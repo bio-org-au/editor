@@ -1,0 +1,49 @@
+
+<h3>Registered Available (Active) Reviewers</h3>
+<p>Users registered and available to review taxonomy versions</p>
+
+<% active_reviewers = TaxonomyReviewer.where(active: true) %>
+<% inactive_reviewers = TaxonomyReviewer.where(active: false) %>
+
+  <%= link_to(pluralize(active_reviewers.count,"Active Reviewer"), search_path(query_string: "*",
+                                             query_target: 'taxonomy reviewer'),
+                                             title: 'Retrieve the reviewers',
+                                             class: 'with-underline').html_safe %> 
+<h4>Active</h4>
+<% if active_reviewers.count > 0 %>
+  <table class="width-30em table table-striped">
+    <tr><th>Username</th><th>Organisation</th></tr>
+    <% TaxonomyReviewer.where(active: true).each do |reviewer| %>
+      <tr><td>
+          <%= link_to(reviewer.username, search_path(query_string: reviewer.username,
+                                           query_target: 'taxonomy reviewer'),
+                                           title: 'Retrieve the reviewer',
+                                           class: 'with-underline').html_safe %>
+      </td>
+      <td><%= reviewer.organisation_name %></td></tr>
+    <% end %>
+  </table>
+<% end %>
+<h4>Inactive</h4>
+<% if inactive_reviewers.count > 0 %>
+  <table class="width-30em table table-striped">
+    <tr><th>Username</th><th>Organisation</th></tr>
+    <% TaxonomyReviewer.where(active: false).each do |reviewer| %>
+      <tr><td>
+          <%= link_to(reviewer.username, search_path(query_string: reviewer.username,
+                                           query_target: 'taxonomy reviewer'),
+                                           title: 'Retrieve the reviewer',
+                                           class: 'with-underline').html_safe %>
+      </td>
+      <td><%= reviewer.organisation_name %></td></tr>
+    <% end %>
+  </table>
+<% end %>
+<br>
+<%= link_to('Add a Reviewer',
+            taxonomy_reviewer_new_row_path,
+            class: 'with-underline',
+            remote: true,
+            title: 'Open a form to create a new taxonomy reviewer') %>
+
+

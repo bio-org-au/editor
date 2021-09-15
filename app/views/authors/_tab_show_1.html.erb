@@ -10,6 +10,10 @@
   <%= @author.notes %>
 <% end %>
 <%= divider %>
+<%= render partial: 'detail_line', locals: {info: @author.normalised_name, label: 'name without diacritics', warn: !@author&.normalised_name&.match(/[^ -~]/).nil?} %>
+<%= render partial: 'detail_line', locals: {info: @author.normalised_abbrev, label: 'abbrev without diacritics', warn: !@author&.normalised_abbrev&.match(/[^ -~]/).nil?} %>
+
+<%= divider %>
 
 <% search_count = @author.master_of.try('count') || 0 %>
 <% if search_count > 0 %>

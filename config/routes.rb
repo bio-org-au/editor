@@ -428,6 +428,8 @@ Rails.application.routes.draw do
   match "taxonomy_reviewers/new/:random_id",
         as: "new_taxonomy_reviewer_with_random_id", to: "taxonomy_reviewers#new", via: :get
   match "taxonomy_review/:id/tab/:tab", as: "taxonomy_reviewer_tab", to: "taxonomy_reviewers#tab", via: :get
+  match "taxonomy_reviewer/activate/:id", as: "activate_taxonomy_reviewer", to: "taxonomy_reviewers#activate", via: :post
+  match "taxonomy_reviewer/de_activate/:id", as: "de_activate_taxonomy_reviewer", to: "taxonomy_reviewers#de_activate", via: :post
   resources :taxonomy_reviewers, only: [:show, :create, :update, :destroy]
 
   resources :tvr_periods_reviewers

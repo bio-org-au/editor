@@ -14,7 +14,7 @@
   <% label_width = ' width-30-percent ' %>
 <% end %>
 
-<div class="detail-line <%= 'underline' if underline %>">
+<div class="detail-line <%= 'underline' if underline %> <%= 'red' if warn %>">
   <% if info.blank? %>
     <span class="pull-left <%= info_width %> no-color">&nbsp;</span>
   <% else %>

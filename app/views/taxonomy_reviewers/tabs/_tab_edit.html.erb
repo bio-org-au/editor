@@ -1,0 +1,22 @@
+<% increment_tab_index(0) %>
+
+<br>
+<% if @taxonomy_reviewer.active? %>
+  Reviewer <b><%= @taxonomy_reviewer.username %></b> can join reviews.<br><br>
+  Stop <%= @taxonomy_reviewer.username %> joining reviews.
+  <span class="pull-right">
+    <%= link_to('De-activate', de_activate_taxonomy_reviewer_path(@taxonomy_reviewer),
+                { remote: true, method: :post, action: 'update', class: 'with-underline', title: 'De-activate the reviewer'}) %>
+  </span>
+<% else %>
+  Reviewer <b><%= @taxonomy_reviewer.username %></b> cannot join reviews.<br><br>
+  Let <%= @taxonomy_reviewer.username %> join reviews.
+  <span class="pull-right">
+    <%= link_to('Activate', activate_taxonomy_reviewer_path(@taxonomy_reviewer),
+                { remote: true, method: :post, action: 'update', class: 'with-underline', title: 'Activate the reviewer'}) %>
+  </span>
+<% end %>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+

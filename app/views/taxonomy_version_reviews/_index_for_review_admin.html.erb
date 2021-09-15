@@ -1,5 +1,12 @@
-<h2>Taxonomy Review Hub</h2>
+<h2>Taxonomy Review Admin Hub</h2>
 Reviewing taxonomy draft versions.
+<h3>Things you can do from here.</h3>
+<ol>
+  <li/>See the status of reviews
+  <li/>Register a review
+  <li/>Add a reviewer i.e. set up a user as an available reviewer
+  <li/>Add an available reviewer to a review
+</ol>
 
 <br>
 <hr class="dark">
@@ -24,7 +31,7 @@ This database has <%= link_to(pluralize(Tree.accepted.all.size, 'accepted taxono
 <h3>
   The <%= tree.name %> taxonomy
 </h3>
-  <%= link_to(pluralize(tree.versions.where(published: false).size, 'draft version'),
+  <%= link_to('List all drafts: currently ' + pluralize(tree.versions.where(published: false).size, 'draft version'),
                                     search_path(query_string: "for-tree-id: #{tree.id} unpublished:",
                         query_target: 'tree_versions'),
                         title: 'Retrieve draft versions of this taxonomy',
@@ -39,10 +46,10 @@ This database has <%= link_to(pluralize(Tree.accepted.all.size, 'accepted taxono
     <% end %>
     <li><h4>Draft version <%= tree_version.draft_name %></h4>
     <% if tree_version.reviews.empty? %>
-      No reviews &mdash; <%= link_to('create a review on the review tab',
+      No reviews &mdash; <%= link_to('create one',
                                       search_path(query_string: "id: #{tree_version.id}",
                                                   query_target: 'tree_versions'),
-                                                  title: 'Show the taxonomy version',
+                                                  title: 'Create a review',
                                                   class: 'with-underline') %>
     <% elsif tree_version.reviews.size > 1 %>
     <%= link_to(pluralize(tree_version.taxonomy_version_reviews.size, 'review'),
@@ -73,27 +80,29 @@ This database has <%= link_to(pluralize(Tree.accepted.all.size, 'accepted taxono
                                                   class: 'with-underline') %> 
           <ul>
             <%= pluralize(period.reviewers.size, "Reviewer") %>
+            <table class="width-30em table table-striped">
+              <tr><th>Username</th><th>Organisation</th><th>Active</th></tr>
+              <% period.reviewers.each do |reviewer| %>
+                <tr><td>
+                    <%= link_to(reviewer.username, search_path(query_string: reviewer.username,
+                                                     query_target: 'taxonomy reviewer'),
+                                                     title: 'Retrieve the reviewer',
+                                                     class: 'with-underline').html_safe %>
+                </td>
+                <td><%= reviewer.organisation_name %></td>
+                <td><%= reviewer.active %></td>
+                </tr>
+              <% end %>
+          </table>
           </ul>
+
       <% end %>
     <% end %>
   <% end %>
 <% end %>
 
 </ul>
-<h3>Reviewers</h3>
-
-<h5>
-<%= link_to(pluralize(TaxonomyReviewer.all.count,"Reviewer"), search_path(query_string: "*",
-                                           query_target: 'taxonomy reviewer'),
-                                           title: 'Retrieve the reviewers',
-                                           class: 'with-underline').html_safe %> 
-</h5>
-
-<%= link_to('Add a Reviewer',
-            taxonomy_reviewer_new_row_path,
-            class: 'with-underline',
-            remote: true,
-            title: 'Open a form to create a new taxonomy reviewer') %>
-
-<%#= render partial: 'taxonomy_version_reviews/doco_for_review_admin' %>
+<hr class="dark">
+<%= render partial: 'taxonomy_reviewers/index' %>
+<%= render partial: 'taxonomy_version_reviews/doco_for_review_admin' %>
 

@@ -144,4 +144,12 @@ class Author < ActiveRecord::Base
       ex_base_names.size.zero? &&
       sanctioned_names.size.zero?
   end
+
+  def normalised_name
+    Author.find_by_sql(["select f_unaccent(name) as normalised_name from author where id = ?",id]).first["normalised_name"]
+  end
+
+  def normalised_abbrev
+    Author.find_by_sql(["select f_unaccent(abbrev) as normalised_abbrev from author where id = ?",id]).first["normalised_abbrev"]
+  end
 end

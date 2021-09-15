@@ -17,7 +17,8 @@
 #   limitations under the License.
 #
 class TaxonomyReviewersController < ApplicationController
-  before_action :find_taxonomy_reviewer, only: [:show, :destroy, :tab]
+  before_action :find_taxonomy_reviewer,
+                only: [:show, :destroy, :tab, :activate, :de_activate]
 
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
@@ -58,6 +59,34 @@ class TaxonomyReviewersController < ApplicationController
 
   alias tab show
 
+  def activate
+    if @taxonomy_reviewer.active?
+      throw 'Reviewer is already active'
+    else 
+      @taxonomy_reviewer.active = true
+      @taxonomy_reviewer.save!
+      render "activate.js"
+    end
+  rescue => e
+    logger.error("Tree Reviewer activate rescuing #{e}")
+    @message = e.to_s
+    render "activate_error.js", status: :unprocessable_entity
+  end
+
+  def de_activate
+    unless @taxonomy_reviewer.active?
+      throw 'Reviewer is already active'
+    else 
+      @taxonomy_reviewer.active = false
+      @taxonomy_reviewer.save!
+      render "de_activate.js"
+    end
+  rescue => e
+    logger.error("Tree Reviewer de_activate rescuing #{e}")
+    @message = e.to_s
+    render "de_activate_error.js", status: :unprocessable_entity
+  end
+
   private
 
   def find_taxonomy_reviewer
@@ -68,7 +97,7 @@ class TaxonomyReviewersController < ApplicationController
   end
 
   def taxonomy_reviewer_params
-    params.require(:taxonomy_reviewer).permit(:username, :organisation_name, :role_name)
+    params.require(:taxonomy_reviewer).permit(:username, :organisation_name, :role_name, :active)
   end
 
   def set_tab

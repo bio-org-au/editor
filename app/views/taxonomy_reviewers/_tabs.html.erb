@@ -12,11 +12,11 @@
 
       <%# if can? 'names', 'update' %>
 
-        <%#= render partial: 'names/tabs/tab', locals: {first: false,
+        <%= render partial: 'taxonomy_reviewers/tabs/tab', locals: {first: false,
                                             last: false,
                                             this_tab: 'tab_edit', 
                                             link_text: "Edit".html_safe,
-                                            link_id: 'name-edit-tab', 
+                                            link_id: 'taxonomy-reviewer-edit-tab', 
                                             link_title: 'Edit details of the name.',
                                             tab_index: increment_tab_index,
                                             prev_tab: '', 

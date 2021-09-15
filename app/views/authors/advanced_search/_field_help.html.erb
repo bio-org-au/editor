@@ -73,6 +73,23 @@
   <% end %>
 </table>
 
+<h5>Quality Checks</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'missed-diacritics:', description: "name or abbrev has diacritics not handled by the unaccent function"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+
+
 <%= render partial: 'comments/advanced_search/help' %>
 <%= render partial: 'help/id_search_help' %>
 <%= render partial: 'help/case_and_wildcards_search' %>

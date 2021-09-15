@@ -61,10 +61,17 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 end
 
+
+
 if ENV['EDITOR_CONFIG_FILE']
-  puts "loading config from #{ENV['EDITOR_CONFIG_FILE']}"
-  load "#{ENV['EDITOR_CONFIG_FILE']}"
+  Rails.configuration.env_editor_config_file = "#{ENV['EDITOR_CONFIG_FILE']}"
+  Rails.configuration.resolved_editor_config_file = "#{ENV['EDITOR_CONFIG_FILE']}"
 else
-  puts "loading config from #{ENV['HOME']}/.nsl/development/editor-r6-config.rb"
-  load "#{ENV['HOME']}/.nsl/development/editor-r6-config.rb"
+  Rails.configuration.env_editor_config_file = ""
+  Rails.configuration.resolved_editor_config_file = "#{ENV['HOME']}/.nsl/development/editor-r6-config.rb"
 end
+
+puts "loading config from #{Rails.configuration.resolved_editor_config_file}"
+load "#{Rails.configuration.resolved_editor_config_file}"
+
+

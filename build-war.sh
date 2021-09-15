@@ -25,8 +25,8 @@ sed -i 's/gem.*pry/\# &/' Gemfile
 echo "bundle exec rake assets:clobber"
 bundle exec rake assets:clobber
 
-echo "bundle exec rake assets:precompile  RAILS_ENV=production"
-bundle exec rake assets:precompile  RAILS_ENV=production 
+echo "bundle exec rake assets:precompile  RAILS_ENV=production RAILS_RELATIVE_URL_ROOT=/nsl/editor"
+bundle exec rake assets:precompile  RAILS_ENV=production  RAILS_RELATIVE_URL_ROOT=/nsl/editor 
 
 echo "bundle exec warble"
 bundle exec warble

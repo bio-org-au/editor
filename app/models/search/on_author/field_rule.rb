@@ -91,5 +91,17 @@ from comment where comment.author_id = author.id)" },
                                multiple_values_where_clause: " id in (?)" },
     "duplicate-of-id:"    => { where_clause: "duplicate_of_id = ? " },
     "notes:" => { where_clause: " lower(notes) like lower(?) " },
+    "missed-diacritics:" => { where_clause: " (exists (
+    select null
+      from regexp_split_to_table(unaccent(name),'') x
+    where ascii(x) not between 1 and 127
+   and length(name)   > 0
+       )
+    or exists (
+    select null
+      from regexp_split_to_table(unaccent(abbrev),'') x
+    where ascii(x) not between 1 and 127
+   and length(abbrev) > 0
+       )) " },
   }.freeze
 end

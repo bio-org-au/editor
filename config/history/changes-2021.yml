@@ -1,7 +1,13 @@
+- :date: 15-Sep-2021
+  :jira_id: '3983'
+  :description: |-
+    Added author search for missed-diacritics, and displayed name and abbrev without diacritics on author details tab, with red highlight when diacritics present.
 - :date: 31-Aug-2021
   :jira_id: '3980'
   :description: |-
     Adjust author search result record so author name and abbrev are the same font-size and line up horizontally. First change in cloud env.
+- :date: 05-Aug-2021
+  :release: true
 - :date: 02-Aug-2021
   :jira_id: ''
   :description: |-

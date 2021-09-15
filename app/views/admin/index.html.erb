@@ -88,6 +88,8 @@
 
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.action_controller.relative_url_root</td>
         <td> <%= Rails.configuration.action_controller.try(:relative_url_root) %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em">Rails.application.config.action_controller.relative_url_root</td>
+        <td> <%= Rails.application.config.action_controller.try(:relative_url_root) %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">ActionController::Base.config.relative_url_root </td>
         <td> <%= ActionController::Base.config.relative_url_root  %> </td></tr>
 
@@ -171,6 +173,13 @@
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.allow_orchid_tree_operations </td><td> <%= Rails.configuration.try(:allow_orchid_tree_operations) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.excluded_orchids_willing </td><td> <%= Rails.configuration.try(:excluded_orchids_willing) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.taxonomic_review_aware </td><td> <%= Rails.configuration.try(:taxonomic_review_aware) || false %> </td></tr>
+    </table>
+    <br> <br> <br> <br>
+
+    <h4>Configuration file</h4>
+    <table class="table table-condensed search-results width-100-percent">
+    <tr><td class="width-40-percent min-width-10em">Rails.configuration.env_editor_config_file </td><td> <%= Rails.configuration.try(:env_editor_config_file) || '' %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em">Rails.configuration.resolved_editor_config_file </td><td> <%= Rails.configuration.try(:resolved_editor_config_file) || '' %> </td></tr>
     </table>
     <br> <br> <br> <br>
   </div>
