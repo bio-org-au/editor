@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.3', '>= 6.0.3.7'
 # Use jdbcpostgresql as the database for Active Record
 gem 'activerecord-jdbcpostgresql-adapter'
 # Use Puma as the app server
-gem 'puma', '>= 4.3.8'
+gem 'puma', '>= 5.5.1'
 # Use SCSS for stylesheets
 # gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -73,7 +73,7 @@ gem "composite_primary_keys"
 gem "sucker_punch"
 gem "pg_search"
 
-gem "nokogiri", ">= 1.11.4"
+gem "nokogiri", ">= 1.12.5"
 gem "rest-client"
 gem "kramdown", ">= 2.3.0"
 gem "exception_notification"

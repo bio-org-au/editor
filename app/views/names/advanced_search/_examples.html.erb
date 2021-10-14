@@ -149,7 +149,7 @@
   <% end %>
 </table>
 
-<h5 class="">Accepted Tree searches</h5>
+<h5 class="">Accepted Taxonomy searches</h5>
 <table class="example-searches table table-striped">
   <% [{search_target: 'Names',
        search_string: "angophora in-accepted-tree:",
@@ -165,7 +165,33 @@
        explanation: %Q(Names matching "angophora cordata%" excluded from the accepted tree.)},
       {search_target: 'Names',
        search_string: "angophora cordata excluded-from-accepted-tree: show-instances:",
-       explanation: %Q(Names matching "angophora cordata%" excluded from the accepted tree with instances.)},
+       explanation: %Q(Names matching "angophora cordata%" excluded from the accepted taxonomy with instances.)},
+     ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string],
+                  search_path(query_string: val[:search_string],
+                  query_target: val[:search_target]),
+                  class:'blue',
+                  title: "Run the described search.")
+      %>
+    </td>
+    <td><%= val[:explanation].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Accepted Taxonomy Distribution searches</h5>
+<table class="example-searches table table-striped">
+  <% [{search_target: 'Names',
+       search_string: "accepted-name-without-distribution:",
+       explanation: %Q(Accepted names in the accepted taxonomy with no distribution strings to display.)},
+      {search_target: 'Names',
+       search_string: "accepted-name-with-dist-but-no-bubbles:",
+       explanation: %Q(Accepted names in the accepted taxonomy with a distribution string but no bubbles.)},
+      {search_target: 'Names',
+       search_string: "id: 88745, 91755, 99999 accepted-name-with-dist-but-no-bubbles:",
+       explanation: %Q(Accepted names in the accepted taxonomy with a distribution string but no bubbles, that also have one of the listed IDs. Show instances on results to drill in.)},
      ].each do |val| %>
   <tr>
     <td class="width-30-percent">

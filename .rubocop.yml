@@ -1,0 +1,20 @@
+AllCops:
+  Exclude:
+    - 'db/**/*'
+  TargetRubyVersion: 2.5
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+Naming/VariableNumber:
+  Enabled: false
+StringLiterals:
+  EnforcedStyle: double_quotes
+  Enabled: true
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# Gives warning: || Warning: unrecognized cop Rails found in /Users/gregc/Dropbox/anbg/rails/ned/.rubocop.yml
+# Rails:
+#   Enabled: true
+

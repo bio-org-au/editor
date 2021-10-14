@@ -275,13 +275,15 @@
 </table>
 <br>
 
-<h5>Accepted Tree Search</h5>
+<h5>Accepted Taxonomy Search</h5>
 <table class="table table-striped">
   <% [
       {field_name: 'in-accepted-tree:', description: "restrict names to those explicitly accepted in or excluded from the accepted tree"},
       {field_name: 'accepted-in-accepted-tree:', description: "restrict names to those explicitly accepted in the accepted tree"},
       {field_name: 'excluded-from-accepted-tree:', description: "restrict names to those explicitly excluded from the accepted tree"},
       {field_name: 'not-in-accepted-tree:', description: "restrict names to those not explicitly accepted in or excluded from the accepted tree"},
+      {field_name: 'accepted-name-without-distribution:', description: "accepted names in the current accepted taxonomy with no profile distribution - mostly higher taxa"},
+      {field_name: 'accepted-name-with-dist-but-no-bubbles:', description: "accepted names in the current accepted taxonomy with a profile distribution, but no 'bubbles. Show instances on results to drill in.'"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

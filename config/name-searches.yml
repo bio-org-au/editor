@@ -471,6 +471,23 @@ from comment where comment.name_id = name.id)"
     and te.excluded
     and te.profile -> (t.config ->> 'distribution_key') is not null)
   :order: name.sort_name
+'accepted-name-without-distribution:':
+  :where_clause: name.id in (SELECT te.name_id from tree t
+    join tree_version_element tve on tve.tree_version_id = t.current_tree_version_id
+    join tree_element te on tve.tree_element_id = te.id
+    where t.accepted_tree
+    and not te.excluded
+    and te.profile -> (t.config ->> 'distribution_key') is null)
+  :order: name.sort_name
+'accepted-name-with-dist-but-no-bubbles:':
+  :where_clause: name.id in (SELECT te.name_id from tree t
+    join tree_version_element tve on tve.tree_version_id = t.current_tree_version_id
+    join tree_element te on tve.tree_element_id = te.id
+    where t.accepted_tree
+    and not te.excluded
+    and te.profile -> (t.config ->> 'distribution_key') is not null
+    and not exists (select null from tree_element_distribution_entries tede
+                     where tede.tree_element_id = te.id))
 'autonym-does-not-exist:':
   :where_clause: " name.id in (select id from name
  where name_type_id in (

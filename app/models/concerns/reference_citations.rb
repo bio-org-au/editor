@@ -9,6 +9,7 @@ module ReferenceCitations
 
   def set_citation!
     json = citation_json
+    reload
     self.citation_html = json["result"]["citationHtml"]
     self.citation = json["result"]["citation"]
     save!

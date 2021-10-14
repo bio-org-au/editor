@@ -135,6 +135,18 @@ word "darwin" followed by a space, one or more other characters followed by "bar
     <pre>type-note-matches: PERTH\."\Z</pre>
 
 
+<h5>Regular Expression Reminders:</h5>
+<ol>
+  <li/>Regex expressions a different to our usual "like" searches, and different rules apply.
+  <li/>Regex expressions derive much of their power from special characters, and it's hard to know what those characters are without being familiar with posix regex.
+  <li/>The asterisk '*' is one such a special character - subtley different to '*' in our normal searches 
+  <li/>To specify "any number of any characters" in regex, use '.*'
+  <li/>You do not need to add a wildcard to the start or end of regex patterns - that is assumed
+  <li/>Parentheses, '(' and ')' are special characters - replace them with a dot (any character) or escape them by prefixing with a backslash eg. '\('.
+  <li/>Other special characters include ., \, ?, [, ].  This list isn't exhaustive.
+  <li/>Regex expressions are probably best for advanced searching and you may need technical advice from the NSL team
+  <li/>See the examples tab too
+</ol>
 <br>
 
 <h4>Special Note Searches</h4>
@@ -147,13 +159,37 @@ word "darwin" followed by a space, one or more other characters followed by "bar
          {field_name: 'note-key-type-note:', description: "Instances with the specified text in a note with a key of 'type'."},
          {field_name: 'apc-dist-note-matches:', description: "Regular expression matches on the APC Dist. instance note.  Case-sensitive."},
          {field_name: 'apc-comment-note-matches:', description: "Regular expression matches on the APC Comment instance note.  Case-sensitive."},
-         {field_name: 'tree-dist-matches:', description: "Regular expression matches on the Distribution profile on the accepted tree.  Case-sensitive."},
-         {field_name: 'tree-comment-matches:', description: "Regular expression matches on the Comment profile on the accepted tree.  Case-sensitive."},
          {field_name: 'non-tree-drafts:', description: "Find draft instances that are not on any tree."},
          {field_name: 'syn-with-note:', description: "Synonyms with at least one note."},
          {field_name: 'syn-with-adnot:', description: "Synonyms with at least one adnot."},
          {field_name: 'note-has-carriage-return:', description: "Find instances that have at least one instance note containing at least one carriage return. No argument is allowed or required for this directive."},
          {field_name: 'note-updated-by:', description: "Find instances that have at least one instance note last updated by the person (or jira number) you enter."},
+     ].each do |val| %>
+    <tr>
+      <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+      </td>
+      <td><%= val[:description].html_safe %></td>
+      <% if val[:partial].present? %>
+        <td><%= render partial: val[:partial] %></td>
+      <% else %>
+        <td></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<h4>Tree distribution and comment searches</h4>
+<table class="table table-striped">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+  </tr>
+  <% [
+         {field_name: 'tree-dist-matches:', description: "Regular expression matches on the Distribution profile on the accepted tree.  Case-insensitive."},
+         {field_name: 'tree-comment-matches:', description: "Regular expression matches on the Comment profile on the accepted tree.  Case-insensitive."},
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">

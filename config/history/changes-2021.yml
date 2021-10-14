@@ -1,3 +1,41 @@
+- :date: 14-Oct-2021
+  :jira_id: '3999'
+  :description: |-
+    Amend instructions for selecting draft taxonomy on Tree Tab - in line with minor tweaks from NSL-4012.
+- :date: 13-Oct-2021
+  :jira_id: '4012'
+  :description: |-
+    Minor tweaks to the layout for consistency - mainly to the Draft Taxonomy menu and to the associated tab for Reports on the draft taxonomy.
+- :date: 11-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Software upgrades for security.
+- :date: 11-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Add Name search directives <code>accepted-name-without-distribution</code> and <code>accepted-name-with-dist-but-no-bubbles</code> while working on distribution.
+- :date: 08-Oct-2021
+  :jira_id: '4006'
+  :description: |-
+    For instance search directives <code>tree-dist-matches</code> and <code>tree-comment-matches</code>: search only the current active tree, do not replace '*' with '%', add documentation and examples 
+- :date: 01-Oct-2021
+  :jira_id: '3364'
+  :description: |-
+    Add processing to avoid stale object errors when creating names and references (which can happen because they require a 2-step dance with services during creation).
+- :date: 28-Sep-2021
+  :jira_id: ''
+  :description: |-
+    Upgrade to Rails 6.0.4.1, yarn upgrade.
+- :date: 27-Sep-2021
+  :jira_id: ''
+  :description: |-
+    Replace the tree icon with the sitemap icon to indicate a hierarchy, rename tree menu to indicate it is for draft taxonomy.
+- :date: 27-Sep-2021
+  :jira_id: ''
+  :description: |-
+    Restore trash icons that were not appearing - they are now "open" icons, not filled in
+- :date: 15-Sep-2021
+  :release: true
 - :date: 15-Sep-2021
   :jira_id: '3983'
   :description: |-

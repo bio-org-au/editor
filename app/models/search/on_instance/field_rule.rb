@@ -116,17 +116,31 @@ from comment where comment.instance_id = instance.id)",
                                  convert_asterisk_to_percent: false,
                                  case_sensitive: true},
       "tree-dist-matches:" => {where_clause: " exists(select null
-                                 from tree t, tree_element te
-                                 where t.accepted_tree
-                                   and instance_id = instance.id
-                                   and (te.profile -> (t.config ->> 'distribution_key') ->> 'value') ~ ?)",
-                                 case_sensitive: true},
+                 from tree t
+                      join tree_version tv
+                           on t.id = tv.tree_id
+                      join tree_version_element tve
+                           on tv.id = tve.tree_version_id
+                      join tree_element te
+                           on te.id = tve.tree_element_id
+                where t.accepted_tree
+                  and tv.id = t.current_tree_version_id
+                  and te.instance_id = instance.id
+                  and (te.profile -> (t.config ->> 'distribution_key') ->> 'value') ~* ?)",
+                                 convert_asterisk_to_percent: false},
       "tree-comment-matches:" => {where_clause: " exists(select null
-                                 from tree t, tree_element te
-                                 where t.accepted_tree
-                                   and instance_id = instance.id
-                                   and (te.profile -> (t.config ->> 'comment_key') ->> 'value') ~ ?)",
-                                 case_sensitive: true},
+                 from tree t
+                      join tree_version tv
+                           on t.id = tv.tree_id
+                      join tree_version_element tve
+                           on tv.id = tve.tree_version_id
+                      join tree_element te
+                           on te.id = tve.tree_element_id
+                where t.accepted_tree
+                  and tv.id = t.current_tree_version_id
+                  and te.instance_id = instance.id
+                  and (te.profile -> (t.config ->> 'comment_key') ->> 'value') ~* ?)",
+                                 convert_asterisk_to_percent: false},
       "non-tree-drafts:" => {where_clause: " draft and not exists(select null
                                  from tree_element te
                                  where te.instance_id = instance.id)"},

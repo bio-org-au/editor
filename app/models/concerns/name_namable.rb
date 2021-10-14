@@ -70,6 +70,7 @@ module NameNamable
 
   def set_names!
     names_json = get_names_json
+    reload
     self.full_name = names_json["result"]["fullName"]
     self.full_name_html = names_json["result"]["fullMarkedUpName"]
     self.simple_name = names_json["result"]["simpleName"]

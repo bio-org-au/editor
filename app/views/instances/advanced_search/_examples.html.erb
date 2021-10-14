@@ -54,12 +54,35 @@
          {search_target: 'Instances', search_string: "apc-comment-note-matches: NSW", explanation: %Q(Find instances with APC Comment notes matching regular expression "NSW".)},
          {search_target: 'Instances', search_string: "apc-dist-note-matches: NSw", explanation: %Q(Find instances with APC Dist. notes matching regular expression "NSw".)},
          {search_target: 'Instances', search_string: "apc-dist-note-matches: [^C]hI", explanation: %Q(Find instances with APC Dist. notes matching "hI" not preceded by "C".)},
-         {search_target: 'Instances', search_string: "tree-dist-matches: \\?", explanation: %Q(Find instances with profile distribution containing "?".)},
-         {search_target: 'Instances', search_string: "tree-dist-matches: [^C]hI", explanation: %Q(Find instances with profile distribution matching "hI" not preceded by "C".)},
          {search_target: 'Instances', search_string: "tree-comment-matches: \\?", explanation: %Q(Find instances with profile comment containing "?".)},
          {search_target: 'Instances', search_string: "non-tree-drafts:", explanation: %Q(Find draft instances not on a tree.)},
          {search_target: 'Instances', search_string: "note-has-carriage-return:", explanation: %Q(Find instances with at least one note that has at least one carriage return. No argument allowed or required.)},
          {search_target: 'Instances', search_string: "note-updated-by: nsl-3495", explanation: %Q(Find instances with at least one note that was last updated by nsl-3495.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <a href="javascript:void(0)" 
+         class="example-search width-100-percent" 
+         title="Link to search">
+         <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
+      </a>
+    </td>
+    <td><%= val[:explanation].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
+<h5 class="">Tree distribution and comment searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+         {search_target: 'Instances', search_string: 'tree-dist-matches: \\?', explanation: %Q(Find instances with profile distribution containing "?".)},
+         {search_target: 'Instances', search_string: 'tree-comment-matches: \\?', explanation: %Q(Find instances with profile comment containing "?".)},
+         {search_target: 'Instances', search_string: 'tree-dist-matches: [^C]hI', explanation: %Q(Find instances with profile distribution matching "hI" not preceded by "C".)},
+         {search_target: 'Instances', search_string: 'tree-dist-matches: SA \(uncertain origin', explanation: %Q(Find instances with profile distribution matching "SA" followed by a space, then an opening parenthesis, immediately followed by 'uncertain origin'.)},
+         {search_target: 'Instances', search_string: 'tree-dist-matches: SA.*\(uncertain origin', explanation: %Q(Find instances with profile distribution matching "SA" followed by zero or more characters, then an opening parenthesis, immediately followed by 'uncertain origin'.)},
+         {search_target: 'Instances', search_string: 'tree-comment-matches: hYbrid.*\(Pryor & johnson, 1971; chippendale, 1988\)', explanation: %Q(Find instances with profile comment matching "hybrid" followed by zero or more characters, followed by an opening parenthesis, the more characters, then 1988 followed by a closing parenthesis.  Shows escaping parentheses and case-insensitivity)},
+         {search_target: 'Instances', search_string: 'tree-comment-matches: \(.*\)', explanation: %Q(Find instances with profile comment containing at least some parentheses".)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
