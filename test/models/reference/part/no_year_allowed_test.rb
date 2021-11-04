@@ -32,11 +32,11 @@ class ReferencePartNoYearAllowedTest < ActiveSupport::TestCase
                   "A reference part with a date should be invalid" do
       reference.save!
     end
-    assert_equal "iso_publication_date",
-                 reference.errors.first.first.to_s,
-                 "Error should be on 'iso_publication_date'"
+    assert_equal :iso_publication_date,
+                 reference.errors.first.attribute,
+                 "Error should be on :iso_publication_date"
     assert_equal "is not allowed for a Part",
-                 reference.errors.first.last.to_s,
+                 reference.errors.first.message,
                  "Incorrect error message"
   end
 end

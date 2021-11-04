@@ -46,8 +46,6 @@
       </li>
 
 
-      <% if @standard_mode %>
-
       <li role="presentation" class="">
         <a id="help-search-tab-container-link"
            class="main-body-tab-link search-non-default-tab-link"
@@ -104,19 +102,16 @@
       <% end %>
 
 
-      <% end %>
-     <% if @taxonomic_review_mode || ( can?("taxonomy_version_review", :edit) && Rails.configuration.try('taxonomic_review_aware') ) %>
-
-      <li role="presentation"
-          class="">
-      <li role="presentation" class="">
-        <%= link_to "Taxonomy",
-                    taxonomy_version_review_index_path,
-                    class: "main-body-tab-link",
-                    remote: true,
-                    title: "Use the taxonomy review hub" %>
-      </li>
-
+      <% if Rails.configuration.try('batch_loader_aware') && can?('batch_loader', 'update') %>
+        <li role="presentation"
+            class="">
+        <li role="presentation" class="">
+          <%= link_to "Loader",
+                      "loader",
+                      class: "main-body-tab-link",
+                      remote: true,
+                      title: "Use the batch loader tab" %>
+        </li>
       <% end %>
 
     </ul>

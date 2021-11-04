@@ -52,9 +52,9 @@ class Comment < ActiveRecord::Base
     parents += 1 if name_id.present?
     parents += 1 if reference_id.present?
     if parents.zero?
-      errors[:base] << "do not know which record this comment is for."
+      errors.add(:base, "do not know which record this comment is for.")
     elsif parents > 1
-      errors[:base] << "cannot be attached to more than one record."
+      errors.add(:base, "cannot be attached to more than one record.")
     end
   end
 end

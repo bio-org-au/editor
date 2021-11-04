@@ -28,7 +28,6 @@ class TreeElementsController < ApplicationController
     @tab_index = choose_index
     @take_focus = params[:take_focus] == 'true'
     @tree_version = TreeVersion.find(params['tree-version-id'])
-    set_up_blank_comment
     logger.debug("params: #{params.inspect}")
     render "show", layout: false
   end
@@ -58,17 +57,5 @@ class TreeElementsController < ApplicationController
 
   def choose_index
     (params[:tabIndex] || "1").to_i
-  end
-
-  def set_up_blank_comment
-    if @tree_version.active_review?
-      if params[:tab] == 'tab_review'
-        @te_comment = TaxonomyElementComment.new
-        @te_comment.tree_element_id = @tree_element.id
-        @te_comment.taxonomy_version_review_period_id = @tree_version.active_review.id
-      else
-        @te_comment = nil
-      end
-    end
   end
 end

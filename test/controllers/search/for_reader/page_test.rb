@@ -33,8 +33,8 @@ class SearchControllerForReaderPageTest < ActionController::TestCase
                   false,
                   "Should not see New menu link."
     assert_select "a#help-dropdown-menu-link.dropdown-toggle",
-                  false,
-                  "Should not see Help menu link."
+                  true,
+                  "Should see Help menu link."
     assert_select "a#user-dropdown-menu-link.dropdown-toggle",
                   true,
                   "Should show User menu link."

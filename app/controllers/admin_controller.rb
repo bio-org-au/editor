@@ -23,9 +23,6 @@ class AdminController < ApplicationController
   def index
   end
 
-  def db_connections
-  end
-
   def throw
     raise "Exception!!!"
   end

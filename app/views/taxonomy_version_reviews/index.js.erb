@@ -1,7 +1,0 @@
-$('#taxonomy-review-info-container').removeClass('hidden');
-$('ul#results-tabset li').removeClass('active');
-if (!$('#taxonomy-review-info-container').hasClass('has-data')){
-  $('#taxonomy-review-info-container').html("<%= j render(:partial => 'index') %>")
-  //$('#batch-container').addClass('has-data');
-}
-

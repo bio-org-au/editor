@@ -1,3 +1,69 @@
+- :date: 02-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: components and link for batch_review and batch_review_period.
+- :date: 02-Nov-2021
+  :jira_id: '4059'
+  :description: |-
+    Show 'updated' message after Name edit is saved. Make the same fix for some delete and update errors for comments and instances.
+- :date: 02-Nov-2021
+  :jira_id: '4058'
+  :description: |-
+    Add a global debug function to allow things like the Synonymy Report to run.
+- :date: 01-Nov-2021
+  :jira_id: '4057'
+  :description: |-
+    Orchids: Log draft instance create action even if no instance created.
+- :date: 01-Nov-2021
+  :jira_id: '4058'
+  :description: |-
+    Upgrade JavaScript libraries to fix webpacker and JQuery problems.
+- :date: 27-Oct-2021
+  :jira_id: '4044'
+  :description: |-
+    Tweak startup script to exclude passwords from the output list of variables.
+- :date: 27-Oct-2021
+  :jira_id: '4044'
+  :description: |-
+    Fix timestamps in test.
+- :date: 26-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Add database connection info to admin -> config page; remove separate page showing database connection info.
+- :date: 26-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Add clear-connections service.
+- :date: 25-Oct-2021
+  :jira_id: '4028'
+  :description: |-
+    Add basic infrastructure for batch loader.
+- :date: 25-Oct-2021
+  :jira_id: '4041'
+  :description: |-
+    Fix name report for <code>top-of-tree</code> - look for depth 1 rather than depth null
+- :date: 25-Oct-2021
+  :jira_id: ''
+  :description: |-
+    Fix typo "excludeded" in orchids stats.
+- :date: 22-Oct-2021
+  :jira_id: '4033'
+  :description: |-
+    Fix Orchid loader query error complaining about non-attribute arguments.
+- :date: 21-Oct-2021
+  :jira_id: '4027'
+  :description: |-
+    Remove code for taxonomic (tree version) review from Editor
+- :date: 20-Oct-2021
+  :jira_id: '4014'
+  :description: |-
+    Fix failing tests and change error processing to avoid deprecation warnings following the Rails upgrade.
+- :date: 15-Oct-2021
+  :jira_id: '4014'
+  :description: |-
+    Upgrade to rails 6.1.4 - please run through common workflow tests.
+- :date: 14-Oct-2021
+  :release: true
 - :date: 14-Oct-2021
   :jira_id: '3999'
   :description: |-

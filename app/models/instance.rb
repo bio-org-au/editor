@@ -227,7 +227,7 @@ class Instance < ActiveRecord::Base
     return if concept_warning_bypassed?
     return if standalone_or_unpublished_citation?
     return unless this_is_cited_by.accepted_concept?
-    errors[:base] << "You are trying to change an accepted concept's synonymy."
+    errors.add(:base, "You are trying to change an accepted concept's synonymy.")
   end
 
   def concept_warning_bypassed?
@@ -254,7 +254,7 @@ class Instance < ActiveRecord::Base
     return if name.primary_instances.empty?
     return if current_record_is_the_only_primary_instance?
     return if an_update_not_changing_type?
-    errors[:base] << MULTIPLE_PRIMARY_WARNING 
+    errors.add(:base, MULTIPLE_PRIMARY_WARNING)
   end
 
   def instance_type_is_primary?
@@ -281,11 +281,11 @@ class Instance < ActiveRecord::Base
     return if unpublished_citation?
     return unless double_synonym?
     if misapplied?
-      errors[:base] << "A name cannot be placed in synonymy twice
-      (non-misapplication synonym is already present)."
+      errors.add(:base, "A name cannot be placed in synonymy twice
+      (non-misapplication synonym is already present).")
     else
-      errors[:base] << "A name cannot be placed in synonymy twice, except as a
-      misapplication."
+      errors.add(:base, "A name cannot be placed in synonymy twice, except as a
+      misapplication.")
     end
   end
 
@@ -335,7 +335,7 @@ class Instance < ActiveRecord::Base
     return if cited_by_id.blank?
     return if cites_id.blank?
     return unless this_is_cited_by.name_id == this_cites.name_id
-    errors[:base] << "A name cannot be a synonym of itself"
+    errors.add(:base, "A name cannot be a synonym of itself")
   end
 
   def apc_instance_notes
@@ -353,7 +353,7 @@ class Instance < ActiveRecord::Base
   end
 
   def name_id_must_not_change
-    errors[:base] << "You cannot use a different name." if name_id_changed?
+    errors.add(:base, "You cannot use a different name.") if name_id_changed?
   end
 
   # A standalone instance with no dependents can change reference.
@@ -361,8 +361,8 @@ class Instance < ActiveRecord::Base
     return unless reference_id_changed? &&
         standalone? &&
         reverse_of_this_is_cited_by.present?
-    errors[:base] << "this instance has relationships, "
-    errors[:base] << "so you cannot alter the reference."
+    errors(:base, "this instance has relationships, ")
+    errors(:base, "so you cannot alter the reference.")
   end
 
   # Update of name_id is not allowed.
@@ -402,12 +402,12 @@ class Instance < ActiveRecord::Base
 
   def cites_id_with_no_cited_by_id_is_invalid
     return unless cites_id.present? && cited_by_id.blank?
-    errors[:base] << "A cites id with no cited by id is invalid."
+    errors(:base, "A cites id with no cited by id is invalid.")
   end
 
   def cannot_cite_itself
     return if !synonymy? || id != cites_id
-    errors[:base] << "cannot cite itself"
+    errors.add(:base, "cannot cite itself")
   end
 
   def cannot_be_cited_by_itself

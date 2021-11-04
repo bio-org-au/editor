@@ -73,7 +73,11 @@ class Search::Mapper::Extras
     "orchids-search-examples" => "orchids/advanced_search/examples",
     "orchid-processing-logs-search-help" => "orchid_processing_logs/advanced_search/help",
     "orchid-processing-logs-search-examples" => "orchid_processing_logs/advanced_search/examples",
-    "tree-version-search-help" => "tree_versions/advanced_search/help",
-    "tree-version-search-examples" => "tree_versions/advanced_search/examples",
+    "loader-batch-search-help" => "loader/batches/help/fields",
+    "loader-batch-search-examples" => "loader/batches/help/examples",
+    "loader-name-search-help" => "loader/names/help/fields",
+    "loader-name-search-examples" => "loader/names/help/examples",
+    "batch-review-search-help" => "loader/batch/reviews/help/fields",
+    "batch-review-search-examples" => "loader/batch/reviews/help/examples",
   }.freeze
 end

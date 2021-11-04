@@ -31,7 +31,6 @@ class Author::AsEdited < Author::AsTypeahead
   end
 
   def update_if_changed(params, typeahead_params, username)
-    params = empty_strings_should_be_nils(params)
     assign_attributes(params)
     resolve_typeahead_params(typeahead_params)
     if changed?
@@ -41,15 +40,6 @@ class Author::AsEdited < Author::AsTypeahead
     else
       "No change"
     end
-  end
-
-  # Empty strings as parameters for string fields are interpreted as a change.
-  def empty_strings_should_be_nils(params)
-    params["abbrev"] = nil if params["abbrev"] == ""
-    params["name"] = nil if params["name"] == ""
-    params["full_name"] = nil if params["full_name"] == ""
-    params["notes"] = nil if params["notes"] == "" #
-    params
   end
 
   def resolve_typeahead_params(params)

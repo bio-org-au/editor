@@ -58,14 +58,8 @@ input[type="checkbox"]:not([title]) {
         data-active-name-tab="tab_details"
         data-active-author-tab="tab_show_1"
         data-active-instance-tab="tab_show_1"
-        data-active-tree-tab="tab_details"
-        data-active-instance-tab="tab_show_1"
-        data-active-taxonomy-version-review-tab="tab_details"
-        data-active-taxonomy-review-period-tab="tab_details"
-        data-active-tree-element-tab="tab_details"
-        data-active-tree-version-tab="tab_details"
-        data-active-taxonomy-reviewer-tab="tab_details"
-        data-active-diff-list-tab="tab_details"
+        data-active-loader-batch-tab="tab_details"
+        data-active-loader-name-tab="tab_details"
         >
 
     <div id="screen-too-small-msg">Sorry.... your window is too small to show the editor.  It needs to be wider.</div>
@@ -85,7 +79,6 @@ input[type="checkbox"]:not([title]) {
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 sidebar" >
           <%= yield %>
         </div>
-        <% if @standard_mode %>
         <div id="help-search-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
             <%= render partial: 'search/help_search_inner' %>
@@ -107,10 +100,6 @@ input[type="checkbox"]:not([title]) {
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
         </div>
         <div id="orchids-batch-panel-container"
-             class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
-        </div>
-        <% end %>
-        <div id="taxonomy-review-info-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
         </div>
       </div>

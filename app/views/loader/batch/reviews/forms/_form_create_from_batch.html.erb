@@ -1,0 +1,8 @@
+<%= form_with model: @batch_review, url: 'batch_reviews', method: :post do |form| %>
+  <%= form.hidden_field :loader_batch_id %>
+  Name: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", tabindex: increment_tab_index %>
+  <%= form.submit id: "save-new-batch-review-btn", class: 'btn-primary', title: "Create a new review", tabindex: increment_tab_index %>
+<% end %>
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+ 

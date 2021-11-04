@@ -1,5 +1,0 @@
-$('#confirm-or-cancel-link-container a.btn-danger').addClass('disabled');
-$('#cancel-delete-link').addClass('disabled');
-$('#delete-info-message-container').removeClass('hidden');
-$('#delete-info-message-container').html('Record deleted.  <br><br>In a few moments it will disappear from the page.');
-setTimeout(function(){window.showRecordWasDeleted('<%= @taxonomy_version_review_period.id %>', 'taxonomy_version_review_period')},2000);

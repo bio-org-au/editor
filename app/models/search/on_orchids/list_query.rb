@@ -32,7 +32,7 @@ class Search::OnOrchids::ListQuery
     where_clauses = Search::OnOrchids::WhereClauses.new(@parsed_request, prepared_query)
     prepared_query = where_clauses.sql
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
-    prepared_query = prepared_query.order("coalesce(parent_id,0), id")
+    prepared_query = prepared_query.order(Arel.sql("coalesce(parent_id,0), id"))
     @sql = prepared_query
   end
 end

@@ -1,8 +1,0 @@
-$('.message-container').html('');
-$('#search-result-details-info-message-container').html('Created');
-$('tr#new-taxonomy-reviewer-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'taxonomy_reviewer_record', locals: {search_result: @taxonomy_reviewer, give_me_focus: true})) %>");
-debug("create with <%= @random_id %>.");
-$('tr#search-result-<%= @taxonomy_reviewer.id %> td.takes-focus a.show-details-link').focus();
-
-
-

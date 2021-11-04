@@ -1,13 +1,10 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception  # from v4, needed in v6?
-  STANDARD_MODE = "standard_mode"
-  TRM = TAXONOMIC_REVIEW_MODE = "taxonomic_review_mode"
   before_action :set_debug,
                 :start_timer,
                 :check_system_broadcast,
                 :authenticate,
-                :check_authorization,
-                :set_mode
+                :check_authorization
   around_action :user_tagged_logging
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :show_login_page
@@ -47,46 +44,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # Continue in current mode from session
-  # Default to standard mode if session not set
-  # Force reviewers into review mode regardless of session
-  # Set booleans
-  def set_mode
-    logger.info("1. set_mode: session[:mode]: #{session[:mode]}; start")
-    @mode = session[:mode] ||= STANDARD_MODE
-    logger.info("2. set_mode: session[:mode]: #{session[:mode]}; default to standard mode")
-    @mode = session[:mode] = TRM unless can? 'standard_mode', 'use'
-    logger.info("3. set_mode: session[:mode]: #{session[:mode]}; fall back to TRM mode if cannot use standard mode")
-    session[:mode] = @mode
-    @standard_mode = @mode == STANDARD_MODE
-    @taxonomic_review_mode = !@standard_mode
-  end
-
-  def set_mode_new_cannot_change_mode
-    logger.info("set_mode - controller: #{params[:controller]}, action: #{params[:action]}")
-    return if params[:controller] = 'mode' && params[:action] = 'toggle_mode'
-
-    logger.debug("best mode: #{best_mode}")
-    logger.info("1. set_mode: session[:mode]: #{session[:mode]}; start")
-    @mode = session[:mode] ||= best_mode
-    logger.debug("2. @mode: #{@mode}")
-    @mode = best_mode unless can? session[:mode], 'use'
-    logger.debug("3. @mode: #{@mode}")
-    session[:mode] = @mode
-    logger.debug("4. mode: session[:mode]: #{session[:mode]}")
-    @standard_mode = @mode == STANDARD_MODE
-    @taxonomic_review_mode = !@standard_mode
-  end
-
   private
-
-  def best_mode
-    if can? 'standard_mode', 'use'
-      STANDARD_MODE
-    else
-      TRM
-    end
-  end
 
   def ask_user_to_sign_in
     session[:url_after_sign_in] = request.url

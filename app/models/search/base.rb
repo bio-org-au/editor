@@ -75,19 +75,16 @@ class Search::Base
     @executed_query =
       case @parsed_request.target_table
       when /any/ then raise "cannot run an 'any' search yet"
-      when /name/ then Search::OnName::Base.new(@parsed_request)
+      when /^name/ then Search::OnName::Base.new(@parsed_request)
       when /author/ then Search::OnAuthor::Base.new(@parsed_request)
       when /instance/ then Search::OnInstance::Base.new(@parsed_request)
       when /reference/ then Search::OnReference::Base.new(@parsed_request)
       when /orchids/ then Search::OnOrchids::Base.new(@parsed_request)
       when /orchid.processing.log/ then Search::OnOrchidProcessingLogs::Base.new(@parsed_request)
-      when /tree\z/ then Search::OnTree::Base.new(@parsed_request)
-      when /tree_version\z/ then Search::OnTreeVersion::Base.new(@parsed_request)
-      when /tree_version_element\z/ then Search::OnTreeVersionElement::Base.new(@parsed_request)
-      when /tree_element\z/ then Search::OnTreeElement::Base.new(@parsed_request)
-      when /taxonomy_version_review\z/ then Search::OnTaxonomyVersionReview::Base.new(@parsed_request)
-      when /taxonomy_version_review_period\z/ then Search::OnTaxonomyVersionReviewPeriod::Base.new(@parsed_request)
-      when /taxonomy_reviewer\z/ then Search::OnTaxonomyReviewer::Base.new(@parsed_request)
+      when /loader.batch/ then Search::OnLoaderBatch::Base.new(@parsed_request)
+      when /loader.name/ then Search::OnLoaderName::Base.new(@parsed_request)
+      when /^batch.review$/ then Search::Loader::Batch::Review::Base.new(@parsed_request)
+      when /^batch.review.period$/ then Search::Loader::Batch::Review::Period::Base.new(@parsed_request)
       else raise 'unknown target table'
       end
   end
@@ -121,8 +118,6 @@ class Search::Base
       .new(@parsed_request)
       when /\Areferences.shared.names\z/i
         Reference::DefinedQuery::ReferencesSharedNames.new(@parsed_request)
-      when /\Achanged.tree.elements\z/i
-        Tree::DefinedQuery::ChangedTreeElements.new(@parsed_request)
       else
         Rails.logger.error("Search::Base failed to run defined query: "\
                            "#{@parsed_request.defined_query}")

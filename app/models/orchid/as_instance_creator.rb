@@ -34,7 +34,7 @@ class Orchid::AsInstanceCreator
     @orchid.preferred_match.each do |preferred_match|
       begin
         @created += preferred_match.create_instance(@ref, @authorising_user)
-        log_create_action(@created) unless @created == 0
+        log_create_action(@created)
       rescue => e
         @errors += 1
         log_to_table("Errors creating instance for preferred match #{preferred_match.id} - #{e.message}")

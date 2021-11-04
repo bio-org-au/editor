@@ -1,0 +1,3 @@
+task :add_table do
+  puts 'Add table to Editor'
+end

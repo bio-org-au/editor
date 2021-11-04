@@ -1,0 +1,30 @@
+<%= form_with model: @review_period, url: update_review_period_path(@review_period), method: :patch do |form| %>
+  <%= form.hidden_field :id %>
+  <%= form.hidden_field :batch_review_id %>
+  Name: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", tabindex: increment_tab_index %>
+
+  <br>
+    Start date
+    <br>
+    <%= form.date_select :start_date,
+                      {order: [:day, :month, :year]},
+                      {title: 'Start date for the period of review',
+                       tabindex: increment_tab_index}  %>
+    <br>
+    End date
+    <br>
+    <%= form.date_select :end_date,
+      {order: [:day, :month, :year],
+       include_blank: true},
+                      {title: 'End date for the period of review',
+                       tabindex: increment_tab_index}  %>
+    <br>
+ 
+  <div class="form-group align-right">
+  <%= form.submit id: "save-review-period-btn", class: 'btn btn-primary width-5em', value: "Save", title: "Save changes to the review period", tabindex: increment_tab_index %>
+  </div>
+<% end %>
+<br>
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+ 

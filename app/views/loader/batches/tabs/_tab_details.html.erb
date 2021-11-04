@@ -1,0 +1,26 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line',
+           locals: {info: @loader_batch.name, label: 'Name'} %>
+<%= render partial: 'detail_line',
+      locals: {info: @loader_batch.loader_names.size,
+               label: link_to('Loader Names',
+                        search_path(
+                          query_string: "batch-id: #{@loader_batch.id}",
+                          query_target: 'loader names'),
+               title:"Query loader names",class:'blue')} %>
+
+<%= render partial: 'detail_line',
+      locals: {info: @loader_batch.batch_reviews.size,
+               label: link_to('Batch Reviews',
+                        search_path(
+                          query_string: "batch-id: #{@loader_batch.id}",
+                          query_target: 'batch reviews'),
+               title:"Query batch reviews",class:'blue')} %>
+
+
+<%= divider %>
+Loader Batch #<%= @loader_batch.id %>
+<h5>Metadata</h5>
+<%= created_by_whom_and_when(@loader_batch).html_safe %> <br>
+<%= updated_by_whom_and_when(@loader_batch).html_safe %>
+

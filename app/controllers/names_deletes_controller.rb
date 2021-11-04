@@ -29,7 +29,7 @@ class NamesDeletesController < ApplicationController
   rescue StandardError => e
     logger.error("Exception deleting name: #{e}")
     assemble_error_message(e)
-    render partial: "error.js"
+    render partial: "error"
   end
 
   private

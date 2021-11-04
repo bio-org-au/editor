@@ -1,4 +1,3 @@
 $('tr#new-author-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'author_record', locals: {search_result: @author, give_me_focus: true})) %>");
-debug("create with <%= @random_id %>.");
 $('tr#search-result-<%= @author.id %> td.takes-focus a.show-details-link').focus();
 

@@ -1,0 +1,40 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.record_type, label: 'Record Type'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.family, label: 'Family'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.rank, label: 'rank'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.rank_nsl, label: 'rank_nsl'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.ex_base_author, label: 'ex_base_author'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.base_author, label: 'base_author'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.ex_author, label: 'ex_author'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.author, label: 'author'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.name_status, label: 'name_status'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.name_comment, label: 'name_comment'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.partly, label: 'partly'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.auct_non, label: 'auct_non'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.unplaced, label: 'unplaced'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.doubtful, label: 'doubtful'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.hybrid_flag, label: 'hybrid_flag'} %>
+
+<br>
+<%= divider %>
+<b>Original Text (styled)</b>
+<br>
+<%= @loader_name.original_text.html_safe %>
+<%= divider %>
+
+<%= render partial: 'detail_line',
+      locals: {info: @loader_name.batch.name,
+               label: link_to('Batch',
+                        search_path(
+                          query_target: 'loader batch',
+                          query_string: "id: #{@loader_name.batch.id}"),
+               title:"Query the loader batch",class:'blue')} %>
+Loader Name #<%= @loader_name.id %> <br>
+Raw ID #<%= @loader_name.raw_id %><br>
+Seq #<%= @loader_name.seq %>
+<%= divider %>
+
+<h5>Metadata</h5>
+<%= created_by_whom_and_when(@loader_name).html_safe %>
+<br>
+<%= updated_by_whom_and_when(@loader_name).html_safe %>

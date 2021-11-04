@@ -46,7 +46,7 @@ class Orchid::AsStatusReporter::ForExcludedNames
           synonym_matched_with_cross_ref: synonym_matched_with_cross_ref,
           misapplied_with_cross_ref: misapplied_with_cross_ref },
       with_match_and_instances_breakdown:
-        { excludeded_matched_with_standalone_instance_created: excluded_matched_with_standalone_instance_created,
+        { excluded_matched_with_standalone_instance_created: excluded_matched_with_standalone_instance_created,
           excluded_matched_with_standalone_instance_found: excluded_matched_with_standalone_instance_found,
           synonym_matched_with_cross_ref_created: synonym_matched_with_cross_ref_created,
           synonym_matched_with_cross_ref_found: synonym_matched_with_cross_ref_found,

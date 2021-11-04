@@ -194,7 +194,7 @@ class TreesController < ApplicationController
                                                version_id: place_name_params[:version_id])
     response = placement.place
     @message = placement_json_result(response)
-    render "place_name.js"
+    render "place_name"
   rescue RestClient::Unauthorized, RestClient::Forbidden => e
     @message = json_error(e)
     render "place_name_error.js"
@@ -209,7 +209,7 @@ class TreesController < ApplicationController
                                                  target: target)
     response = removement.remove
     @message = json_result(response)
-    render "removed_placement.js"
+    render "removed_placement"
   rescue RestClient::Unauthorized, RestClient::Forbidden => e
     @message = json_error(e)
     render "remove_placement_error.js"

@@ -1,0 +1,18 @@
+
+<%= form_with model: @review_period, url: 'batch_review_periods', method: :post do |form| %>
+  <%= form.hidden_field :batch_review_id, value: @batch_review.id %>
+  Name: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", tabindex: increment_tab_index %>
+
+    Start date
+    <br>
+    <%= form.date_select :start_date,
+                      {order: [:day, :month, :year]},
+                      {title: 'Start date for the period of review',
+                       tabindex: increment_tab_index}  %>
+    <br>
+    <br>
+  <%= form.submit id: "save-new-batch-review-period-btn", class: 'btn-primary', title: "Create a new review period", tabindex: increment_tab_index %>
+<% end %>
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+ 

@@ -1,9 +1,6 @@
-<% unless @taxonomic_review_mode %>
-  <% if session[:include_common_and_cultivar] == true %>
+<% if session[:include_common_and_cultivar] == true %>
   <%= link_to "#{icon('check-square-o fa-lg')} Common/Cultivars".html_safe,set_include_common_and_cultivar_path, remote: true, method: :post, title: 'Name searches will include common and cultivars.  Click to reverse this setting and exclude common and cultivars from future searches.' %>&nbsp;
-  <% else %>
     <%= link_to "#{icon('square-o fa-lg')} Common/Cultivars".html_safe,set_include_common_and_cultivar_path, remote: true, method: :post , title: 'Name searches will exclude common and cultivars unless your search requires them.  Click to reverse this setting and include common and cultivars in future searches.'%>
-  <% end %>
   <% unless @empty_search %>
     &nbsp;|&nbsp;
   <% end %>

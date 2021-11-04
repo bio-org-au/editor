@@ -71,7 +71,7 @@ module NameAuthorable
 
   def author_and_ex_author_must_differ
     if author_id.present? && ex_author_id.present? && author_id == ex_author_id
-      errors[:base] << "The ex-author cannot be the same as the author."
+      errors.add(:base, "The ex-author cannot be the same as the author.")
     end
   end
 
@@ -79,6 +79,6 @@ module NameAuthorable
     return unless base_author_id.present? &&
                   ex_base_author_id.present? &&
                   base_author_id == ex_base_author_id
-    errors[:base] << "The ex-base author cannot be the same as the base author."
+    errors.add(:base, "The ex-base author cannot be the same as the base author.")
   end
 end

@@ -1,19 +1,19 @@
 <tr id="search-result-<%= search_result.id %>" 
   class="search-result show-no-details <%= 'fresh' if search_result.fresh? %>"  
-  data-get-url="<%#= taxonomy_version_review_path(search_result.id) %>"
-  data-edit-url="<%#= taxonomy_version_review_path(search_result.id) %>"
-  data-base-url="<%#= taxonomy_version_review_path(search_result.id) %>"
-  data-tab-url="<%#= taxonomy_version_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-get-url=""
+  data-edit-url=""
+  data-base-url=""
+  data-tab-url=""
   data-record-id="<%#= search_result.id %>"
-  data-record-type="taxonomy_version_review"
+  data-record-type=""
   tabindex="<%= increment_tab_index(100) %>"
     >
-  <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%= record_icon('taxonomy_version_review') %></td>
+  <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%= record_icon('orchid') %></td>
   <td class="text takes-focus name main-content min-width-40-percent max-width-60-percent width-50-percent <%= 'give-me-focus' if give_me_focus %>">
     <a
       class="show-details-link"
       tabindex="<%= increment_tab_index %>" 
-      title="Taxonomy review record. Select to show details."
+      title="Orchid processing log record. Select to show details."
       id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
       <%= search_result.log_entry.html_safe %>
       <%= render partial: 'application/search_results/link_texts/orchid_processing_log', locals: {search_result: search_result} %>

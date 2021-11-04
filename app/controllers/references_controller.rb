@@ -55,11 +55,11 @@ class ReferencesController < ApplicationController
     @reference = Reference::AsEdited.create(reference_params,
                                             typeahead_params,
                                             current_user.username)
-    render "create.js"
+    render "create"
   rescue => e
     logger.error("Controller:reference:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error.js", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_entity
   end
 
   # PUT /references/1.json
@@ -69,11 +69,11 @@ class ReferencesController < ApplicationController
     check_date_params
     @form = params[:form][:name] if params[:form]
     update_reference
-    render "update.js"
+    render "update"
   rescue => e
     logger.error("Controller:reference:update rescuing: #{e}")
     @message = e.to_s
-    render "update_error.js", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_entity
   end
 
   # DELETE /references/1

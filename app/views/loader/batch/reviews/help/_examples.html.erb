@@ -1,0 +1,15 @@
+<h4>Batch review search examples</h4>
+<h5 class="">List batch reviews</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Batch reviews', search_string: "*",explanation: %Q(First 100, order by name.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td><%= val[:explanation].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+

@@ -48,6 +48,6 @@ module AuthorValidations
     return unless changed.include?('duplicate_of_id')
     return unless duplicate?
     return if duplicate_of.abbrev.present?
-    errors[:base] << "Cannot make this a duplicate of an author that has no abbreviation."
+    errors.add(:base, "Cannot make this a duplicate of an author that has no abbreviation.")
   end
 end

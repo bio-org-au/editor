@@ -462,7 +462,7 @@ from comment where comment.name_id = name.id)"
                             FROM tree_version_element tve
                               JOIN tree t ON tve.tree_version_id = t.current_tree_version_id
                               join tree_element te on tve.tree_element_id = te.id
-                            where t.accepted_tree and tve.depth = ?)
+                            where t.accepted_tree and tve.depth = 1)
 'excluded-name-with-distribution:':
   :where_clause: name.id in (SELECT te.name_id from tree t
     join tree_version_element tve on tve.tree_version_id = t.current_tree_version_id

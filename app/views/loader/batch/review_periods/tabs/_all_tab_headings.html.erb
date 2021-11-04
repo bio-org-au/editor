@@ -1,0 +1,26 @@
+<ul class="nav nav-tabs">
+  <%= render partial: 'loader/batch/review_periods/tabs/tab',
+             locals: {first: true,
+                      last: false,
+                      this_tab: 'tab_details', 
+                      link_text: 'Details', 
+                      link_id: 'loader-batch-review-periods-details-tab', 
+                      link_title: 'View a summary',
+                      tab_index: @tab_index,
+                      prev_tab: '.search-result.batch-review-periods-edit-tab', 
+                      next_tab: '.search-result.batch-review-periods-edit-tab' } %> 
+
+  <%= render partial: 'loader/batch/review_periods/tabs/tab',
+             locals: {first: false,
+                      last: true,
+                      this_tab: 'tab_edit', 
+                      link_text: 'Edit', 
+                      link_id: 'loader-batch-review-periods-edit-tab', 
+                      link_title: 'Edit the period',
+                      tab_index: @tab_index,
+                      prev_tab: '.search-result.batch-review-periods-tab', 
+                      next_tab: '.search-result.batch-review-periods-tab' } %> 
+
+
+</ul>
+

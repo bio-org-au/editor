@@ -1,0 +1,19 @@
+<% this_tab_re = Regexp.new(this_tab) %>
+
+<% data = Hash.new %>
+<% data['edit-url'] = review_period_tab_path(@review_period,tab:"#{this_tab}") %>
+<% data['tab-url']  = review_period_tab_path(id: @review_period,tab:"#{this_tab}") %>
+<% data['prev-tab'] = prev_tab unless prev_tab.blank? %>
+<% data['tab-name'] = this_tab %>
+
+<li class='first <%= @tab.match(this_tab_re) ? "active" : "non-active" %>'>
+ <%= link_to link_text,
+             '#',
+             id: link_id,
+             class: 'tab edit-details-tab', 
+             title: link_title,
+             tabindex: tab_index,
+             data: data %>
+</li>
+
+

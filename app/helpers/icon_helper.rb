@@ -44,7 +44,6 @@ module IconHelper
     when "reference" then "rgba(245,172,0,1.0)"
     when "instance" then "rgba(197,151,203,1.0)"
     when "orchid" then "rgba(121,7,242,1.0)"
-    when "taxonomy_reviewer" then "rgba(255, 165, 0, 1)"
     else "rgba(197,151,203,1.0)"
     end
   end

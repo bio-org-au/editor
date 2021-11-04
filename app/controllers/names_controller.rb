@@ -117,7 +117,7 @@ class NamesController < ApplicationController
     @tab_index = (params[:tabIndex] || "40").to_i
     @name = new_name_for_category
     @no_search_result_details = true
-    render "new.js"
+    render "new"
   end
 
   # POST /names
@@ -125,11 +125,11 @@ class NamesController < ApplicationController
     @name = Name::AsEdited.create(name_params,
                                   typeahead_params,
                                   current_user.username)
-    render "create.js"
+    render "create"
   rescue => e
     logger.error("Controller:Names:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error.js", status: 422
+    render "create_error", status: 422
   end
 
   # PUT /names/1.json
@@ -141,10 +141,10 @@ class NamesController < ApplicationController
                                        typeahead_params,
                                        current_user.username)
     refresh_names if refresh_after_update
-    render "update.js"
+    render "update"
   rescue => e
     @message = e.to_s
-    render "update_error.js", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_entity
   end
 
   def rules

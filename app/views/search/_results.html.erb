@@ -67,35 +67,23 @@
       <% when 'OrchidProcessingLog' %>  
         <%= render partial: 'application/search_results/orchid_processing_log_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'Tree' %>  
-        <%= render partial: 'tree_record', 
+      <% when 'Loader Batch' %>  
+        <%= render partial: 'application/search_results/loader_batch_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'TreeVersion' %>  
-        <%= render partial: 'tree_version_record', 
+      <% when 'Loader Name' %>  
+        <%= render partial: 'application/search_results/loader_name_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'TreeVersionElement' %>  
-        <%= render partial: 'tree_version_element_record', 
+      <% when 'Batch Review' %>  
+        <%= render partial: 'application/search_results/batch_review_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'TreeElement' %>  
-        <%= render partial: 'tree_element_record', 
+      <% when 'Review Period' %>  
+        <%= render partial: 'application/search_results/review_period_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'HelpTopic' %>  
         <%= render partial: 'help_topic_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'TaxonomyVersionReview' %>  
-        <%= render partial: 'application/search_results/taxonomy_version_review_record', 
-          locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'TaxonomyVersionReviewPeriod' %>  
-        <%= render partial: 'application/search_results/taxonomy_version_review_period_record', 
-          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'UserQuery' %>  
         <%= render partial: 'user_query_record', 
-          locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'TaxonomyReviewer' %>  
-        <%= render partial: 'taxonomy_reviewer_record', 
-          locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'DiffListRecord' %>  
-        <%= render partial: 'diff_list_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% else %>
         <tr>

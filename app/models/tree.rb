@@ -22,21 +22,6 @@ class Tree < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
  
-  def display_as
-    'Tree'
-  end
-
-  def fresh?
-    false
-  end
-
-  def has_parent?
-    false
-  end
-
-  def record_type
-    'Tree'
-  end
 
   belongs_to :default_draft_version,
              class_name: "TreeVersion",
@@ -47,10 +32,6 @@ class Tree < ActiveRecord::Base
              foreign_key: "current_tree_version_id"
 
   has_many :tree_versions,
-           foreign_key: "tree_id"
-
-  has_many :versions,
-           class_name: "TreeVersion",
            foreign_key: "tree_id"
 
   scope :accepted,
@@ -68,9 +49,4 @@ class Tree < ActiveRecord::Base
   def config?
     self.config.present?
   end
-
-  def self.exactly_one_accepted?
-    Tree.accepted.all.size == 1
-  end
-
 end

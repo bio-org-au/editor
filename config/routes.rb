@@ -270,8 +270,6 @@ Rails.application.routes.draw do
 
   match "/admin", as: "admin", to: "admin#index", via: :get
   match "/admin/throw", as: "throw", to: "admin#throw", via: :get
-  match "/admin/db_connections",
-        as: "db_connections", to: "admin#db_connections", via: :get
 
   match "help/index", to: "help#index", via: :get
   match "help/instance_models",
@@ -408,36 +406,22 @@ Rails.application.routes.draw do
   match "/trees/show/valrep", as: "show_valrep", to: "trees#show_valrep", via: :get
   match "/trees/run/valrep", as: "run_valrep", to: "trees#run_valrep", via: :get
 
-  match "/user/toggle_mode", as: "toggle_mode", to: "mode#toggle_mode", via: :post
+  resources :loader_batches
+  match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
+  resources :loader_names
+  match "loader_names/:id/tab/:tab", as: "loader_name_tab", to: "loader/names#tab", via: :get
+  match "batch_reviews/:id/tab/:tab", as: "batch_review_tab", to: "loader/batch/reviews#tab", via: :get
+  match "batch_reviews", as: "create_batch_review", to: "loader/batch/reviews#create", via: :post
+  match "batch_reviews", as: "update_batch_review", to: "loader/batch/reviews#update", via: :put
+  match "batch_reviews", as: "batch_review", to: "loader/batch/reviews#show", via: :get
+  match "/batch_reviews/:id", as: "delete_batch_review", to: "loader/batch/reviews#destroy", via: :delete
+  #resources :batch_reviews
+  match "batch_review_periods", as: "create_batch_review_period", to: "loader/batch/review_periods#create", via: :post
+  match "batch_review_periods", as: "review_period", to: "loader/batch/review_periods#show", via: :get
+  match "batch_review_periods/:id/tab/:tab", as: "review_period_tab", to: "loader/batch/review_periods#tab", via: :get
+  match "batch_review_periods/:id", as: "update_review_period", to: "loader/batch/review_periods#update", via: :patch
 
-  resources :taxonomy_version_reviews, only: [:show, :post, :create, :new, :update, :destroy]
-  match "taxonomy_version_reviews/:id/tab/:tab", as: "taxonomy_version_review_tab", to: "taxonomy_version_reviews#tab", via: :get
-  match "taxonomy_version_review_index",
-        as: "taxonomy_version_review_index",
-        to: "taxonomy_version_reviews#index",
-        via: :get
-
-  match "taxonomy_version_review_periods/:id/tab/:tab", as: "taxonomy_version_review_period_tab", to: "taxonomy_version_review_periods#tab", via: :get
-  match "taxonomy_version_review_periods/calendar", as: "taxonomy_version_review_period_calendar", to: "taxonomy_version_review_periods#calendar", via: :get
-  resources :taxonomy_version_review_periods, only: [:show, :create, :new, :update, :destroy]
-
-  resources :taxonomy_element_comments, only: [:show, :post, :create, :new, :update, :destroy]
-
-  match "taxonomy_reviewers/new_row",
-        as: "taxonomy_reviewer_new_row", to: "taxonomy_reviewers#new_row", via: :get
-  match "taxonomy_reviewers/new/:random_id",
-        as: "new_taxonomy_reviewer_with_random_id", to: "taxonomy_reviewers#new", via: :get
-  match "taxonomy_review/:id/tab/:tab", as: "taxonomy_reviewer_tab", to: "taxonomy_reviewers#tab", via: :get
-  match "taxonomy_reviewer/activate/:id", as: "activate_taxonomy_reviewer", to: "taxonomy_reviewers#activate", via: :post
-  match "taxonomy_reviewer/de_activate/:id", as: "de_activate_taxonomy_reviewer", to: "taxonomy_reviewers#de_activate", via: :post
-  resources :taxonomy_reviewers, only: [:show, :create, :update, :destroy]
-
-  resources :tvr_periods_reviewers
-
-  # ["operation", "previous_tve", "current_tve", "simple_name", "synonyms_html", "name_path"]
-  # match "diff_list/:id/tab/:tab/:operation/:previous_tve/:current_tve/:simple_name", as: "diff_list_tab", to: "diff_lists#tab", via: :get
-  match "diff_list/:id/tab/:tab/", as: "diff_list_tab", to: "diff_lists#tab", via: :get
-
+  match "/clear-connections", as: "clear_connections", to: "services#clear_connections", via: :get
   root to: "search#search"
   match "/*random", to: "search#search", via: [:get, :post, :delete, :patch]
 end

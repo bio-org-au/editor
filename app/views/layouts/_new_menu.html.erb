@@ -103,17 +103,5 @@
         </li>
       <% end %>
 
-      <% if Rails.configuration.try('taxonomic_review_aware') %>
-      <li role="presentation" class="divider"></li>
-
-        <li role="presentation">
-          <%= link_to "Taxonomy reviewer",
-                    taxonomy_reviewer_new_row_path,
-                    title: 'Add a new taxonomy reviewer',
-                    remote: true,
-                    tabindex: '-1' %>
-        </li>
-      <% end %>
-
     </ul>
 </li>

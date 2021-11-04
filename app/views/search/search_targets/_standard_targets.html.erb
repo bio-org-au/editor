@@ -85,77 +85,34 @@
           <li role="separator" class="divider"></li>
           <li><a id="search-target-audit" 
                      href="#" 
-                 title="Set the search to target review" 
+                 title="Search recent work on names, references, authors, and instances" 
                      data-help="review-search-help"
                      data-examples="review-search-examples"
                      data-advanced="review-search-advanced"
                      >Review</a></li> 
-          <% if Rails.configuration.try(:enable_tree_search) %>
-            <li role="separator" class="divider"></li>
-            <li><a id="search-target-item-trees" 
+          <li role="separator" class="divider"></li>
+
+          <% if Rails.configuration.try(:batch_loader_aware) %>
+            <li><a id="search-target-item-loader-batch" 
                    href="#" 
-                   title="Set the search to target trees" 
-                   data-help="tree-search-help" 
-                   data-examples="tree-search-examples"
-                   data-advanced="tree-search-advanced" 
-                >Trees</a>
+                   title="Search loader batches" 
+                   data-help="loader-batch-search-help" 
+                   data-examples="loader-batch-search-examples"
+                >Loader batches</a>
             </li>
-            <li><a id="search-target-item-tree-versions" 
+            <li><a id="search-target-item-loader-name" 
                    href="#" 
-                   title="Set the search to target tree versions"
-                   data-help="tree-version-search-help" 
-                   data-examples="tree-version-search-examples"
-                   data-advanced="tree-version-search-advanced" 
-                >Tree Versions</a>
+                   title="Search loader names" 
+                   data-help="loader-name-search-help" 
+                   data-examples="loader-name-search-examples"
+                >Loader names</a>
             </li>
-            <li><a id="search-target-item-tree-version-elements" 
+            <li><a id="search-target-item-batch-review" 
                    href="#" 
-                   title="Set the search to target tree version elements" 
-                   data-help="tree-version-element-search-help" 
-                   data-examples="tree-version-element-search-examples"
-                   data-advanced="tree-version-element-search-advanced" 
-                >Tree Version Elements</a>
-            </li>
-            <li><a id="search-target-item-tree-elements" 
-                   href="#" 
-                   title="Set the search to target tree elements" 
-                   data-help="tree-element-search-help" 
-                   data-examples="tree-element-search-examples"
-                   data-advanced="tree-element-search-advanced" 
-                >Tree Elements</a>
-            </li>
-            <li><a id="search-target-item-changed-tree-elements" 
-                   href="#" 
-                   title="Set the search to target changed tree elements" 
-                   data-help="changed-tree-element-search-help" 
-                   data-examples="changed-tree-element-search-examples"
-                   data-advanced="changed-tree-element-search-advanced" 
-                >Changed Tree Elements</a>
-            </li>
-            <li role="separator" class="divider"></li>
-            <li><a id="search-target-item-changed-tree-version"
-                   href="#" 
-                   title="Set the search to target taxonomy version"
-                   data-help="tree-version-search-help" 
-                   data-examples="tree-version-search-examples"
-                   data-advanced="tree-version-search-advanced" 
-                >Tree Version</a>
-            </li>
-            <li role="separator" class="divider"></li>
-            <li><a id="search-target-item-changed-taxonomy-version-review"
-                   href="#" 
-                   title="Set the search to target taxonomy version review"
-                   data-help="taxonomy-version-review-search-help" 
-                   data-examples="taxonomy-version-review-search-examples"
-                   data-advanced="taxonomy-version-review-search-advanced" 
-                >Taxonomy Version Review</a>
-            </li>
-            <li><a id="search-target-item-taxonomy-reviewer"
-                   href="#" 
-                   title="Set the search to target taxonomy reviewers"
-                   data-help="taxonomy-reviewer-search-help" 
-                   data-examples="taxonomy-reviewer-search-examples"
-                   data-advanced="taxonomy-reviewer-search-advanced" 
-                >Taxonomy Reviewer</a>
+                   title="Search batch reviews" 
+                   data-help="batch-review-search-help" 
+                   data-examples="batch-review-search-examples"
+                >Batch reviews</a>
             </li>
           <% end %>
+

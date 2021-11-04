@@ -40,16 +40,6 @@
     <li class="" role="presentation">
       <%= link_to "#{icon('sign-out')} Sign out".html_safe, sign_out_path, method: :get, title: 'Select this to sign out from the NSL Editor'%>
     </li>
-
-    <% if Rails.configuration.try('taxonomic_review_aware') %>
-      <% if can? 'mode', 'toggle_mode' %>
-        <li role="presentation" class="divider"></li>
-        <li class="" role="presentation">
-          <%= link_to "#{icon('superpowers')} Change Mode".html_safe, toggle_mode_path, method: :post, title: 'Switch to the other mode'%>
-        </li>
-      <% end %>
-    <% end %>
-
   </ul>
 </li>
 

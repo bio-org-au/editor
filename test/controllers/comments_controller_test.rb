@@ -66,15 +66,4 @@ class CommentsControllerTest < ActionController::TestCase
              xhr: true)
     end
   end
-
-  test "html request should not destroy comment" do
-    assert_no_difference("Comment.count") do
-      delete(:destroy,
-             params: { id: @comment },
-             session: { username: "fred",
-                        user_full_name: "Fred Jones",
-                        groups: ["edit"] })
-    end
-    assert_response :service_unavailable
-  end
 end

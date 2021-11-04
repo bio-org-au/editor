@@ -54,7 +54,7 @@ class CommentsController < ApplicationController
   # I had to hack it a bit and it certainly needs more looking at, but
   # the check for a javascript request seemed not important enough to delay for.
   def destroy
-   throw 'must be js' unless request.format == "text/javascript" || request.format == "application/json"
+   throw 'request must be js' unless request.format == "text/javascript" || request.format == "application/json"
    username = current_user.username
     if @comment.update(updated_by: username) && @comment.destroy
       respond_to do |format|
@@ -63,10 +63,11 @@ class CommentsController < ApplicationController
         format.js {}
       end
     else
-      render js: "alert('Could not delete that record.');"
+      throw "There was a problem deleting that record."
     end
-  rescue
-    render "create_failed.js", status: 503
+  rescue => e
+    @message = e.to_s
+    render "destroy_failed", status: 503
   end
 
   private

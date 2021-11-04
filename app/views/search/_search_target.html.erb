@@ -17,11 +17,7 @@
 
         <ul id="search-target-list" class="dropdown-menu">
 
-          <% if @taxonomic_review_mode %>
-            <%= render partial: "search/search_targets/taxonomic_targets" %>
-          <% else %>
-            <%= render partial: "search/search_targets/standard_targets" %>
-          <% end %>
+          <%= render partial: "search/search_targets/standard_targets" %>
 
         </ul>
       </div><!-- /btn-group -->

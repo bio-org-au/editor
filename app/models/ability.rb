@@ -48,12 +48,10 @@ class Ability
     basic_auth_2
     edit_auth if user.edit?
     qa_auth if user.qa?
-    taxonomic_review_auth if user.qa?
     # TODO: remove this - NSL-2007
     apc_auth if user.apc?
     admin_auth if user.admin?
     treebuilder_auth if user.treebuilder?
-    taxonomic_review_auth if user.taxonomic_review?
     orchids_matcher_auth if user.orchids_matcher?
   end
 
@@ -95,7 +93,6 @@ class Ability
     can "names_deletes",      :all
     can "references",         :all
     can "names/typeaheads/for_unpub_cit", :all
-    can "standard_mode",      'use'
   end
 
   def qa_auth
@@ -104,9 +101,6 @@ class Ability
     can "tree_version_elements",     :all
     can "tree_elements",             :all
     can "mode",                      :all
-    can "taxonomy_version_review",   :all
-    can "taxonomy_version_reviews",  :all
-    can "taxonomy_version_review_periods",   :all
     can "tree_versions",             :all
   end
 
@@ -122,30 +116,20 @@ class Ability
     can "trees/workspaces/current", "toggle"
     can "names/typeaheads/for_workspace_parent_name", :all
     can "menu", "tree"
-    can "taxonomy_reviewers",  :all
-    can "tvr_periods_reviewers",  :all
   end
 
   def admin_auth
     can "admin",              :all
     can "menu",               "admin"
-    can "standard_mode",      'use'
-  end
-
-  def taxonomic_review_auth
-    can "menu",                       "taxonomic_review"
-    can "trees",                      "tab_details"
-    can "tree_versions",              "tab_details"
-    can "tree_elements",              "tab_details"
-    can "tree_elements",              "tab_review"
-    can "taxonomy_version_reviews",   ["index", "tab_details"]
-    can "taxonomy_element_comments",  "create"
-    can "diff_lists",                 ["tab_details", "tab_review"]
   end
 
   def orchids_matcher_auth
-    can "orchids",                   :all
-    can "orchids_batch",             :all
-    can "orchids_names",             :all
+    can "orchids",                     :all
+    can "orchids_batch",               :all
+    can "orchids_names",               :all
+    can "loader/batches",              :all
+    can "loader/names",                :all
+    can "loader/batch/reviews",        :all
+    can "loader/batch/review_periods", :all
   end
 end

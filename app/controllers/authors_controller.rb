@@ -57,7 +57,7 @@ class AuthorsController < ApplicationController
     @author = Author::AsEdited.create(author_params,
                                       typeahead_params,
                                       current_user.username)
-    render "create.js"
+    render "create"
   rescue => e
     logger.error("Controller:Authors:create:rescuing exception #{e}")
     @error = e.to_s
@@ -69,7 +69,7 @@ class AuthorsController < ApplicationController
     @message = @author.update_if_changed(author_params,
                                          typeahead_params,
                                          current_user.username)
-    render "update.js"
+    render "update"
   rescue => e
     logger.error("Author#update rescuing #{e}")
     @message = e.to_s

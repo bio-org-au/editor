@@ -121,18 +121,18 @@ class InstancesController < ApplicationController
       instance_params, current_user.username
     )
     @message = "Instance was copied"
-    render "instances/copy_standalone/success.js"
+    render "instances/copy_standalone/success"
   rescue => e
-    handle_other_errors(e,'instances/copy_standalone/error.js')
+    handle_other_errors(e,'instances/copy_standalone/error')
   end
 
   def handle_not_unique
     @message = "Error: duplicate record"
-    render "create_error.js", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_entity
   end
   private :handle_not_unique
 
-  def handle_other_errors(e, file_to_render = "create_error.js")
+  def handle_other_errors(e, file_to_render = "create_error")
     logger.debug('handle_other_errors')
     errors = ErrorAsArrayOfMessages.new(e).error_array
     if errors.size <= 1
@@ -151,9 +151,9 @@ class InstancesController < ApplicationController
     @instance = Instance::AsEdited.find(params[:id])
     @message = @instance.update_if_changed(instance_params,
                                            current_user.username)
-    render "update.js"
+    render "update"
   rescue => e
-    handle_other_errors(e, 'update_error.js')
+    handle_other_errors(e, 'update_error')
   end
 
   # PUT /instances/reference/1
@@ -166,11 +166,11 @@ class InstancesController < ApplicationController
     @instance = Instance.find(params[:id])
     @instance.assign_attributes(instance_params)
     make_back_door_changes if @instance.changed?
-    render "update.js"
+    render "update"
   rescue => e
     logger.error(e.to_s)
     @message = e.to_s
-    render "update_error.js", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_entity
   end
 
   def make_back_door_changes
@@ -186,7 +186,7 @@ class InstancesController < ApplicationController
   rescue => e
     logger.error("Instance#destroy exception: #{e}")
     @message = e.to_s
-    render "destroy_error.js", status: 422
+    render "destroy_error", status: 422
   end
 
   def typeahead_for_synonymy

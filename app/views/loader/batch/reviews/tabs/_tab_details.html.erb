@@ -1,0 +1,29 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line', locals: {info: @batch_review.name, label: 'Name'} %>
+
+<%= render partial: 'detail_line',
+      locals: {info: @batch_review.batch.name,
+               label: link_to('Batch',
+                        search_path(
+                          query_target: 'loader batch',
+                          query_string: "id: #{@batch_review.batch.id}"),
+               title:"Query the loader batch",class:'blue')} %>
+
+
+<%= render partial: 'detail_line',
+      locals: {info: @batch_review.periods.size,
+               label: link_to('Periods',
+                        search_path(
+                          query_target: 'batch review periods',
+                          query_string: "batch-review-id: #{@batch_review.id}"),
+               title:"Query the batch review periods",class:'blue')} %>
+
+<%= divider %>
+
+<h5>Metadata</h5>
+Batch Review #<%= @batch_review.id %>
+<br>
+<%= created_by_whom_and_when(@batch_review).html_safe %>
+<br>
+<%= updated_by_whom_and_when(@batch_review).html_safe %>
+

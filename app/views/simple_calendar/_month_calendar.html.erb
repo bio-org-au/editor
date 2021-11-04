@@ -10,9 +10,9 @@
     <% prev_month = start_date - 30 %>
 
 
-    <%= link_to t('simple_calendar.next', default: '<'), taxonomy_version_review_period_calendar_path(id: @taxonomy_version_review_period.id, start_date: prev_month), remote: true, title: "Previous month" %>
+    <%#= link_to t('simple_calendar.next', default: '<'), some_calendar_path(id: @some_period.id, start_date: prev_month), remote: true, title: "Previous month" %>
     <span class="calendar-title"><%= t('date.month_names')[start_date.month] %> <%= start_date.year %></span>
-    <%= link_to t('simple_calendar.next', default: '>'), taxonomy_version_review_period_calendar_path(id: @taxonomy_version_review_period.id, start_date: next_month), remote: true, title: "Next month" %>
+    <%#= link_to t('simple_calendar.next', default: '>'), some_calendar_path(id: @some_period.id, start_date: next_month), remote: true, title: "Next month" %>
 
   </div>
 

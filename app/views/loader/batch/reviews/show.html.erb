@@ -1,0 +1,20 @@
+<div class="focus-details 
+  <% tab_tab_index = @tab_index %>
+  <% if notice %>
+    <p id="notice"><%= notice %></p>
+  <% end %>
+  <div class="inner">
+    <h3>
+      <%= link_to(@batch_review.name,
+                  search_path(query_target: 'batch_review', 
+                              query_string: "id:#{@batch_review.id}"),
+                  id: 'tab-heading',
+                  title: "Query this batch review record") %>
+    </h3>
+    <%= render partial: 'loader/batch/reviews/tabs/all_tab_headings' %>
+    <%= render partial: "loader/batch/reviews/tabs/#{@tab}" %>
+    <br>
+    <span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
+
+  </div><!-- /end .inner -->
+</div><!-- /end .focus-details -->

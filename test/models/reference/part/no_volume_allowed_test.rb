@@ -32,11 +32,11 @@ class ReferencePartNoVolumeAllowedTest < ActiveSupport::TestCase
                   "A reference part with a volume should be invalid" do
       reference.save!
     end
-    assert_equal "volume",
-                 reference.errors.first.first.to_s,
-                 "Error should be on 'volume'"
+    assert_equal :volume,
+                 reference.errors.first.attribute,
+                 "Error should be on :volume"
     assert_equal "is not allowed for a Part",
-                 reference.errors.first.last.to_s,
+                 reference.errors.first.message,
                  "Incorrect error message"
   end
 end

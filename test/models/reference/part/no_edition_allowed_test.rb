@@ -32,11 +32,11 @@ class ReferencePartNoEditionAllowedTest < ActiveSupport::TestCase
                   "A reference part with a edition should be invalid" do
       reference.save!
     end
-    assert_equal "edition",
-                 reference.errors.first.first.to_s,
+    assert_equal :edition,
+                 reference.errors.first.attribute,
                  "Error should be on 'edition'"
     assert_equal "is not allowed for a Part",
-                 reference.errors.first.last.to_s,
+                 reference.errors.first.message,
                  "Incorrect error message"
   end
 end
