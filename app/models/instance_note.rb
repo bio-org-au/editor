@@ -50,7 +50,7 @@ class InstanceNote < ActiveRecord::Base
 
   def update_attributes_with_username!(attributes, username)
     self.updated_by = username
-    update_attributes!(attributes)
+    update!(attributes)
   end
 
   def create_one_apc_dist_per_instance

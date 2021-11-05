@@ -84,11 +84,6 @@ class Author < ActiveRecord::Base
     !duplicate_of_id.blank?
   end
 
-  def update_attributes_with_username(attributes, username)
-    self.updated_by = username
-    update_attributes(attributes)
-  end
-
   def abbrev_if_possible
     abbrev || "[No abbreviation - id: #{id}]"
   end

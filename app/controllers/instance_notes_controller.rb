@@ -31,7 +31,7 @@ class InstanceNotesController < ApplicationController
 
   # GET /instance_notes/1/edit
   def edit
-    render "edit.js"
+    render "edit"
   end
 
   # POST /instance_notes
@@ -46,7 +46,7 @@ class InstanceNotesController < ApplicationController
     end
   rescue => e
     @message = e.to_s
-    render "create_failed.js", status: :unprocessable_entity
+    render "create_failed", status: :unprocessable_entity
   end
 
   # PATCH/PUT /instance_notes/1
@@ -64,10 +64,10 @@ class InstanceNotesController < ApplicationController
       render :destroy
     else
       @message = "Could not delete that record."
-      render "update_failed.js", status: :unprocessable_entity
+      render "update_failed", status: :unprocessable_entity
     end
   end
-
+ 
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -100,6 +100,6 @@ class InstanceNotesController < ApplicationController
     end
   rescue => e
     @message = e.to_s
-    render "update_failed.js", status: :unprocessable_entity
+    render :update_failed, status: :unprocessable_entity
   end
 end

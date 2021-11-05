@@ -69,11 +69,6 @@ class Name < ApplicationRecord
     save
   end
 
-  def update_attributes_with_username(attributes, username)
-    self.updated_by = username
-    update_attributes(attributes)
-  end
-
   def validate
     logger.debug("before save validate - errors: #{errors[:base].size}")
     errors[:base].size.zero?
