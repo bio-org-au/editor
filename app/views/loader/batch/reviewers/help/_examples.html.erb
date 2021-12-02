@@ -1,0 +1,19 @@
+<div id="example-search-batch-reviewer" class="example-search-tab">
+<h4>Batch reviewer search examples</h4>
+Default search is on name, default ordering is by name, default limit is 100 records.
+<br>
+<h5 class="">List Batch Reviewers</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Batch Reviewers', search_string: "*",explanation: %Q(All batch reviewers, limited by default to the first 100.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>

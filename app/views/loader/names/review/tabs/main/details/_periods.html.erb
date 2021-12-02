@@ -1,0 +1,11 @@
+<% @loader_name.batch.active_reviews.each do |review| %>
+  <%= review.name %>
+  <br>
+  <% review.active_periods.each do |period| %>
+    <%= period.name %><br>
+    start: <%= period.start_date.strftime("%d-%b-%Y") %><br>
+    end: <%= period.end_date&.strftime("%d-%b-%Y") %><br>
+    <%= render partial: 'loader/names/review/tabs/main/details/periods/reviewer',
+               locals: {period: period} %>
+  <% end %>
+<% end %>

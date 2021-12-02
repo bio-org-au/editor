@@ -5,8 +5,6 @@
 
     <script>
       window.relative_url_root = "<%= Rails.application.config.action_controller.relative_url_root %>";
-      //window.NG_TEMPLATE_URL="<%= @ng_template_path %>";
-      //taxoTree = "<%= ShardConfig.classification_tree_key %>";
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.js" crossorigin="anonymous"></script>
@@ -60,18 +58,23 @@ input[type="checkbox"]:not([title]) {
         data-active-instance-tab="tab_show_1"
         data-active-loader-batch-tab="tab_details"
         data-active-loader-name-tab="tab_details"
+        data-active-batch-review-tab="tab_details"
+        data-active-review-period-tab="tab_details"
         >
 
     <div id="screen-too-small-msg">Sorry.... your window is too small to show the editor.  It needs to be wider.</div>
-    <%= render partial: 'search/big_navbar' %>
+    <% if @view_mode == 'review' then %>
+      <%= render partial: 'search/review/top_navbar' %>
+    <% else %>
+      <%= render partial: 'search/top_navbar' %>
+    <% end %>
 
     <div id="main-content" class="container-fluid">
 
-      <% if @no_search_result_details %>
-        <div id="search-result-details" class="hidden <%= params[:query_target].try('downcase') %> %>"> </div>
-      <% else %>
-        <div id="search-result-details" class="<%= 'orchids' if params[:query_target] == 'Orchids' %>"> </div>
-      <% end %>
+    <% wide_details =  '' %>
+    <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'orchids' %>
+    <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'loader names' && @view_mode == 'standard' %>
+    <div id="search-result-details" class="hidden <%= wide_details %>"> </div>
 
 
       <div class="row">
@@ -81,11 +84,11 @@ input[type="checkbox"]:not([title]) {
         </div>
         <div id="help-search-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
-            <%= render partial: 'search/help_search_inner' %>
+            <%= render partial: 'search/tab_inners/help_target_divs' %>
         </div>
         <div id="example-search-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
-            <%= render partial: 'search/example_search_inner' %>
+            <%= render partial: 'search/tab_inners/example_target_divs' %>
         </div>
         <div id="search-reports-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">

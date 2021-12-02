@@ -41,6 +41,19 @@ class Loader::BatchesController < ApplicationController
     end
   end
 
+  def make_default
+    find_loader_batch
+    session[:default_loader_batch_id] = params[:id]
+    session[:default_loader_batch_name] = @loader_batch.name
+    @message = 'Done'
+  end
+
+  def clear_default
+    session[:default_loader_batch_id] = nil
+    session[:default_loader_batch_name] = nil
+    @message = 'Done'
+  end
+
   private
 
   def find_loader_batch

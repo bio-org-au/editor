@@ -65,6 +65,13 @@
     $('body').on('click', 'div#search-results tr.search-result .stylish-checkbox', function(event) {
       return clickSearchResultCB(event, $(this));
     });
+
+    $('tr.review-result').keydown(function(event) {
+      return searchResultKeyNavigation(event, $(this));
+    });
+    $('body').on('click', 'tr.review-result td.takes-focus', function(event) {
+      return searchResultFocus(event, $(this).parent('tr'));
+    });
     if (window.location.hash) {
       
       $('a#' + window.location.hash).click();
@@ -784,11 +791,32 @@
     return event.preventDefault();
   };
 
+  xsearchResultFocus = function(event, $this) {
+    debug('searchResultFocus starting');
+    if (!($this.hasClass('showing-details') || $this.hasClass('show-no-details'))) {
+      debug('changing focus');
+      changeFocus(event, $this);
+      $('#search-results.nothing-selected').removeClass('nothing-selected').addClass('something-selected');
+    } else {
+      $this.removeClass('showing-details');
+      $('div#search-result-details').hide();
+      $('#search-results.something-selected').removeClass('something-selected').addClass('nothing-selected');
+    }
+    return event.preventDefault();
+  };
+
   searchResultFocus = function(event, $this) {
     debug('searchResultFocus starting');
     if (!($this.hasClass('showing-details') || $this.hasClass('show-no-details'))) {
+      debug('Changing focus: should show details');
       changeFocus(event, $this);
       $('#search-results.nothing-selected').removeClass('nothing-selected').addClass('something-selected');
+      $('div#search-result-details').show();
+    } else {
+      debug('Should hide details');
+      $this.removeClass('showing-details');
+      $('div#search-result-details').hide();
+      $('#search-results.something-selected').removeClass('something-selected').addClass('nothing-selected');
     }
     return event.preventDefault();
   };

@@ -1,0 +1,49 @@
+<% increment_tab_index(0) %>
+
+<% @review_period.reviewers.sort {|a,b| a.user.full_name <=> b.user.full_name}.each do |reviewer| %>
+  <div id="reviewer-<%= reviewer.id %>">
+  <%= link_to(reviewer.user_table.full_name, 
+                  search_path(query_target: 'users', 
+                              query_string: "id:#{reviewer.user_table.id}"),
+                  class: 'blue',
+                  title: "Query this user") %>,&nbsp; 
+  <ul>
+    <li/>
+         <%= link_to(reviewer.org.name, 
+                         search_path(query_target: 'orgs', 
+                                     query_string: "#{reviewer.org.abbrev}"),
+                         class: 'blue',
+                         title: "Query this organisation") %>,&nbsp; 
+    <li/><%= reviewer.role.name %> role
+  <% confirm_delete_link = link_to("Remove",
+                                   delete_batch_reviewer_path(reviewer.id),
+                                   id: "confirm-delete-review-#{reviewer.id}-link",
+                                   class: "btn btn-danger",
+                                   tabindex: increment_tab_index,
+                                   title: "Confirm the delete.",
+                                   remote: true,
+                                   method: :delete)
+  -%>
+    <% if reviewer.name_review_comments.size == 0 %>
+      <li/><%= confirm_delete_link %>
+    <% else %>
+      <li/>
+         <%= link_to(pluralize(reviewer.name_review_comments.size, 'comment'),
+                         search_path(query_target: 'loader names', 
+                                     query_string: "has-review-comment-by:#{reviewer.user_table.name}"),
+                         class: 'blue',
+                         title: "Query loader names with comments by this user") %>
+    <% end %>
+  </ul>
+  </div>
+<% end %>
+
+
+<%= divider %>
+
+<h5>Add a Reviewer</h5>
+<%= render partial: 'loader/batch/reviewers/forms/form_create', locals: {review_period: @review_period} %>
+
+<%= divider %>
+
+

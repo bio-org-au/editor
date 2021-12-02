@@ -15,6 +15,12 @@
 *.yellow         { color: yellow; }
 *.darkorchid     { color: darkorchid; }
 *.blueviolet     { color: blueviolet; }
+*.darkmagenta    { color: darkmagenta; }
+*.darkviolet     { color: darkviolet; }
+*.firebrick      { color: firebrick; }
+*.mediumslateblue { color: mediumslateblue; }
+*.darkgreen      { color: darkgreen; }
+*.darkolivegreen { color: darkolivegreen; }
 
 /* Prevent full_name_html class setting color */
 
@@ -89,6 +95,10 @@ common element.yellow {color: #606060;}
 *.bgyellow         { background-color: yellow; }
 *.bgdarkorchid     { background-color: darkorchid; }
 *.bgblueviolet     { background-color: blueviolet; }
+*.bgfirebrick      { background-color: firebrick; }
+*.bgdarkgreen      { background-color: darkgreen; }
+*.bgdarkolivegreen { background-color: darkolivegreen; }
+*.bgdarkslategray  { background-color: darkslategray; }
 
 
 *.hover-white:hover    {color: white}

@@ -1,0 +1,15 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line',
+           locals: {info: @org.name, label: 'Name'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @org.abbrev, label: 'Abbreviation'} %>
+
+
+<%= divider %>
+Organisation #<%= @org.id %>
+<h5>Metadata</h5>
+<%= created_by_whom_and_when(@org).html_safe %> <br>
+<%= updated_by_whom_and_when(@org).html_safe %>
+
+

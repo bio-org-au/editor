@@ -1,0 +1,5 @@
+    <% if !@search.parsed_request.count && @search.executed_query.total.present? && @search.executed_query.total >= @search.parsed_request.limit %>
+      <span id="search-results-limited-notice">
+        <%= render partial: 'search/search_result_summary/more_results_for_limited' %>
+      </span>
+    <% end %>

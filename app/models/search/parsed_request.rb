@@ -45,9 +45,14 @@ class Search::ParsedRequest
               :query_target,
               :target_table,
               :target_button_text,
+              :target_model,
               :user,
               :where_arguments,
-              :order_instance_query_by_page
+              :order_instance_query_by_page,
+              :default_order_column,
+              :default_query_directive,
+              :include_instances,
+              :include_instances_class
 
   DEFAULT_LIST_LIMIT = 100
   SIMPLE_QUERY_TARGETS = {
@@ -72,10 +77,72 @@ class Search::ParsedRequest
     "batch_reviews" => "batch review",
     "batch_review_period" => "batch review period",
     "batch_review_periods" => "batch review period",
+    "user" => "users",
+    "users" => "users",
+    "organisation" => "org",
+    "organisations" => "org",
+    "org" => "org",
+    "orgs" => "org",
+    "batch_reviewer" => "batch reviewer",
+    "batch_reviewers" => "batch reviewer",
+  }.freeze
+
+  TARGET_MODELS = {
+    "author" => "Author",
+    "instance" => "Instance",
+    "name" => "Name",
+    "reference" => "Reference",
+    "orchids" => "Orchid",
+    "orchid_processing_logs" => "OrchidProcessingLog",
+    "loader batch" => "Loader::Batch",
+    "loader name" => "Loader::Name",
+    "batch review" => "Loader::Batch::Review",
+    "batch reviewer" => "Loader::Batch::Reviewer",
+    "batch review period" => "Loader::Batch::Review::Period",
+    "users" => "UserTable",
+    "org" => "Org",
+  }.freeze
+
+  DEFAULT_QUERY_DIRECTIVES = {
+    "author" => "name-or-abbrev:",
+    "instance" => "name:",
+    "name" => "sort_name:",
+    "reference" => "citation-text:",
+    "orchids" => "taxon:",
+    "orchid_processing_logs" => " logged_at desc",
+    "loader batch" => "name:",
+    "loader name" => "scientific-name:",
+    "batch review" => "name:",
+    "batch reviewer" => "name:",
+    "batch review period" => "name:",
+    "users" => "name:",
+    "org" => "name_or_abbrev:",
+  }.freeze
+
+  DEFAULT_ORDER_COLUMNS = {
+    "author" => "name",
+    "instance" => "id",
+    "name" => "sort_name",
+    "reference" => "citation",
+    "orchids" => "name",
+    "orchid_processing_logs" => " logged_at desc",
+    "loader batch" => "name",
+    "loader name" => "scientific_name",
+    "batch review" => "name",
+    "batch reviewer" => "id",
+    "batch review period" => "name",
+    "users" => "name",
+    "org" => "name",
+  }.freeze
+
+  INCLUDE_INSTANCES_FOR = ["name", "reference"]
+
+  INCLUDE_INSTANCES_CLASS = {
+    "name" => "Search::OnName::WithInstances",
+    "references" => "Search::OnName::WithInstances",
   }.freeze
 
   def initialize(params)
-    debug("initialize: params: #{params}")
     @params = params
     @query_string = canonical_query_string
     @query_string = @query_string.gsub(/  */, " ") unless @query_string.blank?
@@ -105,7 +172,6 @@ class Search::ParsedRequest
 
   def parse_request
     unused_qs_tokens = normalise_query_string.split(/ /)
-    Rails.logger.debug("unused_qs_tokens: #{unused_qs_tokens}")
     parsed_defined_query = Search::ParsedDefinedQuery.new(@query_target)
     @defined_query = parsed_defined_query.defined_query
     @target_button_text = parsed_defined_query.target_button_text
@@ -117,6 +183,7 @@ class Search::ParsedRequest
     unused_qs_tokens = parse_common_and_cultivar(unused_qs_tokens)
     unused_qs_tokens = parse_show_instances(unused_qs_tokens)
     unused_qs_tokens = parse_order_instances(unused_qs_tokens)
+    unused_qs_tokens = parse_view(unused_qs_tokens)
     @where_arguments = unused_qs_tokens.join(" ")
   end
 
@@ -247,12 +314,25 @@ class Search::ParsedRequest
     joined_tokens
   end
 
+  def parse_view(tokens)
+    joined_tokens = tokens.join(" ")
+    joined_tokens = joined_tokens.gsub(/view: *[A-z]+/i, "")
+    joined_tokens.split(" ")
+  end
+
   def parse_target(tokens)
     if @defined_query == false
       if SIMPLE_QUERY_TARGETS.key?(@query_target)
         @target_table = SIMPLE_QUERY_TARGETS[@query_target]
         @target_button_text = @target_table.capitalize.pluralize
-        Rails.logger.debug(@target_table)
+        @target_model = TARGET_MODELS[@target_table]
+        @default_order_column = DEFAULT_ORDER_COLUMNS[@target_table]
+        @default_query_directive = DEFAULT_QUERY_DIRECTIVES[@target_table]
+        if INCLUDE_INSTANCES_FOR.include?(@target_table)
+          @include_instances = true
+          @include_instances_class = INCLUDE_INSTANCES_CLASS[@target_table]
+        end
+        debug("target table: #{@target_table}, target model: #{@target_model}; default order column: #{@default_order_column}; default query column: #{@default_query_directive}")
       else
         raise "Cannot parse target: #{@query_target}"
       end

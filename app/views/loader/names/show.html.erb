@@ -5,7 +5,6 @@
   <% end %>
   <div class="inner">
     <h3>
-      <%#= render partial: 'detail_line', locals: {info: @loader_name.scientific_name, label: 'Scientific Name'} %>
       <%= link_to(@loader_name.scientific_name,
                   search_path(query_target: 'loader_name', 
                               query_string: "id:#{@loader_name.id}"),
@@ -19,3 +18,6 @@
 
   </div><!-- /end .inner -->
 </div><!-- /end .focus-details -->
+
+<br>
+

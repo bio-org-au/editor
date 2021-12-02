@@ -1,0 +1,13 @@
+
+ <span id="set-include-common-and-cultivar">
+   <%= render partial: 'set_include_common_and_cultivar' %>
+ </span>
+
+<% if @search.error %>
+  <%= @search.error_message %>
+<% elsif @search.empty %>
+<% else %>
+   <%= render partial: 'search/search_result_summary/success' %>
+ <% end %>
+ 
+<%#= @search.parsed_request.inspect %>

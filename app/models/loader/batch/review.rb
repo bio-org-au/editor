@@ -23,9 +23,11 @@ class Loader::Batch::Review < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
+  validates :name, presence: true
+
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
   alias_attribute :batch, :loader_batch
-  has_many :review_periods, class_name: "Loader::Batch::ReviewPeriod", foreign_key: "batch_review_id"
+  has_many :review_periods, class_name: "Loader::Batch::Review::Period", foreign_key: "batch_review_id"
   alias_attribute :periods, :review_periods
 
   attr_accessor :give_me_focus, :message
@@ -40,6 +42,10 @@ class Loader::Batch::Review < ActiveRecord::Base
 
   def allow_delete?
     true
+  end
+
+  def active_periods
+    periods.where("start_date <= Now()").where("end_date is null or end_date >= Now()")
   end
 
   def update_if_changed(params, username)

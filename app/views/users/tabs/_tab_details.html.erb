@@ -1,0 +1,18 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line',
+           locals: {info: @user.userid, label: 'Userid'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @user.given_name, label: 'Given Name'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @user.family_name, label: 'Family Name'} %>
+
+
+<%= divider %>
+User #<%= @user.id %>
+<h5>Metadata</h5>
+<%= created_by_whom_and_when(@user).html_safe %> <br>
+<%= updated_by_whom_and_when(@user).html_safe %>
+
+

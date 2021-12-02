@@ -105,10 +105,10 @@ table#search-results-table tr.showing-details td a span.full-name-within-instanc
 tr td:focus {
   outline: black;
   background: #b0b0b0;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
-div#big-navbar input.form-control:focus,
+div#top-navbar input.form-control:focus,
 input.form-control:focus {
   border-color: black;
   outline: none;
@@ -509,7 +509,7 @@ div#search-results-summary-container {
   padding-top: 0;
 }
 
-div#big-navbar {
+div#top-navbar {
   margin-bottom: 0;
   padding-bottom: 0;
   border-bottom: 1px solid black;

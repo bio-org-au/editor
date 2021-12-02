@@ -1,1 +1,191 @@
-  <h4>Loader names search examples</h4>
+<h4>Loader names search examples</h4>
+<div id="example-search-name" class="example-search-tab">
+<h5>All searches: </h5>
+<ul>
+<li>are case-insensitive, unless otherwise stated, and their
+<li>results are limited by default to the first 100 records - adjust that with the <code>limit:</code> directive.
+</ul>
+<h5>Loader names searches: </h5>
+<ul>
+<li>have the <code>default-batch:</code> directive added automatically if the default batch is set, and their
+<li>results are ordered by the <code>seq</code> (sequence) field, unless otherwise stated, and their
+</ul>
+<br>
+
+<h5 class="">Scientific Name Searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader names', search_string: "*",explanation: %Q(All names.)},
+      {search_target: 'Loader names', search_string: "a",explanation: %Q(All names starting with 'a'.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+
+<h5 class="">Review-related searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "has-review-comment:",explanation: %Q(List loader names with one or more review comments.)},
+      {search_target: 'Loader Names', search_string: "has-review-comment-by: #{@current_user.username}",explanation: %Q(List loader names with one or more review comments by the current user #{@current_user.username}.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+
+<h5 class="">Processing and loading searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "no-name-match:",explanation: %Q(List CSV loader names with no matching name.)},
+      {search_target: 'Loader Names', search_string: "many-name-match:",explanation: %Q(List CSV loader names with multiple matching names.)},
+      {search_target: 'Loader Names', search_string: "many-name-match: has-preferred-name:",explanation: %Q(List CSV loader names with multiple matching names but also a preferred name match recorded.)},
+      {search_target: 'Loader Names', search_string: "many-name-match: has-no-preferred-name:",explanation: %Q(List CSV loader names with multiple matching names and no preferred name match recorded.)},
+      {search_target: 'Loader Names', search_string: "original-text: *×*",explanation: %Q(Likely hybrids.)},
+      {search_target: 'Loader Names', search_string: "original-text: *×* is-accepted:",explanation: %Q(Likely hybrids that are (raw) accepted names.)},
+      {search_target: 'Loader Names', search_string: "original-text: *×* is-accepted:  no-name-match:",explanation: %Q(Likely hybrids that are (raw) accepted names with no matches.)},
+      {search_target: 'Loader Names', search_string: "no-further-processing:",explanation: %Q(Flag set to prevent future bulk processing)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Hybrid example queries</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "hybrid: 3714",explanation: %Q(Hybrid field matches 3714)},
+      {search_target: 'Loader Names', search_string: "hybrid-has-value: ",explanation: %Q(Hybrid field has a value)},
+      {search_target: 'Loader Names', search_string: "hybrid-has-no-value: ",explanation: %Q(Hybrid field has no value)},
+      {search_target: 'Loader Names', search_string: "hybrid-level-has-value:",explanation: %Q(Hybrid level field has a value)},
+      {search_target: 'Loader Names', search_string: "hybrid-level-has-no-value:",explanation: %Q(Hybrid level field has no value)},
+      {search_target: 'Loader Names', search_string: "hybrid-level: genus",explanation: %Q(Hybrid field matches 'genus')},
+      {search_target: 'Loader Names', search_string: "hybrid-has-value: hybrid-level-has-value:",explanation: %Q(Hybrid field has no value)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">More examples</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "is-isonym:",explanation: %Q(List isonyms)},
+      {search_target: 'Loader Names', search_string: "is-orth-var:",explanation: %Q(List orth. vars)},
+      {search_target: 'Loader Names', search_string: "is-syn-but-no-syn-type:",explanation: %Q(Record type is synonym with no value for synonym type.)},
+      {search_target: 'Loader Names', search_string: "caladenia is-syn-but-no-syn-type:",explanation: %Q(Synonyms belonging to 'accepted' names starting 'caladenia' (case insensitive) with no value for synonym type.)},
+      {search_target: 'Loader Names', search_string: "name-status: nom",explanation: %Q(List any records with 'nom' in the name status field)},
+      {search_target: 'Loader Names', search_string: "notes: *",explanation: %Q(Has a value in notes)},
+      {search_target: 'Loader Names', search_string: "comment: *",explanation: %Q(Has a value in comment)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Finding processing anomalies</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "name-sharing-name-id:",explanation: %Q(Two or more orchids with a preferred match to the same name record.)},
+      {search_target: 'Loader Names', search_string: "name-sharing-name-id: is-misapplied:",explanation: %Q(Any orchid that is misapplied sharing a preferred name match with another orchid (misapplied or not))},
+      {search_target: 'Loader Names', search_string: "name-sharing-name-id: is-not-misapplied:",explanation: %Q(Any orchid that is not misapplied sharing a preferred name match with another orchid (misapplied or not).)},
+      {search_target: 'Loader Names', search_string: "non-misapp-name-sharing-name-id:",explanation: %Q(Any non-misapplied orchid that shares a preferred name ID match with at least one other non-misapplied orchid.)},
+      {search_target: 'Loader Names', search_string: "non-misapp-name-sharing-name-id-not-pp:",explanation: %Q(Any non-misapplied orchid that shares a preferred name ID match with at least one other non-misapplied orchid but excluding cases where all the relationships are partial. Use this in tandem with non-misapp-name-sharing-name-id)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Doubtful and excluded loader names examples</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "excluded: *",explanation: %Q(List all doubtful or excluded loader names)},
+      {search_target: 'Loader Names', search_string: "excluded: a*",explanation: %Q(List all doubtful or excluded loader names starting with "a")},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Already in taxonomy examples</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "Acianthus in-current-taxonomy:",explanation: %Q(Find orchids within Acianthus that are already in the current taxonomy)},
+      {search_target: 'Loader Names', search_string: "Liparis in-current-taxonomy:",explanation: %Q(Find orchids within Liparis that are already in the current taxonomy)},
+      {search_target: 'Loader Names', search_string: "Bulb* not-in-current-taxonomy:",explanation: %Q(Find orchids starting with Bulb that aren't already in the current taxonomy)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Status page query examples</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "Pra* misapp-matched-without-cross-ref:",explanation: %Q(Find orchids within Pra* that are matched misapplications without a cross-reference)},
+      {search_target: 'Loader Names', search_string: "corymb* misapp-matched-without-cross-ref:",explanation: %Q(Find orchids within corymb* that are matched misapplications without a cross-reference)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<%= render partial: 'loader/names/stats/high_level_stats' %>
+

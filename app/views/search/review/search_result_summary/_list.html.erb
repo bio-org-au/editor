@@ -1,0 +1,27 @@
+      <% if @search.executed_query.try('summary').present? %>
+        <%= @search.executed_query.summary %>
+      <% elsif @search.executed_query.count == 0 %>
+        <% records_found = false %>
+        No records found. 
+      <% else %>
+        <% records_found = true %>
+        <% if @search.parsed_request.defined_query %>
+          <%= "#{pluralize(@search.executed_query.count,"record")}" %>
+          <% if @search.executed_query.results.present? && @search.executed_query.results.size >= @search.parsed_request.limit %>
+            of an unknown total
+            <strong title="Limited.  To see more records add larger limit to the search e.g. ' limit: 999'." >(limited)</strong>
+          <% end %>
+        <% else %>
+          <% if @search.executed_query.limited %>
+            <% if @search.executed_query.results.size < @search.executed_query.total %>
+              <%= "#{pluralize(@search.executed_query.results.size,"of #{@search.executed_query.total} record")}" %>
+            <% elsif @search.executed_query.results.size <= @search.parsed_request.limit %>
+              <%= pluralize(@search.executed_query.results.size, "record") %>
+            <% else %>
+              <%= pluralize(@search.executed_query.results.size, "record") %> of a larger total
+            <% end %>
+          <% else %>
+            <%= "#{pluralize(@search.executed_query.total,"record")}" %>
+          <% end %>
+        <% end %>
+      <% end %>

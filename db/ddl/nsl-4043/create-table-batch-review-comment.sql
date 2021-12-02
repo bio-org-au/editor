@@ -3,7 +3,6 @@ create table batch_review_comment (
   review_period_id bigint not null,
   batch_reviewer_id bigint not null,
   comment text not null,
-  in_progress boolean not null default false,
   lock_version bigint not null default 0,
   created_at timestamp with time zone not null default now(),
   created_by character varying(50)    not null default user,

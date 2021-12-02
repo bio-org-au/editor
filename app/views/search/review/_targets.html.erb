@@ -1,0 +1,20 @@
+
+
+          <% if Rails.configuration.try(:batch_loader_aware) %>
+            <li><a id="search-target-item-loader-batch" 
+                   href="#" 
+                   title="Search loader batches" 
+                   data-help="loader-batch-search-help" 
+                   data-examples="loader-batch-search-examples"
+                >Loader batches</a>
+            </li>
+            <li><a id="search-target-item-loader-name" 
+                   href="#" 
+                   title="Search loader names" 
+                   data-help="loader-name-search-help" 
+                   data-examples="loader-name-search-examples"
+                >Loader names</a>
+            </li>
+
+          <% end %>
+

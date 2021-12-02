@@ -1,0 +1,27 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line',
+           locals: {info: @batch_reviewer.name, label: 'name'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @batch_reviewer.user.given_name, label: 'given name'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @batch_reviewer.user.family_name, label: 'family name'} %>
+
+<%= render partial: 'detail_line',
+      locals: {info: @batch_reviewer.period.name,
+               label: link_to('review period',
+                        search_path(
+                          query_target: 'batch review periods',
+                          query_string: "id: #{@batch_reviewer.period.id}"),
+               title:"Query the period",class:'blue')} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @batch_reviewer.org.name, label: 'organisation represented'} %>
+<%= divider %>
+Batch Reviewer #<%= @batch_reviewer.id %>
+<h5>Metadata</h5>
+<%= created_by_whom_and_when(@batch_reviewer).html_safe %> <br>
+<%= updated_by_whom_and_when(@batch_reviewer).html_safe %>
+
+

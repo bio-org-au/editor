@@ -60,7 +60,7 @@ class NamesDeletesController < ApplicationController
     @name_delete = NameDelete.new
     @no_searchbar = true
     @no_search_result_details = true
-    @no_navigation = true
+    @no_menus = true
   end
 
   def names_delete_params

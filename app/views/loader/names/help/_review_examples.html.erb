@@ -1,0 +1,50 @@
+<h4>Loader names search examples</h4>
+<div id="example-search-name" class="example-search-tab">
+<h5>All searches: </h5>
+<ul>
+<li>are case-insensitive, unless otherwise stated, and their
+<li>results are limited by default to the first 100 records - adjust that with the <code>limit:</code> directive.
+</ul>
+<h5>Loader names searches: </h5>
+<ul>
+<li>have the <code>default-batch:</code> directive added automatically if the default batch is set, and their
+<li>results are ordered by the <code>seq</code> (sequence) field, unless otherwise stated, and their
+</ul>
+<br>
+
+<h5 class="">Scientific Name Searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader names', search_string: "*",explanation: %Q(All names.)},
+      {search_target: 'Loader names', search_string: "a",explanation: %Q(All names starting with 'a'.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+
+<h5 class="">Review-related searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "has-review-comment:",explanation: %Q(List loader names with one or more review comments.)},
+      {search_target: 'Loader Names', search_string: "has-review-comment-by: #{@current_user.username}",explanation: %Q(List loader names with one or more review comments by the current user #{@current_user.username}.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+

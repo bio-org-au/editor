@@ -31,6 +31,7 @@
  *= require calendar
  *= require orchids
  *= require layout-2021
+ *= require batch-loader
  *= require_self
  */
 

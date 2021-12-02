@@ -76,15 +76,18 @@ class Search::Base
       case @parsed_request.target_table
       when /any/ then raise "cannot run an 'any' search yet"
       when /^name/ then Search::OnName::Base.new(@parsed_request)
-      when /author/ then Search::OnAuthor::Base.new(@parsed_request)
+      when /author/ then Search::OnModel::Base.new(@parsed_request)
       when /instance/ then Search::OnInstance::Base.new(@parsed_request)
       when /reference/ then Search::OnReference::Base.new(@parsed_request)
       when /orchids/ then Search::OnOrchids::Base.new(@parsed_request)
       when /orchid.processing.log/ then Search::OnOrchidProcessingLogs::Base.new(@parsed_request)
-      when /loader.batch/ then Search::OnLoaderBatch::Base.new(@parsed_request)
-      when /loader.name/ then Search::OnLoaderName::Base.new(@parsed_request)
-      when /^batch.review$/ then Search::Loader::Batch::Review::Base.new(@parsed_request)
-      when /^batch.review.period$/ then Search::Loader::Batch::Review::Period::Base.new(@parsed_request)
+      when /loader.batch/ then Search::OnModel::Base.new(@parsed_request)
+      when /loader.name/ then Search::OnModel::Base.new(@parsed_request)
+      when /^batch.review$/ then Search::OnModel::Base.new(@parsed_request)
+      when /^batch.reviewer$/ then Search::OnModel::Base.new(@parsed_request)
+      when /^batch.review.period$/ then Search::OnModel::Base.new(@parsed_request)
+      when /^users$/ then Search::OnModel::Base.new(@parsed_request)
+      when /^org$/ then Search::OnModel::Base.new(@parsed_request)
       else raise 'unknown target table'
       end
   end

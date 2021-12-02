@@ -1,0 +1,26 @@
+<div class="focus-details 
+  <% tab_tab_index = @tab_index %>
+  <% if notice %>
+    <p id="notice"><%= notice %></p>
+  <% end %>
+  <div class="inner">
+    <h3>
+      <%= link_to(@loader_name.scientific_name,
+                  search_path(query_target: 'loader_name', 
+                              query_string: "id:#{@loader_name.id}"),
+                  id: 'tab-heading',
+                  title: "Scientific Name") %>
+                  <% unless params[:component] == 'main' %>
+                  &mdash; <%= params[:component].gsub(/_/,' ') %>
+                  <% end %>
+    </h3>
+    <%= render partial: "loader/names/review/tabs/#{params[:component]}/all_tab_headings" %>
+    <%= render partial: "loader/names/review/tabs/#{params[:component]}/#{@tab}" %>
+    <br>
+    <span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
+
+  </div><!-- /end .inner -->
+</div><!-- /end .focus-details -->
+
+<br>
+

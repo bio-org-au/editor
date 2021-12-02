@@ -1,19 +1,19 @@
 
-body.development div#big-navbar { background: slateblue; }
+body.development div#top-navbar { background: slateblue; }
 body.development div#first-navbar { background: slateblue; }
 body.development ul.navbar-nav li.dropdown { background: slateblue; }
 body.development ul.navbar-nav li a.dropdown-toggle { background: slateblue; }
 body.development div#searchbar { background: slateblue; }
 body.development div#search-summary { background: slateblue; }
 
-body.test div#big-navbar { background: darkmagenta; }
+body.test div#top-navbar { background: darkmagenta; }
 body.test div#first-navbar { background: darkmagenta; }
 body.test ul.navbar-nav li.dropdown { background: darkmagenta; }
 body.test ul.navbar-nav li a.dropdown-toggle { background: darkmagenta; }
 body.test div#searchbar { background: darkmagenta; }
 body.test div#search-summary { background: darkmagenta; }
 
-body.staging div#big-navbar { background: blue; }
+body.staging div#top-navbar { background: blue; }
 body.staging div#first-navbar { background: blue; }
 body.staging ul.navbar-nav li.dropdown { background: blue; }
 body.staging ul.navbar-nav li a.dropdown-toggle { background: blue; }

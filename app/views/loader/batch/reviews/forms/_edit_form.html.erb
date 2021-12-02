@@ -1,7 +1,7 @@
 <%= form_with model: @batch_review, url: 'batch_reviews', method: :put do |form| %>
   <%= form.hidden_field :id %>
   <%= form.hidden_field :loader_batch_id %>
-  Name: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", tabindex: increment_tab_index %>
+  Name: <%= form.text_field :name, class: 'form-control give-me-focus', required: true, title: "Enter name", tabindex: increment_tab_index %>
 
   <br>
   <div class="form-group align-right">

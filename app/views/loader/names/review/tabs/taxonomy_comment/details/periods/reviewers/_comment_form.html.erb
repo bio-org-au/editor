@@ -1,0 +1,24 @@
+
+<%
+ name_review_comment = @loader_name.name_review_comments.new(
+        batch_reviewer_id: period.reviewer_id(@current_user.username),
+        loader_name_id: @loader_name.id,
+        review_period_id: period.id)
+ %>
+
+
+    <%= form_with model: name_review_comment, url: 'name_review_comments', method: :post do |form| %>
+      <%= form.hidden_field :batch_reviewer_id %>
+      <%= form.hidden_field :loader_name_id %>
+      <%= form.hidden_field :review_period_id %>
+      Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", value: "re Taxonomy Comment:", required: true, tabindex: increment_tab_index %>
+      <%= form.submit id: "save-new-batch-review-comment-btn", class: 'btn-primary', value: "Save", title: "Save comment", tabindex: increment_tab_index %>
+      <%= divider %>
+      <p>
+      <b>
+      Note:
+      </b>
+      It isn't necessary to comment - absence of a comment indicates acceptance.
+      
+  <% end %>
+

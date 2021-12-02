@@ -1,0 +1,18 @@
+<% next_limit_max = (@search.executed_query.results.size + @search.page_increment_size) %>
+<% if @search.executed_query.total <= next_limit_max %>
+  &nbsp; | &nbsp;
+    <%= link_to("List #{next_limit_max}",
+                search_path(query_string: "#{@search.parsed_request.query_string.sub(/limit: *\d{1,}/,'').sub(/$/,%Q( limit: #{next_limit_max} ))}",
+                            query_target: "#{params[:query_target]}"),
+                            title: "List #{@search.page_increment_size} more.") %>
+<% end %>
+
+
+<% if @search.parsed_request.count_allowed %>
+  &nbsp; | &nbsp;
+  <%= link_to('Count', 
+              search_path(query_string: "count #{@search.parsed_request.query_string.sub(/^ *list */i,'')}",
+                          query_target: "#{params[:query_target]}"),
+                          title: "Re-run the query as a count query") %>
+<% end %>
+

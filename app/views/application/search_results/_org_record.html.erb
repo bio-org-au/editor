@@ -1,0 +1,23 @@
+<tr id="search-result-<%= search_result.id %>" 
+  class="search-result show-details <%= 'fresh' if search_result.fresh? %>"  
+  data-get-url=""
+  data-edit-url="<%= org_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-base-url=""
+  data-tab-url="<%= org_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-record-id="<%= search_result.id %>"
+  data-record-type="organisation"
+  tabindex="<%= increment_tab_index(100) %>"
+    >
+  <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%= record_icon('orchid') %></td>
+  <td class="text takes-focus name main-content min-width-40-percent max-width-60-percent width-50-percent <%= 'give-me-focus' if give_me_focus %>">
+    <a
+      class="show-details-link"
+      tabindex="<%= increment_tab_index %>" 
+      title="Organisation record. Select to show details."
+      id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
+      <%= render partial: 'application/search_results/link_texts/org', locals: {search_result: search_result} %>
+    </a>
+  </td>
+  <td class="takes-focus width-5-percent filler">&nbsp;</td>
+</tr>
+

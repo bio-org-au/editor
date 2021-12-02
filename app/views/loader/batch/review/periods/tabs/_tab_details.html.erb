@@ -1,0 +1,46 @@
+<% increment_tab_index(0) %>
+<%= render partial: 'detail_line', locals: {info: @review_period.name, label: 'Name'} %>
+
+
+<%= render partial: 'detail_line',
+      locals: {info: @review_period.review.name,
+               label: link_to('Review',
+                        search_path(
+                          query_target: 'batch review',
+                          query_string: "id: #{@review_period.batch_review.id}"),
+               title:"Query the batch review",class:'blue')} %>
+
+<%= render partial: 'detail_line',
+           locals: {label: 'Start',
+                    info: @review_period&.start_date&.strftime("%d-%b-%Y")} %>
+
+<%= render partial: 'detail_line',
+           locals: { label: 'End',
+                     info: @review_period&.end_date&.strftime("%d-%b-%Y")} %>
+
+<%= render partial: 'detail_line',
+      locals: {info: @review_period.reviewers.size,
+               label: link_to('Reviewers',
+                        search_path(
+                          query_target: 'batch_reviewers',
+                          query_string: "period: #{@review_period.id}"),
+               title:"Query the reviewers",class:'blue')} %>
+
+<%= render partial: 'detail_line',
+      locals: {info: @review_period.names_with_comments.size,
+               label: link_to('Names with Comments',
+                        search_path(
+                          query_target: 'loader name',
+                          query_string: "has-review-comment:"),
+               title:"Query the reviewers",class:'blue')} %>
+
+<%= divider %>
+
+
+<h5>Metadata</h5>
+Review Period #<%= @review_period.id %>
+<br>
+<%= created_by_whom_and_when(@review_period).html_safe %>
+<br>
+<%= updated_by_whom_and_when(@review_period).html_safe %>
+

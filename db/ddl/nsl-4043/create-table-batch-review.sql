@@ -8,6 +8,7 @@ create table batch_review (
   created_by character varying(50)    not null default user,
   updated_at timestamp with time zone not null default now(),
   updated_by character varying(50)    not null default user,
-  constraint batch_review_loader_batch_fk foreign key (loader_batch_id) REFERENCES loader_batch(id)
+  constraint batch_review_loader_batch_fk foreign key (loader_batch_id) REFERENCES loader_batch(id),
+  unique (loader_batch_id, name)
 )
 ;

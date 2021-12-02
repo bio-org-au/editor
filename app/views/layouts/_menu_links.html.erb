@@ -1,0 +1,17 @@
+
+<% if can? 'menu', 'new' %>
+  <li> <%= render partial: 'layouts/new_menu'   %> </li>
+<% end %>
+<% if can? 'menu', 'help' %>
+  <li> <%= render partial: 'layouts/help_menu'  %> </li>
+<% end %>
+<% if can? 'menu', 'user' %>
+  <li> <%= render partial: 'layouts/user_menu' %> </li>
+<% end %>
+<% if can? 'menu', 'tree' %>
+  <li> <%= render partial: 'layouts/taxonomy_menu' %> </li>
+<% end %>
+<% if can? 'menu', 'admin' %>
+  <li> <%= render partial: 'layouts/admin_menu' %> </li>
+<% end %>
+

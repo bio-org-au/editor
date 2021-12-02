@@ -588,7 +588,7 @@ and (max-device-width : 1024px) {
   div#search-result-details {
     width: 36%;
   }
-  div#search-result-details.orchids {
+  div#search-result-details.wide-details {
     width: 50%;
     max-width: 800px;
   }
@@ -636,7 +636,7 @@ and (max-device-width : 1024px) {
   div#search-result-details {
     width: 40%;
   }
-  div#search-result-details.orchids {
+  div#search-result-details.wide-details {
     width: 50%;
     max-width: 800px;
   }
@@ -661,7 +661,7 @@ and (max-device-width : 1024px) {
   div#search-result-details {
     width: 36%;
   }
-  div#search-result-details.orchids {
+  div#search-result-details.wide-details {
     width: 50%;
     max-width: 800px;
   }
@@ -685,7 +685,7 @@ and (max-device-width : 1024px) {
     width: 40%;
     max-width: 800px;
   }
-  div#search-result-details.orchids {
+  div#search-result-details.wide-details {
     width: 50%;
     max-width: 800px;
   }
