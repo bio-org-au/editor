@@ -61,7 +61,7 @@ class AuthorsController < ApplicationController
   rescue => e
     logger.error("Controller:Authors:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error.js", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_entity
   end
 
   def update
@@ -73,7 +73,7 @@ class AuthorsController < ApplicationController
   rescue => e
     logger.error("Author#update rescuing #{e}")
     @message = e.to_s
-    render "update_error.js", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_entity
   end
 
   # DELETE /authors/1

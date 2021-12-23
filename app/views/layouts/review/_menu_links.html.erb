@@ -1,0 +1,7 @@
+
+<% if can? 'menu', 'help' %>
+  <li> <%= render partial: 'layouts/help_menu'  %> </li>
+<% end %>
+<% if can? 'menu', 'user' %>
+  <li> <%= render partial: 'layouts/user_menu' %> </li>
+<% end %>

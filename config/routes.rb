@@ -45,8 +45,8 @@ Rails.application.routes.draw do
   match "/search/index", as: "search_index", to: "search#search", via: :get
   match "/search/tree", as: "tree", to: "search#tree", via: :get
   match "/search/preview", as: "search_preview", to: "search#preview", via: :get
-  match "/search/extras/:extras_id",
-        as: "search_extras", to: "search#extras", via: :get
+  match "/search/help/:help_id",
+        as: "search_help", to: "search#help", via: :get
 
   resources :instance_notes,
             only: [:show, :new, :edit, :create, :update, :destroy]
@@ -408,7 +408,11 @@ Rails.application.routes.draw do
 
   resources :loader_batches
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
+  match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
+  match "loader_batch/clear-default", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post
+
   resources :loader_names
+  match "loader_names/:id/tab/:tab/:component", as: "loader_name_review_tab", to: "loader/names#tab", via: :get, defaults: { component: 'main' }
   match "loader_names/:id/tab/:tab", as: "loader_name_tab", to: "loader/names#tab", via: :get
   match "batch_reviews/:id/tab/:tab", as: "batch_review_tab", to: "loader/batch/reviews#tab", via: :get
   match "batch_reviews", as: "create_batch_review", to: "loader/batch/reviews#create", via: :post
@@ -416,10 +420,32 @@ Rails.application.routes.draw do
   match "batch_reviews", as: "batch_review", to: "loader/batch/reviews#show", via: :get
   match "/batch_reviews/:id", as: "delete_batch_review", to: "loader/batch/reviews#destroy", via: :delete
   #resources :batch_reviews
-  match "batch_review_periods", as: "create_batch_review_period", to: "loader/batch/review_periods#create", via: :post
-  match "batch_review_periods", as: "review_period", to: "loader/batch/review_periods#show", via: :get
-  match "batch_review_periods/:id/tab/:tab", as: "review_period_tab", to: "loader/batch/review_periods#tab", via: :get
-  match "batch_review_periods/:id", as: "update_review_period", to: "loader/batch/review_periods#update", via: :patch
+  match "batch_review_periods", as: "create_batch_review_period", to: "loader/batch/review/periods#create", via: :post
+  match "batch_review_periods", as: "review_period", to: "loader/batch/review/periods#show", via: :get
+  match "batch_review_periods/:id/tab/:tab", as: "review_period_tab", to: "loader/batch/review/periods#tab", via: :get
+  match "batch_review_periods/:id", as: "update_review_period", to: "loader/batch/review/periods#update", via: :patch
+
+  match "users", as: "user", to: "users#show", via: :get
+  match "users/:id/tab/:tab", as: "user_tab", to: "users#tab", via: :get
+
+  match "orgs", as: "org", to: "orgs#show", via: :get
+  match "orgs/:id/tab/:tab", as: "org_tab", to: "orgs#tab", via: :get
+
+  match "batch_reviewers", as: "batch_reviewer", to: "loader/batch/reviewers#show", via: :get
+  match "batch_reviewers/:id/tab/:tab", as: "batch_reviewer_tab", to: "loader/batch/reviewers#tab", via: :get
+  match "batch_reviewer", as: "loader_batch_reviewers", to: "loader/batch/reviewers#create", via: :post
+  match "batch_reviewer/:id", as: "delete_batch_reviewer", to: "loader/batch/reviewers#destroy", via: :delete
+
+  match "name_review_comments", as: "create_name_review_comment", to: "loader/name/review/comments#create", via: :post
+  match "name_review_comments/:id", as: "edit_name_review_comment", to: "loader/name/review/comments#edit", via: :get
+  match "name_review_comments/cancel/:id", as: "cancel_edit_name_review_comment", to: "loader/name/review/comments#cancel_edit", via: :get
+  match "name_review_comments", as: "update_name_review_comment", to: "loader/name/review/comments#update", via: :patch
+  match "name_review_comments/delete/dialog/:id", as: "dialog_to_delete_name_review_comment", to: "loader/name/review/comments#dialog_to_delete", via: :delete
+  match "name_review_comments/cancel/delete/dialog/:id", as: "cancel_dialog_to_delete_name_review_comment", to: "loader/name/review/comments#cancel_dialog_to_delete", via: :get
+  match "name_review_comments/:id", as: "delete_name_review_comment", to: "loader/name/review/comments#destroy", via: :delete
+
+  match "switch_on_review_mode", as: "switch_on_review_mode", to: "loader/batch/review/mode#switch_on", via: :post
+  match "switch_off_review_mode", as: "switch_off_review_mode", to: "loader/batch/review/mode#switch_off", via: :post
 
   match "/clear-connections", as: "clear_connections", to: "services#clear_connections", via: :get
   root to: "search#search"

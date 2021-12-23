@@ -1,0 +1,19 @@
+      <div id="search-target-btn" class="input-group-btn">
+        <button id="search-target-button" 
+                type="button" 
+                class="btn btn-default dropdown-toggle" 
+                tabindex="7"
+                title="Target of the search"
+                data-toggle="dropdown" 
+                aria-haspopup="true" 
+                aria-expanded="false">
+          <span id="search-target-button-text">
+                <%= @search.parsed_request.target_button_text %>
+          </span>
+          &nbsp;
+        <span class="caret"></span></button>
+
+        <ul id="search-target-list" class="dropdown-menu">
+          <%= render partial: "search/review/targets" %>
+        </ul>
+      </div><!-- /btn-group -->

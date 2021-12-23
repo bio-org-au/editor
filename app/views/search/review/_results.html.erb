@@ -1,0 +1,45 @@
+      <caption class="hidden">Results of the latest search</caption>
+      <% @focus_anchor_id = params[:focus] unless params[:focus].blank? %>            
+    <% for record in @search.executed_query.results %><%# Allow for hashes or ActiveRecords, so use hash key syntax. %>
+      <% if record[:anchor_id] == @focus_anchor_id %>
+        <% give_me_focus = true  %>
+        <%  @focus_anchor_id = 'do not use again'  %>
+      <% else %>
+       <% give_me_focus = false %>
+      <% end %>
+
+      <% display_as = record.class.name == 'Hash' ? record[:display_as] || record.class.to_s  : record.try('display_as') || record.class.to_s %>
+      <%# TODO: standardize on strings or symbols, at least for the instance record variants. %>
+      <% case display_as %>
+      <% when 'Loader Batch' %>  
+        <%= render partial: 'application/search_results/review/loader_batch_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
+      <% when 'Loader Name' %>  
+        <%= render partial: 'application/search_results/review/loader_name_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
+        <% @flush_loader_name = true %>
+      <% else %>
+        <tr>
+          <td class="width-1-percent"></td>
+          <td class="min-with-40-percent width-50-percent max-width-60-percent">
+            <%= display_as %> is an unknown type of search result in review mode
+          </td>
+          <td class="width-5-perent filler"></td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    <% if @flush_loader_name %>
+    <%= render partial: 'application/search_results/review/loader_name_record', 
+        locals: {search_result: Loader::Name.record_to_flush_results, give_me_focus: false} %>
+    <% end %>
+
+    <tr>
+      <td class="width-1-percent"></td>
+      <td class="min-with-40-percent width-50-percent max-width-60-percent">
+        <br> <br> <br> <br> <br>
+      </td>
+      <td class="width-5-percent filler"></td>
+    </tr>
+
+

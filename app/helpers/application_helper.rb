@@ -90,17 +90,21 @@ module ApplicationHelper
   end
 
   def page_title
-    case Rails.configuration.try("environment")
-    when /\Adev/i
-      "V6 Dev Ed"
-    when /^test/i
-      "V6 Test Ed"
-    when /^stag/i
-      "V6 Stage Ed"
-    when /^prod/i
-      "V6 #{ShardConfig.shard_group_name} Editor"
+    unless Rails.configuration.try('tag').blank?
+      return "#{Rails.configuration.try('tag')} Ed"
     else
-      "V6 #{ShardConfig.shard_group_name} Editor"
+      case Rails.configuration.try("environment")
+      when /\Adev/i
+        "Dev Editor"
+      when /^test/i
+        "Test Editor"
+      when /^stag/i
+        "Stage Editor"
+      when /^prod/i
+        "#{ShardConfig.shard_group_name} Editor"
+      else
+        "#{ShardConfig.shard_group_name} Editor"
+      end
     end
   end
 

@@ -1,0 +1,48 @@
+<% increment_tab_index(0) %>
+
+<% @loader_name.batch.reviews.each do |review| %>
+  Review: <%= link_to(review.name,
+                      search_path(query_target: "batch reviews",
+                                  query_string: "id: #{review.id}"),
+                      title:"Query the period",class:'blue') %><br>
+  <% review.periods.each do |period| %>
+    Period: <%= link_to(period.name,
+                        search_path(query_target: "batch review periods",
+                                    query_string: "id: #{period.id}"),
+                        title:"Query the period",class:'blue') %><br>
+                        <% period.loader_name_comments(@loader_name.id, scope).sort {|x,y| x.created_at <=> y.created_at}.each do |comment| %>
+
+
+                          <br>
+      <div id="one-comment-<%= comment.id %>">
+
+        <%= render partial: 'loader/names/review/tabs/common/one_comment',
+                    locals: {comment: comment,
+                             scope: scope} %>
+
+      </div>
+
+    <% end %>
+  <% end %>
+<%= divider %>
+<% end %>
+
+<%= render partial: 'detail_line',
+      locals: {info: @loader_name.batch.name,
+               label: link_to('Batch',
+                        search_path(
+                          query_target: 'loader batch',
+                          query_string: "id: #{@loader_name.batch.id}"),
+               title:"Query the loader batch",class:'blue')} %>
+
+<%= render partial: 'detail_line', locals: {label: 'Loader Name ID', info: @loader_name.id} %>
+<%= created_by_whom_and_when(@loader_name).html_safe %>
+<br>
+<%= updated_by_whom_and_when(@loader_name).html_safe %>
+
+<%= divider %>
+<%= link_to('Show record in context',
+            search_path(
+              query_target: 'loader names',
+              query_string: "id: #{@loader_name.parent_id || @loader_name.id}"),
+               title:"Query the loader name in context",class:'blue') %>

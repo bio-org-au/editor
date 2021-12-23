@@ -1,9 +1,19 @@
+
+
 <% if session[:include_common_and_cultivar] == true %>
-  <%= link_to "#{icon('check-square-o fa-lg')} Common/Cultivars".html_safe,set_include_common_and_cultivar_path, remote: true, method: :post, title: 'Name searches will include common and cultivars.  Click to reverse this setting and exclude common and cultivars from future searches.' %>&nbsp;
+  <% icon_name = 'check-square-o fa-lg' %>
+  <% title_text = 'Name searches will include common and cultivars' %>
 <% else %>
-    <%= link_to "#{icon('square-o fa-lg')} Common/Cultivars".html_safe,set_include_common_and_cultivar_path, remote: true, method: :post , title: 'Name searches will exclude common and cultivars unless your search requires them.  Click to reverse this setting and include common and cultivars in future searches.'%>
+  <% icon_name = 'square-o fa-lg' %>
+  <% title_text = 'Name searches will exclude common and cultivars' %>
 <% end %>
-<% unless @empty_search %>
-  &nbsp;|&nbsp;
-<% end %>
+
+<%= link_to "#{icon(icon_name)} Common/Cultivars".html_safe,
+  set_include_common_and_cultivar_path,
+  remote: true,
+  method: :post,
+  title: "#{title_text}",
+  class: "" %>
+
+&nbsp;
 

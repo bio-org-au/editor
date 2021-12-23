@@ -34,6 +34,32 @@
     <% end %>
 
     <li role="presentation" class="divider"></li>
+
+<% if Rails.configuration.try(:batch_loader_aware) %>
+    <li>
+      <% if @view_mode == 'standard' %>
+        <%= link_to "<i class=''></i> Switch to Review Mode".html_safe,
+                    switch_on_review_mode_path,
+                    title: 'See things as a reviewer would',
+                    remote: true,
+                    method: :post,
+                    tabindex: '-1' %>
+         <li role="presentation" class="divider"></li>
+      <% else %>
+         <% if @current_user.edit? %>
+         <%= link_to "<i class=''></i> Switch out of Review Mode".html_safe,
+                     switch_off_review_mode_path,
+                     title: 'Stop seeing things as a reviewer would',
+                     remote: true,
+                     method: :post,
+                     tabindex: '-1' %>
+         <li role="presentation" class="divider"></li>
+         <% end %>
+      <% end %>
+     </li>
+ 
+<% end %>
+
     <li class="" role="presentation">
       <%= link_to "#{icon('key')} Change password".html_safe, edit_password_path, method: :get, title: 'Select this to change your password'%>
     </li>

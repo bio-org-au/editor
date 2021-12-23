@@ -10,6 +10,10 @@
                title:"Query the loader batch",class:'blue')} %>
 
 
+<% if  @batch_review.periods.empty? %>
+  <%= render partial: 'detail_line', locals: {info: '',
+                                              label:'No review periods'} %>
+<% else %>
 <%= render partial: 'detail_line',
       locals: {info: @batch_review.periods.size,
                label: link_to('Periods',
@@ -17,6 +21,7 @@
                           query_target: 'batch review periods',
                           query_string: "batch-review-id: #{@batch_review.id}"),
                title:"Query the batch review periods",class:'blue')} %>
+<% end %>
 
 <%= divider %>
 

@@ -1,0 +1,14 @@
+<ul class="nav nav-tabs">
+  <%= render partial: 'orgs/tabs/tab',
+             locals: {first: true,
+                      last: false,
+                      this_tab: 'tab_details', 
+                      link_text: 'Details', 
+                      link_id: 'loader-batch-details-tab', 
+                      link_title: 'View a summary',
+                      tab_index: @tab_index,
+                      prev_tab: '.search-result.loader-batch-review-tab', 
+                      next_tab: '.search-result.loader-batch-review-tab' } %> 
+
+</ul>
+

@@ -1,0 +1,12 @@
+insert into org (abbrev, name) values ('AD','State Herbarium of South Australia');
+insert into org (abbrev, name) values ('CNS','Australian Tropical Herbarium');
+insert into org (abbrev, name) values ('CANB','Australian National Herbarium');
+insert into org (abbrev, name) values ('BRI','Queensland Herbarium');
+insert into org (abbrev, name) values ('MEL','Royal Botanic Gardens Victoria');
+insert into org (abbrev, name) values ('DNA','Northern Territory Herbarium, Darwin');
+insert into org (abbrev, name) values ('NT','Northern Territory Herbarium, Alice Springs');
+insert into org (abbrev, name) values ('NSW','Royal Botanic Gardens & Domain Trust');
+insert into org (abbrev, name) values ('HO','Tasmanian Herbarium');
+insert into org (abbrev, name) values ('PERTH','Western Australian Herbarium');
+insert into org (name,abbrev, no_org) values ('No Organisation - Unaffiliated','NONE', true);
+insert into org (abbrev, name) values ('K','Herbarium, Royal Botanic Gardens, Kew');

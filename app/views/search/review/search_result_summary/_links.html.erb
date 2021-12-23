@@ -1,0 +1,26 @@
+
+
+
+<%= link_to(%Q(#{@search.parsed_request.query_target.capitalize} "#{@search.parsed_request.query_string}" ).html_safe,
+            search_path(query_string: "#{@search.parsed_request.query_string}",
+                        query_target: "#{params[:query_target]}"),
+                        title: 'Rerun the query.') %>
+
+<% if @search.executed_query.csv? %>
+  &nbsp; | &nbsp;
+  <%= link_to('CSV',
+              search_path(query_string: "#{@search.parsed_request.query_string}",
+                          query_target: "#{params[:query_target]}",
+                          format: 'csv'),
+                          title: 'Get the results as comma-separated variable-length fields (CSV).') %>
+<% end %>
+
+<%= render partial: 'search/search_result_summary/more_results' %>
+
+<% if @search.parsed_request.count && @search.executed_query.count > 0 %> 
+   &nbsp; | &nbsp;
+   <%= link_to('List', 
+               search_path(query_string: "#{@search.parsed_request.query_string.sub(/^ *count */i,'')}",
+               query_target: "#{params[:query_target]}"),
+               title:"Re-run query as a list query" ) %>
+<% end %>

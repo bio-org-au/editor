@@ -24,6 +24,7 @@ class Loader::Batch < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
   has_many :loader_names, class_name: "Loader::Name", foreign_key: "loader_batch_id"
   has_many :batch_reviews, class_name: "Loader::Batch::Review", foreign_key: "loader_batch_id"
+  alias_attribute :reviews, :batch_reviews
 
   attr_accessor :give_me_focus, :message
 
@@ -36,6 +37,24 @@ class Loader::Batch < ActiveRecord::Base
 
   def display_as
     'Loader Batch'
+  end
+
+  def all_periods_of_all_reviews
+    reviews.collect {|r| r.periods}.sort {|x,y| x.start_date <=> y.start_date}.flatten
+  end
+
+  def all_active_periods_of_all_reviews
+    all_periods_of_all_reviews.select {|p| p.active?}
+  end
+
+  def active_reviews
+    return [] if all_active_periods_of_all_reviews.empty?
+
+    all_active_periods_of_all_reviews.collect {|period| period.review}
+  end
+
+  def active_reviews?
+    !active_reviews.empty?
   end
 end
 

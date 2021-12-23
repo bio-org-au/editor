@@ -29,7 +29,7 @@
   background-color: #777;
 }
 
-div#big-navbar .stylish-checkbox-unchecked, 
+div#top-navbar .stylish-checkbox-unchecked, 
 tr.search-result.showing-details .stylish-checkbox-unchecked {
   border-color: white;
   background-color: white;
@@ -40,19 +40,19 @@ div.stylish-checkbox-unchecked div.stylish-checkbox-checkmark {
 }
 
 
-div#big-navbar .stylish-checkbox-checked, 
+div#top-navbar .stylish-checkbox-checked, 
 tr.search-result.showing-details .stylish-checkbox-checked {
   background-color: #404040;
   border-color: #404040;
 }
 
-div#big-navbar .stylish-checkbox-checked .stylish-checkbox-checkmark,
+div#top-navbar .stylish-checkbox-checked .stylish-checkbox-checkmark,
 tr.search-result.showing-details .stylish-checkbox-checked .stylish-checkbox-checkmark {
   background-color: #404040;
 }
 
 
-div#big-navbar div.stylish-checkbox:focus, 
+div#top-navbar div.stylish-checkbox:focus, 
 tr.search-result.showing-details div:focus {
   border: 2px solid #202020;
 }

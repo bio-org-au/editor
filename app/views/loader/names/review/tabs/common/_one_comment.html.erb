@@ -1,0 +1,39 @@
+
+      <div id="comment-<%= comment.id %>-display-container" class='name-comment-display-container'> 
+        <b><%= comment.type.name.titleize %>:</b> &nbsp; <%= comment.comment %><br>
+      &mdash; <%= comment.reviewer.user_table.full_name %> (<%= comment.reviewer.org.abbrev %>),
+      <span title='<%= formatted_timestamp(comment.created_at) %>'>
+        <%= "#{time_ago_in_words(comment.created_at)} ago" %>
+      </span>
+      <% unless comment.created_at == comment.updated_at %>
+        <span title='<%= formatted_timestamp(comment.updated_at) %>'>
+        <%= "(updated #{time_ago_in_words(comment.updated_at)} ago)" %></span><br>
+      <% end %>
+      <% if @current_user.username == comment.reviewer.user_table.name %>
+
+        <br>
+        <%= link_to 'Edit', edit_name_review_comment_path(comment.id),
+          remote: true,
+          class: 'btn btn-primary',
+          title: 'Edit your comment' %>
+
+        <span id="comment-<%= comment.id %>-delete-widgets-container"> 
+
+          <%= render partial: "loader/names/review/tabs/common/delete_dialog_button",
+          locals: {comment: comment} %>
+
+        </span>
+
+
+      <% end %>
+      </div>
+
+
+      <div id="comment-<%= comment.id %>-edit-container" class='name-comment-edit-container'> 
+
+      <div id="<%= comment.id %>-info-message-container" class="message-container"></div>
+      <div id="<%= comment.id %>-error-message-container" class="error-container message-container"></div>
+
+      </div>
+
+

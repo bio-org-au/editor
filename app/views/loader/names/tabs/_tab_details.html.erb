@@ -1,27 +1,32 @@
-<% increment_tab_index(0) %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.record_type, label: 'Record Type'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.family, label: 'Family'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.rank, label: 'rank'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.rank_nsl, label: 'rank_nsl'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.ex_base_author, label: 'ex_base_author'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.base_author, label: 'base_author'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.ex_author, label: 'ex_author'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.author, label: 'author'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.name_status, label: 'name_status'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.name_comment, label: 'name_comment'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.partly, label: 'partly'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.auct_non, label: 'auct_non'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.unplaced, label: 'unplaced'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.doubtful, label: 'doubtful'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.hybrid_flag, label: 'hybrid_flag'} %>
 
+<%= render partial: 'loader/names/tabs/details/core_data' %>
+<%= divider %>
+<%= render partial: 'loader/names/tabs/details/core_data_2' %>
+<br>
+<br>
+<%= divider %>
+
+<% if @loader_name.child? %>
+  <%= render partial: 'detail_line', 
+           locals: {info: link_to("Query parent (accepted name with synonyms)",
+                                  search_path(query_target: "loader names", query_string: "id-with-syn:#{@loader_name.parent_id}"),
+                                  title: 'See parent',
+                                  class: 'underline'), 
+                    label: ''} %>
+<% else %>
+  <%= render partial: 'detail_line', 
+    locals: {info: link_to("Show #{pluralize(@loader_name.children.size,'synonym')}",
+                                  search_path(query_target: "loader names", query_string: "id-with-syn:#{@loader_name.id}"),
+                                  title: 'See this record with synonyms',
+                                  class: 'underline'), 
+                    label: ''} %>
+<% end %>
 <br>
 <%= divider %>
 <b>Original Text (styled)</b>
 <br>
-<%= @loader_name.original_text.html_safe %>
+<%= @loader_name.original_text&.html_safe %>
 <%= divider %>
-
 <%= render partial: 'detail_line',
       locals: {info: @loader_name.batch.name,
                label: link_to('Batch',
@@ -38,3 +43,14 @@ Seq #<%= @loader_name.seq %>
 <%= created_by_whom_and_when(@loader_name).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@loader_name).html_safe %>
+<br>
+compiler view
+<%= divider %>
+<%= divider %>
+<%= divider %>
+
+
+<%#= render partial: 'orchids/tabs/tab_show_1_name_matches' %>
+<%= divider %>
+<%#= render partial: 'orchids/tabs/tab_show_1_more_info' %>
+<%= divider %>

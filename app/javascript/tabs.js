@@ -1,17 +1,32 @@
+  debug = function(s) {
+    var error;
+    try {
+      if (debugSwitch === true) {
+        return console.log('debug: ' + s);
+      }
+    } catch (error1) {
+      error = error1;
+    }
+  };
+
 function getContentOnDemand(theThis) {
   debug("getContentOnDemand for id: " + $(theThis).attr('id') + " and context: " + $(theThis).attr('data-load-context'));
-  var extrasId = $(theThis).attr('data-load-context');
-  debug('#' + extrasId);
-  var $targetElement = $('#' + extrasId);
-  debug("data loaded: " + $targetElement.attr('data-loaded'));
-  if ($targetElement.attr('data-loaded') == 'false') {
-    debug("Not loaded, so need to load extras: " + extrasId);
-    $targetElement.html('Loading...');
-    $.get(window.relative_url_root + "/search/extras/" + extrasId, function (data) {
-      debug("get: " + extrasId + " has finished");
-      $targetElement.html(data);
-      $targetElement.attr('data-loaded', 'true');
-    }, 'html');
+  var targetID = $(theThis).attr('data-load-context');
+  if (targetID === undefined || targetID == '') {
+    debug("targetID is undefined or empty - you need to set it ");
+  } else {
+      var $targetElement = $('#' + targetID);
+      if ($targetElement.attr('data-loaded') === undefined) {
+        debug("No entry for " + targetID);
+        debug("You need to add a target div in search/tab_inners/_*target_divs.html or similar");
+      }
+      if ($targetElement.attr('data-loaded') == 'false') {
+        $targetElement.html('Loading...');
+        $.get(window.relative_url_root + "/search/help/" + targetID, function (data) {
+          $targetElement.html(data);
+          $targetElement.attr('data-loaded', 'true');
+        }, 'html');
+      }
   }
 
 };
@@ -28,6 +43,17 @@ function showHelpForSearchTarget(helpElement) {
   $('#' + helpElement).removeClass('hidden');
   makeCurrentlyVisibleHelpMatchTarget();
 }
+
+window.showOrHideCultivarCommonCbox = function(searchTarget) {
+  if (searchTarget == 'Names' || searchTarget == 'Names plus instances') {
+    $('#set-include-common-and-cultivar').removeClass('hidden');
+    $('#trailing-pipe-for-set-include-common-and-cultivar').removeClass('hidden');
+  } else {
+    $('#set-include-common-and-cultivar').addClass('hidden');
+    $('#trailing-pipe-for-set-include-common-and-cultivar').addClass('hidden');
+  }
+}
+
 
 function makeCurrentlyVisibleHelpMatchTarget() {
   if (helpTabVisible()) {
@@ -76,6 +102,16 @@ function makeCurrentlyVisibleExamplesMatchTarget() {
 
 function examplesTabVisible() {
   return $('#example-search-tab-container-link').closest('li').hasClass('active');
+}
+
+function hideResults() {
+  $('.main-body-container').addClass('hidden');
+  $('#search-result-details').addClass('hidden');
+}
+
+function showHelpTarget(target) {
+  hideResults();
+  $(target).removeClass('hidden');
 }
 
 function getActiveExamplesIdentifier() {
@@ -129,21 +165,12 @@ $( document ).on('turbolinks:load', function() {
 
   $("#search-target-list").on("click", function (e) {
     if (e.target && e.target.nodeName == "A") {
-      debug('========================================= setting search-target ============================================');
-      debug(e.target);
-      debug('========================================= a');
-      debug(e.target.nodeName);
-      debug('========================================= b');
+      debug('setting search-target: e.target.innerHTML:' + e.target.innerHTML);
       document.getElementById('search-target-button-text').innerHTML = e.target.innerHTML;
-      debug('========================================= c');
       document.getElementById('query-target').value = e.target.innerHTML;
-      debug('========================================= d');
-      debug(e.target.dataset.help);
-      debug('========================================= e');
       showHelpForSearchTarget(e.target.dataset.help);
-      debug('========================================= f');
       showExamplesForSearchTarget(e.target.dataset.examples);
-      debug('========================================= end setting search-target ============================================');
+      showOrHideCultivarCommonCbox(e.target.innerHTML);
       e.preventDefault()
     }
   });
@@ -154,20 +181,19 @@ $( document ).on('turbolinks:load', function() {
     $('#query-string-field').focus();
   });
 
-  $('a.search-non-default-tab-link').on('click', function (e) {
-    debug('a.search-non-default-tab-link clicked, calling getContentOnDemand for ' + this);
-    debug('e:' + e.target);
-    debug('e:' + e.target.tagName);
-    debug('e id:' + e.target.id);
+  $('a.search-help-link').on('click', function (e) {
     var targetElement = e.target.dataset.targetElement;
-    debug('e targetElement:' + targetElement);
-    debug('before call to getContentOnDemand');
     getContentOnDemand(this);
-    debug('after call to getContentOnDemand')
-    $('.main-body-container').addClass('hidden');
-    $('#search-result-details').addClass('hidden');
-    $(targetElement).removeClass('hidden');
-    e.preventDefault()
+    debug("after getContentOnDemand");
+    showHelpTarget(targetElement);
+    e.preventDefault();
+  });
+
+  $('a.search-examples-link').on('click', function (e) {
+    var targetElement = e.target.dataset.targetElement;
+    getContentOnDemand(this);
+    showHelpTarget(targetElement);
+    e.preventDefault();
   });
 
   setActiveHelpOnLoad();

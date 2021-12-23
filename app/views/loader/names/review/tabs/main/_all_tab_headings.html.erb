@@ -1,0 +1,27 @@
+<ul class="nav nav-tabs">
+  <%= render partial: 'loader/names/review/tabs/main/tab',
+    locals: {link_text: 'Details',
+             first: true,
+             last: false,
+             this_tab: 'tab_details', 
+             link_id: 'loader-name-details-tab', 
+             link_title: 'View a summary, including any comments',
+             tab_index: @tab_index,
+             prev_tab: '.search-result.loader-names-review-tab', 
+             next_tab: '.search-result.loader-names-rev-comm-tab' } %> 
+
+  <% unless @loader_name.batch.reviews.empty? %>
+
+  <%= render partial: 'loader/names/review/tabs/main/tab',
+    locals: {link_text: 'Add Comment', 
+             this_tab: 'tab_comment', 
+             link_id: 'loader-name-rev-comments-tab', 
+             link_title: 'Add a comment',
+             tab_index: @tab_index,
+             first: false,
+             last: true,
+             prev_tab: '.search-result.loader-name-review-tab', 
+             next_tab: '.search-result.loader-names-details-tab' } %> 
+  <% end %>
+</ul>
+

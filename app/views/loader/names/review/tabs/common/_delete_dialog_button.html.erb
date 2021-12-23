@@ -1,0 +1,8 @@
+        <%= link_to 'Delete...',
+          dialog_to_delete_name_review_comment_path(comment.id),
+          method: :delete,
+          remote: true,
+          class: 'btn btn-warning pull-right',
+          title: 'Prepare to delete this comment' %>
+
+

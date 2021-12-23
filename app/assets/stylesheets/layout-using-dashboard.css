@@ -1,5 +1,5 @@
 
-div#big-navbar {
+div#top-navbar {
   background: gray;
   height: 143px;
 }
@@ -22,12 +22,14 @@ a.navbar-brand {
   padding-bottom: 0px;
   height: 30px;
   vertical-align: bottom;
+  background: white;
+  color: black;
 }
 
 div.navbar-inverse a.navbar-brand {
-  color: white;
   font-weight: normal;
   font-size: 16px;
+  color: black;
 }
 
 div.navbar-inverse a.navbar-brand.active {

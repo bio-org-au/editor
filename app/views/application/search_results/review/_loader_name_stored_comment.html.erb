@@ -1,0 +1,27 @@
+     <% unless @stored_comment.blank? %>
+       <tr id="review-result-taxonomy-comment-<%= @stored_result.id %>" 
+  class="review-result taxonomy-comment show-details <%= 'fresh' if @stored_result.fresh? %>"  
+  data-get-url=""
+  data-edit-url="<%= loader_name_path(id: @stored_result[:id],tab: 'active_tab_goes_here') %>"
+  data-base-url=""
+  data-tab-url="<%= loader_name_review_tab_path(id: @stored_result[:id],tab: 'active_tab_goes_here', component: 'taxonomy_comment') %>"
+  data-record-id="<%= @stored_result.id %>"
+  data-record-type="loader-name"
+  tabindex="<%= increment_tab_index(100) %>"
+    >
+    <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%#= record_icon('orchid') %></td>
+  <td class="text takes-focus loader-name taxonomy-comment main-content min-width-70-percent max-width-90-percent width-80-percent <%= 'give-me-focus' if give_me_focus %>">
+    <a
+      class="xshow-details-link"
+      tabindex="<%= increment_tab_index %>" 
+      title="Concept Note. Select to show details."
+      id="<%= %Q(#{@stored_result.class}-taxonomy-comment-#{@stored_result.id}) %>">
+         <span class="review-loader-name taxonomy-comment"><%= @stored_comment.html_safe %></span>
+    </a>
+    <% if @stored_result.reviewer_comments?('concept-note') %>
+      <span class="has-loader-name-review-comments"><%= pluralize(@stored_result.reviewer_comments('concept-note').size, 'comment') %></span>
+    <% end %>
+  </td>
+</tr>
+
+     <% end %>

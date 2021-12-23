@@ -1,0 +1,80 @@
+
+
+<% if @previous_record_type.blank? then %>
+  <% @previous_record_type = search_result.record_type %>
+   <% if search_result.record_type == 'accepted' then %>
+     <%  @stored_distribution = search_result.distribution %>
+     <%  @stored_comment = search_result.comment %>
+     <%  @stored_id = search_result.id %>
+     <%  @stored_result = search_result %>
+   <% end %>
+<% else %>
+   <% @previous_record_type = search_result.record_type %>
+   <% if search_result.record_type == 'accepted' then %>
+     <%= render partial: 'application/search_results/review/loader_name_stored_comment', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
+     <%= render partial: 'application/search_results/review/loader_name_stored_distribution', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
+     <% @stored_distribution = search_result.distribution %>
+     <% @stored_comment = search_result.comment %>
+     <%  @stored_id = search_result.id %>
+     <%  @stored_result = search_result %>
+     <tr class="review white-space-row"><td colspan="4">&nbsp;</td></tr>
+   <% end %>
+<% end %>
+
+
+
+<% if @previous_family.blank? then
+     @previous_family = search_result.family 
+     @show_family = true
+   elsif @previous_family != search_result.family
+     @previous_family = search_result.family 
+     @show_family = true
+   else
+     @show_family = false
+   end
+%>
+
+<% if @show_family %>
+   <tr class="review family"><td colspan="2"> <span class="review loader-name family"><%= "#{search_result.family}" %> </span> </td></tr>
+<% end %>
+
+<% unless @show_family && search_result.rank == 'family' %>
+<tr id="review-result-<%= search_result.id %>" 
+  class="review-result show-details <%= 'fresh' if search_result.fresh? %>"  
+  data-get-url=""
+  data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-base-url=""
+  data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-record-id="<%= search_result.id %>"
+  data-record-type="loader-name"
+  tabindex="<%= increment_tab_index(100) %>"
+    >
+    <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%#= record_icon('orchid') %></td>
+  <td class="text takes-focus name main-content min-width-70-percent max-width-90-percent width-80-percent <%= 'give-me-focus' if give_me_focus %>">
+    <a
+      class="review-show-details-link"
+      tabindex="<%= increment_tab_index %>" 
+      title="Loader Name record. Select to show details."
+      id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
+      <%= render partial: 'application/search_results/review/link_texts/loader_name', locals: {search_result: search_result} %>
+      <% unless search_result.name_status.blank? %>
+        &nbsp;
+        <span class="review loader-name name-status"><%= search_result.name_status %> </span>
+      <% end %>
+      <% if search_result.record_type == 'accepted' && search_result.excluded? %>
+        <span class="excluded">excluded</span>
+      <% end %>
+      <% if search_result.reviewer_comments? %>
+        <span class="has-loader-name-review-comments"><%= pluralize(search_result.reviewer_comments.size, 'comment') %></span>
+      <% end %>
+      <% if search_result.compiler_comments? %>
+        <span class="has-loader-name-review-comments"><%= pluralize(search_result.compiler_comments.size, 'compiler reply') %></span>
+      <% end %>
+      <% unless search_result.remark_to_reviewers.blank? %>
+        <span class="review loader-name remark-to-reviewers"><%= search_result.remark_to_reviewers.html_safe %></span>
+      <% end %>
+    </a>
+  </td>
+</tr>
+
+<% end %>

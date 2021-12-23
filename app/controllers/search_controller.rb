@@ -1,4 +1,5 @@
 class SearchController < ApplicationController
+  include Search::QueryDefaults
   before_action :hide_details
 
   def search
@@ -33,14 +34,14 @@ class SearchController < ApplicationController
   def set_include_common_and_cultivar
     session[:include_common_and_cultivar] = \
       !session[:include_common_and_cultivar]
+    @empty_search = true
   end
 
-  def extras
-    mapper = Search::Mapper::Extras.new(params)
-    logger.debug(mapper.partial)
-    render partial: mapper.partial
+  def help
+    help_content = Search::Help::PageMappings.new(params, @view_mode)
+    render partial: help_content.partial
   end
-
+ 
   def reports
   end
 
@@ -54,16 +55,23 @@ class SearchController < ApplicationController
     return false unless params[:query_string].present?
     @focus_id = params[:focus_id]
     params[:current_user] = current_user
+    check_query_defaults
     params[:include_common_and_cultivar_session] = \
       session[:include_common_and_cultivar]
+    #record_view_param
+    apply_view_mode
     # Avoid "A copy of Search has been removed from the module tree but is still active" error
     # https://stackoverflow.com/questions/29636334/a-copy-of-xxx-has-been-removed-from-the-module-tree-but-is-still-active
     @search = ::Search::Base.new(params)
     true
   end
-
+ 
   def run_empty_search
-    params["target"] = 'Names'
+    if @view_mode == 'review'
+      params["target"] = 'Loader Batches'
+    else
+      params["target"] = 'Names'
+    end
     @empty_search = true
     @search = Search::Empty.new(params)
   end
@@ -100,6 +108,32 @@ class SearchController < ApplicationController
     params[:query_target] = "name"
     return if params[:query_string] =~ /show-instances:/
     params[:query_string] = params[:query_string].sub(/\z/, " show-instances:")
+  end
+
+  def record_view_param
+    Rails.logger.debug("params: #{params.inspect}")
+    if params["query_string"] =~ /view:/i
+      @view = params["query_string"].sub(/.*(view: *[A-z]+).*/,'\1').sub(/view: */,'')
+    else
+      @view = 'standard'
+    end
+    logger.debug("record_view_param:- @view: #{@view}")
+    throw 'ah'
+  end
+
+
+  def apply_view_mode
+    Rails.logger.debug("apply_view_mode:    params['query_target']: #{params['query_target']}")
+    return unless ['loader names'].include?(params["query_target"].downcase)
+
+    Rails.logger.debug('apply_view_mode is continuing')
+    Rails.logger.debug("apply_view_mode:    @view_mode: #{@view_mode}")
+    if @view_mode == 'review'
+      @view = 'review'
+    else
+      @view = 'standard'
+    end
+    Rails.logger.debug("apply_view_mode:    @view: #{@view}")
   end
 end
 

@@ -82,3 +82,5 @@ gem "rack", ">= 2.2.3"
 gem "simple_calendar", "~> 2.0"
 
 gem "addressable", ">= 2.8.0"
+
+gem 'simplecov', require: false, group: :test

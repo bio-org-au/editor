@@ -9,13 +9,22 @@
                           query_target: 'loader names'),
                title:"Query loader names",class:'blue')} %>
 
-<%= render partial: 'detail_line',
-      locals: {info: @loader_batch.batch_reviews.size,
-               label: link_to('Batch Reviews',
-                        search_path(
-                          query_string: "batch-id: #{@loader_batch.id}",
-                          query_target: 'batch reviews'),
-               title:"Query batch reviews",class:'blue')} %>
+<% if @view_mode == 'standard' %>
+
+  <% if  @loader_batch.batch_reviews.empty? %>
+    <%= render partial: 'detail_line', locals: {info: '',
+                                                label:'No batch reviews'} %>
+  <% else %>
+  <%= render partial: 'detail_line',
+        locals: {info: @loader_batch.batch_reviews.size,
+                 label: link_to('Batch Reviews',
+                          search_path(
+                            query_string: "batch-id: #{@loader_batch.id}",
+                            query_target: 'batch reviews'),
+                 title:"Query batch reviews",class:'blue')} %>
+  <% end %>
+
+<% end %>
 
 
 <%= divider %>

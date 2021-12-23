@@ -1,0 +1,46 @@
+<% increment_tab_index(0) %>
+
+<% if session[:default_loader_batch_id].present? %>
+  <%= session[:default_loader_batch_name] %> is the default batch for queries.
+  <br>
+  <br>
+  <% unless session[:default_loader_batch_id].to_i == @loader_batch.id %>
+  <%= link_to("Set #{@loader_batch.name} as the default batch for queries",
+              make_default_batch_path(@loader_batch.id),
+              {class: 'blue', 
+               title: 'Make this the default batch for queries', 
+               method: :post, 
+               remote: true}) %>
+  <% end %>
+  <br>
+  <br>
+  <%= link_to("Clear the default batch",clear_default_batch_path,{class: 'blue', title: 'Clear out the default batch for queries', method: :post, remote: true}) %>
+<% else %>
+  There is no default batch.  Loader Name queries can be for any batch.
+  <br>
+  <br>
+  <%= link_to("Set #{@loader_batch.name} as the default batch for queries",
+              make_default_batch_path(@loader_batch.id),
+              {class: 'blue', 
+               title: 'Make this the default batch for queries', 
+               method: :post, 
+               remote: true}) %>
+<% end %>
+<br>
+<%= divider %>
+Setting a default batch doesn't alter the batch in any way,
+  <br>
+it simply makes it the default batch for queries.
+  <br>
+<br>
+  Queries for data in the batch loader system will be restricted to this batch if it's the default.
+  <br>
+  For example, queries for Loader Names will assume the default batch.
+<br>
+<br>
+<br>
+
+
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>

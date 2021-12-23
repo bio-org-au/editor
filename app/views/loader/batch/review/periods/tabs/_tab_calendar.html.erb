@@ -1,0 +1,9 @@
+<% increment_tab_index(0) %>
+<div id="review-calendar">
+  <% params[:start_date] = @review_period.start_date %>
+  <%= render partial: 'loader/batch/review/periods/tabs/calendar' %>
+
+</div>
+
+<%= divider %>
+

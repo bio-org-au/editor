@@ -1,3 +1,98 @@
+<% if search_result.has_parent? %>
+  <span class="has-parent">
+    <% case search_result.record_type %>
+    <% when 'accepted' %>
+      wat?
+    <% when 'synonym' %>
+      &mdash;&nbsp;
+    <% when 'misapplied' %>
+      ^^&nbsp;
+    <% when 'hybrid_cross' %>
+      //&nbsp;
+    <% end %>
+  </span>
+<% end %>
+<span class='<%= "#{search_result.record_type}-scientific-name" %>'>
 <%= "#{search_result.scientific_name}" %>
+</span>
+| <%= search_result.matches.size %>m
+<% if search_result.loader_name_match.blank? %>
+  <% case search_result.matches.size %>
+  <% when 0 %>
+    <span class="flag no-matches">No Matches</span>
+  <% when 1 %>
+    <% if search_result.name_match_no_primary? %>
+      <span class="flag no-primary">No Primary</span>
+    <% end %>
+  <% else %>
+    <span class="flag too-many-matches">Too many matches</span>
+    <% if search_result.name_match_no_primary? %>
+      <span class="flag no-primary">No Primary</span>
+    <% end %>
+  <% end %>
+  <% if search_result.isonym? %>
+    <span class="flag isonym">Isonym</span>
+  <% end %>
+  <% if search_result.orth_var? %>
+    <span class="flag orth-var">Orth. Var.</span>
+  <% end %>
+<% else %>
+  <% if search_result.loader_name_match.first.manually_drafted? %>
+    <span class='flag on-tree-indicator'>manually drafted</span>
+  <% end %>
+  <% preferreds = search_result.loader_name_match.collect{|o| "#{o.name_id}/#{o.instance_id}" } %>
+  <span class="flag preferred-name"><%= preferreds.size %>p</span>
+  <% standalones = search_result.loader_name_match.select {|orcn| orcn.standalone_instance_id.present?} %>
+  <% if standalones.size > 0 %>
+    <span class="flag standalone-count"><%= "#{standalones.size}i" %></span>
+    <% if standalones.size > 1 %>
+      <span class="flag standalone-count"><%= "#{standalones.size}i too many!" %></span><%= search_result.id %>, <%= search_result.loader_name_match.size %>
+    <% else %>
+      <% if standalones.first.drafted? %>
+        <span class='flag on-tree-indicator'>drafted</span>
+      <% end %>
+      <% if @working_draft.present? && standalones.first.standalone_instance.in_workspace?(@working_draft) %>
+        <span class='flag on-tree-indicator'>current draft</span>
+      <% end %>
+    <% end %>
+  <% end %>
+  <% relationships = search_result.loader_name_match.select {|orcn| orcn.relationship_instance_id.present?} %>
+  <% if relationships.size > 0 %>
+    <span class="flag relationship-statement"><%= "#{relationships.size}c" %></span>
+  <% end %>
+ 
+
+
+  <% if search_result.isonym? %>
+    <span class="flag isonym-has-preferred-name">Isonym</span>
+  <% end %>
+  <% if search_result.orth_var? %>
+    <span class="flag orth-var-has-preferred-name">Orth. Var.</span>
+  <% end %>
+<% end %>
+
+<% case search_result.record_type %>
+<% when 'accepted' %>
+  <% if search_result.excluded? %>
+    <span class="flag misapplied">Excluded</span>
+  <% end %>
+<% when 'synonym' %>
+<% when 'misapplied' %>
+  <% if preferreds.blank? %>
+    <span class="flag misapplied">Misapplied</span>
+  <% end %>
+<% when 'hybrid_cross' %>
+  <% if preferreds.blank? %>
+    <span class="flag hybrid-cross">Hybrid Cross</span>
+  <% end %>
+<% end %>
+
+<% if search_result.exclude_from_further_processing? %>
+    <span class="flag exclude-from-further-processing">No further processing</span>
+<% end %>
+<% if search_result.try('parent').try('exclude_from_further_processing?') %>
+    <span class="flag exclude-from-further-processing">No further processing via parent</span>
+<% end %>
+
 
 

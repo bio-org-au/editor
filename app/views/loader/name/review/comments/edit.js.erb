@@ -1,0 +1,2 @@
+$('#comment-<%= @review_comment.id %>-display-container').html('');
+$('#comment-<%= @review_comment.id %>-edit-container').html('<%= escape_javascript(render partial: 'loader/name/review/comments/edit_form', locals: {name_review_comment: @review_comment, tab_focus: 'scope'}) %>');

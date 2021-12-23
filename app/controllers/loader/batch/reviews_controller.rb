@@ -25,8 +25,7 @@ class Loader::Batch::ReviewsController < ApplicationController
     set_tab
     set_tab_index
     if params[:tab] =~ /\Atab_periods\z/
-      @review_period = Loader::Batch::ReviewPeriod.new
-      #@review_period.review = @batch_review
+      @review_period = Loader::Batch::Review::Period.new
     end
     @take_focus = params[:take_focus] == 'true'
     render "show", layout: false

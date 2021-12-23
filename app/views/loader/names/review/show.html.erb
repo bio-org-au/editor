@@ -1,0 +1,27 @@
+<% component = params[:component] || 'main' %>
+<% display_component = component %>
+<% display_component = 'concept note' if component == 'taxonomy_comment' %>
+<div class="focus-details 
+  <% tab_tab_index = @tab_index %>
+  <% if notice %>
+    <p id="notice"><%= notice %></p>
+  <% end %>
+  <div class="inner">
+    <h3>
+      <%= link_to(@loader_name.scientific_name,
+                  search_path(query_target: 'loader_name', 
+                              query_string: "id:#{@loader_name.id}"),
+                  id: 'tab-heading',
+                  title: "Scientific Name") %>
+                  &mdash; <%= display_component.gsub(/_/,' ') %>
+    </h3>
+    <%= render partial: "loader/names/review/tabs/#{component}/all_tab_headings" %>
+    <%= render partial: "loader/names/review/tabs/#{component}/#{@tab}" %>
+    <br>
+    <span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
+
+  </div><!-- /end .inner -->
+</div><!-- /end .focus-details -->
+
+<br>
+

@@ -10,15 +10,30 @@
                       prev_tab: '.search-result.loader-batch-review-tab', 
                       next_tab: '.search-result.loader-batch-review-tab' } %> 
 
+  <% if @view_mode == 'standard' %>
+
   <%= render partial: 'loader/batches/tabs/tab',
              locals: {first: false,
-                      last: true,
+                      last: false,
                       this_tab: 'tab_batch_review', 
                       link_text: 'Review', 
                       link_id: 'loader-batch-review-tab', 
                       link_title: 'Create or edit batch reviews',
                       tab_index: @tab_index,
                       prev_tab: '.search-result.loader-batches-details-tab', 
+                      next_tab: '.search-result.loader-batch-settings-tab' } %> 
+  <% end %>
+
+  <%= render partial: 'loader/batches/tabs/tab',
+             locals: {first: false,
+                      last: true,
+                      this_tab: 'tab_settings', 
+                      link_text: 'Settings', 
+                      link_id: 'loader-batch-settings-tab', 
+                      link_title: 'Change settings for this batch',
+                      tab_index: @tab_index,
+                      prev_tab: '.search-result.loader-batch-review-tab', 
                       next_tab: '.search-result.loader-batches-details-tab' } %> 
 </ul>
+
 

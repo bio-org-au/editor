@@ -1,0 +1,532 @@
+\q
+update loader_name set excluded = true where unplaced = '1';
+update loader_name set excluded = true where unplaced is not null and not excluded;
+\q
+update loader_name set excluded = true where unplaced = '1';
+\q
+update loader_name set excluded = true where unplaced = '1';
+\q
+\d loader_name
+select loader_batch_id, doubtful, unplaced, count(*) from loader_name group by loader_batch_id, doubtful, unplaced ;
+select loader_batch_id, doubtful, unplaced, count(*) from loader_name group by loader_batch_id, doubtful, unplaced  order by 1,2 3;
+select loader_batch_id, doubtful, unplaced, count(*) from loader_name group by loader_batch_id, doubtful, unplaced  order by 1,2,3;
+select loader_batch_id, record_type, doubtful, unplaced, count(*) from loader_name group by loader_batch_id,record_type,  doubtful, unplaced  order by 1,2,3;
+select loader_batch_id, record_type, doubtful, unplaced, count(*) from loader_name group by loader_batch_id,record_type,  doubtful, unplaced  order by 1,2,3,4;
+\dt
+ \dt o*
+\d orchids_from_rex_csv 
+select doubtful, count(*) from orchids_from_rex_csv group by doubtful;
+update loader_name set excluded = true where unplaced = '1';
+update loader_name set excluded = true where loader_batch_id = (select id from loader_batch where name = 'Second Batch') and unplaced = '1';
+update loader_name set excluded = true where loader_batch_id = (select id from loader_batch where name = 'List 100') and unplaced = '1';
+\w set-excluded-list-100.sql
+update loader_name set excluded = true where loader_batch_id = (select id from loader_batch where name = 'Second Batch') and unplaced = '1';
+\w set-excluded-second-batch.sql
+\q
+\d name
+select simple_name, sort_name from name order by sort_name limit 100;
+\d name
+select simple_name, sort_name, name_path from name order by sort_name limit 100;
+\q
+\q
+\i creates.sql
+\dv
+\i create-views.sql 
+\dv
+\! ls -larth
+\i grants-webapni.sql 
+\i seeds.sql 
+\q
+\q
+alter database nsl_dev rename to nsl_dev_retired_17_nov_2021;
+alter database nsl_dev_retired_17_nov_2021 to nsl_dev;
+alter database nsl_dev_retired_17_nov_2021 rename to nsl_dev;
+\q
+\q
+\i creates.sql 
+\i create-views.sql 
+\i seeds.sql 
+\i grants-webapni.sql 
+\! ls -lart
+\i copy-raw-orchids-to-loader-name-2nd-batch.sql
+\d loader_name
+\i copy-raw-orchids-to-loader-name-2nd-batch.sql
+\i copy-raw-orchids-to-loader-name-2nd-batch.sql
+\i copy-raw-orchids-to-loader-name-2nd-batch.sql
+select count(*) from loader_name;
+select loader_batch_id, count(*) from loader_name group by loader_batch_id;
+begin;
+\i copy-raw-orchids-to-loader-name-2nd-batch.sql
+select loader_batch_id, count(*) from loader_name group by loader_batch_id;
+commit;
+\q
+select count(*) from instance where reference_id = 51415304;
+select count(*) from instance where reference_id = 51415304 and cited_by_id is null;
+select count(*) from instance where reference_id = 51415304 and cited_by_id is null and cites_id is null;
+\dv
+select count(*) from current_accepted_tree_version_vw where reference_id = 51415304 and cited_by_id is null and cites_id is null;
+select count(*) from instance where reference_id = 51415304 and cited_by_id is null and cites_id is null and exists (select null from current_accepted_tree_version_vw where instance_id = instance.id);
+select name_id from instance where reference_id = 51415304 and cited_by_id is null and cites_id is null and exists (select null from current_accepted_tree_version_vw where instance_id = instance.id);
+select name_id from instance join name on instance.name_id = name.id where reference_id = 51415304 and cited_by_id is null and cites_id is null and exists (select null from current_accepted_tree_version_vw where instance_id = instance.id);
+select simple_name, name_id from instance join name on instance.name_id = name.id where reference_id = 51415304 and cited_by_id is null and cites_id is null and exists (select null from current_accepted_tree_version_vw where instance_id = instance.id);
+select simple_name, name_id from instance join name on instance.name_id = name.id where reference_id = 51415304 and cited_by_id is null and cites_id is null and exists (select null from current_accepted_tree_version_vw where instance_id = instance.id) order by simple_name;
+\q
+begin;
+update instance_type set standalone = true where name = 'excluded name';
+commit;
+begin;
+update instance_type set deprecated = true where name = 'excluded name';
+commit;
+select name from instance_type where not standalone and not relationship order by name;
+select name, deprecated from instance_type where not standalone and not relationship order by name;
+select name, deprecated from instance_type where not standalone and not relationship and not deprecated order by name;
+\q
+select name, deprecated from instance_type where not standalone and not relationship and not deprecated order by name;
+select name, deprecated from instance_type join instance on instance.instance_type_id = instance.id where not standalone and not relationship and not deprecated group by name, deprecated order by name;
+select name, deprecated, count(*) from instance_type join instance on instance.instance_type_id = instance.id where not standalone and not relationship and not deprecated group by name, deprecated order by name;
+\q
+\q
+select count(*) from instance where cited_by_id is null and cites_id is null and reference_id = 51415304;
+select count(*) from instance i join name n on i.name_id = n.id where cited_by_id is null and cites_id is null and reference_id = 51415304;
+select count(*) from instance i join name n on i.name_id = n.id join name_rank r on n.name_rank_id = r.id where cited_by_id is null and cites_id is null and reference_id = 51415304;
+select count(*) from instance i join name n on i.name_id = n.id join name_rank r on n.name_rank_id = r.id join name_status s on n.name_status_id = s.id  where cited_by_id is null and cites_id is null and reference_id = 51415304;
+select count(*) from instance i join instance_type it on i.instance_type_id = it.id join name n on i.name_id = n.id join name_rank r on n.name_rank_id = r.id join name_status s on n.name_status_id = s.id  where cited_by_id is null and cites_id is null and reference_id = 51415304;
+\d instance
+select count(*) from instance i join instance_type it on i.instance_type_id = it.id join name n on i.name_id = n.id join name_rank r on n.name_rank_id = r.id join name_status s on n.name_status_id = s.id  where cited_by_id is null and cites_id is null and reference_id = 51415304;
+/w a-join-count.sql
+\! pwd
+select count(*) from instance i join instance_type it on i.instance_type_id = it.id join name n on i.name_id = n.id join name_rank r on n.name_rank_id = r.id join name_status s on n.name_status_id = s.id  where cited_by_id is null and cites_id is null and reference_id = 51415304;
+select count(*) from instance i join instance_type it on i.instance_type_id = it.id join name n on i.name_id = n.id join name_rank r on n.name_rank_id = r.id join name_status s on n.name_status_id = s.id  where cited_by_id is null and cites_id is null and reference_id = 51415304;
+\w a-join-count.sql
+\i b-join.sql 
+\i b-join.sql 
+\i b-join.sql 
+\i b-join.sql 
+\i d-view.sql 
+\i e-drop-view.sql 
+\q
+\q
+\i f-csv.sql 
+\q
+\i f-csv.sql 
+\dv
+\q
+\i creates.sql 
+\i create-views.sql 
+\i seeds.sql 
+\i grants-webapni.sql 
+\q
+\q
+select * from orchids_names orn where relationship_instance_id = 51357785;
+\q
+select * from instance_type where name = 'excluded'
+;
+\x
+select * from instance_type where name = 'excluded'
+;
+select name from instance_type order by name;
+select * from instance_type where name = 'excluded name'
+;
+select name from instance_type where not relationship and not standalone;
+\x
+select name from instance_type where not relationship and not standalone;
+vacuum full verbose analyze;
+begin;
+update name set verbatim_rank = 'greg was here';
+rollback;
+begin;
+update name set verbatim_rank = 'greg was here' where id = 91755;
+commit;
+select * from orchids_names orn where relationship_instance_id = 51357785;
+select * from orchids_names orn where instance_id = 51357785;
+\x
+select * from orchids_names orn where instance_id = 51357785;
+\i script.sql 
+rollback;
+select * from orchids_names orn where id = 7059 and instance_id = 51357785;
+\i script.sql 
+rollback;
+\q
+alter database nsl_dev rename to nsl_dev_retired_19_nov_2021;
+alter database nslprod rename to nsl_dev;
+\q
+\i script.sql 
+rollback;
+select * from orchids_names orn where id = 7059 and instance_id = 51357785;
+\x
+select * from orchids where id = 6364;
+\q
+select * from orchids_names orn where id = 7059 and instance_id = 51357785;
+select * from orchids_names orn where instance_id = 51357785;
+\x
+select * from orchids_names orn where instance_id = 51357785;
+select * from orchids_names orn where standalone_instance_id = 51357785;
+select * from orchids_names orn where relationship_instance_id = 51357785;
+select * from orchids_names orn where instance_id = 51412461;
+select * from orchids_names orn where relationship_instance_id = 51412461;
+select * from orchids_names orn where standalone_instance_id = 51412461;
+\q
+select count(*) from tree_version where id = (select current_tree_version_id from tree);
+\q
+\d tree
+\q
+select * from orchids_names orn where id = 7942 ;
+\x
+select * from orchids_names orn where id = 7942 ;
+\q
+\x
+select * from orchids_names orn where id = 7942 ;
+select * from orchids_names orn where id = 7944 ;
+\q
+select * from orchids_names orn where id = 7944 ;
+\x
+select * from orchids_names orn where id = 7944 ;
+begin;
+update orchids_names set instance_id = 51461666 where id = 7944;
+commit;
+\q
+\x
+select * from orchids_names where id = 7059;
+begin;
+update orchids_names set instance_id = 51461666 where id = 7059;
+commit;
+\q
+select * from orchids_names orn where id 1021;
+select * from orchids_names orn where id = 1021;
+\x
+select * from orchids_names orn where id = 1021;
+begin;
+delete from orchids_names where id = 1021;
+commit;
+\q
+\x
+select * from orchids_names orn where id = 1021;
+begin;
+delete from orchids_names where id = 1021;
+commit;
+\q
+\i creates.sql 
+\i create-views.sql 
+\i seeds.sql 
+\q
+\d loader_name
+select id, seq from loader_name order by 1, 2 limit 30
+;
+select id, seq, parent_id from loader_name order by 1, 2 limit 30
+;
+\q
+\i copy-raw-orchids-to-loader-name-2nd-batch.sql 
+\i bulk-update-loader-name-parent-id.sql 
+\q
+\q
+\i apply-changes.sql 
+\q
+insert into org (name,abbrev) values ('No Organisation - Unaffiliated','NONE');
+\q
+\d batch_reviewer
+\d org
+alter table ord add column deprecated not null defalt false;
+alter table ord add column deprecated boolean not null defalt false;
+alter table ord add column deprecated boolean not null default false;
+alter table org add column deprecated boolean not null default false;
+alter table org add column no_org boolean not null default false;
+update org set no_org true where abbrev ='NONE';
+update org set no_org= true where abbrev ='NONE';
+\q
+\d instance_type
+\q
+\d instance_type
+selecct name, citing, deprecated, misapplied, nomenclatural, primary_instance, pro_parte, protologue, relationship, secondary_instance, standalone, synonym, taxonomic, unsourced, bidirectional from instance_type order by name;
+select name, citing, deprecated, misapplied, nomenclatural, primary_instance, pro_parte, protologue, relationship, secondary_instance, standalone, synonym, taxonomic, unsourced, bidirectional from instance_type order by name;
+\w a.sql
+\i b.sql 
+\i b.sql 
+\i b.sql 
+\i b.sql 
+\i b.sql 
+\i c.sql 
+\i c.sql 
+\i c.sql 
+\i c.sql 
+k
+\i c.sql 
+\q
+\i c.sql 
+\i c.sql 
+\i c.sql 
+\q
+select count(*) from instance i join instance_type t on i.instance_type_id = t.id ;
+select count(*) from instance i join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' ;
+\q
+select count(*) from instance i join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' ;
+\q
+select count(*) from instance i join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' ;
+select count(*) from instance i join instance_type t on i.instance_type_id = t.id join name n on i.name_id = n.id where t.name = 'excluded name';
+select count(*) from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name';
+select count(*), (select count(*) from instance where name_id = n.id) from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name';
+select count(*), (select count(*) from instance where name_id = n.id) from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' group by n.id;
+select count(*), (select count(*) from instance where name_id = n.id) instance_count_for_name from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' group by n.id;
+select (select count(*) from instance where name_id = n.id) instance_count_for_name from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' group by n.id;
+select (select count(*) from instance where name_id = n.id) instance_count_for_name from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' group by n.id;
+select count(*) from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name';
+select count(*) from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' and 1 = (select count(*) from instance i2 where i2.name_id = n.id);
+select n.id from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' and 1 = (select count(*) from instance i2 where i2.name_id = n.id);
+select n.id, n.simple_name from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' and 1 = (select count(*) from instance i2 where i2.name_id = n.id);
+select n.id, n.simple_name from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' and 1 = (select count(*) from instance i2 where i2.name_id = n.id) order by n.simple_name;
+\w a.sql
+\q
+select n.id, n.simple_name from name n join instance i on n.id = i.name_id join instance_type t on i.instance_type_id = t.id where t.name = 'excluded name' and 1 = (select count(*) from instance i2 where i2.name_id = n.id) order by n.simple_name;
+\q
+select count(*) from instance where where_clause:" id in (select i.id
+from instance i 
+       join name n
+       on i.name_id = n.id 
+  where regexp_replace(lower(n.full_name),' orth. var. ',' ','g') = regexp_replace(lower(i.verbatim_name_string),' orth. var. ',' ','g'))"},
+"name-status:" => { where_clause:%Q[ id in (select i.id from instance i join name n on i.name_id = n.id join name_status ns on n.name_status_id = ns.id and lower(ns.name) = lower(?))]},
+"name-status-not:" => { where_clause:%Q[ id in (select i.id from instance i join name n on i.name_id = n.id join name_status ns on n.name_status_id = ns.id and lower(ns.name) != lower(?));
+\w a.sql
+\i a.sql
+\i a.sql
+\q
+\i a.sql
+\q
+\i b-update.sql 
+rollback;
+\i b-update.sql 
+rollback;
+\i a.sql 
+\i b-update.sql 
+commit;
+\q
+\i b-update.sql 
+rollback;
+\q
+\i apply-changes.sql 
+\q
+\d batch_reviewer
+select * from user;
+select * from users;
+select name from users;
+\d batch_reviewer
+insert into users (name, given_name,family_name) values ('rita','Rita','Reviewer');
+\d name_review_comment
+\d org
+select * from loader_name where exists (select null from name_review_comment nrc where nrc.loader_name_id = loader_name.id)
+;
+select created_by from loader_name where exists (select null from name_review_comment nrc where nrc.loader_name_id = loader_name.id)
+;
+select id from loader_name where exists (select null from name_review_comment nrc where nrc.loader_name_id = loader_name.id)
+;
+\d name_review_comment
+select id from loader_name where exists (select null from name_review_comment nrc where nrc.loader_name_id = loader_name.id)
+;
+select id from loader_name where exists (select null from name_review_comment nrc join batch_reviewer br on nrc.batch_reviewer_id = br.id where nrc.loader_name_id = loader_name.id)
+;
+select id from loader_name where exists (select null from name_review_comment nrc join batch_reviewer br on nrc.batch_reviewer_id = br.id  where nrc.loader_name_id = loader_name.id)
+;
+\d batch_reviewer
+select id from loader_name where exists (select null from name_review_comment nrc join batch_reviewer br on nrc.batch_reviewer_id = br.id join user u on br.user_id = u.id  where nrc.loader_name_id = loader_name.id)
+;
+\
+\d user
+select id from loader_name where exists (select null from name_review_comment nrc join batch_reviewer br on nrc.batch_reviewer_id = br.id join users u on br.user_id = u.id  where nrc.loader_name_id = loader_name.id)
+;
+select id from loader_name where exists (select null from name_review_comment nrc join batch_reviewer br on nrc.batch_reviewer_id = br.id join users u on br.user_id = u.id  where nrc.loader_name_id = loader_name.id and user.name = 'trev')
+;
+select id from loader_name where exists (select null from name_review_comment nrc join batch_reviewer br on nrc.batch_reviewer_id = br.id join users u on br.user_id = u.id  where nrc.loader_name_id = loader_name.id and u.name = 'trev')
+;
+select id from loader_name where exists (select null from name_review_comment nrc join batch_reviewer br on nrc.batch_reviewer_id = br.id join users u on br.user_id = u.id  where nrc.loader_name_id = loader_name.id and u.name = 'rita')
+;
+\d batch_reviewer
+\q
+\d loader_name
+\q
+\d instance
+\d reference
+\q
+\i b-update.sql 
+commit;
+\q
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\d reference
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+select substring('30 Sep. 1992', -4);
+select length('30 Sep. 1992');
+select length('30 Sep. 1992')-4;
+select substring('30 Sep. 1992',length('30 Sep. 1992')-4);
+select substring('Sep. 1992',length('Sep. 1992')-4);
+select substring('1992',length('1992')-4);
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+k
+\i b-first-instance.sql 
+\q
+\q
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+k
+\i b-first-instance.sql 
+\q
+\q
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\q
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i b-first-instance.sql 
+\i c-first-instance.sql 
+\i c-first-instance.sql 
+\i c-first-instance.sql 
+\d reference
+\i d-first-instance.sql 
+\i d-first-instance.sql 
+\i d-first-instance.sql 
+\i d-first-instance.sql 
+\i d-first-instance.sql 
+\i d-first-instance.sql 
+\i d-first-instance.sql 
+\q
+\i b-update.sql 
+commit;
+\q
+\i d-first-instance.sql 
+\q
+\d reference
+select iso_publication_date from reference where length(iso_publication_date) > 4;
+\q
+\i apply-changes.sql 
+select id, distribution from loader_name limit 30;
+\d loader_name
+\q
+\i d-first-instance.sql 
+\q
+alter user nsldev with LOGIN PASSWORD 'nsldev';
+\q
+\d loader_name
+\q
+\i apply-changes.sql 
+commit;
+\q
+\i b-update.sql 
+commit;
+\q
+\dt
+\! pwd
+\! ls
+\i create-table-loader-batch-raw-list-with-taxon-full.sql 
+\i create-table-loader-batch-raw-list-with-taxon-full.sql 
+\dt
+\! ls
+\i load-raw-data-list-with-taxon-full.sql 
+\dt
+drop table loader_batch_raw_list_with_taxon_full;
+\! ls
+\i create-table-loader-batch-raw-list-100-with-taxon-full.sql 
+\i load-raw-data-list-with-taxon-full.sql 
+select * from batch;
+\dt
+select * from loader_batch;
+\! ls
+\i insert-batch.sql 
+select * from loader_batch;
+\! ls
+\i load-raw-data-list-2019-with-taxon-full.sql 
+\dt
+drop table loader_batch_raw_list_100_with_taxon_full;
+\i create-table-loader-batch-raw-list-2019-with-taxon-full.sql 
+\dt
+\i load-raw-data-list-2019-with-taxon-full.sql 
+which dos2unix
+\q
+\i load-raw-data-list-2019-with-taxon-full.sql 
+\! pwd
+\! ls
+\q
+\i load-raw-data-list-2019-with-taxon-full.sql 
+\q
+select * from loader_batch;
+\d loader_name
+alter table loader name add simple_name text not null, full_name text not null;
+alter table loader_name add simple_name text not null, full_name text not null;
+alter table loader_name add simple_name text not null default 'not-supplied-on-load', full_name text not null default 'not-supplied-on-load';
+alter table loader_name add column simple_name text not null default 'not-supplied-on-load';
+alter table loader_name add column full_name text not null default 'not-supplied-on-load';
+\i copy-raw-to-loader-name.sql 
+\d loader_name
+\i copy-raw-to-loader-name.sql 
+\i copy-raw-to-loader-name.sql 
+\dt
+\i copy-raw-to-loader-name.sql 
+\d loader_name
+\dt load*
+\dt loader_batch_raw_list_2019_with_taxon_full
+\d loader_batch_raw_list_2019_with_taxon_full
+\i copy-raw-to-loader-name.sql 
+\i copy-raw-to-loader-name.sql 
+\i copy-raw-to-loader-name.sql 
+select count(*) from loader_batch_raw_list_2019_with_taxon_full;
+select count(*) from loader_name;
+\i copy-raw-to-loader-name.sql 
+select 15025 + 8127;
+select count(*) from loader_name;
+\q
+\i bulk-update-loader-name-parent-id.sql 
+\q
+selct name from loader_batch;
+select name from loader_batch;
+\i bulk-update-loader-name-parent-id.sql 
+\q
+\i running-sheet.sql 
+\q
+select * from loader_batch;
+\dt
+\i running-sheet.sql 
+\q
+\dt
+select count(*) from loader_batch_raw_list_2019_with_taxon_full where original_text is null;
+select count(*) from loader_batch_raw_list_2019_with_taxon_full where original_text is not null;
+\q
+\i running-sheet.sql 
+\i running-sheet.sql 
+select * from loader_batch;
+\i running-sheet.sql 
+\q
+\i running-sheet.sql 
+\q
+\dt
+select * from batch;
+select * from loader_batch;
+select * from batch_review;
+select * from batch_review_period;
+update batch_review_period
+set start_date = start_date-5 where id = 51485269;
+update batch_review_period
+set end_date = start_date+2 where id = 51485269;
+\s lOader_name

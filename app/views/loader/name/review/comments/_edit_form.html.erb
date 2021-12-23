@@ -1,0 +1,24 @@
+
+<br>
+    <%= form_with model: name_review_comment, url: 'name_review_comments', method: :patch do |form| %>
+
+      <%= form.hidden_field :id %>
+      <%= form.hidden_field :batch_reviewer_id %>
+      <%= form.hidden_field :loader_name_id %>
+      <%= form.hidden_field :review_period_id %>
+      Type*:<br>
+      <%= form.collection_select :name_review_comment_type_id, 
+        Loader::Name::Review::Comment::Type.for(name_review_comment.type.name, @current_user.compiler?).order(:name),
+        :id,
+        :name,
+        {},
+        class: 'form-control',
+        title: 'Type or topic of the comment' %> 
+
+      Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", required: true, tabindex: increment_tab_index %>
+      <%= form.submit id: "save-new-batch-review-comment-btn", class: 'btn btn-primary', title: "Save comment", tabindex: increment_tab_index %>
+      
+      <%= link_to 'Cancel', cancel_edit_name_review_comment_path(@review_comment.id), remote: true, class: 'btn btn-primary', title: 'Cancel the edit - remove the editing fields.' %>
+      <br>
+  <% end %>
+

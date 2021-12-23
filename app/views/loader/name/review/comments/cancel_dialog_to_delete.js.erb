@@ -1,0 +1,1 @@
+$("#comment-<%= @review_comment.id %>-delete-widgets-container").html('<%= escape_javascript(render partial: 'loader/names/review/tabs/common/delete_dialog_button', locals: {comment: @review_comment}) %>');

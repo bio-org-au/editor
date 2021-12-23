@@ -25,7 +25,12 @@ class Loader::NamesController < ApplicationController
     set_tab
     set_tab_index
     @take_focus = params[:take_focus] == 'true'
-    render "show", layout: false
+    new_comment if params[:tab] =~ /\Atab_review\z/
+    if @view_mode == 'review' then
+      render "loader/names/review/show", layout: false
+    else
+      render "show", layout: false
+    end
   end
 
   alias tab show
@@ -61,5 +66,28 @@ class Loader::NamesController < ApplicationController
 
   def set_tab_index
     @tab_index = (params[:tabIndex] || "1").to_i
+  end
+
+  def new_comment
+    if reviewer?
+      @name_review_comment = @loader_name.name_review_comments.new(
+        batch_reviewer_id: reviewer.id,
+        loader_name_id: @loader_name.id,
+        review_period_id: period.id)
+    else
+      nil
+    end
+  end
+
+  def period
+    @loader_name.batch.reviews&.first&.periods&.first
+  end
+
+  def reviewer?
+    @loader_name.batch.reviews&.first&.periods&.first&.reviewers&.collect {|x| x.user.userid}&.include?(@current_user.username)
+  end
+  
+  def reviewer
+    @loader_name.batch.reviews&.first&.periods&.first.reviewers.select {|x| x.user.userid == @current_user.username}&.first
   end
 end

@@ -133,7 +133,7 @@ span#set-include-common-and-cultivar:hover,
 span#set-include-common-and-cultivar:hover a,
 ul.navbar-nav li a.dropdown-toggle:hover,
 ul.navbar-nav li a.dropdown-toggle:focus {
-  color: lightgray;
+  color: black;
   background: white;
 }
 

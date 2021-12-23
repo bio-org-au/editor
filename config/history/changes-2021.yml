@@ -1,7 +1,132 @@
+- :date: 22-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: in review mode hide the batch-review tab and the details link to batch reviews - neither are needed or appropriate in review-mode
+- :date: 21-Dec-2021
+  :jira_id: '4092'
+  :description: |-
+    More consistent hiding/showing of the Common/Cultivars switch, also more consistent color styling of the top-LHS brand box e.g. when showing help pages or history pages.
+- :date: 21-Dec-2021
+  :jira_id: '4080'
+  :description: |-
+    Faster version of the earliest-instance-not-primary Names report (which is timing out) - called earliest-instance-not-primary-faster.
+- :date: 21-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: reviewers are now not offered the menu option to switch out of review mode.
+- :date: 20-Dec-2021
+  :jira_id: '4097'
+  :description: |-
+    Rails software upgrade for security - requires general workflow testing.
+- :date: 20-Dec-2021
+  :jira_id: '4092'
+  :description: |-
+    Show the Common/Cultivars checkbox only when relevant
+- :date: 17-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: upgraded major review searches to return full-context of name and synonyms
+- :date: 17-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: make name reviewer the default role when adding a reviewer to a period
+- :date: 17-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: loader name search results now show all synonyms for the last name in the results (applies only to searches that return full-context)
+- :date: 17-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: users who switch to review mode now see the same list of search targets as users who are always in review mode.
+- :date: 16-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Move the Review Mode switch from the Draft Taxonomy menu to the User menu, and remove the Review Menu (not used)
+- :date: 16-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Hide review-mode switch unless app is configured batch-loader aware
+- :date: 16-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Adjust query example for remark search 
+- :date: 15-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Eradicate 'taxonomy-comment' from visible text; reviewer not offered 'compiler-comment'.
+- :date: 15-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Loader Name show record in context link.
+- :date: 15-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: first set of changes arising from yesterday's review
+- :date: 14-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: allow for a configured tag to customize the page title
+- :date: 13-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: name status now appears directly after the full name in review mode
+- :date: 08-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: comments easier to pick out and read in the tab; technical work on view-mode.
+- :date: 08-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: comment counts and remarks on main entries; users can edit/delete their own comments; compilers can comment; new queries; adjustments
 - :date: 03-Dec-2021
   :jira_id: '4091'
   :description: |-
-    Restore common-and-cultivar toggle
+    Restore common-and-cultivar toggle (Moved to production same day, then back-fitted here.)
+- :date: 01-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: tabs now showing/hiding for all loader name records, including taxonomy-comments and distribution
+- :date: 29-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: review mode styling of loader names to allow easy scanning without drilling into details; view mode switchable for compilers
+- :date: 26-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Further refinement of the view for taxonomy reviewers.
+- :date: 24-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Work-in-progress on new view for taxonomy reviewers.
+- :date: 23-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Minor fixes and improvements.
+- :date: 23-Nov-2021
+  :jira_id: ''
+  :description: |-
+    General software update
+- :date: 23-Nov-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Next phase of work since last week's walk-through, including adding and removing batch reviewers, and much more.
+- :date: 16-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: Add several orchid loader features for loader names; add search infrastructure for users, organisations, and batch reviewers.
+- :date: 15-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: Users, organisations, review periods, reviewers. A reviewer can comment on a loader name.
+- :date: 08-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: Batch Reviewer now has basic query, list, display.
+- :date: 07-Nov-2021
+  :jira_id: '4043'
+  :description: |-
+    Batch Loader: more components and links for the loader batch system, including orgs and batch review roles; some search refactoring.
+>>>>>>> master
 - :date: 06-Nov-2021
   :release: true
 - :date: 05-Nov-2021

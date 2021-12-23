@@ -1,0 +1,31 @@
+
+<%= form_tag(search_path, method: :get, id: "search-form", class: 'form-inline')  do -%>
+
+<div class="row">
+  <div class="col-xs-11 col-sm-12 col-md-11 col-lg-11">
+
+    <div id="search-field-and-buttons-container" class="flex-container input-group">
+
+      <%= render partial: 'search/review/search_target' %>
+ 
+      <input id="query-string-field" 
+             name="query_string" 
+             type="search" 
+             class="xform-control"
+             aria-label="search field"
+             tabindex = "8"
+             placeholder = "Search terms"
+             autofocus = "<%= @autofocus_search %>"
+             title = "Specify your search"
+             value = "<%= @search.parsed_request.query_string if @search.present? %>"
+             required
+             >
+    <input id="query-submit" name="query_submit" value="Search" type="submit" class="btn search-btn" tabindex="9" title="Run the query">
+    </div><!-- /input-group -->
+    <input id="focus-id" name="focus-id" value="<%= @focus_id %>" type="hidden" class="" title="focus id">
+  </div><!-- /.col-lg-9 -->
+</div><!-- /row -->
+
+  <input id="query-target" name="query_target" value="<%= @search.parsed_request.target_button_text %>" type="hidden" >
+
+<% end %>

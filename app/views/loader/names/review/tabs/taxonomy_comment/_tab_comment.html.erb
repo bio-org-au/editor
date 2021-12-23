@@ -1,0 +1,29 @@
+<% increment_tab_index(0) %>
+
+<%= @loader_name.batch.name %>
+<br>
+
+<%= divider %>
+<% if @loader_name.batch.reviews.empty? %>
+  No review in place for this batch of records.
+<% else %>
+  <% if @loader_name.batch.active_reviews? %>
+    <%= render partial: 'loader/names/review/tabs/taxonomy_comment/details/periods' %>
+
+  <% else %>
+    There are no active reviews for this record.
+  <% end %>
+<% end %>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+
+
+<br>
+<br>
+<b>
+Note:
+</b>
+It isn't necessary to comment - absence of a comment indicates acceptance.
+
+

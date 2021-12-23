@@ -20,6 +20,7 @@
              value = "<%= @search.parsed_request.query_string if @search.present? %>"
              required
              >
+
     <input id="query-submit" name="query_submit" value="Search" type="submit" class="btn search-btn" tabindex="9" title="Run the query">
     </div><!-- /input-group -->
     <input id="focus-id" name="focus-id" value="<%= @focus_id %>" type="hidden" class="" title="focus id">

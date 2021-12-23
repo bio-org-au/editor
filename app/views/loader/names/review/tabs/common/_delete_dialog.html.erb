@@ -1,0 +1,24 @@
+
+
+       <%= link_to 'Delete...',
+          dialog_to_delete_name_review_comment_path(comment.id),
+          method: :delete,
+          disabled: true,
+          remote: true,
+          class: 'btn btn-warning pull-right',
+          title: 'Prepare to delete this comment' %>
+
+
+        <%= link_to 'Cancel delete',
+          cancel_dialog_to_delete_name_review_comment_path(comment.id),
+          method: :get,
+          remote: true,
+          class: 'btn btn-default pull-right',
+          title: 'Cancel your intention to delete this comment' %>
+
+        <%= link_to 'Confirm delete',
+          delete_name_review_comment_path(comment.id),
+          method: :delete,
+          remote: true,
+          class: 'btn btn-danger pull-right',
+          title: 'Really delete the comment' %>

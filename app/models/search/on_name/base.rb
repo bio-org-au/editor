@@ -73,21 +73,21 @@ class Search::OnName::Base
     @limited = list_query.limited
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
-    consider_instances
+    include_instances
     @count = @results.size
     calculate_total
     @summary = build_summary
   end
 
-  def consider_instances
-    if @parsed_request.show_instances
-      show_instances
+  def include_instances
+    if @parsed_request.include_instances && @parsed_request.show_instances
+      @results = Search::OnName::WithInstances.new(@names).names_with_instances
     else
       @results = @names.to_a
     end
   end
 
-  def show_instances
+  def xshow_instances
     @results = []
     @names.each do |name|
       name.display_as_part_of_concept

@@ -1,0 +1,8 @@
+<% if @search.parsed_request.count %> 
+  <%= "#{pluralize(@search.executed_query.count,@search.parsed_request.target_table||'record')}" %>
+<% else %>
+  <%= render partial: 'search/search_result_summary/list' %>
+<% end %>
+&nbsp; | &nbsp;
+<%= render partial: 'search/search_result_summary/links' %>
+

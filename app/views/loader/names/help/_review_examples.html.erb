@@ -1,0 +1,114 @@
+<h4>Loader names search examples</h4>
+<div id="example-search-name" class="example-search-tab">
+<h5>All searches: </h5>
+<ul>
+<li>are case-insensitive, unless otherwise stated, and their
+<li>results are limited by default to the first 100 records - adjust that with the <code>limit:</code> directive.
+</ul>
+<h5>Loader names searches: </h5>
+<ul>
+<li>have the <code>default-batch:</code> directive added automatically if the default batch is set, and their
+<li>results are ordered by the <code>seq</code> (sequence) field, unless otherwise stated, and their
+</ul>
+<br>
+
+<h5 class="">Scientific Name Searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader names', search_string: "*",explanation: %Q(All names.)},
+      {search_target: 'Loader names', search_string: "a",explanation: %Q(All names starting with 'a'.)},
+      {search_target: 'Loader names', search_string: "xerot",explanation: %Q(All names starting with 'xerot'.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+
+<h5 class="">Review-related searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "has-review-comment:",explanation: %Q(List loader names with one or more review comments.)},
+      {search_target: 'Loader Names', search_string: "review-comment: authorship",explanation: %Q(List loader names with one or more review comments containing the string 'authorship'.)},
+      {search_target: 'Loader Names', search_string: "has-review-comment-by: #{@current_user.username}",explanation: %Q(List loader names with one or more review comments by the current user #{@current_user.username}.)},
+      {search_target: 'Loader Names', search_string: "xero has-review-comment:",explanation: %Q(List loader names that start with 'xero' with one or more review comments.)},
+      {search_target: 'Loader Names', search_string: "comment-type: distribution",explanation: %Q(List loader names that have a review comment of type 'distribution'.)},
+      {search_target: 'Loader Names', search_string: "remark: qld",explanation: %Q(List loader names that have a remark containing 'qld'.)},
+      {search_target: 'Loader Names', search_string: "concept-note: circumscription",explanation: %Q(List loader names that have a concept note containing 'circumscription'.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+
+<h5 class="">Distribution searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "distribution: wa",explanation: %Q(List loader names that have a distribution containing 'wa'.)},
+      {search_target: 'Loader Names', search_string: "distribution: sa (naturalised)",explanation: %Q(List loader names that have a distribution containing 'sa (naturalised)'.)},
+      {search_target: 'Loader Names', search_string: "distribution: tas (doubtfully naturalised)",explanation: %Q(List loader names that have a distribution containing 'tas (doubtfully naturalised)'.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Distribution-not searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "distribution-not: wa distribution-not: nsw distribution-not: qld",explanation: %Q(List loader names that have a distribution containing none of 'wa' or 'nsl' or 'qld'.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">No-Distribution searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader Names', search_string: "no-distribution: ",explanation: %Q(List loader names that have no distribution.)},
+      {search_target: 'Loader Names', search_string: "no-distribution: record-type: accepted ",explanation: %Q(List loader names that have no distribution but a record-type of accepted.)},
+      {search_target: 'Loader Names', search_string: "no-distribution: record-type: accepted excluded:",explanation: %Q(List loader names that have no distribution but a record-type of accepted and are excluded.)},
+      {search_target: 'Loader Names', search_string: "no-distribution: record-type: accepted not-excluded:",explanation: %Q(List loader names that have no distribution but a record-type of accepted but are not excluded.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+
+
+
+
+

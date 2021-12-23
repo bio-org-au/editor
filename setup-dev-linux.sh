@@ -105,6 +105,7 @@ yarn
   #echo "Installing bundler..."
   #gem install bundler -N || exit 1
 #fi
+gem install bundler -v 2.2.29 -N 
 gem install bundler -N 
 bundle install
 echo "<<< bootstrapped"

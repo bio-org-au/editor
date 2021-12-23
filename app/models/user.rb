@@ -19,7 +19,7 @@
 
 # User model.
 class User < ActiveType::Object
-  attr_accessor :username, :full_name, :groups
+ attr_accessor :username, :full_name, :groups
 
   validates :username, presence: true
   validates :full_name, presence: true
@@ -48,5 +48,13 @@ class User < ActiveType::Object
 
   def orchids_matcher?
     groups.include?("orchids-matcher")
+  end
+
+  def reviewer?
+    groups.include?("taxonomic-review")
+  end
+
+  def compiler?
+    groups.include?("treebuilder")
   end
 end

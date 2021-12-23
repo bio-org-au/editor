@@ -63,7 +63,7 @@ class SessionsController < ApplicationController
     @no_searchbar = true
     @no_search_result_details = true
     @no_advanced_search = true
-    @no_navigation = true
+    @no_menus = true
   end
 
   def set_up_session
