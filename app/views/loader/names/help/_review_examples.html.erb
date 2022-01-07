@@ -9,15 +9,34 @@
 <ul>
 <li>have the <code>default-batch:</code> directive added automatically if the default batch is set, and their
 <li>results are ordered by the <code>seq</code> (sequence) field, unless otherwise stated, and their
+<li>will sometimes return less records than the default or stipulated limit - this is because incomplete at the end of the list is discarded
 </ul>
 <br>
 
-<h5 class="">Scientific Name Searches</h5>
+<h5 class="">Simple Name Searches</h5>
 <table class="example-searches table table-striped">
   <% [
-      {search_target: 'Loader names', search_string: "*",explanation: %Q(All names.)},
+      {search_target: 'Loader names', search_string: "*",explanation: %Q(All names up to the default limit.)},
+      {search_target: 'Loader names', search_string: "* limit: 500",explanation: %Q(First 500 names.)},
       {search_target: 'Loader names', search_string: "a",explanation: %Q(All names starting with 'a'.)},
       {search_target: 'Loader names', search_string: "xerot",explanation: %Q(All names starting with 'xerot'.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>
+
+<h5 class="">Family Searches</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Loader names', search_string: "family: Adoxaceae",explanation: %Q(All members of Adoxaceae. (Note: choose a family in the batch))},
+      {search_target: 'Loader names', search_string: "family-id: 51485419",explanation: %Q(All members of family with ID 51485419. (Note: choose a family ID in the batch))},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">

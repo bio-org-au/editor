@@ -182,7 +182,8 @@ class Search::Loader::Name::FieldRule
       leading_wildcard: true,
       trailing_wildcard: true,
       order: "seq"},
-
+   "family:" => { where_clause: "(lower(family) like ?)"},
+   "family-id:" => { where_clause: "(lower(family) like (select lower(simple_name) from loader_name where id = ?))"},
     "record-type:" => { where_clause: " record_type = ?",
                                order: "seq"},
     "excluded:" => { where_clause: " excluded ",

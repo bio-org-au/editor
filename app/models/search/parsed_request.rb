@@ -127,7 +127,7 @@ class Search::ParsedRequest
     "orchids" => "name",
     "orchid_processing_logs" => " logged_at desc",
     "loader batch" => "name",
-    "loader name" => "scientific_name",
+    "loader name" => "seq",
     "batch review" => "name",
     "batch reviewer" => "id",
     "batch review period" => "name",

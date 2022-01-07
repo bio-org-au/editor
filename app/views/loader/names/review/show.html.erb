@@ -1,13 +1,13 @@
 <% component = params[:component] || 'main' %>
 <% display_component = component %>
 <% display_component = 'concept note' if component == 'taxonomy_comment' %>
-<div class="focus-details 
-  <% tab_tab_index = @tab_index %>
+<div class="focus-details">
   <% if notice %>
     <p id="notice"><%= notice %></p>
   <% end %>
+  <span id="switch-off-details-tab" class="details-toggle pull-right" title="Hide the details tab">&nbsp;<%= icon('window-close') %></span>
   <div class="inner">
-    <h3>
+    <h3 id='loader-name-details-heading'>
       <%= link_to(@loader_name.scientific_name,
                   search_path(query_target: 'loader_name', 
                               query_string: "id:#{@loader_name.id}"),
@@ -15,6 +15,7 @@
                   title: "Scientific Name") %>
                   &mdash; <%= display_component.gsub(/_/,' ') %>
     </h3>
+
     <%= render partial: "loader/names/review/tabs/#{component}/all_tab_headings" %>
     <%= render partial: "loader/names/review/tabs/#{component}/#{@tab}" %>
     <br>

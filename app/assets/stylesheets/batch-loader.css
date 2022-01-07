@@ -127,3 +127,9 @@ div.name-comment-display-container {
 
 div.name-comment-edit-container {
 }
+
+a.review-show-details-link:focus {
+  outline: none;
+  border-width: 0px;
+}
+

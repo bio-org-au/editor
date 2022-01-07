@@ -28,13 +28,21 @@
 <% end %>
 
 <%= render partial: 'detail_line',
-      locals: {info: @loader_name.batch.name,
-               label: link_to('Batch',
+      locals: {label: 'Batch',
+               info: link_to(@loader_name.batch.name,
                         search_path(
                           query_target: 'loader batch',
                           query_string: "id: #{@loader_name.batch.id}"),
                title:"Query the loader batch",class:'blue')} %>
-
+<%= render partial: 'detail_line', locals: {label: 'Rank', info: "#{@loader_name.rank}"} %>
+<%= render partial: 'detail_line',
+      locals: {label: 'Family',
+               info: link_to("#{@loader_name.family}",
+                        search_path(
+                          query_target: 'loader names',
+                          query_string: "family: #{@loader_name.family}"),
+               title:"Query the family",class:'blue')} %>
+<%= divider %>
 <%= render partial: 'detail_line', locals: {label: 'Loader Name ID', info: @loader_name.id} %>
 <%= created_by_whom_and_when(@loader_name).html_safe %>
 <br>
