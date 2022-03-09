@@ -5,6 +5,8 @@
   <% [
     {field: 'batch-id:', descr: "Search within a batch using its ID."},
     {field: 'batch-name:', descr: "Search within a batch using its name."},
+    {field: 'id:', descr: "Search by ID or IDs (comma separated)."},
+    {field: 'raw-id:', descr: "Search by raw-ID or raw-IDs (comma separated). Raw ID is the ID assigned in the original data - these can be duplicated across batches."},
     {field: 'has-review-comment:',
      descr: "Search for loader names that have been commented on."},
     {field: 'review-comment:',
@@ -23,6 +25,18 @@
      descr: "Search for loader names for a given family name."},
     {field: 'family-id:',
      descr: "Search for loader names for a given family ID."},
+    {field: 'simple-name:',
+     descr: "Search for loader names based on simple name."},
+    {field: 'simple-name-as-loaded:',
+     descr: "Search for loader names based on simple name as loaded - this field holds the unchanged value of simple name as loaded.  You can edit simple name, but this field retains the original value."},
+    {field: 'simple-name-not-like:',
+     descr: "Search for loader names based on simple name not matching the argument. Wildcards are added automatically."},
+    {field: 'remark:',
+     descr: "Search for loader names containing a remark to reviewers - wildcards are added automatically."},
+    {field: 'higher-rank-comment:',
+     descr: "Search for loader names containing a higher-rank-comment - wildcards are added automatically."},
+    {field: 'created-manually:',
+     descr: "Search for loader names that users created in the web interface - i.e. 'manually'. Abbreviations: <code>manually-created:</code>, <code>cm:</code>, <code>mc:</code>"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -39,3 +53,349 @@
   </tr>
   <% end %>
 </table>
+
+  <h4>Name Matching Directives</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'no-name-match:',
+     description: "no matching NSL name - checks the supplied name against name.simple_name (no authority) and name.full_name (has authority) for scientific names"},
+    {field_name: 'no-name-match-unscientific:',
+     description: "same as <code>no-name-match:</code>, but no requirement for the matching name to be <b>scientific</b> - so it allows for cultivars"},
+    {field_name: 'no-name-match-unaccent:',
+     description: "no matching NSL name - applies f_unaccent to normalise accented chars but only compares to name.simple_name (no authority)"},
+    {field_name: 'some-name-match:',
+     description: "checks supplied name against name simple_name or full_name for at least one matching NSL scientific name"},
+    {field_name: 'some-name-match-unscientific:',
+     description: "same as <code>some-name-match:</code> but matching names must be <b>unscientific</b> - this complements <code>no-name-match-unscientific</code> by showing you the matching cultivars etc"},
+    {field_name: 'many-name-match:',
+     description: "match loader names with more than 1 matching NSL name - compares on simple name and full_name of scientific names "},
+    {field_name: 'many-name-match-unaccent: Batch Name',
+     description: "match loader names with more than 1 matching NSL name - applies f_unaccent to normalise accented chars, checks name.simple_name only (for scientific names), and <b>needs the target batch name as an argument to give correct results</b>"},
+    {field_name: 'one-name-match:',
+     description: "match only on CSV data with exactly one matching NSL name"},
+    {field_name: 'name-match-eq:',
+     description: "match only on CSV data with a number of matching NSL names equal to the supplied number"},
+    {field_name: 'name-match-gt:',
+     description: "match only on CSV data with a number of matching NSL names greater than the supplied number"},
+    {field_name: 'name-match-gte:',
+     description: "match only on CSV data with a number of matching NSL names greater than or equal to the supplied number"},
+    {field_name: 'name-match-no-primary:',
+     description: "find Orchids with at least one matching name but no matching name with a primary instance"},
+    {field_name: 'taxon-sharing-name-id:',
+     description: "match only on CSV data orchid that shares a preferred name ID with at least one other CSV data orchid"},
+    {field_name: 'non-misapp-taxon-sharing-name-id:',
+     description: "any non-misapplied orchid that shares a preferred name ID match with at least one other non-misapplied orchid"},
+    {field_name: 'non-misapp-taxon-sharing-name-id-not-pp:',
+     description: "any non-misapplied orchid that shares a preferred name ID match with at least one other non-misapplied orchid, but excluding cases where all the relationships are partial"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>More from Orchids (not all tested as at 28 January 2022)</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: '',
+     description: "Default search is the simple-name: search"},
+    {field_name: 'acc:', description: "Abbreviation for accepted-with-syn:."},
+    {field_name: 'id:',
+     description: "search on the id from the CSV file"},
+    {field_name: 'ids:',
+     description: "search on CSV ids in comma-separated list"},
+    {field_name: 'syn-type:',
+     description: "search on the synonym type text field e.g. 'homotyp*'"},
+    {field_name: 'id-with-syn:',
+     description: "match on a single id from the CSV file, then show any associated synonyms"},
+    {field_name: 'has-parent:',
+     description: "match only if parent exists in the CSV file"},
+    {field_name: 'has-no-parent:',
+     description: "match only if no parent in the CSV file"},
+    {field_name: 'notes:',
+     description: "match on the notes field - case-insensitive, leading and trailing wildcards added automatically"},
+    {field_name: 'excluded-with-syn:',
+     description: "Matching 'accepted' taxa that are also doubtful, and any attached synonyms are returned; i.e. 'doubtful or excluded' taxa; case-insensitive, trailing wildcard added automatically."},
+    {field_name: 'exc:', description: "Abbreviation for excluded-with-syn:."},
+    {field_name: 'comment:',
+     description: "match on the comment field - case-insensitive, leading and trailing wildcards added automatically"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Rank Search Directives</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'rank:',
+     description: "match on the rank field - case-insensitive"},
+    {field_name: 'not-rank:',
+     description: "match on the rank field not matching the argument - case-insensitive"},
+    {field_name: 'no-rank:',
+     description: "no value in the rank field"},
+    {field_name: 'nsl-rank:',
+     description: "match on the nsl-rank field - case-insensitive"},
+    {field_name: 'not-nsl-rank:',
+     description: "match on the nsl-rank field not matching the argument - case-insensitive"},
+    {field_name: 'no-nsl-rank:',
+     description: "no value in the nsl-rank field"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Record Type Directives or Similar</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'is-accepted:',
+     description: "match only CSV data with record type 'accepted'"},
+    {field_name: 'is-syn:',
+     description: "match only CSV data with record type 'synonym'"},
+    {field_name: 'is-syn-but-no-syn-type:',
+     description: "match only CSV data with record type 'synonym' and no synonym type"},
+    {field_name: 'is-misapplied:',
+     description: "match only CSV data with record type 'misapplied'"},
+    {field_name: 'is-not-misapplied:',
+     description: "orchid data with a record type other than 'misapplied'"},
+    {field_name: 'is-isonym:',
+     description: "match records with any value in the isonym field"},
+    {field_name: 'is-orth-var:',
+     description: "match records with a name status value starting with 'orth'"},
+    {field_name: 'is-doubtful:',
+     description: "match records with a value in the doubtful column"},
+    {field_name: 'is-not-doubtful:',
+     description: "match records with no value in the doubtful column"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+
+  <h4>Some More Interesting Directives</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'partly:',
+     description: "match only on CSV data where the partly field has any data in it, which is uniformly 'p.p.' - it's essentially a flag where p.p. means true"},
+    {field_name: 'not-partly:',
+     description: "match only on CSV data where the partly field has no data"},
+    {field_name: 'name-status:',
+     description: "match fragment on the name status field (leading and trailing wildcards added automatically)"},
+    {field_name: 'name-status-exact:',
+     description: "match fragment on the name status field (no wildcards added, but you can add them)"},
+    {field_name: 'name-status-empty-string:',
+     description: "orchids with an empty string in name status (these came about during early raw editing of orchid data when empty fields were mistakenly saved as empty strings)"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Helpful queries for checking processing progress</h4>
+  Use these alone for an overview, or in combination with other search directives.
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'has-preferred-name:',
+     description: "match only on CSV taxon data where the preferred name ID has been set"},
+    {field_name: 'has-no-preferred-name:',
+     description: "match only on CSV taxon data where the preferred name ID has NOT been set"},
+    {field_name: 'has-preferred-name-without-instance:',
+     description: "match only on CSV taxon data where the preferred name ID has been set but no instance has been created or found"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Hybrid-related queries</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'original-text-has-×:',
+     description: "original text includes a cross symbol"},
+    {field_name: 'original-text-has-x:',
+     description: "original text includes a cross symbol (directive has an ex character)"},
+    {field_name: 'hybrid-flag:',
+     description: "matches on the hybrid_flag field, which holds values like hybrid, intergrade, MsoNormal"},
+    {field_name: 'is-hybrid:',
+     description: "matches on the hybrid_flag field, checks for value of hybrid"},
+    {field_name: 'is-intergrade:',
+     description: "matches on the hybrid_flag field, checks for value of intergrade"},
+    {field_name: 'is-mso-normal:',
+     description: "matches on the hybrid_flag field, checks for value of MsoNormal"},
+    {field_name: 'no-hybrid-flag:',
+     description: "hybrid_flag has no value"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Processing queries</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'no-further-processing:',
+     description: "search for records flagged to stop further bulk processing"},
+    {field_name: 'in-current-taxonomy:',
+     description: "search for 'accepted' orchids matched to a name which is listed in the current accepted taxonomy"},
+    {field_name: 'not-in-current-taxonomy:',
+     description: "search for 'accepted' orchids NOT matched to a name which is listed in the current accepted taxonomy"},
+    {field_name: 'drafted:',
+     description: "search for orchids matched to a name and flagged as drafted"},
+    {field_name: 'manually-drafted:',
+     description: "search for orchids matched to a name and flagged as manually drafted"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Status page queries</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'misapp-matched-without-cross-ref:',
+     description: "misapplied orchids that have a preferred match but the preferred match has no cross-reference instance identified (NSL-3930)"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+  <h4>Metadata queries</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'created-by:',
+     description: "match on created by field"},
+    {field_name: 'updated-by:',
+     description: "match on updated by field"},
+    {field_name: 'not-created-by:',
+     description: "non-match on created by field"},
+    {field_name: 'not-created-by-batch:',
+     description: "records note created by batch"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+

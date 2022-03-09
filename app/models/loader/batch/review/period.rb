@@ -23,11 +23,14 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
+  validates :name, presence: true, uniqueness: {scope: :batch_review_id, message: 'has been used for another period in the same batch review'}
   validates :start_date, presence: true
   validate :start_date_cannot_be_in_the_past
+  validates :start_date, uniqueness: {scope: :batch_review_id, message: 'has been used for another period in the same batch review'}
   #validate :start_date_cannot_be_changed_once_past, on: :update
   validate :end_date_cannot_be_in_the_past
   validate :end_date_must_be_after_start_date
+  before_destroy :abort_if_review_periods
 
   belongs_to :batch_review,
              class_name: "Loader::Batch::Review",
@@ -48,11 +51,11 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   def loader_name_comments(loader_name_id, scope = 'unrestricted')
     return comments.order(:created_at).collect.select {|x| x.loader_name_id == loader_name_id} if scope == 'unrestricted'
 
-    comments.order(:created_at).collect.select {|x| x.loader_name_id == loader_name_id}.select {|x| x.type.name.downcase == scope.downcase}
+    comments.order(:created_at).collect.select {|x| x.loader_name_id == loader_name_id}.select {|x| x.context.downcase == scope.downcase}
   end
 
   def fresh?
-    created_at > 1.hour.ago
+    true #created_at > 1.hour.ago
   end
 
   def display_as
@@ -60,7 +63,7 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   end
 
   def allow_delete?
-    true
+    !(reviewers.exists? || name_comments.exists?)
   end
 
   def update_if_changed(params, username)
@@ -111,10 +114,6 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
         errors.add(:start_date, "can't be changed once the period has started")
       end
     end
-  end
-
-  def fresh?
-    false
   end
 
   def record_type
@@ -238,6 +237,14 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
 
   def finite?
     end_date.present?
+  end
+
+  private
+
+  def abort_if_review_periods
+    return unless reviewers.exists? || name_comments.exists?
+
+    throw 'Cannot delete period because it has reviewers or comments'
   end
 end
   

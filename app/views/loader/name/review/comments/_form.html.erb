@@ -4,6 +4,7 @@
       <%= form.hidden_field :batch_reviewer_id %>
       <%= form.hidden_field :loader_name_id %>
       <%= form.hidden_field :review_period_id %>
+      <%= form.hidden_field :context, value:  Loader::Name::Review::Comment.context_for(tab_focus) %>
       Type*:<br>
       <%= form.collection_select :name_review_comment_type_id, 
         Loader::Name::Review::Comment::Type.for(tab_focus, @current_user.compiler?).order(:name),
@@ -13,9 +14,11 @@
         class: 'form-control',
         title: 'Type or topic of the comment' %> 
 
-      Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", required: true, tabindex: increment_tab_index %>
+      <br>
+
+      Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", required: true, size: "60x10", tabindex: increment_tab_index %>
+      <br>
       <%= form.submit id: "save-new-batch-review-comment-btn", class: 'btn btn-primary', title: "Save comment", tabindex: increment_tab_index %>
-      
       <br>
   <% end %>
 

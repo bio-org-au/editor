@@ -1,0 +1,10 @@
+<% if params[:random_id].blank? %>
+  $('#search-result-details-info-message-container').html("<%= escape_javascript(@message||'Created') %>");
+  $('#loader-name-save').addClass('hidden');
+  $('#loader-name-cancel').addClass('hidden');
+<% else %>
+  $('tr#new-loader-name-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'application/search_results/loader_name_record', locals: {search_result: @loader_name, give_me_focus: true})) %>");
+  $('tr#search-result-<%= @loader_name.id %> td.takes-focus a.show-details-link').focus();
+<% end %>
+
+

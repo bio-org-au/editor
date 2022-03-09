@@ -297,6 +297,24 @@
 </table>
 <br>
 
+
+<h5>Quality Control Checks</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'possibly-malformed:', description: "search for names attached to a genus that don't start with the genus name - they might be malformed"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
 <%= render partial: 'comments/advanced_search/help' %>
 <%= render partial: 'help/id_search_help' %>
 <%= render partial: 'help/case_and_wildcards_search' %>

@@ -6,11 +6,16 @@
   <% end %>
   <div class="inner">
     <h3>
+  <i class="fa fa-calendar-alt"></i>
+  <i class="fa fa-user"></i>
+      &nbsp;
+
       <%= link_to(@batch_reviewer.full_name, 
                   search_path(query_target: 'batch_reviewers', 
                               query_string: "id:#{@batch_reviewer.id}"),
                   id: 'tab-heading',
                   title: "Query this batch reviewers record") %>
+                batch reviewer
     </h3>
     <%= render partial: 'loader/batch/reviewers/tabs/all_tab_headings' %>
     <%= render partial: "loader/batch/reviewers/tabs/#{@tab}" %>

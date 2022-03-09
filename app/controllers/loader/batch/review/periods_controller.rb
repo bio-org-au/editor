@@ -81,7 +81,11 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
   end
 
   def destroy
-    @batch_review.destroy
+    @review_period.destroy!
+  rescue => e
+    logger.error("Loader::Batch::Review::Period.destroy:rescuing exception #{e}")
+    @error = e.to_s
+    render "destroy_error", status: :unprocessable_entity
   end
 
   private
@@ -90,7 +94,7 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
     @review_period = Loader::Batch::Review::Period.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the batch review record."
-    redirect_to batch_review_periods_path
+    redirect_to review_periods_path
   end
 
   def review_period_params

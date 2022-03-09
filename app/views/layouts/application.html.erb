@@ -60,10 +60,11 @@ input[type="checkbox"]:not([title]) {
         data-active-loader-name-tab="tab_details"
         data-active-batch-review-tab="tab_details"
         data-active-review-period-tab="tab_details"
+        data-active-batch-reviewer-tab="tab_details"
         >
 
     <div id="screen-too-small-msg">Sorry.... your window is too small to show the editor.  It needs to be wider.</div>
-    <% if @view_mode == 'review' then %>
+    <% if @view_mode == ViewMode::REVIEW then %>
       <%= render partial: 'search/review/top_navbar' %>
     <% else %>
       <%= render partial: 'search/top_navbar' %>
@@ -73,7 +74,7 @@ input[type="checkbox"]:not([title]) {
 
     <% wide_details =  '' %>
     <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'orchids' %>
-    <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'loader names' && @view_mode == 'standard' %>
+    <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'loader names' && @view_mode == ViewMode::STANDARD %>
     <div id="search-result-details" class="hidden <%= wide_details %>"> </div>
 
 
@@ -103,6 +104,9 @@ input[type="checkbox"]:not([title]) {
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
         </div>
         <div id="orchids-batch-panel-container"
+             class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
+        </div>
+        <div id="batch-loader-panel-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
         </div>
       </div>

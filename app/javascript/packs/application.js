@@ -39,6 +39,7 @@ require("typeaheads/for_reference/duplicate")
 require("typeaheads/for_name/workspace_parent_name")
 require("typeaheads/for_author/duplicate_of")
 require("typeaheads/for_orchids/parent")
+require("typeaheads/for_loader_name/parent")
 require("main")
 
 

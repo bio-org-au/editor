@@ -773,5 +773,17 @@ FROM
     on name.parent_id = parent.id
  where name.name_path != parent.name_path || '/' || name.name_element
  order by name.id)"
+'possibly-malformed:':
+  :where_clause: " name.id in (
+    select child.id
+      from name child
+           join name parent
+             on child.parent_id = parent.id
+     where parent.name_rank_id = (
+        select id
+          from name_rank r
+         where r.name = 'Genus'
+          )
+   and child.simple_name not like parent.simple_name || '%')"
 
 

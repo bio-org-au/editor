@@ -5,12 +5,4 @@
             class: "rebeccapurple",
             target: "_editor_to_apni",
             tabindex: increment_tab_index) if @name.instances.size > 0 %>
-<% if Rails.configuration.try(:show_new_search_link) %>
-  <%= link_to("New #{ShardConfig.name_space} #{icon('external-link-square')}".html_safe,
-              "#{Rails.configuration.try('search_address')}/name/#{@name.id}?search_form=names#name-#{@name.id}",
-              title: "New #{ShardConfig.name_space} search. Opens in another tab or window.",
-              class: "rebeccapurple",
-              target: "_editor_to_apni",
-              tabindex: increment_tab_index) if @name.instances.size > 0 %>
-<% end %>
 <br>

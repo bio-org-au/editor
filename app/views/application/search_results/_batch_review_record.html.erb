@@ -14,7 +14,7 @@
       class="show-details-link"
       tabindex="<%= increment_tab_index %>" 
       title="Batch review record. Select to show details."
-      id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
+      id="<%= %Q(batch-review-#{search_result.id}) %>">
       <%= render partial: 'application/search_results/link_texts/batch_review', locals: {search_result: search_result} %>
     </a>
   </td>

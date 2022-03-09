@@ -1,56 +1,25 @@
 
 <%= render partial: 'loader/names/tabs/details/core_data' %>
 <%= divider %>
+<%= render partial: 'loader/names/tabs/details/name_matches' %>
+<%= divider %>
 <%= render partial: 'loader/names/tabs/details/core_data_2' %>
-<br>
-<br>
 <%= divider %>
 
-<% if @loader_name.child? %>
-  <%= render partial: 'detail_line', 
-           locals: {info: link_to("Query parent (accepted name with synonyms)",
-                                  search_path(query_target: "loader names", query_string: "id-with-syn:#{@loader_name.parent_id}"),
-                                  title: 'See parent',
-                                  class: 'underline'), 
-                    label: ''} %>
-<% else %>
-  <%= render partial: 'detail_line', 
-    locals: {info: link_to("Show #{pluralize(@loader_name.children.size,'synonym')}",
-                                  search_path(query_target: "loader names", query_string: "id-with-syn:#{@loader_name.id}"),
-                                  title: 'See this record with synonyms',
-                                  class: 'underline'), 
-                    label: ''} %>
-<% end %>
-<br>
-<%= divider %>
-<b>Original Text (styled)</b>
-<br>
-<%= @loader_name.original_text&.html_safe %>
-<%= divider %>
+<h5>Metadata</h5>
+<%= render partial: 'detail_line', locals: {info: @loader_name.id, label: 'ID'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.raw_id, label: 'raw ID (from the CSV data)'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.seq, label: 'ordering position'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.record_type, label: 'record type'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.parent_id, label: 'parent_id'} unless @loader_name.parent_id.blank? %>
 <%= render partial: 'detail_line',
-      locals: {info: @loader_name.batch.name,
-               label: link_to('Batch',
+      locals: {label: 'batch',
+               info: link_to(@loader_name.batch.name,
                         search_path(
                           query_target: 'loader batch',
                           query_string: "id: #{@loader_name.batch.id}"),
                title:"Query the loader batch",class:'blue')} %>
-Loader Name #<%= @loader_name.id %> <br>
-Raw ID #<%= @loader_name.raw_id %><br>
-Seq #<%= @loader_name.seq %>
-<%= divider %>
 
-<h5>Metadata</h5>
 <%= created_by_whom_and_when(@loader_name).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@loader_name).html_safe %>
-<br>
-compiler view
-<%= divider %>
-<%= divider %>
-<%= divider %>
-
-
-<%#= render partial: 'orchids/tabs/tab_show_1_name_matches' %>
-<%= divider %>
-<%#= render partial: 'orchids/tabs/tab_show_1_more_info' %>
-<%= divider %>

@@ -70,17 +70,29 @@
       <% when 'Loader Batch' %>  
         <%= render partial: 'application/search_results/loader_batch_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
+      <% when 'Loader Batch in stack' %>  
+        <%= render partial: 'application/search_results/stack/loader_batch_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Loader Name' %>  
         <%= render partial: 'application/search_results/loader_name_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Batch Review' %>  
         <%= render partial: 'application/search_results/batch_review_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
+      <% when 'Batch Review in stack' %>  
+        <%= render partial: 'application/search_results/stack/batch_review_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Batch Reviewer' %>  
         <%= render partial: 'application/search_results/batch_reviewer_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
+      <% when 'Batch Reviewer in stack' %>  
+        <%= render partial: 'application/search_results/stack/batch_reviewer_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Review Period' %>  
         <%= render partial: 'application/search_results/review_period_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
+      <% when 'Review Period in stack' %>  
+        <%= render partial: 'application/search_results/stack/review_period_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'User' %>  
         <%= render partial: 'application/search_results/user_record', 
@@ -98,7 +110,7 @@
         <tr>
           <td class="width-1-percent"></td>
           <td class="min-with-40-percent width-50-percent max-width-60-percent">
-            <%= display_as %> is an unknown type of search result
+            <%= display_as %> is an unknown type of standard search result
           </td>
           <td class="width-5-perent filler"></td>
         </tr>

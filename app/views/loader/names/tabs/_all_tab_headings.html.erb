@@ -3,36 +3,66 @@
              locals: {first: true,
                       last: false,
                       this_tab: 'tab_details', 
-                      link_text: 'Details', 
+                      link_text: 'Details<br/>&nbsp;'.html_safe, 
                       link_id: 'loader-name-details-tab', 
                       link_title: 'View a summary',
                       tab_index: @tab_index,
-                      prev_tab: '.search-result.loader-names-review-tab', 
-                      next_tab: '.search-result.loader-names-rev-comm-tab' } %> 
+                      prev_tab: 'loader-names-details-tab', 
+                      next_tab: 'loader-names-details-tab' } %> 
 
-  <%= render partial: 'loader/names/tabs/tab',
-             locals: {first: false,
-                      last: false,
-                      this_tab: 'tab_review', 
-                      link_text: 'Review', 
-                      link_id: 'loader-name-review-tab', 
-                      link_title: 'Review this name',
-                      tab_index: @tab_index,
-                      prev_tab: '.search-result.loader-names-details-tab', 
-                      next_tab: '.search-result.loader-name-rev-comm-tab' } %> 
+  <% if can? 'loader/names', 'update' %>
 
-  <% unless @loader_name.batch.reviews.empty? %>
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_edit', 
+                                      link_text: 'Edit <br/> Raw'.html_safe, 
+                                      link_id: 'loader-name-edit-tab', 
+                                      link_title: 'Edit Loader Name.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-details-tab', 
+                                      next_tab: 'loader-name-edit-match-tab'} %> 
 
-  <%= render partial: 'loader/names/tabs/tab',
-             locals: {first: false,
-                      last: true,
-                      this_tab: 'tab_rev_comments', 
-                      link_text: 'Review Comments', 
-                      link_id: 'loader-name-rev-comments-tab', 
-                      link_title: 'Review comments already made',
-                      tab_index: @tab_index,
-                      prev_tab: '.search-result.loader-name-review-tab', 
-                      next_tab: '.search-result.loader-names-details-tab' } %> 
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_match_edit', 
+                                      link_text: 'Edit <br/> Match'.html_safe, 
+                                      link_id: 'loader-name-edit-match-tab', 
+                                      link_title: 'Edit Loader Name Match.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-edit-tab', 
+                                      next_tab: 'loader-name-delete-raw-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_delete_raw', 
+                                      link_text: 'Delete <br/> Raw'.html_safe, 
+                                      link_id: 'loader-name-delete-raw-tab', 
+                                      link_title: 'Delete raw loader name record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-edit-match-tab', 
+                                      next_tab: 'loader-name-create-syn-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_create_syn', 
+                                      link_text: 'Create <br/> Synonym'.html_safe, 
+                                      link_id: 'loader-name-create-syn-tab', 
+                                      link_title: 'Create loader name synonym record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-delete-raw-tab', 
+                                      next_tab: 'loader-name-create-misapp-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_create_misapp', 
+                                      link_text: 'Create <br/> Misapp'.html_safe, 
+                                      link_id: 'loader-name-create-misapp-tab', 
+                                      link_title: 'Create loader name misapplication record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-create-syn-tab', 
+                                      next_tab: 'loader-name-details-tab'} %> 
+
   <% end %>
+
 </ul>
 

@@ -1,0 +1,18 @@
+<div id="example-search-batch-reviewer" class="example-search-tab">
+<h4>Batch stack search examples</h4>
+<br>
+<h5 class="">Query Batches as a stack</h5>
+<table class="example-searches table table-striped">
+  <% [
+      {search_target: 'Batch Stacks', search_string: "*",explanation: %Q(All batches as stacks, limited by default to the first 100.)},
+      ].each do |val| %>
+  <tr>
+    <td class="width-30-percent">
+      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+    <td>
+      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
+    </td>
+  </tr>
+  <% end %>
+</table>

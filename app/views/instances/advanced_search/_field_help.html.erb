@@ -301,8 +301,8 @@ word "darwin" followed by a space, one or more other characters followed by "bar
     <th>Description</th>
   </tr>
   <% [
-         {field_name: 'rank:', description: "Name rank e.g. species.
-       Case-insensitive.  Allows wildcards, but not lists."},
+         {field_name: 'rank:', description: "Name rank e.g. species.  Case-insensitive.  Allows wildcards, but not lists."},
+         {field_name: 'name-type:', description: "Type of name the instance refers to.  Can take a single arguement with wildcards, or comma-separated multiples without wildcards. Case insensitive."},
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">

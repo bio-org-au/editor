@@ -4,7 +4,9 @@
     <p id="notice"><%= notice %></p>
   <% end %>
   <div class="inner">
-    <h3>
+    <h3 title="Loader Batch details">
+    <i class="fa fa-layer-group"></i>&nbsp;
+    Loader Batch
       <%= link_to(@loader_batch.name,
                   search_path(query_target: 'loader_batch', 
                               query_string: "id:#{@loader_batch.id}"),

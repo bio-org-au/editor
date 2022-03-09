@@ -14,7 +14,7 @@
       class="show-details-link"
       tabindex="<%= increment_tab_index %>" 
       title="Loader Batch record. Select to show details."
-      id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
+      id="<%= %Q(loader-batch-#{search_result.id}) %>">
       <%= render partial: 'application/search_results/link_texts/loader_batch', locals: {search_result: search_result} %>
     </a>
   </td>

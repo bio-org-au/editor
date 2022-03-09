@@ -160,15 +160,13 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    session[:view_mode] = 'standard'
-    @view_mode = session[:view_mode]
+    @view_mode = session[:view_mode] = ViewMode::STANDARD
     return unless defined? @current_user
 
     return if @current_user.edit?
 
     if @current_user.reviewer?
-      session[:view_mode] = 'review'
-      @view_mode = session[:view_mode]
+      @view_mode = session[:view_mode] = ViewMode::REVIEW
     end
   end
 end

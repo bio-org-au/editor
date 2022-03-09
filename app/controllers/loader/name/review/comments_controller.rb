@@ -38,12 +38,8 @@ class Loader::Name::Review::CommentsController < ApplicationController
   end
 
   def create
-    logger.debug('create')
-    logger.debug(review_comment_params.inspect)
     @review_comment = Loader::Name::Review::Comment.new(review_comment_params)
-    logger.debug('before save')
     @review_comment.save_with_username(current_user.username)
-    logger.debug('after save')
     render "create"
   rescue => e
     logger.error("Loader::Name::Review::Comment.create:rescuing exception #{e}")
@@ -102,7 +98,8 @@ class Loader::Name::Review::CommentsController < ApplicationController
                                                        :review_period_id,
                                                        :batch_reviewer_id,
                                                        :name_review_comment_type_id,
-                                                       :comment)
+                                                       :comment,
+                                                       :context)
   end
 
   def set_tab

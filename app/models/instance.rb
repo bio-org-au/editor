@@ -89,6 +89,22 @@ class Instance < ActiveRecord::Base
           name.full_name"))
   }
 
+  # doesn't require join on name, unlike the above
+  scope :ordered_by_page_only, lambda {
+    order(Arel.sql("Lpad(
+            Regexp_replace(
+              Regexp_replace(page, '[A-z. ]','','g'),
+            '[^0-9]*([0-9][0-9]*).*', '\\1')
+            ||
+            Regexp_replace(
+              Regexp_replace(
+                Regexp_replace(page, '.*-.*', '~'),
+              '[^~].*','0'),
+              '~','Z'),
+          12,'0'),
+          page"))
+  }
+
   scope :in_nested_instance_type_order, lambda {
     order(Arel.sql(
         "          case instance_type.name " \

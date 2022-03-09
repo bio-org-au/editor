@@ -21,7 +21,10 @@
          <span class="review-loader-name distribution"><%= @stored_distribution.html_safe %></span>
     </a>
       <% if @stored_result.reviewer_comments?('distribution') %>
-        <span class="has-loader-name-review-comments"><%= pluralize(@stored_result.reviewer_comments('distribution').size, 'comment') %></span>
+        <span class="reviewer-comment-tag"><%= pluralize(@stored_result.reviewer_comments('distribution').size, 'reviewer comment') %></span>
+      <% end %>
+      <% if @stored_result.compiler_comments?('distribution') %>
+        <span class="compiler-comment-tag"><%= pluralize(@stored_result.compiler_comments('distribution').size, 'compiler comment') %></span>
       <% end %>
   </td>
 </tr>

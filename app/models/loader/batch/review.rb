@@ -24,6 +24,7 @@ class Loader::Batch::Review < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
 
   validates :name, presence: true
+  before_destroy :abort_if_review_periods
 
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
   alias_attribute :batch, :loader_batch
@@ -41,11 +42,11 @@ class Loader::Batch::Review < ActiveRecord::Base
   end
 
   def allow_delete?
-    true
+    !review_periods.exists?
   end
 
   def active_periods
-    periods.where("start_date <= Now()").where("end_date is null or end_date >= Now()")
+    review_periods.where("start_date <= Now()").where("end_date is null or end_date >= Now()")
   end
 
   def update_if_changed(params, username)
@@ -57,5 +58,13 @@ class Loader::Batch::Review < ActiveRecord::Base
     else
       "No change"
     end
+  end
+
+  private 
+
+  def abort_if_review_periods
+    return unless review_periods.exists?
+
+    throw 'Review cannot be deleted because it has review periods'
   end
 end

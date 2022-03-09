@@ -20,6 +20,6 @@ class Search::Target
   attr_reader :target
 
   def initialize(view_mode)
-    @target = view_mode == 'review' ? 'Loader Batches' : 'Names'
+    @target = view_mode == ::ViewMode::REVIEW ? 'Loader Batches' : 'Names'
   end
 end

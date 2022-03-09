@@ -1,0 +1,33 @@
+<%= divider %>
+<h4>The Drafted Flags</h4>
+<% if @loader_name.accepted? %>
+  The drafted flags can apply to this record type.
+  <br>
+  <% if @loader_name.loader_name_matches.size == 0 %>
+    There's no saved match to a Name record, so no drafted flags are possible yet.
+  <% elsif @loader_name.loader_name_matches.size > 1 %>
+    There's multiple saved matches to Name records - this is unexpected and confusing. Please alert IBIS.
+  <% else %>
+    <% if @loader_name.loader_name_matches.first.drafted? %>
+      This loader-name is already drafted.
+    <% else %>
+      This loader-name is matched but not yet drafted.
+      <br>
+      <% if @loader_name.loader_name_matches.first.manually_drafted? %>
+        This loader-name is already manually drafted.
+        <%= form_with(model: @loader_name.loader_name_matches.first, as: 'loader-name-match', role: 'form', remote: true) do |f| %>
+          <%= f.hidden_field(:loader_name_id, value: @loader_name.loader_name_matches.first.id) %>
+          <%= f.submit "Remove the manually-drafted flag", id: 'save-loader-name-manually-drafted', tabindex: increment_tab_index, title: 'Whoops! Remove the flag.', class: 'btn btn-primary width-20em', disabled: false %>
+        <% end %>
+      <% else %>
+        <%= form_for(@loader_name.loader_name_matches.first, as: 'loader-name', role: 'form', remote: true) do |f| %>
+          <%= f.hidden_field(:loader_name_match_id, value: @loader_name.loader_name_matches.first.id) %>
+          <%= f.submit "Flag it as manually drafted", id: 'save-loader-name-manually-drafted', tabindex: increment_tab_index, title: 'Flag as manually drafted', class: 'btn btn-primary width-15em', disabled: false %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% else %>
+  The drafted flags are not relevant to this record type.
+<% end %>
+

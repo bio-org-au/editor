@@ -1,46 +1,72 @@
 <% increment_tab_index(0) %>
-<%= render partial: 'detail_line', locals: {info: @review_period.name, label: 'Name'} %>
+<%= render partial: 'detail_line', locals: {info: @review_period.name, label: 'review period name'} %>
 
 
 <%= render partial: 'detail_line',
-      locals: {info: @review_period.review.name,
-               label: link_to('Review',
+      locals: {label: 'review name',
+               info: link_to(@review_period.review.name,
                         search_path(
                           query_target: 'batch review',
                           query_string: "id: #{@review_period.batch_review.id}"),
                title:"Query the batch review",class:'blue')} %>
 
 <%= render partial: 'detail_line',
-           locals: {label: 'Start',
+           locals: {label: 'start date',
                     info: @review_period&.start_date&.strftime("%d-%b-%Y")} %>
 
 <%= render partial: 'detail_line',
-           locals: { label: 'End',
+           locals: { label: 'end date',
                      info: @review_period&.end_date&.strftime("%d-%b-%Y")} %>
 
 <%= render partial: 'detail_line',
-      locals: {info: @review_period.reviewers.size,
-               label: link_to('Reviewers',
+      locals: {label: 'reviewers',
+               info: link_to(@review_period.reviewers.size,
                         search_path(
                           query_target: 'batch_reviewers',
                           query_string: "period: #{@review_period.id}"),
                title:"Query the reviewers",class:'blue')} %>
 
 <%= render partial: 'detail_line',
-      locals: {info: @review_period.names_with_comments.size,
-               label: link_to('Names with Comments',
+      locals: {label: 'names with comments',
+               info: link_to(@review_period.names_with_comments.size,
                         search_path(
                           query_target: 'loader name',
                           query_string: "has-review-comment:"),
                title:"Query the reviewers",class:'blue')} %>
 
+<%= render partial: 'detail_line',
+    locals: {label: 'query the stack',
+             info: link_to("#{@review_period.review.batch.name} Stack",
+                          search_path(
+                            query_string: "batch-id: #{@review_period.review.batch.id}",
+                            query_target: 'batch stacks',
+                            focus_id: "review-period-#{@review_period.id}"),
+                 title:"Query the batch in stack format",class:'blue')} %>
+
+<%= render partial: 'detail_line',
+    locals: {label: 'query all stacks',
+             info: link_to("All Batch Stacks",
+                          search_path(
+                            query_string: "*",
+                            query_target: 'batch stacks',
+                            focus_id: "review-period-#{@review_period.id}"),
+                 title:"Query the batch stack",class:'blue')} %>
+
+<br>
 <%= divider %>
-
-
-<h5>Metadata</h5>
 Review Period #<%= @review_period.id %>
 <br>
+<h5>Metadata</h5>
 <%= created_by_whom_and_when(@review_period).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@review_period).html_safe %>
+<%= divider %>
 
+Review workflow:
+<ol>
+  <li/>Create batch review
+  <li/>Create batch review period with date range  
+  <li/>Add user batch reviewers  &nbsp; &nbsp;  <b> &lt;&lt; Next </b>
+  <li/>Review period starts
+  <li/>Review period ends
+</ol>

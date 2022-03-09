@@ -8,11 +8,11 @@
   <span id="switch-off-details-tab" class="details-toggle pull-right" title="Hide the details tab">&nbsp;<%= icon('window-close') %></span>
   <div class="inner">
     <h3 id='loader-name-details-heading'>
-      <%= link_to(@loader_name.scientific_name,
+      <%= link_to(@loader_name.simple_name,
                   search_path(query_target: 'loader_name', 
                               query_string: "id:#{@loader_name.id}"),
                   id: 'tab-heading',
-                  title: "Scientific Name") %>
+                  title: "Simple Name") %>
                   &mdash; <%= display_component.gsub(/_/,' ') %>
     </h3>
 

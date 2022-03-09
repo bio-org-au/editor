@@ -1,0 +1,55 @@
+<% increment_tab_index(0) %>
+
+<h4><%= pluralize(@loader_name.loader_name_matches.size,'Match') %> Chosen </h4>
+<ol>
+<% @loader_name.loader_name_matches.order('id').each do |loader_name_match| %>
+  <li>id: <%= loader_name_match.id %>
+  <li>instance: <%= loader_name_match.instance %>
+  <li>rel instance type id: <%= loader_name_match.relationship_instance_type_id %>
+  <li>name id: <%= loader_name_match.name_id %>
+    <ul>
+      <li><%= loader_name_match.name.full_name %></li>
+      <li><%= loader_name_match.instance.reference.citation %></li>
+      <li><%= loader_name_match.instance.page %></li>
+          <% if @loader_name.accepted? %>
+            (No instance type to edit for accepted names.)
+          <% else %>
+            <li><%= loader_name_match.instance.instance_type.name %></li>
+            <li><%= loader_name_match.instance_type.try('name') %></li>
+
+          <%= form_for(loader_name_match, as: 'loader_name_match', role: 'form', remote: true) do |f| %>
+
+            <%= f.select(:relationship_instance_type_id,
+               InstanceType.synonym_options, {include_blank: true},
+               {value: loader_name_match.relationship_instance_type_id, data: {update_url: instance_path},
+                class: 'form-control width-50-percent', title: 'Enter instance type',
+                required: true, tabindex: increment_tab_index})
+  %>
+
+            <%= f.submit "Change", id: "change-instance-type-#{loader_name_match.id}",
+              tabindex: increment_tab_index,
+              title: 'Change instance type',
+              class: 'bgdarkslateblue btn btn-primary width-6em' %>
+
+          <% end %>
+<% end %>
+
+    </ul>
+    <br>
+    <%= created_by_whom_and_when(loader_name_match).html_safe %>
+    <br>
+    <%= updated_by_whom_and_when(loader_name_match).html_safe %>
+  </li>
+  <br>
+<% end %>
+</ol>
+<%= render partial: 'loader/names/tabs/manually_drafted' %>
+<span id="search-result-details-info-message-container" class="message-container"></span>
+<span id="search-result-details-error-message-container" class="error-container"></span>
+<br>
+<% unless @loader_name.original_text.blank? %>
+  <%= divider %>
+  <h5>Original Text</h5>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.original_text, label: ''} %>
+  <br>
+<% end %>

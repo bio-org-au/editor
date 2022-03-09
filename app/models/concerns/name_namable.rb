@@ -79,6 +79,20 @@ module NameNamable
     save!(touch: false)
   rescue => e
     logger.error("set_names! exception: #{e}")
+    logger.error("set_names! retrying...")
+    retry_set_names!(names_json)
+  end
+
+  def retry_set_names!(names_json)
+    reload
+    self.full_name = names_json["result"]["fullName"]
+    self.full_name_html = names_json["result"]["fullMarkedUpName"]
+    self.simple_name = names_json["result"]["simpleName"]
+    self.simple_name_html = names_json["result"]["simpleMarkedUpName"]
+    self.sort_name = names_json["result"]["sortName"]
+    save!(touch: false)
+  rescue => e
+    logger.error("retry_set_names! exception: #{e}")
     raise
   end
 end

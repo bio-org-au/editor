@@ -27,11 +27,7 @@ $(document).on('turbolinks:load', function() {
     $('#query').focus();
   });
 
-  // Simulate clicking on and giving focus to the designated thing
-  // e.g. the first row of search results
-  // Tried these in coffee script without success
-  // $('td.text.give-me-focus').click();
-  $('td.text.give-me-focus').focus();
+  $('tr.search-result > td.text.give-me-focus').focus();
 
   $('#show-tabindexes').click(function (event) {
     showTabIndexes();

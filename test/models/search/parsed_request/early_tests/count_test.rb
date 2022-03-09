@@ -22,10 +22,10 @@ require "test_helper"
 class SearchParsedRequestCountTest < ActiveSupport::TestCase
   test "search parse query count" do
     query_string = "count"
-    params = ActiveSupport::HashWithIndifferentAccess.new(query_target: "name",
-                                                          canonical_query_target: "name",
-                                                          query_string:
-                                                          query_string)
+    params = ActiveSupport::HashWithIndifferentAccess
+      .new(query_target: "name",
+           canonical_query_target: "name",
+           query_string: query_string)
     parsed_request = Search::ParsedRequest.new(params)
     assert parsed_request.count, "This should be parsed as a count query."
     assert !parsed_request.list, "This should not be parsed as a list query."

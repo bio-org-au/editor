@@ -1,0 +1,26 @@
+
+
+<% a_hash.each do | key, value | %> 
+  <tr>
+    <td>
+        <%= key.to_s.gsub(/_/,' ').capitalize %>
+    </td>
+    <% if key =~ /search_string/ || key =~ /status/ || key =~ /name_category/ %>
+      <td  class="min-width-10em">
+
+    <% else %>
+      <td  class="numeric min-width-10em">
+    <% end %>
+
+    <% if value.class == Hash %>
+      <%= value[:count] %>
+      </td>
+      <td>
+      <%= value[:text] %>
+      </td>
+    <% else %>
+      <%= value %>
+    <% end %>
+    </td>
+  </tr>
+<% end %>

@@ -12,11 +12,14 @@
     <% end %>
   </span>
 <% end %>
-<span class='<%= "#{search_result.record_type}-scientific-name" %>'>
-<%= "#{search_result.scientific_name}" %>
+<span class='<%= "loader-name-simple-name" %>'>
+<%= "#{search_result.simple_name}" %>
 </span>
 | <%= search_result.matches.size %>m
-<% if search_result.loader_name_match.blank? %>
+  <% if search_result.created_manually? %>
+    <span class='flag bgdarkslateblue white'>manually created</span>
+  <% end %>
+<% if search_result.loader_name_matches.blank? %>
   <% case search_result.matches.size %>
   <% when 0 %>
     <span class="flag no-matches">No Matches</span>
@@ -37,16 +40,16 @@
     <span class="flag orth-var">Orth. Var.</span>
   <% end %>
 <% else %>
-  <% if search_result.loader_name_match.first.manually_drafted? %>
+  <% if search_result.loader_name_matches.first.manually_drafted? %>
     <span class='flag on-tree-indicator'>manually drafted</span>
   <% end %>
-  <% preferreds = search_result.loader_name_match.collect{|o| "#{o.name_id}/#{o.instance_id}" } %>
+  <% preferreds = search_result.loader_name_matches.collect{|o| "#{o.name_id}/#{o.instance_id}" } %>
   <span class="flag preferred-name"><%= preferreds.size %>p</span>
-  <% standalones = search_result.loader_name_match.select {|orcn| orcn.standalone_instance_id.present?} %>
+  <% standalones = search_result.loader_name_matches.select {|orcn| orcn.standalone_instance_id.present?} %>
   <% if standalones.size > 0 %>
     <span class="flag standalone-count"><%= "#{standalones.size}i" %></span>
     <% if standalones.size > 1 %>
-      <span class="flag standalone-count"><%= "#{standalones.size}i too many!" %></span><%= search_result.id %>, <%= search_result.loader_name_match.size %>
+      <span class="flag standalone-count"><%= "#{standalones.size}i too many!" %></span><%= search_result.id %>, <%= search_result.loader_name_matches.size %>
     <% else %>
       <% if standalones.first.drafted? %>
         <span class='flag on-tree-indicator'>drafted</span>
@@ -56,7 +59,7 @@
       <% end %>
     <% end %>
   <% end %>
-  <% relationships = search_result.loader_name_match.select {|orcn| orcn.relationship_instance_id.present?} %>
+  <% relationships = search_result.loader_name_matches.select {|orcn| orcn.relationship_instance_id.present?} %>
   <% if relationships.size > 0 %>
     <span class="flag relationship-statement"><%= "#{relationships.size}c" %></span>
   <% end %>

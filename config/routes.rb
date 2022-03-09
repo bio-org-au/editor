@@ -277,6 +277,7 @@ Rails.application.routes.draw do
   match "help/ref_type_rules",
         to: "help#ref_type_rules", as: "ref_type_rules", via: :get
   match "help/typeaheads", to: "help#typeaheads", as: "typeaheads", via: :get
+  match "history/2022", to: "history#y2022", as: "history_2022", via: :get
   match "history/2021", to: "history#y2021", as: "history_2021", via: :get
   match "history/2020", to: "history#y2020", as: "history_2020", via: :get
   match "history/2019", to: "history#y2019", as: "history_2019", via: :get
@@ -406,14 +407,35 @@ Rails.application.routes.draw do
   match "/trees/show/valrep", as: "show_valrep", to: "trees#show_valrep", via: :get
   match "/trees/run/valrep", as: "run_valrep", to: "trees#run_valrep", via: :get
 
-  resources :loader_batches
+  namespace :loader do
+    resources :batches
+    match "batches/stats/:id", as: "batch_stats", to: "batches#stats", via: :get
+  end
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
   match "loader_batch/clear-default", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post
 
-  resources :loader_names
-  match "loader_names/:id/tab/:tab/:component", as: "loader_name_review_tab", to: "loader/names#tab", via: :get, defaults: { component: 'main' }
+  namespace :loader do
+    resources :names, only: [:new]
+    match "names/new_row", as: "name_new_row", to: "names#new_row", via: :get
+    match "names/new/:random_id", as: "name_new_with_random_id", to: "names#new", via: :get
+    resources :names, only: [:create, :update, :destroy]
+    namespace :name do
+      match "matches/create/:id", as: "matches_set", to: "matches#set", via: :patch
+      match "matches/delete/all/:id", as: "matches_delete_all", to: "matches#delete_all", via: :delete
+      match "matches/:id", as: "matches", to: "matches#set", via: :post
+      match "matches/add_or_remove/:id", as: "match_add_or_remove", to: "matches#create_or_delete", via: :post
+      resources :matches, only: [:update]
+    end
+  end
   match "loader_names/:id/tab/:tab", as: "loader_name_tab", to: "loader/names#tab", via: :get
+
+  match "loader_names/:id/tab/:tab/:component", as: "loader_name_review_tab", to: "loader/names#tab", via: :get, defaults: { component: 'main' }
+  match "loader_names/parent_suggestions",
+        as: "loader_names_parent_suggestions",
+        to: "loader/names#parent_suggestions",
+        via: :get
+
   match "batch_reviews/:id/tab/:tab", as: "batch_review_tab", to: "loader/batch/reviews#tab", via: :get
   match "batch_reviews", as: "create_batch_review", to: "loader/batch/reviews#create", via: :post
   match "batch_reviews", as: "update_batch_review", to: "loader/batch/reviews#update", via: :put
@@ -424,6 +446,7 @@ Rails.application.routes.draw do
   match "batch_review_periods", as: "review_period", to: "loader/batch/review/periods#show", via: :get
   match "batch_review_periods/:id/tab/:tab", as: "review_period_tab", to: "loader/batch/review/periods#tab", via: :get
   match "batch_review_periods/:id", as: "update_review_period", to: "loader/batch/review/periods#update", via: :patch
+  match "/batch_review_periods/:id", as: "delete_review_period", to: "loader/batch/review/periods#destroy", via: :delete
 
   match "users", as: "user", to: "users#show", via: :get
   match "users/:id/tab/:tab", as: "user_tab", to: "users#tab", via: :get

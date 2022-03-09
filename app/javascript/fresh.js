@@ -187,13 +187,26 @@
   });
 
   optionalFocusOnPageLoad = function() {
+    debug('optionalFocusOnPageLoad');
     var focusId, focusSelector;
-    focusId = $('#focus-id').val();
-    focusSelector = `#search-result-${focusId} td a.show-details-link`;
-    if ($(focusSelector).length === 1) {
-      return $(focusSelector).focus();
+    debug('optionalFocusOnPageLoad 1');
+    debug('focusId: ' + focusId);
+    debug('optionalFocusOnPageLoad 2');
+    focusId = $('#focus_id').val();
+    debug('optionalFocusOnPageLoad 3');
+    debug('focusId: ' + focusId);
+    if (!focusId) {
+      debug('no focus, so got to first');
+      return $('table.search-results tr td.takes-focus a.show-details-link[tabindex]').first().click();
     } else {
-      return $('table.search-results tr td.takes-focus a.show-details-link[tabindex]').first().focus();
+      focusSelector = `#${focusId}`;
+      if ($(focusSelector).length === 1) {
+        debug('focus, so go there');
+        return $(focusSelector).click();
+      } else {
+        debug('go first anyway');
+        return $('table.search-results tr td.takes-focus a.show-details-link[tabindex]').first().click();
+      }
     }
   };
 
@@ -730,15 +743,13 @@
     }
     debug(`loadDetails url: ${url}`);
     $('#search-result-details').load(url, function() {
-      debug("before recordCurrentActiveTab");
       recordCurrentActiveTab(record_type);
-      debug("after recordCurrentActiveTab");
       if (tabWasClicked) {
         debug('tab clicked loadDetails');
         if ($('.give-me-focus')) {
           return debug('give-me-focus ing - changed so not .give-me-focus ing because clicked a tab resulted in focus switching to the first record');
         } else {
-          //$('.give-me-focus').focus()
+          $('.give-me-focus').focus()
           debug('just focus the tab');
           return $('li.active a.tab').focus();
         }
@@ -802,7 +813,7 @@
 
   searchResultFocus = function(event, $this) {
     debug('searchResultFocus starting');
-    debug('this id: ' + $this.attr('id'));
+    $('#focus_id').val($this.find('a').attr('id'));
     if (!($this.hasClass('showing-details') || $this.hasClass('show-no-details'))) {
       debug('Changing focus: should show details');
       changeFocus(event, $this);
@@ -1031,24 +1042,31 @@
   };
 
   window.moveUpOneSearchResult = function(startRow) {
-    if (startRow.prev()) {
-      return startRow.prev().find('a.show-details-link').focus();
-    }
+    return startRow.prev().find('a.show-details-link').focus();
   };
 
   window.moveDownOneSearchResult = function(startRow) {
     return startRow.next().find('a.show-details-link').focus();
-  };
+  }
 
-  window.moveUpOneReviewResult = function(startRow) {
-    if (startRow.prev()) {
-      return startRow.prev().find('a.navigation-link').focus();
+  window.moveUpOneReviewResult = function(row) {
+    if (row.prev()) {
+      if (row.prev().find('a.navigation-link').length === 1) {
+        return row.prev().find('a.navigation-link').focus();
+      } else {
+        // skip white-space boundary row
+        return row.prev().prev().find('a.navigation-link').focus();
+      }
     }
   };
 
   window.moveDownOneReviewResult = function(row) {
-    debug('moveDownOneReviewResult')
-    return row.next().find('a.navigation-link').focus();
+    if (row.next().find('a.navigation-link').length === 1) {
+      return row.next().find('a.navigation-link').focus();
+    } else {
+      // skip white-space boundary row
+      return row.next().next().find('a.navigation-link').focus();
+    }
   };
 
   window.moveToSearchResultDetails = function(searchResultDetail, liElementHasClass) {

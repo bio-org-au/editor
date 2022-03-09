@@ -23,7 +23,7 @@ table tr.review-result.showing-details td a span.review.loader-name.accepted-ful
   text-decoration: none;
 }
 
-table tr.review-result.showing-details td {
+table tr.review-result td {
   margin-top: 0;
   padding-top: 0.151em;
   padding-bottom: 0.151em;
@@ -33,7 +33,6 @@ tr.review-result.taxonomy-comment.showing-details td a span.review-loader-name.t
   color: white;
   text-decoration: none;
 }
-
 
 table tr.review-result.taxonomy-comment.showing-details td a span.review.loader-name.taxonomy-comment {
   color: white;
@@ -58,6 +57,20 @@ table tr.review-result.taxonomy-comment.showing-details td a span.review.loader-
   padding: 0 0.2em 0 0.2em;
 }
 
+.review.loader-name.isonym {
+  background-color: firebrick;
+  color: white;
+  font-size: 9pt;
+  padding: 0 0.2em 0 0.2em;
+}
+
+.review.loader-name.orth-var {
+  background-color: firebrick;
+  color: white;
+  font-size: 9pt;
+  padding: 0 0.2em 0 0.2em;
+}
+
 .review.loader-name.remark-to-reviewers {
   background-color: yellow;
   font-size: 9pt;
@@ -67,6 +80,20 @@ table tr.review-result.taxonomy-comment.showing-details td a span.review.loader-
 
 tr.review-result span.has-loader-name-review-comments {
   background-color: salmon;
+  font-size: 9pt;
+  color: white;
+  padding: 0 0.2em 0 0.2em;
+}
+
+span.reviewer-comment-tag {
+  background-color: #5252ff;
+  font-size: 9pt;
+  color: white;
+  padding: 0 0.2em 0 0.2em;
+}
+
+span.compiler-comment-tag {
+  background-color: #7900d6;
   font-size: 9pt;
   color: white;
   padding: 0 0.2em 0 0.2em;
@@ -123,6 +150,7 @@ tr.review-result {
 }
 
 div.name-comment-display-container {
+  overflow: scroll;
 }
 
 div.name-comment-edit-container {
@@ -133,3 +161,114 @@ a.review-show-details-link:focus {
   border-width: 0px;
 }
 
+span.indent {
+  display: inline-block;
+}
+
+div.inline-edit-form-container {
+  border: 1px solid gray;
+  padding: 1em;
+  background: lightgray;
+}
+
+tr.review-result span.excluded {
+  background-color: red;
+  font-size: 9pt;
+  color: white;
+  padding: 0 0.2em 0 0.2em;
+}
+
+.review.has-parent {
+  width: 0;
+}
+
+.review.loader-name.child {
+  margin: 0.3em 0.3em 0.3em 2em;
+  font-style: italic;
+  font-size: 10pt;
+}
+
+.review-table tr {
+  line-height: 1.2em;
+}
+
+tr.review-result {
+  line-height: 1.0em;
+}
+
+tr.review.white-space-row {
+  line-height: 2.5em;
+}
+
+tr.review.family {
+  line-height: 2.5em;
+}
+
+tr.review.distribution {
+  line-height: 2.5em;
+}
+
+tr.review.taxonomy-comment {
+  line-height: 2.5em;
+}
+
+tr.loader-batch.review-result {
+  line-height: 2em;
+  border-bottom: 1px solid lightgray;
+}
+
+tr.review-result {
+  cursor: pointer;
+}
+
+div.name-comment-display-container {
+  overflow: scroll;
+}
+
+div.name-comment-edit-container {
+}
+
+a.review-show-details-link:focus {
+  outline: none;
+  border-width: 0px;
+}
+
+span.indent {
+  display: inline-block;
+}
+
+div.inline-edit-form-container {
+  border: 1px solid gray;
+  padding: 1em;
+  background: lightgray;
+}
+
+/* batch stack */
+
+table tr.search-result.batch-stack td {
+  margin-top: 0;
+  padding-top: 0.151em;
+  padding-bottom: 0.151em;
+}
+tr.search-result.batch-stack td {
+  line-height: 0.7em;
+  border-top: 0px;
+}
+table tr.search-result.batch-stack[data-record-type="loader-batch"] td {
+  padding-top: 0.5em;
+  border-top: 1px solid black;
+}
+tr.search-result.batch-stack td span.batch-review {
+  color: black;
+  margin: 0.3em 0.3em 0.3em 2em;
+}
+tr.search-result.batch-stack td span.review-period {
+  color: black;
+  margin: 0.3em 0.3em 0.3em 4em;
+}
+tr.search-result.batch-stack td span.batch-reviewer {
+  color: black;
+  margin: 0.3em 0.3em 0.3em 6em;
+}
+
+.calendar-text { margin-top: .3em; }

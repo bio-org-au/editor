@@ -20,7 +20,6 @@ class Search::Loader::Batch::FieldRule
   RULES = {
     "name:"                 => { where_clause: "lower(name) like ? ",
                                  trailing_wildcard: true,
-                                 leading_wildcard: true,
                                  order: "name"},
     "id:"                 => { multiple_values: true,
                                where_clause: "id = ? ",

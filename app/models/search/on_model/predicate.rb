@@ -61,6 +61,7 @@ class Search::OnModel::Predicate
     @scope_ = rule[:scope_] || ""
     @trailing_wildcard = rule[:trailing_wildcard] || false
     @leading_wildcard = rule[:leading_wildcard] || false
+    @leave_asterisks = rule[:leave_asterisks] || false
     apply_rule_overflow(rule)
   end
 
@@ -114,6 +115,8 @@ class Search::OnModel::Predicate
   def build_canon_value(val)
     if @multiple_values && @value.split(/,/).size > 1
       val.split(",").collect(&:strip)
+    elsif @leave_asterisks
+      val
     else
       val.tr("*", "%")
     end
@@ -126,7 +129,7 @@ class Search::OnModel::Predicate
     elsif @rules_class.key?(@abbrevs_class[field])
       @abbrevs_class[field]
     else
-      raise "Cannot search model for: #{field}. You may need to try another
+      raise "Cannot search this target for: #{field}. You may need to try another
       search term or target."
     end
   end
