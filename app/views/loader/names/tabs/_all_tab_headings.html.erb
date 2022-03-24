@@ -62,6 +62,16 @@
                                       prev_tab: 'loader-name-create-syn-tab', 
                                       next_tab: 'loader-name-details-tab'} %> 
 
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_ref_instance', 
+                                      link_text: 'Reference<br/>Instance'.html_safe, 
+                                      link_id: 'loader-name-choose-instance-tab', 
+                                      link_title: 'Choose the reference instance for the taxonomy record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-create-syn-tab', 
+                                      next_tab: 'loader-name-details-tab'} %> 
+
   <% end %>
 
 </ul>

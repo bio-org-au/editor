@@ -32,6 +32,7 @@ class Search::OnModel::ListQuery
     Rails.logger.debug("Search::OnModel::ListQuery#prepare_query on target: #{@parsed_request.target_table}")
     Rails.logger.debug("Search::OnModel::ListQuery#prepare_query target model: #{@parsed_request.target_model}")
     Rails.logger.debug("===========================================================================================")
+    raise "Target '#{@parsed_request.target_table}' is not registered with parsed request." if @parsed_request.target_model.nil?
     @model_class = @parsed_request.target_model.constantize
     prepared_query = @model_class.where("1=1")
     Rails.logger.debug("Search::OnModel::ListQuery#prepare_query sql: #{prepared_query.to_sql}")
@@ -40,7 +41,8 @@ class Search::OnModel::ListQuery
     prepared_query = where_clauses.sql
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
     prepared_query = prepared_query.offset(@parsed_request.offset) if @parsed_request.offsetted
-    prepared_query = prepared_query.order(@parsed_request.default_order_column)
+    Rails.logger.debug("This Search::OnModel::ListQuery#prepare_query sql: #{prepared_query.to_sql}")
+    prepared_query = prepared_query.order(Arel.sql("#{@parsed_request.default_order_column}"))
     Rails.logger.debug("Search::OnModel::ListQuery#prepare_query sql: #{prepared_query.to_sql}")
     Rails.logger.debug("===========================================================================================")
     @sql = prepared_query

@@ -1,0 +1,31 @@
+<% if @name.name_rank.family? %>
+  <% if @name.family_members.size > 0 %>
+    <%= link_to("#{pluralize(@name.family_members.size,'family member')} #{icon('search')}".html_safe,
+      search_path(query_string: "family-id: #{@name.id}",
+                  query_common_and_cultivar: "t",
+                  query_target: 'name'),
+                  tabindex: increment_tab_index,
+                  title: "Retrieve #{pluralize(@name.family_members.size,'child')}.",
+                  class: '') %>
+  <% else %>
+    No family members
+  <% end %>
+<br>
+<% end %>
+<%# Always show family if there is one.  Only remark the absence if it's odd %>
+<% if @name.family_id.blank? %>
+  <% if @name.name_rank.below_family? %>
+    None
+    <span class="pull-right">Family</span>
+  <% end %>
+<% else %>
+  <%= link_to(@name.family.full_name,
+    search_path(query_string: "id: #{@name.family.id}",
+                query_common_and_cultivar: "f",
+                query_target: 'name'),
+                tabindex: increment_tab_index,
+                title: "See this family",
+                class: '') %>
+
+  <span class="pull-right">Family</span>
+<% end %>

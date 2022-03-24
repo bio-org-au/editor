@@ -94,6 +94,9 @@
       <% when 'Review Period in stack' %>  
         <%= render partial: 'application/search_results/stack/review_period_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
+      <% when 'BulkProcessingLog' %>  
+        <%= render partial: 'application/search_results/bulk_processing_log_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'User' %>  
         <%= render partial: 'application/search_results/user_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>

@@ -1,0 +1,20 @@
+<tr id="ref-instance-record-<%= record.id %>"
+    class="ref-instance-record instance-is-cited-by <%= 'fresh' if record.fresh? %>"
+    data-row-type="instance_is_cited_by"
+    tabindex="<%= increment_tab_index(100) %>"
+>
+  <td colspan="1" class="align-top text width-5-percent"> </td>
+  <td colspan="1" class="text">
+    <span
+    id="<%= %Q(#{record.class}-#{record.id}) %>"
+    class="show-details-link indent-level-2 <%= "draft" if record.draft? %>"
+    title="Instance is cited by record.  Select to show details."
+    tabindex="<%= increment_tab_index %>">
+      <%= "#{record.expanded_instance_type || record.instance_type.name}: <b>#{record.name.full_name_html}</b>".html_safe %>
+      <%= "#{record.page}" %>
+      <%= " #{record.name.name_status.name_for_instance_display}" %>
+      <%= render(partial: 'draft', locals: { search_result: record }) %>
+    </span>
+  </td>
+</tr>
+

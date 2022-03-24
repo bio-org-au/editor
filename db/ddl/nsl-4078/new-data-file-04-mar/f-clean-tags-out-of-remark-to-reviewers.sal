@@ -1,0 +1,29 @@
+begin;
+
+update loader_name set remark_to_reviewers = regexp_replace(regexp_replace(remark_to_reviewers,'<span style=''background-color:yellow;''>',''),'<\/span>','')
+where remark_to_reviewers like '<span%'
+  and loader_batch_id = (select id from loader_batch where name = 'APC List 103 draft 04 Mar');
+
+update loader_name set remark_to_reviewers = null 
+ where remark_to_reviewers ~ '^[0-9]$'
+   and loader_batch_id = (select id from loader_batch where name = 'APC List 103 draft 04 Mar');
+
+update loader_name set remark_to_reviewers = regexp_replace(regexp_replace(remark_to_reviewers,'<span style=''background-color:yellow''>',''),'<\/span>','')
+where remark_to_reviewers like '%<span%'
+  and loader_batch_id = (select id from loader_batch where name = 'APC List 103 draft 04 Mar');
+
+update loader_name set remark_to_reviewers = regexp_replace(regexp_replace(remark_to_reviewers,'<span style=''background-color:yellow''>',''),'<\/span>','')
+where remark_to_reviewers like '%<span%'
+  and loader_batch_id = (select id from loader_batch where name = 'APC List 103 draft 04 Mar');
+
+update loader_name set remark_to_reviewers = regexp_replace(regexp_replace(remark_to_reviewers,'<span style=''background:;''>',''),'<\/span>','')
+where remark_to_reviewers like '%<span%'
+  and loader_batch_id = (select id from loader_batch where name = 'APC List 103 draft 04 Mar');
+
+update loader_name set remark_to_reviewers = regexp_replace(regexp_replace(remark_to_reviewers,'<span style=''background:;''>',''),'<\/span>','')
+where remark_to_reviewers like '%<span%'
+  and loader_batch_id = (select id from loader_batch where name = 'APC List 103 draft 04 Mar');
+
+
+commit;
+

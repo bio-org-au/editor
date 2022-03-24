@@ -90,6 +90,8 @@ class Search::ParsedRequest
     "orgs" => "org",
     "batch_reviewer" => "batch reviewer",
     "batch_reviewers" => "batch reviewer",
+    "bulk_processing_log" => "bulk processing log",
+    "bulk_processing_logs" => "bulk processing log",
   }.freeze
 
   TARGET_MODELS = {
@@ -107,6 +109,7 @@ class Search::ParsedRequest
     "batch review period" => "Loader::Batch::Review::Period",
     "users" => "UserTable",
     "org" => "Org",
+    "bulk processing log" => "BulkProcessingLog",
   }.freeze
 
   DEFAULT_QUERY_DIRECTIVES = {
@@ -124,6 +127,7 @@ class Search::ParsedRequest
     "batch review period" => "name:",
     "users" => "name:",
     "org" => "name_or_abbrev:",
+    "bulk processing log" => " log-entry: ",
   }.freeze
 
   DEFAULT_ORDER_COLUMNS = {
@@ -141,6 +145,7 @@ class Search::ParsedRequest
     "batch review period" => "name",
     "users" => "name",
     "org" => "name",
+    "bulk processing log" => " logged_at desc ",
   }.freeze
 
   INCLUDE_INSTANCES_FOR = ["name", "reference"]

@@ -4,7 +4,9 @@
       <%= form.hidden_field :batch_reviewer_id %>
       <%= form.hidden_field :loader_name_id %>
       <%= form.hidden_field :review_period_id %>
-      <%= form.hidden_field :context, value:  Loader::Name::Review::Comment.context_for(tab_focus) %>
+      Context: <%= name_review_comment.context %>
+      <% form.hidden_field :context, value:  name_review_comment.context %>
+      <br>
       Type*:<br>
       <%= form.collection_select :name_review_comment_type_id, 
         Loader::Name::Review::Comment::Type.for(tab_focus, @current_user.compiler?).order(:name),

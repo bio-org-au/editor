@@ -1,0 +1,19 @@
+<tr id="ref-instance-record-<%= record.id %>" 
+  class="ref-instance-record <%= 'fresh' if record.fresh? %>"
+  data-record-id="<%= record.id %>"
+  data-record-type="name"
+  tabindex="<%= increment_tab_index %>" 
+    >
+  <td colspan="2" class="text">
+    <span 
+      id="<%= record.anchor_id %>"
+      class="show-details-link"
+      title="Name record. Select to show details."
+      tabindex="<%= increment_tab_index %>"> 
+      <%= record.full_name %>
+      <%= "[#{record.name_status.name_without_brackets}]" unless record.name_status.legitimate? %>
+      <%= record.name_tags.collect{|name_tag| name_tag.name}.join(', ') %>
+      <% if record.duplicate? %> [Duplicate] <% end %>
+    </span>
+  </td>
+</tr>

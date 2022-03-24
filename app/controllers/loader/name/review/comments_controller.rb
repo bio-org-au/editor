@@ -41,10 +41,10 @@ class Loader::Name::Review::CommentsController < ApplicationController
     @review_comment = Loader::Name::Review::Comment.new(review_comment_params)
     @review_comment.save_with_username(current_user.username)
     render "create"
-  rescue => e
-    logger.error("Loader::Name::Review::Comment.create:rescuing exception #{e}")
-    @error = e.to_s
-    render "create_error", status: :unprocessable_entity
+  # rescue => e
+    # logger.error("Loader::Name::Review::Comment.create:rescuing exception #{e}")
+    # @error = e.to_s
+    # render "create_error", status: :unprocessable_entity
   end
 
   def update

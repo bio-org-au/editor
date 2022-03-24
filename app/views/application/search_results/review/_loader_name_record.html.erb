@@ -65,7 +65,7 @@
   data-get-url=""
   data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
   data-base-url=""
-  data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here', component: search_result.record_type) %>"
   data-record-id="<%= search_result.id %>"
   data-record-type="loader-name"
   tabindex="<%= increment_tab_index %>" 

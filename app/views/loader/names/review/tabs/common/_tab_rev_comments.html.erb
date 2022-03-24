@@ -34,18 +34,18 @@
 
 
                           <br>
-      <div id="one-comment-<%= comment.id %>">
+                            <div id="one-comment-<%= comment.id %>">
 
-        <%= render partial: 'loader/names/review/tabs/common/one_comment',
-                    locals: {comment: comment,
-                             scope: scope} %>
+                              <%= render partial: 'loader/names/review/tabs/common/one_comment',
+                                          locals: {comment: comment,
+                                                   scope: scope} %>
 
-      </div>
+                            </div>
 
-    <% end %>
+                       <% end %>
+                   <% end %>
+              <%= divider %>
   <% end %>
-<%= divider %>
-<% end %>
 
 <%= render partial: 'detail_line', locals: {label: 'Loader Name ID', info: @loader_name.id} %>
 <%= created_by_whom_and_when(@loader_name).html_safe %>

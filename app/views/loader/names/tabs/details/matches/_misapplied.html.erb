@@ -49,7 +49,9 @@
             <% else %>
               <%= f.submit "Add", id: "add-link-#{instance.id}", tabindex: increment_tab_index, title: 'Add instance link', class: 'hidden btn btn-primary width-3em' %>
               <%= f.submit "Remove", id: "remove-link-#{instance.id}", tabindex: increment_tab_index, title: 'Remove instance link', class: 'bgorange btn width-5em' %>
-              <%= "(#{curr_chosen_match.instance_type.name})" unless curr_chosen_match.instance_type.name == 'misapplied' %>
+              <% unless curr_chosen_match.instance_type.name == 'misapplied' %>
+                <span id="<%= instance.id %>-altered-instance-type"><%= "(#{curr_chosen_match.instance_type.name})" %>instance id: <%= instance.id %></span>
+              <% end %>
             <% end %>
           <% else %>
             <%= f.submit "Add", id: "add-link-#{instance.id}", tabindex: increment_tab_index, title: 'Add instance link', class: 'btn btn-primary width-3em' %>

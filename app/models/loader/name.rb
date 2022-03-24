@@ -279,8 +279,8 @@ class Loader::Name < ActiveRecord::Base
     partly == 'p.p.'
   end
 
-  # This search emulates the default search for LoaderNames, the 
-  # simple-name search.
+  # This search emulates the default search for Loader Name, the 
+  # name-string: search.
   def self.name_string_search(name_string)
     self.name_string_search_no_excluded(name_string)
   end
@@ -290,6 +290,7 @@ class Loader::Name < ActiveRecord::Base
     Loader::Name.where([ "((lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) and record_type = 'accepted' and not doubtful) or (parent_id in (select id from loader_name where (lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) and record_type = 'accepted' and not doubtful))",
                    ns, ns, ns, ns, ns, ns])
   end
+
 
   def self.create(params, username)
     loader_name = Loader::Name.new(params)
@@ -343,10 +344,59 @@ class Loader::Name < ActiveRecord::Base
 
   def record_type_as_context
     case record_type
-      when 'misapplied' then 'misapplication'
+      when 'misapplied' then 'synonymy'
+      when 'synonym' then 'synonymy'
       when 'accepted' then 'main'
-      when 'synonym' then 'synonym'
       else 'unknown'
     end
   end
+
+  def main_entry?
+    record_type == 'accepted'
+  end
+
+  def self.create_preferred_matches(name_s, batch_id, authorising_user, work_on_accepted)
+    #if work_on_accepted
+      self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
+    #else
+      #self.create_preferred_matches_for_excluded_taxa(name_s, batch_id, authorising_user)
+    #end
+      #
+  end
+
+
+  def self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
+    attempted = records = 0
+    self.name_string_search_no_excluded(name_s).where(loader_batch_id: batch_id).order(:seq).each do |loader_name|
+      attempted += 1
+      records += loader_name.create_preferred_match(authorising_user)
+    end
+    entry = "Task finished: create preferred matches for accepted taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    BulkProcessingLog.log(entry, 'job controller')
+    return attempted, records
+  end
+
+  def self.create_preferred_matches_for_excluded_taxa(name_s, batch_id, authorising_user)
+    attempted = records = 0
+    Orchid.taxon_string_search_for_excluded(name_s).order(:seq).each do |match|
+      attempted += 1
+      records += match.create_preferred_match(authorising_user)
+    end
+    entry = "Task finished: create preferred matches for excluded taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    BulkProcessingLog.log(entry, 'job controller')
+    return attempted, records
+  end
+
+  def create_preferred_match(authorising_user)
+    AsNameMatcher.new(self, authorising_user).find_or_create_preferred_match
+  end
+
+  def true_record_type
+    if record_type == 'accepted' && doubtful?
+      'excluded'
+    else
+      record_type
+    end
+  end
+
 end

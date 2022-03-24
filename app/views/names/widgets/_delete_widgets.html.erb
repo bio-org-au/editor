@@ -1,0 +1,18 @@
+  <br>
+  <% delete_link = link_to("Delete...",
+                           '#',
+                           id: "name-delete-link",
+                           class: "btn btn-warning unconfirmed-delete-link pull-right",
+                           title: "Delete #{@name.full_name}",
+                           tabindex: increment_tab_index,
+                           data: {show_this_id: "confirm-or-cancel-link-container"})
+  -%>
+  <%= delete_link.html_safe %> 
+
+  <div class="width-100-percent"> 
+
+  <div id="confirm-or-cancel-link-container" class="confirm-or-cancel-delete-link hidden">
+  <%= render partial: 'names_deletes/new' %>
+  </div>
+
+</div>

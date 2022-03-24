@@ -16,8 +16,8 @@
                   &mdash; <%= display_component.gsub(/_/,' ') %>
     </h3>
 
-    <%= render partial: "loader/names/review/tabs/#{component}/all_tab_headings" %>
-    <%= render partial: "loader/names/review/tabs/#{component}/#{@tab}" %>
+    <%= render partial: "loader/names/review/tabs/main/all_tab_headings", locals: {display_component: display_component} %>
+    <%= render partial: "loader/names/review/tabs/main/#{@tab}", locals:{display_component: display_component} %>
     <br>
     <span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
 

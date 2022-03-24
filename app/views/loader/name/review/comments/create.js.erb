@@ -2,3 +2,7 @@ $('.message-container').html('');
 $('.error-container').html('');
 $('#search-result-details-info-message-container').html('Created. Refresh tab to make another comment.');
 $('#save-new-batch-review-comment-btn').hide();
+
+$('#create-one-comment-container').hide();
+$('#show-one-comment-container').html('<%= escape_javascript(%Q(#{render partial: "loader/names/review/tabs/common/one_comment", locals: {comment: @review_comment} })).html_safe %>');
+

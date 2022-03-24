@@ -69,7 +69,19 @@ class Loader::BatchesController < ApplicationController
   end
 
   def stats
-    @stats = Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames.new('*', session[:default_loader_batch_id]||0).report
+    @stats = Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
+      .new('*', session[:default_loader_batch_id]||0).report
+  end
+
+  def processing_overview
+    render 'processing_overview'
+  end
+
+  def hide_processing_overview
+  end
+
+  def bulk_operation
+    render 'bulk/operation'
   end
 
   private

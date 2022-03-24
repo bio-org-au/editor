@@ -409,7 +409,16 @@ Rails.application.routes.draw do
 
   namespace :loader do
     resources :batches
+    match "batches/stats/hide", as: "hide_batch_stats", to: "batches#hide_stats", via: :get
     match "batches/stats/:id", as: "batch_stats", to: "batches#stats", via: :get
+    match "batches/bulk", as: "batches_bulk", to: "batch/bulk#operation", via: :post
+
+#                                  loader_bulk_operation GET                   /loader/batches/bulk_operation(.:format)                                                          loader/batch/bulk_operations#operation
+#                       loader_batch_processing_overview GET                   /loader/batches/processing/overview(.:format)                                                     loader/batches#processing_overview
+#                  loader_batch_processing_overview_hide GET                   /loader/batches/processing/overview/hide(.:format)                                                loader/batches#hide_processing_overview
+    
+    match "batches/processing/overview", as: "batch_processing_overview", to: "batches#processing_overview", via: :get
+    match "batches/processing/overview/hide", as: "batch_processing_overview_hide", to: "batches#hide_processing_overview", via: :get
   end
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
@@ -425,6 +434,8 @@ Rails.application.routes.draw do
       match "matches/delete/all/:id", as: "matches_delete_all", to: "matches#delete_all", via: :delete
       match "matches/:id", as: "matches", to: "matches#set", via: :post
       match "matches/add_or_remove/:id", as: "match_add_or_remove", to: "matches#create_or_delete", via: :post
+      match "matches/set-standalone-instance/:id", as: "set_standalone_instance", to: "matches#set_standalone_instance", via: :patch
+      match "matches/clear-standalone-instance/:id", as: "match_clear_standalone_instance", to: "matches#clear_standalone_instance", via: :patch
       resources :matches, only: [:update]
     end
   end

@@ -9,4 +9,7 @@ module NameFamilyable
     name_rank.below_family? && name_category.requires_family
   end
 
+  def family_members
+    Name.where(["family_id = ?", id])
+  end
 end

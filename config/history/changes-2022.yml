@@ -1,3 +1,29 @@
+- :date: 23-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: First cut of bulk operations - create preferred matches in place.
+- :date: 21-Mar-2022
+  :jira_id: '4192'
+  :description: |-
+    Name target directive: add <code>source-system:</code> to allow querying of name records migrated from other systems where the originating system name is in the <code>name.source_system</code> field.
+- :date: 18-Mar-2022
+  :jira_id: '4192'
+  :description: |-
+    Name target directive: add <code>source-id:</code> to allow querying of name records migrated from other systems where the original ID is retained in the <code>name.source_id</code> field.
+- :date: 18-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add a new Loader Name tab to set the standalone Reference Instance
+- :date: 11-Mar-2022
+  :jira_id: '4165'
+  :description: |-
+    Name: Do not offer to Delete a Name that has family dependents; show more information about name families on the details tab; add supporting query directives; include common and cultivars in linked search
+- :date: 10-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: loader name detail tab for misapplied name matches now hides any edited instance type if a match is deleted
+- :date: 09-Mar-2022
+  :release: true
 - :date: 09-Mar-2022
   :jira_id: ''
   :description: |-

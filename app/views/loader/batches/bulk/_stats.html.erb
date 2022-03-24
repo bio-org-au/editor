@@ -1,0 +1,10 @@
+  Default batch: <%= session[:default_loader_batch_name] %>
+  <br>
+  <%= link_to 'Counts', loader_batch_stats_path(session[:default_loader_batch_id]),
+    {id: 'show-loader-stats-btn', class: 'btn btn-primary', title: 'Show latest counts for the current batch', remote: true} %>
+  <%= link_to 'Hide', loader_hide_batch_stats_path, {id: 'hide-loader-stats-btn', class: 'btn btn-primary hidden', title: 'Hide the counts', remote: true} %>
+  <%= link_to 'Refresh', loader_batch_stats_path(session[:default_loader_batch_id]),
+    {id: 'refresh-loader-stats-btn', class: 'btn btn-primary hidden', title: 'Show latest counts for the current batch', remote: true} %>
+  <div id="batch-stats">
+  </div>
+

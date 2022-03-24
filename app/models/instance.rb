@@ -672,4 +672,19 @@ class Instance < ActiveRecord::Base
   def year
     reference.year
   end
+
+  def listing_citation
+    (reference.present? ? reference.citation_html : '') +
+    (page.present? ? ": #{page}" : '') +
+    (show_primary_instance_type && instance_type&.primary_instance? ? " [#{instance_type.name}]" : '') +
+    (consider_apc && show_apc? ? ": #{accepted_taxonomy_widget}" : '') +
+    ( draft? ? "<span class='highlight'>[DRAFT]</span>" : '' )
+  end
+
+  def accepted_taxonomy_widget
+    '<span class="apc-container no-decoration">' + 
+    ( name.excluded_concept? ? "<i class='fa fa-ban apc' aria-hidden='true'></i><span class='apc small strong' title='Excluded from APC'>APC</span>" : '' ) +
+    ( !name.excluded_concept? ? "<i class='fa fa-check apc' aria-hidden='true'></i><span class='apc small strong' title='In APC'>APC</span>" : '' ) +
+    '</span>'
+  end
 end

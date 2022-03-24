@@ -95,7 +95,25 @@ class Name < ApplicationRecord
   end
 
   def allow_delete?
-    instances.blank? && children.blank? && comments.blank? && duplicates.blank?
+    instances.blank? && 
+      children.blank? && 
+      comments.blank? &&
+      duplicates.blank? && 
+      !family_dependents?
+  end
+
+  def family_dependents?
+    return false unless name_rank.family?
+
+    # From here on, must be a family
+    return false if family_members.empty?  # 0 members
+    return true if family_members.length > 1 # 2 or more members
+
+    # From here on, only 1 family member
+    return true if family_id.blank? # 1 but null so not itself
+    return false if family_id = self.id # 1 but is itself
+    return true if family_id != self.id # 1 but it is not itself
+    true # fail safe - shouldn't get here
   end
 
   def migrated_from_apni?

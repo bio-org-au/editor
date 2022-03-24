@@ -17,7 +17,8 @@
 #   limitations under the License.
 #
 class Loader::Name::MatchesController < ApplicationController
-  before_action :find_loader_name, only: [:set]
+  before_action :find_loader_name,
+    only: [:set, :set_standalone_instance, :clear_standalone_instance]
   before_action :find_loader_name_match, only: [:update]
   #before_action :find_loader_name_match, only: [:delete]
 
@@ -78,6 +79,41 @@ class Loader::Name::MatchesController < ApplicationController
     logger.error("Loader::Name::MatchesController error: #{e.to_s}")
     @message = e.to_s
     render 'update_error', format: :js
+  end
+
+  def set_standalone_instance
+    @match = @loader_name.preferred_matches.first
+    if @match.standalone_instance_id == loader_name_match_params[:standalone_instance_id].to_i
+      @message = 'No change'
+    elsif loader_name_match_params[:standalone_instance_id].blank?
+      @message = 'No change'
+    else
+      @match.standalone_instance_id = loader_name_match_params[:standalone_instance_id].to_i
+      @match.standalone_instance_found = true
+      @match.save!
+      @message = 'Saved'
+    end
+    render 'set_standalone_instance'
+  rescue => e
+    logger.error("Loader::Name::MatchesController set_standalone_instance error: #{e.to_s}")
+    @message = e.to_s
+    render 'set_standalone_instance_error', format: :js
+  end
+
+  def clear_standalone_instance
+    @match = @loader_name.preferred_matches.first
+    if @match.standalone_instance_id.blank? 
+      @message = 'No change'
+    else
+      @match.standalone_instance_id = nil
+      @match.standalone_instance_found = false
+      @match.save!
+      @message = 'Cleared'
+    end
+  rescue => e
+    logger.error("Loader::Name::MatchesController clear_standalone_instance error: #{e.to_s}")
+    @message = e.to_s
+    render 'clear_standalone_instance_error', format: :js
   end
 
   private
@@ -194,8 +230,9 @@ class Loader::Name::MatchesController < ApplicationController
   end
 
   def loader_name_match_params
-    params.require(:loader_name_match).permit(:name_id, :instance_id,
+    params.require(:loader_name_match).permit(:id, :name_id, :instance_id,
                                               :loader_name_id,
-                                             :relationship_instance_type_id)
+                                             :relationship_instance_type_id,
+                                             :standalone_instance_id)
   end
 end

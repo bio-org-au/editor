@@ -1,0 +1,16 @@
+<% if @loader_name.preferred_matches.size == 0 %>
+  <br><br>
+  No preferred match, nothing to do here.
+<% else %>
+
+  <br><br>
+  <% @loader_name.preferred_matches.each do |match| %>
+    <%= render partial: 'loader/names/tabs/ref_instance/main_entry_form', locals: {match: match} %>
+  <% end %>
+
+  <% unless @loader_name.preferred_matches.first.standalone_instance_id.blank? %>
+    <%= render partial: 'loader/names/tabs/ref_instance/clear_standalone_instance.html.erb' %>
+  <% end %>
+
+<% end %>
+

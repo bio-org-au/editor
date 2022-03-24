@@ -84,8 +84,10 @@ class Loader::Name::Review::Comment < ActiveRecord::Base
       'distribution'
     when 'concept-note' then
       'concept-note'
+    when 'synonymy' then
+      'synonymy'
     else
-      'loader-name'
+      'main name entry'
     end
   end
 

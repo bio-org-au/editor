@@ -1,0 +1,27 @@
+<%= link_to 'Overview', loader_batch_processing_overview_path, {id: 'batch-processing-overview-btn', class: 'btn btn-primary', title: 'Show a summary overview of the loading process', remote: true} %>
+<%= link_to 'Hide', loader_batch_processing_overview_hide_path, {id: 'batch-processing-overview-hide-btn', class: 'btn btn-primary hidden', title: 'Hide the summary', remote: true} %>
+<div id="batch-processing-overview" class="hidden">
+Batch data is imported (from parsed Word documents) as <code>loader-name</code> records
+<h5>Steps</h5>
+<ol>
+  <li>Query and view <code>loader-name</code> records to see how well they match with existing <code>name</code> records.
+    <ul>
+      <li/>You can edit the loader-name <code>simple_name</code> to fine-tune the set of matching <code>names</code> (original value is retained in <code>simple_name_as_loaded</code>)
+     <li/>Create <code>name</code> records if no match exists
+     <li/>Delete <code>loader-name</code> records if not required
+     <li/>Exclude a <code>loader-name</code> record from further processing at any time (reversible)
+     <li/>Create new raw loader-name records via New &gt; Loader Name to supplement the import
+     <li/>Ensure any potential matching <code>Name</code> records have a primary instance
+     <li/>View misapplication matches to a <code>name</code> broken down to specific instances - to let you see and choose where the misapplication occurred
+   </ul>
+  </li>
+  <li>Set <b>preferred match(es)</b> for loader-names - locking them to the appropriate <code>name</code> record</li>
+    <ul>
+     <li/>Edit the match if you need to adjust the relationship instance
+    </ul>
+  <li>Identify an instance that documents the usage of the loader-name for the taxonomy.</li>
+  <li>If no such instance exists, <b>create one</b>.</li>
+  <li><b>Add</b> the identified instance to the draft taxonomy.</li>
+</ol>
+</div>
+

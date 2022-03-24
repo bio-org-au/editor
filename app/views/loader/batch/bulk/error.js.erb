@@ -1,0 +1,3 @@
+$('.message-container').html('');
+$('#<%= message_container_id_prefix %>error-message-container').html("<%= escape_javascript(@message) %>");
+$('.message-clearer').removeClass('hidden');

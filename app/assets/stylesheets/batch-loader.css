@@ -272,3 +272,21 @@ tr.search-result.batch-stack td span.batch-reviewer {
 }
 
 .calendar-text { margin-top: .3em; }
+
+.font-weight-normal {
+  font-weight: normal;
+}
+
+span.indent-level-2 {
+  display: inline-block;
+  padding-left: 6em;
+}
+
+*.padding-right-half-em {
+  padding-right: 0.5em;
+}
+
+label:hover {
+  background: gray;
+  color: white;
+}
