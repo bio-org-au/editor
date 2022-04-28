@@ -53,7 +53,7 @@ end
 
 group :development, :test do
   gem "pry-rails"
-  gem "pry-rescue"
+  # gem "pry-rescue" # breaks test env. on Mac M1
   gem "webmock"
   # gem "schema_plus"
 end
@@ -73,7 +73,7 @@ gem "composite_primary_keys"
 gem "sucker_punch"
 gem "pg_search"
 
-gem "nokogiri", ">= 1.13.2"
+gem "nokogiri", ">= 1.13.4"
 gem "rest-client"
 gem "kramdown", ">= 2.3.0"
 gem "exception_notification"

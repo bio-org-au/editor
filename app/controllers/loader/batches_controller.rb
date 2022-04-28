@@ -84,6 +84,11 @@ class Loader::BatchesController < ApplicationController
     render 'bulk/operation'
   end
 
+  def default_reference_suggestions
+    render json: [] if params[:term].blank?
+    render json: Reference::AsTypeahead::OnCitation.new(params[:term]).results
+  end
+
   private
 
   def find_loader_batch
@@ -94,7 +99,8 @@ class Loader::BatchesController < ApplicationController
   end
 
   def loader_batch_params
-    params.require(:loader_batch).permit(:name, :description)
+    params.require(:loader_batch).permit(:name, :description,
+       :default_reference_id, :default_reference_typeahead)
   end
 
   def set_tab

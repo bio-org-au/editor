@@ -1,0 +1,10 @@
+$('.message-container').html('');
+$('.error-container').html('');
+$('#search-result-details-info-message-container-top').html("<%= escape_javascript(@message) %>... refreshing tab");
+$('#search-result-details-info-message-container').html("<%= escape_javascript(@message) %>... refreshing tab");
+setTimeout(
+  function() 
+  {
+    $('#loader-name-choose-instance-tab').click();
+  }, 1000
+);

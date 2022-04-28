@@ -471,15 +471,15 @@ having count(*) > 2
             where name.name_type_id       = nt.id
        and nt.scientific))",
                                       order: "seq"},
-    "partly:"             => { where_clause: "partly is not null",
+"partly:"             => { where_clause: "partly is not null",
                                       order: "seq"},
-    "not-partly:"         => { where_clause: "partly is null",
+"not-partly:"         => { where_clause: "partly is null",
                                       order: "seq"},
-    "name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match group by name_id having count(*) > 1))",
+"name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match group by name_id having count(*) > 1))",
                                       order: "seq"},
-    "non-misapp-name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match where loader_name_id in (select id from orchids where record_type != 'misapplied') group by name_id having count(*) > 1))",
+"non-misapp-name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match where loader_name_id in (select id from orchids where record_type != 'misapplied') group by name_id having count(*) > 1))",
                                       order: "seq"},
-    "non-misapp-name-sharing-name-id-not-pp:" => { where_clause: "id in (select loader_name_id
+"non-misapp-name-sharing-name-id-not-pp:" => { where_clause: "id in (select loader_name_id
   from loader_name_match
  where name_id in (
     select name_id
@@ -499,11 +499,38 @@ having count(*) > 2
 having count(*)                     >  1
        ))",
                                       order: "seq"},
-    "has-preferred-name:"   => { where_clause: " exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)",
+"has-preferred-name:"   => { where_clause: " exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)",
                                       order: "seq"},
-    "has-preferred-name-without-instance:"   => { where_clause: " exists (select null from loader_name_match orn where loader_name.id = orn.loader_name_id and orn.standalone_instance_id is null and orn.relationship_instance_id is null)",
+"has-preferred-name-without-instance:"   => { where_clause: " exists (select null from loader_name_match orn where loader_name.id = orn.loader_name_id and orn.standalone_instance_id is null and orn.relationship_instance_id is null)",
                                       order: "seq"},
-    "has-no-preferred-name:"   => { where_clause: " not exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)"},
+"use-batch-default-ref:" => { where_clause: " exists (
+    select null
+      from loader_name_match
+ where loader_name.id = loader_name_match.loader_name_id
+   and loader_name_match.use_batch_default_reference)",
+                           order: "seq"},
+"use-existing-instance:" => { where_clause: " exists (
+    select null
+      from loader_name_match
+ where loader_name.id = loader_name_match.loader_name_id
+   and loader_name_match.standalone_instance_id is not null
+   and not loader_name_match.copy_synonyms_and_append_extras)",
+                           order: "seq"},
+"copy-and-append:" => { where_clause: " exists (
+    select null
+      from loader_name_match
+ where loader_name.id = loader_name_match.loader_name_id
+   and loader_name_match.standalone_instance_id is not null
+   and loader_name_match.copy_synonyms_and_append_extras)",
+                           order: "seq"},
+ "no-nomination:" => { where_clause: " loader_name.record_type = 'accepted' and exists (
+    select null
+      from loader_name_match
+ where loader_name.id = loader_name_match.loader_name_id
+   and not loader_name_match.use_batch_default_reference
+   and loader_name_match.standalone_instance_id is null)",
+                           order: "seq"},
+"has-no-preferred-name:"   => { where_clause: " not exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)"},
     "created-by:"=> { where_clause: "created_by = ?",
                                       order: "seq"},
     "updated-by:"=> { where_clause: "updated_by = ?",

@@ -24,6 +24,7 @@ class Loader::Batch < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
   has_many :loader_names, class_name: "Loader::Name", foreign_key: "loader_batch_id"
   has_many :batch_reviews, class_name: "Loader::Batch::Review", foreign_key: "loader_batch_id"
+  belongs_to :default_reference, class_name: "Reference", foreign_key: "default_reference_id", optional: true
   alias_attribute :reviews, :batch_reviews
   validates :name, uniqueness: true, presence: true
 
@@ -64,9 +65,9 @@ class Loader::Batch < ActiveRecord::Base
   end
 
   def update_if_changed(params, username)
+    params[:default_reference_id] = nil if params[:default_reference_typeahead].blank?
+    params.reject! {|name, value| name == 'default_reference_typeahead'}
     assign_attributes(params)
-    self.name = params[:name]
-    self.description = description_was if description.blank? && description_was.blank?
     if changed?
       self.updated_by = username
       save!

@@ -4,7 +4,8 @@
     <input name="name_string" id="bulk-operation-string" type="text" value="<%= session[:name_string] %>" class="form-control" required title="bulk operation string for batch work" />
   </div>
   <input name="gui_submit_place" id="gui-submit-place" type="hidden" title="Where this form is, so we can display result messages in the right place" value="global-tab" />
-  <input id="stats-submit" name="submit" type="submit" value="Show Stats" class="btn btn-primary width-9em" title="Show counts" />
+  <input id="stats-submit" name="submit" type="submit" value="Show Stats" class="btn btn-primary width-9em" title="Show bulk operation statistics" />
+  <input id="stats-hide" name="submit" type="submit" value="Hide Stats" class="btn btn-primary width-9em hidden" title="Hide bulk operation statistics" />
   <input id="create-matches-batch-submit" name="submit" type="submit" value="Create Preferred Matches" class="btn btn-primary width-15em" title="Create preferred matches" />
   <input id="create-instances-batch-submit" name="submit" type="submit" value="Create Draft Instances" class="btn btn-primary width-15em" title="Create draft instances" />
   <% if Rails.configuration.try('allow_orchid_tree_operations') %>
@@ -43,11 +44,15 @@
 <div id="add-instances-to-tree-error-message-container" class="error-container message-container"></div>
 <%= link_to "[clear]", orchids_batch_clear_path, class:"hidden message-clearer with-underline", remote: true, title: "Clear the messages" %> 
 <br>
+<%= link_to "Recent logs", search_path(query_string: "latest:",query_target: 'bulk_processing_logs'), title: "See logs", class: "with-underline" %> 
+<hr class="dark">
 <div id="bulk-ops-stats-container" class="">
 </div>
-<%= divider %>
 
-<h5>Important</h5>
+<%= link_to 'Bulk Operation Notes', loader_batch_bulk_processing_notes_path, {id: 'batch-processing-bulk-op-notes-btn', class: 'btn btn-primary', title: 'Show a summary overview of the loading process', remote: true} %>
+<%= link_to 'Hide', loader_batch_bulk_processing_notes_hide_path, {id: 'batch-processing-bulk-op-notes-hide-btn', class: 'btn btn-primary hidden', title: 'Hide the summary', remote: true} %>
+<div id="batch-processing-bulk-op-notes" class="hidden">
+<h5>Bulk Operation Notes</h5>
 
 <ul class="no-indent">
   <li/>The buttons run the task by matching the string you enter on the current batch.
@@ -58,4 +63,4 @@
   <li/>Attached synonyms <b>are</b> included in the processing with the accepted taxon
   <li/><b>Not</b> wildcarded, but you can add wildcards
 </ul>
-
+</div>

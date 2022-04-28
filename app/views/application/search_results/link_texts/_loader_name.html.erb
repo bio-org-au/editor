@@ -6,95 +6,106 @@
     <% when 'synonym' %>
       &mdash;&nbsp;
     <% when 'misapplied' %>
-      ^^&nbsp;
-    <% when 'hybrid_cross' %>
-      //&nbsp;
+      &mdash;&nbsp;
+    <% else %>
+      wat?
     <% end %>
   </span>
 <% end %>
 <span class='<%= "loader-name-simple-name" %>'>
 <%= "#{search_result.simple_name}" %>
 </span>
-| <%= search_result.matches.size %>m
+
+<% unless search_result.remark_to_reviewers.blank? %>
+  <span class="review loader-name remark-to-reviewers"><%= search_result.remark_to_reviewers.html_safe %></span>
+<% end %>
+<% unless search_result.higher_rank_comment.blank? %>
+        <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment.html_safe %></span>
+<% end %>
+
+| <span title="potential matches count"><%= search_result.matches.size %>m</span>
   <% if search_result.created_manually? %>
-    <span class='flag bgdarkslateblue white'>manually created</span>
+    <span class='flag bgdarkslateblue white' title='Loader name record was manually created'>manually created</span>
   <% end %>
 <% if search_result.loader_name_matches.blank? %>
   <% case search_result.matches.size %>
   <% when 0 %>
-    <span class="flag no-matches">No Matches</span>
+    <span class="flag no-matches" title='No potential matches found'>No Matches</span>
   <% when 1 %>
     <% if search_result.name_match_no_primary? %>
-      <span class="flag no-primary">No Primary</span>
+      <span class="flag no-primary" title='Potential match has no primary instance'>No Primary</span>
     <% end %>
   <% else %>
-    <span class="flag too-many-matches">Too many matches</span>
+    <span class="flag too-many-matches" title='More than one potential match'>Too many matches</span>
     <% if search_result.name_match_no_primary? %>
-      <span class="flag no-primary">No Primary</span>
+      <span class="flag no-primary" title='A potential match has no primary instance'>No Primary</span>
     <% end %>
   <% end %>
   <% if search_result.isonym? %>
-    <span class="flag isonym">Isonym</span>
+    <span class="flag isonym" title='This is an isonym'>Isonym</span>
   <% end %>
   <% if search_result.orth_var? %>
-    <span class="flag orth-var">Orth. Var.</span>
+    <span class="flag orth-var" title='This is an orthographic variant'>Orth. Var.</span>
   <% end %>
 <% else %>
   <% if search_result.loader_name_matches.first.manually_drafted? %>
-    <span class='flag on-tree-indicator'>manually drafted</span>
+    <span class='flag on-tree-indicator' title='This has been manually drafted'>manually drafted</span>
   <% end %>
   <% preferreds = search_result.loader_name_matches.collect{|o| "#{o.name_id}/#{o.instance_id}" } %>
-  <span class="flag preferred-name"><%= preferreds.size %>p</span>
-  <% standalones = search_result.loader_name_matches.select {|orcn| orcn.standalone_instance_id.present?} %>
-  <% if standalones.size > 0 %>
-    <span class="flag standalone-count"><%= "#{standalones.size}i" %></span>
+  <span class="flag preferred-name" title="Preferred matches"><%= preferreds.size %>p</span>
+  <% standalones = search_result.loader_name_matches.select {|lnm| lnm.standalone_instance_id.present?} %>
+  <% copy_and_appends = search_result.loader_name_matches.select {|lnm| lnm.standalone_instance_id.present? && lnm.copy_synonyms_and_append_extras} %>
+
+
+  <% if copy_and_appends.size > 0 %>
+    <span class="flag copy-and-append-count" title="Copy and append from standalone"><%= "#{copy_and_appends.size}c" %></span>
+  <% elsif standalones.size > 0 %>
+    <span class="flag use-existing-instance-count" title="Use existing instance"><%= "#{standalones.size}x" %></span>
     <% if standalones.size > 1 %>
-      <span class="flag standalone-count"><%= "#{standalones.size}i too many!" %></span><%= search_result.id %>, <%= search_result.loader_name_matches.size %>
+      <span class="flag standalone-count" title="Standalone instance count"><%= "#{standalones.size}i too many!" %></span><%= search_result.id %>, <%= search_result.loader_name_matches.size %>
     <% else %>
       <% if standalones.first.drafted? %>
-        <span class='flag on-tree-indicator'>drafted</span>
+        <span class='flag on-tree-indicator' title='Standalone instance has been drafted'>drafted</span>
       <% end %>
       <% if @working_draft.present? && standalones.first.standalone_instance.in_workspace?(@working_draft) %>
-        <span class='flag on-tree-indicator'>current draft</span>
+        <span class='flag on-tree-indicator' title="Record is in the current draft tree">current draft</span>
       <% end %>
     <% end %>
   <% end %>
+  <% use_default_ref = search_result.loader_name_matches.select {|lnm| lnm.using_default_ref?} %>
+  <% if use_default_ref.size > 0 %>
+    <span title="Use default reference" class="flag use-default-ref"><%= "#{use_default_ref.size}d" %></span>
+  <% end %>
   <% relationships = search_result.loader_name_matches.select {|orcn| orcn.relationship_instance_id.present?} %>
   <% if relationships.size > 0 %>
-    <span class="flag relationship-statement"><%= "#{relationships.size}c" %></span>
+    <span class="flag relationship-statement" title='Relationship instance count'><%= "#{relationships.size}c" %></span>
   <% end %>
  
 
 
   <% if search_result.isonym? %>
-    <span class="flag isonym-has-preferred-name">Isonym</span>
+    <span class="flag isonym-has-preferred-name" title='Isonymy has prefered name'>Isonym</span>
   <% end %>
   <% if search_result.orth_var? %>
-    <span class="flag orth-var-has-preferred-name">Orth. Var.</span>
+    <span class="flag orth-var-has-preferred-name" title='Orth. Var. has prefered name'>Orth. Var.</span>
   <% end %>
 <% end %>
 
 <% case search_result.record_type %>
 <% when 'accepted' %>
   <% if search_result.excluded? %>
-    <span class="flag misapplied">Excluded</span>
+    <span class="flag misapplied" title='Excluded name'>Excluded</span>
   <% end %>
 <% when 'synonym' %>
 <% when 'misapplied' %>
-  <% if preferreds.blank? %>
-    <span class="flag misapplied">Misapplied</span>
-  <% end %>
-<% when 'hybrid_cross' %>
-  <% if preferreds.blank? %>
-    <span class="flag hybrid-cross">Hybrid Cross</span>
-  <% end %>
+    <span class="flag misapplied" title='Misapplied name'>Misapplied</span>
 <% end %>
 
 <% if search_result.exclude_from_further_processing? %>
-    <span class="flag exclude-from-further-processing">No further processing</span>
+    <span class="flag exclude-from-further-processing" title='No further processing flag set'>No further processing</span>
 <% end %>
 <% if search_result.try('parent').try('exclude_from_further_processing?') %>
-    <span class="flag exclude-from-further-processing">No further processing via parent</span>
+    <span class="flag exclude-from-further-processing" title='No further processing flag of parent set'>No further processing via parent</span>
 <% end %>
 
 

@@ -127,7 +127,7 @@ class Search::ParsedRequest
     "batch review period" => "name:",
     "users" => "name:",
     "org" => "name_or_abbrev:",
-    "bulk processing log" => " log-entry: ",
+    "bulk processing log" => "log-entry:",
   }.freeze
 
   DEFAULT_ORDER_COLUMNS = {

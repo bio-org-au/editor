@@ -1,0 +1,3 @@
+$('#progress-message-container').html("Nomination started, please complete details below");
+$('#progress-message-container').removeClass('hidden');
+$('#copy-and-append-form-container').html('<%= j render partial: 'loader/names/tabs/ref_instance/copy_and_append_form', locals: {match: @match} %>');

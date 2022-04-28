@@ -1,24 +1,23 @@
 <div id="batch-loader-control-panel" class="reports-inner">
 
-<% increment_tab_index(0) %>
-<h4>Loading Taxonomy Data</h4>
-<%= render partial: 'loader/batches/bulk/overview' %>
-
-<%= divider %>
 <% if session[:default_loader_batch_id].blank? %>
-  Please select a default batch.
+  <h4>Please select a default batch to work on</h4>
+  <%= render partial: 'detail_line',
+    locals: {label: 'query the batch stacks',
+             info: link_to("Batch Stacks",
+                          search_path(
+                            query_string: "*",
+                            query_target: 'batch stacks',
+             ),
+                            title:"Query batch in stack format",class:'blue')} %>
+
 <% else %>
+  <h3>Default batch: <%= session[:default_loader_batch_name] %></h3>
+  <% increment_tab_index(0) %>
+  <h4>Loading Taxonomy Data</h4>
+  <%= render partial: 'loader/batches/bulk/overview' %>
   <h4>Bulk Operations</h4>
   <%= render partial: 'loader/batches/bulk/form' %>
-<% end %>
-
-<%= link_to "See recent logs", search_path(query_string: "latest:",query_target: 'bulk_processing_logs'), title: "See logs", class: "with-underline" %> 
-<hr class="dark">
-
-
-<%= divider %>
-<% unless session[:default_loader_batch_id].blank? %>
-  <h4>Default Batch Summary</h4>
   <%= render partial: 'loader/batches/bulk/stats' %>
 <% end %>
 

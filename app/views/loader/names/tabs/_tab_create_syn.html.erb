@@ -2,7 +2,7 @@
 <% unless @loader_name.accepted? %>
   Not an accepted raw loader name, so you cannot create a synonym for it.
 <% else %>
-  <h4>Create LoaderName synonym for <%= @loader_name.simple_name %></h4>
+  <h5>Create LoaderName synonym for <%= @loader_name.simple_name %></h5>
   <% loader_name = @loader_name.new_synonym %>
   <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: {loader_name: loader_name} %>
 <% end %>

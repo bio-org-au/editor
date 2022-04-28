@@ -141,6 +141,24 @@ a:hover.blue           { color: blue; }
   color: white;
 }
 
+.use-default-ref,
+.use-batch-default-reference {
+  background: mediumvioletred;
+  color: white;
+}
+
+.use-existing-instance-count ,
+.use-an-existing-instance {
+  background: darkred;
+  color: white;
+}
+
+.copy-and-append-count,
+.copy-and-append {
+  background: orangered;
+  color: white;
+}
+
 .relationship-statement {
   background: darkslateblue;
   color: white;

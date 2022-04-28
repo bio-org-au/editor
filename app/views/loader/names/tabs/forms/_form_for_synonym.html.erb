@@ -1,6 +1,6 @@
 <%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
     <div class="form-group align-right">
-      <div class="nsl-inline-block align-left pull-left"><h4>Edit Synonym</h4></div>
+      <div class="nsl-inline-block align-left pull-left"><h5>Edit Synonym</h5></div>
       <% if loader_name.id.blank? %>
         <%= link_to 'Cancel', '/cancel-new-form', id: "loader-name-cancel",
           class: "btn btn-primary cancel-new-record-link",

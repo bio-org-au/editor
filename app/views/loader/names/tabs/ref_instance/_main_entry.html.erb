@@ -2,15 +2,19 @@
   <br><br>
   No preferred match, nothing to do here.
 <% else %>
-
-  <br><br>
   <% @loader_name.preferred_matches.each do |match| %>
-    <%= render partial: 'loader/names/tabs/ref_instance/main_entry_form', locals: {match: match} %>
+    <% if match.taxonomy_choice_made? %>
+      <h5>Current choice</h5>
+      <%= render partial: 'loader/names/tabs/ref_instance/show_current_choice', locals: {match: match} %>
+    <% else %>
+      <%= render partial: 'loader/names/tabs/ref_instance/three_way_choice_form', locals: {match: match} %>
+      <br><br>
+      <div id="search-result-details-info-message-container" class="message-container"></div>
+      <div id="search-result-details-error-message-container" class="error-container"></div>
+    <% end %>
   <% end %>
-
-  <% unless @loader_name.preferred_matches.first.standalone_instance_id.blank? %>
-    <%= render partial: 'loader/names/tabs/ref_instance/clear_standalone_instance.html.erb' %>
-  <% end %>
+  <br><br>
+  <%= render partial: 'loader/names/tabs/ref_instance/clear_standalone_instance' %>
 
 <% end %>
 

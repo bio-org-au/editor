@@ -1,3 +1,69 @@
+- :date: 27-Apr-2022
+  :jira_id: ''
+  :description: |-
+    Security Patch: upgrade Rails to 6.1.5.1
+- :date: 22-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: fix bulk processing logs default query field (so the no-directive query works)
+- :date: 21-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: refine text and icons in batch stack output
+- :date: 20-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: display remark-to-reviewers and higher-rank-comment in standard loader name listing (it's already showing in review mode)
+- :date: 20-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: adjust the logic for instances offered for a loader name so taxonomy instances are offered in the copy-and-append flow. Label fix.
+- :date: 20-Apr-2022
+  :jira_id: ''
+  :description: |-
+    Security Patches: async 2.6.4, nokogiri 1.13.4, rails 6.1.5, etc
+- :date: 19-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Loader Name Reference Instance tab operating with a 3-way choice, refined after last week's walk-through in dev.
+- :date: 01-Apr-2022
+  :jira_id: ''
+  :description: |-
+    Security Upgrade: JRuby library <code>puma</code> upgraded: should only affect development
+- :date: 01-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: allow removal of a batch default reference on the batch edit tab
+- :date: 01-Apr-2022
+  :jira_id: ''
+  :description: |-
+    Admin: show hostname on Admin page
+- :date: 31-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: tweaks following review of first cut - top save button, showing choice on details, flagging choice on LHS, adjusting text to suit record type, show clear button only when needed. 
+- :date: 30-Mar-2022
+  :jira_id: ''
+  :description: |-
+    JRuby Downgrade: go back to JRuby 9.3.1.0 (problems in Tomcat test)
+- :date: 29-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: loaders can now set a batch default reference and then choose that reference for a loader name, instead of picking a preferred match specific instance (first cut with one fix).
+- :date: 28-Mar-2022
+  :jira_id: ''
+  :description: |-
+    JRuby upgrade: 9.3.4.0
+- :date: 28-Mar-2022
+  :jira_id: ''
+  :description: |-
+    Security upgrade: JavaScript library upgrades 
+- :date: 23-Mar-2022
+  :jira_id: '4195'
+  :description: |-
+    Batch Loader: add batch name to bulk logs; move link to query logs closer to the form; tweak Ref Instance tab wording; prevent choosing synonym; and do not display common names in synonymy on Ref Instance tab.
+- :date: 25-Mar-2022
+  :release: true
 - :date: 23-Mar-2022
   :jira_id: '4078'
   :description: |-

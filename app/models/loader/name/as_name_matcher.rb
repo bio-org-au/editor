@@ -22,7 +22,7 @@ class Loader::Name::AsNameMatcher
     debug("Loader::Name::AsNameMatcher for loader::name: #{loader_name.simple_name} (#{loader_name.record_type})")
     @loader_name = loader_name
     @authorising_user = authorising_user
-    @log_tag = " for #{@loader_name.id}, seq: #{@loader_name.seq} #{@loader_name.simple_name} (#{@loader_name.true_record_type})"
+    @log_tag = " for #{@loader_name.id}, batch: #{@loader_name.batch.name} , seq: #{@loader_name.seq} #{@loader_name.simple_name} (#{@loader_name.true_record_type})"
   end
 
   def find_or_create_preferred_match
@@ -38,10 +38,10 @@ class Loader::Name::AsNameMatcher
     else
       return 0
     end
-  #rescue => e
-    #Rails.logger.error(e.to_s)
-    #log_to_table("Error: preferred match problem for #{@loader_name.id}, seq: #{@loader_name.seq} #{@loader_name.taxon} - #{e.to_s}")
-    #return 0
+  rescue => e
+    Rails.logger.error(e.to_s)
+    log_to_table("Error: finding or creating preferred match for batch - #{e.to_s}")
+    return 0
   end
 
   def stop(msg)
@@ -59,7 +59,7 @@ class Loader::Name::AsNameMatcher
       create_match
       true
     else
-      log_to_table("Make preferred match problem: #{non_creation_reason}")
+      log_to_table("Making preferred match but no single suitable preferred name found")
       false
     end
   end

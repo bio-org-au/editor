@@ -10,10 +10,28 @@
       class="show-details-link"
       title="Name record. Select to show details."
       tabindex="<%= increment_tab_index %>"> 
+      <b>
       <%= record.full_name %>
       <%= "[#{record.name_status.name_without_brackets}]" unless record.name_status.legitimate? %>
       <%= record.name_tags.collect{|name_tag| name_tag.name}.join(', ') %>
+      </b>
       <% if record.duplicate? %> [Duplicate] <% end %>
     </span>
+    <span class="pull-right">
+      <%= link_to("#{ShardConfig.name_space} #{icon('external-link-square')}".html_safe,
+              "#{Rails.configuration.try('nsl_links')}rest/name/apni/#{record.id}/api/apni-format",
+            title: "#{ShardConfig.name_space} search by ID. Opens in another tab or window.",
+            class: "rebeccapurple",
+            target: "_editor_to_apni",
+            tabindex: increment_tab_index) %>
+          &nbsp;|&nbsp;
+   <%= link_to("Editor #{icon('external-link-square')}".html_safe,
+                search_path(query_string: "id: #{record.id} show-instances:",query_target: 'names'),
+                          tabindex: increment_tab_index,
+                          title: "Show the name in the Editor",
+                          target: "_editor_to_apni",
+                          class: 'rebeccapurple') %>
+    </span>
+
   </td>
 </tr>

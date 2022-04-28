@@ -68,6 +68,7 @@
     <tr><td>Application version</td><td> <%= Rails.configuration.try('version') %> </td></tr>
     <tr><td>Path to broadcast file</td><td> <%= Rails.configuration.try(:path_to_broadcast_file) %> </td></tr>
     <tr><td>Namespace</td><td> <%= Namespace.try(:default).try(:name) %> </td></tr>
+    <tr><td>Hostname</td><td> <%= Socket.gethostname %> </td></tr>
     <tr><td colspan="2">&nbsp;</td></tr>
     </table>
 

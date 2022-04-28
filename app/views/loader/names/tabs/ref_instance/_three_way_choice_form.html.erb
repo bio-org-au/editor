@@ -1,0 +1,70 @@
+<script>
+function show_use_batch_default_ref() {
+  $('.choices').addClass('hidden')
+  $('.message-container').html('');
+  $('.error-container').html('');
+  $.get( window.relative_url_root + "/loader/name/matches/use-batch-default-ref-form/<%= match.id %>", function( data ) {
+  });
+  $('#use-batch-default-ref-form-container').removeClass('hidden')
+}
+function show_use_existing() {
+  $('.choices').addClass('hidden')
+  $('.message-container').html('');
+  $('.error-container').html('');
+  $('#copy-and-append-form-container').html('');
+  $('#use-existing-instance-form-container').html('Loading...');
+  $('#use-existing-instance-form-container').removeClass('hidden');
+  $.get( window.relative_url_root + "/loader/name/matches/use-existing-instance-form/<%= match.id %>", function( data ) {
+  });
+}
+function show_copy_and_append() {
+  $('.choices').addClass('hidden');
+  $('.message-container').html('');
+  $('.error-container').html('');
+  $('#use-existing-instance-form-container').html('');
+  $('#copy-and-append-form-container').html('Loading...');
+  $('#copy-and-append-form-container').removeClass('hidden');
+  $.get( window.relative_url_root + "/loader/name/matches/copy-and-append-form/<%= match.id %>", function( data ) {
+  });
+}
+</script>
+
+<h5>Choose how this name will be added to taxonomy.</h5>
+Select an option below, then confirm your choice. Some options require a secondary selection before confirmation.
+<br>
+<br>
+<%= form_with do |f1| %>
+  <%= f1.radio_button :choice, "use_batch_default_ref", checked: match.use_batch_default_reference, onClick: "show_use_batch_default_ref();" %>
+  <%= f1.label :choice_use_batch_default_ref, "Use batch default reference", class: 'xfont-weight-normal' %>
+  <br><span class='font-weight-normal'>Create a draft instance for the default reference and attach synonyms from the loader</span>
+  <br>
+  <%= f1.radio_button :choice, "use_existing", checked: match.standalone_instance_id.present? && !match.copy_synonyms_and_append_extras , onClick: "show_use_existing();" %>
+  <%= f1.label :choice_use_existing, "Use an existing instance", class: 'xfont-weight-normal' %>
+  <br><span class='font-weight-normal'>Attach a selected instance from the matching Name record</span>
+  <br>
+  <%= f1.radio_button :choice, "create_and_copy",
+    checked: match.standalone_instance_id.present? && match.copy_synonyms_and_append_extras,
+    onClick: "show_copy_and_append();" %>
+  <%= f1.label :choice_create_and_copy, "Copy and append", class: 'xfont-weight-normal' %>
+  <br><span class='font-weight-normal'>Create a draft instance for the default reference, attach synonyms from a selected instance, then append loader details</span>
+<% end %>
+
+<div id="progress-message-container" class="message-container"></div>
+<%= divider %>
+
+<% show = match.use_batch_default_reference %>
+<div id="use-batch-default-ref-form-container" class="choices <%= 'hidden' unless show %>">
+  <%= render partial: 'loader/names/tabs/ref_instance/use_batch_default_ref_form', locals: {match: match} if show %>
+</div>
+
+<% show = match.standalone_instance_id.present? && !match.copy_synonyms_and_append_extras %>
+<div id="use-existing-instance-form-container" class="choices <%= 'hidden' unless show %>" >
+  <%= render partial: 'loader/names/tabs/ref_instance/use_existing_form', locals: {match: match} if show %>
+</div>
+
+<% show = match.standalone_instance_id.present? && match.copy_synonyms_and_append_extras %>
+<div id="copy-and-append-form-container" class="choices <%= 'hidden' unless show %>">
+  <%= render partial: 'loader/names/tabs/ref_instance/copy_and_append_form', locals: {match: match} if show %>
+</div>
+
+

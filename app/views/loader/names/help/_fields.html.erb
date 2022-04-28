@@ -105,6 +105,35 @@
   <% end %>
 </table>
 
+  <h4>Taxonomy Instance Choice</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'use-batch-default-ref:',
+     description: "Loader name has a preferred match and that preferred match is set to use the batch default reference"},
+    {field_name: 'use-existing-instance:',
+     description: "Loader name has a preferred match and that preferred match is set to an existing instance"},
+    {field_name: 'copy-and-append:',
+     description: "Loader name has a preferred match and that preferred match is set to copy and append instances from an existing instance onto a new instance"},
+    {field_name: 'no-nomination:',
+     description: "Loader name has a preferred match and that preferred match has no decision made on how to create or obtain an instance"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
   <h4>More from Orchids (not all tested as at 28 January 2022)</h4>
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th></tr>

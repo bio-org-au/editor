@@ -408,6 +408,7 @@ Rails.application.routes.draw do
   match "/trees/run/valrep", as: "run_valrep", to: "trees#run_valrep", via: :get
 
   namespace :loader do
+    match "batches/default_reference_suggestions", as: "batches_default_reference_suggestions", to: "batches#default_reference_suggestions", via: :get
     resources :batches
     match "batches/stats/hide", as: "hide_batch_stats", to: "batches#hide_stats", via: :get
     match "batches/stats/:id", as: "batch_stats", to: "batches#stats", via: :get
@@ -419,6 +420,9 @@ Rails.application.routes.draw do
     
     match "batches/processing/overview", as: "batch_processing_overview", to: "batches#processing_overview", via: :get
     match "batches/processing/overview/hide", as: "batch_processing_overview_hide", to: "batches#hide_processing_overview", via: :get
+    match "batches/bulk/processing/notes", as: "batch_bulk_processing_notes", to: "batches#bulk_processing_notes", via: :get
+    match "batches/bulk/processing/notes/hide", as: "batch_bulk_processing_notes_hide", to: "batches#hide_bulk_processing_notes", via: :get
+    match "batches/bulk/processing/stats/hide", as: "batch_bulk_processing_stats_hide", to: "batches#hide_bulk_processing_stats", via: :get
   end
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
@@ -432,10 +436,17 @@ Rails.application.routes.draw do
     namespace :name do
       match "matches/create/:id", as: "matches_set", to: "matches#set", via: :patch
       match "matches/delete/all/:id", as: "matches_delete_all", to: "matches#delete_all", via: :delete
+      match "matches/use/batch/default/ref/:id", as: "matches_use_batch_default_ref", to: "matches#use_batch_default_ref", via: :patch
       match "matches/:id", as: "matches", to: "matches#set", via: :post
-      match "matches/add_or_remove/:id", as: "match_add_or_remove", to: "matches#create_or_delete", via: :post
-      match "matches/set-standalone-instance/:id", as: "set_standalone_instance", to: "matches#set_standalone_instance", via: :patch
-      match "matches/clear-standalone-instance/:id", as: "match_clear_standalone_instance", to: "matches#clear_standalone_instance", via: :patch
+      match "matches/add_or_remove/:id", as: "match_add_or_remove", to: "matches#create_or_delete_for_misapp", via: :post
+      match "matches/taxonomy-instance/:id", as: "taxonomy_instance", to: "matches#taxonomy_instance", via: :patch
+      match "matches/use-batch-default-ref-form/:id", as: "matches_use_batch_default_ref_form", to: "matches#show_batch_default_ref_form", via: :get
+      match "matches/use-existing-instance-form/:id", as: "matches_use_existing_instance_form", to: "matches#use_existing_instance_form", via: :get
+      #match "matches/create-and-copy-form/:id", as: "matches_create_and_copy_form", to: "matches#create_and_copy_form", via: :get
+      match "matches/copy-and-append-form/:id", as: "match_copy_and_append_form", to: "matches#copy_and_append_form", via: :get
+      match "matches/use-existing-instance/:id", as: "matches_use_existing_instance", to: "matches#use_existing_instance", via: :patch
+      match "matches/create-and-copy/:id", as: "matches_create_and_copy", to: "matches#create_and_copy", via: :patch
+      match "matches/clear-taxonomy-nomination/:id", as: "match_clear_taxonomy_nomination", to: "matches#clear_taxonomy_nomination", via: :patch
       resources :matches, only: [:update]
     end
   end

@@ -4,6 +4,8 @@
 <%= render partial: 'detail_line',
            locals: {info: @loader_batch.description, label: 'description'} %>
 <%= render partial: 'detail_line',
+           locals: {info: @loader_batch.default_reference&.citation, label: 'default reference'} %>
+<%= render partial: 'detail_line',
       locals: {label: 'loader names',
                info: link_to( @loader_batch.loader_names.size,
                         search_path(

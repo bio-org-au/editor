@@ -355,6 +355,10 @@ class Loader::Name < ActiveRecord::Base
     record_type == 'accepted'
   end
 
+  def preferred_match?
+    preferred_matches.size > 0
+  end
+
   def self.create_preferred_matches(name_s, batch_id, authorising_user, work_on_accepted)
     #if work_on_accepted
       self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
@@ -366,12 +370,14 @@ class Loader::Name < ActiveRecord::Base
 
 
   def self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
+    entry = "Task started: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}"
+    BulkProcessingLog.log(entry, 'job controller')
     attempted = records = 0
     self.name_string_search_no_excluded(name_s).where(loader_batch_id: batch_id).order(:seq).each do |loader_name|
       attempted += 1
       records += loader_name.create_preferred_match(authorising_user)
     end
-    entry = "Task finished: create preferred matches for accepted taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    entry = "Task finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
     BulkProcessingLog.log(entry, 'job controller')
     return attempted, records
   end
@@ -382,7 +388,10 @@ class Loader::Name < ActiveRecord::Base
       attempted += 1
       records += match.create_preferred_match(authorising_user)
     end
-    entry = "Task finished: create preferred matches for excluded taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    entry = "Task finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} excluded taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+
+    @log_tag = " for #{@loader_name.id}, batch: #{@loader_name.batch.name} , seq: #{@loader_name.seq} #{@loader_name.simple_name} (#{@loader_name.true_record_type})"
+
     BulkProcessingLog.log(entry, 'job controller')
     return attempted, records
   end

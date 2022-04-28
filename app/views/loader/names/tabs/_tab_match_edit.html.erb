@@ -1,6 +1,6 @@
 <% increment_tab_index(0) %>
 
-<h4><%= pluralize(@loader_name.loader_name_matches.size,'Match') %> Chosen </h4>
+<h5><%= pluralize(@loader_name.loader_name_matches.size,'Match') %> Chosen </h5>
 <ol>
 <% @loader_name.loader_name_matches.order('id').each do |loader_name_match| %>
   <li>id: <%= loader_name_match.id %>

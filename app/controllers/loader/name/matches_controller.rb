@@ -17,8 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Name::MatchesController < ApplicationController
-  before_action :find_loader_name,
-    only: [:set, :set_standalone_instance, :clear_standalone_instance]
+  before_action :find_loader_name, only: [:set, :taxonomy_instance] 
   before_action :find_loader_name_match, only: [:update]
   #before_action :find_loader_name_match, only: [:delete]
 
@@ -26,32 +25,32 @@ class Loader::Name::MatchesController < ApplicationController
   # a create or a delete or no change because user has radio
   # buttons to add or remove a match record.
   # This is for 'accepted' records or synonyms, where only 
-  # one match is allower per loader-name.
+  # one match is allowed per loader-name.
   def set
     apply_changes
     render
    rescue => e
-     logger.error("Loader::Name::Matches#create rescuing #{e}")
+     logger.error("Loader::Name::Matches#set rescuing #{e}")
      @message = e.to_s
      render "create_error", status: :unprocessable_entity
   end
 
   def delete_all
     saved_matches = Loader::Name::Match.where(loader_name_id: params[:id])
-    raise "no record for params[:id]: #{params[:id]}" if saved_matches.empty?
+    raise "No record in delete_all for params[:id]: #{params[:id]}" if saved_matches.empty?
     saved_matches.each do |match|
       match.delete
     end
   end
 
   # For misapplications
-  def create_or_delete
+  def create_or_delete_for_misapp
     @loader_name = Loader::Name.find(params[:id])
     Rails.logger.debug("@loader_name: #{@loader_name.id}")
     if params[:commit] == 'Remove'
       delete
     else
-      create_preferred_match2
+      create_for_misapp
     end
   end
 
@@ -81,39 +80,75 @@ class Loader::Name::MatchesController < ApplicationController
     render 'update_error', format: :js
   end
 
-  def set_standalone_instance
-    @match = @loader_name.preferred_matches.first
-    if @match.standalone_instance_id == loader_name_match_params[:standalone_instance_id].to_i
-      @message = 'No change'
-    elsif loader_name_match_params[:standalone_instance_id].blank?
-      @message = 'No change'
-    else
-      @match.standalone_instance_id = loader_name_match_params[:standalone_instance_id].to_i
-      @match.standalone_instance_found = true
-      @match.save!
-      @message = 'Saved'
-    end
-    render 'set_standalone_instance'
-  rescue => e
-    logger.error("Loader::Name::MatchesController set_standalone_instance error: #{e.to_s}")
-    @message = e.to_s
-    render 'set_standalone_instance_error', format: :js
+  def show_batch_default_ref_form
+    @match = Loader::Name::Match.find(params[:id])
   end
 
-  def clear_standalone_instance
-    @match = @loader_name.preferred_matches.first
-    if @match.standalone_instance_id.blank? 
-      @message = 'No change'
-    else
-      @match.standalone_instance_id = nil
-      @match.standalone_instance_found = false
-      @match.save!
-      @message = 'Cleared'
-    end
+  def use_batch_default_ref
+    @match = Loader::Name::Match.find(params[:id])
+    @match.use_batch_default_reference = true
+    @match.standalone_instance_id = nil
+    @match.standalone_instance_found = false
+    @match.copy_synonyms_and_append_extras = false
+    save_if_changed('Confirmed', 'Not confirmed')
+    render 'ref_instance_nomination', format: :js
   rescue => e
-    logger.error("Loader::Name::MatchesController clear_standalone_instance error: #{e.to_s}")
+    logger.error("Loader::Name::MatchesController use_batch_default_ref error: #{e.to_s}")
     @message = e.to_s
-    render 'clear_standalone_instance_error', format: :js
+    render 'ref_instance_nomination_error', format: :js
+  end
+
+  def use_existing_instance_form
+    @match = Loader::Name::Match.find(params[:id])
+  end
+
+  def use_existing_instance
+    raise 'Please choose an instance' if loader_name_match_params[:standalone_instance_id].blank?
+
+    @match = Loader::Name::Match.find(loader_name_match_params[:id])
+    @match.use_batch_default_reference = false
+    @match.standalone_instance_id = loader_name_match_params[:standalone_instance_id]
+    @match.standalone_instance_found = true
+    @match.copy_synonyms_and_append_extras = false
+    save_if_changed
+    render 'ref_instance_nomination'
+  rescue => e
+    logger.error("Loader::Name::MatchesController#use_existing_instance error: #{e.to_s}")
+    @message = e.to_s
+    render 'ref_instance_nomination_error', format: :js
+  end
+
+  def copy_and_append_form
+    @match = Loader::Name::Match.find(params[:id])
+  end
+
+  def create_and_copy
+    raise 'Please choose an instance' if loader_name_match_params[:standalone_instance_id].blank?
+
+    @match = Loader::Name::Match.find(loader_name_match_params[:id])
+    @match.use_batch_default_reference = false
+    @match.standalone_instance_id = loader_name_match_params[:standalone_instance_id]
+    @match.standalone_instance_found = true
+    @match.copy_synonyms_and_append_extras = true
+    save_if_changed
+    render 'ref_instance_nomination'
+  rescue => e
+    logger.error("Loader::Name::MatchesController#create_and_copy error: #{e.to_s}")
+    @message = e.to_s
+    render 'ref_instance_nomination_error', format: :js
+  end
+
+  def clear_taxonomy_nomination
+    @match = Loader::Name::Match.find(params[:id])
+    @match.use_batch_default_reference = false
+    @match.standalone_instance_id = nil
+    @match.standalone_instance_found = false
+    @match.copy_synonyms_and_append_extras = false
+    save_if_changed('Cleared', 'Not cleared')
+  rescue => e
+    logger.error("Loader::Name::MatchesController clear_taxonomy_nomination error: #{e.to_s}")
+    @message = e.to_s
+    render 'clear_taxonomy_nomination_error', format: :js
   end
 
   private
@@ -137,12 +172,12 @@ class Loader::Name::MatchesController < ApplicationController
     stop_if_nothing_changed
     return 'No change' if params[:loader_name].blank? 
 
-    remove_unwanted_loader_names_matches
+    remove_unwanted_loader_name_matches
     create_preferred_match
   end
 
   # Doesn't handle multiple name_ids being passed in params
-  def remove_unwanted_loader_names_matches
+  def remove_unwanted_loader_name_matches
     return if @loader_name_matches.blank? 
     @loader_name_matches.each do |match|
       unless loader_name_params[:name_id] == match[:name_id]
@@ -173,9 +208,8 @@ class Loader::Name::MatchesController < ApplicationController
     loader_name_match.save!
     'Saved'
   end
-
   
-  def create_preferred_match2
+  def create_for_misapp
     loader_name_match = ::Loader::Name::Match.new
     loader_name_match.loader_name_id = @loader_name.id
     loader_name_match.name_id = loader_name_match_params[:name_id]
@@ -216,6 +250,16 @@ class Loader::Name::MatchesController < ApplicationController
     render 'update_error', format: :js
   end
 
+  def save_if_changed(success_message = 'Saved',
+                      no_change_message = 'No change')
+    if @match.changed? 
+      @match.save!
+      @message = success_message
+    else
+      @message = no_change_message
+    end
+  end
+
   # In this controller because some loader_name_match actions originate from 
   # a loader_name record
   def loader_name_params
@@ -233,6 +277,9 @@ class Loader::Name::MatchesController < ApplicationController
     params.require(:loader_name_match).permit(:id, :name_id, :instance_id,
                                               :loader_name_id,
                                              :relationship_instance_type_id,
-                                             :standalone_instance_id)
+                                             :standalone_instance_id,
+                                             :standalone_instance_found,
+                                             :use_batch_default_reference,
+                                             :copy_synonyms_and_append_extras)
   end
 end

@@ -1,7 +1,14 @@
-
   <% wd = 'loader/names/tabs/ref_instance/record' %>
-  <%= form_with(model: match, url: loader_name_set_standalone_instance_path)  do |form| %>
+  <%= form_with(model: match, url: loader_name_matches_use_existing_instance_path)  do |form| %>
+    <div> Choose an instance
+    <%= form.submit "Save", remote: true, class: 'width-5em btn btn-primary pull-right', title: 'Save your choice.' %>
+    </div>
+    <div id="search-result-details-info-message-container-top" class="message-container"></div>
+    <div id="search-result-details-error-message-container-top" class="error-container"></div>
     <%= form.hidden_field :id %>
+    <%= form.hidden_field :use_batch_default_reference, value: false %>
+    <%= form.hidden_field :copy_synonyms_and_append_extras, value: false %>
+    <%= form.hidden_field :standalone_instance_found, value: true %>
   <table border="0">
   <% results = Search::OnName::WithInstances.new([match.name]).names_with_instances %>
   <% results.each do |record| %>
@@ -12,10 +19,15 @@
           locals: {record: record, form: form, give_me_focus: give_me_focus} %>
       <% when :instance_as_part_of_concept %>
         <%= render partial: "#{wd}/instance_as_part_of_concept_record",
-          locals: {record: record, form: form, give_me_focus: give_me_focus}%>
+          locals: {record: record,
+                   form: form,
+                   give_me_focus: give_me_focus,
+                   allow_all_even_if_in_current_tree: false }%>
       <% when 'instance-is-cited-by' %>
-        <%= render partial: "#{wd}/instance_is_cited_by",
-          locals: {record: record, form: form, give_me_focus: give_me_focus} %>
+        <% unless record.instance_type.name =~ /\Acommon/ %>
+          <%= render partial: "#{wd}/instance_is_cited_by",
+            locals: {record: record, form: form, give_me_focus: give_me_focus} %>
+        <% end %>
       <% when 'cited-by-relationship-instance-name-only' %>  
         <%= render partial: "#{wd}/instance_cited_by_relationship_instance_name_only", 
            locals: {record: record, form: form, give_me_focus: give_me_focus} %>
@@ -31,5 +43,5 @@
     <% end %>
     </table>
       <br>
-    <%= form.submit "Save", remote: true, class: 'btn btn-primary pull-right', title: 'Save the preferred usage.' %>
+    <%= form.submit "Save", remote: true, class: 'width-5em btn btn-primary pull-left', title: 'Save your choice.' %>
 <% end %>

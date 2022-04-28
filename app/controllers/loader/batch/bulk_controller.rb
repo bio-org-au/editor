@@ -32,6 +32,8 @@ class Loader::Batch::BulkController < ApplicationController
     case params[:submit].downcase
     when 'show stats'
       show_stats
+    when 'hide stats'
+      hide_stats
     else
       change_data
     end
@@ -65,7 +67,7 @@ class Loader::Batch::BulkController < ApplicationController
     
     #@message = "Created #{records} matches out of #{attempted} records matching the string '#{params[:taxon_string]}'"
     #OrchidBatchJobLock.unlock!
-    @message = "Created....attempted: #{attempted}; records: #{records}"
+    @message = "Create preferred matches....attempted: #{attempted}; created: #{records}"
     render 'create_preferred_matches', locals: {message_container_id_prefix: prefix }
   #rescue => e
     #logger.error("BulkController#create_preferred_matches: #{e.to_s}")
@@ -79,9 +81,13 @@ class Loader::Batch::BulkController < ApplicationController
   end
 
   def show_stats
-    @work_on_accepted = true
+    @work_on_accepted = true # todo: logic for excluded
     @stats = Loader::Batch::Stats::Reporter.new(params[:name_string], (session[:default_loader_batch_id]||0), @work_on_accepted)
     render 'stats'
+  end
+
+  def hide_stats
+    render 'hide_stats'
   end
 
   def set_accepted_excluded_mode
