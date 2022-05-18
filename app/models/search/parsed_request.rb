@@ -367,8 +367,10 @@ class Search::ParsedRequest
       @original_query_target = @query_target
     else
       debug("@params: #{@params.inspect}")
-      unless loader_batch_preprocessing?
-        raise "Unknown query target: #{@query_target}"
+      if Rails.configuration.try(:batch_loader_aware)
+        unless loader_batch_preprocessing?
+          raise "Unknown query target: #{@query_target}"
+        end
       end
     end
     tokens 

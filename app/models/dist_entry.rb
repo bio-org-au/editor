@@ -40,4 +40,8 @@ class DistEntry < ActiveRecord::Base
   def entry
     :display
   end
+
+  def self.id_for_display(display)
+    DistEntry.find_by(display: display).id
+  end
 end

@@ -1,0 +1,54 @@
+<h5>
+  Taxonomy Edit Profile
+</h5>
+
+<p>This information is displayed with the current instance in the latest accepted taxonomy.
+
+<h6>
+Current Element in Taxonomy
+</h6>
+<% current_te = @instance.accepted_tree_version_element.tree_element %>
+  #<%= current_te.id %>;
+  <%= current_te.updated_at.strftime("%d-%b-%Y") %>;
+  <%= current_te.updated_by %><br>
+  <pre>
+  <%= JSON.pretty_generate(current_te.profile) %>
+  </pre>
+
+<h6>Bubbles (sorted alphabetically, display only)</h6>
+<%= current_te.tede_entries_arr.sort.join(',') %>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<h6>
+Current Element in Taxonomy
+</h6>
+
+<%= form_with model: current_te do |form| %>
+  <% show_submit = false %>
+  <% if current_te.distribution? %>
+
+  Distribution: <%= form.text_field :distribution_value, title: 'Distribution', class: 'form-control' %>
+  <br>
+
+  <% end %>
+
+  <% if current_te.comment? %>
+
+  Comment: <%= form.text_field :comment_value, title: 'Comment', class: 'form-control' %>
+  <br>
+
+  <% end %>
+
+  <% if current_te.distribution? || current_te.comment? %>
+
+  <%= form.submit :Save, title: 'Save changes', class: 'btn btn-primary width-3em' %>
+
+  <% end %>
+<% end %>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>

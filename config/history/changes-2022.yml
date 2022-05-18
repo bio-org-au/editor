@@ -1,3 +1,21 @@
+- :date: 17-May-2022
+  :jira_id: '4234'
+  :description: |-
+    Batch Loader: prevent <code>loader_name</code> being considered in defined queries unless the Editor is aware of the batch loader (via config)
+- :date: 11-May-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: early version which aligns the "bubbles" with the edited distribution string
+- :date: 01-May-2022
+  :jira_id: '4220'
+  :description: |-
+    Taxonomy profile edit: fix display bug on the Instance Detail tab for instances in the current taxonomy. (Slipped through in the preceding changes.)
+- :date: 29-Apr-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: Edit Profile tab (distribution, comment) for evaluation as partial answer to the question (but not ready for full-scale testing yet)
+- :date: 29-Apr-2022
+  :release: true
 - :date: 27-Apr-2022
   :jira_id: ''
   :description: |-

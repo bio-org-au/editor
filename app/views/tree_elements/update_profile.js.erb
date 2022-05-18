@@ -1,0 +1,12 @@
+$('.message-container').html('');
+$('input#author_name').focus();
+$('#search-result-details-info-message-container').html('<%= @message %>');
+
+<% if @refresh %>
+setTimeout(
+  function()
+  {
+    $('#instance-edit-profile-tab').click();
+  }, 500
+);
+<% end %>

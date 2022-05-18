@@ -248,6 +248,7 @@ class InstancesController < ApplicationController
       offer << "tab_unpublished_citation"
       offer << "tab_classification"
       offer << "tab_profile_details" if @instance.profile?
+      offer << "tab_edit_profile" if @instance.profile? && @instance.show_apc?
     end
     offer << "tab_comments"
     offer << "tab_copy_to_new_reference" if offer_tab_copy_to_new_ref?

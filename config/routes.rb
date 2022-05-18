@@ -236,6 +236,8 @@ Rails.application.routes.draw do
 
   match "tree_elements/:id/tab/:tab", as: "tree_element_tab", to: "tree_elements#tab", via: :get
 
+  match "tree_elements/profile/:id", as: "tree_element", to: "tree_elements#update_profile", via: :patch
+
   match "references/typeahead/on_citation/duplicate_of/:id",
         as: "references_typeahead_on_citation_duplicate_of_current",
         to: "references#typeahead_on_citation_duplicate_of_current", via: :get

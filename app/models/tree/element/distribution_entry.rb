@@ -15,31 +15,10 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-
-#  Distribution Region
-class DistRegion < ActiveRecord::Base
-  self.table_name = "dist_region"
-  self.primary_key = "id"
-  self.sequence_name = "nsl_global_seq"
-
-  has_many :dist_entries,
-           foreign_key: "region_id"
-
-  def self.sorted
-    DistRegion.all
-        .sort {|a, b| a.sort_order <=> b.sort_order}
-  end
-
-  def self.region_names
-    DistRegion.all
-        .sort {|a, b| a.sort_order <=> b.sort_order}
-        .collect {|dr| dr.name}
-  end
-
-  def self.as_hash
-    dr_hash = {}
-    DistRegion.all.each { |dr| dr_hash[dr.name] = dr.sort_order }
-    dr_hash
-  end
-
+#
+# Loader Batch entity
+class Tree::Element::DistributionEntry < ActiveRecord::Base
+  strip_attributes
+  self.table_name = "tree_element_distribution_entries"
 end
+
