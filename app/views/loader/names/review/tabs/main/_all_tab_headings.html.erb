@@ -6,6 +6,7 @@
              this_tab: 'tab_details', 
              link_id: 'loader-name-details-tab', 
              link_title: 'View a summary, including any comments',
+             display_component: display_component || 'none',
              tab_index: @tab_index,
              prev_tab: '.search-result.loader-names-review-tab', 
              next_tab: '.search-result.loader-names-rev-comm-tab' } %> 
@@ -17,11 +18,14 @@
              this_tab: 'tab_comment', 
              link_id: 'loader-name-rev-comments-tab', 
              link_title: 'Add a comment',
+             display_component: display_component || 'none',
              tab_index: @tab_index,
              first: false,
-             last: true,
+             last: true, 
              prev_tab: '.search-result.loader-name-review-tab', 
              next_tab: '.search-result.loader-names-details-tab' } %> 
   <% end %>
+  <li>
+    <%= display_component %>
 </ul>
 

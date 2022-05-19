@@ -17,8 +17,8 @@ module Search::QueryDefaults
   end
 
   def value_already_applied?
-    id_regex = /batch-id: #{session[:default_loader_batch_id]}/
-    name_regex = /batch-name: #{session[:default_loader_batch_name]}/i
+    id_regex = /batch-id:/
+    name_regex = /batch-name:/
     default_name_regex = /default-batch: #{session[:default_loader_batch_name]}/i
     params[:query_string] =~ id_regex || 
       params[:query_string] =~ name_regex ||

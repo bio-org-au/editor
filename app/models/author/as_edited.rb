@@ -31,6 +31,9 @@ class Author::AsEdited < Author::AsTypeahead
   end
 
   def update_if_changed(params, typeahead_params, username)
+    # strip_attributes is in place and should make this unnecessary
+    # but it's not working in the way I expect
+    params.keys.each { |key| params[key] = nil if params[key] == '' } 
     assign_attributes(params)
     resolve_typeahead_params(typeahead_params)
     if changed?

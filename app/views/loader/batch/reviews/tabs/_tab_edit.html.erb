@@ -1,8 +1,13 @@
 <% increment_tab_index(0) -%>
 <%= render partial: 'loader/batch/reviews/forms/edit_form', locals: { orchid: @batch_review } %>
 <%= divider %>
-
-<%= render 'loader/batch/reviews/widgets/delete_widgets' %>
+<%= render 'loader/batch/reviews/widgets/delete_widgets' if @batch_review.allow_delete? %>
 <div id="search-result-details-info-message-container" class="message-container"></div>
 <div id="search-result-details-error-message-container" class="message-container"></div>
+
+
+<div class="hidden show-after-create">
+<a onclick="$('#query-submit').click();" href="javascript:void(0);" class="btn btn-primary" title="refresh the page">Refresh page</a>
+</div>
+
 

@@ -1,0 +1,16 @@
+
+<%= link_to("Show search results #{params['name_string']}",
+            search_path(query_string: "#{params['name_string']}",
+                        query_target: 'Loader names'),
+            class: 'with-underline',
+            title: 'Search loader name') %>
+<% @stats.report.each do | key, value | %> 
+  <%= "<h5>#{key.to_s.gsub(/_/,' ').capitalize}</h5>".html_safe %>
+  <%= render partial: 'stats_table', locals: { a_hash: value } %>
+  <%# if key.downcase == :lock %>
+<%# if OrchidBatchJobLock.locked? %>
+  <%#= link_to "Emergency unlock batch jobs", {controller: 'orchids_batch', action: 'unlock'}, {id: 'emergency-unlock-link', class: 'btn btn-primary', remote: true, title: "Unlock the batch lock", method: :post} %>
+<%# end %>
+  <%# end %>
+<% end %>
+

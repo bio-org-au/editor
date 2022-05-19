@@ -1,0 +1,88 @@
+<%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
+    <div class="form-group align-right">
+      <div class="nsl-inline-block align-left pull-left"><h5>Edit Misapplication</h5></div>
+      <% if loader_name.id.blank? %>
+          <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new loader name", tabindex: increment_tab_index, data: {element_id: "new-loader-name-#{params[:random_id]}"} %>
+      <% end %>
+      <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+    </div>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container"></div>
+
+    <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
+
+    <br>
+    <div class="form-group">
+      <label for="simple_name">Simple Name*</label>
+      <%= f.text_field :simple_name, class: 'form-control give-me-focus', required: true, title: "Enter simple name", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <% unless loader_name.new_record? %>
+
+      <div class="form-group">
+        <label for="full_name">Full Name*</label>
+        <%= f.text_field :full_name, class: 'form-control give-me-focus', required: true, title: "Enter full name", tabindex: increment_tab_index, autofocus: true %>
+      </div>
+
+    <% end %>
+
+    <div class="form-group">
+      <label for="family">Family*</label>
+      <%= f.text_field :family, class: 'form-control give-me-focus', required: true, title: "Enter family name", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label for="record_type">Record type*</label>
+      <%= f.hidden_field :record_type, value: 'misapplied' %>
+      <%= f.text_field :record_type, class: 'form-control', value: 'misapplied', disabled: true %>
+    </div>
+
+    <% unless loader_name.new_record? %>
+
+    <div class="form-group">
+      <label for="loader-name-parent-typeahead">Parent</label>
+      <input id="loader-name-parent-typeahead"
+             name="loader_name[parent_typeahead]"
+             class="typeahead form-control"
+             data-loader-name-id="<%= loader_name.id %>"
+             data-loader-batch-id="<%= loader_name.loader_batch_id %>"
+             type="text" 
+             tabindex="<%= increment_tab_index %>"
+             title="Loader name parents"
+             value="<%= loader_name.parent.try('simple_name') %>"/>
+     <p>If you change the parent, please also consider changing the seq field.</p>
+    </div>
+    <script>setUpLoaderNameParentTypeahead();</script>
+
+    <% end %>
+    <%= f.hidden_field(:parent_id, {}) %>
+
+    <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
+    <%#= render partial: "authors", locals: {f: f} %>
+
+    <div class="form-group">
+      <label for="comment">Comment</label>
+      <%= f.text_area :comment, class: 'form-control', title: "Enter comment", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label for="seq">Seq*</label>
+      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the simple name in the correct alphabetical/hierarchical order'}) %>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <% unless loader_name.id.blank? %>
+      <div class="form-group">
+        <br>
+      <label class="form-check-label">
+        <%= f.check_box(:no_further_processing, {class: 'xform-control', title: 'Exclude this record and any of its synonyms from further bulk processing.'}) %>
+        Exclude this record from further bulk processing
+      </label>
+      </div>
+    <% end %>
+    <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+<% end %>

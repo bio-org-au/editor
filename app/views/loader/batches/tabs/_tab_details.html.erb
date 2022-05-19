@@ -1,35 +1,70 @@
 <% increment_tab_index(0) %>
 <%= render partial: 'detail_line',
-           locals: {info: @loader_batch.name, label: 'Name'} %>
+           locals: {info: @loader_batch.name, label: 'name'} %>
 <%= render partial: 'detail_line',
-      locals: {info: @loader_batch.loader_names.size,
-               label: link_to('Loader Names',
+           locals: {info: @loader_batch.description, label: 'description'} %>
+<%= render partial: 'detail_line',
+           locals: {info: @loader_batch.default_reference&.citation, label: 'default reference'} %>
+<%= render partial: 'detail_line',
+      locals: {label: 'loader names',
+               info: link_to( @loader_batch.loader_names.size,
                         search_path(
                           query_string: "batch-id: #{@loader_batch.id}",
                           query_target: 'loader names'),
                title:"Query loader names",class:'blue')} %>
 
-<% if @view_mode == 'standard' %>
+<% if @view_mode == ViewMode::STANDARD %>
 
   <% if  @loader_batch.batch_reviews.empty? %>
     <%= render partial: 'detail_line', locals: {info: '',
                                                 label:'No batch reviews'} %>
   <% else %>
+    <%= render partial: 'detail_line',
+      locals: {label: 'batch reviews',
+               info: link_to(@loader_batch.batch_reviews.size,
+                            search_path(
+                              query_string: "batch-id: #{@loader_batch.id}",
+                              query_target: 'batch reviews'),
+                   title:"Query batch reviews",class:'blue')} %>
+  <% end %>
+
   <%= render partial: 'detail_line',
-        locals: {info: @loader_batch.batch_reviews.size,
-                 label: link_to('Batch Reviews',
+    locals: {label: 'query the stack',
+             info: link_to("#{@loader_batch.name} Stack",
                           search_path(
                             query_string: "batch-id: #{@loader_batch.id}",
-                            query_target: 'batch reviews'),
-                 title:"Query batch reviews",class:'blue')} %>
-  <% end %>
+                            query_target: 'batch stacks',
+                            focus_id: "loader-batch-#{@loader_batch.id}"),
+                            title:"Query batch in stack format",class:'blue')} %>
+
+  <%= render partial: 'detail_line',
+    locals: {label: 'query all stacks',
+             info: link_to("All Batch Stacks",
+                          search_path(
+                            query_string: "*",
+                            query_target: 'batch stacks',
+                            focus_id: "loader-batch-#{@loader_batch.id}"),
+                 title:"Query the batch stack",class:'blue')} %>
+
 
 <% end %>
 
 
+<%= divider %>
+<%= render partial: 'loader/batches/tabs/set_default_batch' %>
 <%= divider %>
 Loader Batch #<%= @loader_batch.id %>
 <h5>Metadata</h5>
 <%= created_by_whom_and_when(@loader_batch).html_safe %> <br>
 <%= updated_by_whom_and_when(@loader_batch).html_safe %>
 
+<%= divider %>
+
+Review workflow:
+<ol>
+  <li/>Create batch review  &nbsp; &nbsp;  <b> &lt;&lt; Next </b>
+  <li/>Create batch review period with date range
+  <li/>Add user batch reviewers
+  <li/>Review period starts
+  <li/>Review period ends
+</ol>

@@ -23,7 +23,7 @@ class Search::Help::PageMappings
 
   def initialize(params, view_mode)
     debug("Start for #{params[:help_id]}")
-    if view_mode == 'review' then
+    if view_mode == ::ViewMode::REVIEW then
       @partial = REVIEW_MAP[params[:help_id]]
     else
       @partial = MAP[params[:help_id]]
@@ -79,6 +79,8 @@ class Search::Help::PageMappings
     "orchid-processing-logs-search-examples" => "orchid_processing_logs/advanced_search/examples",
     "loader-batch-search-help" => "loader/batches/help/fields",
     "loader-batch-search-examples" => "loader/batches/help/examples",
+    "loader-batch-stack-search-help" => "loader/batch/stacks/help/fields",
+    "loader-batch-stack-search-examples" => "loader/batch/stacks/help/examples",
     "loader-name-search-help" => "loader/names/help/fields",
     "loader-name-search-examples" => "loader/names/help/examples",
     "batch-review-search-help" => "loader/batch/reviews/help/fields",

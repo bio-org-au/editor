@@ -1,0 +1,3 @@
+alter table batch_reviewer drop constraint batch_reviewer_user_id_org_id_batch_review_role_id_batch_re_key;
+
+alter table batch_reviewer add constraint reviewer_has_one_role_per_period_uk unique(user_id, batch_review_period_id);

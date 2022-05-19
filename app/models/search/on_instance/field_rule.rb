@@ -171,6 +171,20 @@ from comment where comment.instance_id = instance.id)",
                                  and exists (select null from ref_type
                                  where ref_type.id = ref.ref_type_id
                                  and lower(ref_type.name) in (?)))" },
+      "name-type:"            => { where_clause: " exists (select null
+                                 from name 
+                                 where name.id = instance.name_id
+                                 and exists (select null
+                                 from name_type
+                                 where name_type.id = name.name_type_id
+                                 and lower(name_type.name) like lower(?)))",
+                                 multiple_values: true,
+                                 multiple_values_where_clause:
+                                 " exists (select null from name
+                                 where name.id = instance.name_id
+                                 and exists (select null from name_type
+                                 where name_type.id = name.name_type_id
+                                 and lower(name_type.name) in (?)))" },
       "cites-an-instance:"    => { where_clause: " cites_id is not null" },
 
       "is-cited-by-an-instance:" => { where_clause: " cited_by_id is not null" },
@@ -297,7 +311,7 @@ from instance i
        join name n
        on i.name_id = n.id 
   where regexp_replace(lower(n.full_name),' orth. var. ',' ','g') = regexp_replace(lower(i.verbatim_name_string),' orth. var. ',' ','g'))"},
-"name-status:" => { where_clause:%Q[ id in (select i.id from instance i join name n on i.name_id = n.id join name_status ns on n.name_status_id = ns.id and lower(ns.name) = lower(?))]},
+"name-status:" => { where_clause:%Q[ instance.id in (select i.id from instance i join name n on i.name_id = n.id join name_status ns on n.name_status_id = ns.id and lower(ns.name) = lower(?))]},
 "name-status-not:" => { where_clause:%Q[ id in (select i.id from instance i join name n on i.name_id = n.id join name_status ns on n.name_status_id = ns.id and lower(ns.name) != lower(?))]},
   }.freeze
 

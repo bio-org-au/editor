@@ -8,13 +8,13 @@
   data-record-type="loader-batch"
   tabindex="<%= increment_tab_index(100) %>"
     >
-  <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%= record_icon('orchid') %></td>
+<td class="nsl-tiny-icon-container takes-focus width-1-percent"> <i class="rebeccapurple fa fa-layer-group"></i> </td>
   <td class="text takes-focus name main-content min-width-40-percent max-width-60-percent width-50-percent <%= 'give-me-focus' if give_me_focus %>">
     <a
       class="show-details-link"
       tabindex="<%= increment_tab_index %>" 
       title="Loader Batch record. Select to show details."
-      id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
+      id="<%= %Q(loader-batch-#{search_result.id}) %>">
       <%= render partial: 'application/search_results/link_texts/loader_batch', locals: {search_result: search_result} %>
     </a>
   </td>

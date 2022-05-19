@@ -87,17 +87,6 @@ class Search::OnName::Base
     end
   end
 
-  def xshow_instances
-    @results = []
-    @names.each do |name|
-      name.display_as_part_of_concept
-      @results << name
-      Instance::AsArray::ForName.new(name).results.each do |usage_rec|
-        @results << usage_rec
-      end
-    end
-  end
-
   def debug(s)
     Rails.logger.debug("Search::OnName::Base: #{s}")
   end

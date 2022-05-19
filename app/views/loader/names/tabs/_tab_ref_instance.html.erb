@@ -1,0 +1,12 @@
+<% increment_tab_index(0) %>
+<% unless @loader_name.main_entry? %>
+  This tab does not apply to <%= @loader_name.record_type.pluralize(2) %>.
+<% else %>
+  <% unless @loader_name.preferred_match? %>
+    Loader Name must have a preferred match before doing anything here.
+  <% else %>
+    <%= render partial: 'loader/names/tabs/ref_instance/main_entry' %>
+  <% end %>
+<% end %>
+
+

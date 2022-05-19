@@ -24,12 +24,11 @@ class Loader::Batch < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
   has_many :loader_names, class_name: "Loader::Name", foreign_key: "loader_batch_id"
   has_many :batch_reviews, class_name: "Loader::Batch::Review", foreign_key: "loader_batch_id"
+  belongs_to :default_reference, class_name: "Reference", foreign_key: "default_reference_id", optional: true
   alias_attribute :reviews, :batch_reviews
+  validates :name, uniqueness: true, presence: true
 
   attr_accessor :give_me_focus, :message
-
-  # before_create :set_defaults # rails 6 this was not being called before the validations
-  before_save :compress_whitespace
 
   def fresh?
     created_at > 1.hour.ago
@@ -55,6 +54,27 @@ class Loader::Batch < ActiveRecord::Base
 
   def active_reviews?
     !active_reviews.empty?
+  end
+
+  def self.user_reviewable(user_name)
+    Loader::Batch.joins(batch_reviews: [{review_periods: {batch_reviewers: [:user_table]}}]).where(user_table: {name: user_name}).order('name')
+  end
+
+  def self.id_of(canonical_query_target)
+    Loader::Batch.where(["lower(name) = ?", canonical_query_target]).first.id
+  end
+
+  def update_if_changed(params, username)
+    params[:default_reference_id] = nil if params[:default_reference_typeahead].blank?
+    params.reject! {|name, value| name == 'default_reference_typeahead'}
+    assign_attributes(params)
+    if changed?
+      self.updated_by = username
+      save!
+      "Updated"
+    else
+      "No change"
+    end
   end
 end
 

@@ -1,7 +1,13 @@
-- :date: 23-Dec-2021
-  :jira_id: ''
+- :date: 24-Dec-2021
+  :jira_id: '4078'
   :description: |-
-    Still cleaning up changes.
+    Batch Loader: Family loader name records can be selected; added <code>family:</code> and <code>family-id:</code> queries, results ordered by sequence.
+- :date: 23-Dec-2021
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: keyboard navigation works for loader name records in review mode - key up and down; had to change how to hide the details tab - an 'X' to click.
+- :date: 22-Dec-2021
+  :release: true
 - :date: 22-Dec-2021
   :jira_id: '4078'
   :description: |-

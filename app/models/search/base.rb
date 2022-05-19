@@ -78,16 +78,18 @@ class Search::Base
       when /^name/ then Search::OnName::Base.new(@parsed_request)
       when /author/ then Search::OnModel::Base.new(@parsed_request)
       when /instance/ then Search::OnInstance::Base.new(@parsed_request)
-      when /reference/ then Search::OnReference::Base.new(@parsed_request)
+      when /reference/ then Search::OnModel::Base.new(@parsed_request)
       when /orchids/ then Search::OnOrchids::Base.new(@parsed_request)
       when /orchid.processing.log/ then Search::OnOrchidProcessingLogs::Base.new(@parsed_request)
       when /loader.batch/ then Search::OnModel::Base.new(@parsed_request)
+      when /batch.stack/ then Search::OnModel::Base.new(@parsed_request)
       when /loader.name/ then Search::OnModel::Base.new(@parsed_request)
       when /^batch.review$/ then Search::OnModel::Base.new(@parsed_request)
       when /^batch.reviewer$/ then Search::OnModel::Base.new(@parsed_request)
       when /^batch.review.period$/ then Search::OnModel::Base.new(@parsed_request)
       when /^users$/ then Search::OnModel::Base.new(@parsed_request)
       when /^org$/ then Search::OnModel::Base.new(@parsed_request)
+      when /^bulk.processing.log$/ then Search::OnModel::Base.new(@parsed_request)
       else raise 'unknown target table'
       end
   end
@@ -115,7 +117,7 @@ class Search::Base
       when /\Aaudit\z/
         Audit::DefinedQuery::Base.new(@parsed_request)
       when /\Areferences.with.novelties\z/
-        Reference::DefinedQuery::ReferencesWithNovelties.new(@parsed_request)
+        ::Reference::DefinedQuery::ReferencesWithNovelties.new(@parsed_request)
       when /\Areferences.accepted.names.for.id\z/i
         Reference::DefinedQuery::ReferencesAcceptedNamesForId
       .new(@parsed_request)

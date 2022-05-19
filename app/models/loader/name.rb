@@ -31,6 +31,8 @@ class Loader::Name < ActiveRecord::Base
     end
   end
 
+  scope :avoids_id, ->(avoid_id) { where("loader_name.id != ?", avoid_id) }
+
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
   alias_attribute :batch, :loader_batch
 
@@ -43,7 +45,11 @@ class Loader::Name < ActiveRecord::Base
 
   belongs_to :parent,
            class_name: "Loader::Name",
-           foreign_key: "parent_id"
+           foreign_key: "parent_id",
+           optional: true
+
+  has_many :loader_name_matches, class_name: "Loader::Name::Match", foreign_key: "loader_name_id"
+  alias_attribute :preferred_matches, :loader_name_matches
 
   attr_accessor :give_me_focus, :message
 
@@ -62,12 +68,23 @@ class Loader::Name < ActiveRecord::Base
     !parent_id.blank?
   end
 
-  def matches
-    []
+  def update_if_changed(params, username)
+    # strip_attributes is in place and should make this unnecessary
+    # but it's not working in the way I expect
+    params.keys.each { |key| params[key] = nil if params[key] == '' } 
+    assign_attributes(params)
+    if changed?
+      self.updated_by = username
+      save!
+      "Updated"
+    else
+      "No change"
+    end
   end
 
-  def loader_name_match
-    nil
+  def compress_whitespace
+    self.simple_name.squish!
+    self.full_name.squish!
   end
 
   def name_match_no_primary?
@@ -80,7 +97,7 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def exclude_from_further_processing?
-    false
+    no_further_processing == true
   end
 
   def child?
@@ -95,21 +112,22 @@ class Loader::Name < ActiveRecord::Base
     name_review_comments
       .includes(batch_reviewer: [:batch_review_role])
       .select {|comment| comment.reviewer.role.name == Loader::Batch::Review::Role::NAME_REVIEWER}
-      .select {|comment| comment.type.name == scope || scope == 'any'}
+      .select {|comment| comment.context == scope || scope == 'any'}
   end
 
   def reviewer_comments?(scope = 'any')
     reviewer_comments(scope).size > 0
   end
 
-  def compiler_comments
+  def compiler_comments(scope = 'any')
     name_review_comments
       .includes(batch_reviewer: [:batch_review_role])
       .select {|comment| comment.reviewer.role.name == Loader::Batch::Review::Role::COMPILER}
+      .select {|comment| comment.context == scope || scope == 'any'}
   end
 
-  def compiler_comments?
-    compiler_comments.size > 0
+  def compiler_comments?(scope = 'any')
+    compiler_comments(scope).size > 0
   end
 
   def excluded?
@@ -154,4 +172,240 @@ class Loader::Name < ActiveRecord::Base
     end
     ary
   end
+
+  def names_simple_or_full_name_matching_taxon_scientific
+    ::Name.where(
+      ["simple_name = ? or full_name = ?",
+       simple_name, simple_name])
+        .joins(:name_type).where(name_type: {scientific: true})
+        .order("simple_name, name.id")
+  end
+
+  def names_unaccent_simple_name_matching_taxon
+    ::Name.where(
+      ["lower(f_unaccent(simple_name)) like lower(f_unaccent(?))", simple_name])
+        .joins(:name_type).where(name_type: {scientific: true})
+        .order("simple_name, name.id")
+  end
+
+  def matches(type: :strict)
+    if type == :strict
+      names_simple_or_full_name_matching_taxon_scientific
+    elsif type == :cultivar
+      matches_tweaked_for_cultivar
+    elsif type == :phrase
+      matches_tweaked_for_phrase_name
+    else
+      throw "Unknown type of matches requested: #{type}'"
+    end
+  end
+
+  def accepted?
+    record_type == 'accepted'
+  end
+  alias_attribute :standalone?, :accepted?
+
+  def synonym?
+    record_type == 'synonym'
+  end
+
+  def likely_phrase_name?
+    simple_name =~ /Herbarium/ || simple_name =~ /sp\./ || simple_name =~ /[0-9][0-9][0-9]/ 
+  end
+
+  # Simple name match, but ignoring herbarium string and parentheses
+  # Also, no requirement for scientific name type
+  def matches_tweaked_for_phrase_name
+    ::Name.where(["regexp_replace(simple_name,'[)(]','','g') = regexp_replace(regexp_replace(?,' [A-z][A-z]* Herbarium','','i'),'[)(]','','g')", simple_name])
+      .order("simple_name, name.id")
+  end
+
+  def likely_cultivar?
+    simple_name =~ /'/
+  end
+
+  # No requirement for scientific name type
+  def matches_tweaked_for_cultivar
+    ::Name.where(simple_name: simple_name).order("simple_name, name.id")
+  end
+
+  def misapplied?
+    record_type == 'misapplied'
+  end
+  alias_attribute :misapp?, :misapplied?
+
+  def synonym_without_synonym_type?
+    synonym? & synonym_type.blank?
+  end
+
+  # r relationship
+  # i instance
+  # t type
+  # i id
+  def riti
+    return nil if accepted?
+    return InstanceType.find_by_name('misapplied').id if misapplied?
+    if taxonomic?
+      if pp?
+        return InstanceType.find_by_name('pro parte taxonomic synonym').id
+      else
+        return InstanceType.find_by_name('taxonomic synonym').id
+      end
+    elsif nomenclatural?
+      if pp?
+        return InstanceType.find_by_name('pro parte nomenclatural synonym').id
+      else
+        return InstanceType.find_by_name('nomenclatural synonym').id
+      end
+    elsif InstanceType.where(name: synonym_type).size == 1
+      return InstanceType.find_by_name(synonym_type).id
+    elsif synonym_type.blank?
+      throw "The loader-name is a synonym with no synonym type - please set a synonym type in 'Edit Raw' then try again."
+    else
+      throw "LoaderName#riti cannot work out an instance type for loader-name: #{id}: #{simple_name} #{record_type} #{synonym_type}"
+    end
+    throw "LoaderName#riti is stuck with no relationship instance type id for loader-name: #{id}: #{simple_name}"
+  end
+
+  def taxonomic?
+    synonym_type == 'taxonomic synonym'
+  end
+
+  def nomenclatural?
+    synonym_type == 'nomenclatural synonym'
+  end
+
+  def pp?
+    partly == 'p.p.'
+  end
+
+  # This search emulates the default search for Loader Name, the 
+  # name-string: search.
+  def self.name_string_search(name_string)
+    self.name_string_search_no_excluded(name_string)
+  end
+
+  def self.name_string_search_no_excluded(name_string)
+    ns = name_string.downcase.gsub(/\*/,'%')
+    Loader::Name.where([ "((lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) and record_type = 'accepted' and not doubtful) or (parent_id in (select id from loader_name where (lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) and record_type = 'accepted' and not doubtful))",
+                   ns, ns, ns, ns, ns, ns])
+  end
+
+
+  def self.create(params, username)
+    loader_name = Loader::Name.new(params)
+    loader_name.created_manually = true
+    loader_name.loader_batch_id = self.find(params[:parent_id]).loader_batch_id if loader_name.loader_batch_id.blank?
+    loader_name.doubtful = false
+    loader_name.full_name = loader_name.simple_name
+    if loader_name.save_with_username(username)
+      loader_name
+    else
+      raise loader_name.errors.full_messages.first.to_s
+    end
+  end
+
+  def save_with_username(username)
+    self.created_by = self.updated_by = username
+    set_defaults
+    save
+  end
+
+  def set_defaults
+    self.simple_name_as_loaded = simple_name
+  end
+
+  def ok_to_delete?
+    children.empty? && loader_name_matches.empty?
+  end
+
+  def new_child
+    loader_name = Loader::Name.new
+    loader_name.parent_id = id
+    loader_name.simple_name = nil
+    loader_name.full_name = nil
+    loader_name.family = family
+    loader_name.seq = seq + 1
+    loader_name.created_manually = true
+    loader_name
+  end
+
+  def new_synonym
+    loader_name = new_child
+    loader_name.record_type = 'synonym'
+    loader_name
+  end
+
+  def new_misapp
+    loader_name = new_child
+    loader_name.record_type = 'misapplied'
+    loader_name
+  end
+
+  def record_type_as_context
+    case record_type
+      when 'misapplied' then 'synonymy'
+      when 'synonym' then 'synonymy'
+      when 'accepted' then 'main'
+      else 'unknown'
+    end
+  end
+
+  def main_entry?
+    record_type == 'accepted'
+  end
+
+  def preferred_match?
+    preferred_matches.size > 0
+  end
+
+  def self.create_preferred_matches(name_s, batch_id, authorising_user, work_on_accepted)
+    #if work_on_accepted
+      self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
+    #else
+      #self.create_preferred_matches_for_excluded_taxa(name_s, batch_id, authorising_user)
+    #end
+      #
+  end
+
+
+  def self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
+    entry = "Task started: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}"
+    BulkProcessingLog.log(entry, 'job controller')
+    attempted = records = 0
+    self.name_string_search_no_excluded(name_s).where(loader_batch_id: batch_id).order(:seq).each do |loader_name|
+      attempted += 1
+      records += loader_name.create_preferred_match(authorising_user)
+    end
+    entry = "Task finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    BulkProcessingLog.log(entry, 'job controller')
+    return attempted, records
+  end
+
+  def self.create_preferred_matches_for_excluded_taxa(name_s, batch_id, authorising_user)
+    attempted = records = 0
+    Orchid.taxon_string_search_for_excluded(name_s).order(:seq).each do |match|
+      attempted += 1
+      records += match.create_preferred_match(authorising_user)
+    end
+    entry = "Task finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} excluded taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+
+    @log_tag = " for #{@loader_name.id}, batch: #{@loader_name.batch.name} , seq: #{@loader_name.seq} #{@loader_name.simple_name} (#{@loader_name.true_record_type})"
+
+    BulkProcessingLog.log(entry, 'job controller')
+    return attempted, records
+  end
+
+  def create_preferred_match(authorising_user)
+    AsNameMatcher.new(self, authorising_user).find_or_create_preferred_match
+  end
+
+  def true_record_type
+    if record_type == 'accepted' && doubtful?
+      'excluded'
+    else
+      record_type
+    end
+  end
+
 end

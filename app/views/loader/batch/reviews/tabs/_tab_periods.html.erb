@@ -2,3 +2,8 @@
 <h5>Add a Review Period</h5>
 <%= render partial: 'loader/batch/review/periods/forms/form_create', locals: {batch_review: @batch_review} %>
 <%= divider %>
+
+<div class="hidden show-after-create">
+<a onclick="$('#query-submit').click();" href="javascript:void(0);" class="btn btn-primary" title="refresh the page">Refresh page</a>
+</div>
+

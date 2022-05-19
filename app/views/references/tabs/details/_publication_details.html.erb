@@ -1,0 +1,17 @@
+  <% optional_comma = "," if @reference.edition.present? && @reference.volume.present? %>
+  <%= " Edn. #{@reference.edition}#{optional_comma}" if @reference.edition.present? %>
+  <%= @reference.volume %>
+  <%= ": #{@reference.pages}" if @reference.pages.present? %>
+  <%  if @reference.publication_date.present? %>
+    (<%= @reference.publication_date %>)
+  <% else %>
+    <% if @reference.parent && @reference.parent.year %>
+      (<%= @reference.parent.year %>)   
+    <% end %>
+  <% end %>
+	<%= "(#{@reference.language.name})" if @reference.language && @reference.language.determined? %>
+	<%= " published by #{@reference.publisher}" if @reference.publisher.present? %>
+	<%= " in #{@reference.published_location}" if @reference.published_location.present? %>
+	<%= "<em>abbreviated to</em> #{@reference.abbrev_title}".html_safe if @reference.abbrev_title %>
+	<%= "verbatim reference is #{@reference.verbatim_reference}" if @reference.verbatim_reference %>
+

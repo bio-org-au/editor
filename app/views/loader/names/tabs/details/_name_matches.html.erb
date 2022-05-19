@@ -1,0 +1,56 @@
+<h4>Name Matches: <%= name_match_count = @loader_name.matches.size %></h4>
+<% if @loader_name.matches.empty? %>
+  <div class="bggray big-vertical-padding" ><h4 class="white">No Matching Names</h4></div>
+<% end %>
+<% if name_match_count > 0 %>
+  <% if name_match_count > 1 %>
+    <div class="bggray big-vertical-padding" ><h4 class="white">Too Many Matching Names</h4></div>
+  <% end %>
+<% end %>
+<% if @loader_name.exclude_from_further_processing? %>
+  <div class="bggray big-vertical-padding" ><h4 class="white">No Further Processing</h4></div>
+<% end %>
+<% if @loader_name.try('parent').try('exclude_from_further_processing?') %>
+  <div class="bggray big-vertical-padding" ><h4 class="white">No Further Processing via parent</h4></div>
+<% end %>
+
+  <%= link_to("#{ShardConfig.name_space} #{icon('external-link-square')}".html_safe,
+              "#{Rails.configuration.try('nsl_links')}search/names?product=APNI&name=#{url_encode(@loader_name.simple_name)}",
+            title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
+            class: "rebeccapurple",
+            target: "_editor_to_apni",
+            tabindex: increment_tab_index) %>&nbsp;
+  <%= link_to("Editor query #{icon('external-link-square')}".html_safe,
+              "search?query_target=names&query_string=#{url_encode(@loader_name.simple_name)}",
+            title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
+            class: "rebeccapurple",
+            target: "_editor_to_apni",
+            tabindex: increment_tab_index) %>
+
+<% if name_match_count == 0 %>
+  <%= divider %>
+  <%= render partial: 'loader/names/tabs/details/possible_matches' %>
+
+  <% if @loader_name.misapplied? %>
+    <%#= render partial: 'loader/names/tabs/details/matches/misapplied', locals: {name_match_count: name_match_count} %>
+  <% else %>
+    <% if @loader_name.likely_phrase_name? %>
+      <%= render partial: 'loader/names/tabs/details/matches/accepted_or_synonym', locals: {match_type: :phrase} %>
+    <% end %>
+    <% if @loader_name.likely_cultivar? %>
+      <%= render partial: 'loader/names/tabs/details/matches/accepted_or_synonym', locals: {match_type: :cultivar} %>
+    <% end %>
+  <% end %>
+
+<% else %>
+
+  <% if @loader_name.misapplied? %>
+    <%= render partial: 'loader/names/tabs/details/matches/misapplied', locals: {match_type: :strict} %>
+  <% else %>
+    <%= render partial: 'loader/names/tabs/details/matches/accepted_or_synonym', locals: {match_type: :strict} %>
+  <% end %>
+
+<% end %>
+
+<span id="search-result-details-info-message-container" class="message-container"></span>
+<span id="search-result-details-error-message-container" class="message-container error-container"></span>

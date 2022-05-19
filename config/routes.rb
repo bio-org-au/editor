@@ -236,6 +236,8 @@ Rails.application.routes.draw do
 
   match "tree_elements/:id/tab/:tab", as: "tree_element_tab", to: "tree_elements#tab", via: :get
 
+  match "tree_elements/profile/:id", as: "tree_element", to: "tree_elements#update_profile", via: :patch
+
   match "references/typeahead/on_citation/duplicate_of/:id",
         as: "references_typeahead_on_citation_duplicate_of_current",
         to: "references#typeahead_on_citation_duplicate_of_current", via: :get
@@ -277,6 +279,7 @@ Rails.application.routes.draw do
   match "help/ref_type_rules",
         to: "help#ref_type_rules", as: "ref_type_rules", via: :get
   match "help/typeaheads", to: "help#typeaheads", as: "typeaheads", via: :get
+  match "history/2022", to: "history#y2022", as: "history_2022", via: :get
   match "history/2021", to: "history#y2021", as: "history_2021", via: :get
   match "history/2020", to: "history#y2020", as: "history_2020", via: :get
   match "history/2019", to: "history#y2019", as: "history_2019", via: :get
@@ -406,14 +409,57 @@ Rails.application.routes.draw do
   match "/trees/show/valrep", as: "show_valrep", to: "trees#show_valrep", via: :get
   match "/trees/run/valrep", as: "run_valrep", to: "trees#run_valrep", via: :get
 
-  resources :loader_batches
+  namespace :loader do
+    match "batches/default_reference_suggestions", as: "batches_default_reference_suggestions", to: "batches#default_reference_suggestions", via: :get
+    resources :batches
+    match "batches/stats/hide", as: "hide_batch_stats", to: "batches#hide_stats", via: :get
+    match "batches/stats/:id", as: "batch_stats", to: "batches#stats", via: :get
+    match "batches/bulk", as: "batches_bulk", to: "batch/bulk#operation", via: :post
+
+#                                  loader_bulk_operation GET                   /loader/batches/bulk_operation(.:format)                                                          loader/batch/bulk_operations#operation
+#                       loader_batch_processing_overview GET                   /loader/batches/processing/overview(.:format)                                                     loader/batches#processing_overview
+#                  loader_batch_processing_overview_hide GET                   /loader/batches/processing/overview/hide(.:format)                                                loader/batches#hide_processing_overview
+    
+    match "batches/processing/overview", as: "batch_processing_overview", to: "batches#processing_overview", via: :get
+    match "batches/processing/overview/hide", as: "batch_processing_overview_hide", to: "batches#hide_processing_overview", via: :get
+    match "batches/bulk/processing/notes", as: "batch_bulk_processing_notes", to: "batches#bulk_processing_notes", via: :get
+    match "batches/bulk/processing/notes/hide", as: "batch_bulk_processing_notes_hide", to: "batches#hide_bulk_processing_notes", via: :get
+    match "batches/bulk/processing/stats/hide", as: "batch_bulk_processing_stats_hide", to: "batches#hide_bulk_processing_stats", via: :get
+  end
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
   match "loader_batch/clear-default", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post
 
-  resources :loader_names
-  match "loader_names/:id/tab/:tab/:component", as: "loader_name_review_tab", to: "loader/names#tab", via: :get, defaults: { component: 'main' }
+  namespace :loader do
+    resources :names, only: [:new]
+    match "names/new_row", as: "name_new_row", to: "names#new_row", via: :get
+    match "names/new/:random_id", as: "name_new_with_random_id", to: "names#new", via: :get
+    resources :names, only: [:create, :update, :destroy]
+    namespace :name do
+      match "matches/create/:id", as: "matches_set", to: "matches#set", via: :patch
+      match "matches/delete/all/:id", as: "matches_delete_all", to: "matches#delete_all", via: :delete
+      match "matches/use/batch/default/ref/:id", as: "matches_use_batch_default_ref", to: "matches#use_batch_default_ref", via: :patch
+      match "matches/:id", as: "matches", to: "matches#set", via: :post
+      match "matches/add_or_remove/:id", as: "match_add_or_remove", to: "matches#create_or_delete_for_misapp", via: :post
+      match "matches/taxonomy-instance/:id", as: "taxonomy_instance", to: "matches#taxonomy_instance", via: :patch
+      match "matches/use-batch-default-ref-form/:id", as: "matches_use_batch_default_ref_form", to: "matches#show_batch_default_ref_form", via: :get
+      match "matches/use-existing-instance-form/:id", as: "matches_use_existing_instance_form", to: "matches#use_existing_instance_form", via: :get
+      #match "matches/create-and-copy-form/:id", as: "matches_create_and_copy_form", to: "matches#create_and_copy_form", via: :get
+      match "matches/copy-and-append-form/:id", as: "match_copy_and_append_form", to: "matches#copy_and_append_form", via: :get
+      match "matches/use-existing-instance/:id", as: "matches_use_existing_instance", to: "matches#use_existing_instance", via: :patch
+      match "matches/create-and-copy/:id", as: "matches_create_and_copy", to: "matches#create_and_copy", via: :patch
+      match "matches/clear-taxonomy-nomination/:id", as: "match_clear_taxonomy_nomination", to: "matches#clear_taxonomy_nomination", via: :patch
+      resources :matches, only: [:update]
+    end
+  end
   match "loader_names/:id/tab/:tab", as: "loader_name_tab", to: "loader/names#tab", via: :get
+
+  match "loader_names/:id/tab/:tab/:component", as: "loader_name_review_tab", to: "loader/names#tab", via: :get, defaults: { component: 'main' }
+  match "loader_names/parent_suggestions",
+        as: "loader_names_parent_suggestions",
+        to: "loader/names#parent_suggestions",
+        via: :get
+
   match "batch_reviews/:id/tab/:tab", as: "batch_review_tab", to: "loader/batch/reviews#tab", via: :get
   match "batch_reviews", as: "create_batch_review", to: "loader/batch/reviews#create", via: :post
   match "batch_reviews", as: "update_batch_review", to: "loader/batch/reviews#update", via: :put
@@ -424,6 +470,7 @@ Rails.application.routes.draw do
   match "batch_review_periods", as: "review_period", to: "loader/batch/review/periods#show", via: :get
   match "batch_review_periods/:id/tab/:tab", as: "review_period_tab", to: "loader/batch/review/periods#tab", via: :get
   match "batch_review_periods/:id", as: "update_review_period", to: "loader/batch/review/periods#update", via: :patch
+  match "/batch_review_periods/:id", as: "delete_review_period", to: "loader/batch/review/periods#destroy", via: :delete
 
   match "users", as: "user", to: "users#show", via: :get
   match "users/:id/tab/:tab", as: "user_tab", to: "users#tab", via: :get

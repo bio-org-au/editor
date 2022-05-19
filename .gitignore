@@ -37,3 +37,4 @@ yarn-debug.log*
 .DS_Store
 tags
 coverage
+hs_err*.log

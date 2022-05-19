@@ -1,0 +1,400 @@
+- :date: 11-May-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: add configuration switch which is off by default - i.e. inactive unless switched on and therefore safe to promote widely.
+- :date: 17-May-2022
+  :jira_id: '4234'
+  :description: |-
+    Batch Loader: prevent <code>loader_name</code> being considered in defined queries unless the Editor is aware of the batch loader (via config)
+- :date: 11-May-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: early version which aligns the "bubbles" with the edited distribution string
+- :date: 01-May-2022
+  :jira_id: '4220'
+  :description: |-
+    Taxonomy profile edit: fix display bug on the Instance Detail tab for instances in the current taxonomy. (Slipped through in the preceding changes.)
+- :date: 29-Apr-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: Edit Profile tab (distribution, comment) for evaluation as partial answer to the question (but not ready for full-scale testing yet)
+- :date: 29-Apr-2022
+  :release: true
+- :date: 27-Apr-2022
+  :jira_id: ''
+  :description: |-
+    Security Patch: upgrade Rails to 6.1.5.1
+- :date: 22-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: fix bulk processing logs default query field (so the no-directive query works)
+- :date: 21-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: refine text and icons in batch stack output
+- :date: 20-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: display remark-to-reviewers and higher-rank-comment in standard loader name listing (it's already showing in review mode)
+- :date: 20-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: adjust the logic for instances offered for a loader name so taxonomy instances are offered in the copy-and-append flow. Label fix.
+- :date: 20-Apr-2022
+  :jira_id: ''
+  :description: |-
+    Security Patches: async 2.6.4, nokogiri 1.13.4, rails 6.1.5, etc
+- :date: 19-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Loader Name Reference Instance tab operating with a 3-way choice, refined after last week's walk-through in dev.
+- :date: 01-Apr-2022
+  :jira_id: ''
+  :description: |-
+    Security Upgrade: JRuby library <code>puma</code> upgraded: should only affect development
+- :date: 01-Apr-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: allow removal of a batch default reference on the batch edit tab
+- :date: 01-Apr-2022
+  :jira_id: ''
+  :description: |-
+    Admin: show hostname on Admin page
+- :date: 31-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: tweaks following review of first cut - top save button, showing choice on details, flagging choice on LHS, adjusting text to suit record type, show clear button only when needed. 
+- :date: 30-Mar-2022
+  :jira_id: ''
+  :description: |-
+    JRuby Downgrade: go back to JRuby 9.3.1.0 (problems in Tomcat test)
+- :date: 29-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: loaders can now set a batch default reference and then choose that reference for a loader name, instead of picking a preferred match specific instance (first cut with one fix).
+- :date: 28-Mar-2022
+  :jira_id: ''
+  :description: |-
+    JRuby upgrade: 9.3.4.0
+- :date: 28-Mar-2022
+  :jira_id: ''
+  :description: |-
+    Security upgrade: JavaScript library upgrades 
+- :date: 23-Mar-2022
+  :jira_id: '4195'
+  :description: |-
+    Batch Loader: add batch name to bulk logs; move link to query logs closer to the form; tweak Ref Instance tab wording; prevent choosing synonym; and do not display common names in synonymy on Ref Instance tab.
+- :date: 25-Mar-2022
+  :release: true
+- :date: 23-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: First cut of bulk operations - create preferred matches in place.
+- :date: 21-Mar-2022
+  :jira_id: '4192'
+  :description: |-
+    Name target directive: add <code>source-system:</code> to allow querying of name records migrated from other systems where the originating system name is in the <code>name.source_system</code> field.
+- :date: 18-Mar-2022
+  :jira_id: '4192'
+  :description: |-
+    Name target directive: add <code>source-id:</code> to allow querying of name records migrated from other systems where the original ID is retained in the <code>name.source_id</code> field.
+- :date: 18-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add a new Loader Name tab to set the standalone Reference Instance
+- :date: 11-Mar-2022
+  :jira_id: '4165'
+  :description: |-
+    Name: Do not offer to Delete a Name that has family dependents; show more information about name families on the details tab; add supporting query directives; include common and cultivars in linked search
+- :date: 10-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: loader name detail tab for misapplied name matches now hides any edited instance type if a match is deleted
+- :date: 09-Mar-2022
+  :release: true
+- :date: 09-Mar-2022
+  :jira_id: ''
+  :description: |-
+    Security upgrade: Upgrade Rails to latest 6.1.x
+- :date: 04-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Improving and fixing manual create forms and update forms.
+- :date: 03-Mar-2022
+  :jira_id: '4168'
+  :description: |-
+    Review Mode: Comment contexts now include synonym and misapplication for those record types.
+- :date: 03-Mar-2022
+  :jira_id: '4172'
+  :description: |-
+    Instance query: add a <code>name-type:</code> directive to be used like this: <code>name-type: phrase*</code>; also fix the <code>page-sort:</code> directive to order results by page
+- :date: 03-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: users with batch loader privilege can now create misapps for loader name records via the Create Misapp tab; improved and tightened up Create Synonym process.
+- :date: 02-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Fix the 'orth. var. orth. var' problem in review mode
+- :date: 02-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Stop arrowing up/down instance records skipping every second record (side effect of review changes)
+- :date: 02-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: users with batch loader privilege can now create synonyms for loader name records on the Create Synonym tab
+- :date: 02-Mar-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add excluded names entry to summary counts on the Loader tab
+- :date: 02-Mar-2022
+  :jira_id: ''
+  :description: |-
+    Change 'model' to 'target' in search error message; security upgrades.
+- :date: 28-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: name records now have a Delete tab, there's more detailed info on the Loader tab, and a new <code>created_manually</code> field and matching search directive
+- :date: 25-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: users with batch loader privilege can now create a raw loader-name record from the New menu
+- :date: 25-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: users with batch loader privilege can now edit the match processing record loader names on the Edit Match tab
+- :date: 25-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: the preferred-name-saved flag is now showing for loader name records - it's blue, not grey, so it shows up even when the record is selected (colour change applies to orchids flag too)
+- :date: 24-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: allow editing of misapplied loader-name records; set up the parent suggestions for loader-name editing
+- :date: 23-Feb-2022
+  :jira_id: '4157'
+  :description: |-
+    Batch Loader: in review mode prevent the details tab automatically displaying for the first of the queried records
+- :date: 23-Feb-2022
+  :jira_id: '4157'
+  :description: |-
+    Batch Loader: display higher_rank_comment in yellow on LHS in review mode; allow query on <code>higher_rank_comment:</code>; better display of higher rank comment on detail tab
+- :date: 23-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: user can create, remove, and adjust preferred name matches for "non-matched" cultivars and phrase names using less-strict queries on the details tab
+- :date: 21-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: user can create, remove, and adjust preferred name matches for loader-name misapplied records; batch summary counts are now available on the Loader tab using correct ID
+- :date: 21-Feb-2022
+  :jira_id: ''
+  :description: |-
+    Security: update JavaScript library
+- :date: 16-Feb-2022
+  :jira_id: '4157'
+  :description: |-
+    Batch Loader: highlight isonyms and orth. vars on LHS in review mode
+- :date: 14-Feb-2022
+  :jira_id: ''
+  :description: |-
+    Security: JavaScript and ruby library upgrades
+- :date: 14-Feb-2022
+  :jira_id: ''
+  :description: |-
+    Security: upgrade to rails 6.1.4.6
+- :date: 14-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: partial work towards selecting preferred loader name match
+- :date: 10-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add a default search target entry to advise the user they have no reviews if no review targets are available for a user
+- :date: 10-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add reviewer role to batch stack record from reviewer
+- :date: 10-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: fix reference to higher_rank_comment so appropriate details display; add search for <code>raw-id:</code>
+- :date: 9-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: remove reference to deprecated column <code>scientific_name</code>
+- :date: 9-Feb-2022
+  :jira_id: '4150'
+  :description: |-
+    Batch Loader: adjust permissions - allow taxonomic reviewers to view loader-name tabs
+- :date: 9-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: change loader-name <code>is-accepted:</code> search to exclude excluded records
+- :date: 9-Feb-2022
+  :jira_id: '4150'
+  :description: |-
+    Batch Loader: streamline mode-switching and tighten mode-switching permissions and batch loader administration permissions.
+- :date: 9-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: adjusting the <code>loader-name</code> details tab and starting to add the form for confirming a match; added a stub Loader tab in the main panel.
+- :date: 7-Feb-2022
+  :jira_id: '3364'
+  :description: |-
+    Stale object error: add more code to reduce and hopefully prevent this problem occurring
+- :date: 7-Feb-2022
+  :jira_id: '4122'
+  :description: |-
+    Name quality check: add possibly-malformed: search directive, with query help text under a quality control heading
+- :date: 4-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader - loader names: add <code>no-name-match-unscientific:</code>, <code>some-name-match-unscientific:</code> search directives; add possible matches for cultivars on details and an improved context link
+- :date: 4-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add <code>simple-name-not-like:</code> search directive
+- :date: 4-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add loader-name detail query for non-matched likely-phrase names - it removes herbarium name and brackets from the string and shows any matches
+- :date: 3-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: standardise loader_name match searches (directives, notifications on results, and detail tab queries) to be against simple or full_name, but don't normalise accents because the speed trade-off isn't worth it
+- :date: 3-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: fix the problem with <code>no-name-match:</code> query, which was identified in the "Corymbia <code>no-name-match:</code>" query returning incomplete results
+- :date: 3-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: set up hybrid flag queries
+- :date: 3-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: edit synonyms; query <code>many-name-match</code>, <code>many-name-match-unaccent</code>; port other queries; show sequence and batch name on details tab heading
+- :date: 2-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: retain focus on the current record when re-querying the batch stack from a details tab.
+- :date: 2-Feb-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: added links to the full Batch Stack on stack element detail tabs; added batch name to the specific batch stack links on the detail tabs.
+- :date: 1-Feb-2022
+  :jira_id: '4135'
+  :description: |-
+    Search error message: provide error message to explain <code>show-instances:</code> isn't supported for <code>References with novelties</code> queries.  Improve technical aspects of search error messages.
+- :date: 1-Feb-2022
+  :jira_id: ''
+  :description: |-
+    Search input form: remove underscores from search targets when search results are displayed e.g. <code>references_with_novelties</code> now appears consistently as <code>references with novelties</code>
+- :date: 31-Jan-2022
+  :jira_id: '4133'
+  :description: |-
+    Search engine internals: switch reference search to use the new streamlined infrastructure.  Results for reference searches should be unchanged.
+- :date: 31-Jan-2022
+  :jira_id: '4134'
+  :description: |-
+    Instance query: allow the combined query <code>name-status: orth. var. type:autonym</code> to work - a technical SQL improvement in the search engine
+- :date: 31-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Fix JavaScript bug causing problem in review mode by preventing display of the Queries help page.
+- :date: 28-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Add refresh-page buttons on batch, batch-review, and review-period edit tabs; also hide the search form focus_id field.
+- :date: 28-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Add <code>loader_name.simple_name_as_loaded</code> and remove <code>alt_name_for_matching</code>, adjust queries to match, add a new faster <code>no-name-match:</code> query, add edit tab for <code>loader_name</code>.
+- :date: 28-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Orchids: retrofit the broad contextual search developed for <code>loader_name</code> back into the orchid default query <code>taxon-with-syn</code> to improve its handling of synonyms
+- :date: 27-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: mainly fleshing out batch stack as a convenient way of viewing batches, but also improvements to the administrator interface, including delete buttons, queries, and help text
+- :date: 21-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add early version of the batch stack query for review
+- :date: 20-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: add convenience links for unmatched loader_names that query the name in services and the editor
+- :date: 19-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: navigate to the home page after switching into or out of review mode to avoid transitional screen being visible
+- :date: 18-Jan-2022
+  :jira_id: '4111'
+  :description: |-
+    Batch Loader Matching: match also on name.full_name to allow for loader_names with author in loader_name.simple_name
+- :date: 17-Jan-2022
+  :jira_id: '4111'
+  :description: |-
+    Display simple name in name details - may help clarify loader_name mismatches.
+- :date: 17-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Remove reference to hybrid_level (an Orchids remnant) in raw data display, so that loader name details now show for hybrids
+- :date: 17-Jan-2022
+  :jira_id: ''
+  :description: |-
+    Yarn upgrade.
+- :date: 17-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Add matching info to the details tab.
+- :date: 14-Jan-2022
+  :jira_id: ''
+  :description: |-
+    Security: Upgrade follow-redirects to v1.14.7 due to security alert - general workflow testing would be helpful
+- :date: 14-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Correctly label the add review period button, hide it after successfully creating a period, add validations and boilerplate advice for users
+- :date: 14-Jan-2022
+  :jira_id: '4104'
+  :description: |-
+    Reference display: on details tab reverse order of published-in-published-by to published-by-published-in
+- :date: 14-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Set the default batch on the batch details tab, and, as a consequence, remove the setting tab (standard-mode only)
+- :date: 13-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Comments now have clearly distinguished context, commenter role, and type.
+- :date: 13-Jan-2022
+  :jira_id: '4027'
+  :description: |-
+    Removed some more unused remnant code from the tree review project
+- :date: 11-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Adjustments to the new search targets arrangements.
+- :date: 11-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Edit tab for batches
+- :date: 11-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Reviewers now get search targets for the specific batches of loader names that they are reviewing
+- :date: 07-Jan-2022
+  :release: true
+- :date: 04-Jan-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: Count query now works for loader name records
+- :date: 04-Jan-2022
+  :jira_id: ''
+  :description: |-
+    Add change history file for 2022

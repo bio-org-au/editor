@@ -1,5 +1,25 @@
 <% increment_tab_index(0) %>
 
+<%= render partial: 'detail_line',
+      locals: {label: 'Batch',
+               info: link_to(@loader_name.batch.name,
+                        search_path(
+                          query_target: 'loader batch',
+                          query_string: "id: #{@loader_name.batch.id}"),
+               title:"Query the loader batch",class:'blue')} %>
+<%= render partial: 'detail_line',
+      locals: {label: 'Family',
+               info: link_to("#{@loader_name.family}",
+                        search_path(
+                          query_target: 'loader names',
+                          query_string: "family: #{@loader_name.family}"),
+               title:"Query the family",class:'blue')} %>
+<%= render partial: 'detail_line', locals: {label: 'Rank', info: "#{@loader_name.rank}"} %>
+<%= divider %>
+
+
+
+
 <% @loader_name.batch.reviews.each do |review| %>
   Review: <%= link_to(review.name,
                       search_path(query_target: "batch reviews",
@@ -14,26 +34,18 @@
 
 
                           <br>
-      <div id="one-comment-<%= comment.id %>">
+                            <div id="one-comment-<%= comment.id %>">
 
-        <%= render partial: 'loader/names/review/tabs/common/one_comment',
-                    locals: {comment: comment,
-                             scope: scope} %>
+                              <%= render partial: 'loader/names/review/tabs/common/one_comment',
+                                          locals: {comment: comment,
+                                                   scope: scope} %>
 
-      </div>
+                            </div>
 
-    <% end %>
+                       <% end %>
+                   <% end %>
+              <%= divider %>
   <% end %>
-<%= divider %>
-<% end %>
-
-<%= render partial: 'detail_line',
-      locals: {info: @loader_name.batch.name,
-               label: link_to('Batch',
-                        search_path(
-                          query_target: 'loader batch',
-                          query_string: "id: #{@loader_name.batch.id}"),
-               title:"Query the loader batch",class:'blue')} %>
 
 <%= render partial: 'detail_line', locals: {label: 'Loader Name ID', info: @loader_name.id} %>
 <%= created_by_whom_and_when(@loader_name).html_safe %>

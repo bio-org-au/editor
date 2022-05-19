@@ -1,0 +1,1 @@
+alter table name_review_comment drop constraint name_review_comment_context_check;

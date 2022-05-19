@@ -46,7 +46,7 @@ class Search::OnModel::Base
   end
 
   def run_count_query(parsed_request)
-    count_query = Search::User::CountQuery.new(parsed_request)
+    count_query = Search::OnModel::CountQuery.new(parsed_request)
     @relation = count_query.sql
     @count = relation.count
     @limited = false
@@ -64,8 +64,33 @@ class Search::OnModel::Base
     @limited = list_query.limited
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
+    consider_instances(parsed_request)
     @count = @results.size
     calculate_total
+  end
+
+  def consider_instances(parsed_request)
+    if parsed_request.show_instances
+      show_instances(parsed_request)
+    end
+  end
+
+  def show_instances(parsed_request)
+    results_with_instances = []
+    @results.each do |ref|
+      results_with_instances << ref
+      instances_query = Instance::AsArray::ForReference
+                        .new(ref,
+                             instances_sort_key(parsed_request),
+                             parsed_request.limit,
+                             parsed_request.instance_offset)
+      instances_query.results.each { |i| results_with_instances << i }
+    end
+    @results = results_with_instances
+  end
+
+  def instances_sort_key(parsed_request)
+    parsed_request.order_instances_by_page ? "page" : "name"
   end
 
   def debug(s)

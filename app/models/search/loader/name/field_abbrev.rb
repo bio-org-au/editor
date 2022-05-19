@@ -33,5 +33,9 @@ class Search::Loader::Name::FieldAbbrev
     "concept-note:" => "comment:",
     "remark-to-reviewers:" => "remark:",
     "scientific-name:" => "simple-name:",
+    "raw-ids:" => "raw-id:",
+    "manually-created:" => "created-manually:",
+    "cm:" => "created-manually:",
+    "mc:" => "created-manually:",
   }.freeze
 end

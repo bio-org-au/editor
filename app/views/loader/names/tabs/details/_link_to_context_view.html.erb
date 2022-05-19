@@ -1,0 +1,21 @@
+<% if @loader_name.child? %>
+  <%= render partial: 'detail_line', 
+           locals: {info: link_to("parent (accepted name with synonyms)",
+                          search_path(query_target: "loader names",
+                                      query_string: "id-with-syn:#{@loader_name.parent_id}",
+                                      focus_id: "loader-name-#{@loader_name.id}"),
+                                  title: 'See parent',
+                                  class: 'blue underline'), 
+                    label: 'context view'} %>
+<% else %>
+  <%= render partial: 'detail_line', 
+    locals: {info: link_to("#{pluralize(@loader_name.children.size,'synonym')}",
+                           search_path(query_target: "loader names",
+                                       query_string: "id-with-syn:#{@loader_name.id}",
+                                       focus_id: "loader-name-#{@loader_name.id}"
+                                      ),
+                                  title: 'See this record with synonyms',
+                                  class: 'blue underline'), 
+                    label: 'context view'} %>
+<% end %>
+

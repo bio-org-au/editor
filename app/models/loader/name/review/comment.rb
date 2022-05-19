@@ -77,5 +77,19 @@ class Loader::Name::Review::Comment < ActiveRecord::Base
   def can_be_deleted?
     true # for now
   end
+
+  def self.context_for(focus)
+    case focus
+    when 'distribution' then
+      'distribution'
+    when 'concept-note' then
+      'concept-note'
+    when 'synonymy' then
+      'synonymy'
+    else
+      'main name entry'
+    end
+  end
+
 end
   

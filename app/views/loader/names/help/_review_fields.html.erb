@@ -3,8 +3,6 @@
   <p>Note: setting a default batch will apply that batch to Loader Name searches.
   <tr><th>Field</th><th>Description</th></tr>
   <% [
-    {field: 'batch-id:', descr: "Search within a batch using its ID."},
-    {field: 'batch-name:', descr: "Search within a batch using its name."},
     {field: 'has-review-comment:',
      descr: "Search for loader names that have been commented on. (Full context returned.)"},
     {field: 'review-comment:',
@@ -19,6 +17,14 @@
      descr: "Search for loader names that have a distribution without a given string. (Full context returned.)"},
     {field: 'no-distribution:',
      descr: "Search for loader names that have no distribution string. (Full context returned.)"},
+    {field: 'family:',
+     descr: "Search for loader names for a given family name. (Full context returned.)"},
+    {field: 'family-id:',
+     descr: "Search for loader names for a given family ID. (Full context returned.)"},
+    {field: 'remark:',
+     descr: "Search for loader names containing a remark to reviewers - wildcards are added automatically."},
+    {field: 'higher-rank-comment:',
+     descr: "Search for loader names containing a higher-rank-comment - wildcards are added automatically."},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

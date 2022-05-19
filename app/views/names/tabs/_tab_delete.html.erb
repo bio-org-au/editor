@@ -1,6 +1,13 @@
 <% increment_tab_index %>
 
-<%= render 'names/tabs/delete_widgets' %>
+<% if @name.allow_delete? %>
+  <%= render 'names/widgets/delete_widgets' %>
+<% else %>
+  <%= render 'names/widgets/cannot_delete_info' %>
+<% end %>
+<br>
+
+<div class="error-message-container"></div>
 <div id="search-result-details-info-message-container" class="message-container"></div>
 <div id="search-result-details-error-message-container" class="message-container"></div>
 

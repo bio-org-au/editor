@@ -1,0 +1,21 @@
+
+  <div class="form-group">
+    <label for="synonym_type">Synonym type*
+    </label>
+    <%= f.select :synonym_type, 
+      ['alternative name',
+       'basionym',
+       'doubtful pro parte taxonomic synonym',
+       'doubtful taxonomic synonym',
+       'isonym',
+       'nomenclatural synonym',
+       'orthographic variant',
+       'pro parte taxonomic synonym',
+       'replaced synonym',
+       'taxonomic synonym'],
+       {},
+       class: 'form-control',
+    title: "Synonym type (only if record type is synonym)",
+    required: true,
+    tabindex: increment_tab_index %>
+  </div>

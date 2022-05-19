@@ -59,7 +59,7 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   def full_name
     user.full_name
   end
-  
+
   def self.create(params, username)
     batch_reviewer = self.new(params)
     if batch_reviewer.save_with_username(username)

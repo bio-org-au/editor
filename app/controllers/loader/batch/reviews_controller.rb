@@ -69,6 +69,10 @@ class Loader::Batch::ReviewsController < ApplicationController
 
   def destroy
     @batch_review.destroy
+  rescue => e
+    logger.error("Loader::Batch::Review.destroy:rescuing exception #{e}")
+    @error = e.to_s
+    render "destroy_error", status: :unprocessable_entity
   end
 
   private

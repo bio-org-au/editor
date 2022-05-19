@@ -8,7 +8,7 @@
                 aria-haspopup="true" 
                 aria-expanded="false">
           <span id="search-target-button-text">
-                <%= @search.parsed_request.target_button_text || 'no target button text' %>
+                <%= @search.parsed_request.target_button_text.gsub(/_/,' ') || 'no target button text' %>
 
 
           </span>

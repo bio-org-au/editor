@@ -1,9 +1,9 @@
 <% increment_tab_index(0) %>
-<%= render partial: 'detail_line', locals: {info: @batch_review.name, label: 'Name'} %>
+<%= render partial: 'detail_line', locals: {info: @batch_review.name, label: 'review name'} %>
 
 <%= render partial: 'detail_line',
-      locals: {info: @batch_review.batch.name,
-               label: link_to('Batch',
+      locals: {label: 'batch',
+               info: link_to(@batch_review.batch.name,
                         search_path(
                           query_target: 'loader batch',
                           query_string: "id: #{@batch_review.batch.id}"),
@@ -11,24 +11,50 @@
 
 
 <% if  @batch_review.periods.empty? %>
-  <%= render partial: 'detail_line', locals: {info: '',
+  <%= render partial: 'detail_line', locals: {info: 'Create one on the "New Review Period" tab',
                                               label:'No review periods'} %>
 <% else %>
 <%= render partial: 'detail_line',
-      locals: {info: @batch_review.periods.size,
-               label: link_to('Periods',
+      locals: {label: 'periods',
+               info: link_to( @batch_review.periods.size,
                         search_path(
                           query_target: 'batch review periods',
                           query_string: "batch-review-id: #{@batch_review.id}"),
                title:"Query the batch review periods",class:'blue')} %>
 <% end %>
+  <%= render partial: 'detail_line',
+    locals: {label: 'query the stack',
+             info: link_to("#{@batch_review.batch.name} Stack",
+                          search_path(
+                            query_string: "batch-id: #{@batch_review.batch.id}",
+                            query_target: 'batch stacks',
+                            focus_id: "batch-review-#{@batch_review.id}"),
+                 title:"Query batch in stack format",class:'blue')} %>
+
+  <%= render partial: 'detail_line',
+    locals: {label: 'query all stacks',
+             info: link_to("All Batch Stacks",
+                          search_path(
+                            query_string: "*",
+                            query_target: 'batch stacks',
+                            focus_id: "batch-review-#{@batch_review.id}"),
+                 title:"Query the batch stack",class:'blue')} %>
 
 <%= divider %>
-
-<h5>Metadata</h5>
 Batch Review #<%= @batch_review.id %>
 <br>
+<h5>Metadata</h5>
 <%= created_by_whom_and_when(@batch_review).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@batch_review).html_safe %>
 
+<%= divider %>
+
+Review workflow:
+<ol>
+  <li/>Create batch review
+    <li/>Create batch review period with date range &nbsp; &nbsp;  <b> &lt;&lt; Next </b>
+  <li/>Add user batch reviewers
+  <li/>Review period starts
+  <li/>Review period ends
+</ol>

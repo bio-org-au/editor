@@ -1,0 +1,37 @@
+<h4>Possible Matches</h4>
+<% if @loader_name.likely_phrase_name? %>
+  Treating as a phrase name.
+  <br>
+  <code><%= @loader_name.simple_name %></code> (current)
+  <br>
+  <% @loader_name.matches_tweaked_for_phrase_name.each do |name| %>
+  <code><%= name.simple_name %></code>
+    <%= link_to("query #{icon('external-link-square')}".html_safe,
+                "search?query_target=names&query_string=id:#{name.id}",
+            title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
+            class: "rebeccapurple",
+            target: "_editor_to_apni",
+            tabindex: increment_tab_index) %>
+
+    <br>
+  <% end %>
+<% end %>
+<% if @loader_name.likely_cultivar? %>
+  Treating as a cultivar
+  <br>
+  <code><%= @loader_name.simple_name %></code> (current)
+  <br>
+  <% @loader_name.matches_tweaked_for_cultivar.each do |name| %>
+    <code><%= name.simple_name %> (type: <%= name.name_type.name %>)</code>
+    <%= link_to("query #{icon('external-link-square')}".html_safe,
+                "search?query_target=names&query_string=id:#{name.id}",
+            title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
+            class: "rebeccapurple",
+            target: "_editor_to_apni",
+            tabindex: increment_tab_index) %>
+
+    <br>
+  <% end %>
+
+<% end %>
+

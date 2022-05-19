@@ -101,18 +101,18 @@
         </li>
       <% end %>
 
+      <% if Rails.configuration.try('batch_loader_aware') && can?('loader/batches', 'process') %>
 
-      <% if Rails.configuration.try('batch_loader_aware') && can?('batch_loader', 'update') %>
-        <li role="presentation"
-            class="">
         <li role="presentation" class="">
           <%= link_to "Loader",
-                      "loader",
+                      loader_batches_path,
+                      id: "batch-loader-console-tab-link",
                       class: "main-body-tab-link",
                       remote: true,
-                      title: "Use the batch loader tab" %>
+                      title: "Batch Loader processing console" %>
         </li>
-      <% end %>
+      <% end %> 
+
 
     </ul>
   <% end %>

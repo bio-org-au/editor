@@ -57,4 +57,8 @@ class User < ActiveType::Object
   def compiler?
     groups.include?("treebuilder")
   end
+
+  def batch_loader?
+    groups.include?("batch-loader")
+  end
 end

@@ -5,11 +5,13 @@
   <% end %>
   <div class="inner">
     <h3>
+      <i class="darkorchid fas fa-calendar-alt"></i>
       <%= link_to(@review_period.name,
-                  search_path(query_target: 'batch_review', 
+                  search_path(query_target: 'review periods', 
                               query_string: "id:#{@review_period.id}"),
                   id: 'tab-heading',
                   title: "Query this batch review period record") %>
+                        batch review period
     </h3>
     <%= render partial: 'loader/batch/review/periods/tabs/all_tab_headings' %>
     <%= render partial: "loader/batch/review/periods/tabs/#{@tab}" %>

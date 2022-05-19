@@ -1,5 +1,6 @@
 
 <br>
+<div class="inline-edit-form-container">
     <%= form_with model: name_review_comment, url: 'name_review_comments', method: :patch do |form| %>
 
       <%= form.hidden_field :id %>
@@ -15,10 +16,16 @@
         class: 'form-control',
         title: 'Type or topic of the comment' %> 
 
-      Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", required: true, tabindex: increment_tab_index %>
+      Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", required: true, size: "60x10", tabindex: increment_tab_index %>
+      <br>
       <%= form.submit id: "save-new-batch-review-comment-btn", class: 'btn btn-primary', title: "Save comment", tabindex: increment_tab_index %>
       
       <%= link_to 'Cancel', cancel_edit_name_review_comment_path(@review_comment.id), remote: true, class: 'btn btn-primary', title: 'Cancel the edit - remove the editing fields.' %>
-      <br>
-  <% end %>
+        <span id="comment-<%= @review_comment.id %>-delete-widgets-container"> 
 
+          <%= render partial: "loader/names/review/tabs/common/delete_dialog_button",
+          locals: {comment: @review_comment} %>
+
+        </span>
+  <% end %>
+</div>

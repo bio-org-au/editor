@@ -31,7 +31,8 @@ class Search::Empty
     @common_and_cultivar_included = true
     @count = false
     @empty = true
-    @error = false
+    @error = !params[:error_message].blank?
+    @error_message = params[:error_message]
     @tree = false
     @limited = false
     @query_string = params[:query]

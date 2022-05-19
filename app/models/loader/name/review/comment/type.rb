@@ -29,18 +29,7 @@ class Loader::Name::Review::Comment::Type < ActiveRecord::Base
   attr_accessor :give_me_focus, :message
 
   def self.for(focus, compiler)
-    case focus
-    when 'distribution' then
-      self.where(name: 'distribution')
-    when 'taxonomy-comment' then
-      self.where(name: 'concept-note')
-    else
-      if compiler then
-        self.where("name not in ('distribution','concept-note')")
-      else
-        self.where("name not in ('distribution','concept-note','compiler-comment')")
-      end
-    end
+    self.where("not deprecated")
   end
 end
   

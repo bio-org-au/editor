@@ -1,0 +1,11 @@
+
+  <%= form_with(model: match, url: loader_name_matches_use_batch_default_ref_path)  do |form| %>
+    <%= form.hidden_field :id %>
+      <br>
+      Confirm your choice to <b>use the batch default reference</b> for this record:
+      <%= form.submit "Confirm", remote: true, class: 'width-5em btn btn-primary pull-right',
+             title: 'Confirm Use batch default referene.' %>
+      <br>
+      <br>
+      <%= render partial: 'detail_line', locals: {info: match.loader_name.loader_batch.default_reference&.citation&.html_safe || 'There is no default reference for this batch', label: 'default reference'} %>
+  <% end %>

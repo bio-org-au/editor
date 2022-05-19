@@ -297,6 +297,62 @@
 </table>
 <br>
 
+<h5>Quality Control Checks</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'possibly-malformed:', description: "search for names attached to a genus that don't start with the genus name - they might be malformed"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
+
+<h5>Family queries</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'family-id:', description: "search for names attached directly to a family"},
+      {field_name: 'no-family-id:', description: "search for names not attached directly to a family -- tip: combine this with a name-rank: query "},
+      {field_name: 'in-own-family:', description: "search for names not attached directly to themselves as a family"},
+      {field_name: 'fam-in-other-family:', description: "search for family names in a family but not their own family - that is, name.id != name.family_id"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
 <%= render partial: 'comments/advanced_search/help' %>
 <%= render partial: 'help/id_search_help' %>
+<h5>Source</h5>
+<p>Useful for records imported from other systems where the source details have been retained.</p>
+<table class="table table-striped">
+  <% [
+      {field_name: 'source-id:', description: "query the original ID of names loaded from other systems e.g. old APNI;  expects one ID or several comma separated IDs; source IDs are displayed at the bottom of the Name Details tab"},
+      {field_name: 'source-sytem:', description: "query the original source system of names loaded from other systems - the system identifier is displayed at the bottom of the Name Details tab; case-insensitive, takes a wildcard; useful when data has been imported from multiple systems"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent"><a href="javascript:void(0)" 
+                                    class="searchable-field width-100-percent" title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span></a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
+
 <%= render partial: 'help/case_and_wildcards_search' %>

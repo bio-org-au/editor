@@ -1,0 +1,20 @@
+<% if @loader_name.preferred_matches.size == 0 %>
+  <br><br>
+  No preferred match, nothing to do here.
+<% else %>
+  <% @loader_name.preferred_matches.each do |match| %>
+    <% if match.taxonomy_choice_made? %>
+      <h5>Current choice</h5>
+      <%= render partial: 'loader/names/tabs/ref_instance/show_current_choice', locals: {match: match} %>
+    <% else %>
+      <%= render partial: 'loader/names/tabs/ref_instance/three_way_choice_form', locals: {match: match} %>
+      <br><br>
+      <div id="search-result-details-info-message-container" class="message-container"></div>
+      <div id="search-result-details-error-message-container" class="error-container"></div>
+    <% end %>
+  <% end %>
+  <br><br>
+  <%= render partial: 'loader/names/tabs/ref_instance/clear_standalone_instance' %>
+
+<% end %>
+

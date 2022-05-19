@@ -23,9 +23,47 @@ class Search::OnOrchids::FieldRule
                                       order: "seq"},
     "taxon-no-wildcard:"  => { where_clause: " lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?",
                                       order: "seq"},
-    "taxon-with-syn:"      => { trailing_wildcard: true,
+    "old-taxon-with-syn:"      => { trailing_wildcard: true,
                                where_clause: " ((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and not doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and not doubtful))",
                                order: "seq"},
+    "taxon-with-syn:"      => { trailing_wildcard: true,
+                               where_clause: "( (  (
+            lower(taxon) like ?
+          or lower(taxon) like 'x '||?
+        or lower(taxon) like '('||?
+          )
+      and record_type = 'accepted'
+    and not doubtful
+        )
+      or 
+          parent_id in (
+        select id
+          from orchids
+        where (
+                lower(taxon) like ?
+              or lower(taxon) like 'x '||?
+            or lower(taxon) like '('||?
+              )
+          and record_type = 'accepted'
+      and not doubtful
+        )
+      or exists (
+        select null
+          from orchids child
+        where child.parent_id   = orchids.id
+       and (
+        lower(child.taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?)
+        )
+      or exists (
+        select null
+          from orchids sibling
+        where sibling.parent_id = orchids.parent_id
+       and (
+        lower(sibling.taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?
+           )
+      )
+  ) ",
+     order: "seq"},
     "id:"                 => { multiple_values: true,
                                where_clause: "id = ? ",
                                multiple_values_where_clause: " id in (?)",

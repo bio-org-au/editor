@@ -26,6 +26,7 @@
   </div><!-- /.col-lg-9 -->
 </div><!-- /row -->
 
-  <input id="query-target" name="query_target" value="<%= @search.parsed_request.target_button_text %>" type="hidden" >
+<br>
+<input id="query-target" name="query_target" value="<%= params[:query_target] || Loader::Batch.user_reviewable(@current_user.username)&.first&.name %>" type="hidden" >
 
 <% end %>

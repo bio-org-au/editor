@@ -28,7 +28,7 @@ class SearchController < ApplicationController
     @search = Search::Error.new(params) unless @search.present?
   rescue => e
     params[:error_message] = e.to_s
-    @search = Search::Error.new(params) unless @search.present?
+    run_empty_search_to_show_error(params)
   end
 
   def set_include_common_and_cultivar
@@ -38,7 +38,17 @@ class SearchController < ApplicationController
   end
 
   def help
+    logger.debug("help params: #{params.inspect}")
+    if params[:help_id].match(/-for-dynamic-target-/) 
+      @dynamic_target = params[:help_id].sub(/.*-for-dynamic-target-/,'')
+                          .gsub(/-/,' ')
+      params[:help_id].sub!(/-for-dynamic-target-.*/,'')
+      logger.debug("@dynamic_target: #{@dynamic_target}")
+    else
+      @dynamic_target = nil
+    end
     help_content = Search::Help::PageMappings.new(params, @view_mode)
+    logger.debug("help_content: #{help_content}")
     render partial: help_content.partial
   end
  
@@ -53,6 +63,7 @@ class SearchController < ApplicationController
 
   def run_local_search
     return false unless params[:query_string].present?
+    logger.debug("focus_id: #{params[:focus_id]}")
     @focus_id = params[:focus_id]
     params[:current_user] = current_user
     check_query_defaults
@@ -67,11 +78,16 @@ class SearchController < ApplicationController
   end
  
   def run_empty_search
-    if @view_mode == 'review'
-      params["target"] = 'Loader Batches'
+    if @view_mode == ViewMode::REVIEW
+      params["target"] = Loader::Batch.user_reviewable(@current_user.username)&.first&.name
     else
       params["target"] = 'Names'
     end
+    @empty_search = true
+    @search = Search::Empty.new(params)
+  end
+
+  def run_empty_search_to_show_error(params)
     @empty_search = true
     @search = Search::Empty.new(params)
   end
@@ -115,7 +131,7 @@ class SearchController < ApplicationController
     if params["query_string"] =~ /view:/i
       @view = params["query_string"].sub(/.*(view: *[A-z]+).*/,'\1').sub(/view: */,'')
     else
-      @view = 'standard'
+      @view = ViewMode::STANDARD.to_s
     end
     logger.debug("record_view_param:- @view: #{@view}")
     throw 'ah'
@@ -128,10 +144,10 @@ class SearchController < ApplicationController
 
     Rails.logger.debug('apply_view_mode is continuing')
     Rails.logger.debug("apply_view_mode:    @view_mode: #{@view_mode}")
-    if @view_mode == 'review'
-      @view = 'review'
+    if @view_mode == ViewMode::REVIEW
+      @view = ViewMode::REVIEW.to_s
     else
-      @view = 'standard'
+      @view = ViewMode::STANDARD.to_s
     end
     Rails.logger.debug("apply_view_mode:    @view: #{@view}")
   end

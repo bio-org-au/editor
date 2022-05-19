@@ -36,8 +36,9 @@
     <li role="presentation" class="divider"></li>
 
 <% if Rails.configuration.try(:batch_loader_aware) %>
+  <% if can? 'loader/batch/review/mode', 'switch_on' %>
     <li>
-      <% if @view_mode == 'standard' %>
+      <% if @view_mode == ViewMode::STANDARD %>
         <%= link_to "<i class=''></i> Switch to Review Mode".html_safe,
                     switch_on_review_mode_path,
                     title: 'See things as a reviewer would',
@@ -45,7 +46,11 @@
                     method: :post,
                     tabindex: '-1' %>
          <li role="presentation" class="divider"></li>
-      <% else %>
+       <% end %>
+    <% end %>
+
+  <% if can? 'loader/batch/review/mode', 'switch_off' %>
+      <% unless @view_mode == ViewMode::STANDARD %>
          <% if @current_user.edit? %>
          <%= link_to "<i class=''></i> Switch out of Review Mode".html_safe,
                      switch_off_review_mode_path,
@@ -57,7 +62,7 @@
          <% end %>
       <% end %>
      </li>
- 
+  <% end %>
 <% end %>
 
     <li class="" role="presentation">

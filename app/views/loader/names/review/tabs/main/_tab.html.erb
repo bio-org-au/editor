@@ -1,8 +1,8 @@
 <% this_tab_re = Regexp.new(this_tab) %>
 
 <% data = Hash.new %>
-<% data['edit-url'] = loader_name_review_tab_path(@loader_name,tab:"#{this_tab}", component: 'main') %>
-<% data['tab-url']  =  loader_name_review_tab_path(id: @loader_name,tab:"#{this_tab}", component: 'main') %>
+<% data['edit-url'] = loader_name_review_tab_path(@loader_name,tab:"#{this_tab}", component: display_component || @loader_name.record_type) %>
+<% data['tab-url']  =  loader_name_review_tab_path(id: @loader_name,tab:"#{this_tab}", component: display_component || @loader_name.record_type) %>
 <% data['prev-tab'] = prev_tab unless prev_tab.blank? %>
 <% data['tab-name'] = this_tab %>
 
@@ -15,5 +15,4 @@
              tabindex: tab_index,
              data: data %>
 </li>
-
 

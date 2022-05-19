@@ -1,0 +1,18 @@
+
+<% unless @loader_name.accepted? %>
+  Not an accepted raw loader name, so you cannot create a misapplication for it.
+<% else %>
+  <h5>Create LoaderName misapplication for <%= @loader_name.simple_name %></h5>
+  <% loader_name = @loader_name.new_misapp %>
+  <%= render partial: 'loader/names/tabs/forms/form_for_misapp', locals: {loader_name: loader_name} %>
+<% end %>
+
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      $('#loader_name_simple_name').focus();
+    })
+  </script>
+<% end %>
+
+

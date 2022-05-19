@@ -33,6 +33,15 @@
                 >Orchid processing logs</a>
             </li>
           <% end %>
+          <% if Rails.configuration.try(:batch_loader_aware) %>
+            <li><a id="search-target-item-loader-batch-stack" 
+                   href="#" 
+                   title="Search loader batches and retrieve batches, reviews, review periods, reviewers in a stack" 
+                   data-help="loader-batch-stack-search-help" 
+                   data-examples="loader-batch-stack-search-examples"
+                >Batch stacks</a>
+            </li>
+          <% end %>
 
           <li role="separator" class="divider"></li>
 
@@ -124,6 +133,14 @@
                 >Batch reviewers</a>
             </li>
 
+            <li><a id="search-target-item-bulk-processing-logs" 
+                   href="#" 
+                   title="Set the search to target bulk processing-logs" 
+                   data-help="bulk-processing-logs-search-help" 
+                   data-examples="bulk-processing-logs-search-examples"
+                   data-advanced="bulk-processing-logs-search-advanced" 
+                >Bulk processing logs</a>
+            </li>
             <li role="separator" class="divider"></li>
 
             <li><a id="search-target-item-user" 

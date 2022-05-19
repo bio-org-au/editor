@@ -103,5 +103,16 @@
         </li>
       <% end %>
 
+      <% if Rails.configuration.try('batch_loader_aware') && @current_user.batch_loader? %>
+
+        <li role="presentation">
+          <%= link_to "Loader Name (main record)",
+                    loader_name_new_row_path,
+                    title: 'Add a new "accepted" loader-name (raw data) within the current loader-batch',
+                    remote: true,
+                    tabindex: '-1' %>
+        </li>
+      <% end %>
+
     </ul>
 </li>

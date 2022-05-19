@@ -108,6 +108,7 @@ class Author < ActiveRecord::Base
     self.namespace_id = Namespace.default.id if namespace_id.blank?
   end
 
+  #Todo: replace with calls to squish!
   def compress_whitespace
     self.name = name.gsub(/ +/, " ") unless name.nil?
     self.abbrev = abbrev.gsub(/ +/, " ") unless abbrev.nil?

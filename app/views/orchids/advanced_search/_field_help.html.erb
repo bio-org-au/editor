@@ -1,18 +1,20 @@
-  <h4>Default Search - the good, the bad... </h4>
-  <h5>TLDR; If you are getting no results for a search, try the <i>taxon:</i> search directive.  </h5>
+<h4>Default Search - the good, <del>the bad</del>... </h4>
   <h5>The Good</h5>
   When searching through orchids raw data we understand that you almost always want to search for "accepted" taxa and their synonyms.
   <br>
-  Fortunately there's a search directive for that and it's called <i>taxon-with-syn:</i>, which is short for <i>accepted taxon with synonyms</i>.
+  Fortunately there's a search directive for that and it's called <code>taxon-with-syn:</code>, which is short for <i>accepted taxon with synonyms</i>.
   <br>
   <h5>The Really Good</h5>
-Because <i>taxon-with-syn:</i> is so frequently used, we've made it the default.  This means that you don't even have to enter the directive, it will be assumed.
+Because <code>taxon-with-syn:</code> is so frequently used, we've made it the default.  This means that you don't even have to enter the directive, it will be assumed.
   <br>
   Specifically, if you enter a taxon name fragment into the search field without a directive, the search will assume you want to use the <i>taxon-with-syn:</i> directive.
-
   <br>
+  <br>
+  <h5>Note</h5>The text below no longer applies due to a newly written query for <code>taxon-with-syn:</code>.  The new query searches across orchids, their parents, their children (synonyms), and across sibling synonyms, retrieves any positives, and displays them in full context.  We came up with the new query while working on the new batch loader, so have retro-fitted it to orchids.
+
+  <del>
   <h5>The Not-So-Good</h5>
-  We've noticed that sometimes this can cause a problem if you are searching for a taxon name fragment that matches a synonym.  For example, if you enter
+    We've noticed that sometimes this can cause a problem if you are searching for a taxon name fragment that matches a synonym.  For example, if you enter
   <blockquote>
   Dendrobium pugioniforme
   </blockquote>
@@ -21,6 +23,7 @@ Because <i>taxon-with-syn:</i> is so frequently used, we've made it the default.
   taxon: Dendrobium pugioniforme
   </blockquote>
   searches for any matching orchid taxon, and that will return results.
+  </del>
   <br>
   <br>
   <h4>Orchid Search Directives</h4>

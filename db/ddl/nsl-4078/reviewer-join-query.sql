@@ -1,0 +1,1 @@
+select lb.name, family_name, brr.name from brer join users on brer.user_id = users.id join brr on brer.batch_review_role_id = brr.id join brp on brer.batch_review_period_id = brp.id join br on brp.batch_review_id = br.id join loader_batch lb on br.loader_batch_id = lb.id  where lb.name = 'APC List 103' and family_name = 'Clarke';

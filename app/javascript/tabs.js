@@ -1,9 +1,9 @@
   debug = function(s) {
     var error;
     try {
-      if (debugSwitch === true) {
+      //if (debugSwitch === true) {
         return console.log('debug: ' + s);
-      }
+      //}
     } catch (error1) {
       error = error1;
     }
@@ -12,21 +12,34 @@
 function getContentOnDemand(theThis) {
   debug("getContentOnDemand for id: " + $(theThis).attr('id') + " and context: " + $(theThis).attr('data-load-context'));
   var targetID = $(theThis).attr('data-load-context');
-  if (targetID === undefined || targetID == '') {
-    debug("targetID is undefined or empty - you need to set it ");
+  if (targetID.match("-for-dynamic-target-")) {
+    ray = targetID.split("-for-dynamic-target-");
+    displayElementID = ray[0];
+    debug("displayElementID: "+ displayElementID);
+  //  var dynamicTarget = ray[1];
+  //  debug("dynamicTarget: "+ dynamicTarget);
   } else {
-      var $targetElement = $('#' + targetID);
+    displayElementID = targetID;
+  }
+  if (displayElementID === undefined || displayElementID == '') {
+    debug("displayElementID is undefined or empty - you need to set it ");
+  } else {
+      debug("else displayElementID: "+ displayElementID);
+      debug($('#' + displayElementID).length);
+      var $targetElement = $('#' + displayElementID);
       if ($targetElement.attr('data-loaded') === undefined) {
-        debug("No entry for " + targetID);
+        debug("No entry for " + displayElementID);
         debug("You need to add a target div in search/tab_inners/_*target_divs.html or similar");
       }
       if ($targetElement.attr('data-loaded') == 'false') {
+        debug('loading');
         $targetElement.html('Loading...');
         $.get(window.relative_url_root + "/search/help/" + targetID, function (data) {
           $targetElement.html(data);
           $targetElement.attr('data-loaded', 'true');
         }, 'html');
       }
+      $targetElement.removeClass('hidden');
   }
 
 };
@@ -67,10 +80,9 @@ function helpTabVisible() {
 }
 
 function getActiveHelpIdentifier() {
-  debug('getActiveHelpIdentifier()');
   return $('ul#search-target-list li a')
     .filter(function (index) {
-      return $(this).text().toLowerCase() === $('#search-target-button-text')
+      return $(this).text().trim().toLowerCase() === $('#search-target-button-text')
         .text()
         .trim()
         .toLowerCase()
@@ -111,13 +123,14 @@ function hideResults() {
 
 function showHelpTarget(target) {
   hideResults();
+  debug("showHelpTarget: " + target);
   $(target).removeClass('hidden');
 }
 
 function getActiveExamplesIdentifier() {
   return $('ul#search-target-list li a')
     .filter(function (index) {
-      return $(this).text().toLowerCase() === $('#search-target-button-text')
+      return $(this).text().trim().toLowerCase() === $('#search-target-button-text')
         .text()
         .trim()
         .toLowerCase()
@@ -191,8 +204,12 @@ $( document ).on('turbolinks:load', function() {
 
   $('a.search-examples-link').on('click', function (e) {
     var targetElement = e.target.dataset.targetElement;
+    debug("targetElement: " + targetElement);
     getContentOnDemand(this);
-    showHelpTarget(targetElement);
+    debug("after getContentOnDemand");
+    debug("targetElement: " + targetElement);
+    getContentOnDemand(this);
+    //showHelpTarget(targetElement);
     e.preventDefault();
   });
 

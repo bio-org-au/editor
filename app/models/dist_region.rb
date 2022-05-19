@@ -36,4 +36,10 @@ class DistRegion < ActiveRecord::Base
         .collect {|dr| dr.name}
   end
 
+  def self.as_hash
+    dr_hash = {}
+    DistRegion.all.each { |dr| dr_hash[dr.name] = dr.sort_order }
+    dr_hash
+  end
+
 end
