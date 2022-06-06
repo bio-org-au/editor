@@ -27,8 +27,6 @@
     <tr><td>Rails.configuration.nsl_links</td>
         <td> <%= Rails.configuration.try(:nsl_links) %> </td></tr>
 
-    <tr><td>Rails.configuration.ldap_admin_username</td>
-        <td> <%= Rails.configuration.try(:ldap_admin_username) %> </td></tr>
     <tr><td>Rails.configuration.nsl_host_and_port</td>
         <td> <%= Rails.configuration.try(:nsl_host_and_port) %> </td></tr>
     <tr><td>Rails.configuration.search_address</td>
@@ -38,6 +36,12 @@
 
     <h4>LDAP</h4>
     <table class="table table-condensed search-results width-100-percent">
+    <tr><td>Rails.configuration.ldap_via_active_directory</td>
+        <td> <%= Rails.configuration.try(:ldap_via_active_directory) %> </td></tr>
+    <tr><td>Rails.configuration.group_filter_regex</td>
+        <td> <%= Rails.configuration.try(:group_filter_regex) %> </td></tr>
+    <tr><td>Rails.configuration.ldap_admin_username</td>
+        <td> <%= Rails.configuration.try(:ldap_admin_username) %> </td></tr>
     <tr><td class="width-40-percent min-width-10em" >Rails.configuration.ldap_base</td>
         <td> <%= Rails.configuration.try(:ldap_base) %> </td></tr>
 

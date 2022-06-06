@@ -237,6 +237,8 @@ in the following formats:</p>
   <% [
       {field_name: 'duplicate-of-id:', description: "ID of the master record if marked as a duplicate"},
       {field_name: 'parent-id:', description: "ID of the 'parent' reference, if it is identified, e.g. book for chapter, journal for paper"},
+      {field_name: 'parent-id-sort-by-volume:', description: "as for parent-id, but sorted lexicographically by volume"},
+      {field_name: 'parent-id-sort-numerical-by-volume:', description: "as for parent-id, but sorted numerically by volume (query will fail if alphas in volume field)"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

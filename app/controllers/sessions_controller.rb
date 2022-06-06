@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
       render "new"
     end
   rescue => e
-    logger.error("Exception signing in: #{e}")
+    logger.error("Exception signing in: #{e.to_s.gsub(/password:[^,]*/,'password: [filtered]')}")
     redirect_to :retry_start_sign_in
   end
 
@@ -70,6 +70,8 @@ class SessionsController < ApplicationController
     session[:username] = sign_in_params[:username]
     session[:groups] = @sign_in.groups
     session[:user_full_name] = @sign_in.user_full_name
+    session[:user_cn] = @sign_in.user_cn
+    session[:generic_active_directory_user] = @sign_in.generic_active_directory_user
     session[:include_common_and_cultivar] = false
     session[:workspace] = {}
   end

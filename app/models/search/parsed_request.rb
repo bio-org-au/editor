@@ -165,14 +165,18 @@ class Search::ParsedRequest
                                          "references_shared_names",
                                          "references_with_novelties",
                                          "references_names_full_synonymy",
-                                         "references_with_instances",
-                                         "references with instances",
                                          "references, names, full synonymy",
+                                         "references with instances",
+                                         "references_with_instances",
                                          "references + instances",
                                          "references with novelties",
+                                         "references_with_novelties",
                                          "references, accepted names for id",
+                                         "references_accepted_names_for_id",
                                          "instance is cited",
+                                         "instance_is_cited",
                                          "instance is cited by",
+                                         "instance_is_cited_by",
                                          "audit"]
 
   def initialize(params)

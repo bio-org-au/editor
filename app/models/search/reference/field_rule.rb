@@ -115,6 +115,14 @@ from ref_type where lower(name) like lower(?))" },
                                  order: "case when parent_id is null then
                                  'A' else 'B' end, citation" },
 
+    "parent-id-sort-by-volume:" => { where_clause: " id = ? or parent_id = ?",
+                                 order: "case when parent_id is null then
+                                 'A' else 'B' end, volume, citation" },
+
+    "parent-id-sort-numerical-by-volume:" => { where_clause: " id = ? or parent_id = ?",
+                                 order: "case when parent_id is null then
+                                 'A' else 'B' end, to_number(volume,'99999999999'), citation" },
+
     "master-id:"            => { where_clause: " id = ? or
                                  duplicate_of_id = ?" },
 

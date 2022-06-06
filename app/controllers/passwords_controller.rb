@@ -31,11 +31,14 @@ class PasswordsController < ApplicationController
     @password.new_password = params[:password]["new_password"]
     @password.new_password_confirmation = params[:password]["new_password_confirmation"]
     @password.username = @current_user.username
+    @password.user_cn = session[:user_cn]
     if @password.save!
       render :updated
     else
       render :edit
     end
+  rescue => e
+    render :edit
   end
 end
 

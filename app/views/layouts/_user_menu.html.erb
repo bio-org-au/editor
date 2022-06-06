@@ -65,9 +65,15 @@
   <% end %>
 <% end %>
 
+<% if session[:generic_active_directory_user] %>
+    <li class="" role="presentation", title="Generic users cannot change their passwords here.">
+      <span class="strike-through">Change Password </span>
+    </li>
+<% else %>
     <li class="" role="presentation">
       <%= link_to "#{icon('key')} Change password".html_safe, edit_password_path, method: :get, title: 'Select this to change your password'%>
     </li>
+<% end %>
     <li class="" role="presentation">
       <%= link_to "#{icon('sign-out')} Sign out".html_safe, sign_out_path, method: :get, title: 'Select this to sign out from the NSL Editor'%>
     </li>

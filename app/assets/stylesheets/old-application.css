@@ -429,6 +429,12 @@ div#change-password-form {
   padding: 0.5em 2em 2em 2em;
 }
 
+div#change-password-info {
+  width: 45em;
+  margin: 0 auto;
+  padding: 0.5em 2em 2em 2em;
+}
+
 div.focus-details span.twitter-typeahead {
   width: 100%;
 }

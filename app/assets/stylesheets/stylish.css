@@ -150,3 +150,7 @@ hr.dark {
     color: #333; /* old IE */
     background-color: #333; /* Modern Browsers */
 }
+
+*.strike-through {
+  text-decoration: line-through;
+}
