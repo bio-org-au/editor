@@ -187,26 +187,26 @@
   });
 
   optionalFocusOnPageLoad = function() {
-    debug('optionalFocusOnPageLoad');
+
+    try {
+    debug('optionalFocusOnPageLoad start');
     var focusId, focusSelector;
-    debug('optionalFocusOnPageLoad 1');
-    debug('focusId: ' + focusId);
-    debug('optionalFocusOnPageLoad 2');
     focusId = $('#focus_id').val();
-    debug('optionalFocusOnPageLoad 3');
-    debug('focusId: ' + focusId);
     if (!focusId) {
-      debug('no focus, so got to first');
       return $('table.search-results tr td.takes-focus a.show-details-link[tabindex]').first().click();
     } else {
-      focusSelector = `#${focusId}`;
+      focusSelector = `#${focusId.replace(/::.*-/g, '-')}`;
+
       if ($(focusSelector).length === 1) {
-        debug('focus, so go there');
         return $(focusSelector).click();
       } else {
-        debug('go first anyway');
         return $('table.search-results tr td.takes-focus a.show-details-link[tabindex]').first().click();
       }
+    }
+  }
+    catch(err) {
+      debug('optionalFocusOnPageLoad Error: ' + err.toString());
+      return;
     }
   };
 

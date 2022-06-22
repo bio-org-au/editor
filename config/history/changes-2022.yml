@@ -1,20 +1,42 @@
-- :date: 6-Jun-2022
+- :date: 21-Jun-2022
+  :jira_id: '4254'
+  :description: |-
+    New Author: creating a new author no longer locks up searching
+- :date: 15-Jun-2022
+  :jira_id: '4237'
+  :description: |-
+    Change Password: cleaner validation and clearer instructions for Active Directory passwords
+- :date: 09-Jun-2022
+  :jira_id: '3720'
+  :description: |-
+    Tree Report: add error-handling code for the Check All Synonymy report
+- :date: 07-Jun-2022
+  :jira_id: '4237'
+  :description: |-
+    Login: show <code>ldap_generic_users</code> on the Admin configuration page
+- :date: 07-Jun-2022
+  :jira_id: '4247'
+  :description: |-
+    Change Password: hitting Enter now submits the form instead of cancelling it
+- :date: 06-Jun-2022
+  :release: true
+- :date: 06-Jun-2022
   :jira_id: '4237'
   :description: |-
     Change Password: correctly validate new passwords in context - for AD or OpenLDAP appropriately
-- :date: 3-Jun-2022
+- :date: 03-Jun-2022
   :jira_id: '4237'
   :description: |-
     Login: allow generic Active Directory users to login
-- :date: 1-Jun-2022
+- :date: 01-Jun-2022
   :jira_id: '4236'
   :description: |-
     Fixed <code>Instance is cited</code> query error and <code>instance is cited by</code> query error
-- :date: 1-Jun-2022
+- :date: 01-Jun-2022
   :jira_id: '4203'
   :description: |-
     Reference search: parent-id searches that sort results by volume - one lexicographically, the other numerically
-- :date: 1-Jun-2022
+- :date: 01-Jun-2022
   :jira_id: ''
   :description: |-
     Security: Upgrade rack.

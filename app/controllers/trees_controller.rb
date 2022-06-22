@@ -283,6 +283,9 @@ class TreesController < ApplicationController
   def run_cas
     url = Tree::AsServices.val_syn_link(@working_draft.id)
     @result = RestClient.get(url, {content_type: :html, accept: :html})
+  rescue => e
+    @message = e.to_s
+    render 'trees/reports/run_cas_error'
   end
 
   def show_diff

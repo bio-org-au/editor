@@ -430,9 +430,17 @@ div#change-password-form {
 }
 
 div#change-password-info {
-  width: 45em;
+  width: 50em;
+  max-width: 90%;
   margin: 0 auto;
-  padding: 0.5em 2em 2em 2em;
+  padding: 0.5em 2em 0.0em 15em;
+  text-align: left;
+}
+
+div#error-explanation {
+  color: darkred;
+  width: 100%;
+  padding-bottom: 1em;
 }
 
 div.focus-details span.twitter-typeahead {

@@ -45,21 +45,21 @@ class Password < ActiveType::Object
   private
 
   def validate_arguments
-    raise "no current password entered" if current_password.blank? 
-    raise "no new password entered" if new_password.blank? 
-    raise "new password was not confirmed" if new_password_confirmation.blank? 
+    raise "No current password entered" if current_password.blank? 
+    raise "No new password entered" if new_password.blank? 
+    raise "Please also re-type the new password." if new_password_confirmation.blank? 
     unless new_password == new_password_confirmation
-      raise "the new password doesn't match the confirmation you entered"
+      raise "The new password doesn't match the re-typed new password."
     end
     unless new_password != current_password
-      raise "new password is the same as the current password you entered"
+      raise "The new password is the same as the current password you entered."
     end
-    raise "the new password not long enough" if new_password.size < 8
-    raise "the new password too long" if new_password.size > 50
+    raise "The new password is not long enough." if new_password.size < 8
+    raise "The new password is too long." if new_password.size > 50
     if Rails.configuration.try('ldap_via_active_directory')
-      raise "the new password must contain at least one upper-case character A-Z" unless new_password.match(/[A-Z]/)
-      raise "the new password must contain at least one lower-case character a-z" unless new_password.match(/[a-z]/)
-      raise "the new password must contain at least one symbol or digit" unless new_password.match(/[0-9\[~:;'"><!@#$%^&*()_+-=?|}{\]\-=]/)
+      raise "The new password must contain at least one upper-case character A-Z." unless new_password.match(/[[:upper:]]/)
+      raise "The new password must contain at least one lower-case character a-z." unless new_password.match(/[[:lower:]]/)
+      raise "The new password must contain at least one symbol or digit." unless new_password.match(/[\d\W]/) # a digit or non-word char
     end
   end
 

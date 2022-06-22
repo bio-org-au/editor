@@ -2,17 +2,26 @@
 
   <h2>Change Password</h2>
 
-  <div id="change-password-form">
+  <div id="change-password-info">
+        <% if Rails.configuration.try('ldap_via_active_directory') %>
+          Passwords must be 8-50 characters with <br>at least one from each category:
+                <ul class="no-indent">
+                  <li/>upper-case letters, 
+                  <li/>lower-case letters, 
+                  <li/>digits or symbols
+                </ul>
+        <% else %>
+          <p>Must be at least 8 characters long.</p>
+        <% end %>
+  </div>
     <%= form_for(@password, url: edit_password_path, role: 'form') do | form | %>
       <% unless @password.error.blank? %>
-        <h3>We had a problem doing that.</h3>
-        <div id="error_explanation">
-          Your password didn't save because <%= @password.error %>
-        <br>
-        </div>
+        <div id="error-explanation">
+          <%= @password.error %> <br> There may be other problems &mdash; see the notes above,  and try again.
+          </div>
       <% end %>
+  <div id="change-password-form">
       <h4><%= @current_user.full_name %></h4>
-      <br>
       <div class="form-group">
         <%= form.label :current_password, 'Current Password*' %>
         <%= form.password_field :current_password, required: true, title: "Enter your current password", class: 'form-control', autofocus: true %>
@@ -22,28 +31,15 @@
         <%= form.password_field :new_password, required: true, title: "Enter your new password", class: 'form-control' %>
       </div>
       <div class="form-group">
-        <%= form.label :new_password_confirmation, 'New Password confirmation*' %>
+        <%= form.label :new_password_confirmation, 'Re-type New Password*' %>
         <%= form.password_field :new_password_confirmation, required: true, title: "Confirm your new password", class: 'form-control' %>
       </div>
 
-      <%= link_to "<button class='btn btn-primary'>Cancel</button>".html_safe,
-        root_path,
-        id: 'cancel-password-button',
-        class: 'link-holding-button no-highlight',
-        title: 'Select to discard the Change Password form.'
-      %>
-
       <%= form.submit 'Change', title: 'Select to Change Password', class: 'btn btn-primary' %>
+      <button class='btn btn-primary' onclick="$('#change-password-form-container').hide(); return false;">Cancel</button>
  
     <% end %>
 
-  </div>
-  <div id="change-password-info">
-        <% if Rails.configuration.try('ldap_via_active_directory') %>
-          <p>Passwords must be at least 8 characters long and must contain at least one upper-case letter, one lower-case letter, and at least one digit or symbol.  Up to 50 characters are allowed.</p>
-        <% else %>
-          <p>Must be at least 8 characters long.</p>
-        <% end %>
   </div>
   <script type="text/javascript">$("#password_current_password").focus();</script>
 

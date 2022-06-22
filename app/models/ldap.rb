@@ -279,17 +279,4 @@ class Ldap  < ActiveType::Object
     quoted_text.length.times{|i| unicode_string+= "#{quoted_text[i..i]}\000" }
     return unicode_string
   end
-
-
-
-# dn = "cn=test user,ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
-
-
-# if ( ldap.modify :dn => dn, :operations => ops )
-  # puts 'Success!'
-# else
-  # puts(ldap.get_operation_result.error_message)
-# end
-
-
 end
