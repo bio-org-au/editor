@@ -29,7 +29,7 @@ class SearchOnAuthorAbbrevExactIsNullTest < ActiveSupport::TestCase
                    current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert !search.executed_query.results.empty?, "Results expected."
     search.executed_query.results.each do |r|
       assert r.abbrev.blank?, "Abbrev should be blank"

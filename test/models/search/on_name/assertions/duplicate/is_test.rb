@@ -26,7 +26,7 @@ class SearchOnNameAssertionDuplicateIsTest < ActiveSupport::TestCase
                                 query_target: "name",
                                 query_string: "is-a-duplicate:",
                                 current_user: build_edit_user
-    ))
+                              ))
     assert !search.executed_query.results.empty?, "Should find duplicate name."
   end
 end

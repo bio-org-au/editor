@@ -27,7 +27,7 @@ class FromCultivarHybridWithOneParentToCultivarTest < ActiveSupport::TestCase
   def skipped
     name = names(:cultivar_hybrid_with_one_parent)
     assert_equal name.raw_category, Name::CULTIVAR_HYBRID_CATEGORY
-    # Note: cultivar hybrids with one parent were possibly entered
+    # NOTE: cultivar hybrids with one parent were possibly entered
     # incorrectly in the old APNI.
     assert name.second_parent_id.blank?,
            "Expecting 2nd parent to be blank in this fixture."

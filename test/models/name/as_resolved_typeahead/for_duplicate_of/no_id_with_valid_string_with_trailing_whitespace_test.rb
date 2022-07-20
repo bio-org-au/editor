@@ -24,7 +24,7 @@ class NameAsResTAForDupeOfIdWValStrWTrailingWhitespace < ActiveSupport::TestCase
     name = names(:the_regnum)
     result = Name::AsResolvedTypeahead::ForDuplicateOf.new(
       "",
-      name.full_name + " "
+      "#{name.full_name} "
     )
     assert_equal name.id, result.value, "Should get a matching id for the name"
   end

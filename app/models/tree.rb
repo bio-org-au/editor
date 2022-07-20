@@ -30,6 +30,8 @@ class Tree < ActiveRecord::Base
   belongs_to :current_tree_version,
              class_name: "TreeVersion",
              foreign_key: "current_tree_version_id"
+  alias_attribute :current, :current_tree_version
+  alias_attribute :current_version, :current_tree_version
 
   has_many :tree_versions,
            foreign_key: "tree_id"
@@ -48,5 +50,13 @@ class Tree < ActiveRecord::Base
 
   def config?
     self.config.present?
+  end
+
+  def comment_key
+    config['comment_key']
+  end
+
+  def distribution_key
+    config['distribution_key']
   end
 end

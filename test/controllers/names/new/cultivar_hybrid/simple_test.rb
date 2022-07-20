@@ -29,8 +29,8 @@ class NamesNewCultivarHybridNameSimpleTest < ActionController::TestCase
     @request.session["groups"] = ["edit"]
     get(:new,
         params: { category: "cultivar hybrid",
-          random_id: "123445",
-          tabIndex: "107" },
+                  random_id: "123445",
+                  tabIndex: "107" },
         session: {},
         xhr: true)
     assert_response :success, "Cannot edit a new cultivar hybrid name"

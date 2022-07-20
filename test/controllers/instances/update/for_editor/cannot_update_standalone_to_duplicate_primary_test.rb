@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -35,7 +34,7 @@ class CannotUpdateStandaloneToDuplicatePrimary < ActionController::TestCase
         params: { id: @instance.id,
                   instance: { "reference_id" => @target.reference_id,
                               "instance_type_id" => @target.instance_type_id,
-                              "page" => @target.page} },
+                              "page" => @target.page } },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: ["edit"] })

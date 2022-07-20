@@ -36,8 +36,8 @@ class ForInfrafamilyPartiallyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "[infrafamily]",
-      %w(Regio Regnum Division Classis Subclassis Superordo Ordo Subordo
-         Familia Subfamilia Tribus Subtribus)
+      %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo
+         Familia Subfamilia Tribus Subtribus]
     )
   end
 end

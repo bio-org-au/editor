@@ -43,7 +43,7 @@ class InstancesDeleteForEditorTest < ActionController::TestCase
   def stub_it
     stub_request(:delete, "#{a}#{b}#{c}")
       .with(headers: { "Accept" => "application/json",
-	                     'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+                       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
                        "Host" => "localhost:9090",
                        "User-Agent" => /ruby/ })
       .to_return(status: 200, body: { "ok" => true }.to_json, headers: {})

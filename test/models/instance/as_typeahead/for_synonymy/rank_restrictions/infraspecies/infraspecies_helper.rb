@@ -17,9 +17,9 @@
 #   limitations under the License.
 #
 def check_infraspecific_exclusions
-  %w(Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Familia
+  %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Familia
      Subfamilia Tribus Subtribus Genus Subgenus Sectio Subsectio Series
-     Subseries Superspecies).each do |rank_string|
+     Subseries Superspecies].each do |rank_string|
     assert @rank_names.select { |e| e.match(/\A#{rank_string}\z/) }.empty?,
            "Expect no #{Regexp.escape(rank_string)} to be suggested"
   end
@@ -36,8 +36,8 @@ def check_species
 end
 
 def check_the_rest
-  %w(Subspecies Nothovarietas Varietas Subvarietas Forma Subforma [n/a]
-     [unknown] [unranked] [infraspecies] morphological\ var. nothomorph.)
+  ["Subspecies", "Nothovarietas", "Varietas", "Subvarietas", "Forma", "Subforma", "[n/a]", "[unknown]", "[unranked]",
+   "[infraspecies]", "morphological var.", "nothomorph."]
     .each do |rank_string|
     matches = @rank_names.select do |e|
       e.match(/\A#{Regexp.escape(rank_string)}\z/)

@@ -27,8 +27,8 @@ class NamesDeleteConfirmForReaderSimpleTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     delete(:confirm,
            params: { names_delete: { name_id: name.id,
-                             reason: "some reason",
-                             extra_info: "" } },
+                                     reason: "some reason",
+                                     extra_info: "" } },
            session: { username: "fred",
                       user_full_name: "Fred Jones",
                       groups: [] })

@@ -23,6 +23,5 @@ class NameAsResolvedTypeahead4ParentIdWithNoString < ActiveSupport::TestCase
   test "id with no string" do
     result = Name::AsResolvedTypeahead::ForParent.new("1", "", "parent")
     assert_equal("", result.value, "value should be blank when id and no string")
-
   end
 end

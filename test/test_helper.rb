@@ -17,11 +17,14 @@
 #   limitations under the License.
 #
 
-ENV['RAILS_ENV'] ||= 'test'
-require_relative '../config/environment'
-require 'rails/test_help'
-#require File.expand_path("../../config/environment", __FILE__)
-#require "rails/test_help"
+# require 'simplecov'
+# SimpleCov.start
+
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../config/environment"
+require "rails/test_help"
+# require File.expand_path("../../config/environment", __FILE__)
+# require "rails/test_help"
 
 # require "minitest"
 # require "minitest/rails"
@@ -69,7 +72,6 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
-
 
 def debug(string)
   # print "#{Time.now} - #{string} \n"
@@ -175,6 +177,7 @@ end
 def search_results_with_details?
   return unless search_results?
   return true if details_are_showing?
+
   show_details
   debug "sleeping...."
   sleep(0.01)
@@ -332,7 +335,7 @@ def load_new_author_form
   Timeout.timeout(Capybara.default_wait_time) do
     loop until page.evaluate_script("jQuery.active").zero?
   end
-  select_from_menu(%w(New Author))
+  select_from_menu(%w[New Author])
   search_result_must_include_link("New author")
   search_result_details_must_include_content("New Author")
 end
@@ -490,7 +493,7 @@ def try_typeahead_multi(field_id,
                         which_suggestion = "first")
   fill_in(field_id, with: input_text)
   page.execute_script %{ $('##{field_id}').trigger("focus") }
-  suggestion = find("#" + field_id).find(:xpath, ".//..")
+  suggestion = find("##{field_id}").find(:xpath, ".//..")
                                    .all("div.tt-suggestion")
                                    .send(which_suggestion)
   assert_not_nil suggestion, "Should have found a suggestion."
@@ -501,10 +504,10 @@ end
 def try_typeahead_single(field_id, input_text, expected)
   fill_in(field_id, with: input_text)
   page.execute_script %{ $('##{field_id}').trigger("focus") }
-  begin
-    suggestion = find("#" + field_id).find(:xpath, ".//..")
-                                     .find("div.tt-suggestion")
-  end
+
+  suggestion = find("##{field_id}").find(:xpath, ".//..")
+                                   .find("div.tt-suggestion")
+
   assert_not_nil suggestion, "No such suggestion: '#{expected}'"
   assert_equal expected, suggestion.text, "Expected: #{expected}."
 end
@@ -520,4 +523,3 @@ def fill_in_id_field(field, id)
     fill_in(field, with: id)
   end
 end
-

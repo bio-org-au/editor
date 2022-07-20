@@ -1,5 +1,5 @@
-
 # frozen_string_literal: true
+
 def build_edit_user
   edit_user = User.new
   edit_user.username = "tester"

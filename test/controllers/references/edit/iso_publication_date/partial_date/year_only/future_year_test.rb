@@ -30,19 +30,19 @@ class ReferencesesUpdateIsoPartiaFutureYearTest < ActionController::TestCase
 
   test "update reference iso partial future year" do
     @request.headers["Accept"] = "application/javascript"
-      patch(:update,
-           params: { id: references(:simple).id,
-             reference: { "ref_type_id" => ref_types(:book),
-                          "title" => "Some book",
-                          "author_id" => authors(:dash),
-                          "author_typeahead" => "-",
-                          "published" => true,
-                          "parent_typeahead" => @parent_typeahead,
-                          "ref_author_role_id" => ref_author_roles(:author),
-                          "year" => @future_year } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
+    patch(:update,
+          params: { id: references(:simple).id,
+                    reference: { "ref_type_id" => ref_types(:book),
+                                 "title" => "Some book",
+                                 "author_id" => authors(:dash),
+                                 "author_typeahead" => "-",
+                                 "published" => true,
+                                 "parent_typeahead" => @parent_typeahead,
+                                 "ref_author_role_id" => ref_author_roles(:author),
+                                 "year" => @future_year } },
+          session: { username: "fred",
+                     user_full_name: "Fred Jones",
+                     groups: ["edit"] })
     assert_response :unprocessable_entity
     assert_match(/#{@msg_part1}#{@msg_part2}/,
                  response.body.to_s,

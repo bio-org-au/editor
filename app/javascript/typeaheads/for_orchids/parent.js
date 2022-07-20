@@ -32,7 +32,8 @@ orchidParentSuggestions = new Bloodhound({
         replace: function(url,query) {
             return window.relative_url_root + '/orchids/parent_suggestions?' +
                 'orchid_id=' + $('#orchid-parent-typeahead').attr('data-orchid-id') + '&' +
-                'term=' + encodeURIComponent(query.replace(/\|.*/,''))
+                'term=' + encodeURIComponent(query.replace(/\|.*/,'')) + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
         }
     },
     limit: 100

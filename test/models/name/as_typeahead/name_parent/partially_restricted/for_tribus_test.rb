@@ -36,8 +36,8 @@ class ForTribusPartiallyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Tribus",
-      %w(Regio Regnum Division Classis Subclassis Superordo Ordo Subordo
-         Familia Subfamilia)
+      %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo
+         Familia Subfamilia]
     )
   end
 end

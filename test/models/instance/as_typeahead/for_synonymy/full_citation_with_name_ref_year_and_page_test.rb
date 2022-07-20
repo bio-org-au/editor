@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 require "test_helper"
-require "models/instance/as_typeahead/for_synonymy/test_helper.rb"
+require "models/instance/as_typeahead/for_synonymy/test_helper"
 
 # This is a based on a real error in production.
 class ForFullCitationWithNameRefYearPageTest < ActiveSupport::TestCase
@@ -28,7 +28,7 @@ class ForFullCitationWithNameRefYearPageTest < ActiveSupport::TestCase
       Miscellaneous Information 1923(9):1923 [305-332]",
       names(:a_species).id
     )
-    assert typeahead.results.class == Array, "Results should be an array."
+    assert typeahead.results.instance_of?(Array), "Results should be an array."
     assert typeahead.results.size.zero?,
            "No results expected but also no exception should be thrown."
   end

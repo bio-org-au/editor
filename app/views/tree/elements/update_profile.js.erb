@@ -1,12 +1,12 @@
 $('.message-container').html('');
 $('input#author_name').focus();
-$('#search-result-details-info-message-container').html('<%= @message %>');
+$('#search-result-details-info-message-container').html('<%= @distribution_message %><br><%= @comment_message %><br><%= "Refreshing tab...." if @refresh %>');
 
 <% if @refresh %>
 setTimeout(
   function()
   {
     $('#instance-edit-profile-tab').click();
-  }, 500
+  }, 2000
 );
 <% end %>

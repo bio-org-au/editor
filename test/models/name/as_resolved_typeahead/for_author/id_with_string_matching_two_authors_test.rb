@@ -20,7 +20,7 @@ require "test_helper"
 
 # Single name model test.
 class NameAsEditedAuthorIdWithStringMatching2Names < ActiveSupport::TestCase
-  test"id with string matching 2 authors" do
+  test "id with string matching 2 authors" do
     skip
     # This test became redundant in its present form when a
     # database constraint was added to prevent duplicate author names.

@@ -177,7 +177,7 @@ class Name::DeDuper
     debug("instances: #{@instances.size}")
     @duplicates_of = Name.where(duplicate_of_id: @duplicate.id)
     debug("duplicates of: #{@duplicates_of.size}")
-    @tree_elements = TreeElement.where(name_id: @duplicate.id)
+    @tree_elements = Tree::Element.where(name_id: @duplicate.id)
     debug("tree elements: #{@tree_elements.size}")
     @comments = @duplicate.comments
     debug("comments: #{@comments.size}")

@@ -32,7 +32,8 @@ loaderBatchDefaultReferenceSuggestions = new Bloodhound({
     remote: {url: window.relative_url_root + '/loader/batches/default_reference_suggestions?term=%QUERY',
         replace: function(url,query) {
             return window.relative_url_root + '/loader/batches/default_reference_suggestions?' +
-                'term=' + encodeURIComponent(query.replace(/\|.*/,''))
+                'term=' + encodeURIComponent(query.replace(/\|.*/,'')) + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
         }
     },
     limit: 100

@@ -25,4 +25,3 @@ class AdnotsAllowedForTaxNovTest < ActiveSupport::TestCase
     assert instance.accepts_adnots?, "Tax. nov. should accept adnots."
   end
 end
-

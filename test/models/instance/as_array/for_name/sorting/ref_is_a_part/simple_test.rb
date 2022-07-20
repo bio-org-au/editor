@@ -24,7 +24,7 @@ class InstanceAsArrayForNameSortingRefIsAPartTest < ActiveSupport::TestCase
     name = names(:metrosideros_costata)
     part_instance = instances(:some_part_to_do_with_metrosideros_costata)
     i = Instance::AsArray::ForName.new(name)
-    assert i.results.class == Array,
+    assert i.results.instance_of?(Array),
            "InstanceAsArray::ForName should produce an array."
     assert i.results[4].id == part_instance.id,
            "Instance for the ref of type part should be fifth entry in order."

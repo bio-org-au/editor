@@ -23,7 +23,8 @@ window.authorsByNameDuplicateOf = new Bloodhound({
            replace: function(url,query) {
                      return window.relative_url_root + '/authors/typeahead/on_name/duplicate_of/' + 
                                                        $('#author-duplicate-of-typeahead').attr('data-excluded-id') +
-                                                       '?term='+encodeURIComponent(query)
+                                                       '?term='+encodeURIComponent(query) + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
            }
           },
   limit: 100

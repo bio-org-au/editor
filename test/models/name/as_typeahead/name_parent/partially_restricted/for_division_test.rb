@@ -35,6 +35,6 @@ class ForDivisionPartiallyRestrictedTest < ActiveSupport::TestCase
     )
     suggestions_should_only_include(typeahead.suggestions,
                                     "Division",
-                                    %w(Regnum))
+                                    %w[Regnum])
   end
 end

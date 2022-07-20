@@ -31,6 +31,6 @@ class OptionsForScientificHybridFormulaCategoryTest < ActiveSupport::TestCase
     assert_equal(1,
                  NameStatus
       .options_for_category(name_categories(:scientific_hybrid_formula)).size,
-      "Wrong number of name status options for scientific hybrid formula category")
+                 "Wrong number of name status options for scientific hybrid formula category")
   end
 end

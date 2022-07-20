@@ -47,8 +47,8 @@ class OptionsForCultivarHybridCategoryTest < ActiveSupport::TestCase
   test "should have only two entries" do
     assert_equal 3,
                  NameStatus
-      .options_for_category(name_categories(:cultivar_hybrid))
-      .size,
+                   .options_for_category(name_categories(:cultivar_hybrid))
+                   .size,
                  "Wrong no of name status options for cultivar hybrid category"
   end
 end

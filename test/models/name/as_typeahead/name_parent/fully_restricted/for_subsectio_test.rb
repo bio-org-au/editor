@@ -34,7 +34,7 @@ class ForSubsectioFullyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Subsectio",
-      %w(Sectio Subgenus Genus)
+      %w[Sectio Subgenus Genus]
     )
   end
 end

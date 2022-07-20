@@ -66,12 +66,12 @@ class ReferencesesCreateSimpleTest < ActionController::TestCase
     assert_difference("Reference.count") do
       post(:create,
            params: { reference: { "ref_type_id" => ref_types(:book),
-                          "title" => "Some book",
-                          "author_id" => authors(:dash),
-                          "author_typeahead" => "-",
-                          "published" => true,
-                          "parent_typeahead" => @parent_typeahead,
-                          "ref_author_role_id" => ref_author_roles(:author) } },
+                                  "title" => "Some book",
+                                  "author_id" => authors(:dash),
+                                  "author_typeahead" => "-",
+                                  "published" => true,
+                                  "parent_typeahead" => @parent_typeahead,
+                                  "ref_author_role_id" => ref_author_roles(:author) } },
            session: { username: "fred",
                       user_full_name: "Fred Jones",
                       groups: ["edit"] })

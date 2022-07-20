@@ -27,19 +27,19 @@ class OtherTest < ActiveSupport::TestCase
                  NameType.options_for_category(current_category).size,
                  "Should be just 5 #{current_category} name types."
     assert NameType.options_for_category(current_category)
-      .collect(&:first).include?("common"),
+                   .collect(&:first).include?("common"),
            "Common should be an #{current_category} name type."
     assert NameType.options_for_category(current_category)
-      .collect(&:first).include?("informal"),
+                   .collect(&:first).include?("informal"),
            "Informal should be an #{current_category} name type."
     assert NameType.options_for_category(current_category)
-      .collect(&:first).include?("[n/a]"),
+                   .collect(&:first).include?("[n/a]"),
            "[n/a] should be an #{current_category} name type."
     assert NameType.options_for_category(current_category)
-      .collect(&:first).include?("[default]"),
+                   .collect(&:first).include?("[default]"),
            "[default] should be an #{current_category} name type."
     assert NameType.options_for_category(current_category)
-      .collect(&:first).include?("[unknown]"),
+                   .collect(&:first).include?("[unknown]"),
            "[unknown] should be an #{current_category} name type."
   end
 end

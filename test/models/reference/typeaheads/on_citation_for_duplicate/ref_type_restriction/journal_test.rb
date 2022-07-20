@@ -29,9 +29,10 @@ class TAOnCitnForDuplicateRefTypeRestrictionJournal < ActiveSupport::TestCase
     unknowns = 0
     others = 0
     typeahead.results.each do |result|
-      if result[:value] =~ /\[journal\]/
+      case result[:value]
+      when /\[journal\]/
         journals += 1
-      elsif result[:value] =~ /\[unknown\]/
+      when /\[unknown\]/
         unknowns += 1
       else
         others += 1

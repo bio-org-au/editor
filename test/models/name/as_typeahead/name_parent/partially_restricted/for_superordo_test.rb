@@ -36,7 +36,7 @@ class ForSuperordoPartiallyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Superordo",
-      %w(Regnum Division Classis Subclassis)
+      %w[Regnum Division Classis Subclassis]
     )
   end
 end

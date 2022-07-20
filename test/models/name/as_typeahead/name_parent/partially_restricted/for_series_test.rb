@@ -36,7 +36,7 @@ class ForSeriesPartiallyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Series",
-      %w(Subsectio Sectio Subgenus Genus)
+      %w[Subsectio Sectio Subgenus Genus]
     )
   end
 end

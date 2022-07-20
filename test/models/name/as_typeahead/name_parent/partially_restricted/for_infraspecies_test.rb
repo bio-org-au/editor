@@ -36,7 +36,7 @@ class ForInfraspeciesPartiallyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "[infraspecies]",
-      %w(Species Subspecies Nothovarietas Varietas Subvarietas Forma Subforma)
+      %w[Species Subspecies Nothovarietas Varietas Subvarietas Forma Subforma]
     )
   end
 end

@@ -2233,7 +2233,6 @@ part_about_metrosideros_costata:
   created_by: tester
   updated_by: tester
 
-
 paper_has_part_about_metrosideros_costata: 
   title: paper has part about metrosideros costata
   citation: paper has part about metrosideros costata
@@ -2245,6 +2244,21 @@ paper_has_part_about_metrosideros_costata:
   namespace: apni
   ref_author_role: dash
   ref_type: paper
+  created_by: tester
+  updated_by: tester
+
+ref_for_name_in_taxonomy:
+  title: Ref for Name in Taxonomy
+  citation: Ref for Name in Taxonomy (1789)
+  citation_html: Ref for Name in Taxonomy (1789)
+  display_title: Ref for Name in Taxonomy
+  author: gaertn
+  ref_author_role: author
+  language: undetermined
+  namespace: apni
+  ref_type: book
+  iso_publication_date: 1789
+  volume: 1
   created_by: tester
   updated_by: tester
 

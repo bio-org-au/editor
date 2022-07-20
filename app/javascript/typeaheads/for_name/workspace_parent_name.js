@@ -38,7 +38,8 @@ workspaceParentNameSuggestions = new Bloodhound({
                 'allow_higher_ranks=' + $('#allow_higher_ranks:checked').length + '&' +
                 'name_id=' + $('#workspace_parent_name_typeahead').attr('data-name-id') + '&' +
                 'parent_element_id=' + $('#workspace_parent_name_typeahead').attr('data-parent-element-id') + '&' +
-                'term=' + encodeURIComponent(query.replace(/ -.*/, ''))
+                'term=' + encodeURIComponent(query.replace(/ -.*/, '')) + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
         }
     },
     limit: 100

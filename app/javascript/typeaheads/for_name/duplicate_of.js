@@ -30,7 +30,8 @@ nameDuplicateSuggestions = new Bloodhound({
         replace: function(url,query) {
             return window.relative_url_root + '/suggestions/name/duplicate?format=js&' +
                 'name_id=' + $('#duplicate-of-typeahead').attr('data-name-id') + '&' +
-                'term=' + encodeURIComponent(query.replace(/\|.*/,''))
+                'term=' + encodeURIComponent(query.replace(/\|.*/,''))  + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
         }
     },
     limit: 100

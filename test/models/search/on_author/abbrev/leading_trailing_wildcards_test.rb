@@ -30,7 +30,7 @@ class SearchOnAuthorAbbrevLeadingTrailingWildCardsTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 3,
                  search.executed_query.results.size,
                  "Exactly 3 results are expected."

@@ -27,6 +27,6 @@ class MasterNoAbbrevDuplicateHasAbbrevTest < ActiveSupport::TestCase
     assert dupe.abbrev.present?, "Duplicate should have an abbreviation."
     dupe.duplicate_of_id = master.id
     assert_not dupe.valid?,
-      "Dupe w/ abbrev shouldn't be valid if master has no abbrev"
+               "Dupe w/ abbrev shouldn't be valid if master has no abbrev"
   end
 end

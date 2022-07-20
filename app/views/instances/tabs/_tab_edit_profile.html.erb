@@ -1,54 +1,45 @@
 <h5>
-  Taxonomy Edit Profile
+  Edit Profile for <%= @instance.name.full_name %>
 </h5>
 
-<p>This information is displayed with the current instance in the latest accepted taxonomy.
+<p>Profile in the latest published taxonomy:
 
-<h6>
-Current Element in Taxonomy
-</h6>
 <% current_te = @instance.accepted_tree_version_element.tree_element %>
-  #<%= current_te.id %>;
-  <%= current_te.updated_at.strftime("%d-%b-%Y") %>;
-  <%= current_te.updated_by %><br>
+
+<%= form_with model: current_te do |form| %>
+
+  <% if current_te.excluded? %>
+    Distribution: <%= form.text_field :distribution_value, title: 'Distribution', class: 'form-control', disabled: true, placeholder: "Excluded taxa do not have distributions" %>
+  <% else %>
+    Distribution: <%= form.text_field :distribution_value, title: 'Distribution', class: 'form-control' %>
+  <% end %>
+  <% unless current_te.profile.blank? %>
+    <% unless current_te.distribution_value.blank? && current_te.tede_entries_arr.blank? %>
+      <%= render partial: 'detail_line', locals: {info: "&nbsp;#{current_te.tede_entries_arr.join(', ')}", label: 'Matching TEDE (bubbles)'} %>
+    <% end %>
+    <br>
+  <% end %>
+  Comment: <%= form.text_area :comment_value, title: 'Comment', class: 'form-control' %>
+  Note: new lines will be replaced with spaces when saved; leading and trailing spaces will be removed.
+  <br>
+  <br>
+  <%= form.submit :Save, title: 'Save changes', class: 'btn btn-primary width-3em' %>
+  <br>
+  <br>
+  Tree Element:<br>
+  <%= meaningful_update_when_no_created_at(current_te).html_safe %>
+<% end %>
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+  <br>
+<%= divider %>
+<% unless current_te.profile.blank? %>
+  <h5>Technical Profile data</h5>
+  <br>
+  <h6>Profile stored as JSONB in the Tree Element record</h6>
+  <%= render partial: 'detail_line', locals: {info: current_te.id, label: 'Tree Element ID'} %>
   <pre>
   <%= JSON.pretty_generate(current_te.profile) %>
   </pre>
-
-<h6>Bubbles (sorted alphabetically, display only)</h6>
-<%= current_te.tede_entries_arr.sort.join(',') %>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<h6>
-Current Element in Taxonomy
-</h6>
-
-<%= form_with model: current_te do |form| %>
-  <% show_submit = false %>
-  <% if current_te.distribution? %>
-
-  Distribution: <%= form.text_field :distribution_value, title: 'Distribution', class: 'form-control' %>
-  <br>
-
-  <% end %>
-
-  <% if current_te.comment? %>
-
-  Comment: <%= form.text_field :comment_value, title: 'Comment', class: 'form-control' %>
-  <br>
-
-  <% end %>
-
-  <% if current_te.distribution? || current_te.comment? %>
-
-  <%= form.submit :Save, title: 'Save changes', class: 'btn btn-primary width-3em' %>
-
-  <% end %>
 <% end %>
 
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>

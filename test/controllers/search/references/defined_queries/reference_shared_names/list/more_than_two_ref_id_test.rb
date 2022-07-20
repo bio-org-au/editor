@@ -38,4 +38,3 @@ class SearchRefsDQRefSharedNamesListMT2IDTest < ActionController::TestCase
                   "Should report Reference does not exist"
   end
 end
-

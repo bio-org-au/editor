@@ -32,11 +32,10 @@ class ReferenceDestroyForEditorSimpleTest < ActionController::TestCase
                       -1,
                       "References should reduce by 1 when editor destroys 1") do
       post(:destroy,
-           params: {id: @reference.id},
-           session: {username: "fred",
-                    user_full_name: "Fred Jones",
-                    groups: ["edit"]}
-          )
+           params: { id: @reference.id },
+           session: { username: "fred",
+                      user_full_name: "Fred Jones",
+                      groups: ["edit"] })
     end
     assert_response :success, "Editor should be able to destroy reference"
   end

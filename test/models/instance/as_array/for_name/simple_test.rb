@@ -23,7 +23,7 @@ class InstanceAsArrayForNameTest < ActiveSupport::TestCase
   test "instance as array for name simple" do
     name = names(:triodia_basedowii)
     i = Instance::AsArray::ForName.new(name)
-    assert i.results.class == Array,
+    assert i.results.instance_of?(Array),
            "InstanceAsArray::ForName should produce an array."
   end
 end

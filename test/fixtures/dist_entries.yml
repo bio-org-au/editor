@@ -1,14 +1,1080 @@
-wa_entry_1:
+
+wa:
+  display: WA
+  dist_region: WA
+  sort_order: 20
+
+wa_naturalised:
+  display: WA (naturalised)
+  dist_region: WA
+  sort_order: 21
+
+wa_native_and_naturalised:
   display: WA (native and naturalised)
   dist_region: WA
-  dist_statuses: native, naturalised
+  sort_order: 22
 
-act_entry_1:
-  display: ACT
-  dist_region: ACT
-  dist_statuses: native
+wa_native_and_doubtfully_naturalised:
+  display: WA (native and doubtfully naturalised)
+  dist_region: WA
+  sort_order: 23
 
-nsw_entry_1:
+wa_native_and_formerly_naturalised:
+  display: WA (native and formerly naturalised)
+  dist_region: WA
+  sort_order: 24
+
+wa_native_and_uncertain_origin:
+  display: WA (native and uncertain origin)
+  dist_region: WA
+  sort_order: 25
+
+wa_native_and_naturalised_and_uncertain_origin:
+  display: WA (native and naturalised and uncertain origin)
+  dist_region: WA
+  sort_order: 26
+
+wa_doubtfully_naturalised:
+  display: WA (doubtfully naturalised)
+  dist_region: WA
+  sort_order: 27
+
+wa_formerly_naturalised:
+  display: WA (formerly naturalised)
+  dist_region: WA
+  sort_order: 28
+
+wa_naturalised_and_uncertain_origin:
+  display: WA (naturalised and uncertain origin)
+  dist_region: WA
+  sort_order: 29
+
+wa_uncertain_origin:
+  display: WA (uncertain origin)
+  dist_region: WA
+  sort_order: 30
+
+wa_presumed_extinct:
+  display: WA (presumed extinct)
+  dist_region: WA
+  sort_order: 31
+
+coi:
+  display: CoI
+  dist_region: CoI
+  sort_order: 40
+
+coi_naturalised:
+  display: CoI (naturalised)
+  dist_region: CoI
+  sort_order: 41
+
+coi_native_and_naturalised:
+  display: CoI (native and naturalised)
+  dist_region: CoI
+  sort_order: 42
+
+coi_native_and_doubtfully_naturalised:
+  display: CoI (native and doubtfully naturalised)
+  dist_region: CoI
+  sort_order: 43
+
+coi_native_and_formerly_naturalised:
+  display: CoI (native and formerly naturalised)
+  dist_region: CoI
+  sort_order: 44
+
+coi_native_and_uncertain_origin:
+  display: CoI (native and uncertain origin)
+  dist_region: CoI
+  sort_order: 45
+
+coi_native_and_naturalised_and_uncertain_origin:
+  display: CoI (native and naturalised and uncertain origin)
+  dist_region: CoI
+  sort_order: 46
+
+coi_doubtfully_naturalised:
+  display: CoI (doubtfully naturalised)
+  dist_region: CoI
+  sort_order: 47
+
+coi_formerly_naturalised:
+  display: CoI (formerly naturalised)
+  dist_region: CoI
+  sort_order: 48
+
+coi_naturalised_and_uncertain_origin:
+  display: CoI (naturalised and uncertain origin)
+  dist_region: CoI
+  sort_order: 49
+
+coi_uncertain_origin:
+  display: CoI (uncertain origin)
+  dist_region: CoI
+  sort_order: 50
+
+coi_presumed_extinct:
+  display: CoI (presumed extinct)
+  dist_region: CoI
+  sort_order: 51
+
+chi:
+  display: ChI
+  dist_region: ChI
+  sort_order: 60
+
+chi_naturalised:
+  display: ChI (naturalised)
+  dist_region: ChI
+  sort_order: 61
+
+chi_native_and_naturalised:
+  display: ChI (native and naturalised)
+  dist_region: ChI
+  sort_order: 62
+
+chi_native_and_doubtfully_naturalised:
+  display: ChI (native and doubtfully naturalised)
+  dist_region: ChI
+  sort_order: 63
+
+chi_native_and_formerly_naturalised:
+  display: ChI (native and formerly naturalised)
+  dist_region: ChI
+  sort_order: 64
+
+chi_native_and_uncertain_origin:
+  display: ChI (native and uncertain origin)
+  dist_region: ChI
+  sort_order: 65
+
+chi_native_and_naturalised_and_uncertain_origin:
+  display: ChI (native and naturalised and uncertain origin)
+  dist_region: ChI
+  sort_order: 66
+
+chi_doubtfully_naturalised:
+  display: ChI (doubtfully naturalised)
+  dist_region: ChI
+  sort_order: 67
+
+chi_formerly_naturalised:
+  display: ChI (formerly naturalised)
+  dist_region: ChI
+  sort_order: 68
+
+chi_naturalised_and_uncertain_origin:
+  display: ChI (naturalised and uncertain origin)
+  dist_region: ChI
+  sort_order: 69
+
+chi_uncertain_origin:
+  display: ChI (uncertain origin)
+  dist_region: ChI
+  sort_order: 70
+
+chi_presumed_extinct:
+  display: ChI (presumed extinct)
+  dist_region: ChI
+  sort_order: 71
+
+ar:
+  display: AR
+  dist_region: AR
+  sort_order: 80
+
+ar_naturalised:
+  display: AR (naturalised)
+  dist_region: AR
+  sort_order: 81
+
+ar_native_and_naturalised:
+  display: AR (native and naturalised)
+  dist_region: AR
+  sort_order: 82
+
+ar_native_and_doubtfully_naturalised:
+  display: AR (native and doubtfully naturalised)
+  dist_region: AR
+  sort_order: 83
+
+ar_native_and_formerly_naturalised:
+  display: AR (native and formerly naturalised)
+  dist_region: AR
+  sort_order: 84
+
+ar_native_and_uncertain_origin:
+  display: AR (native and uncertain origin)
+  dist_region: AR
+  sort_order: 85
+
+ar_native_and_naturalised_and_uncertain_origin:
+  display: AR (native and naturalised and uncertain origin)
+  dist_region: AR
+  sort_order: 86
+
+ar_doubtfully_naturalised:
+  display: AR (doubtfully naturalised)
+  dist_region: AR
+  sort_order: 87
+
+ar_formerly_naturalised:
+  display: AR (formerly naturalised)
+  dist_region: AR
+  sort_order: 88
+
+ar_naturalised_and_uncertain_origin:
+  display: AR (naturalised and uncertain origin)
+  dist_region: AR
+  sort_order: 89
+
+ar_uncertain_origin:
+  display: AR (uncertain origin)
+  dist_region: AR
+  sort_order: 90
+
+ar_presumed_extinct:
+  display: AR (presumed extinct)
+  dist_region: AR
+  sort_order: 91
+
+cai:
+  display: CaI
+  dist_region: CaI
+  sort_order: 100
+
+cai_naturalised:
+  display: CaI (naturalised)
+  dist_region: CaI
+  sort_order: 101
+
+cai_native_and_naturalised:
+  display: CaI (native and naturalised)
+  dist_region: CaI
+  sort_order: 102
+
+cai_native_and_doubtfully_naturalised:
+  display: CaI (native and doubtfully naturalised)
+  dist_region: CaI
+  sort_order: 103
+
+cai_native_and_formerly_naturalised:
+  display: CaI (native and formerly naturalised)
+  dist_region: CaI
+  sort_order: 104
+
+cai_native_and_uncertain_origin:
+  display: CaI (native and uncertain origin)
+  dist_region: CaI
+  sort_order: 105
+
+cai_native_and_naturalised_and_uncertain_origin:
+  display: CaI (native and naturalised and uncertain origin)
+  dist_region: CaI
+  sort_order: 106
+
+cai_doubtfully_naturalised:
+  display: CaI (doubtfully naturalised)
+  dist_region: CaI
+  sort_order: 107
+
+cai_formerly_naturalised:
+  display: CaI (formerly naturalised)
+  dist_region: CaI
+  sort_order: 108
+
+cai_naturalised_and_uncertain_origin:
+  display: CaI (naturalised and uncertain origin)
+  dist_region: CaI
+  sort_order: 109
+
+cai_uncertain_origin:
+  display: CaI (uncertain origin)
+  dist_region: CaI
+  sort_order: 110
+
+cai_presumed_extinct:
+  display: CaI (presumed extinct)
+  dist_region: CaI
+  sort_order: 111
+
+nt:
+  display: NT
+  dist_region: NT
+  sort_order: 120
+
+nt_naturalised:
+  display: NT (naturalised)
+  dist_region: NT
+  sort_order: 121
+
+nt_native_and_naturalised:
+  display: NT (native and naturalised)
+  dist_region: NT
+  sort_order: 122
+
+nt_native_and_doubtfully_naturalised:
+  display: NT (native and doubtfully naturalised)
+  dist_region: NT
+  sort_order: 123
+
+nt_native_and_formerly_naturalised:
+  display: NT (native and formerly naturalised)
+  dist_region: NT
+  sort_order: 124
+
+nt_native_and_uncertain_origin:
+  display: NT (native and uncertain origin)
+  dist_region: NT
+  sort_order: 125
+
+nt_native_and_naturalised_and_uncertain_origin:
+  display: NT (native and naturalised and uncertain origin)
+  dist_region: NT
+  sort_order: 126
+
+nt_doubtfully_naturalised:
+  display: NT (doubtfully naturalised)
+  dist_region: NT
+  sort_order: 127
+
+nt_formerly_naturalised:
+  display: NT (formerly naturalised)
+  dist_region: NT
+  sort_order: 128
+
+nt_naturalised_and_uncertain_origin:
+  display: NT (naturalised and uncertain origin)
+  dist_region: NT
+  sort_order: 129
+
+nt_uncertain_origin:
+  display: NT (uncertain origin)
+  dist_region: NT
+  sort_order: 130
+
+nt_presumed_extinct:
+  display: NT (presumed extinct)
+  dist_region: NT
+  sort_order: 131
+
+sa:
+  display: SA
+  dist_region: SA
+  sort_order: 140
+
+sa_naturalised:
+  display: SA (naturalised)
+  dist_region: SA
+  sort_order: 141
+
+sa_native_and_naturalised:
+  display: SA (native and naturalised)
+  dist_region: SA
+  sort_order: 142
+
+sa_native_and_doubtfully_naturalised:
+  display: SA (native and doubtfully naturalised)
+  dist_region: SA
+  sort_order: 143
+
+sa_native_and_formerly_naturalised:
+  display: SA (native and formerly naturalised)
+  dist_region: SA
+  sort_order: 144
+
+sa_native_and_uncertain_origin:
+  display: SA (native and uncertain origin)
+  dist_region: SA
+  sort_order: 145
+
+sa_native_and_naturalised_and_uncertain_origin:
+  display: SA (native and naturalised and uncertain origin)
+  dist_region: SA
+  sort_order: 146
+
+sa_doubtfully_naturalised:
+  display: SA (doubtfully naturalised)
+  dist_region: SA
+  sort_order: 147
+
+sa_formerly_naturalised:
+  display: SA (formerly naturalised)
+  dist_region: SA
+  sort_order: 148
+
+sa_naturalised_and_uncertain_origin:
+  display: SA (naturalised and uncertain origin)
+  dist_region: SA
+  sort_order: 149
+
+sa_uncertain_origin:
+  display: SA (uncertain origin)
+  dist_region: SA
+  sort_order: 150
+
+sa_presumed_extinct:
+  display: SA (presumed extinct)
+  dist_region: SA
+  sort_order: 151
+
+qld:
+  display: Qld
+  dist_region: Qld
+  sort_order: 160
+
+qld_naturalised:
+  display: Qld (naturalised)
+  dist_region: Qld
+  sort_order: 161
+
+qld_native_and_naturalised:
+  display: Qld (native and naturalised)
+  dist_region: Qld
+  sort_order: 162
+
+qld_native_and_doubtfully_naturalised:
+  display: Qld (native and doubtfully naturalised)
+  dist_region: Qld
+  sort_order: 163
+
+qld_native_and_formerly_naturalised:
+  display: Qld (native and formerly naturalised)
+  dist_region: Qld
+  sort_order: 164
+
+qld_native_and_uncertain_origin:
+  display: Qld (native and uncertain origin)
+  dist_region: Qld
+  sort_order: 165
+
+qld_native_and_naturalised_and_uncertain_origin:
+  display: Qld (native and naturalised and uncertain origin)
+  dist_region: Qld
+  sort_order: 166
+
+qld_doubtfully_naturalised:
+  display: Qld (doubtfully naturalised)
+  dist_region: Qld
+  sort_order: 167
+
+qld_formerly_naturalised:
+  display: Qld (formerly naturalised)
+  dist_region: Qld
+  sort_order: 168
+
+qld_naturalised_and_uncertain_origin:
+  display: Qld (naturalised and uncertain origin)
+  dist_region: Qld
+  sort_order: 169
+
+qld_uncertain_origin:
+  display: Qld (uncertain origin)
+  dist_region: Qld
+  sort_order: 170
+
+qld_presumed_extinct:
+  display: Qld (presumed extinct)
+  dist_region: Qld
+  sort_order: 171
+
+csi:
+  display: CSI
+  dist_region: CSI
+  sort_order: 180
+
+csi_naturalised:
+  display: CSI (naturalised)
+  dist_region: CSI
+  sort_order: 181
+
+csi_native_and_naturalised:
+  display: CSI (native and naturalised)
+  dist_region: CSI
+  sort_order: 182
+
+csi_native_and_doubtfully_naturalised:
+  display: CSI (native and doubtfully naturalised)
+  dist_region: CSI
+  sort_order: 183
+
+csi_native_and_formerly_naturalised:
+  display: CSI (native and formerly naturalised)
+  dist_region: CSI
+  sort_order: 184
+
+csi_native_and_uncertain_origin:
+  display: CSI (native and uncertain origin)
+  dist_region: CSI
+  sort_order: 185
+
+csi_native_and_naturalised_and_uncertain_origin:
+  display: CSI (native and naturalised and uncertain origin)
+  dist_region: CSI
+  sort_order: 186
+
+csi_doubtfully_naturalised:
+  display: CSI (doubtfully naturalised)
+  dist_region: CSI
+  sort_order: 187
+
+csi_formerly_naturalised:
+  display: CSI (formerly naturalised)
+  dist_region: CSI
+  sort_order: 188
+
+csi_naturalised_and_uncertain_origin:
+  display: CSI (naturalised and uncertain origin)
+  dist_region: CSI
+  sort_order: 189
+
+csi_uncertain_origin:
+  display: CSI (uncertain origin)
+  dist_region: CSI
+  sort_order: 190
+
+csi_presumed_extinct:
+  display: CSI (presumed extinct)
+  dist_region: CSI
+  sort_order: 191
+
+nsw:
   display: NSW
   dist_region: NSW
-  dist_statuses: native
+  sort_order: 200
+
+nsw_naturalised:
+  display: NSW (naturalised)
+  dist_region: NSW
+  sort_order: 201
+
+nsw_native_and_naturalised:
+  display: NSW (native and naturalised)
+  dist_region: NSW
+  sort_order: 202
+
+nsw_native_and_doubtfully_naturalised:
+  display: NSW (native and doubtfully naturalised)
+  dist_region: NSW
+  sort_order: 203
+
+nsw_native_and_formerly_naturalised:
+  display: NSW (native and formerly naturalised)
+  dist_region: NSW
+  sort_order: 204
+
+nsw_native_and_uncertain_origin:
+  display: NSW (native and uncertain origin)
+  dist_region: NSW
+  sort_order: 205
+
+nsw_native_and_naturalised_and_uncertain_origin:
+  display: NSW (native and naturalised and uncertain origin)
+  dist_region: NSW
+  sort_order: 206
+
+nsw_doubtfully_naturalised:
+  display: NSW (doubtfully naturalised)
+  dist_region: NSW
+  sort_order: 207
+
+nsw_formerly_naturalised:
+  display: NSW (formerly naturalised)
+  dist_region: NSW
+  sort_order: 208
+
+nsw_naturalised_and_uncertain_origin:
+  display: NSW (naturalised and uncertain origin)
+  dist_region: NSW
+  sort_order: 209
+
+nsw_uncertain_origin:
+  display: NSW (uncertain origin)
+  dist_region: NSW
+  sort_order: 210
+
+nsw_presumed_extinct:
+  display: NSW (presumed extinct)
+  dist_region: NSW
+  sort_order: 211
+
+lhi:
+  display: LHI
+  dist_region: LHI
+  sort_order: 220
+
+lhi_naturalised:
+  display: LHI (naturalised)
+  dist_region: LHI
+  sort_order: 221
+
+lhi_native_and_naturalised:
+  display: LHI (native and naturalised)
+  dist_region: LHI
+  sort_order: 222
+
+lhi_native_and_doubtfully_naturalised:
+  display: LHI (native and doubtfully naturalised)
+  dist_region: LHI
+  sort_order: 223
+
+lhi_native_and_formerly_naturalised:
+  display: LHI (native and formerly naturalised)
+  dist_region: LHI
+  sort_order: 224
+
+lhi_native_and_uncertain_origin:
+  display: LHI (native and uncertain origin)
+  dist_region: LHI
+  sort_order: 225
+
+lhi_native_and_naturalised_and_uncertain_origin:
+  display: LHI (native and naturalised and uncertain origin)
+  dist_region: LHI
+  sort_order: 226
+
+lhi_doubtfully_naturalised:
+  display: LHI (doubtfully naturalised)
+  dist_region: LHI
+  sort_order: 227
+
+lhi_formerly_naturalised:
+  display: LHI (formerly naturalised)
+  dist_region: LHI
+  sort_order: 228
+
+lhi_naturalised_and_uncertain_origin:
+  display: LHI (naturalised and uncertain origin)
+  dist_region: LHI
+  sort_order: 229
+
+lhi_uncertain_origin:
+  display: LHI (uncertain origin)
+  dist_region: LHI
+  sort_order: 230
+
+lhi_presumed_extinct:
+  display: LHI (presumed extinct)
+  dist_region: LHI
+  sort_order: 231
+
+ni:
+  display: NI
+  dist_region: NI
+  sort_order: 240
+
+ni_naturalised:
+  display: NI (naturalised)
+  dist_region: NI
+  sort_order: 241
+
+ni_native_and_naturalised:
+  display: NI (native and naturalised)
+  dist_region: NI
+  sort_order: 242
+
+ni_native_and_doubtfully_naturalised:
+  display: NI (native and doubtfully naturalised)
+  dist_region: NI
+  sort_order: 243
+
+ni_native_and_formerly_naturalised:
+  display: NI (native and formerly naturalised)
+  dist_region: NI
+  sort_order: 244
+
+ni_native_and_uncertain_origin:
+  display: NI (native and uncertain origin)
+  dist_region: NI
+  sort_order: 245
+
+ni_native_and_naturalised_and_uncertain_origin:
+  display: NI (native and naturalised and uncertain origin)
+  dist_region: NI
+  sort_order: 246
+
+ni_doubtfully_naturalised:
+  display: NI (doubtfully naturalised)
+  dist_region: NI
+  sort_order: 247
+
+ni_formerly_naturalised:
+  display: NI (formerly naturalised)
+  dist_region: NI
+  sort_order: 248
+
+ni_naturalised_and_uncertain_origin:
+  display: NI (naturalised and uncertain origin)
+  dist_region: NI
+  sort_order: 249
+
+ni_uncertain_origin:
+  display: NI (uncertain origin)
+  dist_region: NI
+  sort_order: 250
+
+ni_presumed_extinct:
+  display: NI (presumed extinct)
+  dist_region: NI
+  sort_order: 251
+
+act:
+  display: ACT
+  dist_region: ACT
+  sort_order: 260
+
+act_naturalised:
+  display: ACT (naturalised)
+  dist_region: ACT
+  sort_order: 261
+
+act_native_and_naturalised:
+  display: ACT (native and naturalised)
+  dist_region: ACT
+  sort_order: 262
+
+act_native_and_doubtfully_naturalised:
+  display: ACT (native and doubtfully naturalised)
+  dist_region: ACT
+  sort_order: 263
+
+act_native_and_formerly_naturalised:
+  display: ACT (native and formerly naturalised)
+  dist_region: ACT
+  sort_order: 264
+
+act_native_and_uncertain_origin:
+  display: ACT (native and uncertain origin)
+  dist_region: ACT
+  sort_order: 265
+
+act_native_and_naturalised_and_uncertain_origin:
+  display: ACT (native and naturalised and uncertain origin)
+  dist_region: ACT
+  sort_order: 266
+
+act_doubtfully_naturalised:
+  display: ACT (doubtfully naturalised)
+  dist_region: ACT
+  sort_order: 267
+
+act_formerly_naturalised:
+  display: ACT (formerly naturalised)
+  dist_region: ACT
+  sort_order: 268
+
+act_naturalised_and_uncertain_origin:
+  display: ACT (naturalised and uncertain origin)
+  dist_region: ACT
+  sort_order: 269
+
+act_uncertain_origin:
+  display: ACT (uncertain origin)
+  dist_region: ACT
+  sort_order: 270
+
+act_presumed_extinct:
+  display: ACT (presumed extinct)
+  dist_region: ACT
+  sort_order: 271
+
+vic:
+  display: Vic
+  dist_region: Vic
+  sort_order: 280
+
+vic_naturalised:
+  display: Vic (naturalised)
+  dist_region: Vic
+  sort_order: 281
+
+vic_native_and_naturalised:
+  display: Vic (native and naturalised)
+  dist_region: Vic
+  sort_order: 282
+
+vic_native_and_doubtfully_naturalised:
+  display: Vic (native and doubtfully naturalised)
+  dist_region: Vic
+  sort_order: 283
+
+vic_native_and_formerly_naturalised:
+  display: Vic (native and formerly naturalised)
+  dist_region: Vic
+  sort_order: 284
+
+vic_native_and_uncertain_origin:
+  display: Vic (native and uncertain origin)
+  dist_region: Vic
+  sort_order: 285
+
+vic_native_and_naturalised_and_uncertain_origin:
+  display: Vic (native and naturalised and uncertain origin)
+  dist_region: Vic
+  sort_order: 286
+
+vic_doubtfully_naturalised:
+  display: Vic (doubtfully naturalised)
+  dist_region: Vic
+  sort_order: 287
+
+vic_formerly_naturalised:
+  display: Vic (formerly naturalised)
+  dist_region: Vic
+  sort_order: 288
+
+vic_naturalised_and_uncertain_origin:
+  display: Vic (naturalised and uncertain origin)
+  dist_region: Vic
+  sort_order: 289
+
+vic_uncertain_origin:
+  display: Vic (uncertain origin)
+  dist_region: Vic
+  sort_order: 290
+
+vic_presumed_extinct:
+  display: Vic (presumed extinct)
+  dist_region: Vic
+  sort_order: 291
+
+tas:
+  display: Tas
+  dist_region: Tas
+  sort_order: 300
+
+tas_naturalised:
+  display: Tas (naturalised)
+  dist_region: Tas
+  sort_order: 301
+
+tas_native_and_naturalised:
+  display: Tas (native and naturalised)
+  dist_region: Tas
+  sort_order: 302
+
+tas_native_and_doubtfully_naturalised:
+  display: Tas (native and doubtfully naturalised)
+  dist_region: Tas
+  sort_order: 303
+
+tas_native_and_formerly_naturalised:
+  display: Tas (native and formerly naturalised)
+  dist_region: Tas
+  sort_order: 304
+
+tas_native_and_uncertain_origin:
+  display: Tas (native and uncertain origin)
+  dist_region: Tas
+  sort_order: 305
+
+tas_native_and_naturalised_and_uncertain_origin:
+  display: Tas (native and naturalised and uncertain origin)
+  dist_region: Tas
+  sort_order: 306
+
+tas_doubtfully_naturalised:
+  display: Tas (doubtfully naturalised)
+  dist_region: Tas
+  sort_order: 307
+
+tas_formerly_naturalised:
+  display: Tas (formerly naturalised)
+  dist_region: Tas
+  sort_order: 308
+
+tas_naturalised_and_uncertain_origin:
+  display: Tas (naturalised and uncertain origin)
+  dist_region: Tas
+  sort_order: 309
+
+tas_uncertain_origin:
+  display: Tas (uncertain origin)
+  dist_region: Tas
+  sort_order: 310
+
+tas_presumed_extinct:
+  display: Tas (presumed extinct)
+  dist_region: Tas
+  sort_order: 311
+
+hi:
+  display: HI
+  dist_region: HI
+  sort_order: 320
+
+hi_naturalised:
+  display: HI (naturalised)
+  dist_region: HI
+  sort_order: 321
+
+hi_native_and_naturalised:
+  display: HI (native and naturalised)
+  dist_region: HI
+  sort_order: 322
+
+hi_native_and_doubtfully_naturalised:
+  display: HI (native and doubtfully naturalised)
+  dist_region: HI
+  sort_order: 323
+
+hi_native_and_formerly_naturalised:
+  display: HI (native and formerly naturalised)
+  dist_region: HI
+  sort_order: 324
+
+hi_native_and_uncertain_origin:
+  display: HI (native and uncertain origin)
+  dist_region: HI
+  sort_order: 325
+
+hi_native_and_naturalised_and_uncertain_origin:
+  display: HI (native and naturalised and uncertain origin)
+  dist_region: HI
+  sort_order: 326
+
+hi_doubtfully_naturalised:
+  display: HI (doubtfully naturalised)
+  dist_region: HI
+  sort_order: 327
+
+hi_formerly_naturalised:
+  display: HI (formerly naturalised)
+  dist_region: HI
+  sort_order: 328
+
+hi_naturalised_and_uncertain_origin:
+  display: HI (naturalised and uncertain origin)
+  dist_region: HI
+  sort_order: 329
+
+hi_uncertain_origin:
+  display: HI (uncertain origin)
+  dist_region: HI
+  sort_order: 330
+
+hi_presumed_extinct:
+  display: HI (presumed extinct)
+  dist_region: HI
+  sort_order: 331
+
+mdi:
+  display: MDI
+  dist_region: MDI
+  sort_order: 340
+
+mdi_naturalised:
+  display: MDI (naturalised)
+  dist_region: MDI
+  sort_order: 341
+
+mdi_native_and_naturalised:
+  display: MDI (native and naturalised)
+  dist_region: MDI
+  sort_order: 342
+
+mdi_native_and_doubtfully_naturalised:
+  display: MDI (native and doubtfully naturalised)
+  dist_region: MDI
+  sort_order: 343
+
+mdi_native_and_formerly_naturalised:
+  display: MDI (native and formerly naturalised)
+  dist_region: MDI
+  sort_order: 344
+
+mdi_native_and_uncertain_origin:
+  display: MDI (native and uncertain origin)
+  dist_region: MDI
+  sort_order: 345
+
+mdi_native_and_naturalised_and_uncertain_origin:
+  display: MDI (native and naturalised and uncertain origin)
+  dist_region: MDI
+  sort_order: 346
+
+mdi_doubtfully_naturalised:
+  display: MDI (doubtfully naturalised)
+  dist_region: MDI
+  sort_order: 347
+
+mdi_formerly_naturalised:
+  display: MDI (formerly naturalised)
+  dist_region: MDI
+  sort_order: 348
+
+mdi_naturalised_and_uncertain_origin:
+  display: MDI (naturalised and uncertain origin)
+  dist_region: MDI
+  sort_order: 349
+
+mdi_uncertain_origin:
+  display: MDI (uncertain origin)
+  dist_region: MDI
+  sort_order: 350
+
+mdi_presumed_extinct:
+  display: MDI (presumed extinct)
+  dist_region: MDI
+  sort_order: 351
+
+mi:
+  display: MI
+  dist_region: MI
+  sort_order: 360
+
+mi_naturalised:
+  display: MI (naturalised)
+  dist_region: MI
+  sort_order: 361
+
+mi_native_and_naturalised:
+  display: MI (native and naturalised)
+  dist_region: MI
+  sort_order: 362
+
+mi_native_and_doubtfully_naturalised:
+  display: MI (native and doubtfully naturalised)
+  dist_region: MI
+  sort_order: 363
+
+mi_native_and_formerly_naturalised:
+  display: MI (native and formerly naturalised)
+  dist_region: MI
+  sort_order: 364
+
+mi_native_and_uncertain_origin:
+  display: MI (native and uncertain origin)
+  dist_region: MI
+  sort_order: 365
+
+mi_native_and_naturalised_and_uncertain_origin:
+  display: MI (native and naturalised and uncertain origin)
+  dist_region: MI
+  sort_order: 366
+
+mi_doubtfully_naturalised:
+  display: MI (doubtfully naturalised)
+  dist_region: MI
+  sort_order: 367
+
+mi_formerly_naturalised:
+  display: MI (formerly naturalised)
+  dist_region: MI
+  sort_order: 368
+
+mi_naturalised_and_uncertain_origin:
+  display: MI (naturalised and uncertain origin)
+  dist_region: MI
+  sort_order: 369
+
+mi_uncertain_origin:
+  display: MI (uncertain origin)
+  dist_region: MI
+  sort_order: 370
+
+mi_presumed_extinct:
+  display: MI (presumed extinct)
+  dist_region: MI
+  sort_order: 371

@@ -36,7 +36,7 @@ class ForFamiliaPartiallyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Familia",
-      %w(Regnum Division Classis Subclassis Superordo Ordo Subordo)
+      %w[Regnum Division Classis Subclassis Superordo Ordo Subordo]
     )
   end
 end

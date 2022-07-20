@@ -646,7 +646,7 @@ metrosideros_costata:
   created_by: greg
 
 angophora_costata: 
-  simple_name: angophora costata
+  simple_name: Angophora costata
   full_name: Angophora costata (Gaertn.) Britten
   name_element: costata
   name_rank: species
@@ -2593,6 +2593,21 @@ dendrobium_hybrid_formula:
   family: a_family
   name_path: 'Eukaryota/Plantae/Magnoliophyta/Magnoliopsida/Magnoliidae/Asparagales/Orchidaceae/Dendrobium/aemulum/aemulum x kingianum'
   uri: agd
+  updated_by: greg
+  created_by: greg
+
+name_in_taxonomy: 
+  simple_name: Angophora intaxonomy
+  full_name: Angophora intaxonomy (Gaertn.) Britten
+  name_element: intaxonomy
+  name_rank: species
+  name_status: unknown
+  name_type: scientific
+  namespace: apni
+  parent: angophora
+  family: a_family
+  name_path: 'Plantae/Magnoliophyta/a_family/a_genus/intaxonomy'
+  uri: age
   updated_by: greg
   created_by: greg
 

@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 require "test_helper"
-require "models/instance/as_typeahead/for_synonymy/test_helper.rb"
+require "models/instance/as_typeahead/for_synonymy/test_helper"
 
 # Single instance typeahead search.
 class ForNameAndReferenceYearTest < ActiveSupport::TestCase
@@ -25,11 +25,11 @@ class ForNameAndReferenceYearTest < ActiveSupport::TestCase
     assert_nil instances(:no_source_system).source_system
     ta = Instance::AsTypeahead::ForSynonymy.new("angophora costata",
                                                 names(:a_species).id)
-    assert ta.results.class == Array, "Results should be an array."
+    assert ta.results.instance_of?(Array), "Results should be an array."
     assert ta.results.size >= 1, "Results should include at least one record."
     assert ta.results
              .collect { |r| r[:value] }
-      .include?(ANGOPHORA_COSTATA_DE_FRUCT_1788_STRING),
+             .include?(ANGOPHORA_COSTATA_DE_FRUCT_1788_STRING),
            ANGOPHORA_COSTATA_DE_FRUCT_1788_ERROR
   end
 end

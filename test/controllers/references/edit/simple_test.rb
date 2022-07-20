@@ -63,18 +63,18 @@ class ReferencesesUpdateSimpleTest < ActionController::TestCase
 
   test "update reference simple" do
     @request.headers["Accept"] = "application/javascript"
-      patch(:update,
-           params: { id: references(:simple).id,
-             reference: { "ref_type_id" => ref_types(:book),
-                          "title" => "Some book",
-                          "author_id" => authors(:dash),
-                          "author_typeahead" => "-",
-                          "published" => true,
-                          "parent_typeahead" => @parent_typeahead,
-                          "ref_author_role_id" => ref_author_roles(:author) } },
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
+    patch(:update,
+          params: { id: references(:simple).id,
+                    reference: { "ref_type_id" => ref_types(:book),
+                                 "title" => "Some book",
+                                 "author_id" => authors(:dash),
+                                 "author_typeahead" => "-",
+                                 "published" => true,
+                                 "parent_typeahead" => @parent_typeahead,
+                                 "ref_author_role_id" => ref_author_roles(:author) } },
+          session: { username: "fred",
+                     user_full_name: "Fred Jones",
+                     groups: ["edit"] })
     assert_response :success
   end
 end

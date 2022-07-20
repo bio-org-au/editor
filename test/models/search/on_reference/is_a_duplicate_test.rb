@@ -29,7 +29,7 @@ class IsADuplicateSearchTest < ActiveSupport::TestCase
                   current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert search.executed_query.results.size > 1,
            "At least 1 result is expected."
   end

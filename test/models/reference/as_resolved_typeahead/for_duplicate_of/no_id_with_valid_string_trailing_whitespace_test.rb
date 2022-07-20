@@ -24,7 +24,7 @@ class RefARTA4DupeOfNoIdWValStrTrailingWhitespace < ActiveSupport::TestCase
     reference_1 = references(:origin_of_species)
     result = Reference::AsResolvedTypeahead::ForDuplicateOf.new(
       "",
-      reference_1.citation + " "
+      "#{reference_1.citation} "
     )
     assert_equal reference_1.id,
                  result.value,

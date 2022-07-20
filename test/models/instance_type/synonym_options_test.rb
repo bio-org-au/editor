@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -23,10 +22,11 @@ require "test_helper"
 class InstanceTypeSynonymOptionsTest < ActiveSupport::TestCase
   setup do
     options = InstanceType.synonym_options
-    assert options.class == Array, "Should be an array."
+    assert options.instance_of?(Array), "Should be an array."
     assert_equal 13, options.size, "Should be 13 of them."
     @names = options.collect(&:first)
-    @expected = %w[basionym doubtful\ misapplied doubtful\ pro\ parte\ misapplied doubtful\ pro\ parte\ taxonomic\ synonym doubtful\ taxonomic\ synonym isonym misapplied nomenclatural\ synonym pro\ parte\ misapplied pro\ parte\ taxonomic\ synonym replaced\ synonym taxonomic\ synonym trade\ name]
+    @expected = ["basionym", "doubtful misapplied", "doubtful pro parte misapplied",
+                 "doubtful pro parte taxonomic synonym", "doubtful taxonomic synonym", "isonym", "misapplied", "nomenclatural synonym", "pro parte misapplied", "pro parte taxonomic synonym", "replaced synonym", "taxonomic synonym", "trade name"]
   end
 
   test "instance type synonym options" do

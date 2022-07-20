@@ -1,14 +1,13 @@
-<h6>
-  Taxonomy Profile Details
-</h6>
+<h5>
+  Taxonomy Profile Details for <%= @instance.name.full_name %>
+</h5>
 <p>This is the "cached" data that is associated and displayed with the current instance, as incorporated in various taxonomies and taxonomy versions.
 The data is displayed here regardless of the context in which you have queried the instance record.</p>
 <br>
 
 <% @instance.tree_elements.sort {|x,y| y.updated_at <=> x.updated_at}.each do |te| %>
-  #<%= te.id %>;
-  <%= te.updated_at.strftime("%d-%b-%Y") %>;
-  <%= te.updated_by %><br>
+  Tree Element record #<%= te.id %><br>
+  <%= meaningful_update_when_no_created_at(te).html_safe %>
   <pre>
   <%= JSON.pretty_generate(te.profile) %>
   </pre>

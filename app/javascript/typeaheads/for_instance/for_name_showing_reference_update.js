@@ -34,7 +34,9 @@ instanceForNameShowingReferenceUpdate = new Bloodhound({
         replace: function(url,query) {
             return window.relative_url_root + '/instances/for_name_showing_reference_to_update_instance?instance_id=' +
                 $('#instance_id').val() +
-                '&term=' + encodeURIComponent(query)
+                '&term=' + encodeURIComponent(query) + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
+
         }
     },
     limit: 100

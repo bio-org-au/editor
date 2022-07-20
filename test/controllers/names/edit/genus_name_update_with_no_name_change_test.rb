@@ -72,4 +72,3 @@ class GenusNameUpdateWithNoNameChangeTest < ActionController::TestCase
            "Genus name has not changed so subspecies's name. should not change"
   end
 end
-

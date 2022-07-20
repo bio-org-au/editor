@@ -1,20 +1,88 @@
-- :date: 6-Jun-2022
+- :date: 20-Jul-2022
+  :jira_id: ''
+  :description: |-
+    Security patching: libraries upgraded
+- :date: 14-Jul-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: add spaces to bubble display; change 'Last updated' to 'Created or last updated' on profile tabs bcz <code>tree_element</code> has <code>updated_at/by</code> only
+- :date: 13-Jul-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: unpick the re-factoring that combined add dist with change dist (and same for comments) - was setting jsonb created_at/by for updates
+- :date: 13-Jul-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: push fix to display code (relying on tree_element.created_at/by which doesn't exist)
+- :date: 12-Jul-2022
+  :jira_id: ''
+  :description: |-
+    Broadcast banner: change background and foreground colours for better readability, tweak layout
+- :date: 08-Jul-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: refactored and improved edit code while making sure tree_element updated_at/by are set consistently - see also NSL-4261.
+- :date: 29-Jun-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: fixed bug where adding a comment to a null comment was wiping out any simultaneous distribution change
+- :date: 29-Jun-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: fixed problem displaying instance details tree tab
+- :date: 28-Jun-2022
+  :jira_id: '3987'
+  :description: |-
+    Synonymy typeahead year problem: the query now matches years against <code>iso_publication_date</code> with <code>like</code> and an auto trailing wildcard
+- :date: 28-Jun-2022
+  :jira_id: '3307'
+  :description: |-
+    Typeahead caching problem: added cache-busting random param to the various typeahead search scripts
+- :date: 28-Jun-2022
+  :jira_id: '4213'
+  :description: |-
+    Taxonomy profile edit: new version for testing 
+- :date: 24-Jun-2022
+  :release: true
+- :date: 21-Jun-2022
+  :jira_id: '4254'
+  :description: |-
+    New Author: creating a new author no longer locks up searching
+- :date: 15-Jun-2022
+  :jira_id: '4237'
+  :description: |-
+    Change Password: cleaner validation and clearer instructions for Active Directory passwords
+- :date: 09-Jun-2022
+  :jira_id: '3720'
+  :description: |-
+    Tree Report: add error-handling code for the Check All Synonymy report
+- :date: 07-Jun-2022
+  :jira_id: '4237'
+  :description: |-
+    Login: show <code>ldap_generic_users</code> on the Admin configuration page
+- :date: 07-Jun-2022
+  :jira_id: '4247'
+  :description: |-
+    Change Password: hitting Enter now submits the form instead of cancelling it
+- :date: 06-Jun-2022
+  :release: true
+- :date: 06-Jun-2022
   :jira_id: '4237'
   :description: |-
     Change Password: correctly validate new passwords in context - for AD or OpenLDAP appropriately
-- :date: 3-Jun-2022
+- :date: 03-Jun-2022
   :jira_id: '4237'
   :description: |-
     Login: allow generic Active Directory users to login
-- :date: 1-Jun-2022
+- :date: 01-Jun-2022
   :jira_id: '4236'
   :description: |-
     Fixed <code>Instance is cited</code> query error and <code>instance is cited by</code> query error
-- :date: 1-Jun-2022
+- :date: 01-Jun-2022
   :jira_id: '4203'
   :description: |-
     Reference search: parent-id searches that sort results by volume - one lexicographically, the other numerically
-- :date: 1-Jun-2022
+- :date: 01-Jun-2022
   :jira_id: ''
   :description: |-
     Security: Upgrade rack.

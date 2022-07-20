@@ -22,7 +22,7 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 class SearchOnReferenceIPDRegexUsingAsteriskTest < ActiveSupport::TestCase
   def setup
-    @params =  ActiveSupport::HashWithIndifferentAccess
+    @params = ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
                    query_string: "iso-pub-date-matches: .*",
                    include_common_and_cultivar_session: true,
@@ -32,7 +32,7 @@ class SearchOnReferenceIPDRegexUsingAsteriskTest < ActiveSupport::TestCase
   test "search on iso_publication_date using asterisk" do
     search = Search::Base.new(@params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert !search.executed_query.results.empty?, "Results expected."
   end
 end

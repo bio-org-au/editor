@@ -29,8 +29,8 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
   test "should show detail and APC tab links if editor requests details tab" do
     get(:show,
         params: { id: @instance.id,
-                 tab: "tab_show_1",
-                 "row-type" => "instance_as_part_of_concept_record" },
+                  tab: "tab_show_1",
+                  "row-type" => "instance_as_part_of_concept_record" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: ["treebuilder"] })

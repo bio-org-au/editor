@@ -22,7 +22,7 @@ require "test_helper"
 class NameStatusTest < ActiveSupport::TestCase
   test "select options for na" do
     options = NameStatus.na_option
-    assert options.class == Array, "Options should be an array."
+    assert options.instance_of?(Array), "Options should be an array."
     assert options.size == 1,
            "Options should have 1 entry, but it has #{options.size} entries."
     assert options.first.first == "[n/a]"

@@ -25,4 +25,3 @@ class NotesAllowedForTaxNovTest < ActiveSupport::TestCase
     assert instance.accepts_notes?, "Tax nov. should accept notes."
   end
 end
-

@@ -134,6 +134,7 @@ class InstancesController < ApplicationController
 
   def handle_other_errors(e, file_to_render = "create_error")
     logger.debug('handle_other_errors')
+    logger.error(e.to_s)
     errors = ErrorAsArrayOfMessages.new(e).error_array
     if errors.size <= 1
       @allow_bypass = errors.first.match(/\A#{CONCEPT_WARNING}\z/)

@@ -22,9 +22,10 @@ require "test_helper"
 class NameStatusNameForInstanceDisplaySimpleTest < ActiveSupport::TestCase
   test "simple" do
     NameStatus.all.each do |ns|
-      if ns.name == "legitimate"
+      case ns.name
+      when "legitimate"
         assert ns.name_for_instance_display.blank?
-      elsif ns.name == "[n/a]"
+      when "[n/a]"
         assert ns.name_for_instance_display.blank?
       else
         assert_match ns.name, ns.name_for_instance_display

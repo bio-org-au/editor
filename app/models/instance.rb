@@ -195,7 +195,7 @@ class Instance < ActiveRecord::Base
   has_many :comments
   # ToDo: remove if redundant
   has_many :nodes, class_name: "TreeNode"
-  has_many :tree_elements
+  has_many :tree_elements, class_name: "Tree::Element"
 
   validates_presence_of :name_id,
                         :reference_id,

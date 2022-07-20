@@ -23,10 +23,10 @@
 
     <input id="query-submit" name="query_submit" value="Search" type="submit" class="btn search-btn" tabindex="9" title="Run the query">
     </div><!-- /input-group -->
-    <input id="focus_id" name="focus_id" type="hidden" value="<%= @focus_id %>" class="pull-right" title="focus id">
   </div><!-- /.col-lg-9 -->
 </div><!-- /row -->
 
   <input id="query-target" name="query_target" value="<%= @search.parsed_request.target_button_text %>" type="hidden" >
+  <input id="focus_id" name="focus_id" type="hidden" value="<%= @focus_id %>" class="pull-right" title="focus id">
 
 <% end %>

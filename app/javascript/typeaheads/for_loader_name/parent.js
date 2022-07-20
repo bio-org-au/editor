@@ -33,7 +33,8 @@ loaderNameParentSuggestions = new Bloodhound({
             return window.relative_url_root + '/loader_names/parent_suggestions?' +
                 'loader_batch_id=' + $('#loader-name-parent-typeahead').attr('data-loader-batch-id') + '&' +
                 'loader_name_id=' + $('#loader-name-parent-typeahead').attr('data-loader-name-id') + '&' +
-                'term=' + encodeURIComponent(query.replace(/\|.*/,''))
+                'term=' + encodeURIComponent(query.replace(/\|.*/,'')) + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
         }
     },
     limit: 100

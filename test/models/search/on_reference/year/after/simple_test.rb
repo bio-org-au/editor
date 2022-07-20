@@ -25,7 +25,7 @@ class SearchOnReferenceAfterYearSimpleTest < ActiveSupport::TestCase
     @reference = references(:paper_by_brassard)
     @params = ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
-                   query_string: 
+                   query_string:
                    "after-year: #{@reference.iso_publication_date.to_i - 1}",
                    include_common_and_cultivar_session: true,
                    current_user: build_edit_user)

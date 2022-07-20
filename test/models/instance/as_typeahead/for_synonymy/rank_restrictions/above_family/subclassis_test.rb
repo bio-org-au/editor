@@ -56,6 +56,6 @@ class TypeaheadForSynonymySubclassisTest < ActiveSupport::TestCase
     @rank_names = @tc.results.collect do |result|
       Instance.find(result[:id]).name.name_rank.name
     end
-    check_rank_names_inclusions(%w(Division Classis))
+    check_rank_names_inclusions(%w[Division Classis])
   end
 end

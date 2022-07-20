@@ -35,5 +35,4 @@ class SearchOnNameNameNamedHybridDendrobiumaemulumTest < ActiveSupport::TestCase
                  search.executed_query.results.size,
                  "Expected 1 result"
   end
-
 end

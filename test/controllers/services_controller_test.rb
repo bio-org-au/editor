@@ -24,7 +24,7 @@ class ServicesControllerTest < ActionController::TestCase
   end
 
   test "unauthenticated user should get index" do
-    get(:index, params:{}, session: {})
+    get(:index, params: {}, session: {})
     assert_response :success
   end
 

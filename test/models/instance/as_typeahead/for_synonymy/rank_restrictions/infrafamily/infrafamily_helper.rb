@@ -18,10 +18,10 @@
 #
 
 def check_infrafamily_exclusions
-  %w(Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Genus
+  %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Genus
      Subgenus Sectio Subsectio Series Subseries Superspecies Species
      Subspecies Nothovarietas Varietas
-     Subvarietas Forma Subforma).each do |rank_string|
+     Subvarietas Forma Subforma].each do |rank_string|
     escape_s = Regexp.escape(rank_string)
     assert @rank_names.select { |e| e.match(/\A#{escape_s}\z/) }.empty?,
            "Expect no #{rank_string} to be suggested"

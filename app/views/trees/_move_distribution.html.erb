@@ -1,5 +1,5 @@
 <div>
-  <%= select_tag("move_placement[distribution]", options_for_select(TreeElement.dist_options,
+  <%= select_tag("move_placement[distribution]", options_for_select(Tree::Element.dist_options,
                                                                     selected: @tree_version_element.tree_element.current_dist_options,
                                                                     disabled: @tree_version_element.tree_element.dist_options_disabled),
                  multiple: true, class: "dist-select form-control", tabindex: increment_tab_index) %>

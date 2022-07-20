@@ -30,12 +30,12 @@ class NameCreateCultivarWithCultivarParentTest < ActiveSupport::TestCase
     name_type = name_types(:cultivar)
     name_rank = name_ranks(:unranked)
     name_status = name_statuses(:na)
-    @name_element = 'newcultname'
-    @name_params = {"name_type_id" => name_type.id.to_s,
-                    "name_rank_id" => name_rank.id.to_s,
-                    "name_status_id" => name_status.id.to_s,
-                    "name_element" => @name_element,
-                    "verbatim_rank" => ''}
+    @name_element = "newcultname"
+    @name_params = { "name_type_id" => name_type.id.to_s,
+                     "name_rank_id" => name_rank.id.to_s,
+                     "name_status_id" => name_status.id.to_s,
+                     "name_element" => @name_element,
+                     "verbatim_rank" => "" }
     @parent = names(:a_cultivar)
   end
 

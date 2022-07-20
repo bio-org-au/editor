@@ -987,3 +987,15 @@ default_instance_for_dendrobium_hybrid_formula:
   updated_by: tester
   page: exclude-from-ordering-test
 
+# Standalone instance
+instance_for_name_in_taxonomy:
+  reference: ref_for_name_in_taxonomy
+  name: name_in_taxonomy
+  instance_type: comb_nov
+  verbatim_name_string: verbatim
+  namespace: apni
+  created_by: tester
+  updated_by: tester
+  source_id_string: gcmc
+  page: exclude-from-ordering-test
+

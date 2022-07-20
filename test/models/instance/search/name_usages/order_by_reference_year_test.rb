@@ -59,7 +59,7 @@ class NameUsagesOrderByReferenceYear < ActiveSupport::TestCase
 
   def print_data(results)
     results.each do |r|
-      if r.class == Instance
+      if r.instance_of?(Instance)
         puts
         "#{r.reference.citation}; date: #{r.reference.iso_publication_date}"
       end

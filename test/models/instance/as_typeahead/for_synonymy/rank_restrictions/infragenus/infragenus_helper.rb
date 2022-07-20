@@ -17,9 +17,9 @@
 #   limitations under the License.
 #
 def check_infrageneric_exclusions
-  %w(Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Familia
+  %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Familia
      Subfamilia Tribus Subtribus Species Subspecies Nothovarietas Varietas
-     Subvarietas Forma Subforma).each do |rank_string|
+     Subvarietas Forma Subforma].each do |rank_string|
     escaped_s = Regexp.escape(rank_string)
     assert @rank_names.select { |e| e.match(/\A#{escaped_s}\z/) }.empty?,
            "Expect no #{rank_string} to be suggested"

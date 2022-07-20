@@ -430,9 +430,17 @@ div#change-password-form {
 }
 
 div#change-password-info {
-  width: 45em;
+  width: 50em;
+  max-width: 90%;
   margin: 0 auto;
-  padding: 0.5em 2em 2em 2em;
+  padding: 0.5em 2em 0.0em 15em;
+  text-align: left;
+}
+
+div#error-explanation {
+  color: darkred;
+  width: 100%;
+  padding-bottom: 1em;
 }
 
 div.focus-details span.twitter-typeahead {
@@ -488,14 +496,15 @@ ul.tree {
 
 div#broadcast {
   position: fixed;
-  top: 86px;
+  top: 92px;
   left: 15px;
-  background: orange;
-  color: white;
-  height: 1.5em;
-  min-height: 1.5em;
+  background: yellow;
+  color: black;
+  height: 20px;
+  max-height: 20px;
   width: 90%;
   padding-left: 8px;
+  border-radius: 4px;
 }
 
 div#search-result-container.sidebar {

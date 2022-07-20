@@ -25,4 +25,3 @@ class NotesAllowedForUnsourcedMisappliedTest < ActiveSupport::TestCase
     assert instance.accepts_notes?, "Unsourced misapplied should accept notes."
   end
 end
-

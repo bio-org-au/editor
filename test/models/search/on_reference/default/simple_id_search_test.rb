@@ -30,7 +30,7 @@ class SearchOnReferenceIdTest < ActiveSupport::TestCase
                    current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert_equal 1,
                  search.executed_query.results.size,
                  "Expect exactly one record."

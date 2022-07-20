@@ -34,8 +34,8 @@ class ForSpeciesFullyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Species",
-      %w(Genus Subgenus Sectio Subsectio Series Subseries Superseries \
-         Superspecies)
+      %w[Genus Subgenus Sectio Subsectio Series Subseries Superseries \
+         Superspecies]
     )
   end
 end

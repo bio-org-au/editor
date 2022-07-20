@@ -24,7 +24,7 @@ class NameAsEdNoAuthIdWValStrWithTrailingWhitespace < ActiveSupport::TestCase
     author = authors(:dummy_author_1)
     result = Name::AsResolvedTypeahead::ForAuthor.new(
       "",
-      author.name + " ",
+      "#{author.name} ",
       "some field"
     )
     assert_equal author.id,

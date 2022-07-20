@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 require "test_helper"
-require "models/instance/search/ordering_of_results/nested_simple_helper.rb"
+require "models/instance/search/ordering_of_results/nested_simple_helper"
 
 # Single instance model test.
 class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
@@ -31,8 +31,8 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
     @results = Instance.joins(:instance_type, :reference, :name)
                        .where.not(page: "exclude-from-ordering-test")
                        .in_nested_instance_type_order
-      .order(Arel.sql('reference.iso_publication_date,lower(name.full_name) collate "C"'))
-      .order(Arel.sql("instance_type.name")) # make test order definitive
+                       .order(Arel.sql('reference.iso_publication_date,lower(name.full_name) collate "C"'))
+                       .order(Arel.sql("instance_type.name")) # make test order definitive
     @ndx = 0
   end
 

@@ -17,14 +17,14 @@
 #   limitations under the License.
 #
 require "test_helper"
-require "models/instance/as_typeahead/for_synonymy/test_helper.rb"
+require "models/instance/as_typeahead/for_synonymy/test_helper"
 
 # Single instance typeahead search.
 class ForNameAndReferenceYearTest < ActiveSupport::TestCase
   test "name out of order search" do
     ta = Instance::AsTypeahead::ForSynonymy.new("costata angophora",
                                                 names(:a_species).id)
-    assert ta.results.class == Array, "Results should be an array."
+    assert ta.results.instance_of?(Array), "Results should be an array."
     assert ta.results.size.zero?, "Results should include no records."
   end
 end

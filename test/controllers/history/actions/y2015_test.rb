@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 #   Copyright 2015 Australian National Botanic Gardens
 #
@@ -30,7 +31,7 @@ class HistoryActionsY2015Test < ActionController::TestCase
         params: {},
         session: { username: "fred",
                    user_full_name: "Fred Jones",
-                   groups: []  })
+                   groups: [] })
     assert_response :success
     assert_select "h3",
                   /\b2015 Changes\b/,

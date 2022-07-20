@@ -26,7 +26,7 @@ class SearchOnNameAssertionSecondParentIsNotTest < ActiveSupport::TestCase
                                 query_target: "name",
                                 query_string: "is-not-a-second-parent:",
                                 current_user: build_edit_user
-    ))
+                              ))
     assert !search.executed_query.results.empty?,
            "Should find name that is not a second parent."
   end

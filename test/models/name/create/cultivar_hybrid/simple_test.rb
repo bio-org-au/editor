@@ -29,12 +29,12 @@ class NameCreateCultivarHybridTest < ActiveSupport::TestCase
     name_type = name_types(:cultivar_hybrid)
     name_rank = name_ranks(:unranked)
     name_status = name_statuses(:na)
-    @name_element = 'culthybridname'
-    @name_params = {"name_type_id" => name_type.id.to_s,
-                    "name_rank_id" => name_rank.id.to_s,
-                    "name_status_id" => name_status.id.to_s,
-                    "name_element" => @name_element,
-                    "verbatim_rank" => ''}
+    @name_element = "culthybridname"
+    @name_params = { "name_type_id" => name_type.id.to_s,
+                     "name_rank_id" => name_rank.id.to_s,
+                     "name_status_id" => name_status.id.to_s,
+                     "name_element" => @name_element,
+                     "verbatim_rank" => "" }
     @parent = names(:a_species)
     @second_parent = names(:another_species)
   end

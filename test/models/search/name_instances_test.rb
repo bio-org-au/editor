@@ -29,7 +29,7 @@ class SearchNameInstancesTest < ActiveSupport::TestCase
                                 query_string: "id: #{name.id} show-instances:",
                                 query_target: "name",
                                 current_user: build_edit_user
-    ))
+                              ))
     assert_equal search.class,
                  Search::Base,
                  "The search should be a Search."

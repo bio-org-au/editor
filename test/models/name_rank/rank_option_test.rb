@@ -23,8 +23,9 @@ class RankOptionTest < ActiveSupport::TestCase
   test "scientific ranks below family" do
     options = NameRank.options_for_category(
       name_categories(:scientific),
-      NameRank.species)
-    assert options.class == Array
+      NameRank.species
+    )
+    assert options.instance_of?(Array)
     ranks = options.collect(&:first)
     subfamily_to_genus(ranks)
     genus_to_species(ranks)
@@ -36,8 +37,9 @@ class RankOptionTest < ActiveSupport::TestCase
   test "scientific ranks above family" do
     options = NameRank.options_for_category(
       name_categories(:scientific),
-      NameRank.family)
-    assert options.class == Array
+      NameRank.family
+    )
+    assert options.instance_of?(Array)
     ranks = options.collect(&:first)
     family_and_above(ranks)
   end

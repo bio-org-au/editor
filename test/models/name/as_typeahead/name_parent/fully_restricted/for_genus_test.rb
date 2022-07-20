@@ -34,7 +34,7 @@ class ForGenusFullyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Genus",
-      %w(Familia Subfamilia Tribus Subtribus)
+      %w[Familia Subfamilia Tribus Subtribus]
     )
   end
 end

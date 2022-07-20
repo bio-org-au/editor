@@ -25,4 +25,3 @@ class BasionymIssourcedTest < ActiveSupport::TestCase
     assert_not instance.unsourced?, "Basionym instance should be sourced."
   end
 end
-

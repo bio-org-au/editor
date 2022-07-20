@@ -23,7 +23,7 @@ class SearchInstanceCsvSimpleTest < ActionController::TestCase
   tests SearchController
 
   test "instance search result in csv format" do
-    skip 'fails in 6.1.4'
+    skip "fails in 6.1.4"
     get(:search,
         params: { query_target: "instance",
                   query_string: "*angophora costata*",

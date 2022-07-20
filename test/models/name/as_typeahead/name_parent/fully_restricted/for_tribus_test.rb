@@ -34,7 +34,7 @@ class ForTribusFullyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "Tribus",
-      %w(Familia Subfamilia)
+      %w[Familia Subfamilia]
     )
   end
 end

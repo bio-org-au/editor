@@ -1,11 +1,11 @@
 APC:
   lock_version: 4
   accepted_tree: true
-  config: '{"comment_key": "APC Comment", "distribution_key": "APC Dist."}'
+  config: {"comment_key": "APC Comment", "distribution_key": "APC Dist."}
   current_tree_version: current_version
   default_draft_tree_version_id: draft_version.id
-  description_html: '<p>APC tree</p>'
-  group_name: 'treebuilder'
-  host_name: 'http://localhost:7070/nsl-mapper'
+  description_html: <p>APC tree</p>
+  group_name: treebuilder
+  host_name: http://localhost:7070/nsl-mapper
   link_to_home_page:
-  name: 'APC'
+  name: APC

@@ -37,7 +37,8 @@ nameFamilySuggestions = new Bloodhound({
             return window.relative_url_root + '/names/name_family_suggestions?' +
                 'name_id=' + $('#name-family-typeahead').attr('data-name-id') + '&' +
                 'rank_id=' + $('#name_name_rank_id').val() + '&' +
-                'term=' + encodeURIComponent(query.replace(/\|.*/, ''))
+                'term=' + encodeURIComponent(query.replace(/\|.*/, ''))  + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
         }
     },
     limit: 100

@@ -32,7 +32,7 @@ class WorkspaceCurrentToggleOffTest < ActionController::TestCase
          params: { id: @tree.id },
          session: { username: "fred",
                     user_full_name: "Fred Jones",
-                    groups: %w(edit treebuilder) })
+                    groups: %w[edit treebuilder] })
     assert_response :success
     assert_not @request.session["draft"].present?
   end

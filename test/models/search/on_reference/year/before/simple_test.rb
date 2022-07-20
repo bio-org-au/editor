@@ -34,7 +34,7 @@ class SearchOnReferenceBeforeYearSimpleTest < ActiveSupport::TestCase
   test "search on before year simple" do
     search = Search::Base.new(@params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert !search.executed_query.results.empty?, "Results expected."
   end
 end

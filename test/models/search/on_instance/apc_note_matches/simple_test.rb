@@ -23,9 +23,9 @@ load "test/models/search/users.rb"
 class SearchOnInstanceApcDistMatchesTest < ActiveSupport::TestCase
   test "search on instance apc dist matches" do
     params = ActiveSupport::HashWithIndifferentAccess.new(
-        query_target: "instance",
-        query_string: "apc-dist-note-matches: ^apc dist one$",
-        current_user: build_edit_user
+      query_target: "instance",
+      query_string: "apc-dist-note-matches: ^apc dist one$",
+      current_user: build_edit_user
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.size == 1

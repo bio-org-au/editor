@@ -29,8 +29,8 @@ class NamesNewScientificFamilyOrAboveSimpleTest < ActionController::TestCase
     @request.session["groups"] = ["edit"]
     get(:new,
         params: { category: "scientific_family",
-          random_id: "123445",
-          tabIndex: "107" },
+                  random_id: "123445",
+                  tabIndex: "107" },
         session: {},
         xhr: true)
     assert_response :success, "Cannot enter new scientific name family or above"
@@ -38,10 +38,9 @@ class NamesNewScientificFamilyOrAboveSimpleTest < ActionController::TestCase
     assert_select "input" do |inputs|
       inputs.each do |input|
         if input.to_s.match(/name-parent-typeahead/)
-          assert_no_match 'required', input.to_s, 'name-parent-typeahead should not be required'
+          assert_no_match "required", input.to_s, "name-parent-typeahead should not be required"
         end
       end
     end
- end
+  end
 end
-

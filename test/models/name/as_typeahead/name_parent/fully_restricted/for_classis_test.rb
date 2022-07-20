@@ -32,7 +32,7 @@ class ForClassisFullyRestrictedTest < ActiveSupport::TestCase
       rank_id: NameRank.find_by(name: "Classis").id
     )
     suggestions_should_only_include(
-      typeahead.suggestions, "Classis", %w(Regnum Division)
+      typeahead.suggestions, "Classis", %w[Regnum Division]
     )
   end
 end

@@ -26,4 +26,3 @@ class NotesAllowedForUnsourcedProParteMisappliedTest < ActiveSupport::TestCase
            "Unsourced pro parte misapplied should accept notes."
   end
 end
-

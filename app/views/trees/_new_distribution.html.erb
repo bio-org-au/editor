@@ -1,5 +1,5 @@
 <div>
-  <%= select_tag("place_name[distribution]", options_for_select(TreeElement.dist_options,
+  <%= select_tag("place_name[distribution]", options_for_select(Tree::Element.dist_options,
                                                                 selected: [],
                                                                 disabled: []),
                  multiple: true, class: "dist-select form-control", tabindex: increment_tab_index) %>

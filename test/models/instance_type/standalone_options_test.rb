@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -23,10 +22,11 @@ require "test_helper"
 class InstanceTypeStandaloneOptionsTest < ActiveSupport::TestCase
   setup do
     options = InstanceType.standalone_options
-    assert options.class == Array, "Should be an array."
+    assert options.instance_of?(Array), "Should be an array."
     assert_equal 10, options.size, "Should be 10 of them."
     @names = options.collect(&:first)
-    @expected = %w[autonym comb.\ et\ stat.\ nov. comb.\ nov. explicit\ autonym explicit\ autonym implicit\ autonym nom.\ et\ stat.\ nov. nom.\ nov. primary\ reference secondary\ reference tax.\ nov.]
+    @expected = ["autonym", "comb. et stat. nov.", "comb. nov.", "explicit autonym", "explicit autonym",
+                 "implicit autonym", "nom. et stat. nov.", "nom. nov.", "primary reference", "secondary reference", "tax. nov."]
   end
 
   test "instance type standalone options" do

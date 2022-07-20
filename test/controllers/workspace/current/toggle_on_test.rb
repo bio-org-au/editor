@@ -31,7 +31,7 @@ class WorkspaceCurrentToggleOnTest < ActionController::TestCase
          params: { id: @tree.id },
          session: { username: "fred",
                     user_full_name: "Fred Jones",
-                    groups: %w(edit treebuilder) })
+                    groups: %w[edit treebuilder] })
     assert_response :success
     assert @request.session["draft"].present?,
            "Session draft expected, but not there."

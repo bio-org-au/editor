@@ -25,4 +25,3 @@ class SynonymIsUnsourcedTest < ActiveSupport::TestCase
     assert synonym.unsourced?, "Plain synonym instance should be unsourced."
   end
 end
-

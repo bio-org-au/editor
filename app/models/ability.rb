@@ -122,6 +122,7 @@ class Ability
     can "names/typeaheads/for_workspace_parent_name", :all
     can "menu", "tree"
     can "tree_elements",       :all
+    can "tree/elements",       :all
   end
 
   def admin_auth

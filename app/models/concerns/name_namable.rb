@@ -93,6 +93,6 @@ module NameNamable
     save!(touch: false)
   rescue => e
     logger.error("retry_set_names! exception: #{e}")
-    raise
+    raise "Unable to set up the name via Services.  Please report this error to App Support."
   end
 end

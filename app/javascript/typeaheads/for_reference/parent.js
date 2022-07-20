@@ -28,7 +28,8 @@ window.referenceByCitationForParent = new Bloodhound({
                      return window.relative_url_root + '/references/typeahead/on_citation/for_parent?id=' + 
                                                        $('#reference-parent-typeahead').attr('data-current-id') +
                                                        '&ref_type_id=' + $('#reference_ref_type_id').val() +
-                                                       '&term='+encodeURIComponent(query) 
+                                                       '&term='+encodeURIComponent(query)  + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
            }
           },
   limit: 100

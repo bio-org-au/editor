@@ -34,7 +34,7 @@ class TreeVersionElement < ActiveRecord::Base
 
   belongs_to :tree_element,
              foreign_key: "tree_element_id",
-             class_name: "TreeElement"
+             class_name: "Tree::Element"
 
   belongs_to :parent,
              foreign_key: "parent_id",

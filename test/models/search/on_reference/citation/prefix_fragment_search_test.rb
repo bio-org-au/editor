@@ -30,7 +30,7 @@ class SearchOnRefCitationPrefixFragmentSearchTest < ActiveSupport::TestCase
     )
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-      "Results should be an ActiveRecord::Relation."
+           "Results should be an ActiveRecord::Relation."
     assert search.executed_query.results.size > 1,
            "At least one result expected.  Citation text search should
            support prefix text fragments."

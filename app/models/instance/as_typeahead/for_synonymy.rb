@@ -111,7 +111,7 @@ class Instance::AsTypeahead::ForSynonymy
     reference_year = terms.gsub(/[^0-9]/, "")
     if reference_year.present? &&
        reference_year.to_i > 1000 && reference_year.to_i < 3000
-      reference_binds.push(" iso_publication_date = ? ")
+      reference_binds.push(" iso_publication_date like ? ||'%' ")
       reference_binds.push(reference_year)
     end
     reference_binds

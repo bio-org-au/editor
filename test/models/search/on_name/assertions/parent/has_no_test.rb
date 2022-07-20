@@ -26,7 +26,7 @@ class SearchOnNameeAssertionHasNoParentTest < ActiveSupport::TestCase
                                 query_target: "name",
                                 query_string: "has-no-parent:",
                                 current_user: build_edit_user
-    ))
+                              ))
     assert !search.executed_query.results.empty?,
            "Should find name that has no parent."
   end

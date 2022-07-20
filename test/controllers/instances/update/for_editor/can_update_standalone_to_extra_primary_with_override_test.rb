@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -49,7 +48,7 @@ class CanUpdateStandaloneToExtraPrimaryWithOverride < ActionController::TestCase
     es = "Saving this instance would result in multiple primary instances"
     es += " for the same name."
     assert_no_match(/#{es}/,
-                 response.body,
-                 "Expected error message did not appear")
+                    response.body,
+                    "Expected error message did not appear")
   end
 end

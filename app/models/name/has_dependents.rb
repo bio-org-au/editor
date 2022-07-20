@@ -88,7 +88,7 @@ class Name::HasDependents
     debug("instances: #{@instances.size}")
     @duplicates_of = Name.where(duplicate_of_id: @name.id)
     debug("duplicates of: #{@duplicates_of.size}")
-    @tree_elements = TreeElement.where(name_id: @name.id)
+    @tree_elements = Tree::Element.where(name_id: @name.id)
     debug("tree elements: #{@tree_elements.size}")
     @comments = @name.comments
     debug("comments: #{@comments.size}")

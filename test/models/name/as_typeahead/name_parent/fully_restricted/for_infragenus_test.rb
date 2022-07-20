@@ -34,7 +34,7 @@ class ForInfragenusFullyRestrictedTest < ActiveSupport::TestCase
     suggestions_should_only_include(
       typeahead.suggestions,
       "[infragenus]",
-      %w(Genus Subgenus Sectio Subsectio Series Subseries Superspecies)
+      %w[Genus Subgenus Sectio Subsectio Series Subseries Superspecies]
     )
   end
 end

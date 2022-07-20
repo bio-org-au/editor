@@ -31,7 +31,8 @@ nameParentSuggestionsForCultivar = new Bloodhound({
             return window.relative_url_root + '/suggestions/name/cultivar_parent?' +
                 'name_id=' + $('#name-parent-typeahead').attr('data-name-id') + '&' +
                 'rank_id=' + $('#name_name_rank_id').val() + '&' +
-                'term=' + encodeURIComponent(query.replace(/\|.*/,''))
+                'term=' + encodeURIComponent(query.replace(/\|.*/,'')) + '&' + 
+                'cache_buster=' + Math.floor((Math.random() * 1000) + 1).toString()
         }
     },
     limit: 100

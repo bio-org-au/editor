@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -25,7 +24,8 @@ class InstanceTypeUnpublishedCitationOptionsTest < ActiveSupport::TestCase
     options = InstanceType.unpublished_citation_options
     assert_equal 7, options.size, "Should be 7 of them."
     @names = options.collect(&:first)
-    @expected = %w[common\ name orthographic\ variant unsourced\ doubtful\ misapplied unsourced\ doubtful\ pro\ parte\ misapplied unsourced\ misapplied unsourced\ pro\ parte\ misapplied vernacular\ name]
+    @expected = ["common name", "orthographic variant", "unsourced doubtful misapplied",
+                 "unsourced doubtful pro parte misapplied", "unsourced misapplied", "unsourced pro parte misapplied", "vernacular name"]
   end
 
   test "instance type unpublished citation options" do

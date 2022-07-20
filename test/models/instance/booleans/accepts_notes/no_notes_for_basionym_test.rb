@@ -25,4 +25,3 @@ class NoNotesForBasionymTest < ActiveSupport::TestCase
     assert_not instance.accepts_notes?, "Basionym should not accept notes."
   end
 end
-

@@ -35,25 +35,25 @@ class TreePlacementRemoveTest < ActionController::TestCase
     body = '{"taxonUri":"tree/123/456"}'
 
     stub_request(:post, "#{url}#{params}")
-        .with(body: body,
-              headers: {'Accept' => 'application/json',
-	                      'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-                        'Content-Length' => '27',
-                        'Content-Type' => 'application/json',
-                        'Host' => 'localhost:9090',
-                        'User-Agent' => /ruby/})
-        .to_return(status: 200, body: '{"payload": {"message":"Removed"}}', headers: {})
+      .with(body: body,
+            headers: { "Accept" => "application/json",
+                       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+                       "Content-Length" => "27",
+                       "Content-Type" => "application/json",
+                       "Host" => "localhost:9090",
+                       "User-Agent" => /ruby/ })
+      .to_return(status: 200, body: '{"payload": {"message":"Removed"}}', headers: {})
   end
 
   test "remove name from workspace" do
     @request.headers["Accept"] = "application/javascript"
     delete(:remove_name_placement,
-           params: {id: @workspace,
-            remove_placement: {taxon_uri: 'tree/123/456',
-                               delete: 'delete'}},
+           params: { id: @workspace,
+                     remove_placement: { taxon_uri: "tree/123/456",
+                                         delete: "delete" } },
            session: { username: "fred",
                       user_full_name: "Fred Jones",
-                      groups: %w(edit treebuilder),
+                      groups: %w[edit treebuilder],
                       workspace: @workspace })
     assert_response :success
     assert_equal "remove_name_placement", @controller.action_name,

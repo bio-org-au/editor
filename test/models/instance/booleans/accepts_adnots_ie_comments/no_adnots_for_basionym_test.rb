@@ -25,4 +25,3 @@ class NoAdnotsForBasionymTest < ActiveSupport::TestCase
     assert_not instance.accepts_adnots?, "Basionym should not accept adnots."
   end
 end
-

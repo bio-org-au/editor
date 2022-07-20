@@ -34,7 +34,7 @@ class ForSubspeciesPartiallyRestrictedTest < ActiveSupport::TestCase
       rank_id: NameRank.find_by(name: "Subspecies").id
     )
     suggestions_should_only_include(
-      typeahead.suggestions, "Subspecies", %w(Species)
+      typeahead.suggestions, "Subspecies", %w[Species]
     )
   end
 end

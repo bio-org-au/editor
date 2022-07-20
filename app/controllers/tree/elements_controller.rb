@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class TreeElementsController < ApplicationController
+class Tree::ElementsController < ApplicationController
   before_action :find_tree_element, only: [:show, :tab, :update_profile]
 
   # GET /tree_vesions/1
@@ -28,47 +28,40 @@ class TreeElementsController < ApplicationController
     @tab_index = choose_index
     @take_focus = params[:take_focus] == 'true'
     @tree_version = TreeVersion.find(params['tree-version-id'])
-    logger.debug("params: #{params.inspect}")
     render "show", layout: false
   end
 
   alias tab show
 
+  # Update a mini schema of data with optional fields in a jsonb structure.
+  # This process is messy - jsonb not a good choice for data that changes imo.
+  # Note: this code is separate from the tree controller code for 
+  # setting up profile data in a tree draft via services.  This code was added
+  # later to allow editing of profile data in a way that does not involve 
+  # a new version of the taxonomy i.e. CRUD directly into the database.
   def update_profile
-    @refresh = false
-    @message = 'No change'
-    update_distribution if tree_element_params[:distribution_value].present?
-    update_comment if tree_element_params[:comment_value].present?
+    scope = 'Distribution'
+    @distribution_message, dist_refresh = @tree_element.update_distribution(
+      tree_element_params[:distribution_value], @current_user.username)
+    scope = 'Comment'
+    # After working on distribution part of the schema
+    # start with a fresh record from the database to work on the
+    # comment part of the schema
+    find_tree_element # Pick up refreshed data from database to avoid overwrite
+    @comment_message, comment_refresh = @tree_element.update_comment(
+      tree_element_params[:comment_value].gsub(/\n/,' ').strip,
+      @current_user.username)
+    @refresh = dist_refresh || comment_refresh
   rescue => e
-    logger.error("TreeElementsController:update_profile:rescuing exception #{e}")
-    @message = "Update error: #{e}"
+    logger.error("Tree::ElementsController:update_profile:rescuing #{scope} exception #{e}")
+    @message = "#{scope} update error: #{e}"
     render :update_profile_error, status: :unprocessable_entity
   end
 
   private
 
-  def update_distribution
-    new_cleaned = TreeElement.cleanup_distribution_string(tree_element_params[:distribution_value])
-    TreeElement.validate_distribution_string(new_cleaned)
-    unless @tree_element.distribution_value == new_cleaned
-      @message = 'Distribution changed'
-      @refresh = true
-      @tree_element.update_distribution_directly(new_cleaned, @current_user.username)
-      te = TreeElement.find(@tree_element.id)
-      te.apply_string_to_tedes
-    end
-  end
-
-  def update_comment
-    unless @tree_element.comment_value == tree_element_params[:comment_value]
-      @message = 'Comment changed'
-      @refresh = true
-      @tree_element.update_comment_directly(tree_element_params[:comment_value], @current_user.username)
-    end
-  end
-
   def find_tree_element
-    @tree_element = TreeElement.find(params[:id])
+    @tree_element = Tree::Element.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the tree element."
     redirect_to tree_elements_path
@@ -91,3 +84,5 @@ class TreeElementsController < ApplicationController
     (params[:tabIndex] || "1").to_i
   end
 end
+
+

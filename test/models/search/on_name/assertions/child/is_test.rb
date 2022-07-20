@@ -26,7 +26,7 @@ class SearchOnNameAssertionChildIsTest < ActiveSupport::TestCase
                                 query_target: "name",
                                 query_string: "is-a-child:",
                                 current_user: build_edit_user
-    ))
+                              ))
     assert !search.executed_query.results.empty?,
            "Should find name that is a child."
   end

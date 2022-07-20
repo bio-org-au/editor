@@ -36,10 +36,10 @@ class ReferenceEditorShowEdit3Test < ActionController::TestCase
                   /Edit\.\.\./,
                   "Should show 'Edit...' tab."
     assert_select "form", true
-    assert_select 'input#reference_doi', true
-    assert_select 'input#reference_isbn', true
-    assert_select 'input#reference_issn', true
-    assert_select 'input#reference_bhl_url', true
-    assert_select 'input#reference_tl2', true
+    assert_select "input#reference_doi", true
+    assert_select "input#reference_isbn", true
+    assert_select "input#reference_issn", true
+    assert_select "input#reference_bhl_url", true
+    assert_select "input#reference_tl2", true
   end
 end

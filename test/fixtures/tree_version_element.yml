@@ -10,3 +10,17 @@ a_tree_version_element:
   tree_version: current_version
   updated_at: 2018-05-10 14:00:00.000000
   updated_by: import
+
+tve_for_red_gum:
+  element_link: "tree/123/789"
+  depth: 9
+  name_path: "Plantae/Charophyta/Equisetopsida/Magnoliidae/Rosanae/Myrtales/Myrtaceae/Angophora/costata"
+  parent_id: nil
+  taxon_id: 2895769
+  taxon_link: "/node/apni/2895769"
+  tree_element: red_gum_in_taxonomy
+  tree_path: "/50692159"
+  tree_version: current_version
+  updated_at: 2018-05-10 14:00:00.000000
+  updated_by: import
+
