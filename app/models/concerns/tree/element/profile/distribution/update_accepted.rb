@@ -4,7 +4,7 @@
 #
 #
 # Tree Element Profile 
-module Concerns::Tree::Element::Profile::Distribution::UpdateAccepted extend ActiveSupport::Concern
+module Tree::Element::Profile::Distribution::UpdateAccepted extend ActiveSupport::Concern
 
   def update_dist_with_non_blank_param(dist_param, username)
     throw 'Expecting non-blank distribution' if dist_param.nil?

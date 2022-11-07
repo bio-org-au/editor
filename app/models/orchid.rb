@@ -265,7 +265,7 @@ class Orchid < ActiveRecord::Base
       attempted += 1
       records += match.create_preferred_match(authorising_user)
     end
-    entry = "Task finished: create preferred matches for accepted taxa matching #{taxon_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    entry = "Job finished: create preferred matches for accepted taxa matching #{taxon_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
     OrchidProcessingLog.log(entry, 'job controller')
     return attempted, records
   end
@@ -276,7 +276,7 @@ class Orchid < ActiveRecord::Base
       attempted += 1
       records += match.create_preferred_match(authorising_user)
     end
-    entry = "Task finished: create preferred matches for excluded taxa matching #{taxon_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    entry = "Job finished: create preferred matches for excluded taxa matching #{taxon_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
     OrchidProcessingLog.log(entry, 'job controller')
     return attempted, records
   end
@@ -299,7 +299,7 @@ class Orchid < ActiveRecord::Base
       records += creator.created || 0
       errors += creator.errors || 0
     end
-    entry = "Task finished: create instance for preferred matches for '#{taxon_s}', #{authorising_user}; records created: #{records}; errors: #{errors}"
+    entry = "Job finished: create instance for preferred matches for '#{taxon_s}', #{authorising_user}; records created: #{records}; errors: #{errors}"
     OrchidProcessingLog.log(entry, 'job controller')
     return records, errors
   end
@@ -331,7 +331,7 @@ class Orchid < ActiveRecord::Base
       error_tally += placer.error_count
       preflight_stop_tally += placer.preflight_stop_count
     end
-    entry = "Task finished: add to tree for #{tag} taxa matching #{taxon_s}, #{authorising_user}; placed: #{placed_tally}, errors: #{error_tally}, preflight stops: #{preflight_stop_tally}"
+    entry = "Job finished: add to tree for #{tag} taxa matching #{taxon_s}, #{authorising_user}; placed: #{placed_tally}, errors: #{error_tally}, preflight stops: #{preflight_stop_tally}"
     OrchidProcessingLog.log(entry, 'job controller')
     return placed_tally, error_tally, preflight_stop_tally,''
   rescue GenusTaxonomyPlacementError => e

@@ -1,6 +1,6 @@
 #
 # Tree Element Profile 
-module Concerns::Tree::Element::Profile::Distribution::Validations extend ActiveSupport::Concern
+module Tree::Element::Profile::Distribution::Validations extend ActiveSupport::Concern
   included do
     def self.dist_options
       DistEntry.all.sort do |a, b|

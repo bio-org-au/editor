@@ -42,14 +42,10 @@ class InstanceDeleteServiceNotFound404Test < ActiveSupport::TestCase
       "User-Agent" => /ruby/ }
   end
 
+  # 404 should be handled - code will try to delete the instance
   test "instance delete service not found 404" do
-    exception = assert_raise(
-      RuntimeError,
-      "Should raise runtime exception for not found"
-    ) do
-      # The test mock service determines response based on the id
-      Instance::AsServices.delete(404)
-    end
-    assert_match "Not found.", exception.message, "Wrong message"
+    # The test mock service determines response based on the id
+    Instance::AsServices.delete(404)
+    assert :success
   end
 end

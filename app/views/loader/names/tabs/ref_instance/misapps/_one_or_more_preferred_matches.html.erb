@@ -1,0 +1,39 @@
+<% case %>
+<% when @loader_name.parent.preferred_match.use_batch_default_reference %>
+  <%= render partial: 'loader/names/tabs/ref_instance/misapps/one_preferred_match/use_batch_default_ref' %> 
+
+<% when @loader_name.parent.preferred_match.use_existing_instance %>
+  <%= render partial: 'loader/names/tabs/ref_instance/misapps/one_preferred_match/use_existing_instance' %> 
+
+<% when @loader_name.parent.preferred_match.copy_and_append? %>
+  <%= render partial: 'loader/names/tabs/ref_instance/misapps/one_preferred_match/copy_and_append' %> 
+
+<% else %>
+  The parent name has no choice made about an instance for taxonomy.
+<% end %>
+<br>
+<%= @loader_name.preferred_matches.size %> preferred matches
+<%= divider %>
+<% @loader_name.loader_name_matches.sort {|x,y| x.id <=> y.id }.each_with_index do |match, ndx| %>
+  
+  <%= ndx + 1 %>.
+  <% if match.relationship_instance? %>
+    Relationship instance exists:
+       <%= link_to("show the relationship instance in context",
+                   search_path(query_target: "Name",
+                               query_string: "id: #{match.name_id} show-instances:",
+                               focus_id:"Instance-#{match.relationship_instance_id}"),
+                  tabindex: increment_tab_index,
+                  title: "Show the instance",
+                  class: 'blue') %>
+                <hr>
+    <h5>Undo</h5>
+    <%= render partial:
+      'loader/names/tabs/ref_instance/misapps/rollback_ref_instance',
+      locals: {match: match} %>
+  <% else %>
+    No relationship instance created yet.
+  <% end %>
+  <br>
+<%= divider %>
+<% end %>

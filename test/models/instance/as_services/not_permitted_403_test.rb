@@ -48,6 +48,6 @@ class InstanceDeleteServiceNotPermitted403Test < ActiveSupport::TestCase
       # The test mock service determines response based on the id
       Instance::AsServices.delete(403)
     end
-    assert_match "Not permitted.", exception.message, "Wrong message"
+    assert_match "from Services: 403 Forbidden", exception.message, "Wrong message"
   end
 end

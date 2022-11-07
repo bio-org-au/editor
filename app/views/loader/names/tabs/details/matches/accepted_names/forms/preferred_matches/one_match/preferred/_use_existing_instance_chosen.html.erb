@@ -1,0 +1,14 @@
+
+    <% standalone = @loader_name.loader_name_matches
+                                .where(name_id: matching_name.id)
+                                .first.standalone_instance %>
+    <br>
+
+    <%= render partial: 'detail_line',
+               locals: {info:
+               "#{standalone.reference.citation}:&nbsp;#{standalone.page}",
+                        label: 'selected instance'} %>
+
+    <%= render partial: 'detail_line',
+               locals: {info: standalone.instance_type.name,
+                        label: 'selected instance type'} %>

@@ -22,7 +22,7 @@ create table loader_name_match (
   constraint loader_name_match_name_fk foreign key (name_id) REFERENCES name(id),
   constraint loader_name_match_loadr_nam_fk foreign key (loader_name_id) REFERENCES loader_name(id),
   constraint loader_name_match_rel_inst_fk foreign key (relationship_instance_id) REFERENCES instance(id),
-  constraint loader_nme_mtch_r_inst_type_fk foreign key (relationship_instance_id) REFERENCES instance_type(id),
+  constraint loader_nme_mtch_r_inst_type_fk foreign key (relationship_instance_type_id) REFERENCES instance_type(id),
   constraint loader_name_match_sta_inst_fk foreign key (standalone_instance_id) REFERENCES instance(id)
 )
 ;

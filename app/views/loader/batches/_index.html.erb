@@ -1,16 +1,20 @@
 <div id="batch-loader-control-panel" class="reports-inner">
 
 <% if session[:default_loader_batch_id].blank? %>
-  <h4>Please select a default batch to work on</h4>
-  <%= render partial: 'detail_line',
-    locals: {label: 'query the batch stacks',
-             info: link_to("Batch Stacks",
-                          search_path(
-                            query_string: "*",
-                            query_target: 'batch stacks',
-             ),
-                            title:"Query batch in stack format",class:'blue')} %>
-
+  <h5>Please select a default batch</h5>
+  <p>
+  This tab works on the default batch for your Editor session, so please choose a batch.
+  </p>
+  <p>
+  Follow this link to 
+  <%= link_to("query a list of batches",
+             search_path(query_string: "*", query_target: 'batch stacks'),
+             title:"Query batch in stack format",class:'blue') %>
+  and make one of those the default batch via its Details tab.
+  </p>
+  <p>Then come back here.  </p>
+  <p>You can switch the default batch for your session in the Editor any time.
+  </p>
 <% else %>
   <h3>Default batch: <%= session[:default_loader_batch_name] %></h3>
   <% increment_tab_index(0) %>

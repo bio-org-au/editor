@@ -24,9 +24,9 @@ class Loader::Batch::Stats::ForAcceptedNames
   end
 
   def report
-    { search: {search_string: @name_string,
-               reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
-               name_category: 'Accepted'},
+    { search: {string: @name_string,
+               reported: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
+               category: 'Accepted'},
       lock: { status: lock_status }, 
       core: { accepted: accepteds,
               synonym: synonyms,
@@ -42,56 +42,19 @@ class Loader::Batch::Stats::ForAcceptedNames
                    synonym_without_preferred_match: synonym_without_preferred_match,
                    misapplied_without_a_preferred_match: misapplied_without_a_preferred_match },
       with_match_and_instances:
-        { accepted_matched_with_standalone: accepted_matched_with_standalone,
-          synonym_matched_with_cross_ref: synonym_matched_with_cross_ref,
+        { accepted_with_standalone: accepted_with_standalone,
+          synonym_with_cross_ref: synonym_with_cross_ref,
           misapplied_with_cross_ref: misapplied_with_cross_ref },
       with_match_and_instances_breakdown:
-        { accepted_matched_with_standalone_instance_created: accepted_matched_with_standalone_instance_created,
-          accepted_matched_with_standalone_instance_found: accepted_matched_with_standalone_instance_found,
-          synonym_matched_with_cross_ref_created: synonym_matched_with_cross_ref_created,
-          synonym_matched_with_cross_ref_found: synonym_matched_with_cross_ref_found,
-          misapp_matched_with_cross_ref_created: misapp_matched_with_cross_ref_created,
-          misapp_matched_with_cross_ref_found: misapp_matched_with_cross_ref_found },
+        { accepted_with_standalone_created: accepted_with_standalone_created,
+          accepted_with_standalone_found: accepted_with_standalone_found,
+          synonym_with_cross_ref_created: synonym_with_cross_ref_created,
+          synonym_with_cross_ref_found: synonym_with_cross_ref_found,
+          misapp_with_cross_ref_created: misapp_with_cross_ref_created,
+          misapp_with_cross_ref_found: misapp_with_cross_ref_found },
     }
   end
 
-  def xreport
-    { search: {search_string: @name_string,
-               reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
-               name_category: 'Accepted'},
-      lock: { status: lock_status }, 
-      core: { accepted: accepteds,
-              synonym: synonyms,
-              misapplied: misapplieds,
-              hybrid_cross: hybrid_crosses,
-              total: names_and_synonyms_count },
-      other: { further_processing_prevented: further_processing_prevented },
-      matched: { accepted_with_preferred_match: accepted_with_preferred_match,
-                  synonym_with_preferred_match: synonym_with_preferred_match,
-                  misapplied_with_a_preferred_match: misapplied_with_a_preferred_match,
-                  misapplied_preferred_matches: misapplied_preferred_matches },
-      unmatched: { accepted_without_preferred_match: accepted_without_preferred_match,
-                   synonym_without_preferred_match: synonym_without_preferred_match,
-                   misapplied_without_a_preferred_match: misapplied_without_a_preferred_match },
-      with_match_and_instances:
-        { accepted_matched_with_standalone: accepted_matched_with_standalone,
-          synonym_matched_with_cross_ref: synonym_matched_with_cross_ref,
-          misapplied_with_cross_ref: misapplied_with_cross_ref },
-      with_match_and_instances_breakdown:
-        { accepted_matched_with_standalone_instance_created: accepted_matched_with_standalone_instance_created,
-          accepted_matched_with_standalone_instance_found: accepted_matched_with_standalone_instance_found,
-          synonym_matched_with_cross_ref_created: synonym_matched_with_cross_ref_created,
-          synonym_matched_with_cross_ref_found: synonym_matched_with_cross_ref_found,
-          misapp_matched_with_cross_ref_created: misapp_matched_with_cross_ref_created,
-          misapp_matched_with_cross_ref_found: misapp_matched_with_cross_ref_found },
-      with_match_but_without_instances:
-        { accepted_matched_without_standalone: accepted_matched_without_standalone,
-          synonym_matched_without_cross_ref: synonym_matched_without_cross_ref,
-          misapplied_matched_without_cross_ref: misapplied_matched_without_cross_ref },
-      taxonomy: standalones_in_taxonomy,
-    }
-  end
- 
   def core_search
     Loader::Name.name_string_search(@name_string)
       .joins(:loader_batch)
@@ -103,8 +66,7 @@ class Loader::Batch::Stats::ForAcceptedNames
   end
 
   def lock_status
-    'not implemented for batch loader yet'
-    #OrchidBatchJobLock.locked? ? 'Locked' : 'Unlocked'
+    Loader::Batch::JobLock.locked? ? 'Locked' : 'Unlocked'
   end
 
   def accepteds
@@ -180,70 +142,70 @@ class Loader::Batch::Stats::ForAcceptedNames
     e.to_s
   end
 
-  def accepted_matched_with_standalone
+  def accepted_with_standalone
     core_search.where("record_type = 'accepted'")
                .joins(:loader_name_matches)
                .where.not( {loader_name_matches: { standalone_instance_id: nil}})
                .count
   end
 
-  def accepted_matched_with_standalone_instance_created
+  def accepted_with_standalone_created
     core_search.where("record_type = 'accepted'")
                .joins(:loader_name_matches)
                .where( {'loader_name_match': { standalone_instance_created: true}})
                .count
   end
 
-  def accepted_matched_with_standalone_instance_found
+  def accepted_with_standalone_found
     core_search.where("record_type = 'accepted'")
                .joins(:loader_name_matches)
                .where( {loader_name_matches: { standalone_instance_found: true}})
                .count
   end
 
-  def accepted_matched_without_standalone
+  def accepted_without_standalone
     core_search.where("record_type = 'accepted'")
                .joins(:loader_name_matches)
                .where( {loader_name_matches: { standalone_instance_id: nil}})
                .count
   end
 
-  def synonym_matched_with_cross_ref
+  def synonym_with_cross_ref
     core_search.where("record_type = 'synonym'")
                .joins(:loader_name_matches)
                .where.not( {loader_name_matches: { relationship_instance_id: nil}})
                .count
   end
 
-  def synonym_matched_with_cross_ref_created
+  def synonym_with_cross_ref_created
     core_search.where("record_type = 'synonym'")
                .joins(:loader_name_matches)
                .where( {loader_name_matches: { relationship_instance_created: true}})
                .count
   end
 
-  def synonym_matched_with_cross_ref_found
+  def synonym_with_cross_ref_found
     core_search.where("record_type = 'synonym'")
                .joins(:loader_name_matches)
                .where( {loader_name_matches: { relationship_instance_found: true}})
                .count
   end
 
-  def misapp_matched_with_cross_ref_created
+  def misapp_with_cross_ref_created
     core_search.where("record_type = 'misapplied'")
                .joins(:loader_name_matches)
                .where( {loader_name_matches: { relationship_instance_created: true}})
                .count
   end
 
-  def misapp_matched_with_cross_ref_found
+  def misapp_with_cross_ref_found
     core_search.where("record_type = 'misapplied'")
                .joins(:loader_name_matches)
                .where( {loader_name_matches: { relationship_instance_found: true}})
                .count
   end
 
-  def synonym_matched_without_cross_ref
+  def synonym_without_cross_ref
     core_search.where("record_type = 'synonym'")
                .joins(:loader_name_matches)
                .where( {loader_name_matches: { relationship_instance_id: nil}})
@@ -257,7 +219,7 @@ class Loader::Batch::Stats::ForAcceptedNames
                .count
   end
 
-  def misapplied_matched_without_cross_ref
+  def misapplied_without_cross_ref
     core_search.where("record_type = 'misapplied'")
                .joins(:loader_name_matches)
                .where( {loader_name_matches: { relationship_instance_id: nil}})

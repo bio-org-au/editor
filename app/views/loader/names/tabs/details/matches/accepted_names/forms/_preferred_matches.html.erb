@@ -1,0 +1,28 @@
+<% preferred_name_ids = @loader_name.loader_name_matches.collect {|preferred| preferred.name_id} %>
+
+<%= form_for(@loader_name,
+             as: 'loader_name',
+             url: loader_name_matches_set_path,
+             role: 'form',
+             remote: true) do |form| %>
+
+  <% @loader_name.matches(type: match_type)
+                 .each_with_index do |matching_name, index| %>
+
+  
+    <%= render partial:
+       'loader/names/tabs/details/matches/accepted_names/forms/preferred_matches/one_match',
+        locals: {form: form, matching_name: matching_name, preferred_name_ids: preferred_name_ids} %>
+
+  <% end %>
+  <br><br>
+  <%= form.submit "Save",
+                  id: 'save-match',
+                  value: 'Save Preferred Match',
+                  tabindex: increment_tab_index,
+                  title: 'Save changes',
+                  class: 'btn btn-primary width-11em hidden',
+                  disabled: false %>
+<% end %>
+
+

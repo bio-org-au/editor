@@ -1,6 +1,6 @@
 #
 # Tree Element Profile 
-module Concerns::Tree::Element::Profile::Comment extend ActiveSupport::Concern
+module Tree::Element::Profile::Comment extend ActiveSupport::Concern
 
   def comment
     return nil if profile.blank?
@@ -27,7 +27,7 @@ module Concerns::Tree::Element::Profile::Comment extend ActiveSupport::Concern
   def add_profile_and_comment(comment, username)
     throw 'Profile already exists' unless profile.blank?
 
-    comment = Tree::Element::Profile::Comment.new(username, comment)
+    comment = Tree::Element::Profile::CommentObject.new(username, comment)
     p = Hash.new
     p[comment_key] = comment.as_hash
     self.profile = p
@@ -56,7 +56,7 @@ module Concerns::Tree::Element::Profile::Comment extend ActiveSupport::Concern
   end
 
   def set_comment_in_profile(comment, username)
-    comment = Tree::Element::Profile::Comment.new(username, comment)
+    comment = Tree::Element::Profile::CommentObject.new(username, comment)
     self.profile[comment_key] = comment.as_hash
     self.updated_by = username
     save!

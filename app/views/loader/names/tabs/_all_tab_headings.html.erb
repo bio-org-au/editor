@@ -20,13 +20,13 @@
                                       link_title: 'Edit Loader Name.',
                                       tab_index: @tab_index,
                                       prev_tab: 'loader-name-details-tab', 
-                                      next_tab: 'loader-name-edit-match-tab'} %> 
+                                      next_tab: 'loader-name-matched-name-tab'} %> 
 
   <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
                                       last: true,
-                                      this_tab: 'tab_match_edit', 
-                                      link_text: 'Edit <br/> Match'.html_safe, 
-                                      link_id: 'loader-name-edit-match-tab', 
+                                      this_tab: 'tab_matched_name', 
+                                      link_text: 'Matched<br/>Name'.html_safe, 
+                                      link_id: 'loader-name-matched-name-tab', 
                                       link_title: 'Edit Loader Name Match.',
                                       tab_index: @tab_index,
                                       prev_tab: 'loader-name-edit-tab', 
@@ -39,7 +39,7 @@
                                       link_id: 'loader-name-delete-raw-tab', 
                                       link_title: 'Delete raw loader name record.',
                                       tab_index: @tab_index,
-                                      prev_tab: 'loader-name-edit-match-tab', 
+                                      prev_tab: 'loader-name-matched-name-tab', 
                                       next_tab: 'loader-name-create-syn-tab'} %> 
 
   <%= render partial: 'loader/names/tabs/tab', locals: {first: false,

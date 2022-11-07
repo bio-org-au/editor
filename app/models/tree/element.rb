@@ -20,13 +20,13 @@ require 'open-uri'
 
 #  A tree element - holds the taxon information
 class Tree::Element < ActiveRecord::Base
-  include Concerns::Tree::Element::Profile
-  include Concerns::Tree::Element::Profile::Distribution
-  include Concerns::Tree::Element::Profile::Distribution::Validations
-  include Concerns::Tree::Element::Profile::Distribution::UpdateAccepted
-  include Concerns::Tree::Element::Profile::Distribution::LowLevelOps
-  include Concerns::Tree::Element::Profile::Distribution::Tedes
-  include Concerns::Tree::Element::Profile::Comment
+  include Tree::Element::Profile
+  include Tree::Element::Profile::Distribution
+  include Tree::Element::Profile::Distribution::Validations
+  include Tree::Element::Profile::Distribution::UpdateAccepted
+  include Tree::Element::Profile::Distribution::LowLevelOps
+  include Tree::Element::Profile::Distribution::Tedes
+  include Tree::Element::Profile::Comment
   self.table_name = "tree_element"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

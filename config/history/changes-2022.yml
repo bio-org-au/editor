@@ -1,5 +1,60 @@
-- :date: 20-Jul-2022
+- :date: 03-Nov-2022
+  :jira_id: '4353'
+  :description: |-
+    Instance delete: adjust error handling of Services responses uncovered when undoing batch loader instance create/undo
+- :date: 03-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch Loader: draft instances for misapplications now working (alpha)
+- :date: 28-Oct-2022
+  :jira_id: '4358'
+  :description: |-
+    Configuration: adjust code to let regression tests pass with null values
+- :date: 28-Oct-2022
+  :jira_id: '4353'
+  :description: |-
+    Instance delete false negative: adjust query code to let regression tests pass
+- :date: 28-Oct-2022
+  :jira_id: '4358'
+  :description: |-
+    Configuration: show mapper connection configuration variables on the Admin > Config page
+- :date: 25-Oct-2022
+  :jira_id: '4353'
+  :description: |-
+    Instance delete false negative: avoid the false negatives but still detect true non-deletes.
+- :date: 21-Oct-2022
   :jira_id: ''
+  :description: |-
+    Modify the build pre-compile to give the font-awesome asset the relative url necessary for it to be retrieved.
+- :date: 17-Oct-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: copy and append processing first cut, including undo.
+- :date: 14-Oct-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: adjustments following two more walk-throughs; the option to <code>use-batch-default-reference</code> is now the default choice for bulk instance create; and bugfix
+- :date: 07-Oct-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: adjustments following Wednesday review; simple version of create draft for synonym now working
+- :date: 05-Oct-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: partial work toward creating draft instances in loader (disrupted work, picking up the threads)
+- :date: 13-Sep-2022
+  :jira_project: 'SYS'
+  :jira_id: '209'
+  :description: |-
+    Containers work: adjusting JQuery plumbing to make sure JQuery is always found
+- :date: 13-Sep-2022
+  :jira_project: 'SYS'
+  :jira_id: '209'
+  :description: |-
+    Containers work: removing some stubs and cleaning up some distribution editing models so they run under both JRuby and Ruby.
+- :date: 21-Jul-2022
+  :release: true
+- :date: 20-Jul-2022
   :description: |-
     Security patching: libraries upgraded
 - :date: 14-Jul-2022
@@ -101,7 +156,7 @@
   :description: |-
     Taxonomy profile edit: add configuration switch which is off by default - i.e. inactive unless switched on and therefore safe to promote widely.
 - :date: 17-May-2022
-  :jira_id: '4234'
+  :jira_id: '4236'
   :description: |-
     Batch Loader: prevent <code>loader_name</code> being considered in defined queries unless the Editor is aware of the batch loader (via config)
 - :date: 11-May-2022

@@ -1,6 +1,6 @@
 #
 # Tree Element Profile 
-module Concerns::Tree::Element::Profile::Distribution::Tedes extend ActiveSupport::Concern
+module Tree::Element::Profile::Distribution::Tedes extend ActiveSupport::Concern
 
   def apply_string_to_tedes
     add_missing_tedes

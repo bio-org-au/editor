@@ -41,20 +41,46 @@ class Instance::AsServices < Instance
   #
   # RestClient throws exceptions for 403, 404 type errors and we handle those
   # based on the structured response to extract a meaningful message.
+  #
+  #
+  #
+  #
+  # No, actually, the deleting agent should return an error when the requested 
+  # action fails, and this delete request is still silently failing to delete
+  # as I test the code now.  Silent failure results in unreliable engineering, 
+  # however dressed up. Fail loudly is the principle.  GUIs guide users in what
+  # they can do, but the application has to protect the data regardless.
+  #
+  # Noting that Services sends poorly phrased errors such as:
+  #   "There are 1 instances that say this cites it."
+  # The Editor shows the Services error to the user for transparency.
   def self.delete(id)
-    logger.info("#{tag}.delete")
+    instance = Instance.find_by(id: id)
     url = delete_uri(id)
     response = RestClient.delete(url, accept: :json)
-    json = JSON.parse(response)
-    unless response.code == 200 && json["ok"] == true
-      raise "Service error: #{json['errors'].try('join')} [#{response.code}]"
-    end
+
+    delay = Rails.configuration.try('instance_delete_delay_seconds') || 3
+    logger.info("#{tag} sleeping #{delay}sec before checking services delete")
+    sleep(delay)
+
+    records = Instance.where(id: id)
+      .where(instance_type_id: instance.try(:instance_type_id)).reload
+    throw "Check after #{delay}s shows record not deleted" unless records.blank?
   rescue RestClient::ExceptionWithResponse => rest_client_exception
-    logger.error("Instance::AsServices.delete exception for url: #{url}")
-    logger.error(rest_client_exception.response)
-    json = JSON.parse(rest_client_exception.response)
-    logger.error("#{tag}.delete exception response.errors: #{json['errors'].join(';')}")
-    raise json["errors"].join(";")
+    case rest_client_exception.response.code
+    when 403
+      logger.error("#{tag} 403 from Services delete ##{instance.try('id')}")
+      raise " from Services: #{rest_client_exception}" 
+    when 404
+      logger.error("#{tag} 404 from Services delete ##{instance.try('id')}")
+      logger.error("Editor will now delete instance #{instance.try('id')}")
+      instance.try('destroy')
+      logger.info("Instance destroyed or didn't exist")
+    else
+      logger.error("#{tag}.delete unexpected response #{rest_client_exception.response.code} on ##{instance.id}")
+      logger.error("Instance::AsServices.delete exception for url: #{url}")
+      raise " from Services: #{rest_client_exception}" 
+    end
   rescue
     logger.error("#{tag}.delete exception for url: #{url}")
     raise

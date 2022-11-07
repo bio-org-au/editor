@@ -290,3 +290,24 @@ label:hover {
   background: gray;
   color: white;
 }
+
+
+table.batch-stats.status {
+  width: 24em;
+}
+
+table.batch-stats.status td.numeric {
+  text-align: right;
+}
+
+table.batch-stats.status td {
+  padding: 0 0.5em 0 0.5em;
+}
+
+/*table#search-results-table a span.review.loader_name.heading { */
+span.loader_name.heading,
+span.heading {
+  font-weight: bold;
+  font-size: 13pt
+}
+

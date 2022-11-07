@@ -1,12 +1,14 @@
 <% increment_tab_index(0) %>
-<% unless @loader_name.main_entry? %>
-  This tab does not apply to <%= @loader_name.record_type.pluralize(2) %>.
+<% case %>
+<% when @loader_name.included_name? %>
+    <%= render partial: 'loader/names/tabs/ref_instance/accepted_names/main' %>
+<% when @loader_name.synonym? %>
+    <%= render partial: 'loader/names/tabs/ref_instance/synonyms/main' %>
+<% when @loader_name.excluded? %>
+    <%= render partial: 'loader/names/tabs/ref_instance/excluded_names/main' %>
+<% when @loader_name.misapp? %>
+    <%= render partial: 'loader/names/tabs/ref_instance/misapps/main' %>
 <% else %>
-  <% unless @loader_name.preferred_match? %>
-    Loader Name must have a preferred match before doing anything here.
-  <% else %>
-    <%= render partial: 'loader/names/tabs/ref_instance/main_entry' %>
-  <% end %>
+    No way to handle <%= @loader_name.record_type %>
 <% end %>
-
 

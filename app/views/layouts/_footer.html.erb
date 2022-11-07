@@ -7,6 +7,7 @@
     <% elapsed_time = @start_time ? (Time.now - @start_time).round(3) : '?' %>
     <span class='page-response-time'><%= "(#{elapsed_time}s)" if @start_time %></span>
     <% logger.info {"Page footer - elapsed time: #{elapsed_time}"} %> 
+    <span>config: <%= Rails.configuration.try('config_file_tag') %>;</span>
     <% unless Rails.env.match(/production/i) %>
       <span id="media-max-width-1536px" class="media-spec">media-max-width-1536px;</span>
       <span id="media-max-width-1200px" class="media-spec">media-max-width-1200px;</span>

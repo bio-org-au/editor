@@ -1,0 +1,6 @@
+/no build timestamp
+.d
+-1
+.r !date
+p
+wq

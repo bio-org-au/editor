@@ -97,6 +97,4 @@
   <%= render partial: 'detail_line', locals: {info: @loader_name.original_text.html_safe, label: ''} %>
   <h5>Literally:</h5>
   <%= @loader_name.original_text %>
-  <h5>Pure name part:</h5>
-  <%= @loader_name.original_text.sub(/<span.*/,'').sub(/.*>/,'') %>
 <% end %>

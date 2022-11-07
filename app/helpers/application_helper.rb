@@ -91,7 +91,7 @@ module ApplicationHelper
 
   def page_title
     unless Rails.configuration.try('tag').blank?
-      return "#{Rails.configuration.try('tag')} Ed"
+      return "#{Rails.configuration.try('tag')}"
     else
       case Rails.configuration.try("environment")
       when /\Adev/i

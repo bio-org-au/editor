@@ -89,6 +89,11 @@ class Loader::BatchesController < ApplicationController
     render json: Reference::AsTypeahead::OnCitation.new(params[:term]).results
   end
 
+  def unlock
+    Loader::Batch::JobLock.unlock!
+    render js:  "$('#emergency-unlock-link').hide();" 
+  end
+
   private
 
   def find_loader_batch

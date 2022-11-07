@@ -57,6 +57,11 @@ class InstancesDeleteForEditorTest < ActionController::TestCase
            session: { username: "fred",
                       user_full_name: "Fred Jones",
                       groups: ["edit"] })
-    assert_response :success
+    # Editor has to call on services to delete an instance.
+    # In test we just stub that call, so no delete happens.
+    # Editor checks to see if Services (silently!) fails
+    # to delete the instance, then raises an exception if not deleted, so
+    # that's what happens in test.  Hence a 422 in test.
+    assert_response(422)
   end
 end

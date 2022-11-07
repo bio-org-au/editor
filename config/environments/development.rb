@@ -82,6 +82,10 @@ Rails.application.configure do
     Rails.configuration.env_editor_config_file = ""
     Rails.configuration.resolved_editor_config_file = "#{ENV['HOME']}/.nsl/development/editor-r6-config.rb"
   end
+  
+  # Detect n+1 problems  
+  # https://twitter.com/th1agofm/status/1574709902517440512?s=20&t=pzcd-UJiGNF6veT6UEl9QA
+  # config.active_record.strict_loading_by_default = true
 end
 
 puts "loading config from #{Rails.configuration.resolved_editor_config_file}"

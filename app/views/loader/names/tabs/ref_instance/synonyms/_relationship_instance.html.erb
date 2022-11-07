@@ -1,0 +1,17 @@
+     <br>Relationship
+     <%= link_to("instance",
+                search_path(query_target: "Instance", query_string: "id: #{match.relationship_instance_id}"),
+                tabindex: increment_tab_index,
+                title: "Show the instance",
+                class: 'blue') %> 
+     <% case %>
+     <% when match.relationship_instance_created %>
+       has been created
+     <% when match.relationship_instance_found %>
+       has been found
+     <% else %>
+       exists - not sure whether created or found (error)
+     <% end %>
+     <%= render partial: 
+                'loader/names/tabs/ref_instance/synonyms/rollback_ref_instance',
+                locals: {match: match} %>

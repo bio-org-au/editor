@@ -18,5 +18,6 @@
 #
 class Search::Loader::Batch::Stack::FieldAbbrev
   ABBREVS = {
+    "id:" => "batch-id:",
   }.freeze
 end

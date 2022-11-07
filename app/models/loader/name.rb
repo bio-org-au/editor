@@ -18,6 +18,7 @@
 #
 # Loader Name entity
 class Loader::Name < ActiveRecord::Base
+  include PreferredMatch
   strip_attributes
   self.table_name = "loader_name"
   self.primary_key = "id"
@@ -96,8 +97,16 @@ class Loader::Name < ActiveRecord::Base
     name_status.downcase.match(/\Aorth/)
   end
 
-  def exclude_from_further_processing?
+  def no_further_processing?
     no_further_processing == true
+  end
+
+  def excluded_from_further_processing?
+    no_further_processing == true || parent&.no_further_processing == true
+  end
+
+  def brief_inspect
+    "id: #{id}; simple_name: #{simple_name}"
   end
 
   def child?
@@ -351,12 +360,25 @@ class Loader::Name < ActiveRecord::Base
     end
   end
 
-  def main_entry?
-    record_type == 'accepted'
+  # We have endless confusion arising from a record type of 'accepted' in the 
+  # original data parsed by Rex from Word docs, which originally covered 
+  # names that were taxonomically accepted or taxonomically excluded.
+  # All it meant was that it wasn't a synonym or a misapplication.
+  #
+  # Now trying the terminology 'included_name' with an eye to future work that
+  # won't rely on parsed Word documents.
+  def included_name?
+    record_type == 'accepted' && !excluded?
   end
 
   def preferred_match?
     preferred_matches.size > 0
+  end
+
+  def preferred_match
+    return nil unless preferred_match?
+    throw 'more than one preferred match' unless preferred_matches.size == 1
+    preferred_matches.first
   end
 
   def self.create_preferred_matches(name_s, batch_id, authorising_user, work_on_accepted)
@@ -370,14 +392,14 @@ class Loader::Name < ActiveRecord::Base
 
 
   def self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
-    entry = "Task started: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}"
+    entry = "Job started: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}"
     BulkProcessingLog.log(entry, 'job controller')
     attempted = records = 0
     self.name_string_search_no_excluded(name_s).where(loader_batch_id: batch_id).order(:seq).each do |loader_name|
       attempted += 1
       records += loader_name.create_preferred_match(authorising_user)
     end
-    entry = "Task finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    entry = "Job finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
     BulkProcessingLog.log(entry, 'job controller')
     return attempted, records
   end
@@ -388,7 +410,7 @@ class Loader::Name < ActiveRecord::Base
       attempted += 1
       records += match.create_preferred_match(authorising_user)
     end
-    entry = "Task finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} excluded taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
+    entry = "Job finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} excluded taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
 
     @log_tag = " for #{@loader_name.id}, batch: #{@loader_name.batch.name} , seq: #{@loader_name.seq} #{@loader_name.simple_name} (#{@loader_name.true_record_type})"
 
@@ -401,11 +423,61 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def true_record_type
-    if record_type == 'accepted' && doubtful?
+    if record_type == 'accepted' && excluded?
       'excluded'
     else
       record_type
     end
   end
+  
+  # This search emulates the default search for Orchids, the 
+  # taxon-string: search.
+  def self.taxon_string_search(taxon_string)
+    self.taxon_string_search_no_excluded(taxon_string)
+  end
 
+  def self.taxon_string_search_no_excluded(batch, taxon_string)
+    ts = taxon_string.downcase.gsub(/\*/,'%')
+    Loader::Name.where(["loader_batch_id = ? and ((lower(simple_name) like ?)
+        or exists (
+        select null
+          from loader_name parent
+        where parent.id         = loader_name.parent_id
+       and lower(parent.simple_name) like ?)
+        or exists (
+        select null
+          from loader_name child
+        where child.parent_id   = loader_name.id
+       and lower(child.simple_name) like ?)
+        or exists (
+        select null
+          from loader_name sibling
+        where sibling.parent_id = loader_name.parent_id
+       and lower(sibling.simple_name) like ?) ) and not excluded",
+       batch.id, ts, ts, ts, ts])
+  end
+
+  def self.taxon_string_search_for_excluded(taxon_string)
+    ts = taxon_string.downcase.gsub(/\*/,'%')
+    Orchid.where([ "((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful))",
+                   ts, ts, ts, ts, ts, ts])
+  end
+
+  def self.create_instance_for(taxon_s, authorising_user, search)
+    records = errors = 0
+    @ref = Reference.find(REF_ID)
+    search.order(:seq).each do |match|
+      creator = match.instance_creator_for_preferred_matches(authorising_user)
+      creator.create
+      records += creator.created || 0
+      errors += creator.errors || 0
+    end
+    entry = "Job finished: create instance for preferred matches for '#{taxon_s}', #{authorising_user}; records created: #{records}; errors: #{errors}"
+    OrchidProcessingLog.log(entry, 'job controller')
+    return records, errors
+  end
+
+  def match_for_name_id(name_id)
+    loader_name_matches.where(name_id: name_id)
+  end
 end

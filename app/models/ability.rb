@@ -137,7 +137,8 @@ class Ability
     can "loader/batch/reviews",        :all
     can "loader/batch/reviewers",      :all
     can "loader/batch/review/periods", :all
-    can "loader/batch/bulk",:all
+    can "loader/batch/bulk",           :all
+    can "loader/batch/job_lock",       :all
   end
 
   def orchids_matcher_auth

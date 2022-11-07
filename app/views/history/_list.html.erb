@@ -29,14 +29,14 @@
         <%= val[:date] %>
         &mdash;
         <% if val[:jira_id].present? %>
-          NSL-<%= val[:jira_id] %>:&nbsp;
+          <%= val[:jira_project]||'NSL' %>-<%= val[:jira_id] %>:&nbsp;
         <% end %>
         <%= (val[:description]).html_safe %>
           <% if val[:jira_id].present? %>
            <span class="badge">
-             <%= link_to "(NSL-#{val[:jira_id]}) 
+             <%= link_to "(#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}) 
                #{icon('external-link fa-lg')}".html_safe, 
-               "https://ibis-cloud.atlassian.net/browse/NSL-#{val[:jira_id]}",
+             "https://ibis-cloud.atlassian.net/browse/#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}",
                class:"white hover-white",
                title: "#{title_text}",
                target: "other" %>

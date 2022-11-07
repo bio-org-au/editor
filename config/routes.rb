@@ -424,10 +424,14 @@ Rails.application.routes.draw do
     match "batches/bulk/processing/notes", as: "batch_bulk_processing_notes", to: "batches#bulk_processing_notes", via: :get
     match "batches/bulk/processing/notes/hide", as: "batch_bulk_processing_notes_hide", to: "batches#hide_bulk_processing_notes", via: :get
     match "batches/bulk/processing/stats/hide", as: "batch_bulk_processing_stats_hide", to: "batches#hide_bulk_processing_stats", via: :get
+    #namespace :batch do
+      #match "/unlock", as: "loader_batch_unlock", to: "unlock", via: :post
+    #end
   end
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
   match "loader_batch/clear-default", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post
+  match "loader/batch/unlock", as: "loader_batch_unlock", to: "loader/batch/job_lock#unlock", via: :post
 
   namespace :loader do
     resources :names, only: [:new]
@@ -448,6 +452,12 @@ Rails.application.routes.draw do
       match "matches/use-existing-instance/:id", as: "matches_use_existing_instance", to: "matches#use_existing_instance", via: :patch
       match "matches/create-and-copy/:id", as: "matches_create_and_copy", to: "matches#create_and_copy", via: :patch
       match "matches/clear-taxonomy-nomination/:id", as: "match_clear_taxonomy_nomination", to: "matches#clear_taxonomy_nomination", via: :patch
+      match "matches/clear-standalone-instance/:id", as: "match_clear_standalone_instance", to: "matches#clear_standalone_instance", via: :patch
+      match "matches/clear-and-delete-standalone-instance/:id", 
+        as: "match_clear_and_delete_draft_standalone_instance",
+        to: "matches#clear_and_delete_draft_standalone_instance", via: :patch
+      match "matches/clear-relationship-instance/:id", as: "match_clear_relationship_instance", to: "matches#clear_relationship_instance", via: :patch
+      match "matches/clear-and-delete-relationship-instance/:id", as: "match-clear-and-delete-relationship-instance", to: "matches#clear_and_delete_relationship_instance", via: :patch
       resources :matches, only: [:update]
     end
   end

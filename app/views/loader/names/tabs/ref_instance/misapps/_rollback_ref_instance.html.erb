@@ -1,0 +1,27 @@
+<% if match.relationship_instance_found %>
+
+    <%= form_with(url: loader_name_match_clear_relationship_instance_path(match.id),
+                  role: 'form', remote: true, method: :patch) do |f| -%>
+      <%= f.submit "Clear out the found instance.",
+                    id: 'clear-out-relationship-instance-button',
+                    tabindex: increment_tab_index,
+                    title: 'Clear the found relationship instance from the loader name match',
+                    class: "btn btn-primary width-18em pull-right" -%>
+    <% end %>
+
+<% elsif match.relationship_instance_created %>
+
+    <%= form_with(url: loader_name_match_clear_and_delete_relationship_instance_path(match.id),
+                  role: 'form', remote: true, method: :patch) do |f| -%>
+      <%= f.submit "Clear out and delete the instance",
+                    id: 'clear-and-delete-found-relationship-instance-button',
+                    tabindex: increment_tab_index,
+                    title: 'Clear the created relationship instance from the loader name match and delete the instance',
+                    class: "btn btn-primary width-18em pull-right" -%>
+    <% end %>
+
+<% else %>
+  No rollback option here - check the parent record.
+<% end %>
+
+

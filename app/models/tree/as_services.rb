@@ -178,7 +178,7 @@ class Tree::AsServices
     if MAPPER_USER
       url = "#{MAPPER_API_URL}login"
       payload = {username: MAPPER_USER, password: MAPPER_PWD}.to_json
-      Rails.logger.info("Logging into mapper.")
+      Rails.logger.info("Logging into mapper via url: #{url}.")
       response = RestClient.post(url, payload, {content_type: :json, accept: :json})
       JSON.parse(response.body, object_class: OpenStruct)
     end

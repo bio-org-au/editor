@@ -1,0 +1,35 @@
+
+  <% if @loader_name.parent.preferred_match.instance_choice_confirmed %>
+    Parent's instance choice confirmed:
+    <%= render partial: 'loader/names/tabs/ref_instance/accepted_names/show_current_choice_brief', locals: {match: @loader_name.parent.preferred_match} %>
+  <% end %>
+ <br><br>
+  <% if @loader_name.parent.preferred_match.standalone_instance_id.present? %>
+    <br>
+    <br>
+    <% if @loader_name.parent.preferred_match.standalone_instance_created %>
+      Parent's standalone instance has been created.
+    <% elsif @loader_name.parent.preferred_match.standalone_instance_found %>
+      Parent's standalone instance has been found.
+    <% end %>
+  <% end %>
+<br>
+<br>
+<% if @loader_name.preferred_match.relationship_instance? %>
+  Relationship instance exists
+     <br><br>
+     <%= link_to("Show the relationship instance in context",
+                 search_path(query_target: "Name",
+                             query_string: "id: #{@loader_name.preferred_match.name_id} show-instances:",
+                             focus_id:"Instance-#{@loader_name.preferred_match.relationship_instance_id}"),
+                tabindex: increment_tab_index,
+                title: "Show the instance",
+                class: 'blue') %>
+  <%= divider %>
+  <h5>Undo</h5>
+  <%= render partial:
+    'loader/names/tabs/ref_instance/synonyms/rollback_ref_instance',
+    locals: {match: @loader_name.preferred_match} %>
+<% else %>
+  No relationship instance created yet.
+<% end %>

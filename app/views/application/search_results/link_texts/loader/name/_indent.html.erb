@@ -1,0 +1,14 @@
+<% if search_result.has_parent? %>
+  <span class="has-parent">
+    <% case search_result.record_type %>
+    <% when 'accepted' %>
+      wat?
+    <% when 'synonym' %>
+      &mdash;&nbsp;
+    <% when 'misapplied' %>
+      &mdash;&nbsp;
+    <% else %>
+      wat?
+    <% end %>
+  </span>
+<% end %>

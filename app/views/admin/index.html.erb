@@ -5,57 +5,7 @@
         
     <h2>Admin</h2>
     <h3>Configuration</h3>
-    <h4>Services</h4>
-    <table class="table table-condensed search-results width-100-percent">
-      <tr>
-        <td class="text">Rails.configuration.services_clientside_root_url</td>
-        <td> <%= Rails.configuration.try(:services_clientside_root_url) %> </td>
-      </tr>
-      <tr>
-        <td class="width-40-percent min-width-10em" >
-          Rails.configuration.services
-        </td>
-        <td> 
-            <%= Rails.configuration.try(:services) %>
-        </td>
-      </tr>
-      <tr><td class="width-40-percent min-width-10em" >Rails.configuration.name_services</td>
-          <td> <%= Rails.configuration.try(:name_services) %> </td></tr>
-    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.reference_services</td>
-        <td> <%= Rails.configuration.try(:reference_services) %> </td></tr>
 
-    <tr><td>Rails.configuration.nsl_links</td>
-        <td> <%= Rails.configuration.try(:nsl_links) %> </td></tr>
-
-    <tr><td>Rails.configuration.nsl_host_and_port</td>
-        <td> <%= Rails.configuration.try(:nsl_host_and_port) %> </td></tr>
-    <tr><td>Rails.configuration.search_address</td>
-        <td> <%= Rails.configuration.try(:search_address) %> </td></tr>
-    <tr><td colspan="2">&nbsp;</td></tr>
-    </table>
-
-    <h4>LDAP</h4>
-    <table class="table table-condensed search-results width-100-percent">
-    <tr><td>Rails.configuration.ldap_via_active_directory</td>
-        <td> <%= Rails.configuration.try(:ldap_via_active_directory) %> </td></tr>
-    <tr><td>Rails.configuration.group_filter_regex</td>
-        <td> <%= Rails.configuration.try(:group_filter_regex) %> </td></tr>
-    <tr><td>Rails.configuration.ldap_generic_users</td>
-        <td> <%= Rails.configuration.try(:ldap_generic_users) %> </td></tr>
-    <tr><td>Rails.configuration.ldap_admin_username</td>
-        <td> <%= Rails.configuration.try(:ldap_admin_username) %> </td></tr>
-    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.ldap_base</td>
-        <td> <%= Rails.configuration.try(:ldap_base) %> </td></tr>
-
-    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.ldap_host</td><td> <%= Rails.configuration.try(:ldap_host) %> </td></tr>
-
-    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.ldap_port</td><td> <%= Rails.configuration.try(:ldap_port) %> </td></tr>
-
-    <tr><td>Rails.configuration.ldap_users</td><td> <%= Rails.configuration.try(:ldap_users) %> </td></tr>
-
-    <tr><td>Rails.configuration.ldap_groups</td><td> <%= Rails.configuration.try(:ldap_groups) %> </td></tr>
-    <tr><td colspan="2">&nbsp;</td></tr>
-    </table>
 
     <h4>Application environment</h4>
     <table class="table table-condensed search-results width-100-percent">
@@ -72,6 +22,9 @@
 
     <tr><td>Schema version</td><td> <%= DbVersion.current %> </td></tr>
     <tr><td>Application version</td><td> <%= Rails.configuration.try('version') %> </td></tr>
+    <tr><td>Build timestamp</td><td>
+ no build timestamp recorded
+    </td></tr>
     <tr><td>Path to broadcast file</td><td> <%= Rails.configuration.try(:path_to_broadcast_file) %> </td></tr>
     <tr><td>Namespace</td><td> <%= Namespace.try(:default).try(:name) %> </td></tr>
     <tr><td>Hostname</td><td> <%= Socket.gethostname %> </td></tr>
@@ -103,6 +56,8 @@
 
     <table class="table table-condensed search-results width-100-percent">
 
+    <tr><td class="width-40-percent min-width-10em">Rails.configuration.config_file_tag</td>
+        <td> <%= Rails.configuration.try(:config_file_tag) %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.action_controller.relative_url_root</td>
         <td> <%= Rails.configuration.action_controller.try(:relative_url_root) %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">Rails.application.config.action_controller.relative_url_root</td>
@@ -129,12 +84,56 @@
     </table>
 
 
-    <%# ENV.sort.each do |n,v| %>
-      <!-- <tr><td><%#= n %></td> <td><%#= v %></td></tr> -->
-    <%# end %>
-
-    <h4>Editor Services</h4>
+        <h4>LDAP</h4>
     <table class="table table-condensed search-results width-100-percent">
+    <tr><td>Rails.configuration.ldap_via_active_directory</td>
+        <td> <%= Rails.configuration.try(:ldap_via_active_directory) %> </td></tr>
+    <tr><td>Rails.configuration.group_filter_regex</td>
+        <td> <%= Rails.configuration.try(:group_filter_regex) %> </td></tr>
+    <tr><td>Rails.configuration.ldap_generic_users</td>
+        <td> <%= Rails.configuration.try(:ldap_generic_users) %> </td></tr>
+    <tr><td>Rails.configuration.ldap_admin_username</td>
+        <td> <%= Rails.configuration.try(:ldap_admin_username) %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.ldap_base</td>
+        <td> <%= Rails.configuration.try(:ldap_base) %> </td></tr>
+
+    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.ldap_host</td><td> <%= Rails.configuration.try(:ldap_host) %> </td></tr>
+
+    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.ldap_port</td><td> <%= Rails.configuration.try(:ldap_port) %> </td></tr>
+
+    <tr><td>Rails.configuration.ldap_users</td><td> <%= Rails.configuration.try(:ldap_users) %> </td></tr>
+
+    <tr><td>Rails.configuration.ldap_groups</td><td> <%= Rails.configuration.try(:ldap_groups) %> </td></tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    </table>
+
+    <h4>Services</h4>
+    <table class="table table-condensed search-results width-100-percent">
+      <tr>
+        <td class="text">Rails.configuration.services_clientside_root_url</td>
+        <td> <%= Rails.configuration.try(:services_clientside_root_url) %> </td>
+      </tr>
+      <tr>
+        <td class="width-40-percent min-width-10em" >
+          Rails.configuration.services
+        </td>
+        <td> 
+            <%= Rails.configuration.try(:services) %>
+        </td>
+      </tr>
+      <tr><td class="width-40-percent min-width-10em" >Rails.configuration.name_services</td>
+          <td> <%= Rails.configuration.try(:name_services) %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.reference_services</td>
+        <td> <%= Rails.configuration.try(:reference_services) %> </td></tr>
+
+    <tr><td>Rails.configuration.nsl_links</td>
+        <td> <%= Rails.configuration.try(:nsl_links) %> </td></tr>
+
+    <tr><td>Rails.configuration.nsl_host_and_port</td>
+        <td> <%= Rails.configuration.try(:nsl_host_and_port) %> </td></tr>
+    <tr><td>Rails.configuration.search_address</td>
+        <td> <%= Rails.configuration.try(:search_address) %> </td></tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
 
     <tr><td class="width-40-percent min-width-10em" colspan="2"><strong>Services used in the editor</strong></td></tr>
 
@@ -159,13 +158,35 @@
 		
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/reference/apni/17525/api/citation-strings.json" %>
     <tr><td>Reference strings</td><td> <%= link_to(service_url, service_url, title: 'Link to the reference strings client side service.') %> </td></tr>
+    </table>
 
-   <tr><td colspan="2">&nbsp;</td></tr>
-
-    <tr><td>Test exception logging.</td><td><%= link_to icon('bomb','',class: 'black fa-2x'), throw_path, title:"Throw a harmless exception" %></td></tr>
-
-    <tr><td class="width-5-percent">&nbsp;</td></tr>
     
+    <h4>Mapper</h4>
+    <table class="table table-condensed search-results width-100-percent">
+      <tr>
+        <td class="width-40-percent min-width-10em" >
+        Rails.configuration.x.mapper_api.version </td>
+        <td> <%= Rails.configuration.x.try(:mapper_api).try(:version) %> </td>
+      </tr>
+      <tr>
+        <td>Rails.configuration.x.mapper_api.url </td>
+        <td> <%= Rails.configuration.x.try(:mapper_api).try(:url) %> </td>
+      </tr>
+      <tr>
+        <td>Rails.configuration.x.mapper_api.username </td>
+        <td> <%= Rails.configuration.x.try(:mapper_api).try(:username) %> </td>
+      </tr>
+      <tr>
+        <td>Rails.configuration.x.mapper_api.password clues </td>
+        <td> <%= Rails.configuration.x.try(:mapper_api).try(:password).try(:first) %>, 
+             <%= Rails.configuration.x.try(:mapper_api).try(:password).try(:last) %>, 
+             <%= (Rails.configuration.x.try(:mapper_api).try(:password).try(:length) || 0) > 15 %> </td>
+      </tr>
+    </table>
+
+    <h4>Exception logging</h4>
+    <table class="table table-condensed search-results width-100-percent">
+    <tr><td>Test exception logging.</td><td><%= link_to icon('bomb','',class: 'black fa-2x'), throw_path, title:"Throw a harmless exception" %></td></tr>
     </table>
 
     <h4>Editor Behaviour</h4>
@@ -184,7 +205,7 @@
     <tr><td class="width-5-percent">&nbsp;</td></tr>
     </table>
 
-    <h4>Extra functions</h4>
+    <h4>Feature switches</h4>
     <table class="table table-condensed search-results width-100-percent">
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.orchids_aware </td><td> <%= Rails.configuration.try(:orchids_aware) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.allow_orchid_tree_operations </td><td> <%= Rails.configuration.try(:allow_orchid_tree_operations) || false %> </td></tr>
@@ -192,14 +213,18 @@
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.batch_loader_aware </td><td> <%= Rails.configuration.try(:batch_loader_aware) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.profile_edit_aware </td><td> <%= Rails.configuration.try(:profile_edit_aware) || false %> </td></tr>
     </table>
-    <br> <br> <br> <br>
-
+    <br> <br>
+    <h4>Instance delete delay</h4>
+    <table class="table table-condensed search-results width-100-percent">
+    <tr><td class="width-40-percent min-width-10em">Rails.configuration.instance_delete_delay_seconds</td><td> <%= Rails.configuration.try(:instance_delete_delay_seconds) %> </td></tr>
+    </table>
+    <br>
     <h4>Configuration file</h4>
     <table class="table table-condensed search-results width-100-percent">
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.env_editor_config_file </td><td> <%= Rails.configuration.try(:env_editor_config_file) || '' %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">Rails.configuration.resolved_editor_config_file </td><td> <%= Rails.configuration.try(:resolved_editor_config_file) || '' %> </td></tr>
     </table>
-    <br> <br> <br> <br>
+    <br>
   </div>
 </div>
 

@@ -29,6 +29,7 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
                search_string: @search_string,
                reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
                name_category: 'Accepted'},
+      lock: { status: lock_status }, 
       core: { accepted_family: accepted_families,
               accepted_genera: accepted_genera,
               accepted_species_and_below: accepted_species_and_below,
@@ -94,7 +95,7 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
   end
 
   def lock_status
-    OrchidBatchJobLock.locked? ? 'Locked' : 'Unlocked'
+    Loader::Batch::JobLock.locked? ? 'Locked' : 'Unlocked'
   end
 
   def accepted_species_and_below

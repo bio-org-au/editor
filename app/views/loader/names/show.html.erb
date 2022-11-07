@@ -12,8 +12,12 @@
       <%= "#{@loader_name.simple_name} (#{@loader_name.batch.name})" %>
       <%= 'Manually created' if @loader_name.created_manually? %>
     </h3>
-    <%= render partial: 'loader/names/tabs/all_tab_headings' %>
-    <%= render partial: "loader/names/tabs/#{@tab}" %>
+    <% if @loader_name.record_type == 'heading' %>
+      <%= render partial: 'loader/names/tabs/heading_record_tab' %>
+    <% else %>
+      <%= render partial: 'loader/names/tabs/all_tab_headings' %>
+      <%= render partial: "loader/names/tabs/#{@tab}" %>
+    <% end %>
     <br>
     <span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
 

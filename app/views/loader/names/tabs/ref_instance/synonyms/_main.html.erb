@@ -1,0 +1,8 @@
+<% if @loader_name.preferred_matches.size == 0 %>
+  <%= render partial: 'loader/names/tabs/ref_instance/synonyms/no_preferred_match' %> 
+<% elsif @loader_name.preferred_matches.size == 1 %>
+  <%= render partial: 'loader/names/tabs/ref_instance/synonyms/one_preferred_match' %> 
+<% else %>
+  Multiple preferred matches
+<% end %>
+<br>

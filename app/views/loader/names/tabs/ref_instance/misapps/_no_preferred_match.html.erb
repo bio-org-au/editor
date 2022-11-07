@@ -1,0 +1,12 @@
+
+<% case %>
+<% when @loader_name.parent.preferred_match.use_batch_default_reference %>
+  No preferred match, nothing to do here until there is a preferred match.  <br>
+  (Use batch default reference.)
+<% when @loader_name.parent.preferred_match.use_existing_instance %>
+  The choice made for the parent name is to place an existing instance in taxonomy. <br>
+This loader name record will therefore play no further part in the process, and there is no need to set a preferred match.
+<% when @loader_name.parent.preferred_match.copy_and_append %>
+  No preferred match, nothing to do here until there is a preferred match.  <br>
+  (Copy and append.)
+<% end %>

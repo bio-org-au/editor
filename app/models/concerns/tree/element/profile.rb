@@ -4,7 +4,7 @@
 #
 #
 # Tree Element Profile 
-module Concerns::Tree::Element::Profile extend ActiveSupport::Concern
+module Tree::Element::Profile extend ActiveSupport::Concern
 
   def profile_value(key_string)
     key = profile_key(key_string)

@@ -1,0 +1,20 @@
+<% match = @loader_name.match_for_name_id(matching_name.id).first %>
+
+
+  <% if match.relationship_instance_id.present? %>
+    &mdash; A relationship instance has been
+    <% if match.relationship_instance_found %>
+      found
+    <% elsif match.relationship_instance_created %>
+      created
+    <% else %> 
+      found or created - there is a problem with the data, please report
+    <% end %>
+    to record the
+    <%= link_to("synonym",
+                search_path(query_target: "Instance", query_string: "id: #{match.relationship_instance_id}"),
+                tabindex: increment_tab_index,
+                title: "Show the relationship instance",
+                class: 'blue') %>
+  <% end %>
+

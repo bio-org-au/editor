@@ -1,0 +1,47 @@
+
+    <% disable_radio_button = !matching_name.has_primary_instance? ||
+                              matching_name.duplicate? ||
+                              @loader_name.synonym_without_synonym_type? %>
+
+    <% if disable_radio_button then %>
+      <% reason_to_disable = 
+         build_reason_to_disable(@loader_name, matching_name) %>
+    <% end %> 
+
+    <%= form.radio_button(:name_id, matching_name.id,
+                       checked: preferred_name_ids.include?(matching_name.id),
+                       disabled: disable_radio_button,
+                       onclick: "$('#save-match').removeClass('hidden'); $('#clear-matches').addClass('hidden')") %>
+
+    <%= label_tag(:"loader_name_name_id_#{matching_name.id}",
+                  "#{matching_name.full_name} #{matching_name.name_status.name_for_instance_display}",
+                  title: "Name ID: #{matching_name.id}") %>
+    &nbsp;<%= reason_to_disable if disable_radio_button %>
+
+        | <%= link_to("#{ShardConfig.name_space} Editor #{icon('binoculars')}".html_safe,
+                search_path(query_string: "id: #{matching_name.id} show-instances:",query_target: 'names'),
+                          tabindex: increment_tab_index,
+                          title: "Search for #{matching_name.full_name}",
+                          class: 'blue') %>
+
+      <br>
+    <% matching_name.primary_instances.each do |p_i| %>
+      <span class="brown"><%= p_i.instance_type.name %></span>&nbsp;
+      <span title="Instance ID: <%= p_i.id %>"><%= p_i.reference.citation %>:&nbsp;
+      <%= p_i.page %></span>
+    <% end %>
+    <br>
+
+    <% if preferred_name_ids.include?(matching_name.id) %>
+
+      <%= render partial:
+         'loader/names/tabs/details/matches/synonyms/forms/preferred_matches/one_match/preferred/synonym_chosen',
+          locals: {matching_name: matching_name} %>
+
+    <% end %>
+
+
+
+
+
+

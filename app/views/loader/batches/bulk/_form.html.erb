@@ -1,4 +1,4 @@
-<h5>Enter a name string to identify records within the default batch <%= session[:default_loader_batch_name] %></h5>
+<h5>Search for names in the batch <%= session[:default_loader_batch_name] %></h5>
 <%= form_tag({controller: "loader/batch/bulk", action: "operation"}, method: "post", remote: true) do %>
   <div class="width-56-4em">
     <input name="name_string" id="bulk-operation-string" type="text" value="<%= session[:name_string] %>" class="form-control" required title="bulk operation string for batch work" />
@@ -23,8 +23,8 @@
       <br>
       <br>
       <br>
-      <%= link_to "Enable Add to draft tree", {controller: 'orchids_batch', action: 'enable_add'}, {id: 'enable-add', class: 'btn btn-primary', remote: true, title: "Enable the Add to tree button", method: :post} %>
-      <%= link_to "Disable Add to draft tree", {controller: 'orchids_batch', action: 'disable_add'}, {id: 'disable-add', class: 'btn btn-primary', style: 'display: none;', remote: true, title: "Enable the Add to tree button", method: :post} %>
+      <%#= link_to "Enable Add to draft tree", {controller: 'orchids_batch', action: 'enable_add'}, {id: 'enable-add', class: 'btn btn-primary', remote: true, title: "Enable the Add to tree button", method: :post} %>
+      <%#= link_to "Disable Add to draft tree", {controller: 'orchids_batch', action: 'disable_add'}, {id: 'disable-add', class: 'btn btn-primary', style: 'display: none;', remote: true, title: "Enable the Add to tree button", method: :post} %>
     <% end %>
   <% else %>
     Taxonomy operations not allowed by configuration
@@ -36,13 +36,15 @@
 <div id="bulk-ops-stats-error-container" class="error-container message-container"></div>
 <div id="global-tab-orchid-batch-status-info-message-container" class="message-container"></div>
 <div id="global-tab-orchid-batch-status-error-message-container" class="error-container message-container"></div>
+<div id="bulk-operations-error-message-container" class="error-container message-container"></div>
 <div id="create-preferred-matches-info-message-container" class="message-container"></div>
 <div id="create-preferred-matches-error-message-container" class="error-container message-container"></div>
 <div id="create-draft-instances-info-message-container" class="message-container"></div>
 <div id="create-draft-instances-error-message-container" class="error-container message-container"></div>
 <div id="add-instances-to-tree-info-message-container" class="message-container"></div>
 <div id="add-instances-to-tree-error-message-container" class="error-container message-container"></div>
-<%= link_to "[clear]", orchids_batch_clear_path, class:"hidden message-clearer with-underline", remote: true, title: "Clear the messages" %> 
+<br>
+<%= link_to "[clear messages]", orchids_batch_clear_path, class:"hidden message-clearer with-underline", remote: true, title: "Clear the messages" %> 
 <br>
 <%= link_to "Recent logs", search_path(query_string: "latest:",query_target: 'bulk_processing_logs'), title: "See logs", class: "with-underline" %> 
 <hr class="dark">

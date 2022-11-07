@@ -18,7 +18,7 @@
 #
 class Search::Loader::Name::FieldRule
   RULES = {
-           "simple-name:" => { where_clause: "(lower(simple_name) like ?)
+    "simple-name:" => { where_clause: "(lower(simple_name) like ?)
         or exists (
         select null
           from loader_name parent
@@ -36,7 +36,7 @@ class Search::Loader::Name::FieldRule
        and lower(sibling.simple_name) like ?)",
            trailing_wildcard: true,
            order: "seq"},
-           "simple-name-as-loaded:" => { where_clause: "(lower(simple_name_as_loaded) like ?)
+    "simple-name-as-loaded:" => { where_clause: "(lower(simple_name_as_loaded) like ?)
         or exists (
         select null
           from loader_name parent
@@ -514,14 +514,14 @@ having count(*)                     >  1
       from loader_name_match
  where loader_name.id = loader_name_match.loader_name_id
    and loader_name_match.standalone_instance_id is not null
-   and not loader_name_match.copy_synonyms_and_append_extras)",
+   and not loader_name_match.copy_append_from_existing_use_batch_def_ref)",
                            order: "seq"},
 "copy-and-append:" => { where_clause: " exists (
     select null
       from loader_name_match
  where loader_name.id = loader_name_match.loader_name_id
    and loader_name_match.standalone_instance_id is not null
-   and loader_name_match.copy_synonyms_and_append_extras)",
+   and loader_name_match.copy_append_from_existing_use_batch_def_ref)",
                            order: "seq"},
  "no-nomination:" => { where_clause: " loader_name.record_type = 'accepted' and exists (
     select null

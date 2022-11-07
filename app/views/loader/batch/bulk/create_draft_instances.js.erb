@@ -1,0 +1,5 @@
+$('.message-container').html('');
+$('.message-container').addClass('hidden');
+$('#<%= message_container_id_prefix %>info-message-container').html("<%= escape_javascript(@message) %><br><%= escape_javascript(@errors) %>");
+$('#<%= message_container_id_prefix %>info-message-container').removeClass('hidden');
+$('.message-clearer').removeClass('hidden');

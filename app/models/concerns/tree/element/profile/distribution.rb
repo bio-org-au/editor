@@ -1,6 +1,6 @@
 #
 # Tree Element Profile 
-module Concerns::Tree::Element::Profile::Distribution extend ActiveSupport::Concern
+module Tree::Element::Profile::Distribution extend ActiveSupport::Concern
 
   def distribution
     return nil if profile.blank?

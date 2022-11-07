@@ -1,0 +1,1 @@
+alter table loader_name_match rename column copy_synonyms_and_append_extras to copy_append_from_existing_use_batch_def_ref;

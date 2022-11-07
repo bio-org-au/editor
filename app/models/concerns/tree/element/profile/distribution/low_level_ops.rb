@@ -1,11 +1,11 @@
 #
 # Tree Element Profile 
-module Concerns::Tree::Element::Profile::Distribution::LowLevelOps extend ActiveSupport::Concern
+module Tree::Element::Profile::Distribution::LowLevelOps extend ActiveSupport::Concern
 
   def add_profile_and_distribution(new_dist, username)
     throw 'Profile already exists' unless profile.blank?
 
-    dist = Tree::Element::Profile::Distribution.new(new_dist, username)
+    dist = Tree::Element::Profile::DistributionObject.new(new_dist, username)
     p = Hash.new
     p[distribution_key_for_insert] = dist.as_hash
     self.profile = p
@@ -18,7 +18,7 @@ module Concerns::Tree::Element::Profile::Distribution::LowLevelOps extend Active
 
     throw 'Profile distribution not expected.' unless profile[distribution_key_for_insert].blank?
 
-    dist_object = Tree::Element::Profile::Distribution.new(new_dist, username)
+    dist_object = Tree::Element::Profile::DistributionObject.new(new_dist, username)
     self.profile[distribution_key_for_insert] = dist_object.as_hash
     self.updated_by = username
     save!
