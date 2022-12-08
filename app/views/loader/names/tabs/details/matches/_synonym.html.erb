@@ -5,10 +5,6 @@
 <% end %>
 <%= render partial: 'loader/names/tabs/details/matches/synonyms/forms/preferred_matches.html.erb' , locals: {match_type: match_type} %>
 
-About the parent choice..
-<%= @loader_name.id %>
-parent: <%= @loader_name.parent.id %>
-
 <% unless @loader_name.preferred_matches.empty? %>
   <%= render partial: 'loader/names/tabs/details/matches/synonyms/forms/clear_all_matches.html.erb' %>
 <% end %>

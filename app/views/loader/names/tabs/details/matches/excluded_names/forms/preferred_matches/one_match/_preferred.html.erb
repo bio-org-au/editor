@@ -1,0 +1,22 @@
+    <% if ref_instance_choice?(@loader_name, matching_name) %>
+      <br>
+      Reference Instance choice has been confirmed:
+      <% choice_file = case %>
+    <% when @loader_name.preferred_match.using_existing_instance? %>
+        <% 'use_existing_instance_chosen' %>
+      <% when @loader_name.loader_name_matches.where(name_id: matching_name.id).first.using_default_ref? %>
+        <% 'use_default_ref_chosen' %>
+      <% when @loader_name.loader_name_matches.where(name_id: matching_name.id).first.copy_and_append? %>
+        <% 'copy_and_append_chosen' %>
+      <% else %>
+        <% 'unexpected_choice' %>
+      <% end %>
+      <%= render partial:
+        "loader/names/tabs/details/matches/excluded_names/forms/preferred_matches/one_match/preferred/#{choice_file}",
+          locals: {matching_name: matching_name} %>
+      <%= matching_name.class %>
+    <% else %>
+      [No Reference Instance choice made yet.]
+    <% end %>
+
+

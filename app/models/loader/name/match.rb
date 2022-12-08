@@ -18,13 +18,7 @@
 #
 # Loader Name entity
 class Loader::Name::Match < ActiveRecord::Base
-  include CreateStandaloneInstance
-  include CreateSynonymyInstance
-  include CreateMisappInstance
   strip_attributes
-  CREATED = [1,0,0]
-  DECLINED = [0,1,0]
-  ERROR = [0,0,1]
   self.table_name = "loader_name_match"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -130,14 +124,47 @@ class Loader::Name::Match < ActiveRecord::Base
   def undo_taxonomic_choice
     self.standalone_instance_id = nil
     self.standalone_instance_found = false
+    self.standalone_instance_created = false
     self.use_batch_default_reference = false
     self.use_existing_instance = false
     self.copy_append_from_existing_use_batch_def_ref = false
-    self.standalone_instance_id = nil
-    self.standalone_instance_created = false
-    self.standalone_instance_found = false
+    self.relationship_instance_id = nil
+    self.relationship_instance_created = false
+    self.relationship_instance_found = false
     self.instance_choice_confirmed = false
     self.source_for_copy_instance_id = nil
+  end
+
+  def note_standalone_instance_found(instance)
+    throw 'Already noted as found' if standalone_instance_found
+    throw 'Already noted as created' if standalone_instance_created
+
+    self.standalone_instance_id = instance.id
+    self.standalone_instance_found = true
+    self.updated_by = "job for #{@user}"
+    self.save!
+  end
+
+  def clear_relationship_instance
+    throw 'cannot clear relationship' unless self.can_do_relationship_instance?
+    throw 'has standalone' if self.has_standalone?
+
+    self.relationship_instance_id = nil
+    self.relationship_instance_created = false
+    self.relationship_instance_found = false
+    self.instance_choice_confirmed = false
+    self.source_for_copy_instance_id = nil
+  end
+
+  def can_do_relationship_instance?
+    self.loader_name.synonym? ||
+      self.loader_name.misapp?
+  end
+
+  def has_standalone?
+    self.standalone_instance_id.present? ||
+    self.standalone_instance_found ||
+    self.standalone_instance_created
   end
 end
 

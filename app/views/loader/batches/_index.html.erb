@@ -16,13 +16,21 @@
   <p>You can switch the default batch for your session in the Editor any time.
   </p>
 <% else %>
-  <h3>Default batch: <%= session[:default_loader_batch_name] %></h3>
+  <h3>Default batch: 
+  <%= link_to(session[:default_loader_batch_name],
+                          search_path(
+                            query_string: "*",
+                            query_target: 'batch stacks',
+                            focus_id: "loader-batch-#{session[:default_loader_batch_id]}"),
+                            title:"Query batch in stack format",class:'blue') %>
+  </h3>
   <% increment_tab_index(0) %>
   <h4>Loading Taxonomy Data</h4>
   <%= render partial: 'loader/batches/bulk/overview' %>
   <h4>Bulk Operations</h4>
+  <%= render partial: 'loader/batches/bulk/batch_default_ref_info' %>
   <%= render partial: 'loader/batches/bulk/form' %>
-  <%= render partial: 'loader/batches/bulk/stats' %>
+  <%= render partial: 'loader/batches/bulk/batch_summary_stats' %>
 <% end %>
 
 </div>

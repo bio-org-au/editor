@@ -21,7 +21,7 @@
   | <%= link_to("#{ShardConfig.name_space} Editor #{icon('binoculars')}".html_safe,
               search_path(query_string: "id: #{matching_name.id} show-instances:",
                           query_target: 'names',
-                          focus_id: "Instance-#{matching_name.primary_instances.first.id}"),
+                          focus_id: "Instance-#{matching_name.id}"),
                           tabindex: increment_tab_index,
                           title: "Search for #{matching_name.full_name}",
                           class: 'blue') %>

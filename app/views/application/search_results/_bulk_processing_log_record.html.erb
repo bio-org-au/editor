@@ -1,5 +1,5 @@
 <tr id="search-result-<%= search_result.id %>" 
-  class="search-result show-no-details <%= 'fresh' if search_result.fresh? %>"  
+  class="search-result log-record show-no-details <%= 'fresh' if search_result.fresh? %>"  
   data-get-url=""
   data-edit-url=""
   data-base-url=""
@@ -8,8 +8,7 @@
   data-record-type=""
   tabindex="<%= increment_tab_index(100) %>"
     >
-  <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%= record_icon('bulk') %></td>
-  <td class="text takes-focus name main-content min-width-40-percent max-width-60-percent width-50-percent <%= 'give-me-focus' if give_me_focus %>">
+  <td colspan="3" class="text takes-focus name main-content min-width-40-percent max-width-100-percent width-100-percent <%= 'give-me-focus' if give_me_focus %>">
     <a
       class="show-details-link"
       tabindex="<%= increment_tab_index %>" 
@@ -19,6 +18,5 @@
       <%= render partial: 'application/search_results/link_texts/bulk_processing_log', locals: {search_result: search_result} %>
     </a>
   </td>
-  <td class="takes-focus width-5-percent filler">&nbsp;</td>
 </tr>
 

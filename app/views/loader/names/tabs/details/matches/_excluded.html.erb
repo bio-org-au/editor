@@ -1,0 +1,13 @@
+<% if match_type == :strict %>
+  <h3>Preferred Matches</h3>
+<% else %>
+  <h3>Preferred Matches (<%= match_type %>)</h3>
+<% end %>
+<%= render partial: 'loader/names/tabs/details/matches/excluded_names/forms/preferred_matches.html.erb' , locals: {match_type: match_type} %>
+
+
+<%#= render partial: 'loader/names/tabs/details/matches/synonyms/forms/preferred_matches.html.erb' , locals: {match_type: match_type} %>
+
+<% unless @loader_name.preferred_matches.empty? %>
+  <%= render partial: 'loader/names/tabs/details/matches/synonyms/forms/clear_all_matches.html.erb' %>
+<% end %>

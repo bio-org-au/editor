@@ -8,7 +8,7 @@
   <%= "<h5>#{key.to_s.gsub(/_/,' ').capitalize}</h5>".html_safe %>
   <%= render partial: 'stats_table', locals: { a_hash: value } %>
   <% if key.downcase == :lock %>
-    <% if Loader::Batch::JobLock.locked? %>
+    <% if Loader::Batch::Bulk::JobLock.locked? %>
       <%= link_to "Emergency unlock batch jobs", {controller: 'job_lock', action: 'unlock'}, {id: 'emergency-unlock-link', class: 'btn btn-primary', remote: true, title: "Unlock the batch lock", method: :post} %>
     <% end %>
   <% end %>

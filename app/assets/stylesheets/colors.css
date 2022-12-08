@@ -121,6 +121,10 @@ a:hover.blue           { color: blue; }
   background: #555569;
   color: white;
 }
+.search-result span.flag.excluded {
+  background: purple;
+  color: white;
+}
 .search-result .hybrid-cross {
   background: darkseagreen;
   color: white;
@@ -160,6 +164,11 @@ a:hover.blue           { color: blue; }
 }
 
 .relationship-statement {
+  background: darkslateblue;
+  color: white;
+}
+
+.standalone-statement {
   background: darkslateblue;
   color: white;
 }

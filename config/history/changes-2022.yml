@@ -1,3 +1,57 @@
+- :date: 02-Dec-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: fixes and improvements from Wednesday walk-through
+- :date: 30-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: latest refactoring and adjustments
+- :date: 28-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: refactoring code for making preferred matches and draft instances in bulk; name <code>Loader::Name::Natch::MakeOneInstance::CreateSynonymyInstance</code> correctly
+- :date: 23-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: refactoring code for making preferred matches and draft instances in bulk
+- :date: 23-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: refactoring code for making preferred matches and draft instances in bulk
+- :date: 23-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: when no matches found, but name could be a cultivar, offer a form for any matching names of type 'cultivar'
+- :date: 23-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: the loader tab search and bulk processing now take <code>family:</code> arguments - making the loader family-aware
+- :date: 21-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: fixes/changes from test walk-through: add counts of the instance creation choices to batch stats, improve log messages, don't create unnecessary preferred matches
+- :date: 18-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: fixes/changes from test walk-through: batch default ref warning/link, copy-and-append flag, upgrade/refactored logging for create pref match (color!)
+- :date: 17-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: minor fixes/changes from test walk-through: ACCEPTED OR SYN, stats refresh, stats retrieval msg, create date on batch results
+- :date: 16-Nov-2022
+  :jira_id: ''
+  :description: |-
+    Editor patch: Get latest JavaScript libraries: yarn upgrade --latest
+- :date: 14-Nov-2022
+  :jira_id: ''
+  :description: |-
+    Editor patch: upgrade Rails to 6.1.7
+- :date: 10-Nov-2022
+  :jira_id: '4078'
+  :description: |-
+    Batch loader: new record types: <q>heading</q> and <q>excluded</q>; processing for <q>excluded</q> records working up to and including draft instance
+- :date: 08-Nov-2022
+  :release: true
 - :date: 03-Nov-2022
   :jira_id: '4353'
   :description: |-

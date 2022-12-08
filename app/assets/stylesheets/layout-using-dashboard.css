@@ -116,6 +116,10 @@ table#search-results-table {
   width: 90%;
 }
 
+table#search-results-table-for-logs {
+  width: 100%;
+}
+
 div#search-result-details {
   position: fixed;
   margin-top: 28px;

@@ -176,6 +176,12 @@
     $('body').on('click', '#link-to-run-valrep', function(event) {
       return linkToRunValRepClicked(event, $(this));
     });
+    $('body').on('click', '#loader-bulk-stats-submit', function(event) {
+      return loaderBulkShowStatsClicked(event, $(this));
+    });
+    $('body').on('click', '#loader-bulk-stats-refresh', function(event) {
+      return loaderBulkShowStatsClicked(event, $(this));
+    });
     debug("on load - search-target-button-text: " + $('#search-target-button-text').text().trim());
     window.showOrHideCultivarCommonCbox($('#search-target-button-text').text().trim());
     // When tabbing to search-result record, need to click to trigger retrieval of details.
@@ -1073,4 +1079,8 @@
     return $('#search-result-details ul li.' + liElementHasClass + ' a').focus();
   };
 
+  loaderBulkShowStatsClicked = function(event, $the_element) {
+    $('#bulk-ops-stats-container').html("<br><span class='green'>Stats are being retrieved...</span><br><br><br>");
+    $('#bulk-ops-stats-container').removeClass('hidden');
+  };
 }).call(this);

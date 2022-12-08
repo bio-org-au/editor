@@ -175,6 +175,8 @@ class Loader::Name::MatchesController < ApplicationController
     @standalone_instance = @match.standalone_instance
     ActiveRecord::Base.transaction do
       @match.standalone_instance_id = nil
+      @match.standalone_instance_created = false
+      @match.standalone_instance_found = false
       @match.undo_taxonomic_choice
       @match.save!
       Rails.logger.debug("@match is saved")
@@ -221,12 +223,11 @@ class Loader::Name::MatchesController < ApplicationController
   
   def clear_relationship_instance
     @match = Loader::Name::Match.find(params[:id])
-    @match.relationship_instance_id
-    @match.relationship_instance_found = false
-    @match.relationship_instance_created = false
+    @match.clear_relationship_instance
     save_if_changed('Cleared', 'Nothing to clear')
   rescue => e
     logger.error("Loader::Name::MatchesController clear_relationship_instance error: #{e.to_s}")
+    logger.error(@match.inspect)
     @message = e.to_s
     render 'clear_relationship_instance_error', format: :js
   end
@@ -261,7 +262,6 @@ class Loader::Name::MatchesController < ApplicationController
   end
 
   def apply_changes
-    Rails.logger.debug('apply_changes')
     @loader_name_matches = Loader::Name::Match.where(loader_name_id: @loader_name.id)
     stop_if_nothing_changed
     return 'No change' if params[:loader_name].blank? 

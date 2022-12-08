@@ -1,5 +1,5 @@
 
-<% unless @loader_name.accepted? %>
+<% unless @loader_name.accepted? || @loader_name.excluded? %>
   Not an accepted raw loader name, so you cannot create a synonym for it.
 <% else %>
   <h5>Create LoaderName synonym for <%= @loader_name.simple_name %></h5>

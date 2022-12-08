@@ -1,4 +1,5 @@
 AllCops:
+  NewCops: enable
   Exclude:
     - 'db/**/*'
   TargetRubyVersion: 2.5
@@ -8,7 +9,7 @@ Style/TrailingCommaInHashLiteral:
   Enabled: false
 Naming/VariableNumber:
   Enabled: false
-StringLiterals:
+Style/StringLiterals:
   EnforcedStyle: double_quotes
   Enabled: true
 Style/ClassAndModuleChildren:

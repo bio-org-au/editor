@@ -18,20 +18,16 @@
 <% end %>
 <% if @loader_name.likely_cultivar? %>
   Treating as a cultivar
-  <br>
-  <code><%= @loader_name.simple_name %></code> (current)
-  <br>
-  <% @loader_name.matches_tweaked_for_cultivar.each do |name| %>
-    <code><%= name.simple_name %> (type: <%= name.name_type.name %>)</code>
-    <%= link_to("query #{icon('external-link-square')}".html_safe,
-                "search?query_target=names&query_string=id:#{name.id}",
-            title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
-            class: "rebeccapurple",
-            target: "_editor_to_apni",
-            tabindex: increment_tab_index) %>
-
-    <br>
+  <% if @loader_name.misapplied? %>
+    <%= render partial: 'loader/names/tabs/details/matches/misapplied', locals: {match_type: :cultivar} %>
+  <% elsif @loader_name.accepted? %>
+    <%= render partial: 'loader/names/tabs/details/matches/accepted', locals: {match_type: :cultivar} %>
+  <% elsif @loader_name.synonym? %>
+    <%= render partial: 'loader/names/tabs/details/matches/synonym', locals: {match_type: :cultivar} %>
+  <% elsif @loader_name.excluded? %>
+    <%= render partial: 'loader/names/tabs/details/matches/excluded', locals: {match_type: :cultivar} %>
   <% end %>
+
 
 <% end %>
 

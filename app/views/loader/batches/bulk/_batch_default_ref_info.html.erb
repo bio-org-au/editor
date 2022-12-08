@@ -1,0 +1,15 @@
+<% batch_default_reference = Loader::Batch.find(session[:default_loader_batch_id]).default_reference %>
+<% if batch_default_reference.blank? %>
+  <span class="red">No batch default reference has been set. </span>
+  Set one on the edit tab for the 
+  <%= link_to("batch",
+                          search_path(
+                            query_string: "*",
+                            query_target: 'batch stacks',
+                            focus_id: "loader-batch-#{session[:default_loader_batch_id]}"),
+                            title:"Query batch in stack format",class:'blue') %>
+
+<% else %>
+Batch Default Reference : <%= Loader::Batch.find(session[:default_loader_batch_id]).default_reference.citation %>
+<br>
+<% end %>

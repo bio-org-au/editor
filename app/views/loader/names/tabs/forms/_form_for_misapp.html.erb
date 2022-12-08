@@ -79,8 +79,8 @@
       <div class="form-group">
         <br>
       <label class="form-check-label">
-        <%= f.check_box(:no_further_processing, {class: 'xform-control', title: 'Exclude this record and any of its synonyms from further bulk processing.'}) %>
-        Exclude this record from further bulk processing
+        <%= f.check_box(:no_further_processing, {class: 'xform-control', title: 'Prevent further bulk processing of this record.'}) %>
+        Stop further bulk processing of this record
       </label>
       </div>
     <% end %>

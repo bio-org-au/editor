@@ -7,3 +7,4 @@
 \i g-replace-multiplication-signs.sql
 \i h-set-long-dash-to-dash.sql
 \i i-translate-synonym-types.sql
+\i l-set-record-type-excluded.sql

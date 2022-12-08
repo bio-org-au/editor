@@ -16,24 +16,15 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-
 #  We need to place Orchids on a draft tree.
 class Loader::Batch::Stats::Reporter
-  def initialize(name_string, batch_id, work_on_accepted)
-    @name_string = name_string.downcase.gsub(/\*/,'%')
+  def initialize(name_string, batch_id)
+    @name_string = name_string.downcase.gsub(/\*/, "%")
     @batch_id = batch_id
-    @work_on_accepted = work_on_accepted
-    @work_on_excluded = !work_on_accepted
     report
   end
 
   def report
-    if @work_on_accepted
-      Loader::Batch::Stats::ForAcceptedNames
-        .new(@name_string, @batch_id).report
-    else
-      Loader::Batch::Stats::Reporter::ForExcludedNames
-        .new(@name_string, @batch_id).report
-    end
+    Loader::Batch::Stats::ForAllNames.new(@name_string, @batch_id).report
   end
 end

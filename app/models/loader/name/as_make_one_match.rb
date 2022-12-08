@@ -17,31 +17,27 @@
 #   limitations under the License.
 
 # Record a preferred matching name for a raw loader name record.
-class Loader::Name::AsNameMatcher
+class Loader::Name::AsMakeOneMatch
+  include Constants
+
   def initialize(loader_name, authorising_user)
-    debug("Loader::Name::AsNameMatcher for loader::name: #{loader_name.simple_name} (#{loader_name.record_type})")
+    @tag = "#{self.class} for #{loader_name.simple_name} (#{loader_name.record_type})"
     @loader_name = loader_name
     @authorising_user = authorising_user
-    @log_tag = " for #{@loader_name.id}, batch: #{@loader_name.batch.name} , seq: #{@loader_name.seq} #{@loader_name.simple_name} (#{@loader_name.true_record_type})"
   end
 
   def find_or_create_preferred_match
-    if preferred_match?
-      return 0
-    elsif @loader_name.no_further_processing? || 
-       @loader_name.parent.try('no_further_processing?')
-      return 0
-    elsif @loader_name.misapplied?
-      return 0
-    elsif make_preferred_match?
-      return 1
-    else
-      return 0
-    end
+    return already_exists if preferred_match?
+    return no_further_processing if @loader_name.no_further_processing?
+    return misapp if @loader_name.misapplied?
+    return heading if @loader_name.heading?
+    return parent_using_existing if @loader_name.parent&.preferred_match&.use_existing_instance
+
+    return make_preferred_match?
   rescue => e
-    Rails.logger.error(e.to_s)
-    log_to_table("Error: finding or creating preferred match for batch - #{e.to_s}")
-    return 0
+    Rails.logger.error("#{@tag}: #{e.to_s}")
+    log_to_table("#{ERROR} - #{e.to_s}")
+    COUNT_ERROR
   end
 
   def stop(msg)
@@ -52,45 +48,51 @@ class Loader::Name::AsNameMatcher
     return !@loader_name.preferred_matches.empty?
   end
 
+  def already_exists
+    log_to_table("#{DECLINED} - existing")
+    COUNT_DECLINED
+  end
+
+  def misapp
+    log_to_table("#{DECLINED} - misapplications are not eligible")
+    COUNT_DECLINED
+  end
+
+  def heading
+    log_to_table("#{DECLINED} - headings don't get processed")
+    COUNT_DECLINED
+  end
+
+  def no_further_processing
+    log_to_table("#{DECLINED} - no further processing")
+    COUNT_DECLINED
+  end
+
+  def parent_using_existing
+    log_to_table("#{DECLINED} - parent is using an existing instance")
+    COUNT_DECLINED
+  end
+
   def make_preferred_match?
     if exactly_one_matching_name? &&
          matching_name_has_primary? &&
          matching_name_has_exactly_one_primary?
       create_match
-      true
+      log_to_table(CREATED)
+      COUNT_CREATED
     else
-      log_to_table("Making preferred match but no single suitable preferred name found")
-      false
+      log_to_table("#{DECLINED} - no single match found")
+      COUNT_DECLINED
     end
-  end
-
-  def non_creation_reason
-    if exactly_one_matching_name?
-      reason += "matching names's instance is not primary; " unless matching_name_has_primary?
-      reason += "matching names has more than one primary instance; " unless matching_name_has_exactly_one_primary?
-      reason = 'Unknown reason' if reason.blank?
-    else
-      reason = "#{@loader_name.matches.size} matching names"
-    end
-  rescue => e
-    Rails.logger.error(e.to_s)
-    reason = "couldn't determine reason"
   end
 
   def create_match
-    log_to_table("Make preferred match")
     pref = @loader_name.loader_name_matches.new
     pref.name_id = @loader_name.matches.first.id
     pref.instance_id = @loader_name.matches.first.primary_instances.first.id
     pref.relationship_instance_type_id = @loader_name.riti
     pref.created_by = pref.updated_by = "#{@authorising_user}"
     pref.save!
-  end
-
-  def log_to_table(entry)
-    BulkProcessingLog.log("#{entry} #{@log_tag}", @authorising_user)
-  rescue => e
-    Rails.logger.error("Couldn't log to table: #{e.to_s}")
   end
 
   def exactly_one_matching_name?
@@ -114,7 +116,16 @@ class Loader::Name::AsNameMatcher
     @loader_name.simple_name
   end
 
+  def log_to_table(entry)
+    tag = " ##{@loader_name.id}, batch: #{@loader_name.batch.name},  " +
+      "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
+      " (#{@loader_name.record_type})"
+    BulkProcessingLog.log("#{entry} #{tag}", @authorising_user)
+  rescue => e
+    Rails.logger.error("#{@tag}: Couldn't log to table: #{e.to_s}")
+  end
+
   def debug(msg)
-    Rails.logger.debug("#{msg}")
+    Rails.logger.debug("${@tag}: #{msg}")
   end
 end

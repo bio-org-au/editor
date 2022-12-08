@@ -1,0 +1,15 @@
+<% content_for :search_result_summary do %>
+  <%= render partial: 'header' unless @search.blank? %>
+<% end %>
+
+<div id="search-results" class="wide col-xs-12 col-sm-12 col-md-12 col-lg-12 nothing-selected stylish-scrollbar">
+  <div id="search-results-inner" class="no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 search-results-inner">
+    <table id="search-results-table-for-logs" class="table table-condensed search-results" data-summary="Results of the latest search.">
+      <% unless @search.parsed_request.count %>
+        <% increment_tab_index(1000) %>
+        <%= render partial: 'search/standard/results' unless @search.executed_query.blank? || @search.executed_query.results.blank? %>
+      <% end %>
+    </table>
+  </div>
+</div>
+

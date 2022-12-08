@@ -19,7 +19,7 @@
 
 class Loader::Batch::JobLockController < ApplicationController
   def unlock
-    Loader::Batch::JobLock.unlock!
+    Loader::Batch::Bulk::JobLock.unlock!
     render js:  "$('#emergency-unlock-link').hide();" 
   end
 end

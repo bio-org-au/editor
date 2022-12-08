@@ -4,10 +4,21 @@
     <input name="name_string" id="bulk-operation-string" type="text" value="<%= session[:name_string] %>" class="form-control" required title="bulk operation string for batch work" />
   </div>
   <input name="gui_submit_place" id="gui-submit-place" type="hidden" title="Where this form is, so we can display result messages in the right place" value="global-tab" />
-  <input id="stats-submit" name="submit" type="submit" value="Show Stats" class="btn btn-primary width-9em" title="Show bulk operation statistics" />
-  <input id="stats-hide" name="submit" type="submit" value="Hide Stats" class="btn btn-primary width-9em hidden" title="Hide bulk operation statistics" />
-  <input id="create-matches-batch-submit" name="submit" type="submit" value="Create Preferred Matches" class="btn btn-primary width-15em" title="Create preferred matches" />
-  <input id="create-instances-batch-submit" name="submit" type="submit" value="Create Draft Instances" class="btn btn-primary width-15em" title="Create draft instances" />
+  <input id="loader-bulk-stats-submit" name="submit" type="submit" 
+         value="Show Stats" class="btn btn-primary width-16em"
+         title="Show bulk operation statistics" />
+  <input id="loader-bulk-stats-hide" name="submit" type="submit" 
+         value="Hide Stats" class="btn btn-primary width-7em hidden"
+         title="Hide bulk operation statistics" />
+  <input id="loader-bulk-stats-refresh" name="submit" type="submit" 
+         value="Refresh Stats" class="btn btn-primary width-8em hidden"
+         title="Hide bulk operation statistics" />
+  <input id="create-matches-batch-submit" name="submit" type="submit" 
+         value="Create Preferred Matches" class="btn btn-primary width-15em"
+         title="Create preferred matches" />
+  <input id="create-instances-batch-submit" name="submit" type="submit" 
+         value="Create Draft Instances" class="btn btn-primary width-15em" 
+         title="Create draft instances" />
   <% if Rails.configuration.try('allow_orchid_tree_operations') %>
     <% if @working_draft.nil? %>
       <span>(Please choose a draft for taxonomy work)<span>

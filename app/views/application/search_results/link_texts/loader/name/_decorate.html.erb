@@ -38,7 +38,7 @@
   <% preferreds = search_result.loader_name_matches.collect{|o| "#{o.name_id}/#{o.instance_id}" } %>
   <span class="flag preferred-name" title="Preferred matches"><%= preferreds.size %>p</span>
   <% standalones = search_result.loader_name_matches.select {|lnm| lnm.standalone_instance_id.present?} %>
-  <% copy_and_appends = search_result.loader_name_matches.select {|lnm| lnm.standalone_instance_id.present? && lnm.copy_append_from_existing_use_batch_def_ref} %>
+  <% copy_and_appends = search_result.loader_name_matches.select {|lnm| lnm.copy_append_from_existing_use_batch_def_ref == true} %>
 
 
   <% use_existing_instance = search_result.loader_name_matches.select {|lnm| lnm.use_existing_instance == true} %>
@@ -65,6 +65,10 @@
   <% if relationships.size > 0 %>
     <span class="flag relationship-statement" title='Relationship instance count'><%= "#{relationships.size}c" %></span>
   <% end %>
+  <% standalones = search_result.loader_name_matches.select {|match| match.standalone_instance_id.present?} %>
+  <% if standalones.size > 0 %>
+    <span class="flag standalone-statement" title='Stanalone instance count'><%= "#{standalones.size}s" %></span>
+  <% end %>
  
 
 
@@ -78,12 +82,14 @@
 
 <% case search_result.record_type %>
 <% when 'accepted' %>
-  <% if search_result.excluded? %>
-    <span class="flag misapplied" title='Excluded name'>Excluded</span>
-  <% end %>
 <% when 'synonym' %>
+  <% if search_result.excluded? %>
+    <span class="flag excluded" title='Excluded synonym'>Excluded Syn</span>
+  <% end %>
 <% when 'misapplied' %>
     <span class="flag misapplied" title='Misapplied name'>Misapplied</span>
+<% when 'excluded' %>
+    <span class="flag excluded" title='Excluded name'>Excluded</span>
 <% end %>
 
 <% if search_result.no_further_processing? %>

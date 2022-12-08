@@ -18,29 +18,15 @@
 
 # Record a preferred matching name for a raw loader name record.
 class Loader::Batch::BulkController::AsCreateDraftInstanceJob
-  def initialize(batch_id, search_string, authorising_user, work_on_accepted,
-                 job_number)
+  def initialize(batch_id, search_string, authorising_user, job_number)
     @batch = Loader::Batch.find(batch_id)
     @search_string = search_string
     @authorising_user = authorising_user
-    @work_on_accepted = work_on_accepted
     @job_number = job_number
+    @search = ::Loader::Name::BulkSearch.new(search_string, batch_id).search
   end
 
-  # Loader::Name.create_instance_for_accepted_or_excluded(params[:taxon_string], @current_user.username, @work_on_accepted)
-  # def self.create_instance_for_accepted_or_excluded(taxon_s, authorising_user, work_on_accepted)
   def run
-    if @work_on_accepted
-      @search = Loader::Name.taxon_string_search_no_excluded(@batch, @search_string)
-    else
-      @search = Loader::Name.taxon_string_search_for_excluded(@batch, @search_string)
-    end
-    return create_draft_instances
-  end
-
-  private
-
-  def create_draft_instances
     log_start
     @attempts = @creates = @declines = @errors = 0
     @search.order(:seq).each do |loader_name|
@@ -50,20 +36,21 @@ class Loader::Batch::BulkController::AsCreateDraftInstanceJob
     return @attempts, @creates, @declines, @errors
   end
 
+  private
+
   def do_one_loader_name(loader_name)
     @attempts += 1
-    creator = ::Loader::Name::AsInstanceCreator.new(loader_name,
-                                                    @authorising_user,
-                                                    @job_number)
+    creator = ::Loader::Name::MakeOneInstance.new(loader_name,
+                                                  @authorising_user,
+                                                  @job_number)
     @result = creator.create
-    record_result(loader_name)
+    tally_result_parts
   rescue => e
-    raise
-    entry = "Failed to create instance for #{loader_name.simple_name} "
-    entry += "##{loader_name.id} - error in do_one_loader_name: #{e.to_s}"
+    entry = "<span class='red'>Error: failed to create instance</span> "
+    entry += "##{loader_name.id} #{loader_name.simple_name} "
+    entry += "- error in do_one_loader_name: #{e.to_s}"
     log(entry)
-    raise
-    #return [0,0,1]
+    @errors += 1
   end
 
   def log(payload)
@@ -72,20 +59,16 @@ class Loader::Batch::BulkController::AsCreateDraftInstanceJob
   end
 
   def log_start
-    entry = "Started create draft instances for batch: "
+    entry = "<b>STARTED</b>: create draft instances for batch: "
     entry += "#{@batch.name} accepted taxa matching #{@search_string}"
     log(entry)
   end
 
   def log_finish
-    entry = "Finished; records attempted: #{@attempts}; "
+    entry = "<b>FINISHED</b>: records attempted: #{@attempts}; "
     entry += "records created: #{@creates}; "
     entry += "declined: #{@declines}; errors: #{@errors}"
     log(entry)
-  end
-
-  def record_result(loader_name)
-    tally_result_parts
   end
 
   def tally_result_parts

@@ -27,30 +27,19 @@
             target: "_editor_to_apni",
             tabindex: increment_tab_index) %>
 
-<% if name_match_count == 0 %>
-  <%= divider %>
-  <%= render partial: 'loader/names/tabs/details/possible_matches' %>
-
-  <% if @loader_name.misapplied? %>
-    <%#= render partial: 'loader/names/tabs/details/matches/misapplied', locals: {name_match_count: name_match_count} %>
-  <% else %>
-    <% if @loader_name.likely_phrase_name? %>
-      <%= render partial: 'loader/names/tabs/details/matches/accepted_or_synonym', locals: {match_type: :phrase} %>
-    <% end %>
-    <% if @loader_name.likely_cultivar? %>
-      <%= render partial: 'loader/names/tabs/details/matches/accepted_or_synonym', locals: {match_type: :cultivar} %>
-    <% end %>
-  <% end %>
-
-<% else %>
-
+<% if name_match_count > 0 %>
   <% if @loader_name.misapplied? %>
     <%= render partial: 'loader/names/tabs/details/matches/misapplied', locals: {match_type: :strict} %>
   <% elsif @loader_name.accepted? %>
     <%= render partial: 'loader/names/tabs/details/matches/accepted', locals: {match_type: :strict} %>
-  <% else %>
+  <% elsif @loader_name.synonym? %>
     <%= render partial: 'loader/names/tabs/details/matches/synonym', locals: {match_type: :strict} %>
+  <% elsif @loader_name.excluded? %>
+    <%= render partial: 'loader/names/tabs/details/matches/excluded', locals: {match_type: :strict} %>
   <% end %>
+<% else %>
+  <%= divider %>
+  <%= render partial: 'loader/names/tabs/details/possible_matches' %>
 
 <% end %>
 

@@ -1,0 +1,13 @@
+        <br>
+        <b>Copy and append:</b> <ul><li/>copy instances from: <br> 
+        <% si = @loader_name.loader_name_matches.where(name_id: matching_name.id).first.source_for_copy %>
+        <span class="brown"><%= si.instance_type.name %></span>&nbsp;
+        <span title="Instance ID: <%= si.id %>">
+          <%= si.reference.citation %>:&nbsp;<%= si.page %>
+        </span>
+        and <li/> append to a new instance created to reference the batch default reference:
+        <%= @loader_name.loader_batch.default_reference&.citation&.html_safe ||
+        'There is no default reference for this batch' %>,
+        <li/>also add any loader instances (but not duplicates).
+        </ul>
+

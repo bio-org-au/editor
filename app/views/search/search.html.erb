@@ -1,5 +1,7 @@
 <% if @view_mode == ViewMode::STANDARD %>
   <%= render partial: 'search/standard/container' %>
+<% elsif @view_mode == ViewMode::WIDE %>
+  <%= render partial: 'search/wide/container' %>
 <% elsif @view_mode == ViewMode::REVIEW %>
     <%= render partial: 'search/review/container' %>
 <% else %>

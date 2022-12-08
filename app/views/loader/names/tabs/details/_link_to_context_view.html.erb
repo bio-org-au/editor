@@ -1,6 +1,6 @@
 <% if @loader_name.child? %>
   <%= render partial: 'detail_line', 
-           locals: {info: link_to("parent (accepted name with synonyms)",
+           locals: {info: link_to("parent (name with synonyms)",
                           search_path(query_target: "loader names",
                                       query_string: "id-with-syn:#{@loader_name.parent_id}",
                                       focus_id: "loader-name-#{@loader_name.id}"),

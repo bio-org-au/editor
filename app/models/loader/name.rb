@@ -98,10 +98,6 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def no_further_processing?
-    no_further_processing == true
-  end
-
-  def excluded_from_further_processing?
     no_further_processing == true || parent&.no_further_processing == true
   end
 
@@ -137,10 +133,6 @@ class Loader::Name < ActiveRecord::Base
 
   def compiler_comments?(scope = 'any')
     compiler_comments(scope).size > 0
-  end
-
-  def excluded?
-    excluded == true
   end
 
   def self.record_to_flush_results
@@ -209,6 +201,7 @@ class Loader::Name < ActiveRecord::Base
     end
   end
 
+
   def accepted?
     record_type == 'accepted'
   end
@@ -217,6 +210,26 @@ class Loader::Name < ActiveRecord::Base
   def synonym?
     record_type == 'synonym'
   end
+
+  def misapplied?
+    record_type == 'misapplied'
+  end
+  alias_attribute :misapp?, :misapplied?
+
+  def heading?
+    record_type == 'heading'
+  end
+
+  # not ideal
+  def excluded_rt?
+    record_type == 'excluded'
+  end
+
+  # record types 'excluded' and 'synonym' can be excluded names
+  def excluded?
+    excluded == true
+  end
+
 
   def likely_phrase_name?
     simple_name =~ /Herbarium/ || simple_name =~ /sp\./ || simple_name =~ /[0-9][0-9][0-9]/ 
@@ -238,11 +251,6 @@ class Loader::Name < ActiveRecord::Base
     ::Name.where(simple_name: simple_name).order("simple_name, name.id")
   end
 
-  def misapplied?
-    record_type == 'misapplied'
-  end
-  alias_attribute :misapp?, :misapplied?
-
   def synonym_without_synonym_type?
     synonym? & synonym_type.blank?
   end
@@ -253,6 +261,8 @@ class Loader::Name < ActiveRecord::Base
   # i id
   def riti
     return nil if accepted?
+    return nil if excluded_rt?
+
     return InstanceType.find_by_name('misapplied').id if misapplied?
     if taxonomic?
       if pp?
@@ -291,15 +301,16 @@ class Loader::Name < ActiveRecord::Base
   # This search emulates the default search for Loader Name, the 
   # name-string: search.
   def self.name_string_search(name_string)
-    self.name_string_search_no_excluded(name_string)
-  end
-
-  def self.name_string_search_no_excluded(name_string)
     ns = name_string.downcase.gsub(/\*/,'%')
-    Loader::Name.where([ "((lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) and record_type = 'accepted' and not doubtful) or (parent_id in (select id from loader_name where (lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) and record_type = 'accepted' and not doubtful))",
-                   ns, ns, ns, ns, ns, ns])
+    Loader::Name.where([ "((lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) ) or (parent_id in (select id from loader_name where (lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) ))",
+                         ns, ns, ns, ns, ns, ns])
   end
 
+  # This is used in bulk jobs when the user wants to process names in a family. 
+  def self.family_string_search(family_string)
+    fam = family_string.downcase.gsub(/\*/,'%')
+    Loader::Name.where([ "lower(family) like lower(?) ", fam])
+  end
 
   def self.create(params, username)
     loader_name = Loader::Name.new(params)
@@ -360,17 +371,6 @@ class Loader::Name < ActiveRecord::Base
     end
   end
 
-  # We have endless confusion arising from a record type of 'accepted' in the 
-  # original data parsed by Rex from Word docs, which originally covered 
-  # names that were taxonomically accepted or taxonomically excluded.
-  # All it meant was that it wasn't a synonym or a misapplication.
-  #
-  # Now trying the terminology 'included_name' with an eye to future work that
-  # won't rely on parsed Word documents.
-  def included_name?
-    record_type == 'accepted' && !excluded?
-  end
-
   def preferred_match?
     preferred_matches.size > 0
   end
@@ -381,47 +381,6 @@ class Loader::Name < ActiveRecord::Base
     preferred_matches.first
   end
 
-  def self.create_preferred_matches(name_s, batch_id, authorising_user, work_on_accepted)
-    #if work_on_accepted
-      self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
-    #else
-      #self.create_preferred_matches_for_excluded_taxa(name_s, batch_id, authorising_user)
-    #end
-      #
-  end
-
-
-  def self.create_preferred_matches_for_accepted_taxa(name_s, batch_id, authorising_user)
-    entry = "Job started: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}"
-    BulkProcessingLog.log(entry, 'job controller')
-    attempted = records = 0
-    self.name_string_search_no_excluded(name_s).where(loader_batch_id: batch_id).order(:seq).each do |loader_name|
-      attempted += 1
-      records += loader_name.create_preferred_match(authorising_user)
-    end
-    entry = "Job finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} accepted taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
-    BulkProcessingLog.log(entry, 'job controller')
-    return attempted, records
-  end
-
-  def self.create_preferred_matches_for_excluded_taxa(name_s, batch_id, authorising_user)
-    attempted = records = 0
-    Orchid.taxon_string_search_for_excluded(name_s).order(:seq).each do |match|
-      attempted += 1
-      records += match.create_preferred_match(authorising_user)
-    end
-    entry = "Job finished: create preferred matches for batch: #{Loader::Batch.find(batch_id).name} excluded taxa matching #{name_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
-
-    @log_tag = " for #{@loader_name.id}, batch: #{@loader_name.batch.name} , seq: #{@loader_name.seq} #{@loader_name.simple_name} (#{@loader_name.true_record_type})"
-
-    BulkProcessingLog.log(entry, 'job controller')
-    return attempted, records
-  end
-
-  def create_preferred_match(authorising_user)
-    AsNameMatcher.new(self, authorising_user).find_or_create_preferred_match
-  end
-
   def true_record_type
     if record_type == 'accepted' && excluded?
       'excluded'
@@ -430,39 +389,6 @@ class Loader::Name < ActiveRecord::Base
     end
   end
   
-  # This search emulates the default search for Orchids, the 
-  # taxon-string: search.
-  def self.taxon_string_search(taxon_string)
-    self.taxon_string_search_no_excluded(taxon_string)
-  end
-
-  def self.taxon_string_search_no_excluded(batch, taxon_string)
-    ts = taxon_string.downcase.gsub(/\*/,'%')
-    Loader::Name.where(["loader_batch_id = ? and ((lower(simple_name) like ?)
-        or exists (
-        select null
-          from loader_name parent
-        where parent.id         = loader_name.parent_id
-       and lower(parent.simple_name) like ?)
-        or exists (
-        select null
-          from loader_name child
-        where child.parent_id   = loader_name.id
-       and lower(child.simple_name) like ?)
-        or exists (
-        select null
-          from loader_name sibling
-        where sibling.parent_id = loader_name.parent_id
-       and lower(sibling.simple_name) like ?) ) and not excluded",
-       batch.id, ts, ts, ts, ts])
-  end
-
-  def self.taxon_string_search_for_excluded(taxon_string)
-    ts = taxon_string.downcase.gsub(/\*/,'%')
-    Orchid.where([ "((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful))",
-                   ts, ts, ts, ts, ts, ts])
-  end
-
   def self.create_instance_for(taxon_s, authorising_user, search)
     records = errors = 0
     @ref = Reference.find(REF_ID)

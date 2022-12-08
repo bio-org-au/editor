@@ -1,0 +1,30 @@
+<tr id="ref-instance-record-<%= record.id %>"
+    class="ref-instance-record instance-as-part-of-concept-within-name <%= 'fresh' if record.fresh? %>"
+    data-row-type="citing_instance_within_name_search"
+    tabindex="<%= increment_tab_index(100) %>"
+>
+  <td colspan="1" class="align-top text width-5-percent padding-right-half-em">
+  </td>
+  <td colspan="1" class="text width-90-percent">
+    <span class='indent-level-1 font-weight-normal'><%= record.listing_citation.html_safe %></span>
+  </td>
+</tr>
+
+<%# TODO: move logic for this subsequent record to the model. %>
+<% if record.this_is_cited_by %>
+  <tr id="ref-instance-record-<%= record.this_is_cited_by.id %>"
+      class="ref-instance-record instance-as-part-of-concept"
+      tabindex="<%= increment_tab_index(100) %>"
+  >
+    <td colspan="1" class="text takes-focus width-8-percent">
+      &nbsp;
+    </td>
+    <td colspan="1" class="text takes-focus name main-content <%= 'give-me-focus' if give_me_focus %>">
+      <span class="indent-level-1">&nbsp;</span>
+      <%= "#{record.instance_type.name.downcase} of #{record.this_is_cited_by.name.simple_name}" %>
+      <%= "</td><td>this is cited by: #{ record.try('display_as') || record.this_is_cited_by.class.to_s};#{record.this_is_cited_by.id }-2nd part --- #{Pathname.new(__FILE__).basename}".html_safe if true %>
+    </td>
+
+  </tr>
+
+<% end %>

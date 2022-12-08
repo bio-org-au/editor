@@ -1,0 +1,61 @@
+<% for record in @search.executed_query.results -%>
+  <% display_as = record.class.name == 'Hash' ? record[:display_as] || record.class.to_s  : record.display_as || record.class.to_s -%>
+  <% case display_as -%>
+      <% when 'Reference' -%>  
+        <%= render partial: 'reference_record', 
+          locals: {reference: record, give_me_focus: give_me_focus} -%>
+      <% when :reference_as_part_of_concept -%>
+        <%= render partial: 'reference_as_part_of_concept_record', 
+          locals: {reference: record, give_me_focus: give_me_focus} -%>
+      <% when 'Author' -%>
+        <%= render partial: 'author_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'Name' -%>
+        <%= render partial: 'name_record', locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when :name_as_part_of_concept -%>
+        <%= render partial: 'name_as_part_of_instance_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when :instance_as_part_of_concept -%>
+        <%= render partial: 'instance_as_part_of_concept_record',
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when :citing_instance_within_name_search -%>
+        <%= render partial: 'citing_instance_within_name_search_record',
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when :instance_within_reference -%>
+        <%= render partial: 'instance_within_reference_record',
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'Instance' -%>
+<%= render partial: 'instances/show.csv', locals: {record: record} -%> 
+      <% when 'cites-this-instance' -%>
+        <%= render partial: 'instance_cites_this_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'name-cited-by-instance' -%>
+        <%= render partial: 'instance_cited_by_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'instance-is-cited-by' -%>
+        <%= render partial: 'instance_is_cited_by',
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'cited-by-instance' -%>  
+        <%= render partial: 'cited_by_instance', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'cited-by-instance-within-full-synonymy' -%>  
+        <%= render partial: 'instance_cited_by_record_within_full_synonymy', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+     <% when 'cited-by-relationship-instance' -%>  
+        <%= render partial: 'instance_cited_by_relationship_instance_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'cited-by-relationship-instance-name-only' -%>  
+         <%= render partial: 'instance_cited_by_relationship_instance_name_only', 
+           locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'instance-for-expansion' -%>  
+        <%= render partial: 'instance_for_expansion_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'HelpTopic' -%>  
+        <%= render partial: 'help_topic_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% when 'UserQuery' -%>  
+        <%= render partial: 'user_query_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} -%>
+      <% else -%>
+      <% end -%>
+    <% end -%>

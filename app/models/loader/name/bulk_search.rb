@@ -16,29 +16,25 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Loader::Batch::JobLock < ActiveRecord::Base
-  self.table_name = "loader_batch_job_lock"
-  self.primary_key = "id"
+# Loader Name entity
+class Loader::Name::BulkSearch 
+  attr_reader :search
 
-  def self.lock!(name)
-    rec = self.new
-    rec.job_name = name
-    rec.save!
-    true
-  rescue => e
-    false
+  def initialize(search_s, batch_id)
+    @batch_id = batch_id
+    @search_s= search_s
+    @search = bulk_processing_search
   end
 
-  def self.locked?
-    all.count > 0
-  end
-
-  def self.unlock!
-    destroy_all
-    true
-  rescue => e
-    false
+  def bulk_processing_search
+    if @search_s.match(/\Afamily:/i)
+      family_string = @search_s.sub(/\Afamily: */i,'')
+      search = Loader::Name.family_string_search(family_string)
+    else
+      search= Loader::Name.name_string_search(@search_s)
+    end
+    search.joins(:loader_batch)
+          .where(loader_batch: { id: @batch_id })
+          .order(:seq)
   end
 end
-
-

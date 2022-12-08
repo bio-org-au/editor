@@ -1,0 +1,48 @@
+  <% wd = 'loader/names/tabs/ref_instance/excluded_names/record' %>
+  <%= form_with(model: match, url: loader_name_matches_use_existing_instance_path)  do |form| %>
+    <div> Choose an instance
+    <%= form.submit "Save", remote: true, class: 'width-5em btn btn-primary pull-right', title: 'Save your choice.' %>
+    </div>
+    <div id="search-result-details-info-message-container-top" class="message-container"></div>
+    <div id="search-result-details-error-message-container-top" class="error-container"></div>
+    <%= form.hidden_field :id %>
+    <%= form.hidden_field :use_batch_default_reference, value: false %>
+    <%= form.hidden_field :copy_append_from_existing_use_batch_def_ref, value: false %>
+    <%= form.hidden_field :standalone_instance_found, value: true %>
+  <table border="0">
+  <% results = Search::OnName::WithInstances.new([match.name]).names_with_instances %>
+  <% results.each do |record| %>
+    <% give_me_focus = false %>
+    <% case record.display_as %>
+      <% when :name_as_part_of_concept %>
+        <%= render partial: "#{wd}/name_as_part_of_instance_record", 
+          locals: {record: record, form: form, give_me_focus: give_me_focus} %>
+      <% when :instance_as_part_of_concept %>
+        <%= render partial: "#{wd}/instance_as_part_of_concept_record",
+          locals: {record: record,
+                   form: form,
+                   give_me_focus: give_me_focus,
+                   allow_all_even_if_in_current_tree: false,
+                   payload_field_name: :standalone_instance_id }%>
+      <% when 'instance-is-cited-by' %>
+        <% unless record.instance_type.name =~ /\Acommon/ %>
+          <%= render partial: "#{wd}/instance_is_cited_by",
+            locals: {record: record, form: form, give_me_focus: give_me_focus} %>
+        <% end %>
+      <% when 'cited-by-relationship-instance-name-only' %>  
+        <%= render partial: "#{wd}/instance_cited_by_relationship_instance_name_only", 
+           locals: {record: record, form: form, give_me_focus: give_me_focus} %>
+      <% when 'cited-by-relationship-instance' %>  
+        <%= render partial: "#{wd}/instance_cited_by_relationship_instance_record", 
+           locals: {record: record, form: form, give_me_focus: give_me_focus} %>
+      <% when :citing_instance_within_name_search %>
+        <%= render partial: "#{wd}/citing_instance_within_name_search_record",
+          locals: {record: record, form: form, give_me_focus: give_me_focus}%>
+      <% else %>
+        <td></td><td class="red">Unable to display this type of record: <%= record.display_as %></td>
+      <% end %>
+    <% end %>
+    </table>
+      <br>
+    <%= form.submit "Save", remote: true, class: 'width-5em btn btn-primary pull-left', title: 'Save your choice.' %>
+<% end %>

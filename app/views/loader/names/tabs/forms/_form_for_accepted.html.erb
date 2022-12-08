@@ -87,8 +87,9 @@
         <br>
       <label class="form-check-label">
         <%= f.check_box(:no_further_processing,
-                        {class: 'xform-control', title: 'Prevent any further processing automated processing of this record.', tabindex: increment_tab_index}) %>
-        Prevent any further bulk processing of this record
+                        {class: 'xform-control', title: 'Prevent any further automated processing of this record or of its synonyms.',
+                         tabindex: increment_tab_index}) %>
+        Stop further bulk processing of this record or of its synonyms
       </label>
       </div>
     <% end %>
