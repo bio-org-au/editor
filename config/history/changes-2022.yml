@@ -1,3 +1,14 @@
+- :date: 12-Dec-2022
+  :jira_id: ''
+  :description: |-
+    Security patch.
+- :date: 12-Dec-2022
+  :jira_project: 'SYS'
+  :jira_id: '209'
+  :description: |-
+    JRuby cleanup: remove old build files and instructions, upgrade Readme.
+- :date: 08-Dec-2022
+  :release: true
 - :date: 02-Dec-2022
   :jira_id: '4078'
   :description: |-
