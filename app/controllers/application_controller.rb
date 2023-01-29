@@ -92,6 +92,10 @@ class ApplicationController < ActionController::Base
   def hide_details
     @no_search_result_details = true
   end
+  
+  def show_details
+    @no_search_result_details = false
+  end
 
   attr_reader :current_user
 
@@ -125,6 +129,12 @@ class ApplicationController < ActionController::Base
     params["target"] = Search::Target.new(@view_mode).target
     @search = Search::Empty.new(params)
     @empty_search = true
+  end
+
+  def non_empty_search
+    #params["target"] = Search::Target.new(@view_mode).target
+    #@search = Search::Empty.new(params)
+    @empty_search = false
   end
 
   def set_debug

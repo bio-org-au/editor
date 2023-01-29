@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-#
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -20,13 +19,12 @@
 require "test_helper"
 
 # Single controller test.
-class HistoryAuthorizationsY2016UnauthenticatedTest < ActionController::TestCase
-  tests HistoryController
-
-  test "history y2016 should get redirected unauthenticated" do
-    get('for_year', params: {"year"=>"2016"}, xhr: true)
-    assert_match /alert.'Your session may have expired./, response.body
-    assert_match /expired. Please reload the whole page before continuing.'.;/,
-      response.body
+class HelpRoutesInstanceTypesTest < ActionController::TestCase
+  tests InstanceTypesController
+  test "index should route ok" do
+    assert_routing "/help/instance_types",
+                   controller: "help",
+                   action: "instance_types"
   end
 end
+

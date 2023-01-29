@@ -19,11 +19,17 @@
 require "test_helper"
 
 # Single controller test.
-class InstanceTypesIndexRouteTest < ActionController::TestCase
-  tests InstanceTypesController
-  test "index should route ok" do
-    assert_routing "/instance_types",
-                   controller: "instance_types",
-                   action: "index"
+class HelpControllerInstanceTypesForReaderTest < ActionController::TestCase
+  tests HelpController
+
+  test "reader should get instance types" do
+    get(:instance_types,
+        params: {},
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: [] },
+        xhr: true)
+    assert_response :success
   end
 end
+

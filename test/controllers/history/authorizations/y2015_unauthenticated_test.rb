@@ -24,7 +24,9 @@ class HistoryAuthorizationsY2015UnauthenticatedTest < ActionController::TestCase
   tests HistoryController
 
   test "history y2015 should get redirected unauthenticated" do
-    get :y2015
-    assert_response :redirect
+    get('for_year', params: {"year"=>"2015"}, xhr: true)
+    assert_match /alert.'Your session may have expired./, response.body
+    assert_match /expired. Please reload the whole page before continuing.'.;/,
+      response.body
   end
 end

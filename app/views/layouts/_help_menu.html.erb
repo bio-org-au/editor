@@ -8,50 +8,50 @@
     </a>
     <ul id="create-dropdown-menu" class="dropdown-menu" role="menu">
       <li role="presentation">
-        <%= link_to "Overview", help_index_path, title: 'View editor help', tabindex: '-1' %>
+        <%= link_to "Overview", help_index_path, title: 'View editor help', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Name rules", name_rules_path, title: 'See the name rules', tabindex: '-1' %>
+        <%= link_to "Name rules", help_name_rules_path, title: 'See the name rules', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Reference type rules", ref_type_rules_path, title: 'See reference type rules', tabindex: '-1' %>
+        <%= link_to "Reference type rules", ref_type_rules_path, title: 'See reference type rules', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Instance models", instance_models_path, title: 'See diagrams modelling instances', tabindex: '-1' %>
+        <%= link_to "Instance models", instance_models_path, title: 'See diagrams modelling instances', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Typeaheads", typeaheads_path, title: 'About typeahead fields', tabindex: '-1' %>
+        <%= link_to "Typeaheads", typeaheads_path, title: 'About typeahead fields', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Instance Types", instance_types_path, title: 'List of instance types', tabindex: '-1' %>
+        <%= link_to "Instance Types", instance_types_path, title: 'List of instance types', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation" class="divider"></li>
       <li role="presentation">
-        <%= link_to "Changes 2023", history_2023_path, title: 'Changes to the editor recorded for 2023', tabindex: '-1' %>
+        <%= link_to "Changes 2023", history_for_year_path('2023'), title: 'Changes to the editor in 2023', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Changes 2022", history_2022_path, title: 'Changes to the editor recorded for 2022', tabindex: '-1' %>
+        <%= link_to "Changes 2022", history_for_year_path('2022'), title: 'Changes to the editor 2022', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Changes 2021", history_2021_path, title: 'Changes to the editor recorded for 2021', tabindex: '-1' %>
+        <%= link_to "Changes 2021", history_for_year_path('2021'), title: 'Changes to the editor 2021', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Changes 2020", history_2020_path, title: 'Changes to the editor recorded for 2020', tabindex: '-1' %>
+        <%= link_to "Changes 2020", history_for_year_path('2020'), title: 'Changes to the editor 2020', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Changes 2019", history_2019_path, title: 'Changes to the editor recorded for 2019', tabindex: '-1' %>
+        <%= link_to "Changes 2019", history_for_year_path('2019'), title: 'Changes to the editor 2019', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Changes 2018", history_2018_path, title: 'Changes to the editor recorded for 2018', tabindex: '-1' %>
+        <%= link_to "Changes 2018", history_for_year_path('2018'), title: 'Changes to the editor 2018', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Changes 2017", history_2017_path, title: 'Changes to the editor recorded for 2017', tabindex: '-1' %>
+        <%= link_to "Changes 2017", history_for_year_path('2017'), title: 'Changes to the editor 2017', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Changes 2016", history_2016_path, title: 'Changes to the editor recorded for 2016', tabindex: '-1' %>
+        <%= link_to "Changes 2016", history_for_year_path('2016'), title: 'Changes to the editor 2016', tabindex: '-1', remote: true %>
       </li>
       <li role="presentation">
-        <%= link_to "Changes 2015", history_2015_path, title: 'Changes to the editor recorded from May 2015 to the end of 2015', tabindex: '-1' %>
+        <%= link_to "Changes 2015", history_for_year_path('2015'), title: 'Changes to the editor May - December 2015', tabindex: '-1', remote: true %>
       </li>
     </ul>
 </li>

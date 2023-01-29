@@ -13,7 +13,7 @@ module TreeVersionElements
       Rails.logger.debug("@previous_tve: #{@previous_tve}")
       Rails.logger.debug("@current_tve: #{@current_tve}")
       Rails.logger.debug("TreeVersionElements#DiffHtml get url: #{url}")
-      open(url, "Accept" => "text/html") {|f| f.read }
+      URI.open(url, "Accept" => "text/html") {|f| f.read }
     end
 
     # split the diff to get just the after part

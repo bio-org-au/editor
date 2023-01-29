@@ -7,7 +7,7 @@ module NameTreeable
 
   def apc_as_json
     Rails.cache.fetch("#{cache_key}/apc_info", expires_in: 2.minutes) do
-      JSON.load(open(Name::AsServices.in_apc_url(id), "Accept" => "text/json"))
+      JSON.load(URI.open(Name::AsServices.in_apc_url(id), "Accept" => "text/json"))
     end
   rescue => e
     logger.error("apc_as_json: #{e} for : #{Name::AsServices.in_apc_url(id)}")

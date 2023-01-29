@@ -19,15 +19,12 @@
 class HelpController < ApplicationController
   before_action :hide_details, :empty_search
 
-  def index
-  end
-
-  def instance_models
-  end
-
-  def ref_type_rules
-  end
-
-  def typeaheads
+  def index; end
+  def instance_models; end
+  def ref_type_rules; end
+  def typeaheads; end
+  def name_rules; end
+  def instance_types
+    @instance_types = InstanceType.all.order("sort_order,name")
   end
 end

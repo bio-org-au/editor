@@ -27,7 +27,8 @@ class AdminControllerAdminUserCanSeeDBConnsTest < ActionController::TestCase
         params: {},
         session: { username: "fred",
                    user_full_name: "Fred Jones",
-                   groups: ["admin"] })
+                   groups: ["admin"] },
+        xhr: true)
     assert_response :success
   end
 end

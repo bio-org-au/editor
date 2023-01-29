@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.10'
+ruby '3.1.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1.7'
@@ -46,7 +46,7 @@ group :test do
     gem "minitest-rails"
     gem "minitest-reporters"
     gem "launchy"
-    gem "mocha", "~> 1.1.0"
+    gem "mocha",  "~> 1.1.0"
     # NoMethodError: assert_template has been extracted to a gem. To continue using it, add:
     gem 'rails-controller-testing'
 end

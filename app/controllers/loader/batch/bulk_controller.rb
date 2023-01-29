@@ -40,6 +40,9 @@ class Loader::Batch::BulkController < ApplicationController
     end
   end
 
+  def enable_add; end
+  def disable_add; end
+
   private
 
   def run_job

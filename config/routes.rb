@@ -133,9 +133,9 @@ Rails.application.routes.draw do
         to: "names/typeaheads/for_workspace_parent_name#index",
         via: :get
 
-  match "names/rules",
-        as: "name_rules",
-        to: "names#rules",
+  match "help/name/rules",
+        as: "help_name_rules",
+        to: "help#name_rules",
         via: :get
 
   match "names/new_row/:type",
@@ -282,17 +282,10 @@ Rails.application.routes.draw do
         to: "help#instance_models", as: "instance_models", via: :get
   match "help/ref_type_rules",
         to: "help#ref_type_rules", as: "ref_type_rules", via: :get
+  match "help/instance_types",
+        to: "help#instance_types", as: "instance_types", via: :get
   match "help/typeaheads", to: "help#typeaheads", as: "typeaheads", via: :get
-  match "history/2023", to: "history#y2023", as: "history_2023", via: :get
-  match "history/2022", to: "history#y2022", as: "history_2022", via: :get
-  match "history/2021", to: "history#y2021", as: "history_2021", via: :get
-  match "history/2020", to: "history#y2020", as: "history_2020", via: :get
-  match "history/2019", to: "history#y2019", as: "history_2019", via: :get
-  match "history/2018", to: "history#y2018", as: "history_2018", via: :get
-  match "history/2017", to: "history#y2017", as: "history_2017", via: :get
-  match "history/2016", to: "history#y2016", as: "history_2016", via: :get
-  match "history/2015", to: "history#y2015", as: "history_2015", via: :get
-  resources :instance_types, only: [:index]
+  match "history/:year", to: "history#for_year", as: "history_for_year", via: :get, year: /202[0123]|201[5-9]/
 
   match "/set_include_common_and_cultivar",
         to: "search#set_include_common_and_cultivar",
@@ -433,6 +426,8 @@ Rails.application.routes.draw do
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
   match "loader_batch/clear-default", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post
   match "loader/batch/unlock", as: "loader_batch_unlock", to: "loader/batch/job_lock#unlock", via: :post
+  match "loader/batch/bulk/enable_add", as: "loader_batch_bulk_enable_add", to: "loader/batch/bulk#enable_add", via: :post
+  match "loader/batch/bulk/disable_add", as: "loader_batch_bulk_disable_add", to: "loader/batch/bulk#disable_add", via: :post
 
   namespace :loader do
     resources :names, only: [:new]

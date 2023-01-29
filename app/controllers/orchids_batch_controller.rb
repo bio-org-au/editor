@@ -17,8 +17,10 @@
 #   limitations under the License.
 #
 class OrchidsBatchController < ApplicationController
-  before_action :set_accepted_excluded_mode, only: [:index, :submit, :create_preferred_matches, :create_instances_for_preferred_matches, :add_instances_to_draft_tree]
-
+  before_action :set_accepted_excluded_mode,
+    only: [:index, :submit, :create_preferred_matches,
+           :create_instances_for_preferred_matches,
+           :add_instances_to_draft_tree]
   def index
   end
 
