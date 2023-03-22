@@ -1,0 +1,25 @@
+<% path = 'application/search_results/link_texts/loader/name/decorate' %>
+
+<% case search_result.matches.size %>
+<% when 0 %>
+  <span class="flag no-matches" title='No potential matches found'>No Matches</span>
+<% when 1 %>
+  <% if search_result.name_match_no_primary? %>
+    <span class="flag no-primary" title='Potential match has no primary instance'>No Primary</span>
+  <% end %>
+<% else %>
+  <span class="flag too-many-matches" title='More than one potential match'>Too many matches</span>
+  <% if search_result.name_match_no_primary? %>
+    <span class="flag no-primary" title='A potential match has no primary instance'>No Primary</span>
+  <% end %>
+<% end %>
+
+<% if search_result.isonym? %>
+  <span class="flag isonym" title='This is an isonym'>Isonym</span>
+<% end %>
+
+<% if search_result.orth_var? %>
+  <span class="flag orth-var" title='This is an orthographic variant'>Orth. Var.</span>
+<% end %>
+
+

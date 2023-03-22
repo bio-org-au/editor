@@ -33,6 +33,7 @@ class Search::ParsedDefinedQuery
     "instance_is_cited_by" => "instance-is-cited-by",
     "audit" => "audit",
     "review" => "audit",
+    "activity" => "audit",
     "changed_tree_elements" => "changed-tree-elements",
   }.freeze
 

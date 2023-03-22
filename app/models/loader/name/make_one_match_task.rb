@@ -17,17 +17,17 @@
 #   limitations under the License.
 
 #   Create a preferred match for a loader_name record
-class Loader::Name::AsMakeOneMatchTask
-  def initialize(loader_name, authorising_user, job_number)
+class Loader::Name::MakeOneMatchTask
+  def initialize(loader_name, user, job_number)
     debug("initialize Loader::Name::AsPreferredMatcher; job: #{job_number}")
-    debug("loader_name: #{loader_name}; authorising_user: #{authorising_user}")
+    debug("loader_name: #{loader_name}; user: #{user}")
     @loader_name = loader_name
-    @authorising_user = authorising_user
+    @user = user
     @job_number = job_number
   end
 
   def create
-    matcher = Loader::Name::AsMakeOneMatch.new(@loader_name, @authorising_user)
+    matcher = Loader::Name::MakeOneMatch.new(@loader_name, @user, @job_number)
     result = matcher.find_or_create_preferred_match
     created = result[0]
     declined = result[1]
@@ -36,7 +36,7 @@ class Loader::Name::AsMakeOneMatchTask
   end
 
   def no_further_processing
-    log_to_table("Declined - no further processing")
+    log("Declined - no further processing")
     [0,1,0]
   end
     
@@ -50,13 +50,11 @@ class Loader::Name::AsMakeOneMatchTask
 
   def log_create_action(count)
     entry = "Create preferred match counted #{count} #{'record'.pluralize(count)}"
-    log_to_table(entry)
+    log(entry)
   end
 
-  def log_to_table(entry)
-    BulkProcessingLog.log("Job ##{@job_number}: #{entry}", "Bulk job for #{@authorising_user}")
-  rescue => e
-    Rails.logger.error("Couldn't log to table: #{e.to_s}")
+  def log(payload)
+    Loader::Batch::Bulk::JobLog.new(@job_number, payload, @user).write
   end
 
   def scientific_name
@@ -68,7 +66,7 @@ class Loader::Name::AsMakeOneMatchTask
     msg.gsub!(/"/,'')
     msg.sub!(/^Failing/,'')
     Rails.logger.error("Loader::Name::AsPreferredMatcher failure: #{msg}")
-    log_to_table("Loader::Name::AsPreferredMatcher failure: #{msg}")
+    log("Loader::Name::AsPreferredMatcher failure: #{msg}")
   end
 
   def debug(msg)

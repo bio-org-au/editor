@@ -74,7 +74,7 @@ class Loader::Batch::Stats::ForAllNames
                   .joins(:loader_batch)
                   .where(loader_batch: { id: @batch_id })
     else
-      Loader::Name.name_string_search(@name_string)
+      Loader::Name.bulk_operations_search(@name_string)
                   .joins(:loader_batch)
                   .where(loader_batch: { id: @batch_id })
     end

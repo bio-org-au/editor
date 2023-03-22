@@ -1,0 +1,6 @@
+<% if search_result.try('parent').try('no_further_processing?') %>
+    <span class="flag exclude-from-further-processing" title='No further processing flag of parent set'>No further processing via parent</span>
+<% elsif search_result.no_further_processing? %>
+    <span class="flag exclude-from-further-processing" title='No further processing flag set'>No further processing</span>
+<% end %>
+

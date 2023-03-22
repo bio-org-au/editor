@@ -1,3 +1,114 @@
+- :date: 21-Mar-2023
+  :jira_id: '4466'
+  :description: |-
+    Loader: Minor adjustment to Batch Summary Counts to include <code>excluded</code> record comments in the comment tally
+- :date: 28-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Fix bug preventing Loader Name detail tab displaying when <code>original_text</code> is empty
+- :date: 28-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Show a hint in red on the Batch details tab about setting a batch default reference; tweak boilerplate on the edit tab
+- :date: 27-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Fix Batch Summary Counts on the Loader tab - largely untouched since copied from Orchids equivalent
+- :date: 27-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Repair refactoring bugs preventing access to the Loader tab and to Summary Statistics on that tab
+- :date: 27-Feb-2023
+  :jira_id: '4452'
+  :description: |-
+    Loader-side-issue: Rename 'Review' to 'Activity' in the search targets dropdown.
+- :date: 24-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: Bulk processing code re-factoring - expect no change to features or functions.
+- :date: 23-Feb-2023
+  :jira_id: '4447'
+  :description: |-
+    Taxonomy: Toggling a taxonomy draft on/off from the menu now doesn't reload the page - instead, the menu display and tab availability are changed via JavaScript.
+- :date: 22-Feb-2023
+  :jira_id: '4426'
+  :description: |-
+    LDAP: Now verifying SimpleAD TLS certificate when logging users in
+- :date: 21-Feb-2023
+  :jira_id: '4434'
+  :description: |-
+    Loader: Label seq field consistently
+- :date: 21-Feb-2023
+  :jira_id: '4434'
+  :description: |-
+    Loader: Exclude names marked as duplicates from loader_name matches.
+- :date: 21-Feb-2023
+  :jira_id: '4434'
+  :description: |-
+    Loader: Allow synonyms and misapplications to be created from existing synonyms and misapplications; make sequencing easier; correct positon of success message
+- :date: 21-Feb-2023
+  :jira_id: '4434'
+  :description: |-
+    Loader: Fix <code>name-match-no-primary:</code> query
+- :date: 17-Feb-2023
+  :jira_id: '4433'
+  :description: |-
+    LDAP: Added two more layers of protection to prevent a 'generic' SimpleAD user trying to change their password via the Editor
+- :date: 15-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Added member count to details for loader_name Family records
+- :date: 15-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Added loader name convenience query directive <code>families:</code>, which is equivalent to <code>rank: family</code>
+- :date: 14-Feb-2023
+  :jira_id: '4425'
+  :description: |-
+    Loader: Any logged in user can see the configuration page - no need to make people administrators to see this page
+- :date: 14-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: the bulk-ops query can now handle the family: directive - by turning it into a bulk-ops-family: directive
+- :date: 13-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Disable no-further-processing flag field for loader name records once a standalone or relationship instance has been associated
+- :date: 13-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Details tab for header entries (typically family records) now has a link to query members of the family, if the record's rank is 'family'
+- :date: 13-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Show the loader name seq as a list item number at the top of the details - this is clearer; also visually separate and gray the batch name
+- :date: 10-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Add a /version get end point - currently just returns the app version
+- :date: 10-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: Display the loader name sequence number at the top of the detail tabs
+- :date: 10-Feb-2023
+  :jira_id: '4424'
+  :description: |-
+    Loader: <q>Not drafted</q> text no longer appears on loader name records which have been allocated an existing instance
+- :date: 10-Feb-2023
+  :jira_id: '4423'
+  :description: |-
+    Loader: bulk operations search now similar to the Orchids one - top-level matches only; added an equivalent <code>bulk-ops:</code> search directive which is linked from the Loader tab
+- :date: 08-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: improve log entries, make them more consistent
+- :date: 06-Feb-2023
+  :jira_id: '4078'
+  :description: |-
+    Loader: first cut of bulk add to taxonomy (tree)
+- :date: 07-Feb-2023
+  :release: true
+  :description: Released to staging - production release will follow
 - :date: 19-Jan-2023
   :jira_id: ''
   :description: |-

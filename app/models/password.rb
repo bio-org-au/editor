@@ -28,13 +28,12 @@ class Password < ActiveType::Object
 
   def save!
     validate_arguments
-    Rails.logger.debug('save!')
-    Rails.logger.debug("username: #{username}")
     change_password
     true
   rescue => e
-    Rails.logger.error("Error changing password: #{e.to_s}")
-    @error = e.to_s
+    # Hide the params because they contain password
+    Rails.logger.error("Error changing password: #{e.to_s.sub(/ for .*/,'...')}")
+    @error = e.to_s.sub(/ for .*/,'...')
     false
   end
 

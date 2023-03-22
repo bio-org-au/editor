@@ -9,7 +9,7 @@
                               query_string: "id:#{@loader_name.id}"),
                   id: 'tab-heading',
                   title: "Simple Name") %>
-      <%= "#{@loader_name.simple_name} (#{@loader_name.batch.name})" %>
+                <%= "#{@loader_name.seq}. #{@loader_name.simple_name} <span class='gray'>&nbsp;&mdash; Batch #{@loader_name.batch.name}</span>".html_safe %>
       <%= 'Manually created' if @loader_name.created_manually? %>
     </h3>
     <% if @loader_name.record_type == 'heading' %>

@@ -27,6 +27,10 @@ class ServicesController < ApplicationController
     render plain: "✓", status: :ok, layout: false
   end
 
+  def version
+    render plain: "app: #{Rails.configuration.try('version')}", status: :ok, layout: false
+  end
+
   def clear_connections
     ActiveRecord::Base.clear_active_connections!
     render plain: "Cleared.", status: :ok, layout: false

@@ -54,7 +54,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
       new_syn.reference_id = @new_standalone.reference_id
       new_syn.save!
       syns_copied += 1
-      log_to_table("#{Constants::COPIED_SYN} #{new_syn.name.full_name}")
+      log("#{Constants::COPIED_SYN} #{new_syn.name.full_name}")
     end
     created += syns_copied
     [created, declined, errors]
@@ -69,43 +69,43 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
     @new_standalone.instance_type_id = InstanceType.secondary_reference.id
     @new_standalone.created_by = @new_standalone.updated_by = "bulk for #{@user}"
     @new_standalone.save!
-    log_to_table("#{Constants::CREATED_INSTANCE} #{@new_standalone.name.full_name}")
+    log("#{Constants::CREATED_INSTANCE} #{@new_standalone.name.full_name}")
   end
 
   def no_def_ref
-    log_to_table("#{Constants::DECLINED_INSTANCE} - no default reference " +
+    log("#{Constants::DECLINED_INSTANCE} - no default reference " +
                  "for #{@loader_name.simple_name} #{@loader_name.id}", @user, @job)
     Constants::DECLINED
   end
 
   def no_source_for_copy
-    log_to_table("#{Constants::DECLINED_INSTANCE} - no source instance to " +
+    log("#{Constants::DECLINED_INSTANCE} - no source instance to " +
                  "copy #{@loader_name.simple_name} #{@loader_name.id}", @user, @job)
     Constants::DECLINED
   end
 
   def stand_already_noted
-    log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
+    log("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "already noted for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
     Constants::DECLINED
   end
 
   def stand_already_for_default_ref
-    log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
+    log("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "exists for def ref for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
     Constants::DECLINED
   end
 
   def using_existing_instance
-    log_to_table("#{Constants::DECLINED_INSTANCE} - using existing " +
+    log("#{Constants::DECLINED_INSTANCE} - using existing " +
                  " instance for #{@loader_name.simple_name} #{@loader_name.id}")
     return Constants::DECLINED
   end
 
   def unknown_option
-    log_to_table(
+    log(
       "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}")
     log_error("Unknown option: ##{@match.id} #{@match.loader_name_id}")
     log_error("#{@match.inspect}")
@@ -123,7 +123,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
     @match.standalone_instance_found = false
     @match.updated_by = "job for #{@user}"
     @match.save!
-    log_to_table("#{Constants::CREATED_INSTANCE} - standalone for " +
+    log("#{Constants::CREATED_INSTANCE} - standalone for " +
                  "##{@match.loader_name_id} #{@loader_name.simple_name}")
   end
 
@@ -139,9 +139,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
     Rails.logger.debug("CopyAndAppend: #{str}")
   end
 
-  def log_to_table(entry)
-    BulkProcessingLog.log("Job ##{@job}: #{entry}","bulk job for #{@user}")
-  rescue => e
-    Rails.logger.error("Couldn't log to table: #{e.to_s}")
+  def log(payload)
+    Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
   end
 end

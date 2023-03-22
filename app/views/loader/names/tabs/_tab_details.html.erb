@@ -9,7 +9,7 @@
 <h5>Metadata</h5>
 <%= render partial: 'detail_line', locals: {info: @loader_name.id, label: 'ID'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.raw_id, label: 'raw ID (from the CSV data)'} %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.seq, label: 'ordering position'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.seq, label: 'seq (for sorted display)'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.record_type, label: 'record type'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.parent_id, label: 'parent_id'} unless @loader_name.parent_id.blank? %>
 <%= render partial: 'detail_line',

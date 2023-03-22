@@ -1,4 +1,6 @@
-#   Copyright 2022 Australian National Botanic Gardens
+# frozen_string_literal: true
+
+#   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
 #
@@ -14,14 +16,19 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# Loader Name entity
-module Loader::Name::AsMakeOneMatch::Constants
-  COUNT_CREATED = [1,0,0]
-  COUNT_DECLINED = [0,1,0]
-  COUNT_ERROR = [0,0,1]
+require "test_helper"
 
-  DECLINED = "<span class='firebrick'>Declined to make preferred match</span>"
-  ERROR = "<span class='red'>Error: failed to make preferred match </span>"
-  CREATED = "<span class='darkgreen'>Made preferred match</span>"
+# Single test per file
+class AdminControllerQAUserCanSeeConfigTest < ActionController::TestCase
+  tests AdminController
+
+  test "qa user should get configuration" do
+    get(:index,
+        params: {},
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["QA"] },
+        xhr: true)
+    assert_response :success, "QA user should see configuration"
+  end
 end
-

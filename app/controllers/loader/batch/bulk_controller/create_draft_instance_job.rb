@@ -17,7 +17,7 @@
 #   limitations under the License.
 
 # Record a preferred matching name for a raw loader name record.
-class Loader::Batch::BulkController::AsCreatePreferredMatchesJob
+class Loader::Batch::BulkController::CreateDraftInstanceJob
   def initialize(batch_id, search_string, authorising_user, job_number)
     @batch = Loader::Batch.find(batch_id)
     @search_string = search_string
@@ -40,26 +40,31 @@ class Loader::Batch::BulkController::AsCreatePreferredMatchesJob
 
   def do_one_loader_name(loader_name)
     @attempts += 1
-    matcher = ::Loader::Name::AsMakeOneMatchTask.new(loader_name,
-                                                     @authorising_user,
-                                                     @job_number)
-    @result = matcher.create
+    creator = ::Loader::Name::MakeOneInstance.new(loader_name,
+                                                  @authorising_user,
+                                                  @job_number)
+    @result = creator.create
     tally_result_parts
   rescue => e
-    entry = "<span class='red'>Error: failed to make preferred match </span>"
-    entry += "##{loader_name.id} #{loader_name.simple_name} - error in do_one_loader_name: #{e.to_s}"
+    entry = "<span class='red'>Error: failed to create instance</span> "
+    entry += "##{loader_name.id} #{loader_name.simple_name} "
+    entry += "- error in do_one_loader_name: #{e.to_s}"
     log(entry)
     @errors += 1
   end
 
-  def log(payload)
+  def xlog(payload)
     entry = "Job ##{@job_number}: #{payload}"
     BulkProcessingLog.log(entry, "Bulk job for #{@authorising_user}")
   end
+  
+  def log(payload)
+    Loader::Batch::Bulk::JobLog.new(@job_number, payload, @authorising_user).write
+  end
 
   def log_start
-    entry = "<b>STARTED</b>: create preferred matches for batch: "
-    entry += "#{@batch.name} loader names matching #{@search_string}"
+    entry = "<b>STARTED</b>: create draft instances for batch: "
+    entry += "#{@batch.name} accepted taxa matching #{@search_string}"
     log(entry)
   end
 
@@ -77,7 +82,7 @@ class Loader::Batch::BulkController::AsCreatePreferredMatchesJob
   end
 
   def debug(s)
-    tag = "Loader::Name::AsCreatePreferredMatchesJob" 
+    tag = "Loader::Name::CreateDraftInstanceJob" 
     Rails.logger.debug("#{tag}: #{s}")
   end
 end

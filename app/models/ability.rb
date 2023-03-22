@@ -68,6 +68,8 @@ class Ability
     can "instances",          "update_reference_id_widgets"
     can "menu",               "help"
     can "menu",               "user"
+    can "menu",               "admin" # config is the only option
+    can "admin",              "index" # allows viewing of the config
   end
 
   def basic_auth_2

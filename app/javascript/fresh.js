@@ -1080,7 +1080,7 @@
   };
 
   loaderBulkShowStatsClicked = function(event, $the_element) {
-    $('#bulk-ops-stats-container').html("<br><span class='green'>Stats are being retrieved...</span><br><br><br>");
+    $('#bulk-ops-stats-container').html("<br><span class='green'>Querying stats...</span><br><br><br>");
     $('#bulk-ops-stats-container').removeClass('hidden');
   };
 }).call(this);

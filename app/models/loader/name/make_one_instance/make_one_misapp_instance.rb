@@ -32,24 +32,24 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
   def failed(error)
     entry = "#{Constants::FAILED_INSTANCE} for #{@loader_name.simple_name} "
     entry += "#{@loader_name.id} - error in do_one_loader_name: #{error}"
-    log_to_table(entry)
+    log(entry)
     Constants::ERROR
   end
 
   def no_relationship_instance_type
-    log_to_table(declined_entry("No relationship instance type id "))
+    log(declined_entry("No relationship instance type id "))
     Constants::DECLINED
   end
 
   def parent_no_standalone
-    log_to_table(declined_entry(
+    log(declined_entry(
       "parent has no standalone instance so cannot proceed")
     )
     Constants::DECLINED
   end
 
   def already_noted
-    log_to_table(declined_entry(
+    log(declined_entry(
         "relationship instance already noted (##{@match.relationship_instance_id})")
     )
     Constants::DECLINED
@@ -57,12 +57,12 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
 
   def misapp_already_attached
     record_misapp_already_there(@user)
-    log_to_table(declined_entry("misapp already there"))
+    log(declined_entry("misapp already there"))
     Constants::DECLINED
   end
 
   def parent_using_existing
-    log_to_table(declined_entry("parent is using existing instance"))
+    log(declined_entry("parent is using existing instance"))
     Constants::DECLINED
   end
 
@@ -113,12 +113,10 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     @match.relationship_instance_id = instance.id
     @match.updated_by = "bulk for #{@user}"
     @match.save!
-    log_to_table("#{Constants::CREATED_INSTANCE} for loader_name ##{@loader_name.id} #{@loader_name.simple_name}")
+    log("#{Constants::CREATED_INSTANCE} for loader_name ##{@loader_name.id} #{@loader_name.simple_name}")
   end
 
-  def log_to_table(entry)
-    BulkProcessingLog.log("Job ##{@job}: #{entry}", @user)
-  rescue => e
-    Rails.logger.error("Couldn't log to table: #{e}")
+  def log(payload)
+    Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
   end
 end

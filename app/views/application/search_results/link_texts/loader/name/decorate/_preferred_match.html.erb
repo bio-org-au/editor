@@ -1,0 +1,51 @@
+<% path = 'application/search_results/link_texts/loader/name' %>
+
+
+<% if search_result.loader_name_matches.first.manually_drafted? %>
+  <span class='flag on-tree-indicator' title='This has been manually drafted'>manually drafted</span>
+<% end %>
+
+<% preferreds = search_result.loader_name_matches.collect{|o| "#{o.name_id}/#{o.instance_id}" } %>
+<span class="flag preferred-name" title="Preferred matches"><%= preferreds.size %>p</span>
+
+<% standalones = search_result.loader_name_matches.select {|lnm| lnm.standalone_instance_id.present?} %>
+<% copy_and_appends = search_result.loader_name_matches.select {|lnm| lnm.copy_append_from_existing_use_batch_def_ref == true} %>
+
+
+<% use_existing_instance = search_result.loader_name_matches.select {|lnm| lnm.use_existing_instance == true} %>
+<% if copy_and_appends.size > 0 %>
+  <span class="flag copy-and-append-count" title="Copy and append from standalone"><%= "#{copy_and_appends.size}c" %></span>
+<% elsif standalones.size > 0 && use_existing_instance.present? %>
+  <%= render partial: "#{path}/decorate/preferred_match/no_cap_but_standalones_and_use_existing_instance",
+    locals: {search_result: search_result, standalones: standalones}
+  %>
+<% end %>
+
+<% use_default_ref = search_result.loader_name_matches.select {|lnm| lnm.using_default_ref?} %>
+<% if use_default_ref.size > 0 %>
+  <span title="Use batch default reference" class="flag use-default-ref"><%= "#{use_default_ref.size}d" %></span>
+<% end %>
+
+<% relationships = search_result.loader_name_matches.select {|orcn| orcn.relationship_instance_id.present?} %>
+<% if relationships.size > 0 %>
+  <span class="flag relationship-statement" title='Relationship instance count'><%= "#{relationships.size}c" %></span>
+<% end %>
+
+<% if standalones.size > 0 %>
+  <span class="flag standalone-statement" title='Standalone instance count'><%= "#{standalones.size}s" %></span>
+<% end %>
+ 
+
+
+<% if search_result.isonym? %>
+  <span class="flag isonym-has-preferred-name" title='Isonymy has prefered name'>Isonym</span>
+<% end %>
+<% if search_result.orth_var? %>
+  <span class="flag orth-var-has-preferred-name" title='Orth. Var. has prefered name'>Orth. Var.</span>
+<% end %>
+
+<% if standalones&.first&.drafted? %>
+  <span class='flag on-tree-indicator' title='Standalone instance has been drafted'>drafted</span>
+<% end %>
+
+

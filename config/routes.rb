@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :batches
   match "/feedback", as: "feedback", to: "feedback#index", via: :get
   match "/ping", as: "ping_service", to: "services#ping", via: :get
+  match "/version", as: "version_service", to: "services#version", via: :get
   match "services", as: "services", to: "services#index", via: :get
 
   resources :name_tag_names, only: [:show, :post, :create, :new]
@@ -412,6 +413,11 @@ Rails.application.routes.draw do
     resources :batches
     match "batches/stats/hide", as: "hide_batch_stats", to: "batches#hide_stats", via: :get
     match "batches/stats/:id", as: "batch_stats", to: "batches#stats", via: :get
+    match "batches/bulk/stats/hide", as: "batches_bulk_hide_stats", to: "batch/bulk#hide_stats", via: :post
+    match "batches/bulk/stats", as: "batches_bulk_stats", to: "batch/bulk#stats", via: :post
+    match "batches/bulk/matches", as: "batches_bulk_create_matches", to: "batch/bulk#create_preferred_matches", via: :post
+    match "batches/bulk/instances", as: "batches_bulk_create_instances", to: "batch/bulk#create_draft_instances", via: :post
+    match "batches/bulk/taxonomy", as: "batches_bulk_add_to_draft_taxonomy", to: "batch/bulk#add_to_draft_taxonomy", via: :post
     match "batches/bulk", as: "batches_bulk", to: "batch/bulk#operation", via: :post
     match "batches/processing/overview", as: "batch_processing_overview", to: "batches#processing_overview", via: :get
     match "batches/processing/overview/hide", as: "batch_processing_overview_hide", to: "batches#hide_processing_overview", via: :get

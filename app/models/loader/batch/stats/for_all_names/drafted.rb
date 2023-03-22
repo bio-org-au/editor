@@ -15,19 +15,25 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-#
-require "test_helper"
 
-# Single test per file
-class AdminControllerQAUserCannotSeeConfigTest < ActionController::TestCase
-  tests AdminController
+# Batch Statistics report
+# Returns a hash
+class Loader::Batch::Stats::ForAllNames::Drafted
+  def initialize(core_search)
+    @core_search = core_search
+  end
 
-  test "qa user should not get configuration" do
-    get(:index,
-        params: {},
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
-                   groups: ["QA"] })
-    assert_response :forbidden, "QA user should not see configuration"
+  def report
+    {
+      accepted_or_excuded_drafted: accepted_or_excluded_drafted,
+    }
+  end
+
+  def accepted_or_excluded_drafted
+    @core_search.where("record_type in ('accepted','excluded')")
+                .joins(:loader_name_matches)
+                .where({ loader_name_match:
+                           { drafted: true } })
+                .count
   end
 end

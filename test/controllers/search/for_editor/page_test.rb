@@ -39,7 +39,7 @@ class SearchControllerForEditorPageTest < ActionController::TestCase
                   true,
                   "Should show User menu link."
     assert_select "a#admin-dropdown-menu-link.dropdown-toggle",
-                  false,
-                  "Should not show Admin menu link."
+                  true,
+                  "Should show Admin menu link."
   end
 end
