@@ -1,41 +1,58 @@
 <h5>Search for names in the batch <%= session[:default_loader_batch_name] %></h5>
 <%= form_tag({controller: "loader/batch/bulk", action: "operation"}, method: "post", remote: true) do %>
-  <div class="width-56-4em">
-    <input name="name_string" id="bulk-operation-string" type="text" value="<%= session[:name_string] %>" class="form-control" required title="bulk operation string for batch work" />
+
+  <div class="width-64em">
+    <input name="name_string"
+           id="bulk-operation-string"
+           type="text"
+           value="<%= session[:name_string] %>"
+           class="form-control"
+           required title="bulk operation string for batch work" />
   </div>
+
   <input name="gui_submit_place" id="gui-submit-place" type="hidden" title="Where this form is, so we can display result messages in the right place" value="global-tab" />
   <input id="loader-bulk-stats-submit" name="submit" type="submit" 
          value="Show Stats" class="btn btn-primary width-16em"
-         title="Show bulk operation statistics" />
+         title="Show bulk operation statistics" formaction="loader/batches/bulk/stats" />
   <input id="loader-bulk-stats-hide" name="submit" type="submit" 
          value="Hide Stats" class="btn btn-primary width-7em hidden"
-         title="Hide bulk operation statistics" />
+         title="Hide bulk operation statistics" formaction="loader/batches/bulk/stats/hide" />
   <input id="loader-bulk-stats-refresh" name="submit" type="submit" 
          value="Refresh Stats" class="btn btn-primary width-8em hidden"
-         title="Hide bulk operation statistics" />
+         title="Refresh bulk operation statistics" formaction="loader/batches/bulk/stats" />
   <input id="create-matches-batch-submit" name="submit" type="submit" 
          value="Create Preferred Matches" class="btn btn-primary width-15em"
-         title="Create preferred matches" />
+         title="Create preferred matches" formaction="loader/batches/bulk/matches" />
   <input id="create-instances-batch-submit" name="submit" type="submit" 
          value="Create Draft Instances" class="btn btn-primary width-15em" 
-         title="Create draft instances" />
-  <% if Rails.configuration.try('allow_orchid_tree_operations') %>
+         title="Create draft instances" formaction="loader/batches/bulk/instances" />
+  <% if Rails.configuration.try('allow_batch_loader_tree_operations') %>
     <% if @working_draft.nil? %>
       <span>(Please choose a draft for taxonomy work)<span>
     <% else %>
-      <input id="add-instances-to-draft-tree-batch-submit"
+      <input id="add-instances-to-draft-taxonomy-batch-submit"
              name="submit"
              type="submit"
-             value="Add to draft tree"
+             value="Add to draft taxonomy"
              class="btn btn-primary width-15em"
              title="Add instance to the draft taxonomy"
+             formaction="loader/batches/bulk/taxonomy"
              disabled="true"/>
       <br>
       <br>
       <br>
       <br>
-      <%#= link_to "Enable Add to draft tree", {controller: 'orchids_batch', action: 'enable_add'}, {id: 'enable-add', class: 'btn btn-primary', remote: true, title: "Enable the Add to tree button", method: :post} %>
-      <%#= link_to "Disable Add to draft tree", {controller: 'orchids_batch', action: 'disable_add'}, {id: 'disable-add', class: 'btn btn-primary', style: 'display: none;', remote: true, title: "Enable the Add to tree button", method: :post} %>
+      <%= link_to "Enable Add to draft taxonomy", 
+        {controller: 'loader/batch/bulk', action: 'enable_add'},
+        {id: 'enable-add', class: 'btn btn-primary',
+         remote: true, title: "Enable the Add to draft taxonomy button",
+         method: :post} %>
+
+       <%= link_to "Disable Add to draft taxonomy",
+         {controller: 'loader/batch/bulk', action: 'disable_add'},
+         {id: 'disable-add', class: 'btn btn-primary', style: 'display: none;',
+          remote: true, title: "Disable the Add to draft taxonomy button",
+          method: :post} %>
     <% end %>
   <% else %>
     Taxonomy operations not allowed by configuration
@@ -52,12 +69,18 @@
 <div id="create-preferred-matches-error-message-container" class="error-container message-container"></div>
 <div id="create-draft-instances-info-message-container" class="message-container"></div>
 <div id="create-draft-instances-error-message-container" class="error-container message-container"></div>
-<div id="add-instances-to-tree-info-message-container" class="message-container"></div>
-<div id="add-instances-to-tree-error-message-container" class="error-container message-container"></div>
+<div id="add-to-draft-taxonomy-info-message-container" class="message-container"></div>
+<div id="add-to-draft-taxonomy-error-message-container" class="error-container message-container"></div>
 <br>
 <%= link_to "[clear messages]", orchids_batch_clear_path, class:"hidden message-clearer with-underline", remote: true, title: "Clear the messages" %> 
 <br>
 <%= link_to "Recent logs", search_path(query_string: "latest:",query_target: 'bulk_processing_logs'), title: "See logs", class: "with-underline" %> 
+<br>
+<%= link_to(%Q(Show search results for: #{merge_family_search_directive("bulk-ops: #{session[:name_string]}")}),
+            search_path(query_string: merge_family_search_directive("bulk-ops: #{session[:name_string]}"),
+                        query_target: 'Loader names'),
+            class: 'with-underline',
+            title: 'Search loader name') unless session[:name_string].blank? %>
 <hr class="dark">
 <div id="bulk-ops-stats-container" class="">
 </div>
@@ -77,3 +100,4 @@
   <li/><b>Not</b> wildcarded, but you can add wildcards
 </ul>
 </div>
+

@@ -1,0 +1,8 @@
+$('.main-body-container').addClass('hidden');
+$('#search-result-details').addClass('hidden');
+$('li.active').removeClass('active');
+$('li.dropdown.open').removeClass('open');
+$('ul#results-tabset li').removeClass('active');
+$('#help-info-panel-container').removeClass('hidden');
+$('#help-info-panel-container').html("<%= j render(:partial => 'name_rules') %>");
+

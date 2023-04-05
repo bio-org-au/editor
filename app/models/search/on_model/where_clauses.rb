@@ -86,6 +86,7 @@ class Search::OnModel::WhereClauses
     when 4 then supply_token_4_times(rule, rule.processed_value)
     when 5 then supply_token_5_times(rule, rule.processed_value)
     when 6 then supply_token_6_times(rule, rule.processed_value)
+    when 7 then supply_token_7_times(rule, rule.processed_value)
     else
       raise "Where clause value frequency: #{frequency}, is too high."
     end
@@ -93,42 +94,31 @@ class Search::OnModel::WhereClauses
 
   def supply_token_twice(rule, token)
     @sql = @sql.where(rule.predicate,
-                      token,
-                      token)
-  end
+                      token, token) end
 
   def supply_token_thrice(rule, token)
     @sql = @sql.where(rule.predicate,
-                      token,
-                      token,
-                      token)
+                      token, token, token)
   end
 
   def supply_token_4_times(rule, token)
     @sql = @sql.where(rule.predicate,
-                      token,
-                      token,
-                      token,
-                      token)
+                      token, token, token, token)
   end
 
   def supply_token_5_times(rule, token)
     @sql = @sql.where(rule.predicate,
-                      token,
-                      token,
-                      token,
-                      token,
-                      token)
+                      token, token, token, token, token)
   end
 
   def supply_token_6_times(rule, token)
     @sql = @sql.where(rule.predicate,
-                      token,
-                      token,
-                      token,
-                      token,
-                      token,
-                      token)
+                      token, token, token, token, token, token)
+  end
+
+  def supply_token_7_times(rule, token)
+    @sql = @sql.where(rule.predicate,
+                      token, token, token, token, token, token, token)
   end
 
   def apply_predicate_for_token(rule, token)
@@ -141,6 +131,7 @@ class Search::OnModel::WhereClauses
     when 4 then supply_token_4_times(rule, token)
     when 5 then supply_token_5_times(rule, token)
     when 6 then supply_token_6_times(rule, token)
+    when 7 then supply_token_7_times(rule, token)
     else
       raise "Where-clause value frequency (#{rule.value_frequency}) too high."
     end

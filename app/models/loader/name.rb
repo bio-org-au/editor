@@ -178,6 +178,7 @@ class Loader::Name < ActiveRecord::Base
     ::Name.where(
       ["simple_name = ? or full_name = ?",
        simple_name, simple_name])
+        .where(duplicate_of_id: nil)
         .joins(:name_type).where(name_type: {scientific: true})
         .order("simple_name, name.id")
   end
@@ -239,6 +240,7 @@ class Loader::Name < ActiveRecord::Base
   # Also, no requirement for scientific name type
   def matches_tweaked_for_phrase_name
     ::Name.where(["regexp_replace(simple_name,'[)(]','','g') = regexp_replace(regexp_replace(?,' [A-z][A-z]* Herbarium','','i'),'[)(]','','g')", simple_name])
+      .where(duplicate_of_id: nil)
       .order("simple_name, name.id")
   end
 
@@ -248,7 +250,9 @@ class Loader::Name < ActiveRecord::Base
 
   # No requirement for scientific name type
   def matches_tweaked_for_cultivar
-    ::Name.where(simple_name: simple_name).order("simple_name, name.id")
+    ::Name.where(simple_name: simple_name)
+          .where(duplicate_of_id: nil)
+          .order("simple_name, name.id")
   end
 
   def synonym_without_synonym_type?
@@ -298,11 +302,10 @@ class Loader::Name < ActiveRecord::Base
     partly == 'p.p.'
   end
 
-  # This search emulates the default search for Loader Name, the 
-  # name-string: search.
-  def self.name_string_search(name_string)
+  # This is different to the default name search
+  def self.bulk_operations_search(name_string)
     ns = name_string.downcase.gsub(/\*/,'%')
-    Loader::Name.where([ "((lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) ) or (parent_id in (select id from loader_name where (lower(simple_name) like ? or lower(simple_name) like 'x '||? or lower(simple_name) like '('||?) ))",
+    Loader::Name.where([ Constants::BULK_OPERATIONS_WHERE_FRAG,
                          ns, ns, ns, ns, ns, ns])
   end
 
@@ -315,7 +318,10 @@ class Loader::Name < ActiveRecord::Base
   def self.create(params, username)
     loader_name = Loader::Name.new(params)
     loader_name.created_manually = true
-    loader_name.loader_batch_id = self.find(params[:parent_id]).loader_batch_id if loader_name.loader_batch_id.blank?
+    if loader_name.loader_batch_id.blank?
+      loader_name.loader_batch_id = self.find(params[:parent_id])
+                                        .loader_batch_id
+    end
     loader_name.doubtful = false
     loader_name.full_name = loader_name.simple_name
     if loader_name.save_with_username(username)
@@ -339,25 +345,24 @@ class Loader::Name < ActiveRecord::Base
     children.empty? && loader_name_matches.empty?
   end
 
-  def new_child
+  def new_child(base_seq = self.seq)
     loader_name = Loader::Name.new
     loader_name.parent_id = id
-    loader_name.simple_name = nil
-    loader_name.full_name = nil
+    loader_name.simple_name = loader_name.full_name = nil
     loader_name.family = family
-    loader_name.seq = seq + 1
+    loader_name.seq = base_seq + 1
     loader_name.created_manually = true
     loader_name
   end
 
-  def new_synonym
-    loader_name = new_child
+  def new_synonym(base_seq: self.seq)
+    loader_name = new_child(base_seq)
     loader_name.record_type = 'synonym'
     loader_name
   end
 
-  def new_misapp
-    loader_name = new_child
+  def new_misapp(base_seq: self.seq)
+    loader_name = new_child(base_seq)
     loader_name.record_type = 'misapplied'
     loader_name
   end

@@ -26,21 +26,29 @@ class Ldap  < ActiveType::Object
 
   validate :validate_user_credentials
 
+  HOST = Rails.configuration.try('ldap_host')
+  # e.g. ldap_host = "ldaps.biodiversity.org.au"
+  PORT = Rails.configuration.try('ldap_port')
+  BASE = Rails.configuration.try('ldap_base')
+  # e.g. Rails.configuration.ldap_base = "ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
+  GROUPS_PATH = Rails.configuration.try('ldap_groups')
+  # e.g. ldap_groups = "ou=groups,cn=dev,dc=nsl,dc=bio,dc=org,dc=au"
+  USERID_FIELD = Rails.configuration.try('ldap_userid_field') || 'samAccountName'
+  # e.g. ldap_userid_field = "uid"            (openldap)
+  # e.g. ldap_userid_field = "samAccountName" (active directory)
+  VERIFY_CERT = Rails.configuration.try('ldap_verify_certificate')
+  USERS = Rails.configuration.try('ldap_users')
+  # e.g. ldap_users: "ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
+  ADMIN_USERNAME = Rails.configuration.try('ldap_admin_username')
+  # e.g. ldap_admin_username = "cn=NSL Admin,ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
+  ADMIN_PASSWORD = Rails.configuration.try('ldap_admin_password')
+  GENERIC_USERS = Rails.configuration.try('ldap_generic_users')
+  # e.g. ldap_generic_users: "cn=Users,dc=cloud,dc=biodiversity,dc=org,dc=au"
+  GROUP_FILTER_REGEX = Rails.configuration.try('ldap_group_filter_regex') 
+  # Rails.configuration.group_filter_regex = 'ou=dev,ou=nsl'
+
   def users_groups
     @groups
-  end
-
-  # Users full name.
-  def user_full_name
-    Rails.logger.info("Ldap#user_full_name")
-    Ldap.new.admin_search(Rails.configuration.ldap_users,
-                          "uid",
-                          username,
-                          "cn").first || username
-  rescue => e
-    Rails.logger.error("Error in Ldap#user_full_name for username: #{username}")
-    Rails.logger.error(e.to_s)
-    return username
   end
 
   def user_full_name
@@ -56,16 +64,16 @@ class Ldap  < ActiveType::Object
   end
 
   def active_directory_user
-    @active_directory_user || false
+    true
   end
 
   def openldap_user
-    @openldap_user || false
+    false
   end
 
   # Known groups
   def self.groups
-    Ldap.new.admin_search(Rails.configuration.ldap_groups,
+    Ldap.new.admin_search(GROUPS_PATH,
                           "objectClass",
                           "groupOfUniqueNames",
                           "cn")
@@ -86,19 +94,20 @@ class Ldap  < ActiveType::Object
 
   # See https://github.com/ruby-ldap/ruby-net-ldap/issues/290
   def change_password(uid,new_password,salt)
-    if Rails.configuration.try('ldap_via_active_directory')
-      change_password_active_directory(uid,new_password,salt)
-    else
-      change_password_openldap(uid,new_password,salt)
-    end
-  end
-
-  def change_password_openldap(uid,new_password,salt)
     conn = admin_connection
-    digest = Digest::SHA1.digest("#{new_password}#{salt}")
-    person = conn.search(base: Rails.configuration.ldap_users, filter: Net::LDAP::Filter.eq("uid",uid))
-    new_hashed_password = "{SSHA}"+Base64.encode64(digest+salt).chomp!
-    conn.replace_attribute(person.first.dn, 'userPassword', new_hashed_password)
+    ops = [ [ :replace, :unicodePwd, unicode_password(new_password) ] ]
+    person = conn.search(base: USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD,uid))
+    if person.blank?
+      person = conn.search(base: GENERIC_USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD,uid))
+    end
+    Rails.logger.debug("person.first.dn: #{person.first.dn}")
+    if conn.replace_attribute(person.first.dn, 'unicodePwd', unicode_password(new_password))
+      Rails.logger.debug('password changed!')
+    else
+      Rails.logger.error('password NOT changed!')
+      Rails.logger.error(conn.get_operation_result.error_message)
+      raise "#{conn.get_operation_result.error_message}"
+    end
   end
 
   def verify_current_password
@@ -106,77 +115,48 @@ class Ldap  < ActiveType::Object
   end
 
   def admin_connection
-    if Rails.configuration.try('ldap_via_active_directory')
-      admin_connection_active_directory
-    else
-      admin_connection_openldap
-    end
-  end
-
-  def admin_connection_openldap
-    Rails.logger.info("Connecting to LDAP")
-    ldap = Net::LDAP.new
-    Rails.logger.info("Rails.configuration.ldap_host: #{Rails.configuration.ldap_host}")
-    Rails.logger.info("Rails.configuration.ldap_port: #{Rails.configuration.ldap_port}")
-    Rails.logger.info("Rails.configuration.ldap_admin_username: #{Rails.configuration.ldap_admin_username}")
-    ldap.port = Rails.configuration.ldap_port
-    ldap.host = Rails.configuration.ldap_host
-    ldap.auth Rails.configuration.ldap_admin_username,
-              Rails.configuration.ldap_admin_password
-    unless ldap.bind
-      Rails.logger.error("LDAP error: #{ldap.get_operation_result.error_message}")
-      raise "Failed admin connection!"
-    end
-    Rails.logger.info("Admin connection to LDAP succeeded")
-    ldap
-  end
-
-  def admin_connection_active_directory
     Rails.logger.info("Connecting to Active Directory")
-    Rails.logger.info("ldap_host: #{Rails.configuration.ldap_host}")
-    Rails.logger.info("ldap_port: #{Rails.configuration.ldap_port}")
-    Rails.logger.info("ldap_admin_username: #{Rails.configuration.ldap_admin_username}")
-    ldap = Net::LDAP.new  :host => Rails.configuration.ldap_host,
-                      :port => Rails.configuration.ldap_port,
-                      :base => Rails.configuration.ldap_base,
-                      :encryption => {:method => :simple_tls,
-                                      :tls_options => { :verify_mode => OpenSSL::SSL::VERIFY_NONE }
-                              },
-                      :auth => {
-                        :method => :simple,
-                        :username => Rails.configuration.ldap_admin_username,
-                        :password => Rails.configuration.ldap_admin_password
-                      }
+    ldap = Net::LDAP.new  :host => HOST,
+        :port => PORT,
+        :base => BASE,
+        :encryption => {:method => :simple_tls,
+                        :tls_options => tls_options },
+        :auth => {
+          :method => :simple,
+          :username => ADMIN_USERNAME,
+          :password => ADMIN_PASSWORD
+        }
     unless ldap.bind
-      Rails.logger.error("LDAP error: #{ldap.get_operation_result.error_message}")
+      Rails.logger.error("LDAP: #{ldap.get_operation_result.error_message}")
       raise "Failed admin connection!"
     end
-    Rails.logger.info("Admin connection to LDAP succeeded")
+    Rails.logger.info("Admin connection to AD succeeded")
     ldap
   end
 
   private
 
-  def validate_user_credentials
-    if Rails.configuration.try('ldap_via_active_directory')
-      validate_via_active_directory
+  # By default verify the certificate
+  # Only if VERIFY_CERT is explicitly false do we avoid verifying cert
+  # i.e. if nil or true we verify
+  def tls_options
+    case VERIFY_CERT
+    when false
+      { :verify_mode => OpenSSL::SSL::VERIFY_NONE }
     else
-      validate_via_ldap
+      # verify
+      {}
     end
   end
 
-  def validate_via_active_directory
+  def validate_user_credentials
     bind_as = admin_connection.bind_as(
-      base: Rails.configuration.ldap_users,
-      filter: Net::LDAP::Filter.eq('samAccountName', username),
+      base: USERS,
+      filter: Net::LDAP::Filter.eq(USERID_FIELD, username),
       password: password
     )
     if bind_as
-      @display_name = bind_as.first[:displayname].first
-      @groups = bind_as.first[:memberof].select {|x| x.match(/#{Rails.configuration.group_filter_regex}/i)}.collect {|x| x.split(',').first.split('=').last}
-      @user_cn = bind_as.first[:dn].first
-      @active_directory_user = true
-      @openldap_user = false
+      set_bind_as_instance_variables(bind_as)
       @generic_active_directory_user = false
       return true
     else
@@ -188,23 +168,25 @@ class Ldap  < ActiveType::Object
     errors.add(:connection, "connection failed with exception")
   end
 
+  def set_bind_as_instance_variables(bind_as)
+    @display_name = bind_as.first[:displayname].first
+    @groups = bind_as.first[:memberof].select {|x| x.match(/#{GROUP_FILTER_REGEX}/i)}.collect {|x| x.split(',').first.split('=').last}
+    @user_cn = bind_as.first[:dn].first
+  end
+
   def validate_generic_user_in_active_directory
     bind_as = admin_connection.bind_as(
-      base: Rails.configuration.ldap_generic_users,
-      filter: Net::LDAP::Filter.eq('samAccountName', username),
+      base: GENERIC_USERS,
+      filter: Net::LDAP::Filter.eq(USERID_FIELD, username),
       password: password
     )
     if bind_as
-      @display_name = bind_as.first[:displayname].first
-      @groups = bind_as.first[:memberof].select {|x| x.match(/#{Rails.configuration.group_filter_regex}/i)}.collect {|x| x.split(',').first.split('=').last}
-      @user_cn = bind_as.first[:dn].first
-      @active_directory_user = true
-      @openldap_user = false
+      set_bind_as_instance_variables(bind_as)
       @generic_active_directory_user = true
       return true
     else
       errors.add(:connection, "failed")
-      Rails.logger.error("Validating alt user credentials failed for username: #{username} against AD samAccountName.")
+      Rails.logger.error("Validating alt user credentials failed for username: #{username} against AD #{USERID_FIELD}.")
       return false
     end
   rescue => e
@@ -213,33 +195,9 @@ class Ldap  < ActiveType::Object
     errors.add(:connection, "connection failed with exception")
   end
   
-  def validate_via_ldap
-    result = admin_connection.bind_as(
-      base: Rails.configuration.ldap_users,
-      filter: Net::LDAP::Filter.eq('uid', username),
-      password: password
-    )
-    if result
-      @display_name = ldap_full_name(result)
-      @groups = ldap_user_groups
-      @user_cn = 'not needed for openldap'
-      @openldap_user = true
-      @active_directory_user = false
-      @generic_active_directory_user = false
-      return true
-    else
-      errors.add(:connection, "failed")
-      Rails.logger.error("Validating user credentials failed for username: #{username} against LDAP uid.")
-      return false
-    end
-  rescue => e
-    Rails.logger.error("Exception in validate_user_credentials")
-    Rails.logger.error(e.to_s)
-    errors.add(:connection, "connection failed with exception")
-  end
-
   def ldap_full_name(result)
-    result.first[:dn].first.split(',').select {|x| x =~ /cn=/}.first.split('=').second
+    result.first[:dn].first.split(',')
+      .select {|x| x =~ /cn=/}.first.split('=').second
   rescue => e
     Rails.logger.error("Error getting user full_name from LDAP")
     Rails.logger.error(e.to_s)
@@ -248,31 +206,14 @@ class Ldap  < ActiveType::Object
 
   # Groups user is assigned to.
   def ldap_user_groups
-    Rails.logger.info("Ldap#users_groups:" + Rails.configuration.ldap_groups)
-    Ldap.new.admin_search(Rails.configuration.ldap_groups,
+    Rails.logger.info("ldap_user_groups start; GROUPS_PATH: #{GROUPS_PATH}")
+    Ldap.new.admin_search(GROUPS_PATH,
                           "uniqueMember",
                           "uid=#{username}", "cn")
   rescue => e
-    Rails.logger.error("Error in Ldap#users_groups for username: #{username}")
+    Rails.logger.error("Error in Ldap#ldap_user_groups for username: #{username}")
     Rails.logger.error(e.to_s)
     return ["error getting groups"]
-  end
-
-  def change_password_active_directory(uid,new_password,salt)
-    conn = admin_connection
-    ops = [ [ :replace, :unicodePwd, unicode_password(new_password) ] ]
-    person = conn.search(base: Rails.configuration.ldap_users, filter: Net::LDAP::Filter.eq("samAccountName",uid))
-    if person.blank?
-      person = conn.search(base: Rails.configuration.ldap_generic_users, filter: Net::LDAP::Filter.eq("samAccountName",uid))
-    end
-    Rails.logger.debug("person.first.dn: #{person.first.dn}")
-    if conn.replace_attribute(person.first.dn, 'unicodePwd', unicode_password(new_password))
-      Rails.logger.debug('password changed!')
-    else
-      Rails.logger.error('password NOT changed!')
-      Rails.logger.error(conn.get_operation_result.error_message)
-      raise "#{conn.get_operation_result.error_message}"
-    end
   end
 
   def unicode_password(clear_text_password)

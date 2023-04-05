@@ -9,7 +9,7 @@
      data-toggle="dropdown">
     <%= icon('user') %>&nbsp;<%= @current_user.full_name %> <span class="caret"></span></a>
   <ul id="user-dropdown-menu" class="dropdown-menu" role="menu">
-    <% if @current_user.groups.size > 0 %>
+    <% if @current_user.groups.present? && @current_user.groups.size > 0 %>
       <li class="dropdown-submenu">
         <a tabindex="-1" 
            href="#"

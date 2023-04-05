@@ -1,6 +1,6 @@
 
-<%= link_to("Show search results #{params['name_string']}",
-            search_path(query_string: "#{params['name_string']}",
+<%= link_to(%Q(Show search results for: #{merge_family_search_directive("bulk-ops: #{params['name_string']}")}),
+            search_path(query_string: merge_family_search_directive("bulk-ops: #{params['name_string']}"),
                         query_target: 'Loader names'),
             class: 'with-underline',
             title: 'Search loader name') %>

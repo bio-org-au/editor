@@ -33,13 +33,6 @@
 <% end %>
 
     </ul>
-  <li>Instance: #<%= loader_name_match.instance %>
-  <li>rel instance type id: <%= loader_name_match.relationship_instance_type_id %>
-  <li><%= created_by_whom_and_when(loader_name_match).html_safe %>
-  <li><%= updated_by_whom_and_when(loader_name_match).html_safe %>
-  <li>
-  <%= loader_name_match.inspect.gsub(/,/,'<br>').html_safe %>
-  <br>
 <% end %>
 </ol>
 <%= render partial: 'loader/names/tabs/manually_drafted' %>

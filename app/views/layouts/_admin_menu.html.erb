@@ -1,10 +1,19 @@
                   
 <li class="dropdown">
-  <a href="#" id="admin-dropdown-menu-link" class="dropdown-toggle" tabindex="5" <%= 'active' if params[:controller].match(/admin/) %> data-toggle="dropdown">Admin<span class="caret"></span></a>
+  <a href="#"
+     id="admin-dropdown-menu-link" 
+     class="dropdown-toggle"
+     tabindex="5"
+     <%= 'active' if params[:controller].match(/admin/) %>
+     data-toggle="dropdown">Admin<span class="caret"></span></a>
   <ul id="admin-dropdown-menu" class="dropdown-menu" role="menu"> 
-
-    <li class="" role="presentation"> <%= link_to("Configuration", admin_path, title:"Load the page showing configuration.") %> </li>
-
+    <li class=""
+        role="presentation">
+        <%= link_to("Configuration",
+                    admin_path,
+                    title:"Load the page showing configuration.",
+                    remote: true) %>
+    </li>
   </ul>
 </li>
 

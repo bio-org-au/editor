@@ -7,7 +7,7 @@ module NameNamable
   def apni_json
     logger.info("apni_json; service call unless cached...")
     Rails.cache.fetch("#{cache_key}/in_apni", expires_in: 1.minutes) do
-      JSON.load(open(Name::AsServices.in_apni_url(id), "Accept" => "text/json", read_timeout: 1))
+      JSON.load(URI.open(Name::AsServices.in_apni_url(id), "Accept" => "text/json", read_timeout: 1))
     end
   rescue => e
     logger.error("Name#apni_json error: #{e}")
@@ -25,7 +25,7 @@ module NameNamable
 
   def apni_family_json
     Rails.cache.fetch("#{cache_key}/apni_info", expires_in: 1.minutes) do
-      JSON.load(open(Name::AsServices.apni_family_url(id), "Accept" => "text/json", read_timeout: 1))
+      JSON.load(URI.open(Name::AsServices.apni_family_url(id), "Accept" => "text/json", read_timeout: 1))
     end
   end
 
@@ -41,7 +41,7 @@ module NameNamable
     logger.debug("get_names_json start for id: #{id}")
     logger.debug("Name::AsServices.name_strings_url(id) for
                  id: #{id}: #{Name::AsServices.name_strings_url(id)}")
-    JSON.load(open(Name::AsServices.name_strings_url(id), "Accept" => "text/json"))
+    JSON.load(URI.open(Name::AsServices.name_strings_url(id), "Accept" => "text/json"))
   end
 
   # Use update_columns to avoid validation errors, stale object
@@ -71,6 +71,9 @@ module NameNamable
   def set_names!
     names_json = get_names_json
     reload
+    Rails.logger('--------------------------')
+    Rails.logger.debug(names_json.inspect)
+    Rails.logger('--------------------------')
     self.full_name = names_json["result"]["fullName"]
     self.full_name_html = names_json["result"]["fullMarkedUpName"]
     self.simple_name = names_json["result"]["simpleName"]

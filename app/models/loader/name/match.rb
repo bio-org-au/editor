@@ -166,5 +166,9 @@ class Loader::Name::Match < ActiveRecord::Base
     self.standalone_instance_found ||
     self.standalone_instance_created
   end
+
+  def excluded?
+    loader_name.excluded? || loader_name.parent&.excluded?
+  end
 end
 

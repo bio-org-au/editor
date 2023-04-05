@@ -36,6 +36,54 @@ class Search::Loader::Name::FieldRule
        and lower(sibling.simple_name) like ?)",
            trailing_wildcard: true,
            order: "seq"},
+    "bulk-ops:" => { where_clause: "(
+      (
+        (
+          lower(simple_name) like ?
+          or lower(simple_name) like 'x '||? 
+          or lower(simple_name) like '('||?)
+        )
+        and record_type in ('accepted', 'excluded')
+      ) 
+    or 
+      (parent_id in 
+        (select id 
+           from loader_name 
+          where (
+                  (
+                    lower(simple_name) like ?
+                    or lower(simple_name) like 'x '||?
+                    or lower(simple_name) like '('||?) 
+                  )
+                  and record_type in ('accepted', 'excluded')
+                )
+        )",
+           order: "seq"},
+    "bulk-ops-family:" => { where_clause: "(
+      ( lower(simple_name) like ? and rank = 'family')
+    or
+      (
+        (
+          lower(family) like ?
+          or lower(family) like 'x '||? 
+          or lower(family) like '('||?)
+        )
+        and record_type in ('accepted', 'excluded')
+      ) 
+    or 
+      (parent_id in 
+        (select id 
+           from loader_name 
+          where (
+                  (
+                    lower(family) like ?
+                    or lower(family) like 'x '||?
+                    or lower(family) like '('||?) 
+                  )
+                  and record_type in ('accepted', 'excluded')
+                )
+        )",
+           order: "seq"},
     "simple-name-as-loaded:" => { where_clause: "(lower(simple_name_as_loaded) like ?)
         or exists (
         select null
@@ -422,28 +470,30 @@ having count(*) > 2
           where name.name_type_id       = nt.id
      and nt.scientific))",
                          order: "seq"},
-         "name-match-no-primary:" => { where_clause: "0 < (
-      select count(*)
-        from name
-      where loader_name.simple_name          = name.simple_name
-        and exists (
-          select null
-            from name_Type nt
-          where name.name_type_id                = nt.id
-            and nt.scientific
-            and not exists (
-              select null
-                from instance
-                join instance_type
-                  on instance.instance_type_id        = instance_type.id
-              where instance_type.primary_instance
-     and name.id                          = instance.name_id)))
-     AND ( not exists (
-      select null
-        from loader_name_match
-   where loader_name_match.loader_name_id = loader_name.id )) ",
-                         order: "seq"},
-          "name-match-eq:" => { where_clause: "? = (
+   "name-match-no-primary:" => { where_clause: "
+   record_type != 'heading'
+   and exists ( select null
+             from name
+                  join name_type nty
+                  on name.name_type_id = nty.id
+                where loader_name.simple_name = name.simple_name
+                  and nty.name = 'scientific'
+                )
+   and not exists (
+                   select null
+                     from name
+                          join instance
+                          on name.id = instance.name_id
+                          join instance_type ity
+                          on instance.instance_type_id = ity.id
+                          join name_type nty
+                          on name.name_type_id = nty.id
+                    where loader_name.simple_name = name.simple_name
+                      and ity.primary_instance = true
+                      and nty.name = 'scientific'
+          )",
+      order: "seq"},
+    "name-match-eq:" => { where_clause: "? = (
       select count(*)
         from name
         where loader_name.simple_name = name.simple_name
@@ -569,8 +619,10 @@ having count(*)                     >  1
                        leading_wildcard: true,
                        trailing_wildcard: true,
                        order: "seq"},
+    "families:"     => { where_clause: "lower(rank) = 'family'",
+                         order: "seq"},
     "rank:"         => { where_clause: "lower(rank) like ?",
-                                      order: "seq"},
+                         order: "seq"},
     "not-rank:"         => { where_clause: "lower(rank) not like ?",
                                       order: "seq"},
     "no-rank:"         => { where_clause: "rank is null",

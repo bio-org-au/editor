@@ -69,15 +69,13 @@
                     remote: true,
                     title: "Reports" %>
       </li>
-      <% if @working_draft %>
-        <li role="presentation" class="">
+      <li id="taxonomy-report-tab" role="presentation" class="<%= 'hidden' unless @working_draft %>">
           <%= link_to "Draft Taxonomy Reports",
                       trees_reports_path,
                       class: "main-body-tab-link",
                       remote: true,
                       title: "Reports on the current draft taxonomy" %>
-        </li>
-      <% end %>
+      </li>
 
       <% if can?("batches", :index) %>
       <li role="presentation" class="">

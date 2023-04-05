@@ -121,7 +121,7 @@ class Search::ParsedRequest
     "orchid_processing_logs" => " logged_at desc",
     "loader batch" => "name:",
     "batch stack" => "name:",
-    "loader name" => "scientific-name:",
+    "loader name" => "simple-name:",
     "batch review" => "name:",
     "batch reviewer" => "name:",
     "batch review period" => "name:",
@@ -161,7 +161,7 @@ class Search::ParsedRequest
     "loader name" => true,
   }.freeze
 
-  ADDITIONAL_NON_PREPROCESSED_TARGETS = ["review",
+  ADDITIONAL_NON_PREPROCESSED_TARGETS = ["activity",
                                          "references_shared_names",
                                          "references_with_novelties",
                                          "references_names_full_synonymy",
@@ -370,7 +370,6 @@ class Search::ParsedRequest
       @apply_default_query_scope = false
       @original_query_target = @query_target
     else
-      debug("@params: #{@params.inspect}")
       if Rails.configuration.try(:batch_loader_aware)
         unless loader_batch_preprocessing?
           raise "Unknown query target: #{@query_target}"

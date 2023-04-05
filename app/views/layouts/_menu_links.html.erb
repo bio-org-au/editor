@@ -9,7 +9,7 @@
   <li> <%= render partial: 'layouts/user_menu' %> </li>
 <% end %>
 <% if can? 'menu', 'tree' %>
-  <li> <%= render partial: 'layouts/taxonomy_menu' %> </li>
+  <li id="taxonomy-menu-main" class="dropdown"> <%= render partial: 'layouts/taxonomy_menu' %> </li>
 <% end %>
 <% if can? 'menu', 'admin' %>
   <li> <%= render partial: 'layouts/admin_menu' %> </li>

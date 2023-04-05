@@ -21,11 +21,32 @@ class PasswordsController < ApplicationController
   before_action :hide_details, :empty_search
 
   def edit
-    @password = Password.new
+    if session[:generic_active_directory_user]
+      render :edit_error
+    else
+      edit_inner
+    end
+  rescue => e
+    logger.error("Password change error: #{e.to_s}")
+    render :edit_error
   end
 
   def update
-    Rails.logger.debug("Now in change_password")
+    if session[:generic_active_directory_user]
+      render :edit_error
+    else
+      update_inner
+    end
+  end
+
+  private
+
+  def edit_inner
+    @password = Password.new
+    render :edit
+  end
+
+  def update_inner
     @password = Password.new
     @password.current_password = params[:password]["current_password"]
     @password.new_password = params[:password]["new_password"]
@@ -38,7 +59,7 @@ class PasswordsController < ApplicationController
       render :edit
     end
   rescue => e
+    Rails.logger.error(e.to_s)
     render :edit
   end
 end
-

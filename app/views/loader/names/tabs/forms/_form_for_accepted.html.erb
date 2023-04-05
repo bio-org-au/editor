@@ -19,6 +19,12 @@
     <% end %>
 
     <br>
+
+    <div class="form-group">
+      <label for="seq">Seq*</label>
+      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
+    </div>
+
     <div class="form-group">
       <label for="simple_name">Simple Name*</label>
       <%= f.text_field :simple_name, class: 'form-control give-me-focus', required: true, title: "Enter simple name - the value of simple name, as loaded is retained in simple name as loaded", tabindex: increment_tab_index, autofocus: true %>
@@ -73,26 +79,32 @@
     </div>
 
     <div class="form-group">
-      <label for="seq">Seq*</label>
-      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the taxon in the correct alphabetical/hierarchical order', tabindex: increment_tab_index}) %>
-    </div>
-
-    <div class="form-group">
       <label for="notes">Notes</label>
       <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
     </div>
+
     <%= divider %>
+
     <% unless loader_name.id.blank? %>
-      <div class="form-group">
-        <br>
-      <label class="form-check-label">
-        <%= f.check_box(:no_further_processing,
-                        {class: 'xform-control', title: 'Prevent any further automated processing of this record or of its synonyms.',
-                         tabindex: increment_tab_index}) %>
-        Stop further bulk processing of this record or of its synonyms
-      </label>
-      </div>
+      <% unless loader_name.preferred_match.blank? %>
+        <% if loader_name.preferred_match.standalone_instance? %>
+          <% disabled = true %>
+          Note: this record already has an associated instance - you cannot switch off bulk processing while that instance is attached.
+        <% else %>
+          <% disabled = false %>
+        <% end %>
+
+        <div class="form-group">
+        <label class="form-check-label">
+          <%= f.check_box(:no_further_processing, {class: 'xform-control',
+                                                   disabled: disabled,
+                                                   title: 'Prevent further bulk processing of this record and of its synonyms'}) %>
+                                                 Stop further bulk processing of this record and of its synonyms
+        </label>
+        </div>
+      <% end %>
     <% end %>
+
     <div class="form-group align-right">
       <% if loader_name.id.blank? %>
         <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", data: {element_id: "new-loader-name-#{params[:random_id]}"}, 

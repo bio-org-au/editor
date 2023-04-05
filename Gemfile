@@ -1,17 +1,13 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.10'
+ruby '3.1.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1.7'
 gem 'pg', '~> 1.1'
 # Use Puma as the app server
 gem 'puma', '>= 5.5.1'
-# Use SCSS for stylesheets
-# gem 'sass-rails', '>= 6'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-# gem 'sassc-rails'
 gem 'webpacker', '~> 5.x'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
@@ -30,7 +26,6 @@ group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'awesome_print'
-  # gem 'sass-rails', '>= 6'
 end
 
 group :test do
@@ -46,7 +41,7 @@ group :test do
     gem "minitest-rails"
     gem "minitest-reporters"
     gem "launchy"
-    gem "mocha", "~> 1.1.0"
+    gem "mocha",  "~> 1.1.0"
     # NoMethodError: assert_template has been extracted to a gem. To continue using it, add:
     gem 'rails-controller-testing'
 end
@@ -62,11 +57,9 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Added
-gem 'warbler', '~> 2.0.5'
 gem "strip_attributes"
 gem "cancancan"
 gem "active_type"
-# gem "bootstrap-sass"
 gem "font-awesome-rails"
 gem "net-ldap"
 gem "composite_primary_keys"
@@ -84,3 +77,8 @@ gem "simple_calendar", "~> 2.0"
 gem "addressable", ">= 2.8.0"
 
 gem 'simplecov', require: false, group: :test
+
+gem "standardrb", group: [:development, :test]
+gem "standard", group: [:development, :test]
+
+

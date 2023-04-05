@@ -1,1 +1,7 @@
-$("#classifications-menu").html("<%= escape_javascript(h(render partial: 'trees/drafts_menu')) %>");
+$("#taxonomy-menu-main").html("<%= escape_javascript(h(render partial: 'layouts/taxonomy_menu')) %>").click();
+<% if @working_draft %>
+  $("#taxonomy-report-tab").removeClass('hidden');
+<% else %>
+  $("#taxonomy-report-tab").addClass('hidden');
+  $("#tree-reports-container").addClass('hidden');
+<% end %>

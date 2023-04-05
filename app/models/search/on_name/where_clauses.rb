@@ -83,7 +83,7 @@ class Search::OnName::WhereClauses
     when 3 then supply_value_thrice(rule)
     when 4 then supply_value_four_times(rule)
     else
-      raise "Where clause value frequency (#{rule.value_frequency}), too high."
+      raise "Token frequency (#{rule.value_frequency}) in name qry, too high."
     end
   end
 

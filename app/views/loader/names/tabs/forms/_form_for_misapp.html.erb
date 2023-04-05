@@ -10,8 +10,14 @@
     <div id="search-result-details-error-message-container" class="message-container"></div>
 
     <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
-
     <br>
+
+
+    <div class="form-group">
+      <label for="seq">Seq*</label>
+      <%= f.number_field(:seq, {class: 'form-control', title: 'For listing the name in the correct order'}) %>
+    </div>
+
     <div class="form-group">
       <label for="simple_name">Simple Name*</label>
       <%= f.text_field :simple_name, class: 'form-control give-me-focus', required: true, title: "Enter simple name", tabindex: increment_tab_index, autofocus: true %>
@@ -66,23 +72,31 @@
     </div>
 
     <div class="form-group">
-      <label for="seq">Seq*</label>
-      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the simple name in the correct alphabetical/hierarchical order'}) %>
-    </div>
-
-    <div class="form-group">
       <label for="notes">Notes</label>
       <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <% unless loader_name.id.blank? %>
-      <div class="form-group">
-        <br>
-      <label class="form-check-label">
-        <%= f.check_box(:no_further_processing, {class: 'xform-control', title: 'Prevent further bulk processing of this record.'}) %>
-        Stop further bulk processing of this record
-      </label>
-      </div>
+      <% unless loader_name.loader_name_matches.blank? %>
+        <% if loader_name.loader_name_matches.collect {|lnm| lnm.relationship_instance}.compact.blank? %>
+          <% disabled = false %>
+        <% else %>
+          <% disabled = true %>
+          Note: this record already has one or more associated instances -
+          you cannot switch off bulk processing while any of those relationship
+          instances is attached.
+        <% end %>
+
+        <div class="form-group">
+        <label class="form-check-label">
+          <%= f.check_box(:no_further_processing, {class: 'xform-control',
+                                                   disabled: disabled,
+                                                   title: 'Prevent further bulk processing of this record.'}) %>
+          Stop further bulk processing of this record
+        </label>
+        </div>
+      <% end %>
     <% end %>
+
     <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
 <% end %>

@@ -29,8 +29,8 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
                search_string: @search_string,
                reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
                name_category: 'Accepted'},
-      lock: { status: lock_status }, 
-      core: { accepted_family: accepted_families,
+      core: { heading_records: heading_records,
+              accepted_family: accepted_families,
               accepted_genera: accepted_genera,
               accepted_species_and_below: accepted_species_and_below,
               synonym: synonyms,
@@ -40,45 +40,8 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
               accepted_with_distribution: accepted_with_distribution,
               taxonomy_comments: taxonomy_comments,
               excluded_names: excluded_names,
-              # total: orchids_and_their_synonyms
+              total: core_search.size,
               },
-    }
-  end
-
-  def xreport
-    { search: {search_string: @search_string,
-               reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
-               name_category: 'Accepted'},
-      lock: { status: lock_status }, 
-      core: { accepted: accepted_records,
-              synonym: synonyms,
-              misapplied: misapplieds,
-              hybrid_cross: hybrid_crosses,
-              total: orchids_and_their_synonyms },
-      other: { further_processing_prevented: further_processing_prevented },
-      matched: { accepted_with_preferred_match: accepted_with_preferred_match,
-                  synonym_with_preferred_match: synonym_with_preferred_match,
-                  misapplied_with_a_preferred_match: misapplied_with_a_preferred_match,
-                  misapplied_preferred_matches: misapplied_preferred_matches },
-      unmatched: { accepted_without_preferred_match: accepted_without_preferred_match,
-                   synonym_without_preferred_match: synonym_without_preferred_match,
-                   misapplied_without_a_preferred_match: misapplied_without_a_preferred_match },
-      with_match_and_instances:
-        { accepted_matched_with_standalone: accepted_matched_with_standalone,
-          synonym_matched_with_cross_ref: synonym_matched_with_cross_ref,
-          misapplied_with_cross_ref: misapplied_with_cross_ref },
-      with_match_and_instances_breakdown:
-        { accepted_matched_with_standalone_instance_created: accepted_matched_with_standalone_instance_created,
-          accepted_matched_with_standalone_instance_found: accepted_matched_with_standalone_instance_found,
-          synonym_matched_with_cross_ref_created: synonym_matched_with_cross_ref_created,
-          synonym_matched_with_cross_ref_found: synonym_matched_with_cross_ref_found,
-          misapp_matched_with_cross_ref_created: misapp_matched_with_cross_ref_created,
-          misapp_matched_with_cross_ref_found: misapp_matched_with_cross_ref_found },
-      with_match_but_without_instances:
-        { accepted_matched_without_standalone: accepted_matched_without_standalone,
-          synonym_matched_without_cross_ref: synonym_matched_without_cross_ref,
-          misapplied_matched_without_cross_ref: misapplied_matched_without_cross_ref },
-      taxonomy: standalones_in_taxonomy,
     }
   end
 
@@ -86,20 +49,18 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
     if @search_string == '%' then
       Loader::Name.where(loader_batch_id: @batch_id)
     else
-      Loader::Name.name_string_search(@search_string).where(loader_batch_id: @batch_id)
+      Loader::Name.bulk_operations_search(@search_string).where(loader_batch_id: @batch_id)
     end
-  end
-
-  def orchids_and_their_synonyms
-    core_search.count
-  end
-
-  def lock_status
-    Loader::Batch::JobLock.locked? ? 'Locked' : 'Unlocked'
   end
 
   def accepted_species_and_below
     arg = "record_type = 'accepted' and not excluded and not doubtful and rank in ('species','infraspecific')"
+    {count: core_search.where(arg).count,
+     text: arg}
+  end
+
+  def heading_records
+    arg = "record_type = 'heading'" 
     {count: core_search.where(arg).count,
      text: arg}
   end
@@ -117,17 +78,16 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
   end
 
   def excluded_names
-    arg = "record_type = 'accepted' and excluded"
+    arg = "record_type = 'excluded'"
     {count: core_search.where(arg).count,
      text: arg}
   end
 
   def taxonomy_comments
-    arg = "record_type = 'accepted' and comment is not null"
+    arg = "record_type in ('accepted','excluded') and comment is not null"
     {count: core_search.where(arg).count,
      text: arg}
   end
-
 
   def accepted_with_distribution
     arg = "record_type = 'accepted' and distribution is not null"
@@ -155,167 +115,5 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
   def intergrades
     {count: core_search.where("hybrid_flag = 'intergrade'").count,
      text: "hybrid_flag = 'intergrade'"}
-  end
-
-  def further_processing_prevented
-    core_search.where(" exclude_from_further_processing  or (select exclude_from_further_processing from orchids p where p.id = orchids.parent_id)")
-           .count
-  end
-
-  def accepted_with_preferred_match
-    core_search.where("record_type = 'accepted'")
-               .joins(:orchids_name)
-               .count
-  end
-
-  def accepted_without_preferred_match
-    core_search.where("record_type = 'accepted'")
-               .where(" not exclude_from_further_processing ")
-               .where.not("exists (select null from orchids_names orn where orchids.id = orn.orchid_id)")
-               .count
-  end
-
-  def synonym_with_preferred_match
-    core_search.where("record_type = 'synonym'")
-               .joins(:orchids_name)
-               .count
-  end
-
-  def synonym_without_preferred_match
-    core_search.where("record_type = 'synonym'")
-               .where(" not exclude_from_further_processing ")
-               .where(" not exists (select null from orchids parent where orchids.parent_id = parent.id and parent.exclude_from_further_processing)")
-               .where.not("exists (select null from orchids_names orn where orchids.id = orn.orchid_id)")
-               .count
-  end
-
-  def misapplied_preferred_matches
-    core_search.where("record_type = 'misapplied'")
-               .where(" not exclude_from_further_processing ")
-               .joins(:orchids_name)
-               .count
-  end
-
-  def misapplied_with_a_preferred_match
-    core_search.where("record_type = 'misapplied'")
-               .where("exists (select null from orchids_names orn where orchids.id = orn.orchid_id)")
-               .count
-  rescue => e
-    e.to_s
-  end
-
-  def misapplied_without_a_preferred_match
-    core_search.where("record_type = 'misapplied'")
-               .where(" not exists (select null from orchids parent where orchids.parent_id = parent.id and parent.exclude_from_further_processing)")
-               .where.not("exists (select null from orchids_names orn where orchids.id = orn.orchid_id)")
-               .count
-  rescue => e
-    e.to_s
-  end
-
-  def accepted_matched_with_standalone
-    core_search.where("record_type = 'accepted'")
-               .joins(:orchids_name)
-               .where.not( {orchids_names: { standalone_instance_id: nil}})
-               .count
-  end
-
-  def accepted_matched_with_standalone_instance_created
-    core_search.where("record_type = 'accepted'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { standalone_instance_created: true}})
-               .count
-  end
-
-  def accepted_matched_with_standalone_instance_found
-    core_search.where("record_type = 'accepted'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { standalone_instance_found: true}})
-               .count
-  end
-
-  def accepted_matched_without_standalone
-    core_search.where("record_type = 'accepted'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { standalone_instance_id: nil}})
-               .count
-  end
-
-  def synonym_matched_with_cross_ref
-    core_search.where("record_type = 'synonym'")
-               .joins(:orchids_name)
-               .where.not( {orchids_names: { relationship_instance_id: nil}})
-               .count
-  end
-
-  def synonym_matched_with_cross_ref_created
-    core_search.where("record_type = 'synonym'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_created: true}})
-               .count
-  end
-
-  def synonym_matched_with_cross_ref_found
-    core_search.where("record_type = 'synonym'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_found: true}})
-               .count
-  end
-
-  def misapp_matched_with_cross_ref_created
-    core_search.where("record_type = 'misapplied'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_created: true}})
-               .count
-  end
-
-  def misapp_matched_with_cross_ref_found
-    core_search.where("record_type = 'misapplied'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_found: true}})
-               .count
-  end
-
-  def synonym_matched_without_cross_ref
-    core_search.where("record_type = 'synonym'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_id: nil}})
-               .count
-  end
-
-  def misapplied_with_cross_ref
-    core_search.where("record_type = 'misapplied'")
-               .joins(:orchids_name)
-               .where.not( {orchids_names: { relationship_instance_id: nil}})
-               .count
-  end
-
-  def misapplied_matched_without_cross_ref
-    core_search.where("record_type = 'misapplied'")
-               .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_id: nil}})
-               .count
-  end
-
-  # Note: the name_id column is merely an ugly hack to get the count(*) value.
-  # It is _not_ the name_id
-  def standalones_in_taxonomy
-    sql = "select t.draft_name, count(*) name_id "
-    sql += " from orchids_names orn "
-    sql += " join orchids o "
-    sql += " on o.id = orn.orchid_id "
-    sql += " join tree_vw t "
-    sql += " on orn.standalone_instance_id = t.instance_id "
-    sql += " where lower(o.taxon) like ? "
-    sql += " and (o.record_type = 'accepted' and not o.doubtful)"
-    sql += " and t.current_tree_version_id = t.tree_version_id_fk "
-    sql += " group by t.draft_name, published"
-    records_array = TreeVw.find_by_sql([sql, @search_string])
-    h = Hash.new
-    h[:taxonomy_records] = 0 if records_array.empty?
-    records_array.each do |rec|
-      h["#{rec[:draft_name]}"] = rec[:name_id]  # name_id is a column I'm using for the count
-    end
-    h
   end
 end

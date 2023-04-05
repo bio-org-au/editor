@@ -15,16 +15,6 @@
               target: "_editor_to_apni",
               tabindex: increment_tab_index) %>
   </span>
-<% if Rails.configuration.try(:show_new_search_link) %>
-  <span class="apni-format-link-on-details">
-  <%= link_to("New #{ShardConfig.name_space} #{icon('external-link-square')}".html_safe,
-              "#{Rails.configuration.try('search_address')}/name/#{@instance.name_id}?search_form=names#name-#{@instance.name_id}",
-              title: "New #{ShardConfig.name_space} search. Opens in another tab or window.",
-              class: "rebeccapurple",
-              target: "_editor_to_apni",
-              tabindex: increment_tab_index) if @instance.name.instances.size > 0 %>
-  </span>
-<% end %>
 <br>
 <% if @instance.cites_id %>
     in

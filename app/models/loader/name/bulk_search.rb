@@ -31,7 +31,7 @@ class Loader::Name::BulkSearch
       family_string = @search_s.sub(/\Afamily: */i,'')
       search = Loader::Name.family_string_search(family_string)
     else
-      search= Loader::Name.name_string_search(@search_s)
+      search= Loader::Name.bulk_operations_search(@search_s)
     end
     search.joins(:loader_batch)
           .where(loader_batch: { id: @batch_id })

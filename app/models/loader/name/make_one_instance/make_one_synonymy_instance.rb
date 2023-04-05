@@ -14,33 +14,33 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
       entry = "#{Constants::DECLINED_INSTANCE} -: relationship instance already "
       entry += "noted (##{@match.relationship_instance_id}) for "
       entry += "#{@loader_name.simple_name} ##{@loader_name.id}"
-      log_to_table(entry)
+      log(entry)
       return Constants::DECLINED
     end
     if @loader_name.parent.preferred_match.blank?
       entry = "#{Constants::DECLINED_INSTANCE} -: parent has no preferred match"
       entry += " #{@loader_name.simple_name} ##{@loader_name.id}"
-      log_to_table(entry)
+      log(entry)
       return Constants::DECLINED
     end
     if @loader_name.parent.preferred_match.use_existing_instance == true
       entry = "#{Constants::DECLINED_INSTANCE} -: parent is using existing instance for "
       entry += "#{@loader_name.simple_name} ##{@loader_name.id}"
-      log_to_table(entry)
+      log(entry)
       return Constants::DECLINED
     end
     if synonym_already_attached?
       record_synonym_already_there
       entry = "#{Constants::DECLINED_INSTANCE} -: synonym already there for "
       entry += "#{@loader_name.simple_name} ##{@loader_name.id}"
-      log_to_table(entry)
+      log(entry)
       return Constants::DECLINED
     end
     return create_relationship_instance
   rescue => e
     entry = "#{Constants::ERROR_INSTANCE} - for #{@loader_name.simple_name} "
     entry += "##{@loader_name.id} - error in do_one_loader_name: #{e.to_s}"
-    log_to_table(entry)
+    log(entry)
     return Constants::ERROR
   end
 
@@ -72,7 +72,7 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
       entry = "#{Constants::DECLINED_INSTANCE} - loader name parent" +
       " has no standalone instance so cannot proceed " +
       "#{@loader_name.simple_name} ##{@loader_name.id}"
-      log_to_table(entry)
+      log(entry)
       return Constants::DECLINED
     else
       Rails.logger.debug('qfter three')
@@ -94,7 +94,7 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
     entry = "LoaderNameMatch#create_relationship_instance: #{e.to_s}"
     Rails.logger.error(entry)
     entry = "#{Constants::FAILED_INSTANCE}: #{e.to_s}"
-    log_to_table(entry)
+    log(entry)
     return Constants::ERROR
   end
 
@@ -103,13 +103,12 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
     @match.relationship_instance_id = instance.id
     @match.updated_by = "#job for #{@user}"
     @match.save!
-    log_to_table("#{Constants::CREATED_INSTANCE} - for " +
+    log("#{Constants::CREATED_INSTANCE} - for " +
                  "##{@loader_name.id} #{@loader_name.simple_name}")
   end
 
-  def log_to_table(entry)
-    BulkProcessingLog.log("Job ##{@job}: #{entry}","Bulk job for #{@user}")
-  rescue => e
-    Rails.logger.error("Couldn't log to table: #{e.to_s}")
+  def log(payload)
+    Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
   end
+
 end

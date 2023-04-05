@@ -1,0 +1,7 @@
+debug('job lock error');
+debug($('#bulk-operations-error-message-container').length);
+debug($('.message-container').length);
+debug($('.message-clearer').length);
+$('#bulk-operations-error-message-container').html("Processing is locked - perhaps there's another job running <br> If you're confident no-one else is running a bulk operation in the database, and you're not running one, you can clear the lock.<br><%= escape_javascript(link_to "Emergency unlock batch jobs", {controller: 'job_lock', action: 'unlock'}, {id: 'emergency-unlock-link', class: 'btn btn-primary', remote: true, title: "Unlock the batch lock", method: :post}) %>");
+$('.message-clearer').removeClass('hidden');
+debug('job lock error reported');

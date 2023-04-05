@@ -23,16 +23,17 @@
 # Only accepted orchids
 class Loader::Name::AsTypeahead::ForParent
   attr_reader :suggestions,
-              :params
+    :params
   SEARCH_LIMIT = 50
 
   def initialize(params)
     @params = params
-    @suggestions = if @params[:term].blank?
-                     []
-                   else
-                     query
-                   end
+    @suggestions =
+      if @params[:term].blank?
+        []
+      else
+        query
+      end
   end
 
   def prepared_search_term
@@ -40,18 +41,18 @@ class Loader::Name::AsTypeahead::ForParent
   end
 
   def core_query
-    Loader::Name.where(record_type: 'accepted')
-        .where(["lower(simple_name) like ?",prepared_search_term])
-        .where(["loader_batch_id = ?", @params[:loader_batch_id]])
-        .avoids_id(@params[:avoid_id].try("to_i") || -1)
-        .order("simple_name")
-        .limit(SEARCH_LIMIT)
+    Loader::Name.where(record_type: "accepted")
+      .where(["lower(simple_name) like ?", prepared_search_term])
+      .where(["loader_batch_id = ?", @params[:loader_batch_id]])
+      .avoids_id(@params[:avoid_id].try("to_i") || -1)
+      .order("simple_name")
+      .limit(SEARCH_LIMIT)
   end
 
   def query
     @qry = core_query
-    @qry = @qry.select('id, simple_name')
-               .collect do |n|
+    @qry = @qry.select("id, simple_name")
+      .collect do |n|
       {value: "#{n.simple_name} (#{n.id}) ",
        id: n.id}
     end

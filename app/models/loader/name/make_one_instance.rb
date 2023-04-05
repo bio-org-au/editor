@@ -74,17 +74,17 @@ class Loader::Name::MakeOneInstance
   end
 
   def no_further_processing
-    log_to_table("#{Constants::DECLINED_INSTANCE} - no further processing for #{@loader_name.id}")
+    log("#{Constants::DECLINED_INSTANCE} - no further processing for #{@loader_name.id}")
     Constants::DECLINED
   end
 
   def no_preferred_match
-    log_to_table("#{Constants::DECLINED_INSTANCE} - no preferred match for ##{@loader_name.id} #{@loader_name.simple_name}")
+    log("#{Constants::DECLINED_INSTANCE} - no preferred match for ##{@loader_name.id} #{@loader_name.simple_name}")
     Constants::DECLINED
   end
 
   def heading
-    log_to_table("#{Constants::DECLINED_INSTANCE} - heading entries not processed ##{@loader_name.id} #{@loader_name.simple_name}")
+    log("#{Constants::DECLINED_INSTANCE} - heading entries not processed ##{@loader_name.id} #{@loader_name.simple_name}")
     Constants::DECLINED
   end
 
@@ -131,14 +131,15 @@ class Loader::Name::MakeOneInstance
 
   def log_create_action(count)
     entry = "Create instance counted #{count} #{'record'.pluralize(count)}"
-    log_to_table(entry)
+    log(entry)
   end
 
-  def log_to_table(entry)
-    BulkProcessingLog.log("Job ##{@job_number}: #{entry}",
-                          "Bulk job for #{@authorising_user}")
-  rescue StandardError => e
-    Rails.logger.error("Couldn't log to table: #{e}")
+  def log(entry)
+    tag = " ##{@loader_name.id}, batch: #{@loader_name.batch.name},  " +
+      "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
+      " (#{@loader_name.record_type})"
+    payload = "#{entry} #{tag}"
+    Loader::Batch::Bulk::JobLog.new(@job_number, payload, @user).write
   end
 
   def scientific_name
@@ -150,7 +151,7 @@ class Loader::Name::MakeOneInstance
     msg.gsub!(/"/, "")
     msg.sub!(/^Failing/, "")
     Rails.logger.error("Loader::Name::AsInstanceCreator failure: #{msg}")
-    log_to_table("Loader::Name::AsInstanceCreator failure: #{msg}")
+    log("Loader::Name::AsInstanceCreator failure: #{msg}")
   end
 
   def debug(msg)

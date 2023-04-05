@@ -1,161 +1,141 @@
-# README
+# Editor README
+---
+This a names-and-usages-editor (the "Editor") first released in 2014 within a suite of applications targetting the National Species List (NSL) database structure developed by the IBIS team based at ANBG.  It presupposes, and in same cases depends on, a `Services` app and a `Mapper` app.
 
-## Build 
 
-TIP: To setup your build environment in linux try the setup-dev-linux.sh bash script. This will make sure tou have the
-prerequisites installed and run the bootstrap below.
+## Ruby version: 2.6.10
 
-When running the setup-dev-linux script you should "source" it if you want to run commands from the same command line, e.g.
+Note, this app was originally developed, tested, and deployed in JRuby - from 2013-2022, running finally on `jruby-9.3.2.0` in 2022.  In that year we moved to a c-ruby deployment on AWS, so it is now deveoped, tested, and deployed in Ruby.  You may find remnants of JRuby in the app but hopefully not as time goes on.
 
-    . ./setup-dev-linux.sh
+## System dependencies
 
-If you're not using linux have a look at the script, it _may_ help.
+Developed against a Postgresql database, version 9 and 10, designed to by run as a low-privilege CRUD user.
 
-### Prerequisites
-#### java
-* version: 8 (Suggest 8u252 e.g. AdoptOpenJDK)
-* https://adoptopenjdk.net/
-
-To install I would recommend using sdkman https://sdkman.io/
-
-#### jruby 
-* version: 9.2.11.1 
-* from: https://www.jruby.org/download
-* download: https://repo1.maven.org/maven2/org/jruby/jruby-dist/9.2.11.1/jruby-dist-9.2.11.1-bin.zip
-* md5 hash: 52dece370067d74bdba38dbdab1a87ee
-
-To install you can download and unpack somewhere and set some environment variables.
-
-    JRUBY_HOME=$PWD/bin/jruby-9.2.11.1
-    PATH=$JRUBY_HOME/bin:$PATH
-    export JRUBY_HOME PATH
-
-#### yarn
-* version: 1.22.4
-* install: see https://classic.yarnpkg.com/en/docs/install#centos-stable
-
-#### node
-* version: >12
-* install: https://nodejs.org/en/download/package-manager/#enterprise-linux-and-fedora
-
-### bootstrapping
-
-To get this all started run:
-
-    yarn
-    gem install bundler
-    bundle install
+Currently Rails 6.1.  There was an original Rails 4.* application for many years, now archived, but for the Rails 6.0 upgrade I started with a clean app and copied slabs of code across - one unfortunate side-effect was that contributions by others ended up in my name in the version 6.x app.  That wasn't my intention - while most of the app is down to me (GC), most of the "tree" ops were coded by others -- look at the archived v4.x app to find out more.
 
 ## Configuration
 
-Configuration files normally live in the `~/.nsl` directory. You will need a development and test directory
-within `~/.nsl` to house your development configs. I recommend you set environment variables to set the location of
-the configuration files.
+Database config file is expected at `~/.nsl/editor-database.yml`
+Configuration file is expected at `~/.nsl/development/editor-r6-config.rb` (for development).
+Sample config file below.
 
-    EDITOR_CONFIG_FILE=$HOME/.nsl/editor-config.rb
-    EDITOR_CONFIGDB_FILE=$HOME/.nsl/editor-database.yml
-    export EDITOR_CONFIG_FILE EDITOR_CONFIGDB_FILE
+## Database creation
 
-See the docs/configuration-guide.adoc
+This app doesn't carry the information necessary to create the database, which is created and maintained separately from this app.
 
-example local development editor-config.rb
+## Database initialization
+
+As above, this app doesn't carry the information necessary to create the database, which is created and maintained separately from this app.
+
+## How to run the test suite
+
+Create a test database, load the sql structure, run tests: 
+    createdb -O nsldev ned_test
+    RAILS_ENV=test rake db:structure:load 
+    bundle exec rails:test
+
+## Services (job queues, cache servers, search engines, etc.)
+
+This app is constrained to call out to the Services, and Mapper apps for "services" like taxonomy operations and deletes.
+
+The application could likely do with a proper job queue, as could Services, for handling long-running tasks. 
+
+
+## Deployment instructions
+
+Get an NSL database.
+Set up editor-database.yml and editor-r6-config.rb
+rails s
+
+## Release notes
+
+There is a longish trail of release notes in annual yaml files held in
+`config/history/` and visible from the help menu in the Editor.
+
+## Example local development editor-config.rb
+
+    % cat editor-r6-config.rb
+
+    #host
+    external_host = 'http://localhost:9093'
+    external_services_host = "#{external_host}/nsl/services"
+    internal_services_host = 'http://localhost:9093/nsl/services'
+
+    internal_mapper_host = 'http://localhost:9094'
+    external_mapper_host = 'http://localhost:9094'
+
+    #environment
+    Rails.configuration.config_file_tag = 'apni development'
+    Rails.configuration.action_controller.relative_url_root = "/nsl/editor"
+    Rails.configuration.environment = 'development'
+    Rails.configuration.session_key_tag = 'in-dev-only'
+    Rails.configuration.draft_instances = 'true'
+    Rails.configuration.orchids_aware = true
+    Rails.configuration.allow_orchid_tree_operations = true
+    Rails.configuration.batch_loader_aware = true
+    Rails.configuration.profile_edit_aware = true
 
     #Services
-      Rails.configuration.services_clientside_root_url = 'http://localhost:8080/services/'
-      Rails.configuration.services = 'http://localhost:8080/services/'
-      Rails.configuration.name_services = 'http://localhost:8080/services/rest/name/apni/'
-      Rails.configuration.reference_services = 'http://localhost:8080/services/rest/reference/apni/'
-      Rails.configuration.api_key = 'my dog ate my homework'
-      Rails.configuration.nsl_links = 'http://localhost:8080/services/'
-      Rails.configuration.nsl_linker = 'http://localhost:7070/nsl-mapper/'
-      Rails.configuration.api_key = 'dev-apni-editor'
-    
-    #LDAP
-      Rails.configuration.ldap_admin_username = "uid=admin,ou=system"
-      Rails.configuration.ldap_admin_password = "make this really secret"
-      Rails.configuration.ldap_base = "ou=users,dc=nsl,dc=bio,dc=org,dc=au"
-      Rails.configuration.ldap_host = "localhost"
-      Rails.configuration.ldap_port = 10389
-      Rails.configuration.ldap_users = "ou=users,dc=nsl,dc=bio,dc=org,dc=au"
-      Rails.configuration.ldap_groups = "ou=groups,dc=nsl,dc=bio,dc=org,dc=au"
-    
-    #mapper
-      Rails.configuration.mapper_root_url = 'http://localhost:7070/nsl-mapper/'
-      Rails.configuration.mapper_shard = 'myshard'
-      
-    #environment
-      Rails.configuration.environment = 'development'
-    
-      if ENV['SESSION_KEY_TAG'].nil?
-        Rails.configuration.session_key_tag = 'dev'
-      else
-        Rails.configuration.session_key_tag = ENV['SESSION_KEY_TAG']
-      end
-    
-    Rails.configuration.draft_instances = 'true'
+    Rails.configuration.services_clientside_root_url = "#{external_services_host}/"
+    Rails.configuration.services = "#{internal_services_host}/"
+    Rails.configuration.name_services = "#{internal_services_host}/rest/name/apni/"
+    Rails.configuration.reference_services = "#{internal_services_host}/rest/reference/apni/"
 
-example local development editor-database.yml
+    # - used to create external facing links to the services
+    Rails.configuration.nsl_links = "#{external_services_host}/"
+
+    # - API key for the services
+    Rails.configuration.api_key = 'some-api-key-goes-here'
+
+    #mapper
+    Rails.configuration.x.mapper_api.version = 2
+    Rails.configuration.x.mapper_api.url = "#{internal_mapper_host}/api/"
+    Rails.configuration.x.mapper_api.username = 'some-username'
+    Rails.configuration.x.mapper_api.password = 'this-isnt-the-password'
+    Rails.configuration.x.mapper_external.url = "#{external_mapper_host}/"
+
+    #ldap
+    Rails.configuration.ldap_admin_username = "not-real-data"
+    Rails.configuration.ldap_admin_password = "this-isnt-the-password"
+    Rails.configuration.ldap_base = "not-real-data"
+    Rails.configuration.ldap_host = "not-real-data"
+    Rails.configuration.ldap_port = "not-real-data"
+    Rails.configuration.ldap_users = "not-real-data"
+    Rails.configuration.ldap_generic_users = "not-real-data"
+    Rails.configuration.ldap_groups = "not-real-data"
+    Rails.configuration.ldap_via_active_directory = boolean_goes_here
+    Rails.configuration.group_filter_regex = 'not-real-data"
+
+    #email
+    Rails.configuration.action_mailer.delivery_method = nil
+    Rails.configuration.action_mailer.perform_deliveries = false
+    Rails.configuration.action_mailer.raise_delivery_errors = false
+    Rails.configuration.action_mailer.smtp_settings = {}
+
+    #feedback
+    Rails.configuration.offer_feedback_link = false
+    Rails.configuration.feedback_script = '<script></script>'
+
+    Rails.configuration.path_to_broadcast_file = '/path/to/broadcast.txt'
+
+
+## Fragment of local development editor-database.yml
+
+
+% cat ~/.nsl/editor-database.yml
 
     default: &default
       adapter: postgresql
       encoding: unicode
-    
-    production:
-      <<: *default
-      url: "postgresql://999.999.999.999:5432/mydb"
-      username: web
-      password: dont_tell_anyone
-    
+
     development:
       <<: *default
-      url: "postgresql://127.0.0.1:5432/mydb"
-      username: web
-      password: dont_tell_anyone
-    
-    test:
-      adapter: postgresql
-      encoding: unicode
       host: localhost
-      database: nsl-ed-test
-      username: web
-      password: dont_tell_anyone   
+      database: nsl_dev
+      username: nsl
+      pool: 10
 
-Note with the new micronaut mapper the api has been revised and the mapper config looks like this:
-
-    #mapper                                                        
-    Rails.configuration.x.mapper_api.version = 2
-    Rails.configuration.x.mapper_api.url = "#{internal_mapper_host}/api/"
-    Rails.configuration.x.mapper_api.username = 'TEST-services'
-    Rails.configuration.x.mapper_api.password = 'buy-me-a-pony'
-    Rails.configuration.x.mapper_external.url = "#{external_mapper_host}/" 
-
-see: application_helper.rb and tree/as_services.rb
-       
 ## Running
 
 To run in development run `rails s` from the command line in your project directory
 
----
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

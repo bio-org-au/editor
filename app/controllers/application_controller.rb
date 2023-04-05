@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     if request.format == "text/javascript"
       logger.error('JavaScript request with invalid authenticity token\
                   - expired session?')
-      render :js => "alert('Your session may have expired. Please reload the whole page before continuing.');"
+      render js: "alert('Your session may have expired. Please reload the whole page before continuing.');"
     else
       redirect_to start_sign_in_path, notice: "Please try again."
     end
@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
     logger.error("User #{@current_user.username} #{details}")
     raise
   end
- 
+
   def authenticate
     if session[:username].blank?
       ask_user_to_sign_in
@@ -50,8 +50,8 @@ class ApplicationController < ActionController::Base
   def ask_user_to_sign_in
     session[:url_after_sign_in] = request.url
     respond_to do |format|
-      format.html {redirect_to start_sign_in_url, notice: "Please sign in."}
-      format.json {render partial: "layouts/no_session.js"}
+      format.html { redirect_to start_sign_in_url, notice: "Please sign in." }
+      format.json { render partial: "layouts/no_session.js" }
       format.js { js_render }
     end
   end
@@ -60,9 +60,10 @@ class ApplicationController < ActionController::Base
     if params[:help_id] =~ /search-examples/ || params[:help_id] =~ /search-help/
       logger.error("Handling unauth request for search-helpd or search-examples")
       render html: "<div class='embedded-notice'><b>Your session may have expired.  Please reload the whole page before continuing.</b></div><script>alert('login...';) </script>".html_safe
-    elsif params[:tab].blank? 
+    elsif params[:tab].blank?
       logger.error("Handling unauth request for a non-tab")
-      render :js => "alert('Your session may have expired. Please reload the whole page before continuing.');", layout: true
+      render js: "alert('Your session may have expired. Please reload the whole page before continuing.');",
+             layout: true
     else
       logger.error("Handling unauth request for the rest, including tabs")
       render html: "<div class='embedded-notice'><b>Your session may have expired.  Please reload the whole page before continuing.</b></div><script>alert('login...';) </script>".html_safe
@@ -76,37 +77,41 @@ class ApplicationController < ActionController::Base
     logger.info("User is known: #{@current_user.username}")
     set_working_draft_session
   end
-  
+
   def set_working_draft_session
     @working_draft = nil
-    if session[:draft].present? && TreeVersion.exists?(session[:draft]["id"])
-      version = TreeVersion.find(session[:draft]["id"])
-      if version.published
-        session[:draft] = nil
-      else
-        @working_draft = version
-      end
+    return unless session[:draft].present? && TreeVersion.exists?(session[:draft]["id"])
+
+    version = TreeVersion.find(session[:draft]["id"])
+    if version.published
+      session[:draft] = nil
+    else
+      @working_draft = version
     end
   end
-  
+
   def hide_details
     @no_search_result_details = true
+  end
+
+  def show_details
+    @no_search_result_details = false
   end
 
   attr_reader :current_user
 
   def username
     @current_user.username
-  rescue
-    'no current user'
+  rescue StandardError
+    "no current user"
   end
 
   # Could not get this to work with a guard clause.
   def javascript_only
-    unless request.format == "text/javascript" || request.format == "application/json"
-      logger.error("Rejecting a non-JavaScript request (format: #{request.format}) Is Firebug console on?")
-      return false
-    end
+    return if request.format == "text/javascript" || request.format == "application/json"
+
+    logger.error("Rejecting a non-JavaScript request (format: #{request.format}) Is Firebug console on?")
+    false
   end
 
   def pick_a_tab(default_tab = "tab_show_1")
@@ -127,6 +132,12 @@ class ApplicationController < ActionController::Base
     @empty_search = true
   end
 
+  def non_empty_search
+    # params["target"] = Search::Target.new(@view_mode).target
+    # @search = Search::Empty.new(params)
+    @empty_search = false
+  end
+
   def set_debug
     @debug = false
   end
@@ -137,21 +148,19 @@ class ApplicationController < ActionController::Base
 
   def check_system_broadcast
     @system_broadcast = ""
-    file_path = Rails.configuration.try('path_to_broadcast_file')||''
+    file_path = Rails.configuration.try("path_to_broadcast_file") || ""
     if File.exist?(file_path)
       logger.debug("System broadcast file exists at #{file_path}")
       file = File.open(file_path, "r")
       @system_broadcast = file.readline unless file.eof?
     end
-  rescue => e
+  rescue StandardError => e
     logger.error("Problem with system broadcast.")
     logger.error(e.to_s)
   end
 
-  def user_tagged_logging
-    logger.tagged(username || 'Anonymous') do
-      yield
-    end
+  def user_tagged_logging(&block)
+    logger.tagged(username || "Anonymous", &block)
   end
 
   def set_view_mode
@@ -165,8 +174,8 @@ class ApplicationController < ActionController::Base
 
     return if @current_user.edit?
 
-    if @current_user.reviewer?
-      @view_mode = session[:view_mode] = ViewMode::REVIEW
-    end
+    return unless @current_user.reviewer?
+
+    @view_mode = session[:view_mode] = ViewMode::REVIEW
   end
 end

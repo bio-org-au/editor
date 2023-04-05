@@ -90,7 +90,7 @@ class Search::OnOrchids::WhereClauses
     when 9 then supply_token_9_times(rule, rule.processed_value)
     when 12 then supply_token_12_times(rule, rule.processed_value)
     else
-      raise "Where clause value frequency: #{frequency}, is too high or not handled in apply_predicate."
+      raise "Orchids where clause value frequency: #{frequency}, is too high or not handled in apply_predicate."
     end
   end
 

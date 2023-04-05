@@ -81,13 +81,13 @@
     {field_name: 'name-match-gte:',
      description: "match only on CSV data with a number of matching NSL names greater than or equal to the supplied number"},
     {field_name: 'name-match-no-primary:',
-     description: "find Orchids with at least one matching name but no matching name with a primary instance"},
+     description: "find loader names with at least one matching name but no matching name with a primary instance"},
     {field_name: 'taxon-sharing-name-id:',
-     description: "match only on CSV data orchid that shares a preferred name ID with at least one other CSV data orchid"},
+     description: "match only on CSV data loader name that shares a preferred name ID with at least one other CSV data loader name"},
     {field_name: 'non-misapp-taxon-sharing-name-id:',
-     description: "any non-misapplied orchid that shares a preferred name ID match with at least one other non-misapplied orchid"},
+     description: "any non-misapplied loader name that shares a preferred name ID match with at least one other non-misapplied loader name"},
     {field_name: 'non-misapp-taxon-sharing-name-id-not-pp:',
-     description: "any non-misapplied orchid that shares a preferred name ID match with at least one other non-misapplied orchid, but excluding cases where all the relationships are partial"},
+     description: "any non-misapplied loader name that shares a preferred name ID match with at least one other non-misapplied loader name, but excluding cases where all the relationships are partial"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -181,6 +181,8 @@
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th></tr>
   <% [
+    {field_name: 'families:',
+     description: "retrieve record with rank 'family' - takes no argument"},
     {field_name: 'rank:',
      description: "match on the rank field - case-insensitive"},
     {field_name: 'not-rank:',
@@ -225,7 +227,7 @@
     {field_name: 'misapplied:',
      description: "match only CSV data with record type 'misapplied'"},
     {field_name: 'not-misapplied:',
-     description: "orchid data with a record type other than 'misapplied'"},
+     description: "loader name data with a record type other than 'misapplied'"},
     {field_name: 'isonym:',
      description: "match records with any value in the isonym field"},
     {field_name: 'orth-var:',
@@ -265,7 +267,7 @@
     {field_name: 'name-status-exact:',
      description: "match fragment on the name status field (no wildcards added, but you can add them)"},
     {field_name: 'name-status-empty-string:',
-     description: "orchids with an empty string in name status (these came about during early raw editing of orchid data when empty fields were mistakenly saved as empty strings)"},
+     description: "loader name with an empty string in name status (these came about during early raw editing of loader name data when empty fields were mistakenly saved as empty strings)"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -350,16 +352,20 @@
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th></tr>
   <% [
+    {field_name: 'bulk-ops:',
+     description: "searches on a name string exactly as bulk operations search does, wildcards are supported but not supplied (as for bulk ops)"},
+    {field_name: 'bulk-ops-family:',
+     description: "searches on a family name string exactly as bulk operations search does, wildcards are supported but not supplied (as for bulk ops)"},
     {field_name: 'no-further-processing:',
      description: "search for records flagged to stop further bulk processing"},
     {field_name: 'in-current-taxonomy:',
-     description: "search for 'accepted' orchids matched to a name which is listed in the current accepted taxonomy"},
+     description: "search for 'accepted' loader names matched to a name which is listed in the current accepted taxonomy"},
     {field_name: 'not-in-current-taxonomy:',
-     description: "search for 'accepted' orchids NOT matched to a name which is listed in the current accepted taxonomy"},
+     description: "search for 'accepted' loader names NOT matched to a name which is listed in the current accepted taxonomy"},
     {field_name: 'drafted:',
-     description: "search for orchids matched to a name and flagged as drafted"},
+     description: "search for loader names matched to a name and flagged as drafted"},
     {field_name: 'manually-drafted:',
-     description: "search for orchids matched to a name and flagged as manually drafted"},
+     description: "search for loader names matched to a name and flagged as manually drafted"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -382,7 +388,7 @@
   <tr><th>Field</th><th>Description</th></tr>
   <% [
     {field_name: 'misapp-matched-without-cross-ref:',
-     description: "misapplied orchids that have a preferred match but the preferred match has no cross-reference instance identified (NSL-3930)"},
+     description: "misapplied loader names that have a preferred match but the preferred match has no cross-reference instance identified (NSL-3930)"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
