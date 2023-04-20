@@ -29,7 +29,7 @@ class HybridFormulaFirstParentChangeTest < ActionController::TestCase
     @nfp_typeahead_string = "Angophora costata (Gaertn.) Britten | Species"
     @request.headers["Accept"] = "application/javascript"
     @expected_name_element = "costata x another-species"
-    @expected_name_path = "Plantae/Magnoliophyta/a_family/a_genus/thing/#{@expected_name_element}"
+    @expected_name_path = "Plantae/Magnoliophyta/a_family/a_genus/thingbb/#{@expected_name_element}"
   end
   def a
     "localhost:9090"

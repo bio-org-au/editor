@@ -541,7 +541,7 @@ journal_of_botany_british_and_foreign:
   citation: "Journal of Botany, British and Foreign"
   citation_html: "Journal of Botany, British and Foreign"
   display_title: "Journal of Botany, British and Foreign"
-  author: na
+  author: sturm
   ref_author_role: editor
   language: undetermined
   namespace: apni
@@ -1875,7 +1875,6 @@ a_book:
   created_by: tester
   updated_by: tester
 
-
 dummy_reference_1:
   title: dummy_reference_1 
   citation: dummy_reference_1 
@@ -2094,11 +2093,11 @@ published_with_no_parent_no_year_no_pub_date:
   updated_by: tester
 
 hulten_with_diacritic:
-  title: "Title includes hultén with diacritic"
+  title: "Title includes hultén with diacritic zzz"
   citation: "Citation includes hultén with diacritic"
   citation_html: "Citation includes hultén with diacritic"
   display_title: "Title includes hultén with diacritic"
-  author: hulten_with_diacritic
+  author: hultén_with_diacritic
   language: undetermined
   namespace: apni
   ref_author_role: editor
@@ -2126,7 +2125,7 @@ hilten_with_diacritic:
   citation: "Citation includes hiltén with diacritic"
   citation_html: "Citation includes hiltén with diacritic"
   display_title: "Title includes hiltén with diacritic"
-  author: hilten_with_diacritic
+  author: hiltén_with_diacritic
   language: undetermined
   namespace: apni
   ref_author_role: editor
@@ -2182,6 +2181,20 @@ for_to_be_a_double_synonym:
   citation: For to be a double synonym
   citation_html: For to be a double synonym
   display_title: For to be a double synonym
+  author: unknown
+  language: undetermined
+  namespace: apni
+  ref_author_role: editor
+  ref_type: book
+  published: true
+  created_by: tester
+  updated_by: tester
+
+alt_for_to_be_a_double_synonym:
+  title: Alt for to be a double synonym
+  citation: Alt for to be a double synonym
+  citation_html: Alt for to be a double synonym
+  display_title: Alt for to be a double synonym
   author: unknown
   language: undetermined
   namespace: apni

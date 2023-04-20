@@ -1,2 +1,2 @@
-$('#synonymy-content').html('<h3>Error:</h3><p><%= @message.html_safe %></p><p>Refresh to update report.</p>');
+$('#synonymy-content').html('<h3>Error:</h3><p><%= escape_javascript(@message) %></p><p>Refresh to update report.</p>');
 $('#update_selected_synonymy').addClass('hidden');

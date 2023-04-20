@@ -24,7 +24,7 @@ class MetrosiderosCostataBasionymAngophoraCosTest < ActiveSupport::TestCase
     metrosideros_instance =
       instances(:metrosideros_costata_is_basionym_of_angophora_costata)
     assert_not metrosideros_instance.valid?,
-               "should be valid; errors:
+               "should not be valid; errors:
                #{metrosideros_instance.errors.full_messages.join(';')}"
   end
 end

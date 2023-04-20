@@ -32,7 +32,7 @@ class TreePlacementRemoveTest < ActionController::TestCase
   def stub_it
     url = "http://localhost:9090/nsl/services/api/treeElement/removeElement"
     params = "?apiKey=test-api-key&as=fred"
-    body = '{"taxonUri":"tree/123/456"}'
+    body = '{"taxonUri":"tree/123/789"}'
 
     stub_request(:post, "#{url}#{params}")
       .with(body: body,
@@ -49,7 +49,7 @@ class TreePlacementRemoveTest < ActionController::TestCase
     @request.headers["Accept"] = "application/javascript"
     delete(:remove_name_placement,
            params: { id: @workspace,
-                     remove_placement: { taxon_uri: "tree/123/456",
+                     remove_placement: { taxon_uri: "tree/123/789",
                                          delete: "delete" } },
            session: { username: "fred",
                       user_full_name: "Fred Jones",

@@ -1,3 +1,13 @@
+- :date: 20-Apr-2023
+  :jira_id: ''
+  :description: |-
+    Tree Error: Make tree error messages simple strings, without html tags.
+- :date: 20-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade: Tree processing errors noticed during upgrade testing and visible in log but not on UI form - make error messages display
+- :date: 06-Apr-2023
+  :release: true
 - :date: 31-Mar-2023
   :jira_id: '4471'
   :description: |-

@@ -419,7 +419,7 @@ schlechter_not_a_duplicate:
 schlechter_a_duplicate:
   name: xschlechter
   abbrev: xschl
-  duplicate_of: schlechter_a
+  duplicate_of: schlechter_not_a_duplicate
   namespace: apni
   created_by: greg
   updated_by: greg

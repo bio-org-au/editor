@@ -37,6 +37,7 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
   end
 
   test "instances in nested simple instance order" do
+    # Very useful debug
     # @results.each_with_index do |i,ndx|
     #   puts "#{ndx}: #{i.page} - #{i.name.full_name}" if ndx < 80
     # end
@@ -52,3 +53,4 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
     test10
   end
 end
+

@@ -2,4 +2,4 @@ $('#update_comment_btn').find('i.fa').removeClass('fa-spin');
 $('#tree_comment_message')
     .addClass('error')
     .removeClass('hidden')
-    .html(markdown("<%= escape_javascript(@message.html_safe) %>"));
+    .html(markdown("<%= escape_javascript(@message) %>"));

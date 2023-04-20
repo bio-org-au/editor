@@ -25,7 +25,7 @@ apc_dist_1:
   created_by: greg
 
 apc_dist_2:
-  instance: has_apc_2_dist_notes
+  instance: has_apc_dist_note_2
   instance_note_key: apc_dist
   value: apc dist two
   namespace: apni

@@ -1,6 +1,6 @@
 $('#remove-placement-message-container').addClass('hidden').html("");
 $('#remove-placement-error-message-container')
     .removeClass('hidden')
-    .html(markdown("<%= escape_javascript(@message.html_safe) %>"));
+    .html(markdown("<%= escape_javascript(@message) %>"));
 $('#remove_name_placement').find('i.fa').removeClass('fa-spin');
 

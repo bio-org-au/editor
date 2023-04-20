@@ -1,3 +1,17 @@
+
+# Standalone instance
+gaertner_created_metrosideros_costata:
+  reference: de_fructibus_et_seminibus_plantarum
+  name: metrosideros_costata
+  instance_type: comb_nov
+  verbatim_name_string: verbatim
+  namespace: apni
+  source_id_string: gcmc
+  page: "xx 1"
+  created_by: tester1
+  updated_by: tester2
+
+# Relationship instance - synonymy
 triodia_in_brassard:
   reference: paper_by_brassard
   name: triodia_basedowii
@@ -22,19 +36,17 @@ britten_created_angophora_costata:
   updated_by: tester
   page: "xx 15"
 
-# Standalone instance
-gaertner_created_metrosideros_costata:
-  reference: de_fructibus_et_seminibus_plantarum
-  name: metrosideros_costata
-  instance_type: comb_nov
-  verbatim_name_string: verbatim
+# standalone
+inst_species_or_below_to_be_synonym:
+  reference: ref_4_genus_or_above_to_be_synonym
+  name: species_or_below_to_be_synonym
+  instance_type: synonym
+  page: exclude-from-ordering-test
+  verbatim_name_string: m
   namespace: apni
   created_by: tester
   updated_by: tester
-  source_id_string: gcmc
-  page: "xx 1"
 
-# Relationship instance - synonymy
 metrosideros_costata_is_basionym_of_angophora_costata:
   reference: paper_by_britten_on_angophora
   name: metrosideros_costata
@@ -52,14 +64,15 @@ some_part_to_do_with_metrosideros_costata:
   reference: part_about_metrosideros_costata
   name: metrosideros_costata
   instance_type: comb_nov
-  verbatim_name_string: verbatim
   namespace: apni
   created_by: tester
   updated_by: tester
   source_id_string: gcmc
   page: exclude-from-ordering-test
+  verbatim_name_string: n
 
 # Relationship instance - synonymy
+# this_cites: gaertner_created_metrosideros_costata
 xyz_costata_is_synonym_of_angophora_costata:
   reference: paper_by_britten_on_angophora
   name: metrosideros_costata
@@ -527,6 +540,7 @@ casuarina_inophloia_by_mueller:
   name: casuarina_inophloia
   instance_type: secondary_reference
   page: zzzz99901
+  verbatim_name_string: verbatim1
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -536,6 +550,7 @@ casuarina_inophloia_by_mueller_and_bailey:
   name: casuarina_inophloia
   instance_type: tax_nov
   page: zzzz99902
+  verbatim_name_string: verbatim2
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -546,6 +561,7 @@ casuarina_inophloia_in_bailey_catalogue_qld_plants:
   instance_type: secondary_reference
   page: zzzz99903
   namespace: apni
+  verbatim_name_string: verbatim3
   created_by: tester
   updated_by: tester
 
@@ -554,6 +570,7 @@ casuarina_inophloia_in_ref_with_no_year:
   name: casuarina_inophloia
   instance_type: secondary_reference
   page: exclude-from-ordering-test
+  verbatim_name_string: o
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -563,6 +580,7 @@ for_a_genus_with_one_instance:
   name: a_genus_with_one_instance
   instance_type: tax_nov
   page: zzzz99904
+  verbatim_name_string: verbatim31
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -572,6 +590,7 @@ for_a_genus_with_two_instances_first:
   name: a_genus_with_two_instances
   instance_type: tax_nov
   page: zzzz99905
+  verbatim_name_string: verbatim32
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -581,6 +600,7 @@ for_a_genus_with_two_instances_second:
   name: a_genus_with_two_instances
   instance_type: secondary_reference
   page: zzzz99906
+  verbatim_name_string: verbatim33
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -590,6 +610,7 @@ for_a_genus_with_two_instances_the_same_first:
   name: has_two_instances_the_same
   instance_type: tax_nov
   page: zzzz99907
+  verbatim_name_string: verbatim34
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -599,6 +620,7 @@ for_a_genus_with_two_instances_the_same_second:
   name: has_two_instances_the_same
   instance_type: tax_nov
   page: zzzz99907
+  verbatim_name_string: verbatim35
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -614,10 +636,10 @@ angophora_costata_in_stanley:
   created_by: tester
   updated_by: tester
 
+#  this_cites: gaertner_created_metrosideros_costata
 metrosideros_costata_gaertn:
   bhl_url:
   this_is_cited_by: angophora_costata_in_stanley
-  this_cites: gaertner_created_metrosideros_costata
   created_at: 2011-11-29 13:00:00.000000000 Z
   created_by: CUL07D
   draft: false
@@ -627,6 +649,7 @@ metrosideros_costata_gaertn:
   namespace: apni
   nomenclatural_status:
   page: exclude-from-ordering-test
+  verbatim_name_string: q
   reference: de_fructibus_et_seminibus_plantarum
   source_id: 177748
   source_id_string: '177748'
@@ -639,10 +662,11 @@ metrosideros_costata_gaertn:
 # Relationship instance - unpublished citation
 #  this_cites: for_to_be_a_double_in_ref
 #  this_is_cited_by: for_to_have_a_double_in_ref
+#
+# this_cites: britten_created_angophora_costata.id
 angophora_lanceolata_cav_in_stanley:
   reference: stanley_in_stanley_and_ross
   name: rusty_gum
-  this_cites: britten_created_angophora_costata.id
   this_is_cited_by: for_to_have_a_double_in_ref
   instance_type: common_name
   verbatim_name_string: verbatim
@@ -652,11 +676,11 @@ angophora_lanceolata_cav_in_stanley:
   updated_by: tester
 
 # Relationship instance - synonymy
+# this_cites: gaertner_created_metrosideros_costata
 in_stanley_metrosideros_costata_is_a_nomenclatural_synonym_of_angophora_costata_in_britten:
   reference: stanley_in_stanley_and_ross
   name: metrosideros_costata
   this_is_cited_by: angophora_costata_in_stanley
-  this_cites: gaertner_created_metrosideros_costata
   instance_type: nomenclatural_synonym
   verbatim_name_string: verbatim
   page: zzzz99911
@@ -684,6 +708,7 @@ doubtful_taxonomic_synonym_instance:
   name: legitimate_name_one_for_eflora
   instance_type: doubtful_taxonomic_synonym
   page: zzzz99913a
+  verbatim_name_string: verbatim16
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -695,6 +720,7 @@ doubtful_nomenclatural_synonym_instance:
   name: legitimate_name_one_for_eflora
   instance_type: doubtful_nomenclatural_synonym
   page: zzzz99913b
+  verbatim_name_string: verbatim17
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -704,8 +730,9 @@ doubtful_nomenclatural_synonym_instance:
 doubtful_pro_parte_nomenclatural_synonym_instance:
   reference: dummy_reference_for_eflora_service
   name: legitimate_name_one_for_eflora
-  instance_type: doubtful_pro_parte_nomenclatural_synonym
+  instance_type: doubtful_pro_parte_synonym
   page: zzzz99913c
+  verbatim_name_string: verbatim18
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -717,6 +744,7 @@ doubtful_pro_parte_taxonomic_synonym_instance:
   name: legitimate_name_one_for_eflora
   instance_type: doubtful_pro_parte_taxonomic_synonym
   page: zzzz99913d
+  verbatim_name_string: verbatim19
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -728,6 +756,7 @@ pro_parte_nomenclatural_synonym_instance:
   name: legitimate_name_one_for_eflora
   instance_type: pro_parte_nomenclatural_synonym
   page: zzzz99913e
+  verbatim_name_string: verbatim20
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -748,6 +777,7 @@ page_57_hyphen_58:
   name: dummy_name_2
   instance_type: comb_nov
   page: 57-58
+  verbatim_name_string: verbatim22
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -756,6 +786,7 @@ page_57:
   reference: reference_1_for_instance_ordering_by_page
   name: dummy_name_3
   instance_type: comb_nov
+  verbatim_name_string: verbatim22
   page: 57
   namespace: apni
   created_by: tester
@@ -766,6 +797,7 @@ tax_nov_for_an_orth_var:
   name: orth_var_for_tax_nov
   instance_type: tax_nov
   page: 9999999999
+  verbatim_name_string: verbatim23
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -777,6 +809,7 @@ has_apc_dist_note:
   instance_type: comb_nov
   page: exclude-from-ordering-test
   namespace: apni
+  verbatim_name_string: r
   created_by: tester
   updated_by: tester
 
@@ -786,6 +819,7 @@ has_apc_comment_note:
   name: dummy_name_1
   instance_type: comb_nov
   page: exclude-from-ordering-test
+  verbatim_name_string: s
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -796,6 +830,7 @@ has_apc_dist_note_2:
   name: dummy_name_2
   instance_type: comb_nov
   page: zczzzzzzzzzzz99999999999999
+  verbatim_name_string: verbatim14
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -805,6 +840,7 @@ earliest_inst_sec_ref:
   name: orth_var_with_earliest_inst_sec_ref
   instance_type: secondary_reference
   page: exclude-from-ordering-test
+  verbatim_name_string: xab
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -814,6 +850,7 @@ not_earliest_inst_sec_ref:
   name: orth_var_with_not_earliest_inst_sec_ref
   instance_type: tax_nov
   page: exclude-from-ordering-test
+  verbatim_name_string: verbatim5
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -823,6 +860,7 @@ later_inst_sec_ref:
   name: orth_var_with_not_earliest_inst_sec_ref
   instance_type: secondary_reference
   page: exclude-from-ordering-test
+  verbatim_name_string: verbatim6
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -831,10 +869,11 @@ later_inst_sec_ref:
 species_or_below_syn_with_genus_or_above:
   reference: ref_4_species_or_below_to_be_synonymised
   name: species_or_below_to_be_synonym
-  this_cites: inst_species_or_below_to_be_synonym
   this_is_cited_by: inst_genus_or_above_to_be_synomised
+  this_cites: inst_species_or_below_to_be_synonym
   instance_type: synonym
   page: exclude-from-ordering-test
+  verbatim_name_string: verbatim7
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -845,16 +884,7 @@ inst_genus_or_above_to_be_synomised:
   name: genus_or_above_to_be_synonymised
   instance_type: synonym
   page: exclude-from-ordering-test
-  namespace: apni
-  created_by: tester
-  updated_by: tester
-
-# standalone
-inst_species_or_below_to_be_synonym:
-  reference: ref_4_genus_or_above_to_be_synonym
-  name: species_or_below_to_be_synonym
-  instance_type: synonym
-  page: exclude-from-ordering-test
+  verbatim_name_string: verbatim8
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -865,6 +895,7 @@ inst_for_name_earliest_instance_not_primary:
   name: earliest_instance_not_primary
   instance_type: secondary_reference
   page: exclude-from-ordering-test
+  verbatim_name_string: verbatim10
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -877,6 +908,7 @@ name_in_secondary_ref_marked_as_basionym_synonym:
   this_is_cited_by: secondary_ref_citation
   instance_type: basionym
   page: exclude-from-ordering-test
+  verbatim_name_string: verbatim11
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -887,15 +919,17 @@ secondary_ref_citation:
   name: name_in_secondary_ref
   instance_type: secondary_reference
   page: exclude-from-ordering-test
+  verbatim_name_string: verbatim12
   namespace: apni
   created_by: tester
   updated_by: tester
 
 for_to_have_a_double_in_ref:
   reference: for_to_have_a_double_synonym
-  name: to_have_double_synonym
+  name: to_have_a_double_synonym
   instance_type: unknown
   page: exclude-from-ordering-test
+  verbatim_name_string: a
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -905,6 +939,7 @@ for_to_be_a_double_in_ref:
   name: to_be_a_double_synonym
   instance_type: unknown
   page: exclude-from-ordering-test
+  verbatim_name_string: xaax
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -914,17 +949,19 @@ for_to_be_a_double_in_alt_ref:
   name: to_be_a_double_synonym
   instance_type: unknown
   page: exclude-from-ordering-test
+  verbatim_name_string: xaaa
   namespace: apni
   created_by: tester
   updated_by: tester
 
 first_syn_for_to_have_a_double:
   name: to_be_a_double_synonym
-  this_cites: for_to_be_a_double_in_ref
   this_is_cited_by: for_to_have_a_double_in_ref
+  this_cites: for_to_be_a_double_in_ref
   reference: for_to_have_a_double_synonym
   instance_type: synonym
   page: exclude-from-ordering-test
+  verbatim_name_string: d
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -934,15 +971,17 @@ usage_of_name_to_be_placed:
   name: to_be_placed
   instance_type: primary_reference
   page: exclude-from-ordering-test
+  verbatim_name_string: e
   namespace: apni
   created_by: tester
   updated_by: tester
 
 first_instance_for_to_have_double_primary:
   name: to_have_double_primary
-  reference: dummy
+  reference: dummy_reference_1
   instance_type: tax_nov
   page: exclude-from-ordering-test
+  verbatim_name_string: faaa
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -952,15 +991,18 @@ unsourced_misapplied_example:
   reference: dummy_reference_1
   instance_type: unsourced_misapplied
   page: exclude-from-ordering-test
+  verbatim_name_string: g
   namespace: apni
   created_by: tester
   updated_by: tester
 
+# name: dummy_name_for_pro_parte_misapps
 unsourced_pro_parte_misapplied_example:
-  name: dummy_name_for_pro_parte_misapps
+  name: dummy_name_for_unsourced_pro_parte_misapplied
   reference: dummy_reference_1
   instance_type: unsourced_pro_parte_misapplied
   page: exclude-from-ordering-test
+  verbatim_name_string: h
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -970,6 +1012,7 @@ unsourced_doubtful_pro_parte_misapplied_example:
   reference: dummy_reference_1
   instance_type: unsourced_doubtful_pro_parte_misapplied
   page: exclude-from-ordering-test
+  verbatim_name_string: i
   namespace: apni
   created_by: tester
   updated_by: tester
@@ -981,21 +1024,21 @@ default_instance_for_dendrobium_hybrid_formula:
   reference: bucket_reference_for_default_instances
   name: dendrobium_hybrid_formula
   instance_type: tax_nov
-  verbatim_name_string: verbatim
   namespace: apni
   created_by: tester
   updated_by: tester
   page: exclude-from-ordering-test
+  verbatim_name_string: j
 
 # Standalone instance
 instance_for_name_in_taxonomy:
   reference: ref_for_name_in_taxonomy
   name: name_in_taxonomy
   instance_type: comb_nov
-  verbatim_name_string: verbatim
   namespace: apni
   created_by: tester
   updated_by: tester
   source_id_string: gcmc
   page: exclude-from-ordering-test
+  verbatim_name_string: k
 
