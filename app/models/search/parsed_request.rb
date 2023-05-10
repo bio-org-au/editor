@@ -178,6 +178,7 @@ class Search::ParsedRequest
                                          "instance is cited by",
                                          "instance_is_cited_by",
                                          "audit"]
+  SHOW_INSTANCES = 'show-instances:'
 
   def initialize(params)
     @params = params
@@ -219,6 +220,7 @@ class Search::ParsedRequest
     unused_qs_tokens = preprocess_target(unused_qs_tokens)
     unused_qs_tokens = parse_target(unused_qs_tokens)
     unused_qs_tokens = parse_common_and_cultivar(unused_qs_tokens)
+    unused_qs_tokens = inflate_show_instances_abbrevs(unused_qs_tokens)
     unused_qs_tokens = parse_show_instances(unused_qs_tokens)
     unused_qs_tokens = parse_order_instances(unused_qs_tokens)
     unused_qs_tokens = parse_view(unused_qs_tokens)
@@ -420,6 +422,20 @@ class Search::ParsedRequest
     @include_common_and_cultivar_session = \
       @params["include_common_and_cultivar_session"] ||
       @params["query_common_and_cultivar"] == "t"
+    tokens
+  end
+
+  def inflate_show_instances_abbrevs(tokens)
+    tokens = inflate_token(tokens, 's-i:', SHOW_INSTANCES)
+    tokens = inflate_token(tokens, 'si:', SHOW_INSTANCES)
+    tokens = inflate_token(tokens, 'i:', SHOW_INSTANCES)
+    tokens
+  end
+
+  def inflate_token(tokens, abbrev_s, full_s)
+    if tokens.include?(abbrev_s)
+      tokens.map! { |x| x == abbrev_s ? full_s : x } 
+    end
     tokens
   end
 

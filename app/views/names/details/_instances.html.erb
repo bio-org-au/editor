@@ -1,5 +1,5 @@
 <% if @name.instances.size > 0 %>
-    <%= link_to("#{pluralize(@name.instances.size, 'instance')} #{icon('search')}".html_safe,
+    <%= link_to("#{pluralize(@name.instances.size, 'instance')} #{editor_icon('search')}".html_safe,
                 search_path(query_target: "Name", query_string: "id: #{@name.id} show-instances:"),
                 tabindex: increment_tab_index,
                 title: "Search for the #{pluralize(@name.instances.size, 'instance')}",

@@ -14,19 +14,19 @@
   <div class="bggray big-vertical-padding" ><h4 class="white">No Further Processing via parent</h4></div>
 <% end %>
 
-  <%= link_to("#{ShardConfig.name_space} #{icon('external-link-square')}".html_safe,
+  <%= link_to("#{ShardConfig.name_space} #{editor_icon('external-link-square')}".html_safe,
               "#{Rails.configuration.try('nsl_links')}search/names?product=APNI&name=#{url_encode(@loader_name.simple_name)}",
             title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
             class: "rebeccapurple",
             target: "_editor_to_apni",
             tabindex: increment_tab_index) %>&nbsp;
-  <%= link_to("Editor name query #{icon('external-link-square')}".html_safe,
+  <%= link_to("Editor name query #{editor_icon('external-link-square')}".html_safe,
               "search?query_target=names&query_string=#{url_encode(@loader_name.simple_name)} show-instances:",
             title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
             class: "rebeccapurple",
             target: "_editor_to_apni",
             tabindex: increment_tab_index) %>
-  <%= link_to("Editor simple name query #{icon('external-link-square')}".html_safe,
+  <%= link_to("Editor simple name query #{editor_icon('external-link-square')}".html_safe,
               "search?query_target=names&query_string=simple-name: #{url_encode(@loader_name.simple_name)} show-instances:",
             title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
             class: "rebeccapurple",

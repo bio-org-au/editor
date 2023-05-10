@@ -104,7 +104,7 @@
 
 <% unless @reference.bhl_url.blank? %>
   <br/>
-  <%= link_to("BHL #{icon('external-link')}".html_safe ,@reference.bhl_url, title: "Link to the BHL entry.") %>
+  <%= link_to("BHL #{editor_icon('external-link')}".html_safe ,@reference.bhl_url, title: "Link to the BHL entry.") %>
 <% end %>
 
 <% unless @reference.tl2.blank? %>

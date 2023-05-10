@@ -13,13 +13,13 @@ function getContentOnDemand(theThis) {
   debug("getContentOnDemand for id: " + $(theThis).attr('id') + " and context: " + $(theThis).attr('data-load-context'));
   var targetID = $(theThis).attr('data-load-context');
   if (targetID.match("-for-dynamic-target-")) {
-    ray = targetID.split("-for-dynamic-target-");
-    displayElementID = ray[0];
+    var ray = targetID.split("-for-dynamic-target-");
+    var displayElementID = ray[0];
     debug("displayElementID: "+ displayElementID);
   //  var dynamicTarget = ray[1];
   //  debug("dynamicTarget: "+ dynamicTarget);
   } else {
-    displayElementID = targetID;
+    var displayElementID = targetID;
   }
   if (displayElementID === undefined || displayElementID == '') {
     debug("displayElementID is undefined or empty - you need to set it ");
@@ -137,8 +137,8 @@ function getActiveExamplesIdentifier() {
     }).first().attr('data-examples');
 }
 
-$( document ).on('turbolinks:load', function() {
-  console.log('turbolinks:load event');
+$( document ).on('turbo:load', function() {
+  console.log('tabs.js turbo:load event');
 
   $('ul#search-results-tabset li a.main-body-tab-link').on('click', function (e) {
     debug('.main-body-tab-link clicked; non-advanced containers will be HIDDEN.');

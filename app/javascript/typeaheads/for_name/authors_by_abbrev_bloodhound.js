@@ -1,6 +1,6 @@
 
 
-authorsByAbbrev = new Bloodhound({
+window.authorsByAbbrev = new Bloodhound({
   datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
   queryTokenizer: Bloodhound.tokenizers.whitespace,
   remote: window.relative_url_root + '/authors/typeahead_on_abbrev?term=%QUERY',
@@ -8,6 +8,5 @@ authorsByAbbrev = new Bloodhound({
 });
 
 // kicks off the loading/processing of `local` and `prefetch`
-authorsByAbbrev.initialize();
+window.authorsByAbbrev.initialize();
 
-window.authorsByAbbrev = authorsByAbbrev;

@@ -2,4 +2,4 @@ $('#update_distribution_btn').find('i.fa').removeClass('fa-spin');
 $('#tree_distribution_message')
     .addClass('error')
     .removeClass('hidden')
-    .html(markdown("<%= escape_javascript(@message) %>"));
+    .html(markdown("Error: <%= escape_javascript(@message.html_safe) %>"));

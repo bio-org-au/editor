@@ -5,6 +5,7 @@
  */
 
 (function($) {
+    //var Bloodhound = function() {};
     var _ = function() {
         "use strict";
         return {
@@ -579,16 +580,16 @@
             }
         }
     }();
-    (function(root) {
+    window.Bloodhound = (function(root) {
         "use strict";
         var old, keys;
-        old = root.Bloodhound;
+        //old = root.Bloodhound;  // commented out to avoid undefined typeError GC March 2023
         keys = {
             data: "data",
             protocol: "protocol",
             thumbprint: "thumbprint"
         };
-        root.Bloodhound = Bloodhound;
+        //root.Bloodhound = Bloodhound;  // commented out to avoid undefined typeError GC March 2023
         function Bloodhound(o) {
             if (!o || !o.local && !o.prefetch && !o.remote) {
                 $.error("one of local, prefetch, or remote is required");
@@ -1779,4 +1780,8 @@
             return this;
         };
     })();
+
+
+//window.tokenizers = tokenizers;
+
 })(window.jQuery);

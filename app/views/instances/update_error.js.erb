@@ -8,9 +8,9 @@ $('.override-container').addClass('hidden');
   $('#search-result-details-error-message-container').html('<%= escape_javascript(@message.first) %>');
 <% else %>
     if ($('.override-container').size > 0) {
-      $('#search-result-details-error-message-container').html('<%=j "#{icon('warning red')} #{'Multiple errors (No overrides are available when there are multiple errors)'}".html_safe %>');
+      $('#search-result-details-error-message-container').html('<%=j "#{editor_icon('warning red')} #{'Multiple errors (No overrides are available when there are multiple errors)'}".html_safe %>');
     } else {
-      $('#search-result-details-error-message-container').html('<%=j "#{icon('warning red')} #{'Multiple errors'}".html_safe %>');
+      $('#search-result-details-error-message-container').html('<%=j "#{editor_icon('warning red')} #{'Multiple errors'}".html_safe %>');
     }
   <% @message.each_with_index do |m,i| %>
     <% tag_id = "#search-result-details-error-message-container-#{i}" %>

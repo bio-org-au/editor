@@ -181,7 +181,7 @@
   };
 
   //###
-  $(document).on("turbolinks:load", function() {
+  $(document).on("turbo:load", function() {
     return $('body').on('click', 'a.searchable-field', function(event) {
       return searchableFieldClick(event, $(this));
     });

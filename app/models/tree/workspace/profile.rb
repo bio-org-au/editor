@@ -30,7 +30,7 @@ class Tree::Workspace::Profile < ActiveType::Object
     RestClient.post(url, payload.to_json,
                     {content_type: 'application/json; charset=utf-8', accept: 'application/json; charset=utf-8'})
   rescue RestClient::ExceptionWithResponse => e
-    Rails.logger.error("Tree::Workspace::Profile error: #{e}")
+    Rails.logger.error("Tree::Workspace::Profile rest client exception with response error: #{e}")
     raise
   rescue => e
     Rails.logger.error("Tree::Workspace::Profile other error: #{e}")

@@ -20,10 +20,10 @@
 class Tree::AsServices
 
 #Services
-  API_KEY = "apiKey=#{Rails.configuration.api_key}"
+  API_KEY = "apiKey=#{Rails.configuration.try('api_key')}"
 
-  SERVICES_ADDRESS = Rails.configuration.services
-  CLIENT_SIDE_SERVICES = Rails.configuration.services_clientside_root_url
+  SERVICES_ADDRESS = Rails.configuration.try('services')
+  CLIENT_SIDE_SERVICES = Rails.configuration.try('services_clientside_root_url')
   PLACEMENT_PATH = "api/treeElement/placeElement"
   TOP_PLACEMENT_PATH = "api/treeElement/placeTopElement"
   REPLACE_ELEMENT = "api/treeElement/replaceElement"
@@ -42,7 +42,7 @@ class Tree::AsServices
   SYN_UPDATE_INST_LINK = "tree-element/update-synonymy-by-instance"
 
 # Mapper
-  MAPPER_API_URL = Rails.configuration.try("nsl_linker") || Rails.configuration.x.mapper_api.url
+  MAPPER_API_URL = Rails.configuration.try("nsl_linker") || Rails.configuration.x.mapper_api.try("url")
   MAPPER_API_VERSION = Rails.configuration.x.mapper_api.try("version") || 1
   MAPPER_PWD = Rails.configuration.x.mapper_api.try("password")
   MAPPER_USER = Rails.configuration.x.mapper_api.try("username")

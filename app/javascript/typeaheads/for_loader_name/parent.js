@@ -25,7 +25,7 @@ window.setUpLoaderNameParentTypeahead = setUpLoaderNameParentTypeahead;
 // Provides a way to inject the current loader name id into the URL.
 // Using the replace function to strip off the loader name's rank, which
 // is delimited by a pipe symbol (|).
-loaderNameParentSuggestions = new Bloodhound({
+window.loaderNameParentSuggestions = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/loader_names/parent_suggestions?term=%QUERY',
@@ -40,7 +40,6 @@ loaderNameParentSuggestions = new Bloodhound({
     limit: 100
 });
 
-loaderNameParentSuggestions.initialize();
+window.loaderNameParentSuggestions.initialize();
 
-window.loaderNameParentSuggestions = loaderNameParentSuggestions;
 

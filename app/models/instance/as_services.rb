@@ -18,7 +18,7 @@
 #
 class Instance::AsServices < Instance
   def self.name_strings_url(id)
-    "#{Rails.configuration.name_services}#{id}/api/name-strings"
+    "#{Rails.configuration.try('name_services')}#{id}/api/name-strings"
   end
 
   def self.tag
@@ -87,8 +87,8 @@ class Instance::AsServices < Instance
   end
 
   def self.delete_uri(id)
-    api_key = Rails.configuration.api_key
-    host_path = "#{Rails.configuration.services}rest/instance/apni/#{id}/api/delete"
+    api_key = Rails.configuration.try('api_key')
+    host_path = "#{Rails.configuration.try('services')}rest/instance/apni/#{id}/api/delete"
     "#{host_path}?apiKey=#{api_key}&reason=Edit"
   end
 end

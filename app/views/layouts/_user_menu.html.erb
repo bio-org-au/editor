@@ -7,7 +7,7 @@
      class="dropdown-toggle <%= 'active' if params[:controller].match(/session/) %>" 
      title="Select this to see your account options."
      data-toggle="dropdown">
-    <%= icon('user') %>&nbsp;<%= @current_user.full_name %> <span class="caret"></span></a>
+    <%= editor_icon('user') %>&nbsp;<%= @current_user.full_name %> <span class="caret"></span></a>
   <ul id="user-dropdown-menu" class="dropdown-menu" role="menu">
     <% if @current_user.groups.present? && @current_user.groups.size > 0 %>
       <li class="dropdown-submenu">
@@ -25,7 +25,7 @@
              %>
              <li role="presentation">
                <a title="A security group you belong to">
-                 <%= "#{icon(icon_name)} #{group == group.upcase ? group : group.capitalize}".html_safe %>
+                 <%= "#{editor_icon(icon_name)} #{group == group.upcase ? group : group.capitalize}".html_safe %>
                </a>
              </li>
           <% end %>
@@ -71,11 +71,11 @@
     </li>
 <% else %>
     <li class="" role="presentation">
-      <%= link_to "#{icon('key')} Change password".html_safe, edit_password_path, method: :get, title: 'Select this to change your password'%>
+      <%= link_to "#{editor_icon('key')} Change password".html_safe, edit_password_path, method: :get, title: 'Select this to change your password'%>
     </li>
 <% end %>
     <li class="" role="presentation">
-      <%= link_to "#{icon('sign-out')} Sign out".html_safe, sign_out_path, method: :get, title: 'Select this to sign out from the NSL Editor'%>
+      <%= link_to "#{editor_icon('sign-out')} Sign out".html_safe, sign_out_path, method: :get, title: 'Select this to sign out from the NSL Editor'%>
     </li>
   </ul>
 </li>

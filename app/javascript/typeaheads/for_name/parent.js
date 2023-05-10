@@ -1,3 +1,4 @@
+
 function setUpNameParentTypeahead() {
     if (typeof(nameParentSuggestions) != "undefined") {
         $("#name-parent-typeahead").typeahead({highlight: true}, {
@@ -28,7 +29,7 @@ window.setUpNameParentTypeahead = setUpNameParentTypeahead;
 // Provides a way to inject the current name id into the URL.
 // Using the replace function to strip off the Name's rank, which
 // is delimited by a pipe symbol (|).
-nameParentSuggestions = new Bloodhound({
+window.nameParentSuggestions = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/names/name_parent_suggestions?format=js&term=%QUERY',
@@ -43,6 +44,5 @@ nameParentSuggestions = new Bloodhound({
     limit: 100
 });
 
-nameParentSuggestions.initialize();
+window.nameParentSuggestions.initialize();
 
-window.nameParentSuggestions = nameParentSuggestions;

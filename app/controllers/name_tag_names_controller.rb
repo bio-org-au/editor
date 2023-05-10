@@ -56,7 +56,7 @@ class NameTagNamesController < ApplicationController
   rescue => e
     logger.error("Name Tag Name create failed: #{e}")
     @message = "Could not attach that tag because #{e}"
-    render :create_failed, format: :js
+    render :create_failed, format: :js, status: :unprocessable_entity
   end
 
   # DELETE /name_tag_names/1

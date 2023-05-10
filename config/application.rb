@@ -9,10 +9,11 @@ Bundler.require(*Rails.groups)
 module NEDR6
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 7.0
 
     config.time_zone = "Australia/Melbourne"
     config.active_record.default_timezone = :local
+    config.active_record.schema_format = :sql
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -20,8 +21,6 @@ module NEDR6
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.active_record.schema_format = :sql
-    # config.action_view.form_with_generates_remote_forms = true
+    config.action_view.form_with_generates_remote_forms = true
   end
 end
-

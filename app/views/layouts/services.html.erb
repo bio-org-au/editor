@@ -7,11 +7,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><%= 'Test' if Rails.configuration.session_key_tag.match(/test/i) %> NSL Editor</title>
+    <title><%= 'Test' if (Rails.configuration.session_key_tag && Rails.configuration.session_key_tag.match(/test/i)) %> NSL Editor</title>
 
     <script>
-      window.relative_url_root = "<%= Rails.application.config.relative_url_root %>"
-      window.NG_TEMPLATE_URL="<%= @ng_template_path %>";
+      window.relative_url_root = "<%= Rails.application.config.try('relative_url_root') %>"
     </script>
 
     <%= favicon_link_tag 'favicon.png?v=1', :rel => 'shortcut icon' %>

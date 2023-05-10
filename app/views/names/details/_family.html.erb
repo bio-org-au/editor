@@ -1,6 +1,6 @@
 <% if @name.name_rank.family? %>
   <% if @name.family_members.size > 0 %>
-    <%= link_to("#{pluralize(@name.family_members.size,'family member')} #{icon('search')}".html_safe,
+    <%= link_to("#{pluralize(@name.family_members.size,'family member')} #{editor_icon('search')}".html_safe,
       search_path(query_string: "family-id: #{@name.id}",
                   query_common_and_cultivar: "t",
                   query_target: 'name'),

@@ -1,5 +1,5 @@
 $('#copy-name-info-message-container')
-  .html('<%= link_to("1 Name copied #{icon('search')}".html_safe,
+  .html('<%= link_to("1 Name copied #{editor_icon('search')}".html_safe,
                      search_url(query_target: 'Names',
                                 query_string: "id:#{@name.id}"),
                                 title: "Query the newly copied name") %>');

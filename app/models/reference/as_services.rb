@@ -18,6 +18,6 @@
 #
 class Reference::AsServices < Reference
   def self.citation_strings_url(id)
-    "#{Rails.configuration.reference_services}#{id}/api/citation-strings"
+    "#{Rails.configuration.try('reference_services')}#{id}/api/citation-strings"
   end
 end

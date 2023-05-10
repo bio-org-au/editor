@@ -90,7 +90,7 @@
     <tr><td>ldap_admin_username</td> <td> <%= Rails.configuration.try(:ldap_admin_username) %> </td></tr>
     <tr><td>ldap_userid_field</td> <td> <%= Rails.configuration.try(:ldap_userid_field) %> </td></tr>
     <tr><td>ldap_verify_certificate</td> <td> <%= Rails.configuration.try(:ldap_verify_certificate) %> </td></tr>
-    <tr><td class="width-40-percent min-width-10em" >Rails.configuration.ldap_base</td> <td> <%= Rails.configuration.try(:ldap_base) %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em" >ldap_base</td> <td> <%= Rails.configuration.try(:ldap_base) %> </td></tr>
     <tr><td>ldap_users</td><td> <%= Rails.configuration.try(:ldap_users) %> </td></tr>
     <tr><td>ldap_groups</td><td> <%= Rails.configuration.try(:ldap_groups) %> </td></tr>
     <tr><td>ldap_generic_users</td> <td> <%= Rails.configuration.try(:ldap_generic_users) %> </td></tr>
@@ -179,7 +179,7 @@
 
     <h4>Exception logging</h4>
     <table class="table table-condensed search-results width-100-percent">
-    <tr><td>Test exception logging.</td><td><%= link_to icon('bomb','',class: 'black fa-2x'), throw_path, title:"Throw a harmless exception" %></td></tr>
+    <tr><td>Test exception logging.</td><td><%= link_to editor_icon('bomb','',class: 'black fa-2x'), throw_path, title:"Throw a harmless exception" %></td></tr>
     </table>
 
     <h4>ICN/ICZN Switches</h4>

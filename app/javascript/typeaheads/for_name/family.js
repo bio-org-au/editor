@@ -28,7 +28,7 @@ window.setUpNameFamilyTypeahead = setUpNameFamilyTypeahead;
 // Provides a way to inject the current name id into the URL.
 // Using the replace function to strip off the Name's rank, which
 // is delimited by a pipe symbol (|).
-nameFamilySuggestions = new Bloodhound({
+window.nameFamilySuggestions = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
@@ -44,5 +44,5 @@ nameFamilySuggestions = new Bloodhound({
     limit: 100
 });
 
-nameFamilySuggestions.initialize();
+window.nameFamilySuggestions.initialize();
 

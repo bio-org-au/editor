@@ -14,6 +14,8 @@ function setUpWorkspaceParentName() {
         .on('typeahead:selected', function($e,datum) {
             $('#workspace_parent_name_id').val(datum.id);
             var input = $('#workspace_parent_name_typeahead');
+            // remove program-generated tags in typeahead list entries
+            // there will be no scripts here
             var replaced = input.val().replace(/<.*>/g, '').trim();
             input.val(replaced);
         })
@@ -28,7 +30,7 @@ function setUpWorkspaceParentName() {
 
 window.setUpWorkspaceParentName = setUpWorkspaceParentName;
 
-workspaceParentNameSuggestions = new Bloodhound({
+window.workspaceParentNameSuggestions = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
@@ -45,6 +47,6 @@ workspaceParentNameSuggestions = new Bloodhound({
     limit: 100
 });
 
-workspaceParentNameSuggestions.initialize();
+window.workspaceParentNameSuggestions.initialize();
 
-window.workspaceParentNameSuggestions = workspaceParentNameSuggestions;
+

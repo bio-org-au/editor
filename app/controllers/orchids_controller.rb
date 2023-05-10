@@ -72,11 +72,11 @@ class OrchidsController < ApplicationController
   def update_the_raw_record
     @orchid = Orchid.find(params[:id])
     @message = @orchid.update_if_changed(orchid_params, current_user.username)
-    render "update.js"
+    render "update"
   rescue => e
     logger.error("Orchid#update_the_raw_record rescuing #{e}")
     @message = e.to_s
-    render "update_error.js", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_entity
   end
  
   def destroy
@@ -84,7 +84,7 @@ class OrchidsController < ApplicationController
   rescue => e
     logger.error("Orchid#destroy rescuing #{e}")
     @message = e.to_s
-    render "destroy_error.js", status: :unprocessable_entity
+    render "destroy_error", status: :unprocessable_entity
   end
 
   # GET /orchids/new_row
@@ -110,11 +110,11 @@ class OrchidsController < ApplicationController
   # POST /orchids
   def create
     @orchid = Orchid.create(orchid_params, current_user.username)
-    render "create.js"
+    render "create"
   rescue => e
     logger.error("Controller:Authors:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error.js", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_entity
   end  # For the typeahead search.
 
   def parent_suggestions

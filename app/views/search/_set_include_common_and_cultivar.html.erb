@@ -1,19 +1,20 @@
 
 
 <% if session[:include_common_and_cultivar] == true %>
-  <% icon_name = 'check-square-o fa-lg' %>
-  <% title_text = 'Name searches will include common and cultivars' %>
+  <% icon_name = 'square-check' %>
+  <% include_exclude = 'include' %>
 <% else %>
-  <% icon_name = 'square-o fa-lg' %>
-  <% title_text = 'Name searches will exclude common and cultivars' %>
+  <% icon_name = 'square' %>
+  <% include_exclude = 'exclude' %>
 <% end %>
 
-<%= link_to "#{icon(icon_name)} Common/Cultivars".html_safe,
+<%= link_to "#{icon('fa-sharp fa-regular fa-lg', icon_name)} Common/Cultivars".html_safe,
   set_include_common_and_cultivar_path,
   remote: true,
   method: :post,
-  title: "#{title_text}",
+  title: "Name searches will #{include_exclude} common names and cultivars",
   class: "" %>
 
 &nbsp;
+
 

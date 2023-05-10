@@ -1,11 +1,65 @@
-- :date: 20-Apr-2023
-  :jira_id: ''
+- :date: 04-May-2023
+  :jira_id: '4506'
   :description: |-
-    Tree Error: Make tree error messages simple strings, without html tags.
-- :date: 20-Apr-2023
+    Services error messages: reverse the escaping of tags in tree error messages done under NSL-4493
+- :date: 04-May-2023
+  :jira_id: '4499'
+  :description: |-
+    Services error messages: restore the code that extracts json errors from Services responses - this leaves us vulnerable to silent 500 errors, so triaged that by prefixing possible silent/XML errors with "Tree error:", but currently no way to generate 500 errors from Services on demand for testing.
+- :date: 04-May-2023
+  :jira_id: '4136'
+  :description: |-
+    Added short-hand variants of the <code>show-instances:</code> directive for Name and Reference searches
+- :date: 04-May-2023
+  :jira_id: '4460'
+  :description: |-
+    Refined the error message to make clear it's referring to the Name of a Review for a Batch rather than a Name per se
+- :date: 03-May-2023
+  :jira_id: '4460'
+  :description: |-
+    Improved error message when Loader Batch Review already exists
+- :date: 03-May-2023
   :jira_id: '4470'
   :description: |-
-    Upgrade: Tree processing errors noticed during upgrade testing and visible in log but not on UI form - make error messages display
+    Upgrade branch: configuration change to fix form submit problems in Rails 7
+- :date: 01-May-2023
+  :jira_id: '4498'
+  :description: |-
+    Upgrade to Ruby 3.2.2
+- :date: 28-Apr-2023
+  :jira_id: ''
+  :description: |-
+    Security: Integrity comments and changes.
+- :date: 27-Apr-2023
+  :jira_id: ''
+  :description: |-
+    Restored csv output for Instance search results
+- :date: 26-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade branch: On the Draft Taxonomies menu, any of the listed drafts should now be ticked if and only if they are the selected draft
+- :date: 21-Apr-2023
+  :release: true
+- :date: 20-Apr-2023
+  :jira_id: '4493'
+  :description: |-
+    Tree Profile Edit Errors: Make tree error messages simple strings, without xml/html tags - improving their visibility and legibility.
+- :date: 20-Apr-2023
+  :jira_id: '4493'
+  :description: |-
+    Tree Profile Edit Errors: Make hidden tree profile update errors visible by no longer treating xml tags as (non-displayed) html; the errors were logged but invisible in GUI because wrapped in &lt; and &gt; glyphs.
+- :date: 19-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade Branch: More rendering fixes - removing hard-coded file suffixes - ".js" first noticed on tree menu; also, tree menu fix for icon.  <b>(Branch was not in prod release 21 Apr)</b>
+- :date: 19-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade Branch: Fix problem preventing the create-reference action showing a form  <b>(Branch was not in prod release 21 Apr)</b>
+- :date: 13-Apr-2023
+  :jira_id: '4470'
+  :description: |-
+    Upgrade Branch: Upgrade to Rails 7  <b>(Branch was not in prod release 21 Apr)</b>
 - :date: 06-Apr-2023
   :release: true
 - :date: 31-Mar-2023

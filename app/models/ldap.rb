@@ -30,7 +30,7 @@ class Ldap  < ActiveType::Object
   # e.g. ldap_host = "ldaps.biodiversity.org.au"
   PORT = Rails.configuration.try('ldap_port')
   BASE = Rails.configuration.try('ldap_base')
-  # e.g. Rails.configuration.ldap_base = "ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
+  # e.g. Rails.configuration.try('ldap_base') = "ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
   GROUPS_PATH = Rails.configuration.try('ldap_groups')
   # e.g. ldap_groups = "ou=groups,cn=dev,dc=nsl,dc=bio,dc=org,dc=au"
   USERID_FIELD = Rails.configuration.try('ldap_userid_field') || 'samAccountName'
@@ -45,7 +45,7 @@ class Ldap  < ActiveType::Object
   GENERIC_USERS = Rails.configuration.try('ldap_generic_users')
   # e.g. ldap_generic_users: "cn=Users,dc=cloud,dc=biodiversity,dc=org,dc=au"
   GROUP_FILTER_REGEX = Rails.configuration.try('ldap_group_filter_regex') 
-  # Rails.configuration.group_filter_regex = 'ou=dev,ou=nsl'
+  # Rails.configuration.try('group_filter_regex') = 'ou=dev,ou=nsl'
 
   def users_groups
     @groups

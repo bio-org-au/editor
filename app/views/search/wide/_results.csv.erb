@@ -25,7 +25,7 @@
         <%= render partial: 'instance_within_reference_record',
           locals: {search_result: record, give_me_focus: give_me_focus} -%>
       <% when 'Instance' -%>
-<%= render partial: 'instances/show.csv', locals: {record: record} -%> 
+<%= render partial: 'instances/show', locals: {record: record}, formats: :csv -%> 
       <% when 'cites-this-instance' -%>
         <%= render partial: 'instance_cites_this_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} -%>

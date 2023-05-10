@@ -25,7 +25,7 @@ window.setUpOrchidParentTypeahead = setUpOrchidParentTypeahead;
 // Provides a way to inject the current orchid id into the URL.
 // Using the replace function to strip off the Name's rank, which
 // is delimited by a pipe symbol (|).
-orchidParentSuggestions = new Bloodhound({
+window.orchidParentSuggestions = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/orchids/parent_suggestions?term=%QUERY',
@@ -39,7 +39,6 @@ orchidParentSuggestions = new Bloodhound({
     limit: 100
 });
 
-orchidParentSuggestions.initialize();
+window.orchidParentSuggestions.initialize();
 
-window.orchidParentSuggestions = orchidParentSuggestions;
 

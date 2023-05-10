@@ -1,4 +1,4 @@
-$("#instance-note-edit-form-container-<%= @instance_note.id %>").append("<%= escape_javascript(render partial: 'form.html') %>");
+$("#instance-note-edit-form-container-<%= @instance_note.id %>").append("<%= escape_javascript(render partial: 'form') %>");
 $("#instance-note-edit-link-<%= @instance_note.id %>").addClass('hidden');
 $("#instance-note-cancel-edit-link-<%= @instance_note.id %>").removeClass('hidden');
 $("#instance-note-delete-link-<%= @instance_note.id %>").removeClass('hidden');

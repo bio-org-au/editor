@@ -26,7 +26,7 @@ window.setUpLoaderBatchDefaultReferenceTypeahead = setUpLoaderBatchDefaultRefere
 // Provides a way to inject the current loader name id into the URL.
 // Using the replace function to strip off the loader name's rank, which
 // is delimited by a pipe symbol (|).
-loaderBatchDefaultReferenceSuggestions = new Bloodhound({
+window.loaderBatchDefaultReferenceSuggestions = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/loader/batches/default_reference_suggestions?term=%QUERY',
@@ -39,7 +39,6 @@ loaderBatchDefaultReferenceSuggestions = new Bloodhound({
     limit: 100
 });
 
-loaderBatchDefaultReferenceSuggestions.initialize();
+window.loaderBatchDefaultReferenceSuggestions.initialize();
 
-window.loaderBatchDefaultReferenceSuggestions = loaderBatchDefaultReferenceSuggestions;
 

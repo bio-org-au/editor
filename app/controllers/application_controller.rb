@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception  # from v4, needed in v6?
+  protect_from_forgery with: :exception
   before_action :set_debug,
                 :start_timer,
                 :check_system_broadcast,
                 :authenticate,
                 :authorise,
                 :set_view_mode
-  around_action :user_tagged_logging
+#  around_action :user_tagged_logging
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :show_login_page
   rescue_from CanCan::AccessDenied do |_exception|

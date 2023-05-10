@@ -48,12 +48,12 @@ module IconHelper
     end
   end
 
-  def icon(icon, text = "", html_options = {})
+  def editor_icon(icon, text = "", html_options = {})
     html_options[:class] = icon_content_class(icon, html_options)
     html = if text.blank?
              content_tag(:i, nil, html_options)
            else
-             "content_tag(:i, nil, html_options) #{text}"
+             "#{content_tag(:i, nil, html_options)} #{text}"
            end
     html.html_safe
   end
@@ -67,10 +67,10 @@ module IconHelper
   end
 
   def search_icon_on_tab
-    icon("search")
+    editor_icon("search")
   end
 
   def gray_search_icon
-    icon("search", "", class: "darkgray")
+    editor_icon("search", "", class: "darkgray")
   end
 end

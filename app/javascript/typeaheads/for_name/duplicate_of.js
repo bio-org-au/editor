@@ -23,7 +23,7 @@ function setUpNameDuplicateOf() {
 
 window.setUpNameDuplicateOf = setUpNameDuplicateOf;
 
-nameDuplicateSuggestions = new Bloodhound({
+window.nameDuplicateSuggestions = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/suggestions/name/duplicate?format=js&term=%QUERY',
@@ -37,7 +37,6 @@ nameDuplicateSuggestions = new Bloodhound({
     limit: 100
 });
 
-nameDuplicateSuggestions.initialize();
+window.nameDuplicateSuggestions.initialize();
 
 
-window.nameDuplicateSuggestions = nameDuplicateSuggestions;

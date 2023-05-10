@@ -256,10 +256,6 @@ class Search::Loader::Name::FieldRule
    "family-id:" => { where_clause: "(lower(family) like (select lower(simple_name) from loader_name where id = ?))"},
     "record-type:" => { where_clause: " record_type = ?",
                                order: "seq"},
-    "excluded:" => { where_clause: " record_type = 'excluded' ",
-                               order: "seq"},
-    "not-excluded:" => { where_clause: " record_type != 'excluded' ",
-                               order: "seq"},
 
     "remark:" => { where_clause: "(lower(remark_to_reviewers) like ?)
         or exists (
@@ -363,6 +359,8 @@ class Search::Loader::Name::FieldRule
                                       order: "seq"},
     "excluded:"        => { where_clause: "record_type = 'excluded'",
                                       order: "seq"},
+    "not-excluded:" => { where_clause: " record_type != 'excluded' ",
+                               order: "seq"},
     "syn:"             => { where_clause: "record_type = 'synonym'",
                                       order: "seq"},
     "misapplied:"      => { where_clause: "record_type = 'misapplied'",

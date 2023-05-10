@@ -1,7 +1,7 @@
 <% if @name.name_tags.present? %>
     <br>
     <span title='Name tags'>
-      <%= icon('tags') %>
+      <%= editor_icon('tags') %>
       <span class='name-tag' title='Name tag'>
         <%= @name.name_tags.collect { |name_tag| name_tag.name }.join(',') %>
       </span>

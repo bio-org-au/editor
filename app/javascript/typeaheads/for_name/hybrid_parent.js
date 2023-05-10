@@ -24,7 +24,7 @@ window.setUpNameHybridParentTypeahead = setUpNameHybridParentTypeahead;
 
 
 // Provides a way to inject the current name id into the URL.
-nameParentSuggestionsForHybrid = new Bloodhound({
+window.nameParentSuggestionsForHybrid = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/suggestions/name/hybrid_parent?term=%QUERY',
@@ -40,5 +40,5 @@ nameParentSuggestionsForHybrid = new Bloodhound({
 });
 
 // kicks off the loading/processing of `local` and `prefetch`
-nameParentSuggestionsForHybrid.initialize();
+window.nameParentSuggestionsForHybrid.initialize();
 

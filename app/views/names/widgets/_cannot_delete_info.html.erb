@@ -1,7 +1,7 @@
   Cannot delete:
   <% if @name.instances.size > 0 %>
     <br>
-    <%= link_to("#{pluralize(@name.instances.size,'instance')} #{icon('search')}".html_safe, 
+    <%= link_to("#{pluralize(@name.instances.size,'instance')} #{editor_icon('search')}".html_safe, 
                         search_path(query_string: "id: #{@name.id} show-instances:", 
                         query_target: 'name'),
                         tabindex: increment_tab_index,
@@ -10,7 +10,7 @@
   <% end %>
   <% if @name.children.size > 0 %>
     <br>
-  <%= link_to("#{pluralize(@name.children.size,'child')} #{icon('search')}".html_safe,
+  <%= link_to("#{pluralize(@name.children.size,'child')} #{editor_icon('search')}".html_safe,
     search_path(query_string: "parent-id: #{@name.id}",
                 query_target: 'name'),
                 tabindex: increment_tab_index,
@@ -19,7 +19,7 @@
   <% end %>
   <% if @name.family_dependents? %>
     <br>
-  <%= link_to("#{pluralize(@name.family_members&.size,'family member')} #{icon('search')}".html_safe,
+  <%= link_to("#{pluralize(@name.family_members&.size,'family member')} #{editor_icon('search')}".html_safe,
     search_path(query_string: "family-id: #{@name.id}",
                 query_target: 'name'),
                 tabindex: increment_tab_index,

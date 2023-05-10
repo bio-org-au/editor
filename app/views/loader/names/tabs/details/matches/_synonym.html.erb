@@ -3,8 +3,8 @@
 <% else %>
   <h3>Preferred Matches (<%= match_type %>)</h3>
 <% end %>
-<%= render partial: 'loader/names/tabs/details/matches/synonyms/forms/preferred_matches.html.erb' , locals: {match_type: match_type} %>
+<%= render partial: 'loader/names/tabs/details/matches/synonyms/forms/preferred_matches' , locals: {match_type: match_type} %>
 
 <% unless @loader_name.preferred_matches.empty? %>
-  <%= render partial: 'loader/names/tabs/details/matches/synonyms/forms/clear_all_matches.html.erb' %>
+  <%= render partial: 'loader/names/tabs/details/matches/synonyms/forms/clear_all_matches' %>
 <% end %>

@@ -1,7 +1,7 @@
 <% Tree.menu_drafts.each do |menu_item| %>
 
     <%
-      icon_check_class =
+      check_is_hidden =
           if session["draft"].present? &&
               menu_item.draft_id == session["draft"]["id"]
             ""
@@ -13,7 +13,7 @@
     <li role="presentation">
       <% if menu_item.draft_id %>
           <%= link_to("#{menu_item.name} #{menu_item.draft_name}
-                      #{fa_icon 'check', class: icon_check_class}".html_safe,
+                      #{editor_icon('check', '',{class: check_is_hidden})}".html_safe,
                       toggle_current_workspace_path(id: menu_item.draft_id),
                       { remote: true,
                         method: "post",

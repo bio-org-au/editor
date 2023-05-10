@@ -27,7 +27,7 @@ window.setUpInstanceInstanceForNameShowingReferenceUpdate = setUpInstanceInstanc
 
 
 // Get a list of references in instances of the name
-instanceForNameShowingReferenceUpdate = new Bloodhound({
+window.instanceForNameShowingReferenceUpdate = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/instances/for_name_showing_reference?term=%QUERY',
@@ -43,7 +43,6 @@ instanceForNameShowingReferenceUpdate = new Bloodhound({
 });
 
 // kicks off the loading/processing of `local` and `prefetch`
-instanceForNameShowingReferenceUpdate.initialize();
+window.instanceForNameShowingReferenceUpdate.initialize();
 
-window.instanceForNameShowingReferenceUpdate = instanceForNameShowingReferenceUpdate;
 

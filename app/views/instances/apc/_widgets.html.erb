@@ -1,9 +1,9 @@
       <span class="apc-container no-decoration">
       <% if instance.name.excluded_concept? %>
-        <%= icon('ban','',class: 'apc') %>
+        <%= editor_icon('ban','',class: 'apc') %>
         <span class='apc small strong' title="Excluded from APC">APC</span>
       <% else %>
-        <%= icon('check','',class: 'apc') %>
+        <%= editor_icon('check','',class: 'apc') %>
         <span class='apc small strong' title="In APC">APC</span>
       <% end %>
       </span>

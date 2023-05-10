@@ -3,7 +3,7 @@ $('.error-container').html('').addClass('hidden');
 $('.override-container').addClass('hidden');
 
 <% if @message.size > 1 %>
-    $('#copy-instance-error-message-container').html('<%=j "#{icon('warning red')} #{'Multiple errors (No overrides are available when there are multiple errors)'}".html_safe %>');
+    $('#copy-instance-error-message-container').html('<%=j "#{editor_icon('warning red')} #{'Multiple errors (No overrides are available when there are multiple errors)'}".html_safe %>');
    $('#copy-instance-error-message-container').removeClass('hidden');
    <% @message.each_with_index do |m,i| %>
      <% tag_id = "#search-result-details-error-message-container-#{i}" %>
@@ -11,7 +11,7 @@ $('.override-container').addClass('hidden');
      $('<%= tag_id %>').removeClass('hidden');
    <% end %>
 <% else %>
-   $('#copy-instance-error-message-container').html('<%=j "#{icon('warning red')} #{@message.first}".html_safe %>');
+   $('#copy-instance-error-message-container').html('<%=j "#{editor_icon('warning red')} #{@message.first}".html_safe %>');
    $('#copy-instance-error-message-container').removeClass('hidden');
    <% if @multiple_primary_override %>
      $('#multiple-primary-override').removeClass('hidden');

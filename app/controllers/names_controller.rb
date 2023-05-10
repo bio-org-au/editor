@@ -157,19 +157,19 @@ class NamesController < ApplicationController
     current_name = Name::AsCopier.find(params[:id])
     @name = current_name.copy_with_username(name_params[:name_element],
                                             current_user.username)
-    render "names/copy/success.js"
+    render "names/copy/success"
   rescue => e
     @message = e.to_s
     logger.error("Error in Name#copy: #{@message}")
-    render "names/copy/error.js"
+    render "names/copy/error"
   end
 
   def refresh
     @name.set_names!
-    render "names/refresh/ok.js"
+    render "names/refresh/ok"
   rescue => e
     @message = e.to_s
-    render "names/refresh/error.js"
+    render "names/refresh/error"
   end
 
   def refresh_name_path_field
@@ -177,26 +177,26 @@ class NamesController < ApplicationController
     @name.build_name_path
     if @name.changed?
       @name.save!(touch: false)
-      render "names/refresh_name_path/ok.js"
+      render "names/refresh_name_path/ok"
     else
-      render "names/refresh_name_path/no_change.js"
+      render "names/refresh_name_path/no_change"
     end
   rescue => e
     @message = e.to_s
-    render "names/refresh_name_path/error.js"
+    render "names/refresh_name_path/error"
   end
 
   def refresh_children
     if @name.combined_children.size > 50
       NameChildrenRefresherJob.new.perform(@name.id)
-      render "names/refresh_children/job_started.js"
+      render "names/refresh_children/job_started"
     else
       @total = NameChildrenRefresherJob.new.perform(@name.id)
-      render "names/refresh_children/ok.js"
+      render "names/refresh_children/ok"
     end
   rescue => e
     @message = e.to_s
-    render "names/refresh_children/error.js"
+    render "names/refresh_children/error"
   end
 
   def transfer_dependents

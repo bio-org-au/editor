@@ -9,8 +9,8 @@
     <%= render(partial: 'instances/apc/widgets', locals: {instance: @instance}) %>
 <% end %>
 &nbsp;
-<%= link_to("#{ShardConfig.name_space}&nbsp;#{icon('external-link-square')}".html_safe,
-            "#{Rails.configuration.nsl_links}apni-format/display/#{@instance.name_id}",
+<%= link_to("#{ShardConfig.name_space}&nbsp;#{editor_icon('external-link-square')}".html_safe,
+            "#{Rails.configuration.try('nsl_links')}apni-format/display/#{@instance.name_id}",
             title: "#{ShardConfig.name_space} search. Opens in another named tab or window.",
             class: 'rebeccapurple',
             target: "_editor_to_apni",
@@ -31,7 +31,7 @@ as <%= @instance.instance_type.name_with_indefinite_article.sub(/ /, '<br>').htm
 <%= "<br>on page #{@instance.page}".html_safe if @instance.page.present? %>
 <%= "<br>with verbatim name #{@instance.verbatim_name_string}".html_safe if @instance.verbatim_name_string.present? %>
 <br>
-<%= link_to("and BHL entry #{icon('external-link')}".html_safe,
+<%= link_to("and BHL entry #{editor_icon('external-link')}".html_safe,
             @instance.bhl_url,
             title: "Follow this link to the BHL entry.") if @instance.bhl_url.present? %>
 

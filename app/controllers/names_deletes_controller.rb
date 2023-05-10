@@ -25,7 +25,7 @@ class NamesDeletesController < ApplicationController
     raise "Not confirmed" unless @names_delete.save! # i.e. confirmed
 
     delete_via_service(names_delete_params)
-    render partial: "ok.js"
+    render partial: "ok"
   rescue StandardError => e
     logger.error("Exception deleting name: #{e}")
     assemble_error_message(e)

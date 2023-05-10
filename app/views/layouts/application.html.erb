@@ -2,13 +2,18 @@
 <html lang="en">
   <head>
     <title> <%= page_title || 'NEDR6' %> </title>
-
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
     <script>
       window.relative_url_root = "<%= Rails.application.config.action_controller.relative_url_root %>";
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.js" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/c8a7e4d562.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.js"
+            integrity="zp/kcGQmjhN2GY+9dUw1823+UDbxCMMSnbndrGSpqJR9o0tzrLvbLrXgEAMPV5b1"
+            crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/c8a7e4d562.js"
+            integrity="TKHwXUa3s9VcOUHVKywYZru7PNEYgJAu6xu0nohkh6Qrzt4EMmITw2cYzMqzy2W2"
+            crossorigin="anonymous"></script>
 
     <% if Rails.env == "development" || params[:debug] == 'true' %>
       <script> debugSwitch = true; </script>
@@ -16,15 +21,15 @@
       <script> debugSwitch = false; </script>
     <% end %>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_importmap_tags %>
 
-    <%= csrf_meta_tags %>
     <%= favicon_link_tag 'favicon.png?v=1', :rel => 'shortcut icon' %>
     <!--    Select2 widget TODO download if it works out -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script> -->
 
     <% if development? %>
 <style>

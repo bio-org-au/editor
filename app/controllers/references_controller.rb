@@ -37,7 +37,7 @@ class ReferencesController < ApplicationController
     @reference = Reference::AsNew.default
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    render "new.js"
+    render "new"
   end
 
   # GET /references/new_row

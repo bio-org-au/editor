@@ -62,11 +62,11 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
   def create
     @batch_review_period = ::Loader::Batch::Review::Period.create(review_period_params,
                                                current_user.username)
-    render "create.js"
+    render "create"
   rescue => e
     logger.error("Controller:Loader::Batch::Review::PeriodsController#create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error.js", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_entity
   end
 
   # POST /batch_reviews

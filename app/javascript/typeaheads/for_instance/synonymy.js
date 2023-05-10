@@ -20,7 +20,7 @@ function setUpSynonymyInstance() {
 window.setUpSynonymyInstance = setUpSynonymyInstance;
 
 // Get a list of instances for a name
-instanceForSynonymy = new Bloodhound({
+window.instanceForSynonymy = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/instances/for_synonymy?term=%QUERY',
@@ -35,6 +35,6 @@ instanceForSynonymy = new Bloodhound({
 }); 
 
 // kicks off the loading/processing of `local` and `prefetch`
-instanceForSynonymy.initialize();
+window.instanceForSynonymy.initialize();
 
 window.instanceForSynonymy = instanceForSynonymy;

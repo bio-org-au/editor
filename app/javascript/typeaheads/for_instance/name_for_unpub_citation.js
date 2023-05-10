@@ -22,7 +22,7 @@ function setUpInstanceNameForUnpubCitation() {
 
 window.setUpInstanceNameForUnpubCitation = setUpInstanceNameForUnpubCitation;
 
-nameByFullNameForUnpubCit = new Bloodhound({
+window.nameByFullNameForUnpubCit = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: window.relative_url_root + '/names/typeaheads/for_unpub_cit/index?term=%QUERY',
@@ -30,8 +30,7 @@ nameByFullNameForUnpubCit = new Bloodhound({
 });
 
 // kicks off the loading/processing of `local` and `prefetch`
-nameByFullNameForUnpubCit.initialize();
+window.nameByFullNameForUnpubCit.initialize();
 
-window.nameByFullNameForUnpubCit = nameByFullNameForUnpubCit
 
 

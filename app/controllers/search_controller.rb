@@ -9,16 +9,7 @@ class SearchController < ApplicationController
       format.html
       format.csv do
         data = @search.executed_query.results.to_csv
-        begin
-          data = data.unicode_normalize(:nfc).encode("UTF-16LE")
-          data = "\xFF\xFE".dup.force_encoding("UTF-16LE") + data
-        rescue => encoding_error
-          logger.error(encoding_error.to_s)
-          logger.error("This CSV error in the SearchController does not")
-          logger.error("prevent CSV data being created but it does indicate")
-          logger.error("failure to encode the CSV as UTF-16LE")
-        end
-        send_data data
+        send_data(encode_data_for_csv(data))
       end
     end
   rescue ActiveRecord::StatementInvalid => e
@@ -69,7 +60,6 @@ class SearchController < ApplicationController
     check_query_defaults
     params[:include_common_and_cultivar_session] = \
       session[:include_common_and_cultivar]
-    #record_view_param
     apply_view_mode
     # Avoid "A copy of Search has been removed from the module tree but is still active" error
     # https://stackoverflow.com/questions/29636334/a-copy-of-xxx-has-been-removed-from-the-module-tree-but-is-still-active
@@ -96,12 +86,13 @@ class SearchController < ApplicationController
     params[:query_field] = "apc" if params[:query_field].blank?
     params[:query] = plantae_haeckel if params[:query].blank?
   end
-
+ 
+  # ToDo: where is this needed and why?
   def plantae_haeckel
     Name.find_by(full_name: "Plantae Haeckel").id
   end
 
-  # note: services needs to be changed to use the "new" params
+  # Note: services needs to be changed to use the "new" params
   # before you can remove this code
   def handle_old
     handle_old_style_params
@@ -155,5 +146,15 @@ class SearchController < ApplicationController
     Rails.logger.info("apply_view_mode:    @view_mode: #{@view_mode}")
     Rails.logger.info("apply_view_mode:    @view: #{@view}")
   end
-end
 
+  def encode_data_for_csv(data)
+    data = data.unicode_normalize(:nfc).encode("UTF-16LE")
+    data = "\xFF\xFE".dup.force_encoding("UTF-16LE") + data
+    data
+  rescue => encoding_error
+    logger.error(encoding_error.to_s)
+    logger.error("This CSV error in the SearchController does not")
+    logger.error("prevent CSV data being created but it does indicate")
+    logger.error("failure to encode the CSV as UTF-16LE")
+  end
+end

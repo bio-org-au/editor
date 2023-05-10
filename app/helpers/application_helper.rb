@@ -113,7 +113,7 @@ module ApplicationHelper
   end
 
   def development?
-    Rails.configuration.try("environment").match(/^development/i)
+    Rails.configuration.try("environment", /^development/i)
   end
 end
 

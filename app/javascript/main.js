@@ -16,7 +16,7 @@ function reportError(s) {
 // ====================================== //
 //  Document Ready                        //
 // ====================================== //
-$(document).on('turbolinks:load', function() {
+$(document).on('turbo:load', function() {
   debug('Start of main.js document ready.');
 
   /* save editable fields automatically */

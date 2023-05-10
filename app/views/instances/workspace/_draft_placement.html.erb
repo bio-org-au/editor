@@ -101,7 +101,7 @@
     </dd>
     <dt>apni format</dt>
     <dd>
-      <a href="<%= "#{Rails.configuration.nsl_links}apni-format/display/#{@instance.name_id}?versionId=#{@tree_version_element.tree_version.id}&drafts=true" %>"
+      <a href="<%= %Q(#{Rails.configuration.try('nsl_links')}apni-format/display/#{@instance.name_id}?versionId=#{@tree_version_element.tree_version.id}&drafts=true) %>"
          title="apni format" target="_blank">
         <i class="fa fa-external-link-square"></i>
         ... <%= "apni-format/display/#{@instance.name_id}" %>

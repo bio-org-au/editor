@@ -23,7 +23,7 @@ function setUpNameCultivarParentTypeahead() {
 window.setUpNameCultivarParentTypeahead = setUpNameCultivarParentTypeahead;
 
 // Provides a way to inject the current name id into the URL.
-nameParentSuggestionsForCultivar = new Bloodhound({
+window.nameParentSuggestionsForCultivar = new Bloodhound({
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {url: window.relative_url_root + '/suggestions/name/cultivar_parent?term=%QUERY',
@@ -39,5 +39,5 @@ nameParentSuggestionsForCultivar = new Bloodhound({
 });
 
 // kicks off the loading/processing of `local` and `prefetch`
-nameParentSuggestionsForCultivar.initialize();
+window.nameParentSuggestionsForCultivar.initialize();
 
