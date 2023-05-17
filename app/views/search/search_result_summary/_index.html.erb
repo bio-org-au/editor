@@ -1,9 +1,17 @@
 
- <span id="set-include-common-and-cultivar">
+<% if @search&.parsed_request&.target_table == 'name' %>
+  <% cbox_class = '' %>
+<% else %>
+  <% cbox_class = 'hidden' %>
+<% end %>
+
+<span id="set-include-common-and-cultivar" class="<%= cbox_class %>" >
    <%= render partial: 'search/set_include_common_and_cultivar' %>
- </span>
+</span>
+
+
 <% unless @empty_search %>
-  <span id="trailing-pipe-for-set-include-common-and-cultivar" class="">&nbsp;|&nbsp;</span>
+  <span id="trailing-pipe-for-set-include-common-and-cultivar" class="<%= cbox_class %>">&nbsp;|&nbsp;</span>
 <% end %>
 
 <% if @search.error %>

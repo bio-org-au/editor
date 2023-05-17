@@ -7,8 +7,6 @@ const application = Application.start()
 //Rails.start(); // errors
 
 
-// Configure Stimulus development experience
-application.debug = true
 window.Stimulus   = application
 
 export { application }

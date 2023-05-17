@@ -50,14 +50,16 @@ Rails.start();
 
 
 console.log($); // ok
-console.log("hi");
 
-window.onload = function() {
-  console.log('window loaded via js/application.js');
+
+if (debugSwitch === true) {
+  window.onload = function() {
+    console.log('window loaded via js/application.js');
+  }
+
+  $(document).on("turbo:load", () => {
+    console.log('turbo! via javascript/application.js');
+    console.log('Turbo.session.drive: ' + Turbo.session.drive);
+  });
 }
-
-$(document).on("turbo:load", () => {
-  console.log('turbo! via javascript/application.js');
-  console.log('Turbo.session.drive: ' + Turbo.session.drive);
-});
 

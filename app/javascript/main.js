@@ -17,7 +17,9 @@ function reportError(s) {
 //  Document Ready                        //
 // ====================================== //
 $(document).on('turbo:load', function() {
+  if (debugSwitch === true) {
   debug('Start of main.js document ready.');
+  }
 
   /* save editable fields automatically */
   $('a.add-to-query').click(function (event) {
@@ -40,7 +42,9 @@ $(document).on('turbo:load', function() {
   $.expr[':'].containsIgnoreCase = function (n, i, m) {
     return jQuery(n).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
   };
+  if (debugSwitch === true) {
   debug('End of main.js document ready.');
+  }
 });  // end of document ready
 // ===================================  end of document ready ================================================
 

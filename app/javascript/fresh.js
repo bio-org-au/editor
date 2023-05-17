@@ -2,7 +2,6 @@
 (function() {
   var appendToQueryField, assignSingleSelectedIdToLinks, buildQueryString, cancelDeleteInstanceNote, cancelInstanceNoteEdit, cancelLinkClick, changeFocus, changeNameCategoryOnEditTab, changeTreeFocus, checkSearchResultCB, clearQueryField, clickOnFocus, clickSearchResultCB, closeOpenPopups, confirmNameRefreshChildrenButtonClick, copyInstanceForNameFormEnter, copyInstanceLinkClicked, copyNameFormEnter, createCopyOfNameClick, createInstancesBatchSubmit, createMatchesBatchSubmit, currentActiveTab, debug, debugObject, deleteInstanceNote, dropdownSubmenuClick, firstSelectedItem, hideDetails, hidePopupOrAddHider, hideSearchResultDetailsIfMenusOpen, instanceNoteEnableOrDisableSaveButton, instanceNoteKeyIdSelectChanged, linkToRunCasClicked, linkToRunDiffClicked, linkToRunValRepClicked, loaderBulkShowStatsClicked, makeTargetInvisible, makeTargetVisible, nameDeleteFormSubmit, nameRankIdChanged, optionalFocusOnPageLoad, populateList, positionOnTheRight, queryonSelectChanged, recordCurrentActiveTab, refreshPageLinkClick, reviewResultKeyNavigation, searchFieldChanged, searchResultFocus, searchResultKeyNavigation, searchResultRecordType, searchResultsCheckedCount, selectedRecords, serializeSelectedIds, serializeSelectedRecords, showFieldIsNotYetSaved, showSearchResultDetailsIfMenusClosed, showToolsForSomethingSelected, showToolsForTwoOrMoreThingsSelected, toggleVisibleHidden, treeRowClicked, treeRowClicked2, unCheckSearchResultCB, unconfirmedActionLinkClick;
 
-  var debugSwitch = true; // set during trial to get debug working
   debug = function(s) {
     var error;
     try {
@@ -35,17 +34,17 @@
   };
 
   $(document).on("load", function() {
-    console.log('document load, via fresh.js');
+    debug('document load, via fresh.js');
   });
   $(document).on("turbolinks:load", function() {
-    console.log('turbolinks:load, via fresh.js');
+    debug('turbolinks:load, via fresh.js');
   });
   $(document).on("turbo:load", function() {
-    console.log('turbo:load, via fresh.js');
+    debug('turbo:load, via fresh.js');
   });
 
   $(window).on('load', function(){ 
-    console.log('jquery loaded, via fresh.js');
+    debug('jquery loaded, via fresh.js');
   });
 
   $(document).on("turbo:load", function() {

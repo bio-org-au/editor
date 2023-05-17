@@ -50,7 +50,9 @@ function setActiveHelpOnLoad() {
 }
 
 function showHelpForSearchTarget(helpElement) {
-  debug('showHelpForSearchTarget: ' + helpElement);
+  if (debugSwitch === true) {
+    debug('showHelpForSearchTarget: ' + helpElement);
+  }
   $('#help-search-tab-container-link').attr('data-load-context', helpElement);
   $('.search-help').addClass('hidden');
   $('#' + helpElement).removeClass('hidden');
@@ -94,7 +96,9 @@ function getActiveHelpIdentifier() {
 // //////////////////////////////////////////////////////////////
 
 function setActiveExamplesOnLoad() {
-  debug("setActiveExamplesOnLoad");
+  if (debugSwitch === true) {
+    debug("setActiveExamplesOnLoad");
+  }
   showExamplesForSearchTarget(getActiveExamplesIdentifier());
 }
 
@@ -138,7 +142,9 @@ function getActiveExamplesIdentifier() {
 }
 
 $( document ).on('turbo:load', function() {
-  console.log('tabs.js turbo:load event');
+  if (debugSwitch === true) {
+    console.log('tabs.js turbo:load event');
+  }
 
   $('ul#search-results-tabset li a.main-body-tab-link').on('click', function (e) {
     debug('.main-body-tab-link clicked; non-advanced containers will be HIDDEN.');
