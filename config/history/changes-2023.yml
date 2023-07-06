@@ -10,6 +10,8 @@
   :jira_id: '4547'
   :description: |-
     Postgres library upgrade: upgrade pg gem - testing will be to confirm no Editor behaviour has changed
+- :date: 18-May-2023
+  :release: true
 - :date: 17-May-2023
   :jira_id: '4516'
   :description: |-
