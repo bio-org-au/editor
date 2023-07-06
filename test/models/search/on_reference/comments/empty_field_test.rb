@@ -24,7 +24,7 @@ class SearchOneReferenceCommentsEmptyFieldTest < ActiveSupport::TestCase
   def setup
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
-                   query_string: "handbook_of_the_vascular_plants_of_sydney",
+                   query_string: "handbook vascular plants sydney",
                    include_common_and_cultivar_session: true,
                    current_user: build_edit_user)
     search = Search::Base.new(params)
@@ -35,7 +35,7 @@ class SearchOneReferenceCommentsEmptyFieldTest < ActiveSupport::TestCase
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
                    query_string:
-                   "handbook_of_the_vascular_plants_of_sydney comments: ",
+                   "handbook vascular plants sydney comments: ",
                    include_common_and_cultivar_session: true,
                    current_user: build_edit_user)
     search = Search::Base.new(params)

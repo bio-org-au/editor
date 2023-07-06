@@ -13,7 +13,7 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 
 # Use Puma as the app server [https://github.com/puma/puma]
-gem "puma", ">= 5.5.1"
+gem "puma", "= 6.1.1" # note was ">= 5..." but bundle update couldn't install puma 6.3.0, so hard-coding to 6.1.1 for now
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
