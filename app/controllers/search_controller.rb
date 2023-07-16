@@ -64,6 +64,11 @@ class SearchController < ApplicationController
     # Avoid "A copy of Search has been removed from the module tree but is still active" error
     # https://stackoverflow.com/questions/29636334/a-copy-of-xxx-has-been-removed-from-the-module-tree-but-is-still-active
     @search = ::Search::Base.new(params)
+    if @search.parsed_request&.print
+      render :printable, layout: 'print'
+    else 
+      render :search
+    end
     true
   end
  

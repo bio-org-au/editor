@@ -30,6 +30,6 @@ class NameTagName < ActiveRecord::Base
 
   def save_new_record_with_username(username)
     self.created_by = self.updated_by = username
-    save
+    self.save!
   end
 end

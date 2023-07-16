@@ -21,7 +21,7 @@
     <tr><td>Schema version</td><td> <%= DbVersion.current %> </td></tr>
     <tr><td>Application version</td><td> <%= Rails.configuration.try('version') %> </td></tr>
     <tr><td>Build timestamp</td><td>
- no build timestamp recorded
+        <%= render partial: 'services/build' %>
     </td></tr>
     <tr><td>Path to broadcast file</td><td> <%= Rails.configuration.try(:path_to_broadcast_file) %> </td></tr>
     <tr><td>Namespace</td><td> <%= Namespace.try(:default).try(:name) %> </td></tr>

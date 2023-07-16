@@ -28,7 +28,16 @@ class ServicesController < ApplicationController
   end
 
   def version
-    render plain: "app: #{Rails.configuration.try('version')}", status: :ok, layout: false
+    render plain: "#{Rails.configuration.try('version')}",
+           status: :ok,
+           layout: false
+  end
+
+  def build
+    render partial: 'build',
+           format: :text,
+           status: :ok,
+           layout: false
   end
 
   def clear_connections

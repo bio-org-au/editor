@@ -56,7 +56,9 @@ class Search::ParsedRequest
               :default_query_scope,
               :apply_default_query_scope,
               :original_query_target,
-              :original_query_target_for_display
+              :original_query_target_for_display,
+              :print,
+              :display
 
   DEFAULT_LIST_LIMIT = 100
   SIMPLE_QUERY_TARGETS = {
@@ -214,6 +216,7 @@ class Search::ParsedRequest
     @defined_query = parsed_defined_query.defined_query
     @target_button_text = parsed_defined_query.target_button_text
     unused_qs_tokens = parse_count_or_list(unused_qs_tokens)
+    unused_qs_tokens = parse_print_or_display(unused_qs_tokens)
     unused_qs_tokens = parse_limit(unused_qs_tokens)
     unused_qs_tokens = parse_instance_offset(unused_qs_tokens)
     unused_qs_tokens = parse_offset(unused_qs_tokens)
@@ -249,6 +252,21 @@ class Search::ParsedRequest
     else default_list_and_count
     end
     tokens
+  end
+
+  def parse_print_or_display(tokens)
+    @print = false
+    if tokens.include?("print:") then 
+      @print = true
+      tokens.delete_if { |x| x.match(/print:/) }
+    end
+    @display = !@print
+    tokens
+  end
+
+  def default_to_display_not_print
+    @print = false
+    @display = !@print
   end
 
   def default_list_and_count

@@ -1,0 +1,7 @@
+<% case search_result.record_type %>
+<% when  /heading|accepted|excluded|synonym/ %>
+  <%= render partial: "application/search_results/print/records/loader/record_types/#{search_result.record_type}", locals: {search_result: search_result} %>
+<% else %>
+   <%= render partial: 'application/search_results/print/records/loader/record_types/other', locals: {search_result: search_result} %>
+<% end %>
+

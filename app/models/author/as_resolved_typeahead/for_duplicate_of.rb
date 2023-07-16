@@ -22,8 +22,8 @@ class Author::AsResolvedTypeahead::ForDuplicateOf
   attr_reader :value
 
   def initialize(id_string, param_text, author)
-    @text = param_text.sub(/ *\|.*\z/, "")
-    @text.rstrip!
+    @text = extract_delimited_string(param_text)
+    @text.rstrip! unless @text.blank?
     @id_string = id_string
     @field_name = "duplicate of"
     @author = author

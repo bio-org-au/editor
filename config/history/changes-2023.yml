@@ -1,3 +1,57 @@
+- :date: 14-Jul-2023
+  :jira_id: '4566'
+  :description: |-
+    Remove Javascript warning message: correct the format of the integrity attribute - no change to behaviour expected
+- :date: 14-Jul-2023
+  :jira_id: '4565'
+  :description: |-
+    Firefox problem fix: the Editor now works again in Firefox v115
+- :date: 13-Jul-2023
+  :jira_id: '4564'
+  :description: |-
+    Version and build ID (system use): add service to report build time and fine-tune the service reporting version - no user testing required
+- :date: 13-Jul-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: upgrades to loader name print output based on yesterday's review: excluded names heading and format, phrase name not duplicated
+- :date: 13-Jul-2023
+  :jira_id: '4563'
+  :description: |-
+    Loader: remove duplicated 'Drafted' indicator from Loader Name record display
+- :date: 12-Jul-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: first cut of loader name output intended for printing
+- :date: 11-Jul-2023
+  :jira_id: '4562'
+  :description: |-
+    Code clean up: change underlying code for adding a Name Tag - no behaviour should change
+- :date: 11-Jul-2023
+  :jira_id: '4561'
+  :description: |-
+    Code clean up: change underlying code for Name <q>Refresh descendents names...</q> button  - no behaviour should change
+- :date: 11-Jul-2023
+  :jira_id: '4560'
+  :description: |-
+    Code clean up: fix problem created as a side-effect of yesterday's JavaScript changes - no behaviour should change.
+- :date: 10-Jul-2023
+  :jira_id: '4560'
+  :description: |-
+    Code clean up: remove dead JavaScript code originally intended for multi-record processing - no behaviour should change
+- :date: 10-Jul-2023
+  :jira_id: '4558'
+  :description: |-
+    Security: replace regex in typeahead save processing for <code>name:</code> <code>parent</code>, <code>family</code>, <code>duplicate-of</code>, <code>author</code>, <code>unpub-cit-instance</code>, and <code>author:</code> <code>duplicate-of</code>
+- :date: 10-Jul-2023
+  :jira_id: '4558'
+  :description: |-
+    Security: replace regex in typeahead save processing for <code>reference: duplicate-of</code>, <code>parent</code>, <code>author</code> - no behaviour should change
+- :date: 07-Jul-2023
+  :jira_id: '4556'
+  :description: |-
+    Rails 7 upgrade: remove some overlooked Rails 6 remnants - testing will be to confirm no Editor behaviour has changed
+- :date: 07-Jul-2023
+  :release: true
 - :date: 05-Jul-2023
   :jira_id: '4549'
   :description: |-

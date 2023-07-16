@@ -31,28 +31,9 @@ class NameTagNamesController < ApplicationController
 
   # POST /name_tag_names
   # POST /name_tag_names.json
-  # Short-time work-around.
-  #
-  # There is a problem with the AR create for composite keys
-  # under JRuby 9k (9.1.2.0, 9.1.5.0 are the versions I know about).
-  # The "returning" clause of the insert is generated as "name_id, tag_id",
-  # which is invalid sql.  Under Matz' ruby the "returning" clause is
-  # "name_id", "tag_id" which works.
-  def build_insert
-    "INSERT INTO name_tag_name (name_id, tag_id, created_at, created_by,
-    updated_at, updated_by) VALUES (#{name_tag_name_params[:name_id]},
-    #{name_tag_name_params[:tag_id]}, current_timestamp,
-    '#{current_user.username}', current_timestamp, '#{current_user.username}')
-    returning name_id, tag_id"
-  end
-  private :build_insert
-
   def create
-    ActiveRecord::Base.connection.execute(build_insert)
-    @name_tag_name = NameTagName.find([name_tag_name_params[:name_id],
-                                       name_tag_name_params[:tag_id]])
-    @message = ""
-    render :create, format: :js
+    @name_tag_name = NameTagName.new(name_tag_name_params)
+    @name_tag_name.save_new_record_with_username(current_user.username)
   rescue => e
     logger.error("Name Tag Name create failed: #{e}")
     @message = "Could not attach that tag because #{e}"

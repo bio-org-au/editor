@@ -1,0 +1,45 @@
+<tr class="search-result accepted top-spacer"><td>&nbsp;</td></tr>
+
+<tr id="search-result-<%= search_result.id %>" 
+    class="search-result <%= search_result.record_type %> ">
+  <td class="text name main-content" >
+
+
+    <%# Try to bold just the simple_name portion of the full_name %>
+    <% if search_result.simple_name.match(/ sp\. /) %>
+      <span class='loader-name <%= search_result.record_type %> simple-name'>
+          <%= "#{search_result.simple_name}" %>
+      </span>
+    <% else %>
+      <span class='loader-name <%= search_result.record_type %> simple-name'>
+          <%= "#{search_result.simple_name}" %>
+      </span>
+      <span class='loader-name <%= search_result.record_type %> authority'>
+          <%= "#{search_result.full_name.sub(Regexp.new(search_result.simple_name),'')}" %>
+      </span>
+    <% end %>
+
+
+    <% unless search_result.remark_to_reviewers.blank? %>
+        <span class="review loader-name remark-to-reviewers">
+           <%= search_result.remark_to_reviewers.html_safe %>
+        </span>
+    <% end %>
+
+    <% unless search_result.higher_rank_comment.blank? %>
+        <span class="review loader-name remark-to-reviewers">
+          <%= search_result.higher_rank_comment.html_safe %>
+        </span>
+    <% end %>
+
+  </td>
+</tr>
+
+
+<tr class="search-result accepted distribution">
+    <td>
+      <span class="distribution-inset">&nbsp;</span><%= search_result.distribution %>
+    </td>
+</tr>
+
+

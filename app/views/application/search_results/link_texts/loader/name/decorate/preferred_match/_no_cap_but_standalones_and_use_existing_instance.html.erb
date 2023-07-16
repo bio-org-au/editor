@@ -1,13 +1,12 @@
+
+
+
 <span class="flag use-existing-instance-count" title="Use existing instance"><%= "#{standalones.size}x" %></span>
 <% if standalones.size > 1 %>
   <span class="flag standalone-count" title="Standalone instance count">
     <%= "#{standalones.size}i too many!" %></span>
   <%= search_result.id %>, <%= search_result.loader_name_matches.size %>
 <% else %>
-  <% if standalones.first.drafted? %>
-    <span class='flag on-tree-indicator'
-          title='Standalone instance has been drafted'>drafted</span>
-  <% end %>
   <% if @working_draft.present? &&
         standalones.first.standalone_instance.in_workspace?(@working_draft) %>
     <span class='flag on-tree-indicator'

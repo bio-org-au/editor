@@ -22,8 +22,8 @@ class Name::AsResolvedTypeahead::ForAuthor
   attr_reader :value
 
   def initialize(id_string, param_text, field_name)
-    @text = param_text.sub(/ *\|.*\z/, "")
-    @text.rstrip!
+    @text = param_text # .sub(/ *\|.*\z/, "")
+    @text.rstrip! unless @text.blank?
     @id_string = id_string
     @field_name = field_name
     run

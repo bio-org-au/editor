@@ -34,7 +34,9 @@ class Search::EmptyParsedRequest
               :where_arguments,
               :query_target,
               :target_button_text,
-              :show_instances
+              :show_instances,
+              :print,
+              :display
 
   def initialize(params)
     @params = params
@@ -47,5 +49,7 @@ class Search::EmptyParsedRequest
     @common_and_cultivar = false
     @order = ""
     @query_string = params[:query_string]
+    @print = false
+    @display = !@print
   end
 end

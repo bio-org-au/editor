@@ -1,0 +1,38 @@
+<tr id="search-result-<%= search_result.id %>" 
+    class="search-result <%= search_result.record_type %> <%= 'fresh' if search_result.fresh? %>"  
+    >
+    <td class="text name main-content xwidth-40-percent xmax-width-60-percent width-100-percent"
+      >
+
+
+<% path = 'application/search_results/link_texts/loader/name' %>
+<%= render partial: "#{path}/indent", locals: {search_result: search_result} %>
+
+<span class='loader-name <%= search_result.record_type %> simple-name synonym'>
+<%= "#{search_result.simple_name}" %>
+</span>
+<span class='loader-name <%= search_result.record_type %> authority'>
+<%= "#{search_result.full_name.sub(Regexp.new(search_result.simple_name),'')}" %>
+</span>
+
+
+
+<% path = 'application/search_results/link_texts/loader/name' %>
+
+
+<% unless search_result.remark_to_reviewers.blank? %>
+  <span class="review loader-name remark-to-reviewers">
+    <%= search_result.remark_to_reviewers.html_safe %>
+  </span>
+<% end %>
+
+<% unless search_result.higher_rank_comment.blank? %>
+  <span class="review loader-name remark-to-reviewers">
+    <%= search_result.higher_rank_comment.html_safe %>
+  </span>
+<% end %>
+
+  </td>
+</tr>
+
+

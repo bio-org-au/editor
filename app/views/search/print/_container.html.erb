@@ -1,0 +1,14 @@
+
+<h1 class='showme'><%#= params.inspect %></h1>
+
+<div id="search-results" class="col-xs-12 col-sm-8 col-md-9 col-lg-9 nothing-selected stylish-scrollbar">
+  <div id="search-results-inner" class="no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 search-results-inner">
+    <table border="0" id="printable-search-results-table" class="table search-results for-print" data-summary="Results of the latest search.">
+      <% unless @search.parsed_request.count %>
+        <% increment_tab_index(1000) %>
+        <%= render partial: 'search/print/results' unless @search.executed_query.blank? || @search.executed_query.results.blank? %>
+      <% end %>
+    </table>
+  </div>
+</div>
+

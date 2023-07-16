@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title> <%= page_title || 'NEDR6' %> </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag 'print', media: 'all' %>
+    <%= favicon_link_tag 'favicon.png?v=1', :rel => 'shortcut icon' %>
+    
+
+  </head>
+
+  <body>
+
+          <%= yield %>
+ </body>
+</html>
+ 
+

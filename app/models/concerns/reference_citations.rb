@@ -22,7 +22,7 @@ module ReferenceCitations
     logger.error("Exception rescued in ReferencesController#citation_json!")
     logger.error(e.to_s)
     logger.error("Check resource: #{resource}")
-    raise "After saving the record it was not possible set the citation
+    raise "After saving the record it was not possible to set the citation
     strings.  The service we need might not be running. If this continues
     please contact support."
   end
