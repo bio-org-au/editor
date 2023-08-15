@@ -58,7 +58,7 @@ class NameAsCopierMakeACopySimpleTest < ActiveSupport::TestCase
   def headers
     { "Accept" => "text/json",
       "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-      "User-Agent" => "Ruby" }
+      "User-Agent" => /rest-client.*ruby.*/ }
   end
 
   test "copy one name" do

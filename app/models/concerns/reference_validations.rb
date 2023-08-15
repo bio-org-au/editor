@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Reference validations
 module ReferenceValidations
   extend ActiveSupport::Concern
@@ -31,8 +30,8 @@ module ReferenceValidations
                               less_than_or_equal_to: ->(_reference) { Date.current.year } },
               allow_nil: true
     validates :iso_publication_date, exclusion: { in: [nil],
-                                     message: "is required",
-                                     if: :iso_publication_date_required? }
+                                                  message: "is required",
+                                                  if: :iso_publication_date_required? }
     validates_exclusion_of :parent_id,
                            in: ->(reference) { [reference.id] },
                            allow_blank: true,
@@ -59,16 +58,20 @@ module ReferenceValidations
                        .where(["coalesce(volume,'no volume data') = coalesce(?,'no volume data')", volume])
                        .where(["coalesce(pages,'no pages data') = coalesce(?,'no pages data')", pages])
                        .where(["coalesce(iso_publication_date,'0') = coalesce(?,'0')", iso_publication_date])
-                       .where(["coalesce(publication_date,'no publication date data') = coalesce(?,'no publication date data')", publication_date])
+                       .where([
+                                "coalesce(publication_date,'no publication date data') = coalesce(?,'no publication date data')", publication_date
+                              ])
                        .where(["coalesce(notes,'no notes data') = coalesce(?,'no notes data')", notes])
                        .where.not(id: id)
                        .where("duplicate_of_id is null")
                        .count == 0
+
     errors.add(:base, "Reference is not unique")
   end
 
   def validate_parent
     return if parent_id.blank?
+
     validate_non_blank_parent
   end
 
@@ -82,6 +85,7 @@ module ReferenceValidations
 
   def validate_parent_allowed
     return if ref_type.parent.name == parent.ref_type.name
+
     errors.add(:parent_id, incompatible_parent_type_message)
   end
 
@@ -93,6 +97,7 @@ module ReferenceValidations
   # Reference that is a "part" of a paper has restricted fields
   def validate_fields_for_part
     return unless ref_type.part?
+
     a_part_ref_cannot_have_publication_details
     a_part_ref_cannot_have_publication_details_date
   end
@@ -103,12 +108,10 @@ module ReferenceValidations
   end
 
   def a_part_ref_cannot_have_publication_details_date
-    if iso_publication_date.present?
-      errors.add(:iso_publication_date, "is not allowed for a Part")
-    end
-    if publication_date.present?
-      errors.add(:publication_date,
-                 "is not allowed for a Part")
-    end
+    errors.add(:iso_publication_date, "is not allowed for a Part") if iso_publication_date.present?
+    return unless publication_date.present?
+
+    errors.add(:publication_date,
+               "is not allowed for a Part")
   end
 end

@@ -17,7 +17,6 @@
 #   limitations under the License.
 #
 module Resolvable
-
   extend ActiveSupport::Concern
 
   NO_ID_OR_TEXT = :no_id_or_text
@@ -50,15 +49,15 @@ module Resolvable
   end
 
   # param_text can be empty (signalling removal) or of the form:
-  # 
+  #
   #      text for matching record | extra info for user
   #
-  # We need to extract the first part 
+  # We need to extract the first part
   # ie. "text for matching record"
   # from param_text while allowing for the empty string
   def extract_delimited_string(param_text)
     return param_text if param_text.blank?
-    param_text.split('|').first
-  end
 
+    param_text.split("|").first
+  end
 end

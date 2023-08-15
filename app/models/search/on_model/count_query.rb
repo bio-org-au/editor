@@ -32,7 +32,7 @@ class Search::OnModel::CountQuery
     prepared_query = @model_class.where("1=1")
 
     where_clauses = Search::OnModel::WhereClauses.new(@parsed_request,
-                                                       prepared_query)
+                                                      prepared_query)
     prepared_query = where_clauses.sql
     @sql = prepared_query
   end

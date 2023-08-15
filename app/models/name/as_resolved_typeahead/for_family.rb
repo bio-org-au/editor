@@ -31,14 +31,14 @@ class Name::AsResolvedTypeahead::ForFamily
 
   def run
     case resolve(@id_string, @text)
-      when NO_ID_OR_TEXT, ID_ONLY # assume delete
-        raise "please choose family from suggestions"
-      when TEXT_ONLY
-        text_only
-      when ID_AND_TEXT
-        id_and_text
-      else
-        raise "please check the #{@field_name}"
+    when NO_ID_OR_TEXT, ID_ONLY # assume delete
+      raise "please choose family from suggestions"
+    when TEXT_ONLY
+      text_only
+    when ID_AND_TEXT
+      id_and_text
+    else
+      raise "please check the #{@field_name}"
     end
   end
 
@@ -46,12 +46,12 @@ class Name::AsResolvedTypeahead::ForFamily
     possibles = Name.lower_full_name_like(@text).not_common_or_cultivar
                     .not_a_duplicate
     case possibles.size
-      when 0
-        zero_possibles_for_text
-      when 1
-        @value = possibles.first.id
-      else
-        raise "please choose #{@field_name} from suggestions (more than 1 match)"
+    when 0
+      zero_possibles_for_text
+    when 1
+      @value = possibles.first.id
+    else
+      raise "please choose #{@field_name} from suggestions (more than 1 match)"
     end
   end
 
@@ -63,10 +63,10 @@ class Name::AsResolvedTypeahead::ForFamily
     possibles = Name.lower_full_name_like(@text + "%").not_common_or_cultivar
                     .not_a_duplicate
     case possibles.size
-      when 1
-        @value = possibles.first.id
-      else
-        raise "please choose #{@field_name} from suggestions"
+    when 1
+      @value = possibles.first.id
+    else
+      raise "please choose #{@field_name} from suggestions"
     end
   end
 
@@ -74,12 +74,12 @@ class Name::AsResolvedTypeahead::ForFamily
     possibles = Name.lower_full_name_like(@text).not_common_or_cultivar
                     .not_a_duplicate
     case possibles.size
-      when 0
-        zero_possibles_for_id_and_text
-      when 1
-        @value = possibles.first.id
-      else
-        two_or_more_possibles_for_id_and_text
+    when 0
+      zero_possibles_for_id_and_text
+    when 1
+      @value = possibles.first.id
+    else
+      two_or_more_possibles_for_id_and_text
     end
   end
 
@@ -89,13 +89,11 @@ class Name::AsResolvedTypeahead::ForFamily
 
   def two_or_more_possibles_for_id_and_text
     possibles_with_id = Name
-                            .where(id: @id_string.to_i)
-                            .lower_full_name_like(@text)
-                            .not_a_duplicate
-    if possibles_with_id.size == 1
-      @value = possibles_with_id.first.id
-    else
-      raise "please choose #{@field_name} from suggestions (> 1 match)"
-    end
+                        .where(id: @id_string.to_i)
+                        .lower_full_name_like(@text)
+                        .not_a_duplicate
+    raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
+
+    @value = possibles_with_id.first.id
   end
 end

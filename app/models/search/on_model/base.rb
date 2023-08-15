@@ -70,9 +70,9 @@ class Search::OnModel::Base
   end
 
   def consider_instances(parsed_request)
-    if parsed_request.show_instances
-      show_instances(parsed_request)
-    end
+    return unless parsed_request.show_instances
+
+    show_instances(parsed_request)
   end
 
   def show_instances(parsed_request)

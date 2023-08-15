@@ -75,4 +75,3 @@ class Loader::Name::DraftTaxonomyAdder
     Rails.logger.debug("Loader::Name::AsInstanceCreator #{msg} #{@tag}")
   end
 end
-

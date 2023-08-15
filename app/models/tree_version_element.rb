@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -46,7 +45,7 @@ class TreeVersionElement < ActiveRecord::Base
     TreeVersionElement.find_by_sql(["select count(tve) c
 from tree_version_element tve
 where tve.tree_version_id = ?
-  and tve.tree_path ~ ?", tree_version_id, pattern]).first['c']
+  and tve.tree_path ~ ?", tree_version_id, pattern]).first["c"]
   end
 
   def tree_ordered_name_ids
@@ -71,7 +70,7 @@ select name_id from walk", element_link])
 
   def tree_ordered_names
     name_ids = tree_ordered_name_ids
-    name_ids.reverse.collect {|nameId| Name.includes(:name_rank).find(nameId.name_id)}
+    name_ids.reverse.collect { |nameId| Name.includes(:name_rank).find(nameId.name_id) }
   end
 
   def comment_key
@@ -136,6 +135,4 @@ select name_id from walk", element_link])
     record.multiline = false
     record
   end
-
-
 end

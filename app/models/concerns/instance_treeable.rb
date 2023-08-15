@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Names can be in a classification tree
 module InstanceTreeable
   extend ActiveSupport::Concern
@@ -20,6 +19,7 @@ module InstanceTreeable
 
   def excluded_concept?
     return nil unless accepted_concept?
+
     accepted_tree_version_element.tree_element.excluded
   end
 
@@ -54,5 +54,4 @@ where te.instance_id = ?", id])
       tree.name
     end.join(", ")
   end
-
 end

@@ -33,8 +33,7 @@ class DistStatus < ActiveRecord::Base
 
   def self.status_names
     DistStatus.all
-        .sort {|a, b| a.sort_order <=> b.sort_order}
-        .collect {|ds| ds.name}
+              .sort { |a, b| a.sort_order <=> b.sort_order }
+              .collect { |ds| ds.name }
   end
-
 end

@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails"
-gem 'rails', '~> 7.0.0'
+gem "rails", "~> 7.0.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -13,7 +13,7 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 
 # Use Puma as the app server [https://github.com/puma/puma]
-gem "puma", "= 6.1.1" # note was ">= 5..." but bundle update couldn't install puma 6.3.0, so hard-coding to 6.1.1 for now
+gem "puma", "= 6.1.1" # NOTE: was ">= 5..." but bundle update couldn't install puma 6.3.0, so hard-coding to 6.1.1 for now
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
@@ -29,16 +29,12 @@ gem "jbuilder", "~> 2.7"
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
- 
- 
- 
-
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -46,29 +42,28 @@ gem "bootsnap", require: false
 # Use Sass to process CSS
 # gem "sassc-rails"
 
-
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'listen', '>= 3.0.5', '< 3.2'
+gem "listen", ">= 3.0.5", "< 3.2"
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
-  gem 'awesome_print'
+  gem "awesome_print"
+  gem "web-console", ">= 3.3.0"
 end
 
 group :test do
   # gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
+  gem "selenium-webdriver"
   # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers'
+  gem "launchy"
   gem "minitest"
   gem "minitest-rails"
   gem "minitest-reporters"
-  gem "launchy"
-  gem "mocha",  "~> 1.1.0"
+  gem "mocha", "~> 1.1.0"
+  gem "webdrivers"
   # NoMethodError: assert_template has been extracted to a gem. To continue using it, add:
-  gem 'rails-controller-testing'
+  gem "rails-controller-testing"
 end
 
 group :development, :test do
@@ -79,30 +74,29 @@ group :development, :test do
 end
 
 # Added
-gem "strip_attributes"
-gem "cancancan"
 gem "active_type"
-gem "net-ldap"
+gem "cancancan"
 gem "composite_primary_keys"
-gem "sucker_punch"
+gem "net-ldap"
 gem "pg_search"
+gem "strip_attributes"
+gem "sucker_punch"
 
-gem "nokogiri", ">= 1.13.4"
-gem "rest-client"
-gem "kramdown", ">= 2.3.0"
 gem "exception_notification"
-gem "websocket-extensions", ">= 0.1.5"
+gem "kramdown", ">= 2.3.0"
+gem "nokogiri", ">= 1.13.4"
 gem "rack", ">= 2.2.3"
+gem "rest-client"
 gem "simple_calendar", "~> 2.0"
+gem "websocket-extensions", ">= 0.1.5"
 
 gem "addressable", ">= 2.8.0"
 
-gem 'simplecov', require: false, group: :test
+gem "simplecov", require: false, group: :test
 
-gem "standardrb", group: [:development, :test]
-gem "standard", group: [:development, :test]
+gem "standard", group: %i[development test]
+gem "standardrb", group: %i[development test]
 
-
-gem "rails-ujs"
-gem "font-awesome-sass", "~> 6.4.0"
 gem "csv"
+gem "font-awesome-sass", "~> 6.4.0"
+gem "rails-ujs"

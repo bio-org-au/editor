@@ -23,23 +23,22 @@ class Tree::Workspace::Profile < ActiveType::Object
 
   def update
     url = build_url
-    payload = {taxonUri: element_link, profile: profile_data.profile_data}
+    payload = { taxonUri: element_link, profile: profile_data.profile_data }
 
     logger.info "Calling #{url} with #{payload}"
     raise errors.full_messages.first unless valid?
+
     RestClient.post(url, payload.to_json,
-                    {content_type: 'application/json; charset=utf-8', accept: 'application/json; charset=utf-8'})
+                    { content_type: "application/json; charset=utf-8", accept: "application/json; charset=utf-8" })
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::Workspace::Profile rest client exception with response error: #{e}")
     raise
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Tree::Workspace::Profile other error: #{e}")
     raise
   end
 
-
   def build_url
     Tree::AsServices.profile_url(username)
   end
-
 end

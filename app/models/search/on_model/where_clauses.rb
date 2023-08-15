@@ -94,7 +94,8 @@ class Search::OnModel::WhereClauses
 
   def supply_token_twice(rule, token)
     @sql = @sql.where(rule.predicate,
-                      token, token) end
+                      token, token)
+  end
 
   def supply_token_thrice(rule, token)
     @sql = @sql.where(rule.predicate,

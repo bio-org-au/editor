@@ -38,7 +38,7 @@ class Search::Empty
     @query_string = params[:query]
     @more_allowed = false
     @executed_query = Search::EmptyExecutedQuery.new(params)
-   end
+  end
 
   def to_history
     ""

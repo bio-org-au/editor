@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Reference Citations
 module ReferenceCitations
   extend ActiveSupport::Concern
@@ -17,8 +16,8 @@ module ReferenceCitations
 
   def citation_json
     resource = Reference::AsServices.citation_strings_url(id)
-    JSON.load(URI.open(resource, "Accept" => "text/json"))
-  rescue => e
+    JSON.load(RestClient.get(resource, "Accept" => "text/json"))
+  rescue StandardError => e
     logger.error("Exception rescued in ReferencesController#citation_json!")
     logger.error(e.to_s)
     logger.error("Check resource: #{resource}")

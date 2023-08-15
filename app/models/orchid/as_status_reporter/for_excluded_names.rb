@@ -16,18 +16,17 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-
 #  We need to place Orchids on a draft tree.
 class Orchid::AsStatusReporter::ForExcludedNames
   def initialize(taxon_string)
-    @taxon_string = taxon_string.downcase.gsub(/\*/,'%')
+    @taxon_string = taxon_string.downcase.gsub(/\*/, "%")
   end
 
   def report
-    { search: {search_string: @taxon_string,
-               reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
-               name_category: 'Excluded'},
-      lock: { status: lock_status }, 
+    { search: { search_string: @taxon_string,
+                reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
+                name_category: "Excluded" },
+      lock: { status: lock_status },
       core: { excluded: excludeds,
               synonym: synonyms,
               misapplied: misapplieds,
@@ -35,9 +34,9 @@ class Orchid::AsStatusReporter::ForExcludedNames
               total: orchids_and_their_synonyms },
       other: { further_processing_prevented: further_processing_prevented },
       matched: { excluded_with_preferred_match: excluded_with_preferred_match,
-                  synonym_with_preferred_match: synonym_with_preferred_match,
-                  misapplied_with_a_preferred_match: misapplied_with_a_preferred_match,
-                  misapplied_preferred_matches: misapplied_preferred_matches },
+                 synonym_with_preferred_match: synonym_with_preferred_match,
+                 misapplied_with_a_preferred_match: misapplied_with_a_preferred_match,
+                 misapplied_preferred_matches: misapplied_preferred_matches },
       unmatched: { excluded_without_preferred_match_and_not_nfp: excluded_without_preferred_match,
                    synonym_without_preferred_match_and_not_nfp: synonym_without_preferred_match,
                    misapplied_without_a_preferred_match_and_not_nfp: misapplied_without_a_preferred_match },
@@ -56,8 +55,7 @@ class Orchid::AsStatusReporter::ForExcludedNames
         { excluded_matched_without_standalone: excluded_matched_without_standalone,
           synonym_matched_without_cross_ref: synonym_matched_without_cross_ref,
           misapplied_matched_without_cross_ref: misapplied_matched_without_cross_ref },
-      excluded_standalone_in_current_taxonomy: standalones_in_taxonomy,
-    }
+      excluded_standalone_in_current_taxonomy: standalones_in_taxonomy, }
   end
 
   def core_search
@@ -69,7 +67,7 @@ class Orchid::AsStatusReporter::ForExcludedNames
   end
 
   def lock_status
-    OrchidBatchJobLock.locked? ? 'Locked' : 'Unlocked'
+    OrchidBatchJobLock.locked? ? "Locked" : "Unlocked"
   end
 
   def excludeds
@@ -90,7 +88,7 @@ class Orchid::AsStatusReporter::ForExcludedNames
 
   def further_processing_prevented
     core_search.where(" exclude_from_further_processing  or (select exclude_from_further_processing from orchids p where p.id = orchids.parent_id)")
-           .count
+               .count
   end
 
   def excluded_with_preferred_match
@@ -131,7 +129,7 @@ class Orchid::AsStatusReporter::ForExcludedNames
     core_search.where("record_type = 'misapplied'")
                .where("exists (select null from orchids_names orn where orchids.id = orn.orchid_id)")
                .count
-  rescue => e
+  rescue StandardError => e
     e.to_s
   end
 
@@ -141,95 +139,95 @@ class Orchid::AsStatusReporter::ForExcludedNames
                .where(" not exists (select null from orchids parent where orchids.parent_id = parent.id and parent.exclude_from_further_processing)")
                .where.not("exists (select null from orchids_names orn where orchids.id = orn.orchid_id)")
                .count
-  rescue => e
+  rescue StandardError => e
     e.to_s
   end
 
   def excluded_matched_with_standalone
     core_search.where("record_type = 'accepted'")
                .joins(:orchids_name)
-               .where.not( {orchids_names: { standalone_instance_id: nil}})
+               .where.not({ orchids_names: { standalone_instance_id: nil } })
                .count
   end
 
   def excluded_matched_with_standalone_instance_created
     core_search.where("record_type = 'accepted' and doubtful")
                .joins(:orchids_name)
-               .where( {orchids_names: { standalone_instance_created: true}})
+               .where({ orchids_names: { standalone_instance_created: true } })
                .count
   end
 
   def excluded_matched_with_standalone_instance_found
     core_search.where("record_type = 'accepted' and doubtful")
                .joins(:orchids_name)
-               .where( {orchids_names: { standalone_instance_found: true}})
+               .where({ orchids_names: { standalone_instance_found: true } })
                .count
   end
 
   def excluded_matched_without_standalone
     core_search.where("record_type = 'accepted' and doubtful")
                .joins(:orchids_name)
-               .where( {orchids_names: { standalone_instance_id: nil}})
+               .where({ orchids_names: { standalone_instance_id: nil } })
                .count
   end
 
   def synonym_matched_with_cross_ref
     core_search.where("record_type = 'synonym'")
                .joins(:orchids_name)
-               .where.not( {orchids_names: { relationship_instance_id: nil}})
+               .where.not({ orchids_names: { relationship_instance_id: nil } })
                .count
   end
 
   def synonym_matched_with_cross_ref_created
     core_search.where("record_type = 'synonym'")
                .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_created: true}})
+               .where({ orchids_names: { relationship_instance_created: true } })
                .count
   end
 
   def synonym_matched_with_cross_ref_found
     core_search.where("record_type = 'synonym'")
                .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_found: true}})
+               .where({ orchids_names: { relationship_instance_found: true } })
                .count
   end
 
   def misapp_matched_with_cross_ref_created
     core_search.where("record_type = 'misapplied'")
                .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_created: true}})
+               .where({ orchids_names: { relationship_instance_created: true } })
                .count
   end
 
   def misapp_matched_with_cross_ref_found
     core_search.where("record_type = 'misapplied'")
                .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_found: true}})
+               .where({ orchids_names: { relationship_instance_found: true } })
                .count
   end
 
   def synonym_matched_without_cross_ref
     core_search.where("record_type = 'synonym'")
                .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_id: nil}})
+               .where({ orchids_names: { relationship_instance_id: nil } })
                .count
   end
 
   def misapplied_with_cross_ref
     core_search.where("record_type = 'misapplied'")
                .joins(:orchids_name)
-               .where.not( {orchids_names: { relationship_instance_id: nil}})
+               .where.not({ orchids_names: { relationship_instance_id: nil } })
                .count
   end
 
   def misapplied_matched_without_cross_ref
     core_search.where("record_type = 'misapplied'")
                .joins(:orchids_name)
-               .where( {orchids_names: { relationship_instance_id: nil}})
+               .where({ orchids_names: { relationship_instance_id: nil } })
                .count
   end
 
-  # Note: the name_id column is merely an ugly hack to get the count(*) value.
+  # NOTE: the name_id column is merely an ugly hack to get the count(*) value.
   # It is _not_ the name_id
   def standalones_in_taxonomy
     sql = "select t.draft_name, count(*) name_id "
@@ -242,8 +240,8 @@ class Orchid::AsStatusReporter::ForExcludedNames
     sql += " and (o.record_type = 'accepted' and o.doubtful)"
     sql += " and (t.current_tree_version_id = t.tree_version_id_fk or not published)"
     sql += " group by t.draft_name, published"
-    records_array = TreeVw.find_by_sql([sql, @taxon_string])
-    h = Hash.new
+    records_array = TreeJoinVw.find_by_sql([sql, @taxon_string])
+    h = {}
     h[:taxonomy_records] = 0 if records_array.empty?
     records_array.each do |rec|
       h["#{rec[:draft_name]}"] = rec[:name_id]  # name_id is a column I'm using for the count

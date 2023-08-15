@@ -18,12 +18,11 @@
 
 #  Tree services
 class Tree::AsServices
-
-#Services
+  # Services
   API_KEY = "apiKey=#{Rails.configuration.try('api_key')}"
 
-  SERVICES_ADDRESS = Rails.configuration.try('services')
-  CLIENT_SIDE_SERVICES = Rails.configuration.try('services_clientside_root_url')
+  SERVICES_ADDRESS = Rails.configuration.try("services")
+  CLIENT_SIDE_SERVICES = Rails.configuration.try("services_clientside_root_url")
   PLACEMENT_PATH = "api/treeElement/placeElement"
   TOP_PLACEMENT_PATH = "api/treeElement/placeTopElement"
   REPLACE_ELEMENT = "api/treeElement/replaceElement"
@@ -41,7 +40,7 @@ class Tree::AsServices
   SYN_UPDATE_LINK = "tree-element/update-synonymy-by-event"
   SYN_UPDATE_INST_LINK = "tree-element/update-synonymy-by-instance"
 
-# Mapper
+  # Mapper
   MAPPER_API_URL = Rails.configuration.try("nsl_linker") || Rails.configuration.x.mapper_api.try("url")
   MAPPER_API_VERSION = Rails.configuration.x.mapper_api.try("version") || 1
   MAPPER_PWD = Rails.configuration.x.mapper_api.try("password")
@@ -105,21 +104,19 @@ class Tree::AsServices
 
   def self.instance_url(instance_id)
     url = MAPPER_API_VERSION == 1 ? preferred_link_url_v1(instance_id) : preferred_link_url_v2(instance_id)
-    response = RestClient.get(url, {content_type: :json, accept: :json})
+    response = RestClient.get(url, { content_type: :json, accept: :json })
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.link
-  rescue RestClient::ExceptionWithResponse => rest_client_exception
-    Rails.logger.error("Tree::AsServices instance_url rest_client_exception error: #{rest_client_exception.response}")
-    if rest_client_exception.response.code == 404
-      add_instance_link(instance_id)
-    end
-  rescue => e
+  rescue RestClient::ExceptionWithResponse => e
+    Rails.logger.error("Tree::AsServices instance_url rest_client_exception error: #{e.response}")
+    add_instance_link(instance_id) if e.response.code == 404
+  rescue StandardError => e
     Rails.logger.error("Tree::AsServices instance_url other error: #{e}")
     raise
   end
 
-#Mostly this won't get called because the services will pick up a new instance and add the URI before this is needed.
-# This will most probably happen if the services are busy, or the update polling is paused.
+  # Mostly this won't get called because the services will pick up a new instance and add the URI before this is needed.
+  # This will most probably happen if the services are busy, or the update polling is paused.
   def self.add_instance_link(instance_id)
     if MAPPER_API_VERSION == 1
       add_instance_link_v1(instance_id)
@@ -130,10 +127,10 @@ class Tree::AsServices
 
   def self.add_instance_link_v1(instance_id)
     url = add_instance_identifier_url_v1(instance_id)
-    response = RestClient.put(url, {}.to_json, {content_type: :json, accept: :json})
+    response = RestClient.put(url, {}.to_json, { content_type: :json, accept: :json })
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.preferredURI
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Tree::AsServices add_instance_link_v1 error: #{e.response}")
     raise
   end
@@ -141,48 +138,48 @@ class Tree::AsServices
   def self.add_instance_link_v2(instance_id)
     jwt = mapper_auth
     url = add_instance_identifier_url_v2(instance_id)
-    response = RestClient.put(url, {}.to_json, {content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}"})
+    response = RestClient.put(url, {}.to_json,
+                              { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" })
     json = JSON.parse(response.body, object_class: OpenStruct)
     json.uri
-  rescue RestClient::ExceptionWithResponse => rest_client_exception
+  rescue RestClient::ExceptionWithResponse => e
     tag = "Tree::AsServices.add_instance_link_v2"
-    Rails.logger.warn("#{tag} error: #{rest_client_exception.response}")
-    if rest_client_exception.response.code == 401
-      Rails.logger.warn("#{tag} rescuing a 401 error, will log into mapper")
-      jwt = force_mapper_auth
-      response = RestClient.put(url, {}.to_json, {content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}"})
-      json = JSON.parse(response.body, object_class: OpenStruct)
-      json.uri
-    else 
-      raise
-    end
-  rescue => e
-    Rails.logger.error("Tree::AsServices add_instance_link_v2 error: #{e.to_s}")
+    Rails.logger.warn("#{tag} error: #{e.response}")
+    raise unless e.response.code == 401
+
+    Rails.logger.warn("#{tag} rescuing a 401 error, will log into mapper")
+    jwt = force_mapper_auth
+    response = RestClient.put(url, {}.to_json,
+                              { content_type: :json, accept: :json, authorization: "Bearer #{jwt.access_token}" })
+    json = JSON.parse(response.body, object_class: OpenStruct)
+    json.uri
+  rescue StandardError => e
+    Rails.logger.error("Tree::AsServices add_instance_link_v2 error: #{e}")
     raise
   end
 
   def self.mapper_auth
-    #using a class variable because we need a singleton instance variable to
-    #keep this. Login should only be called
-    #when we don't have the tokens
+    # using a class variable because we need a singleton instance variable to
+    # keep this. Login should only be called
+    # when we don't have the tokens
     $jwt ||= Tree::AsServices.mapper_login
-    return $jwt
+    $jwt
   end
 
   def self.force_mapper_auth
     $jwt = Tree::AsServices.mapper_login
-    return $jwt
+    $jwt
   end
 
   def self.mapper_login
     if MAPPER_USER
       url = "#{MAPPER_API_URL}login"
-      payload = {username: MAPPER_USER, password: MAPPER_PWD}.to_json
+      payload = { username: MAPPER_USER, password: MAPPER_PWD }.to_json
       Rails.logger.info("Logging into mapper via url: #{url}.")
-      response = RestClient.post(url, payload, {content_type: :json, accept: :json})
+      response = RestClient.post(url, payload, { content_type: :json, accept: :json })
       JSON.parse(response.body, object_class: OpenStruct)
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Tree::AsServices mapper_login error: Can't log in #{e}")
     raise
   end
@@ -202,7 +199,7 @@ class Tree::AsServices
   def self.update_synonymy(events, username)
     url = syn_update_link(username)
     Rails.logger.info "calling #{url}"
-    RestClient.post(url, events, {accept: :json})
+    RestClient.post(url, events, { accept: :json })
   end
 
   def self.syn_update_inst_link(username)
@@ -212,7 +209,7 @@ class Tree::AsServices
   def self.update_synonymy_by_instance(instances, username)
     url = syn_update_inst_link(username)
     Rails.logger.info "calling #{url}"
-    RestClient.post(url, instances, {accept: :json})
+    RestClient.post(url, instances, { accept: :json })
   end
 
   def self.val_syn_link(tree_version_id)
@@ -222,5 +219,4 @@ class Tree::AsServices
   def self.val_link(version)
     "#{CLIENT_SIDE_SERVICES}#{VAL_LINK}?version=#{version}&embed=true"
   end
-
 end

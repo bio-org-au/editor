@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class ReferencesController < ApplicationController
-  before_action :find_reference, only: [:edit, :update, :destroy, :show, :tab]
+  before_action :find_reference, only: %i[edit update destroy show tab]
 
   # GET /references/1/tab/:tab
   # Sets up RHS details panel on the search results page.
@@ -26,7 +26,7 @@ class ReferencesController < ApplicationController
     pick_a_tab
     pick_a_tab_index
     copy_reference if @tab == "tab_copy"
-    @take_focus = params[:take_focus] == 'true'
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -56,7 +56,7 @@ class ReferencesController < ApplicationController
                                             typeahead_params,
                                             current_user.username)
     render "create"
-  rescue => e
+  rescue StandardError => e
     logger.error("Controller:reference:create:rescuing exception #{e}")
     @error = e.to_s
     render "create_error", status: :unprocessable_entity
@@ -70,7 +70,7 @@ class ReferencesController < ApplicationController
     @form = params[:form][:name] if params[:form]
     update_reference
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error("Controller:reference:update rescuing: #{e}")
     @message = e.to_s
     render "update_error", status: :unprocessable_entity
@@ -146,8 +146,8 @@ class ReferencesController < ApplicationController
     redirect_to references_path
   end
 
-  # Note: the order of the :year, :month, :day params is critical to 
-  # successfully processing these fields on insert and combining them into 
+  # NOTE: the order of the :year, :month, :day params is critical to
+  # successfully processing these fields on insert and combining them into
   # the iso_publication_date field.
   def reference_params
     params.require(:reference)
@@ -180,11 +180,8 @@ class ReferencesController < ApplicationController
 
   # Do this before getting to the model - much more control.
   def check_date_params
-    if reference_params[:year].blank?
-      raise 'Month entered but no year' unless reference_params[:month].blank?
-    end
-    if reference_params[:month].blank?
-      raise 'Day entered but no month' unless reference_params[:day].blank?
-    end
+    raise "Month entered but no year" if reference_params[:year].blank? && !reference_params[:month].blank?
+    return unless reference_params[:month].blank?
+    raise "Day entered but no month" unless reference_params[:day].blank?
   end
 end

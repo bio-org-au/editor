@@ -24,14 +24,14 @@ Rails.application.routes.draw do
   match "/build", as: "build_service", to: "services#build", via: :get
   match "services", as: "services", to: "services#index", via: :get
 
-  resources :name_tag_names, only: [:show, :post, :create, :new]
+  resources :name_tag_names, only: %i[show post create new]
   match "name_tag_names/:name_id/:tag_id",
         as: "delete_name_tag_name",
         to: "name_tag_names#destroy",
         via: :delete
 
   resources :name_tags, only: [:show]
-  resources :comments, only: [:show, :new, :edit, :create, :update, :destroy]
+  resources :comments, only: %i[show new edit create update destroy]
 
   match "sign_in", as: "start_sign_in", to: "sessions#new", via: :get
   match "retry_sign_in",
@@ -51,7 +51,7 @@ Rails.application.routes.draw do
         as: "search_help", to: "search#help", via: :get
 
   resources :instance_notes,
-            only: [:show, :new, :edit, :create, :update, :destroy]
+            only: %i[show new edit create update destroy]
 
   match "instances/for_name_showing_reference",
         as: "typeahead_for_name_showing_references",
@@ -80,7 +80,7 @@ Rails.application.routes.draw do
         via: :patch
   match "instances/:id/standalone/copy",
         as: "copy_standalone", to: "instances#copy_standalone", via: :post
-  resources :instances, only: [:new, :create, :update, :destroy]
+  resources :instances, only: %i[new create update destroy]
   match "instances/:id",
         as: "instance_show",
         to: "instances#show",
@@ -149,7 +149,7 @@ Rails.application.routes.draw do
   match "names/:id/tab/:tab/as/:new_category",
         as: "name_edit_as_category", to: "names#edit_as_category", via: :get
   match "names/:id/copy", as: "name_copy", to: "names#copy", via: :post
-  resources :names, only: [:new, :create, :update, :destroy]
+  resources :names, only: %i[new create update destroy]
   match "names/:id",
         as: "name_show",
         to: "names#show",
@@ -184,15 +184,15 @@ Rails.application.routes.draw do
   match "authors/new/:random_id",
         as: "new_author_with_random_id", to: "authors#new", via: :get
   match "authors/:id/tab/:tab", as: "author_tab", to: "authors#tab", via: :get
-  resources :authors, only: [:new, :create, :update, :destroy]
+  resources :authors, only: %i[new create update destroy]
   match "authors/:id", as: "author_show",
-        to: "authors#show",
-        via: :get, defaults: { tab: "tab_show_1" }
+                       to: "authors#show",
+                       via: :get, defaults: { tab: "tab_show_1" }
 
-  resources :orchids, only: [:new, :create, :update, :destroy]
+  resources :orchids, only: %i[new create update destroy]
   match "orchids/:id/tab/:tab", as: "orchid_tab", to: "orchids#tab", via: :get
   match "orchids/:id", as: "orchid_update", to: "orchids#update", via: :post
-  resources :orchids_names, only: [:new, :create, :update, :destroy]
+  resources :orchids_names, only: %i[new create update destroy]
   match "orchids/new_row",
         as: "orchid_new_row", to: "orchids#new_row", via: :get
   match "orchids/new/:random_id",
@@ -216,33 +216,36 @@ Rails.application.routes.draw do
         to: "orchids_batch#add_instances_to_draft_tree", via: :post
 
   match "orchids_batch_index", as: "orchids_batch_index",
-        to: "orchids_batch#index", via: :get
+                               to: "orchids_batch#index", via: :get
 
   match "orchids/batch/progress", as: "orchids_batch_progress",
-        to: "orchids_batch#submit", via: [:post]
+                                  to: "orchids_batch#submit", via: [:post]
 
   match "orchids/batch/clear", as: "orchids_batch_clear", to: "orchids_batch#clear", via: :get
   match "orchids/batch/jobs/lock", as: "orchids_batch_jobs_lock", to: "orchids_batch#lock", via: :post
   match "orchids/batch/enable/add", as: "orchids_batch_enable_add", to: "orchids_batch#enable_add", via: :post
   match "orchids/batch/disable/add", as: "orchids_batch_disable_add", to: "orchids_batch#disable_add", via: :post
   match "orchids/batch/unlock", as: "orchids_batch_unlock", to: "orchids_batch#unlock", via: :post
-  match "orchids/batch/work/on/excluded", as: "orchids_batch_work_on_excluded", to: "orchids_batch#work_on_excluded", via: :post
-  match "orchids/batch/work/on/accepted", as: "orchids_batch_work_on_accepted", to: "orchids_batch#work_on_accepted", via: :post
+  match "orchids/batch/work/on/excluded", as: "orchids_batch_work_on_excluded", to: "orchids_batch#work_on_excluded",
+                                          via: :post
+  match "orchids/batch/work/on/accepted", as: "orchids_batch_work_on_accepted", to: "orchids_batch#work_on_accepted",
+                                          via: :post
 
   match "trees/:id/tab/:tab", as: "tree_tab", to: "trees#tab", via: :get
 
-  resources :tree_versions, only: [:new, :create, :update, :destroy]
+  resources :tree_versions, only: %i[new create update destroy]
   match "tree_versions/:id/tab/:tab", as: "tree_version_tab", to: "tree_versions#tab", via: :get
 
-  match "tree_version_elements/:element_link/tab/:tab", as: "tree_version_element_tab", to: "tree_version_elements#tab", via: :get
+  match "tree_version_elements/:element_link/tab/:tab", as: "tree_version_element_tab",
+                                                        to: "tree_version_elements#tab", via: :get
 
   # match "tree_elements/:id/tab/:tab", as: "tree_element_tab", to: "tree_elements#tab", via: :get
   namespace :tree do
-    #match "tree_elements/:id/tab/:tab", as: "element_tab", to: "elements#tab", via: :get
+    # match "tree_elements/:id/tab/:tab", as: "element_tab", to: "elements#tab", via: :get
     match "tree_elements/profile/:id", as: "element", to: "elements#update_profile", via: :patch
   end
 
-  #match "tree_elements/profile/:id", as: "tree_element", to: "tree_elements#update_profile", via: :patch
+  # match "tree_elements/profile/:id", as: "tree_element", to: "tree_elements#update_profile", via: :patch
 
   match "references/typeahead/on_citation/duplicate_of/:id",
         as: "references_typeahead_on_citation_duplicate_of_current",
@@ -261,7 +264,7 @@ Rails.application.routes.draw do
         to: "references#typeahead_on_citation_for_parent", via: :get
   match "references/new_row",
         as: "reference_new_row", to: "references#new_row", via: :get
-  resources :references, only: [:new, :create, :update, :destroy]
+  resources :references, only: %i[new create update destroy]
   match "references/:id",
         as: "reference_show",
         to: "references#show",
@@ -304,12 +307,12 @@ Rails.application.routes.draw do
   match "trees/:id/place_name",
         as: "tree_place_name",
         to: "trees#place_name",
-        via: [:patch, :post]
+        via: %i[patch post]
 
   match "trees/:id/replace_placement",
         as: "tree_replace_placement",
         to: "trees#replace_placement",
-        via: [:patch, :post]
+        via: %i[patch post]
 
   match "trees/workspace/current",
         as: "toggle_current_workspace",
@@ -330,7 +333,6 @@ Rails.application.routes.draw do
         as: "tree_update_parent",
         to: "trees#update_tree_parent",
         via: :post
-
 
   match "trees/update_excluded",
         as: "tree_update_excluded",
@@ -410,63 +412,85 @@ Rails.application.routes.draw do
   match "/trees/run/valrep", as: "run_valrep", to: "trees#run_valrep", via: :get
 
   namespace :loader do
-    match "batches/default_reference_suggestions", as: "batches_default_reference_suggestions", to: "batches#default_reference_suggestions", via: :get
+    match "batches/default_reference_suggestions", as: "batches_default_reference_suggestions",
+                                                   to: "batches#default_reference_suggestions", via: :get
     resources :batches
     match "batches/stats/hide", as: "hide_batch_stats", to: "batches#hide_stats", via: :get
     match "batches/stats/:id", as: "batch_stats", to: "batches#stats", via: :get
     match "batches/bulk/stats/hide", as: "batches_bulk_hide_stats", to: "batch/bulk#hide_stats", via: :post
     match "batches/bulk/stats", as: "batches_bulk_stats", to: "batch/bulk#stats", via: :post
-    match "batches/bulk/matches", as: "batches_bulk_create_matches", to: "batch/bulk#create_preferred_matches", via: :post
-    match "batches/bulk/instances", as: "batches_bulk_create_instances", to: "batch/bulk#create_draft_instances", via: :post
-    match "batches/bulk/taxonomy", as: "batches_bulk_add_to_draft_taxonomy", to: "batch/bulk#add_to_draft_taxonomy", via: :post
+    match "batches/bulk/matches", as: "batches_bulk_create_matches", to: "batch/bulk#create_preferred_matches",
+                                  via: :post
+    match "batches/bulk/instances", as: "batches_bulk_create_instances", to: "batch/bulk#create_draft_instances",
+                                    via: :post
+    match "batches/bulk/taxonomy", as: "batches_bulk_add_to_draft_taxonomy", to: "batch/bulk#add_to_draft_taxonomy",
+                                   via: :post
     match "batches/bulk", as: "batches_bulk", to: "batch/bulk#operation", via: :post
     match "batches/processing/overview", as: "batch_processing_overview", to: "batches#processing_overview", via: :get
-    match "batches/processing/overview/hide", as: "batch_processing_overview_hide", to: "batches#hide_processing_overview", via: :get
-    match "batches/bulk/processing/notes", as: "batch_bulk_processing_notes", to: "batches#bulk_processing_notes", via: :get
-    match "batches/bulk/processing/notes/hide", as: "batch_bulk_processing_notes_hide", to: "batches#hide_bulk_processing_notes", via: :get
-    match "batches/bulk/processing/stats/hide", as: "batch_bulk_processing_stats_hide", to: "batches#hide_bulk_processing_stats", via: :get
-    #namespace :batch do
-      #match "/unlock", as: "loader_batch_unlock", to: "unlock", via: :post
-    #end
+    match "batches/processing/overview/hide", as: "batch_processing_overview_hide",
+                                              to: "batches#hide_processing_overview", via: :get
+    match "batches/bulk/processing/notes", as: "batch_bulk_processing_notes", to: "batches#bulk_processing_notes",
+                                           via: :get
+    match "batches/bulk/processing/notes/hide", as: "batch_bulk_processing_notes_hide",
+                                                to: "batches#hide_bulk_processing_notes", via: :get
+    match "batches/bulk/processing/stats/hide", as: "batch_bulk_processing_stats_hide",
+                                                to: "batches#hide_bulk_processing_stats", via: :get
+    # namespace :batch do
+    # match "/unlock", as: "loader_batch_unlock", to: "unlock", via: :post
+    # end
   end
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
   match "loader_batch/clear-default", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post
   match "loader/batch/unlock", as: "loader_batch_unlock", to: "loader/batch/job_lock#unlock", via: :post
-  match "loader/batch/bulk/enable_add", as: "loader_batch_bulk_enable_add", to: "loader/batch/bulk#enable_add", via: :post
-  match "loader/batch/bulk/disable_add", as: "loader_batch_bulk_disable_add", to: "loader/batch/bulk#disable_add", via: :post
+  match "loader/batch/bulk/enable_add", as: "loader_batch_bulk_enable_add", to: "loader/batch/bulk#enable_add",
+                                        via: :post
+  match "loader/batch/bulk/disable_add", as: "loader_batch_bulk_disable_add", to: "loader/batch/bulk#disable_add",
+                                         via: :post
 
   namespace :loader do
     resources :names, only: [:new]
     match "names/new_row", as: "name_new_row", to: "names#new_row", via: :get
     match "names/new/:random_id", as: "name_new_with_random_id", to: "names#new", via: :get
-    resources :names, only: [:create, :update, :destroy]
+    resources :names, only: %i[create update destroy]
     namespace :name do
       match "matches/create/:id", as: "matches_set", to: "matches#set", via: :patch
       match "matches/delete/all/:id", as: "matches_delete_all", to: "matches#delete_all", via: :delete
-      match "matches/use/batch/default/ref/:id", as: "matches_use_batch_default_ref", to: "matches#use_batch_default_ref", via: :patch
+      match "matches/use/batch/default/ref/:id", as: "matches_use_batch_default_ref",
+                                                 to: "matches#use_batch_default_ref", via: :patch
       match "matches/:id", as: "matches", to: "matches#set", via: :post
-      match "matches/add_or_remove/:id", as: "match_add_or_remove", to: "matches#create_or_delete_for_misapp", via: :post
+      match "matches/add_or_remove/:id", as: "match_add_or_remove", to: "matches#create_or_delete_for_misapp",
+                                         via: :post
       match "matches/taxonomy-instance/:id", as: "taxonomy_instance", to: "matches#taxonomy_instance", via: :patch
-      match "matches/use-batch-default-ref-form/:id", as: "matches_use_batch_default_ref_form", to: "matches#show_batch_default_ref_form", via: :get
-      match "matches/use-existing-instance-form/:id", as: "matches_use_existing_instance_form", to: "matches#use_existing_instance_form", via: :get
-      #match "matches/create-and-copy-form/:id", as: "matches_create_and_copy_form", to: "matches#create_and_copy_form", via: :get
-      match "matches/copy-and-append-form/:id", as: "match_copy_and_append_form", to: "matches#copy_and_append_form", via: :get
-      match "matches/use-existing-instance/:id", as: "matches_use_existing_instance", to: "matches#use_existing_instance", via: :patch
+      match "matches/use-batch-default-ref-form/:id", as: "matches_use_batch_default_ref_form",
+                                                      to: "matches#show_batch_default_ref_form", via: :get
+      match "matches/use-existing-instance-form/:id", as: "matches_use_existing_instance_form",
+                                                      to: "matches#use_existing_instance_form", via: :get
+      # match "matches/create-and-copy-form/:id", as: "matches_create_and_copy_form", to: "matches#create_and_copy_form", via: :get
+      match "matches/copy-and-append-form/:id", as: "match_copy_and_append_form", to: "matches#copy_and_append_form",
+                                                via: :get
+      match "matches/use-existing-instance/:id", as: "matches_use_existing_instance",
+                                                 to: "matches#use_existing_instance", via: :patch
       match "matches/create-and-copy/:id", as: "matches_create_and_copy", to: "matches#create_and_copy", via: :patch
-      match "matches/clear-taxonomy-nomination/:id", as: "match_clear_taxonomy_nomination", to: "matches#clear_taxonomy_nomination", via: :patch
-      match "matches/clear-standalone-instance/:id", as: "match_clear_standalone_instance", to: "matches#clear_standalone_instance", via: :patch
-      match "matches/clear-and-delete-standalone-instance/:id", 
-        as: "match_clear_and_delete_draft_standalone_instance",
-        to: "matches#clear_and_delete_draft_standalone_instance", via: :patch
-      match "matches/clear-relationship-instance/:id", as: "match_clear_relationship_instance", to: "matches#clear_relationship_instance", via: :patch
-      match "matches/clear-and-delete-relationship-instance/:id", as: "match-clear-and-delete-relationship-instance", to: "matches#clear_and_delete_relationship_instance", via: :patch
+      match "matches/clear-taxonomy-nomination/:id", as: "match_clear_taxonomy_nomination",
+                                                     to: "matches#clear_taxonomy_nomination", via: :patch
+      match "matches/clear-standalone-instance/:id", as: "match_clear_standalone_instance",
+                                                     to: "matches#clear_standalone_instance", via: :patch
+      match "matches/clear-and-delete-standalone-instance/:id",
+            as: "match_clear_and_delete_draft_standalone_instance",
+            to: "matches#clear_and_delete_draft_standalone_instance", via: :patch
+      match "matches/clear-relationship-instance/:id", as: "match_clear_relationship_instance",
+                                                       to: "matches#clear_relationship_instance", via: :patch
+      match "matches/clear-and-delete-relationship-instance/:id", as: "match-clear-and-delete-relationship-instance",
+                                                                  to: "matches#clear_and_delete_relationship_instance", via: :patch
+      match "matches/verify_drafted/:id", as: "matches_verify_drafted", to: "matches#verify_drafted", via: :patch
       resources :matches, only: [:update]
     end
   end
   match "loader_names/:id/tab/:tab", as: "loader_name_tab", to: "loader/names#tab", via: :get
 
-  match "loader_names/:id/tab/:tab/:component", as: "loader_name_review_tab", to: "loader/names#tab", via: :get, defaults: { component: 'main' }
+  match "loader_names/:id/tab/:tab/:component", as: "loader_name_review_tab", to: "loader/names#tab", via: :get,
+                                                defaults: { component: "main" }
   match "loader_names/parent_suggestions",
         as: "loader_names_parent_suggestions",
         to: "loader/names#parent_suggestions",
@@ -477,7 +501,7 @@ Rails.application.routes.draw do
   match "batch_reviews", as: "update_batch_review", to: "loader/batch/reviews#update", via: :put
   match "batch_reviews", as: "batch_review", to: "loader/batch/reviews#show", via: :get
   match "/batch_reviews/:id", as: "delete_batch_review", to: "loader/batch/reviews#destroy", via: :delete
-  #resources :batch_reviews
+  # resources :batch_reviews
   match "batch_review_periods", as: "create_batch_review_period", to: "loader/batch/review/periods#create", via: :post
   match "batch_review_periods", as: "review_period", to: "loader/batch/review/periods#show", via: :get
   match "batch_review_periods/:id/tab/:tab", as: "review_period_tab", to: "loader/batch/review/periods#tab", via: :get
@@ -497,16 +521,20 @@ Rails.application.routes.draw do
 
   match "name_review_comments", as: "create_name_review_comment", to: "loader/name/review/comments#create", via: :post
   match "name_review_comments/:id", as: "edit_name_review_comment", to: "loader/name/review/comments#edit", via: :get
-  match "name_review_comments/cancel/:id", as: "cancel_edit_name_review_comment", to: "loader/name/review/comments#cancel_edit", via: :get
+  match "name_review_comments/cancel/:id", as: "cancel_edit_name_review_comment",
+                                           to: "loader/name/review/comments#cancel_edit", via: :get
   match "name_review_comments", as: "update_name_review_comment", to: "loader/name/review/comments#update", via: :patch
-  match "name_review_comments/delete/dialog/:id", as: "dialog_to_delete_name_review_comment", to: "loader/name/review/comments#dialog_to_delete", via: :delete
-  match "name_review_comments/cancel/delete/dialog/:id", as: "cancel_dialog_to_delete_name_review_comment", to: "loader/name/review/comments#cancel_dialog_to_delete", via: :get
-  match "name_review_comments/:id", as: "delete_name_review_comment", to: "loader/name/review/comments#destroy", via: :delete
+  match "name_review_comments/delete/dialog/:id", as: "dialog_to_delete_name_review_comment",
+                                                  to: "loader/name/review/comments#dialog_to_delete", via: :delete
+  match "name_review_comments/cancel/delete/dialog/:id", as: "cancel_dialog_to_delete_name_review_comment",
+                                                         to: "loader/name/review/comments#cancel_dialog_to_delete", via: :get
+  match "name_review_comments/:id", as: "delete_name_review_comment", to: "loader/name/review/comments#destroy",
+                                    via: :delete
 
   match "switch_on_review_mode", as: "switch_on_review_mode", to: "loader/batch/review/mode#switch_on", via: :post
   match "switch_off_review_mode", as: "switch_off_review_mode", to: "loader/batch/review/mode#switch_off", via: :post
 
   match "/clear-connections", as: "clear_connections", to: "services#clear_connections", via: :get
   root to: "search#search"
-  match "/*random", to: "search#search", via: [:get, :post, :delete, :patch]
+  match "/*random", to: "search#search", via: %i[get post delete patch]
 end

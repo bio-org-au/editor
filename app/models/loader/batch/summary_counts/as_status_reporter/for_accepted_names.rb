@@ -16,19 +16,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-
 #  We need to place Orchids on a draft tree.
 class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
   def initialize(search_string, batch_id)
-    @search_string = search_string.downcase.gsub(/\*/,'%')
+    @search_string = search_string.downcase.gsub(/\*/, "%")
     @batch_id = batch_id
   end
 
   def report
-    { search: {batch_id: @batch_id,
-               search_string: @search_string,
-               reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
-               name_category: 'Accepted'},
+    { search: { batch_id: @batch_id,
+                search_string: @search_string,
+                reported_at: Time.now.strftime("%d-%b-%Y %H:%M:%S"),
+                name_category: "Accepted" },
       core: { heading_records: heading_records,
               accepted_family: accepted_families,
               accepted_genera: accepted_genera,
@@ -40,13 +39,11 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
               accepted_with_distribution: accepted_with_distribution,
               taxonomy_comments: taxonomy_comments,
               excluded_names: excluded_names,
-              total: core_search.size,
-              },
-    }
+              total: core_search.size, }, }
   end
 
   def core_search
-    if @search_string == '%' then
+    if @search_string == "%"
       Loader::Name.where(loader_batch_id: @batch_id)
     else
       Loader::Name.bulk_operations_search(@search_string).where(loader_batch_id: @batch_id)
@@ -55,65 +52,65 @@ class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
 
   def accepted_species_and_below
     arg = "record_type = 'accepted' and not excluded and not doubtful and rank in ('species','infraspecific')"
-    {count: core_search.where(arg).count,
-     text: arg}
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def heading_records
-    arg = "record_type = 'heading'" 
-    {count: core_search.where(arg).count,
-     text: arg}
+    arg = "record_type = 'heading'"
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def accepted_families
     arg = "record_type = 'accepted' and not excluded and not doubtful and rank = 'family'"
-    {count: core_search.where(arg).count,
-     text: arg}
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def accepted_genera
     arg = "record_type = 'accepted' and not excluded and not doubtful and rank = 'genus'"
-    {count: core_search.where(arg).count,
-     text: arg}
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def excluded_names
     arg = "record_type = 'excluded'"
-    {count: core_search.where(arg).count,
-     text: arg}
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def taxonomy_comments
     arg = "record_type in ('accepted','excluded') and comment is not null"
-    {count: core_search.where(arg).count,
-     text: arg}
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def accepted_with_distribution
     arg = "record_type = 'accepted' and distribution is not null"
-    {count: core_search.where(arg).count,
-     text: arg}
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def synonyms
     arg = "record_type = 'synonym'"
-    {count: core_search.where(arg).count,
-     text: arg}
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def misapplieds
     arg = "record_type = 'misapplied'"
-    {count: core_search.where(arg).count,
-     text: arg}
+    { count: core_search.where(arg).count,
+      text: arg }
   end
 
   def hybrid_crosses
-    {count: core_search.where("hybrid_flag = 'hybrid'").count,
-     text: "hybrid_flag = 'hybrid'"}
+    { count: core_search.where("hybrid_flag = 'hybrid'").count,
+      text: "hybrid_flag = 'hybrid'" }
   end
 
   def intergrades
-    {count: core_search.where("hybrid_flag = 'intergrade'").count,
-     text: "hybrid_flag = 'intergrade'"}
+    { count: core_search.where("hybrid_flag = 'intergrade'").count,
+      text: "hybrid_flag = 'intergrade'" }
   end
 end

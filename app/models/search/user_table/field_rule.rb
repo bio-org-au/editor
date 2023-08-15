@@ -18,8 +18,8 @@
 #
 class Search::UserTable::FieldRule
   RULES = {
-    "id:"     => { where_clause: " id = ? " },
-    "name:"     => { where_clause: " lower(name) like ? " },
-    "given:"     => { where_clause: " lower(given_name) like ? " },
+    "id:" => { where_clause: " id = ? " },
+    "name:" => { where_clause: " lower(name) like ? " },
+    "given:" => { where_clause: " lower(given_name) like ? " },
   }.freeze
 end

@@ -22,6 +22,7 @@ class Instance::AsTypeahead::ForNameShowingReferences
   def initialize(params)
     @references = []
     return if params[:instance_id].blank?
+
     @references = Reference.find_by_sql([sql_string,
                                          params[:instance_id].to_i,
                                          params[:instance_id].to_i,
@@ -51,16 +52,19 @@ class Instance::AsTypeahead::ForNameShowingReferences
 
   def formatted_pages(ref)
     return "" if ref.pages_useless?
+
     "[#{ref.pages}]"
   end
 
   def formatted_type(ref)
     return "" if ref.instance_type == "secondary reference"
+
     "[#{ref.instance_type}]"
   end
 
   def formatted_source_system(ref)
     return "" if ref.source_system.blank?
+
     "[#{ref.source_system.downcase}]"
   end
 end

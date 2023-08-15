@@ -18,6 +18,7 @@
 #
 class Search::OnName::WhereClauses
   attr_reader :sql
+
   DEFAULT_FIELD = "name:"
 
   def initialize(parsed_request, incoming_sql)
@@ -120,6 +121,7 @@ class Search::OnName::WhereClauses
   def apply_common_and_cultivar(rule)
     debug("apply_common_and_cultivar: #{rule.try('where_clause')}")
     return if @common_and_cultivar_included
+
     if rule.allow_common_and_cultivar
       @common_and_cultivar_included = true
       debug("now including common and cultivar!!!!!!")

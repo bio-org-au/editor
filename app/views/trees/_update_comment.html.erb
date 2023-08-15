@@ -5,18 +5,18 @@
         class="btn btn-primary left"
         name="update_comment[update]"
         tabindex="<%= increment_tab_index %>"
-        title="Update this comment"
+        title="Update this comment on the draft"
         onclick="$('#update_comment_btn').find('i.fa').addClass('fa-spin');"
->Update comment <i class="fa fa-refresh"></i>
+>Update comment on draft <i class="fa fa-refresh"></i>
 </button>
 <button type="button"
         id="delete_comment_btn"
         class="btn btn-warning right"
         name="delete_comment_btn"
         tabindex="<%= increment_tab_index %>"
-        title="delete this comment"
+        title="Delete this comment on the draft"
         onclick="$('#confirm_delete_comment').show();$('#update_comment_btn').hide();$('#delete_comment_btn').prop('disabled', true);$('#cancel_delete_comment_btn').focus();"
->Delete comment
+>Delete comment on draft
 </button>
 <div style="display: none" id="confirm_delete_comment">
   <button type="submit"
@@ -24,18 +24,18 @@
           class="btn btn-danger left"
           name="update_comment[delete]"
           tabindex="<%= tab_index(2) %>"
-          title="Update this comment"
+          title="Confrm - delete this comment on the draft"
           onclick="$('#confirm_delete_comment_btn').find('i.fa').addClass('fa-spin');$('#update_comment_comment').val('')"
-  >Confirm delete <i class="fa fa-trash-o"></i>
+  >Confirm delete on draft <i class="fa fa-trash-o"></i>
   </button>
   <button type="button"
           id="cancel_delete_comment_btn"
           class="btn right"
           name="update_comment[delete]"
           tabindex="<%= increment_tab_index %>"
-          title="delete this comment"
+          title="Cancel delete of this comment on the draft"
           onclick="$('#confirm_delete_comment').hide();$('#update_comment_btn').show();$('#delete_comment_btn').prop('disabled', false);$('#confirm_delete_comment_btn').find('i.fa').removeClass('fa-spin');"
-  >Cancel delete
+  >Cancel delete on draft
   </button>
   <% increment_tab_index %>
 </div>

@@ -24,12 +24,10 @@ class Tree::Element::Profile::CommentObject
   end
 
   def as_hash
-    h = Hash.new
-    h['value'] = @text
-    h['created_at'] = h['updated_at'] = Time.now
-    h['created_by'] = h['updated_by'] = @username
+    h = {}
+    h["value"] = @text
+    h["created_at"] = h["updated_at"] = Time.now
+    h["created_by"] = h["updated_by"] = @username
     h
   end
 end
-
-

@@ -7,17 +7,17 @@
 
   window.captureSearch = function() {
     var fields, str;
-    console.log('captureSearch');
+    debug('captureSearch');
     str = $('#query-string-field').val();
-    console.log(str);
+    debug(str);
     fields = parseSearchString(str);
     return captureFields(fields);
   };
 
   window.parseSearchString = function(searchString, verbose = false) {
     var action, fields, limited, searchTokens, setSize, term, wherePairs;
-    console.log(" ");
-    console.log(`parseSearchString for: ${searchString}`);
+    debug(" ");
+    debug(`parseSearchString for: ${searchString}`);
     searchTokens = searchString.trim().replace(/:/g, ': ').replace(/:  /g, ': ').split(" ");
     [action, searchTokens] = parseAction(searchTokens);
     [setSize, limited, searchTokens] = parseSetSize(searchTokens);
@@ -32,11 +32,11 @@
       term: term,
       wherePairs: wherePairs
     };
-    console.log(`Action: ${fields.action}`);
-    console.log(`Limited: ${fields.limited}`);
-    console.log(`SetSize: ${fields.setSize}`);
-    console.log(`term: ${fields.term}`);
-    console.log(`wherePairs: ${fields.wherePairs}`);
+    debug(`Action: ${fields.action}`);
+    debug(`Limited: ${fields.limited}`);
+    debug(`SetSize: ${fields.setSize}`);
+    debug(`term: ${fields.term}`);
+    debug(`wherePairs: ${fields.wherePairs}`);
     return fields;
   };
 
@@ -60,7 +60,7 @@
 
   parseSetSize = function(tokens) {
     var defaultSetSize, limited, setSize;
-    console.log(`parseSetSize for tokens: ${tokens.join(',')}`);
+    debug(`parseSetSize for tokens: ${tokens.join(',')}`);
     defaultSetSize = 100;
     if (!tokens[0]) {
       tokens = [defaultSetSize.toString()];
@@ -89,7 +89,7 @@
 
   parseDefaultSearchTerm = function(tokens) {
     var ndx, term, termTokens;
-    console.log(`parseDefaultSearchTerm for tokens: ${tokens}`);
+    debug(`parseDefaultSearchTerm for tokens: ${tokens}`);
     ndx = _.findIndex(tokens, isFieldName);
     if (ndx >= 0) {
       termTokens = tokens.slice(0, ndx);
@@ -104,7 +104,7 @@
 
   parseWherePairs = function(tokens) {
     var pair, wherePairs;
-    console.log(`parseWherePairs for: ${tokens.join(' ')}`);
+    debug(`parseWherePairs for: ${tokens.join(' ')}`);
     wherePairs = [];
     while (tokens.length > 0) {
       [pair, tokens] = parseOnePair(tokens);
@@ -117,7 +117,7 @@
 
   parseOnePair = function(tokens) {
     var field, pair, value;
-    console.log(`parseOneWherePair for: ${tokens.join(' ')}`);
+    debug(`parseOneWherePair for: ${tokens.join(' ')}`);
     switch (false) {
       case tokens.length !== 0:
         pair = null;
@@ -126,7 +126,7 @@
       case !isFieldName(tokens[0]):
         field = tokens[0];
         [value, tokens] = parseOneValue(tokens.slice(1));
-        console.log(`Got back value: ${value}`);
+        debug(`Got back value: ${value}`);
         pair = {
           field: field,
           value: value
@@ -140,21 +140,21 @@
 
   parseOneValue = function(tokens) {
     var value;
-    console.log(`parseOneValue for: ${tokens.join(' ')}`);
+    debug(`parseOneValue for: ${tokens.join(' ')}`);
     value = "";
     while (!(tokens.length === 0 || isFieldName(tokens[0]))) {
-      console.log(`token zero: ${tokens[0]}`);
+      debug(`token zero: ${tokens[0]}`);
       value += ` ${tokens[0]}`;
       tokens = tokens.slice(1);
     }
-    console.log(`Returning: value: ${value}`);
+    debug(`Returning: value: ${value}`);
     return [value.trim(), tokens];
   };
 
   captureFields = function(fields) {
     var target;
     target = $('#query-target').val();
-    console.log(`target: ${target}`);
+    debug(`target: ${target}`);
     switch (false) {
       case !target.match(/^authors$/i):
         return window.captureAuthorFields(fields);
@@ -176,8 +176,12 @@
   };
 
   searchableFieldClick = function(event, $element) {
-    $('#query-string-field').val($('#query-string-field').val() + ' ' + $element.html().replace(/<[^>]*>/g, '').trim());
-    return $('#query-string-field').focus();
+    debug(`searchableFieldClick: `);
+    var re = new RegExp($element.attr("data-search-directive"),"g");
+    if (!$('#query-string-field').val().match(re)) {
+      $('#query-string-field').val($('#query-string-field').val() + ' ' + $element.attr("data-search-directive") + ' ');
+    }
+    return;
   };
 
   //###

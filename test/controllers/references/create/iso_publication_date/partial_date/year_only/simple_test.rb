@@ -56,7 +56,7 @@ class ReferencesesCreateYearOnlyTest < ActionController::TestCase
       .with(
         headers: { "Accept" => "text/json",
                    "Accept-Encoding" => encoding,
-                   "User-Agent" => "Ruby" }
+                   "User-Agent" => /rest-client.*ruby.*/ }
       )
       .to_return(status: 200, body: body, headers: {})
   end

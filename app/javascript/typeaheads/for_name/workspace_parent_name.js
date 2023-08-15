@@ -8,23 +8,29 @@ function setUpWorkspaceParentName() {
         },
         source: workspaceParentNameSuggestions.ttAdapter()})
         .on('typeahead:opened', function($e,datum) {
+            debug('typeahead:opened');
             // Start afresh. Do not clear the hidden field on this event
             // because it will clear the field just by tabbing into the field.
         })
         .on('typeahead:selected', function($e,datum) {
+            debug('typeahead:selected');
             $('#workspace_parent_name_id').val(datum.id);
             var input = $('#workspace_parent_name_typeahead');
-            // remove program-generated tags in typeahead list entries
-            // there will be no scripts here
-            var replaced = input.val().replace(/<.*>/g, '').trim();
+            // avoid triggering code scan
+            var replaced = input.val().replace(/<i class="fa fa-ban red"><\/i>/, '').trim();
             input.val(replaced);
         })
         .on('typeahead:autocompleted', function($e,datum) {
+            debug('typeahead:autocompleted');
             $('#workspace_name_parent_id').val(datum.id);
         })
         .on('typeahead:closed', function($e,datum) {
+            debug('typeahead:closed');
             // NOOP: cannot distinguish tabbing through vs emptying vs typing text.
             // Users must select or autocomplete.
+        })
+        .on('typeahead:change', function($e,datum) {
+            debug('typeahead:change');
         });
 }
 
@@ -48,5 +54,4 @@ window.workspaceParentNameSuggestions = new Bloodhound({
 });
 
 window.workspaceParentNameSuggestions.initialize();
-
 

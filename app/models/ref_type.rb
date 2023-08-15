@@ -53,11 +53,9 @@ class RefType < ActiveRecord::Base
 
   def self.options_for_parent_of(children_ref_types)
     children_ref_types.uniq.each do |rt|
-      if rt.parent_id.present?
-        return options_with_preference(rt.parent.name)
-      else
-        return options
-      end
+      return options_with_preference(rt.parent.name) if rt.parent_id.present?
+
+      return options
     end
   end
 
@@ -74,7 +72,7 @@ class RefType < ActiveRecord::Base
 
   def self.query_form_options
     all.sort_by(&:name)
-       .collect { |n| [n.name, n.name.downcase, class: ""] }
+       .collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 
   def rule
@@ -101,11 +99,11 @@ class RefType < ActiveRecord::Base
   end
 
   def part?
-    name.match(/\APart\z/)
+    name == "Part"
   end
 
   def reference_year_required?
-    %w(chapter database\ record herbarium\ annotation personal\ communication
-       paper section).include? name.downcase
+    ["chapter", "database record", "herbarium annotation", "personal communication", "paper",
+     "section"].include? name.downcase
   end
 end

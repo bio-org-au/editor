@@ -34,7 +34,7 @@ class Search::OnInstance::Predicate
               :join_name
 
   def initialize(field, value)
-    debug('Start')
+    debug("Start")
     @field = field
     @value = value
     @canon_field = build_canon_field(field)
@@ -108,8 +108,8 @@ class Search::OnInstance::Predicate
       @rule[:not_exists_clause]
     else
       @rule[:where_clause].gsub(/= \?/, "is null")
-                         .gsub(/like lower\(\?\)/, "is null")
-                         .gsub(/like lower\(f_unaccent\(\?\)\)/, "is null")
+                          .gsub(/like lower\(\?\)/, "is null")
+                          .gsub(/like lower\(f_unaccent\(\?\)\)/, "is null")
     end
   end
 
@@ -123,13 +123,13 @@ class Search::OnInstance::Predicate
 
   def convert_asterisk_to_percent
     case @rule[:convert_asterisk_to_percent]
-      when nil then
-        @value.tr("*", "%")
-      when true then
-        @value.tr("*", "%")
-      else
-        @value
-      end
+    when nil
+      @value.tr("*", "%")
+    when true
+      @value.tr("*", "%")
+    else
+      @value
+    end
   end
 
   def build_canon_field(field)
@@ -141,7 +141,7 @@ class Search::OnInstance::Predicate
     )
       Search::OnInstance::FieldAbbrev::ABBREVS[field]
     elsif field_matches_a_note_key?(field)
-      field      
+      field
     else
       raise "Cannot search instances for: #{field}. You may need to try another
       search term or target."

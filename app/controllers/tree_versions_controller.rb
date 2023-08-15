@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class TreeVersionsController < ApplicationController
-  before_action :find_tree_version, only: [:show, :tab]
+  before_action :find_tree_version, only: %i[show tab]
 
   # GET /tree_vesions/1
   # GET /tree_vesions/1/tab/:tab
@@ -26,7 +26,7 @@ class TreeVersionsController < ApplicationController
   def show
     set_tab
     set_tab_index
-    @take_focus = params[:take_focus] == 'true'
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 

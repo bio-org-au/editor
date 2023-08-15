@@ -69,16 +69,13 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
 end
 
-if ENV['EDITOR_CONFIG_FILE']
+if ENV["EDITOR_CONFIG_FILE"]
   Rails.configuration.env_editor_config_file = "#{ENV['EDITOR_CONFIG_FILE']}"
   Rails.configuration.resolved_editor_config_file = "#{ENV['EDITOR_CONFIG_FILE']}"
 else
   Rails.configuration.env_editor_config_file = ""
-  Rails.configuration.resolved_editor_config_file = "#{ENV['HOME']}/.nsl/development/editor-r6-config.rb"
+  Rails.configuration.resolved_editor_config_file = "#{ENV.fetch('HOME', nil)}/.nsl/development/editor-r6-config.rb"
 end
-  
 
 puts "loading config from #{Rails.configuration.resolved_editor_config_file}"
 load "#{Rails.configuration.resolved_editor_config_file}"
-
-

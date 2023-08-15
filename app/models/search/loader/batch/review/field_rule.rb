@@ -18,19 +18,19 @@
 #
 class Search::Loader::Batch::Review::FieldRule
   RULES = {
-    "name:"                 => { where_clause: "lower(name) like ? ",
-                                 trailing_wildcard: true,
-                                 leading_wildcard: true,
-                                 order: "name"},
-    "id:"                 => { multiple_values: true,
-                               where_clause: "id = ? ",
-                               multiple_values_where_clause: " id in (?)",
-                               order: "name"},
-    "ids:"                => { multiple_values: true,
-                               where_clause: " id = ?",
-                               multiple_values_where_clause: " id in (?)",
-                               order: "name"},
-    "batch-id:"           => { where_clause: "loader_batch_id = ? ",
-                               order: "name"},
+    "name:" => { where_clause: "lower(name) like ? ",
+                 trailing_wildcard: true,
+                 leading_wildcard: true,
+                 order: "name" },
+    "id:" => { multiple_values: true,
+               where_clause: "id = ? ",
+               multiple_values_where_clause: " id in (?)",
+               order: "name" },
+    "ids:" => { multiple_values: true,
+                where_clause: " id = ?",
+                multiple_values_where_clause: " id in (?)",
+                order: "name" },
+    "batch-id:" => { where_clause: "loader_batch_id = ? ",
+                     order: "name" },
   }.freeze
 end

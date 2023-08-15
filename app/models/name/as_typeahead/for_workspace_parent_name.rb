@@ -20,6 +20,7 @@
 class Name::AsTypeahead::ForWorkspaceParentName
   attr_reader :suggestions,
               :params
+
   SEARCH_LIMIT = 50
 
   def initialize(params, working_draft)
@@ -50,24 +51,22 @@ class Name::AsTypeahead::ForWorkspaceParentName
 
   def normal_query
     this_name = Name.find(@params[:name_id])
-    rank_names = this_name.ranks_up_to_next_major.collect {|rank| rank.name}
+    rank_names = this_name.ranks_up_to_next_major.collect { |rank| rank.name }
     @workspace.query_name_version_ranks(prepared_search_term, rank_names)
-        .includes(:tree_element)
-        .collect do |n|
-      begin
-        excl = n.tree_element.excluded ? '<i class="fa fa-ban red"></i> ' : ''
-        {value: "#{excl}#{n.tree_element.name.full_name} - #{n.tree_element.rank}", id: n.element_link}
-      end
+              .includes(:tree_element)
+              .collect do |n|
+      excl = n.tree_element.excluded ? '<i class="fa fa-ban red"></i> ' : ""
+      { value: "#{excl}#{n.tree_element.name.full_name} - #{n.tree_element.rank}", id: n.element_link }
     end
   end
 
   def higher_ranks_query
     this_name = Name.find(@params[:name_id])
     basic_query
-        .joins(tree_element: {name: :name_rank})
-        .where(["name_rank.sort_order < ?", this_name.name_rank.sort_order])
-        .collect do |n|
-      {value: "#{n.tree_element.name.simple_name} - #{n.tree_element.name.name_rank.name}", id: n.element_link}
+      .joins(tree_element: { name: :name_rank })
+      .where(["name_rank.sort_order < ?", this_name.name_rank.sort_order])
+      .collect do |n|
+      { value: "#{n.tree_element.name.simple_name} - #{n.tree_element.name.name_rank.name}", id: n.element_link }
     end
   end
 end

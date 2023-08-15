@@ -20,6 +20,7 @@
 class Name::AsTypeahead::ForUnpubCit
   attr_reader :suggestions,
               :params
+
   SEARCH_LIMIT = 50
 
   def initialize(params)

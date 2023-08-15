@@ -46,7 +46,7 @@ class InstancesCreateCitesAndCitedByByEdDupErrTest < ActionController::TestCase
 
   def check_assertions
     assert_response 422, "Response should be 422, unprocessable entity."
-    # Note: this assertion failed in upgraded to Rails 7
+    # NOTE: this assertion failed in upgraded to Rails 7
     # assert_match(/already exists with the same reference, type and page/,
     #            response.body,
     #            "Unexpected error message part 1")

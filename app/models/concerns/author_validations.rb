@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Author validations
 module AuthorValidations
   extend ActiveSupport::Concern
@@ -45,9 +44,10 @@ module AuthorValidations
 
   def master_has_abbrev_if_needed
     return if abbrev.blank?
-    return unless changed.include?('duplicate_of_id')
+    return unless changed.include?("duplicate_of_id")
     return unless duplicate?
     return if duplicate_of.abbrev.present?
+
     errors.add(:base, "Cannot make this a duplicate of an author that has no abbreviation.")
   end
 end

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Names can be in a classification tree
 module NameFamilyable
   extend ActiveSupport::Concern

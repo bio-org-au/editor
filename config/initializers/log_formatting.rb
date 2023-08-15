@@ -26,11 +26,11 @@ class ActiveSupport::Logger::SimpleFormatter
   USE_HUMOROUS_SEVERITIES = true
 
   def call(severity, time, _progname, msg)
-    if USE_HUMOROUS_SEVERITIES
-      formatted_severity = format("%-3s", SEVERITY_TO_TAG_MAP[severity])
-    else
-      formatted_severity = format("%-5s", severity)
-    end
+    formatted_severity = if USE_HUMOROUS_SEVERITIES
+                           format("%-3s", SEVERITY_TO_TAG_MAP[severity])
+                         else
+                           format("%-5s", severity)
+                         end
 
     formatted_time =
       time.strftime("%Y-%m-%d %H:%M:%S.") << time.usec.to_s[0..2].rjust(3)

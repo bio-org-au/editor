@@ -59,13 +59,13 @@ Rails.application.configure do
   # config.action_view.annotate_rendered_view_with_filenames = true
 end
 
-if ENV['EDITOR_CONFIG_FILE']
+if ENV["EDITOR_CONFIG_FILE"]
   Rails.configuration.env_editor_config_file = "#{ENV['EDITOR_CONFIG_FILE']}"
   Rails.configuration.resolved_editor_config_file = "#{ENV['EDITOR_CONFIG_FILE']}"
 else
   Rails.configuration.env_editor_config_file = ""
-  Rails.configuration.resolved_editor_config_file = "#{ENV['HOME']}/.nsl/test/editor-r6-config.rb"
+  Rails.configuration.resolved_editor_config_file = "#{ENV.fetch('HOME', nil)}/.nsl/test/editor-r6-config.rb"
 end
- 
+
 puts "loading config from #{Rails.configuration.resolved_editor_config_file}"
 load "#{Rails.configuration.resolved_editor_config_file}"

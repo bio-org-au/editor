@@ -21,7 +21,6 @@ class Tree < ActiveRecord::Base
   self.table_name = "tree"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
- 
 
   belongs_to :default_draft_version,
              class_name: "TreeVersion",
@@ -49,14 +48,14 @@ class Tree < ActiveRecord::Base
   end
 
   def config?
-    self.config.present?
+    config.present?
   end
 
   def comment_key
-    config['comment_key']
+    config["comment_key"]
   end
 
   def distribution_key
-    config['distribution_key']
+    config["distribution_key"]
   end
 end

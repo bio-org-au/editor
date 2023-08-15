@@ -22,8 +22,8 @@ class Loader::Batch::Review::Role < ActiveRecord::Base
   self.table_name = "batch_review_role"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  NAME_REVIEWER = 'name reviewer'
-  COMPILER = 'compiler'
+  NAME_REVIEWER = "name reviewer"
+  COMPILER = "compiler"
   attr_accessor :give_me_focus, :message
 
   def fresh?
@@ -31,7 +31,7 @@ class Loader::Batch::Review::Role < ActiveRecord::Base
   end
 
   def display_as
-    'Review Role'
+    "Review Role"
   end
 
   def allow_delete?
@@ -51,26 +51,24 @@ class Loader::Batch::Review::Role < ActiveRecord::Base
 
   # The table isn't in all schemas, so check it's there
   def self.exists?
-    begin 
-      BatchReviewRole.all.count
-    end
+    BatchReviewRole.all.count
+
     true
-  rescue => e
+  rescue StandardError => e
     false
   end
 
   def record_type
-    'BatchReviewRole'
+    "BatchReviewRole"
   end
 
   def save_with_username(username)
     self.created_by = self.updated_by = username
-    #set_defaults
+    # set_defaults
     save
   end
 
   def self.name_reviewer_role
-    self.where("name = 'name reviewer'").first
+    where("name = 'name reviewer'").first
   end
 end
-  

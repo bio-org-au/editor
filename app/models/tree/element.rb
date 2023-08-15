@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-require 'open-uri'
+require "open-uri"
 
 #  A tree element - holds the taxon information
 class Tree::Element < ActiveRecord::Base
@@ -45,11 +45,11 @@ class Tree::Element < ActiveRecord::Base
                           foreign_key: "tree_element_id"
 
   def deprecated_utc_offset_s
-    seconds_offset = Time.now.in_time_zone('Australia/Canberra').utc_offset
-    hours_offset = seconds_offset/3600
-    mins_offset = seconds_offset%3600
-    hours_offset_s = hours_offset.to_s.rjust(2, '0')
-    mins_offset_s = mins_offset.to_s.rjust(2, '0')
+    seconds_offset = Time.now.in_time_zone("Australia/Canberra").utc_offset
+    hours_offset = seconds_offset / 3600
+    mins_offset = seconds_offset % 3600
+    hours_offset_s = hours_offset.to_s.rjust(2, "0")
+    mins_offset_s = mins_offset.to_s.rjust(2, "0")
     utc_offset = "#{hours_offset_s}:#{mins_offset_s}"
   end
 end

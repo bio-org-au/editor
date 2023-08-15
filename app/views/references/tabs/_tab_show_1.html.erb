@@ -93,15 +93,24 @@
 <% end %>
 
 <% unless @reference.isbn.blank? %>
-  <br/>
-  <%= link_to('ISBN',@reference.isbn, title: "Link to the ISBN entry.") %>
+  <%= render partial: 'detail_line', locals: {info: "#{@reference.isbn}&nbsp;&nbsp;(no look-up available)", label: 'ISBN'} %>
 <% end %>
 
 <% unless @reference.issn.blank? %>
+  <div class="detail-line">
+    <span class="pull-left">
+             <a href='<%= "https://portal.issn.org/resource/ISSN/#{@reference.issn}" %>'
+                class='blue'
+                title="Link to the reference the ISSN portal">
+                <%= @reference.issn %>
+             </a>
+    </span>
+    <span class="pull-right align-right field-label">
+      <label class="align-right">ISSN</label>
+    </span>
+  </div>
   <br/>
-  <%= link_to('ISSN',@reference.issn, title: "Link to the ISSN entry.") %>
 <% end %>
-
 <% unless @reference.bhl_url.blank? %>
   <br/>
   <%= link_to("BHL #{editor_icon('external-link')}".html_safe ,@reference.bhl_url, title: "Link to the BHL entry.") %>

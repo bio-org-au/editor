@@ -17,9 +17,9 @@
 #   limitations under the License.
 #
 class OrchidsNamesController < ApplicationController
-  before_action :find_orchids_name, only: [:show, :update]
+  before_action :find_orchids_name, only: %i[show update]
   def create
-    if params[:commit] == 'Remove'
+    if params[:commit] == "Remove"
       delete
     else
       orn = OrchidsName.new
@@ -34,12 +34,12 @@ class OrchidsNamesController < ApplicationController
   end
 
   def update
-    case params[:commit] 
+    case params[:commit]
     when nil
-      raise 'no commit param'
-    when /flag.* manually drafted/i
+      raise "no commit param"
+    when /flag.{0,500} manually drafted/i
       flag_as_manually_drafted
-    when /remove.*manually.drafted.flag/i
+    when /remove.{0,500} manually.drafted.flag/i
       unflag_as_manually_drafted
     else
       update_relationship_instance_type
@@ -50,7 +50,8 @@ class OrchidsNamesController < ApplicationController
     orchids_name = OrchidsName.where(orchid_id: orchids_name_params[:orchid_id])
                               .where(name_id: orchids_name_params[:name_id])
                               .where(instance_id: orchids_name_params[:instance_id])
-    raise 'no such record' if orchids_name.empty?
+    raise "no such record" if orchids_name.empty?
+
     orchids_name.each do |orcn|
       orcn.delete
     end
@@ -59,32 +60,31 @@ class OrchidsNamesController < ApplicationController
   private
 
   def update_relationship_instance_type
-    raise "No change!" if @orchids_name.relationship_instance_type_id == orchids_name_params[:relationship_instance_type_id].to_i
+    if @orchids_name.relationship_instance_type_id == orchids_name_params[:relationship_instance_type_id].to_i
+      raise "No change!"
+    end
+
     @orchids_name.relationship_instance_type_id = orchids_name_params[:relationship_instance_type_id]
     @orchids_name.updated_by = username
     @orchids_name.save!
-  rescue => e
+  rescue StandardError => e
     logger.error(e.to_s)
     @message = e.to_s
-    render 'update_error', format: :js
+    render "update_error", format: :js
   end
 
   def flag_as_manually_drafted
-    if @orchids_name.manually_drafted?
-      raise 'no change required'
-    else
-      @orchids_name.manually_drafted = true
-      @orchids_name.save!
-    end
+    raise "no change required" if @orchids_name.manually_drafted?
+
+    @orchids_name.manually_drafted = true
+    @orchids_name.save!
   end
 
   def unflag_as_manually_drafted
-    if @orchids_name.manually_drafted?
-      @orchids_name.manually_drafted = false
-      @orchids_name.save!
-    else
-      raise 'no change required'
-    end
+    raise "no change required" unless @orchids_name.manually_drafted?
+
+    @orchids_name.manually_drafted = false
+    @orchids_name.save!
   end
 
   def orchids_name_params
@@ -97,5 +97,4 @@ class OrchidsNamesController < ApplicationController
     flash[:alert] = "We could not find the orchid-name."
     redirect_to orchids_name_path
   end
-
 end

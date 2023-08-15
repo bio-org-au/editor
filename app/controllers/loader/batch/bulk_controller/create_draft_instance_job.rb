@@ -33,7 +33,7 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
       do_one_loader_name(loader_name)
     end
     log_finish
-    return @attempts, @creates, @declines, @errors
+    [@attempts, @creates, @declines, @errors]
   end
 
   private
@@ -45,10 +45,10 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
                                                   @job_number)
     @result = creator.create
     tally_result_parts
-  rescue => e
+  rescue StandardError => e
     entry = "<span class='red'>Error: failed to create instance</span> "
     entry += "##{loader_name.id} #{loader_name.simple_name} "
-    entry += "- error in do_one_loader_name: #{e.to_s}"
+    entry += "- error in do_one_loader_name: #{e}"
     log(entry)
     @errors += 1
   end
@@ -57,7 +57,7 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
     entry = "Job ##{@job_number}: #{payload}"
     BulkProcessingLog.log(entry, "Bulk job for #{@authorising_user}")
   end
-  
+
   def log(payload)
     Loader::Batch::Bulk::JobLog.new(@job_number, payload, @authorising_user).write
   end
@@ -82,7 +82,7 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
   end
 
   def debug(s)
-    tag = "Loader::Name::CreateDraftInstanceJob" 
+    tag = "Loader::Name::CreateDraftInstanceJob"
     Rails.logger.debug("#{tag}: #{s}")
   end
 end

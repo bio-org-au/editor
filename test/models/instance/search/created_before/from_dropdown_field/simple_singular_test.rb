@@ -26,7 +26,7 @@ class InstSrchCreB4FromDropdownSimpleSingularTest < ActiveSupport::TestCase
     search = Search::Base
              .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "1 instances-only:",
-                       query_target: "Review",
+                       query_target: "Activity",
                        current_user: build_edit_user))
     assert_equal Array,
                  search.executed_query.results.class,

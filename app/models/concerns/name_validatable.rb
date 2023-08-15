@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Name validations
 module NameValidatable
   extend ActiveSupport::Concern
@@ -58,6 +57,7 @@ module NameValidatable
   def name_element_is_stripped
     return unless name_element.present?
     return if name_element == name_element.strip
+
     errors.add(:name_element, "has whitespace")
   end
 end

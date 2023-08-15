@@ -16,11 +16,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-
 #  We need to place Orchids on a draft tree.
 class Orchid::AsStatusReporter
   def initialize(taxon_string, work_on_accepted)
-    @taxon_string = taxon_string.downcase.gsub(/\*/,'%')
+    @taxon_string = taxon_string.downcase.gsub(/\*/, "%")
     @work_on_accepted = work_on_accepted
     @work_on_excluded = !work_on_accepted
   end

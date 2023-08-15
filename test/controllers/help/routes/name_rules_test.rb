@@ -27,4 +27,3 @@ class HelpRoutesNameRulesTest < ActionController::TestCase
                    action: "name_rules"
   end
 end
-

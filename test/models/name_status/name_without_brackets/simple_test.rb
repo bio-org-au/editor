@@ -23,7 +23,7 @@ class NameStatusNameWithoutBracketsSimpleTest < ActiveSupport::TestCase
   test "simple" do
     NameStatus.all.each do |ns|
       if ns.name =~ /]/
-        assert_match ns.name.sub(/]/, "").sub(/\[/, ""),
+        assert_match ns.name.delete("[").delete("]"),
                      ns.name_without_brackets
       else
         assert_match ns.name, ns.name_without_brackets

@@ -17,12 +17,12 @@
 #   limitations under the License.
 #
 class OrchidsController < ApplicationController
-  before_action :find_orchid, only: [:show, :update, :tab, :destroy]
+  before_action :find_orchid, only: %i[show update tab destroy]
 
   def show
     set_tab
     set_tab_index
-    @take_focus = params[:take_focus] == 'true'
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -32,17 +32,17 @@ class OrchidsController < ApplicationController
     logger.debug("OrchidsController#update")
     if orchid_params.blank?
       @message = "No change"
-      render 'update_no_change'
+      render "update_no_change"
     elsif orchid_params[:name_id].blank?
       update_the_raw_record
     else
       update_matching_name
     end
-  rescue => e
-    logger.error("OrchidsController#update: #{e.to_s}")
+  rescue StandardError => e
+    logger.error("OrchidsController#update: #{e}")
     logger.error e.backtrace.join("\n")
     @message = e.to_s
-    render 'update_error', format: :js
+    render "update_error", format: :js
   end
 
   def update_matching_name
@@ -73,15 +73,15 @@ class OrchidsController < ApplicationController
     @orchid = Orchid.find(params[:id])
     @message = @orchid.update_if_changed(orchid_params, current_user.username)
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error("Orchid#update_the_raw_record rescuing #{e}")
     @message = e.to_s
     render "update_error", status: :unprocessable_entity
   end
- 
+
   def destroy
     @orchid.delete
-  rescue => e
+  rescue StandardError => e
     logger.error("Orchid#destroy rescuing #{e}")
     @message = e.to_s
     render "destroy_error", status: :unprocessable_entity
@@ -111,11 +111,11 @@ class OrchidsController < ApplicationController
   def create
     @orchid = Orchid.create(orchid_params, current_user.username)
     render "create"
-  rescue => e
+  rescue StandardError => e
     logger.error("Controller:Authors:create:rescuing exception #{e}")
     @error = e.to_s
     render "create_error", status: :unprocessable_entity
-  end  # For the typeahead search.
+  end # For the typeahead search.
 
   def parent_suggestions
     typeahead = Orchid::AsTypeahead::ForParent.new(params)
@@ -133,8 +133,9 @@ class OrchidsController < ApplicationController
 
   def orchid_params
     return nil if params[:orchid].blank?
+
     params.require(:orchid).permit(:taxon, :name_id, :instance_id,
-                                   :record_type, :parent, :parent_id, 
+                                   :record_type, :parent, :parent_id,
                                    :name_status, :ex_base_author,
                                    :base_author, :ex_author, :author,
                                    :synonym_type, :comment, :seq,
@@ -156,7 +157,8 @@ class OrchidsController < ApplicationController
   end
 
   def stop_if_nothing_changed
-    return if @orchids_names.blank? 
+    return if @orchids_names.blank?
+
     changed = false
     @orchids_names.each do |orchid_name|
       unless orchid_name.name_id == orchid_params[:name_id].to_i &&
@@ -164,12 +166,13 @@ class OrchidsController < ApplicationController
         changed = true
       end
     end
-    raise 'no change required' unless changed
+    raise "no change required" unless changed
   end
 
   # Doesn't handle multiple name_ids being passed in params
   def remove_unwanted_orchid_names
-    return if @orchids_names.blank? 
+    return if @orchids_names.blank?
+
     @orchids_names.each do |orchid_name|
       unless orchid_name.name_id == orchid_params[:name_id].to_i &&
              orchid_name.instance_id == orchid_params[:instance_id].to_i

@@ -27,12 +27,14 @@ class Search::OnModel::ListQuery
   end
 
   def prepare_query
-    Rails.logger.debug("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
     Rails.logger.debug("===========================================================================================")
     Rails.logger.debug("Search::OnModel::ListQuery#prepare_query on target: #{@parsed_request.target_table}")
     Rails.logger.debug("Search::OnModel::ListQuery#prepare_query target model: #{@parsed_request.target_model}")
     Rails.logger.debug("===========================================================================================")
-    raise "Target '#{@parsed_request.target_table}' is not registered with parsed request." if @parsed_request.target_model.nil?
+    if @parsed_request.target_model.nil?
+      raise "Target '#{@parsed_request.target_table}' is not registered with parsed request."
+    end
+
     @model_class = @parsed_request.target_model.constantize
     prepared_query = @model_class.where("1=1")
     Rails.logger.debug("Search::OnModel::ListQuery#prepare_query sql: #{prepared_query.to_sql}")
@@ -55,5 +57,4 @@ class Search::OnModel::ListQuery
       results
     end
   end
-
 end

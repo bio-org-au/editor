@@ -15,6 +15,10 @@
         </tr>
       <% end %>
     <% end %>
+    <%# trailing callback %>
+    <% if defined?(@previous_comment) || defined?(@previous_distribution) %>
+      <%= render partial: 'application/search_results/print/records/loader/record_types/prev_rec_dist_comments' %>
+    <% end %>
 
     <tr>
       <td class="width-1-percent"></td>

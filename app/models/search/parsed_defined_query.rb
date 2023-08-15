@@ -38,7 +38,7 @@ class Search::ParsedDefinedQuery
   }.freeze
 
   def initialize(query_target)
-    @query_target = query_target.downcase.gsub(', ','_').gsub(' ','_')
+    @query_target = query_target.downcase.gsub(", ", "_").gsub(" ", "_")
     parse_query_target
   end
 

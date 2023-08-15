@@ -84,8 +84,7 @@
     <%= divider %>
 
     <% unless loader_name.id.blank? %>
-      <% unless loader_name.preferred_match.blank? %>
-        <% if loader_name.preferred_match.standalone_instance? %>
+        <% if loader_name&.preferred_match&.standalone_instance? %>
           <% disabled = true %>
           Note: this record already has an associated instance - you cannot switch off bulk processing while that instance is attached.
         <% else %>
@@ -100,7 +99,6 @@
                                                  Stop further bulk processing of this record and of its synonyms
         </label>
         </div>
-      <% end %>
     <% end %>
 
     <div class="form-group align-right">
@@ -110,4 +108,6 @@
       <% end %>
       <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
     </div>
+    <div id="search-result-details-info-message-container2" class="message-container"></div>
+    <div id="search-result-details-error-message-container2" class="message-container"></div>
 <% end %>

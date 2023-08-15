@@ -19,7 +19,7 @@
 
 # I can Deduplicate a name
 # I have a name I can deduplicate
-# 
+#
 class Name::DeDuper
   def initialize(duplicate_name)
     @duplicate = duplicate_name
@@ -29,7 +29,7 @@ class Name::DeDuper
   end
 
   def de_dupe
-    debug('De-duplicating.... not actually...')
+    debug("De-duplicating.... not actually...")
   end
 
   def preview
@@ -37,7 +37,7 @@ class Name::DeDuper
   end
 
   def overview
-    result = Hash.new
+    result = {}
     # family members
     result[:children] = @children.size
     result[:second_children] = @second_children.size
@@ -63,7 +63,7 @@ class Name::DeDuper
   end
 
   def tree_versions
-    @duplicate.tree_elements.collect do | te |
+    @duplicate.tree_elements.collect do |te|
       te.tree_version_elements.collect do |tve|
         tve.tree_version
       end
@@ -71,7 +71,7 @@ class Name::DeDuper
   end
 
   def trees
-    @duplicate.tree_elements.collect do | te |
+    @duplicate.tree_elements.collect do |te|
       te.tree_version_elements.collect do |tve|
         tve.tree_version.tree
       end
@@ -79,12 +79,13 @@ class Name::DeDuper
   end
 
   def trees_2
-    t = @duplicate.tree_elements.collect do |te|
-          te.tree_version_elements.collect {|tve| tve.tree_version.tree.name + '::' +
-                                                  tve.tree_version.draft_name + '::' +
-                                                  tve.tree_version.published.to_s}
-        end
-    t
+    @duplicate.tree_elements.collect do |te|
+      te.tree_version_elements.collect do |tve|
+        tve.tree_version.tree.name + "::" +
+          tve.tree_version.draft_name + "::" +
+          tve.tree_version.published.to_s
+      end
+    end
   end
 
   def transfer_dependents(type)
@@ -105,7 +106,7 @@ class Name::DeDuper
     @transferred_count = 0
     @duplicate.members.each do |family_member|
       family_member.update_attribute(:family_id, @master.id)
-      family_member.update_attribute(:updated_by, 'duplicate-rewiring')
+      family_member.update_attribute(:updated_by, "duplicate-rewiring")
       @transferred_count += 1
     end
     @transferred_count
@@ -116,7 +117,7 @@ class Name::DeDuper
     @transferred_count = 0
     @duplicate.children.each do |child|
       child.update_attribute(:parent_id, @master.id)
-      child.update_attribute(:updated_by, 'duplicate-rewiring')
+      child.update_attribute(:updated_by, "duplicate-rewiring")
       @transferred_count += 1
     end
     @transferred_count
@@ -125,11 +126,11 @@ class Name::DeDuper
   def transfer_instances
     @transferred_count = 0
     @duplicate.instances.each do |instance|
-      #unless instance.tree_elements.size > 0
-        instance.update_attribute(:name_id, @master.id)
-        instance.update_attribute(:updated_by, 'duplicate-rewiring')
-        @transferred_count += 1
-      #end
+      # unless instance.tree_elements.size > 0
+      instance.update_attribute(:name_id, @master.id)
+      instance.update_attribute(:updated_by, "duplicate-rewiring")
+      @transferred_count += 1
+      # end
     end
     @transferred_count
   end
@@ -148,7 +149,7 @@ class Name::DeDuper
     end
     @transferred_count
   end
- 
+
   private
 
   def identify_master
@@ -156,16 +157,16 @@ class Name::DeDuper
     validate_master
   end
 
-  # Note: exclude the case of duplicate of a duplicate, because that
+  # NOTE: exclude the case of duplicate of a duplicate, because that
   # trail of duplicates could lead back to the current duplicate
   # In this early version we want to keep things simple
   def validate_master
     throw "No master" if @master.blank?
     debug("Master name: #{@master.id} #{@master.full_name}")
-    unless @master.duplicate_of_id.blank?
-      debug("Master is also a duplicate")
-      throw "We do not de-duplicate where the master is also a duplicate"
-    end
+    return if @master.duplicate_of_id.blank?
+
+    debug("Master is also a duplicate")
+    throw "We do not de-duplicate where the master is also a duplicate"
   end
 
   def identify_dependencies
@@ -188,7 +189,7 @@ class Name::DeDuper
   end
 
   def debug(msg)
-    #Rails.logger.debug('De-duplicating....')
+    # Rails.logger.debug('De-duplicating....')
     puts(msg)
   end
 end

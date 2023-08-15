@@ -21,10 +21,10 @@ require "test_helper"
 # Single instance model test.
 class InstanceDeleteServiceNotFound404Test < ActiveSupport::TestCase
   setup do
-    raw = { "action": "delete",
-            "instance": {},
-            "ok": false,
-            "errors": ["Not found."] }
+    raw = { action: "delete",
+            instance: {},
+            ok: false,
+            errors: ["Not found."] }
     stub_request(:delete,
                  "#{action}?apiKey=test-api-key&reason=Edit")
       .with(headers: headers)

@@ -80,11 +80,11 @@ class Search::OnName::Base
   end
 
   def include_instances
-    if @parsed_request.include_instances && @parsed_request.show_instances
-      @results = Search::OnName::WithInstances.new(@names).names_with_instances
-    else
-      @results = @names.to_a
-    end
+    @results = if @parsed_request.include_instances && @parsed_request.show_instances
+                 Search::OnName::WithInstances.new(@names).names_with_instances
+               else
+                 @names.to_a
+               end
   end
 
   def debug(s)
@@ -102,6 +102,7 @@ class Search::OnName::Base
   def build_summary
     return "No names found" if @names.size.zero?
     return "1 name of #{@total}" if @names.size == 1
+
     "#{@names.size} names of #{@total}"
   end
 end

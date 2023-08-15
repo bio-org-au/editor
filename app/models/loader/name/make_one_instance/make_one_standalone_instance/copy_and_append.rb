@@ -27,7 +27,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
   end
 
   def create
-    debug('create')
+    debug("create")
     created = declined = errors = 0
     return no_def_ref if @loader_name.loader_batch.default_reference.blank?
     return no_source_for_copy if @match.source_for_copy.blank?
@@ -41,7 +41,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
     @match.standalone_instance_found = false
     @match.updated_by = "@job for #{@user}"
     @match.save!
-    
+
     syns_copied = 0
     @match.source_for_copy.synonyms.each do |source_synonym|
       debug("copy syn #{source_synonym.id}")
@@ -61,7 +61,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
   end
 
   def create_the_standalone
-    debug('create_the_standalone')
+    debug("create_the_standalone")
     @new_standalone = Instance.new
     @new_standalone.draft = true
     @new_standalone.name_id = @match.name_id
@@ -101,21 +101,21 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
   def using_existing_instance
     log("#{Constants::DECLINED_INSTANCE} - using existing " +
                  " instance for #{@loader_name.simple_name} #{@loader_name.id}")
-    return Constants::DECLINED
+    Constants::DECLINED
   end
 
   def unknown_option
     log(
-      "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}")
+      "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}"
+    )
     log_error("Unknown option: ##{@match.id} #{@match.loader_name_id}")
     log_error("#{@match.inspect}")
-    return Constants::ERROR
+    Constants::ERROR
   end
 
   def standalone_instance_already_noted?
     return true unless @match.standalone_instance_id.blank?
   end
-
 
   def note_standalone_instance_created(instance)
     @match.standalone_instance_id = instance.id
@@ -128,13 +128,13 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
   end
 
   def note_standalone_instance(instance)
-    Rails.logger.debug('note_standalone_instance')
+    Rails.logger.debug("note_standalone_instance")
     @match.standalone_instance_id = instance.id
     @match.standalone_instance_found = true
     @match.updated_by = "job for #{@user}"
     @match.save!
   end
- 
+
   def debug(str)
     Rails.logger.debug("CopyAndAppend: #{str}")
   end

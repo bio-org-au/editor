@@ -35,7 +35,7 @@ class Tree::DraftVersion < ActiveRecord::Base
 
   def name_in_version(name)
     tree_version_elements.joins(:tree_element)
-        .where(tree_element: { name: name }).first
+                         .where(tree_element: { name: name }).first
   end
 
   def self.create(tree_id, from_version_id, draft_name, draft_log, default_draft, username)
@@ -44,8 +44,7 @@ class Tree::DraftVersion < ActiveRecord::Base
                 fromVersionId: from_version_id,
                 draftName: draft_name,
                 log: draft_log,
-                defaultDraft: default_draft
-    }
+                defaultDraft: default_draft }
     logger.info "Calling #{url} with #{payload}"
     RestClient::Request.execute(method: :put,
                                 url: url,
@@ -55,7 +54,7 @@ class Tree::DraftVersion < ActiveRecord::Base
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::DraftVersion RestClient::ExceptionWithResponse error: #{e}")
     raise
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Tree::DraftVersion other error: #{e}")
     raise
   end
@@ -71,12 +70,12 @@ class Tree::DraftVersion < ActiveRecord::Base
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::DraftVerson RestClient::ExceptionWithResponse error: #{e}")
     raise
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Tree::DraftVerson other error: #{e}")
     raise
   end
 
   def last_update
-    self.tree_version_elements.order(updated_at: :desc).first
+    tree_version_elements.order(updated_at: :desc).first
   end
 end

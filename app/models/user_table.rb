@@ -19,7 +19,7 @@
 # Loader Usertable entity
 #
 # Called UserTable to distinguish from the pre-existing user model which is
-# used for authenticatio/authorisation.  This model is for the users table 
+# used for authenticatio/authorisation.  This model is for the users table
 # created during work on the batch loader and batch review subsystem.
 class UserTable < ActiveRecord::Base
   strip_attributes
@@ -42,7 +42,7 @@ class UserTable < ActiveRecord::Base
   end
 
   def display_as
-    'User'
+    "User"
   end
 
   def allow_delete?

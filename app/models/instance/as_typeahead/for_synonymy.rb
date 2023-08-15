@@ -36,10 +36,11 @@
 # Ordering: NSL-1103: added ordering by year.
 class Instance::AsTypeahead::ForSynonymy
   attr_reader :results
-  COLUMNS = " name.full_name, reference.citation, "\
-            " reference.iso_publication_date, " \
-            " reference.pages, instance.id, instance.source_system, "\
-            " instance_type.name as instance_type_name"
+
+  COLUMNS = " name.full_name, reference.citation,  " \
+            "reference.iso_publication_date,  " \
+            "reference.pages, instance.id, instance.source_system,  " \
+            "instance_type.name as instance_type_name"
   SEARCH_LIMIT = 50
 
   def initialize(terms, name_id)
@@ -47,6 +48,7 @@ class Instance::AsTypeahead::ForSynonymy
     @name_binds = []
     terms_without_year = terms.gsub(/[0-9]/, "").strip.gsub(/  /, " ")
     return if terms_without_year.blank?
+
     @name_binds.push(" lower(f_unaccent(full_name)) like lower(f_unaccent(?)) ")
     @name_binds.push(terms_without_year.tr("*", "%") + "%")
     @results = run_query(terms, name_id)
@@ -97,12 +99,8 @@ class Instance::AsTypeahead::ForSynonymy
 
   def display_value(i)
     value = "#{i.full_name} in #{i.citation}:#{i.iso_publication_date}"
-    unless i.pages.blank? || i.pages.match(/null - null/)
-      value += " [#{i.pages}]"
-    end
-    unless i.instance_type_name == "secondary reference"
-      value += " [#{i.instance_type_name}]"
-    end
+    value += " [#{i.pages}]" unless i.pages.blank? || i.pages.match(/null - null/)
+    value += " [#{i.instance_type_name}]" unless i.instance_type_name == "secondary reference"
     value
   end
 

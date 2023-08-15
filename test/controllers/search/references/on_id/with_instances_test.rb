@@ -23,19 +23,19 @@ class SearchRefsOnIdWithInstancesTest < ActionController::TestCase
   tests SearchController
 
   test "search on reference id with show-instances" do
-    run_search('show-instances:')
+    run_search("show-instances:")
   end
 
   test "search on reference id with s-i abbrev" do
-    run_search('s-i:')
+    run_search("s-i:")
   end
 
   test "search on reference id with si abbrev" do
-    run_search('si:')
+    run_search("si:")
   end
 
   test "search on reference id with i abbrev" do
-    run_search('i:')
+    run_search("i:")
   end
 
   def run_search(directive)

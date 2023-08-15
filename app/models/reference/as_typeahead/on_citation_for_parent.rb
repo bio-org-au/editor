@@ -27,6 +27,7 @@ class Reference::AsTypeahead::OnCitationForParent
   # Restricts to references to legal types based on rules in ref_type i.e. which parent ref types are allowed, if any.
   # Accepts a ref type id param - the one on screen - rather than looking at the saved record.
   attr_reader :results
+
   SEARCH_LIMIT = 50
   def initialize(terms, current_id, param_ref_type_id)
     @results = query(terms, current_id, param_ref_type_id).collect do |ref|
@@ -62,11 +63,10 @@ class Reference::AsTypeahead::OnCitationForParent
     if param_ref_type_id.present?
       best_ref_type_id = param_ref_type_id
     else
-      if current_id.present?
-        best_ref_type_id = Reference.find(current_id).ref_type_id
-      else
-        return []
-      end
+      return [] unless current_id.present?
+
+      best_ref_type_id = Reference.find(current_id).ref_type_id
+
     end
     Reference.joins(:ref_type).includes(:ref_type)
              .where.not(reference: { id: current_id.blank? ? 0 : current_id })

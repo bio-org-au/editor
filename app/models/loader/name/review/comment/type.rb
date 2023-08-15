@@ -23,13 +23,12 @@ class Loader::Name::Review::Comment::Type < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
   has_many :name_review_comments, class_name: "Loader::Name::Review::Comment",
-             foreign_key: "name_review_comment_type_id"
+                                  foreign_key: "name_review_comment_type_id"
   alias_attribute :comments, :name_review_comment_types
 
   attr_accessor :give_me_focus, :message
 
-  def self.for(focus, compiler)
-    self.where("not deprecated")
+  def self.for(_focus, _compiler)
+    where("not deprecated")
   end
 end
-  

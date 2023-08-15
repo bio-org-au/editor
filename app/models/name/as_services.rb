@@ -18,7 +18,7 @@
 
 #  Name services
 class Name::AsServices < Name
-  NAME_SERVICES = Rails.configuration.try('name_services')
+  NAME_SERVICES = Rails.configuration.try("name_services")
   def self.name_strings_url(id)
     "#{NAME_SERVICES}#{id}/api/name-strings"
   end
@@ -36,9 +36,9 @@ class Name::AsServices < Name
   end
 
   def self.delete_url(id, reason = "No longer required.")
-    api_key = Rails.configuration.try('api_key')
+    api_key = Rails.configuration.try("api_key")
     path = "#{id}/api/delete"
-    encoded_reason= "#{ERB::Util.url_encode(reason)}"
+    encoded_reason = "#{ERB::Util.url_encode(reason)}"
     "#{NAME_SERVICES}#{path}?apiKey=#{api_key}&reason=#{encoded_reason}"
   end
 

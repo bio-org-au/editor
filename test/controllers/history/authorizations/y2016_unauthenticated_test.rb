@@ -24,9 +24,9 @@ class HistoryAuthorizationsY2016UnauthenticatedTest < ActionController::TestCase
   tests HistoryController
 
   test "history y2016 should get redirected unauthenticated" do
-    get('for_year', params: {"year"=>"2016"}, xhr: true)
-    assert_match /alert.'Your session may have expired./, response.body
-    assert_match /expired. Please reload the whole page before continuing.'.;/,
-      response.body
+    get("for_year", params: { "year" => "2016" }, xhr: true)
+    assert_match(/alert.'Your session may have expired./, response.body)
+    assert_match(/expired. Please reload the whole page before continuing.'.;/,
+                 response.body)
   end
 end

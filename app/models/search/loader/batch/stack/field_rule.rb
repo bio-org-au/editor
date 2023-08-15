@@ -18,16 +18,16 @@
 #
 class Search::Loader::Batch::Stack::FieldRule
   RULES = {
-    "name:"                 => { where_clause: "lower(batch_name) like ? ",
-                                 trailing_wildcard: true,
-                                 order: "order_by"},
-    "batch-id:"                 => { multiple_values: true,
-                               where_clause: "batch_id = ? ",
-                               multiple_values_where_clause: " batch_id in (?)",
-                               order: "order_by"},
-    "batch-ids:"                => { multiple_values: true,
-                               where_clause: " batch_id = ?",
-                               multiple_values_where_clause: " batch_id in (?)",
-                               order: "order_by"},
+    "name:" => { where_clause: "lower(batch_name) like ? ",
+                 trailing_wildcard: true,
+                 order: "order_by" },
+    "batch-id:" => { multiple_values: true,
+                     where_clause: "batch_id = ? ",
+                     multiple_values_where_clause: " batch_id in (?)",
+                     order: "order_by" },
+    "batch-ids:" => { multiple_values: true,
+                      where_clause: " batch_id = ?",
+                      multiple_values_where_clause: " batch_id in (?)",
+                      order: "order_by" },
   }.freeze
 end

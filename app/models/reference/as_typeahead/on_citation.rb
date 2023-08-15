@@ -25,10 +25,11 @@ class Reference::AsTypeahead::OnCitation
   # Allow for an ID to exclude, but default it to a meaningless value
   # but not null.
   attr_reader :results
+
   SEARCH_LIMIT = 50
   def initialize(terms, excluded_id = -1)
-    #Rails.logger.debug("Reference::AsTypeahead::OnCitation: initialize; terms: #{terms}")
-    #Rails.logger.debug(query(terms, excluded_id).class)
+    # Rails.logger.debug("Reference::AsTypeahead::OnCitation: initialize; terms: #{terms}")
+    # Rails.logger.debug(query(terms, excluded_id).class)
     @results = query(terms, excluded_id).collect do |ref|
       { value: ref.typeahead_display_value,
         id: ref.id.to_s }

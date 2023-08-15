@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class AuthorsController < ApplicationController
-  before_action :find_author, only: [:show, :destroy, :tab]
+  before_action :find_author, only: %i[show destroy tab]
 
   # GET /authors/1
   # GET /authors/1/tab/:tab
@@ -26,7 +26,7 @@ class AuthorsController < ApplicationController
   def show
     set_tab
     set_tab_index
-    @take_focus = params[:take_focus] == 'true'
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -58,7 +58,7 @@ class AuthorsController < ApplicationController
                                       typeahead_params,
                                       current_user.username)
     render "create"
-  rescue => e
+  rescue StandardError => e
     logger.error("Controller:Authors:create:rescuing exception #{e}")
     @error = e.to_s
     render "create_error", status: :unprocessable_entity
@@ -70,7 +70,7 @@ class AuthorsController < ApplicationController
                                          typeahead_params,
                                          current_user.username)
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error("Author#update rescuing #{e}")
     @message = e.to_s
     render "update_error", status: :unprocessable_entity
@@ -100,9 +100,7 @@ class AuthorsController < ApplicationController
   def typeahead_on_name_duplicate_of_current
     authors = []
     typeahead = Author::AsTypeahead
-    unless params[:term].blank?
-      authors = typeahead.on_name_duplicate_of(params[:term], params[:id])
-    end
+    authors = typeahead.on_name_duplicate_of(params[:term], params[:id]) unless params[:term].blank?
     render json: authors
   end
 

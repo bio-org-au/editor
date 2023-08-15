@@ -23,17 +23,15 @@ class Author::AsEdited < Author::AsTypeahead
   def self.create(params, typeahead_params, username)
     author = Author::AsEdited.new(params)
     author.resolve_typeahead_params(typeahead_params)
-    if author.save_with_username(username)
-      author
-    else
-      raise author.errors.full_messages.first.to_s
-    end
+    raise author.errors.full_messages.first.to_s unless author.save_with_username(username)
+
+    author
   end
 
   def update_if_changed(params, typeahead_params, username)
     # strip_attributes is in place and should make this unnecessary
     # but it's not working in the way I expect
-    params.keys.each { |key| params[key] = nil if params[key] == '' } 
+    params.keys.each { |key| params[key] = nil if params[key] == "" }
     assign_attributes(params)
     resolve_typeahead_params(typeahead_params)
     if changed?

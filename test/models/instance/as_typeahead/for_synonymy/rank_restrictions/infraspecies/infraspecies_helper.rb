@@ -20,7 +20,7 @@ def check_infraspecific_exclusions
   %w[Regio Regnum Division Classis Subclassis Superordo Ordo Subordo Familia
      Subfamilia Tribus Subtribus Genus Subgenus Sectio Subsectio Series
      Subseries Superspecies].each do |rank_string|
-    assert @rank_names.select { |e| e.match(/\A#{rank_string}\z/) }.empty?,
+    assert @rank_names.none? { |e| e.match(/\A#{rank_string}\z/) },
            "Expect no #{Regexp.escape(rank_string)} to be suggested"
   end
 end
@@ -31,7 +31,7 @@ def check_infraspecific_inclusions
 end
 
 def check_species
-  assert @rank_names.select { |e| e.match(/\ASpecies\z/) }.size >= 5,
+  assert @rank_names.select { |e| e == "Species" }.size >= 5,
          "Expect correct number of species to be suggested"
 end
 

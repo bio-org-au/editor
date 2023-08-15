@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -20,8 +19,8 @@
 #   Controls instances.
 class InstancesController < ApplicationController
   include ActionView::Helpers::TextHelper
-  before_action :find_instance, only: [:show, :tab, :destroy]
-  # todo refactor validation error checks to not rely on a copied string comparison as this is very fragile
+  before_action :find_instance, only: %i[show tab destroy]
+  # TODO: refactor validation error checks to not rely on a copied string comparison as this is very fragile
   CONCEPT_WARNING = "Validation failed: You are trying to change an accepted concept's synonymy."
 
   # GET /instances/1
@@ -39,7 +38,7 @@ class InstancesController < ApplicationController
       @parent_tve = find_a_parent(@instance.name)
     end
     @accepted_tve = @instance.name.accepted_tree_version_element
-    @take_focus = params[:take_focus] == 'true'
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -58,7 +57,7 @@ class InstancesController < ApplicationController
     else
       create(instance_params, "create_unpub")
     end
-  rescue => e
+  rescue StandardError => e
     render_create_error(e.to_s, "instance-name-typeahead")
   end
 
@@ -85,7 +84,7 @@ class InstancesController < ApplicationController
     render view_to_render
   rescue ActiveRecord::RecordNotUnique
     handle_not_unique
-  rescue => e
+  rescue StandardError => e
     handle_other_errors(e)
   end
 
@@ -102,7 +101,7 @@ class InstancesController < ApplicationController
 
   def prevent_double_overrides
     if @instance.multiple_primary_override &&
-        @instance.duplicate_instance_override
+       @instance.duplicate_instance_override
       @instance.multiple_primary_override = false
       @instance.duplicate_instance_override = false
     end
@@ -122,8 +121,8 @@ class InstancesController < ApplicationController
     )
     @message = "Instance was copied"
     render "instances/copy_standalone/success"
-  rescue => e
-    handle_other_errors(e,'instances/copy_standalone/error')
+  rescue StandardError => e
+    handle_other_errors(e, "instances/copy_standalone/error")
   end
 
   def handle_not_unique
@@ -133,7 +132,7 @@ class InstancesController < ApplicationController
   private :handle_not_unique
 
   def handle_other_errors(e, file_to_render = "create_error")
-    logger.debug('handle_other_errors')
+    logger.debug("handle_other_errors")
     logger.error(e.to_s)
     errors = ErrorAsArrayOfMessages.new(e).error_array
     if errors.size <= 1
@@ -153,8 +152,8 @@ class InstancesController < ApplicationController
     @message = @instance.update_if_changed(instance_params,
                                            current_user.username)
     render "update"
-  rescue => e
-    handle_other_errors(e, 'update_error')
+  rescue StandardError => e
+    handle_other_errors(e, "update_error")
   end
 
   # PUT /instances/reference/1
@@ -168,7 +167,7 @@ class InstancesController < ApplicationController
     @instance.assign_attributes(instance_params)
     make_back_door_changes if @instance.changed?
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error(e.to_s)
     @message = e.to_s
     render "update_error", status: :unprocessable_entity
@@ -184,7 +183,7 @@ class InstancesController < ApplicationController
   # DELETE /instances/1
   def destroy
     @instance.delete_as_user(current_user.username)
-  rescue => e
+  rescue StandardError => e
     logger.error("Instance#destroy exception: #{e}")
     @message = e.to_s
     render "destroy_error", status: 422
@@ -243,7 +242,7 @@ class InstancesController < ApplicationController
 
   # Different types of instances require different sets of tabs.
   def tabs_to_offer
-    offer = %w(tab_show_1 tab_edit tab_edit_notes)
+    offer = %w[tab_show_1 tab_edit tab_edit_notes]
     if @instance.simple?
       offer << "tab_synonymy"
       offer << "tab_unpublished_citation"
@@ -313,6 +312,7 @@ class InstancesController < ApplicationController
 
   def resolve_unpub_citation_name_id(name_id, name_typeahead)
     return unless instance_params[:name_id].blank?
+
     params[:instance][:name_id] = Name::AsResolvedTypeahead::ForUnpubCitationInstance.new(name_id, name_typeahead).value
   end
 
@@ -320,8 +320,9 @@ class InstancesController < ApplicationController
     while parent
       parent_tve = @working_draft.name_in_version(parent)
       return parent_tve if parent_tve
+
       parent = parent.parent
     end
-    @working_draft.tree_version_elements.order(tree_element_id: 'asc').first
+    @working_draft.tree_version_elements.order(tree_element_id: "asc").first
   end
 end

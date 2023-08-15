@@ -53,9 +53,13 @@ class Audit::DefinedQuery::WhereClause::Predicate
       elsif WHERE_INTEGER_VALUE_HASH.key?(canonical_field)
         @sql = @sql.where(WHERE_INTEGER_VALUE_HASH[canonical_field], canonical_value.to_i)
       elsif WHERE_VALUE_HASH_2_VALUES.key?(canonical_field)
-        @sql = @sql.where(WHERE_VALUE_HASH_2_VALUES[canonical_field], canonical_value.downcase, canonical_value.downcase)
+        @sql = @sql.where(WHERE_VALUE_HASH_2_VALUES[canonical_field], canonical_value.downcase,
+                          canonical_value.downcase)
       else
-        raise "No way to handle field: '#{canonical_field}' in an author search." unless WHERE_VALUE_HASH.key?(canonical_field)
+        unless WHERE_VALUE_HASH.key?(canonical_field)
+          raise "No way to handle field: '#{canonical_field}' in an author search."
+        end
+
         @sql = @sql.where(WHERE_VALUE_HASH[canonical_field], canonical_value)
       end
     end
@@ -141,6 +145,5 @@ class Audit::DefinedQuery::WhereClause::Predicate
     "not-by:" => "not-created-or-updated-by:",
   }.freeze
 
-  ALLOWS_MULTIPLE_VALUES = {
-  }.freeze
+  ALLOWS_MULTIPLE_VALUES = {}.freeze
 end

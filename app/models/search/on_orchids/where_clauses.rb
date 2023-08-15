@@ -36,7 +36,7 @@ class Search::OnOrchids::WhereClauses
     args = @parsed_request.where_arguments.downcase
     @common_and_cultivar_included = @parsed_request.common_and_cultivar
     @sql = @sql.for_id(@parsed_request.id) if @parsed_request.id
-    debug('sql')
+    debug("sql")
     debug(@sql.to_sql)
     apply_args_to_sql(args)
   end
@@ -51,15 +51,15 @@ class Search::OnOrchids::WhereClauses
       raise "endless loop #{x}" if x > 50
     end
   end
- 
-  def add_clause(field = 'taxon', value)
+
+  def add_clause(field = "taxon", value)
     debug("add_clause for field: #{field}; value: #{value}")
     if field.blank? && value.blank?
       @sql
     else
       field_or_default = field.blank? ? DEFAULT_FIELD : field
       rule = Search::OnOrchids::Predicate.new(field_or_default,
-                                             value)
+                                              value)
       apply_rule(rule)
       apply_order(rule)
     end
@@ -173,10 +173,6 @@ class Search::OnOrchids::WhereClauses
   end
 
   def apply_order(rule)
-    @sql = if rule.order
-             @sql.order(rule.order)
-           else
-             @sql.order("parent_id, id")
-           end
+    @sql = @sql.order(rule.order || "parent_id, id")
   end
 end

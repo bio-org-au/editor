@@ -21,12 +21,12 @@ class Tree::Element::DistributionEntry < ActiveRecord::Base
   strip_attributes
   self.table_name = "tree_element_distribution_entries"
 
-  belongs_to :dist_entry, class_name: 'DistEntry'
-  belongs_to :tree_element, class_name: 'Tree::Element'
+  belongs_to :dist_entry, class_name: "DistEntry"
+  belongs_to :tree_element, class_name: "Tree::Element"
 
   def self.for_tree_element(tree_element_id)
-    self.where(tree_element_id: tree_element_id). each do |tede|
-      puts 'tede.display'
+    where(tree_element_id: tree_element_id).each do |_tede|
+      puts "tede.display"
     end
   end
 
@@ -34,4 +34,3 @@ class Tree::Element::DistributionEntry < ActiveRecord::Base
     "#{tree_element_id} #{dist_entry.display}"
   end
 end
-

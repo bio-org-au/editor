@@ -64,9 +64,7 @@ class Reference::DefinedQuery::ReferencesNamesFullSynonymy
       @count += 1
       ref.instances.each do |instance|
         @count += 1
-        if instance.name.present?
-          @count += Instance::AsArray::ForName.new(instance.name).results.size
-        end
+        @count += Instance::AsArray::ForName.new(instance.name).results.size if instance.name.present?
       end
     end
     @results = []

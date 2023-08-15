@@ -31,22 +31,17 @@ class Name::AsResolvedTypeahead::ForWorkspaceParent
   end
 
   def run
-    if @id_string.blank?
-      no_found
-    end
+    no_found if @id_string.blank?
 
     tree_version_element = TreeVersionElement.find(@id_string)
-    if tree_version_element.present?
-      if @text != tree_version_element.tree_element.simple_name
-        no_found
-      end
-      @value = tree_version_element.element_link
-    end
+    return unless tree_version_element.present?
+
+    no_found if @text != tree_version_element.tree_element.simple_name
+    @value = tree_version_element.element_link
   end
 
   def no_found
     @value = ""
     raise "please choose #{@field_name} from suggestions, match not found."
   end
-
 end

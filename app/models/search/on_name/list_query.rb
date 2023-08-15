@@ -34,16 +34,12 @@ class Search::OnName::ListQuery
   end
 
   def prepare_query
-    seed_query = Name.includes(:name_status).includes(:name_tags) 
+    seed_query = Name.includes(:name_status).includes(:name_tags)
     where_clauses = Search::OnName::WhereClauses.new(@parsed_request,
                                                      seed_query)
     prepared_query = where_clauses.sql
-    if @parsed_request.limited
-      prepared_query = prepared_query.limit(@parsed_request.limit)
-    end
-    if @parsed_request.offsetted
-      prepared_query = prepared_query.offset(@parsed_request.offset)
-    end
+    prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
+    prepared_query = prepared_query.offset(@parsed_request.offset) if @parsed_request.offsetted
     @sql = prepared_query
   end
 end

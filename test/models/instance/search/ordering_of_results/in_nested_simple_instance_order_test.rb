@@ -53,4 +53,3 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
     test10
   end
 end
-

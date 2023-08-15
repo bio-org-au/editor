@@ -21,8 +21,8 @@ require "test_helper"
 # Single instance model test.
 class InstanceDeleteServiceNotPermitted403Test < ActiveSupport::TestCase
   setup do
-    raw = { "action": "delete", "instance": {}, "ok": false,
-            "errors": ["Not permitted."] }
+    raw = { action: "delete", instance: {}, ok: false,
+            errors: ["Not permitted."] }
     stub_request(:delete,
                  "#{action}?apiKey=test-api-key&reason=Edit")
       .with(headers: headers)

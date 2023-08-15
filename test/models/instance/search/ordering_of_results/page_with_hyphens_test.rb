@@ -30,9 +30,9 @@ class InstanceSearchOrderOfResultsPageWithHyphensTest < ActiveSupport::TestCase
   # otherwise, the second test might succeed due to name order.
   test "instance search ordering of results by name" do
     results = Instance
-              .joins(:reference)\
-              .joins(:name)\
-              .where(reference_id: @reference.id)\
+              .joins(:reference) \
+              .joins(:name) \
+              .where(reference_id: @reference.id) \
               .ordered_by_name
     # print_results(results)
     assert results.first.id == @with_hyphen.id,
@@ -44,9 +44,9 @@ class InstanceSearchOrderOfResultsPageWithHyphensTest < ActiveSupport::TestCase
   # This is the important test.
   test "instance search ordering of results by page" do
     results = Instance
-              .joins(:reference)\
-              .joins(:name)\
-              .where(reference_id: @reference.id)\
+              .joins(:reference) \
+              .joins(:name) \
+              .where(reference_id: @reference.id) \
               .ordered_by_page
     # print_results(results)
     assert results.first.id == @without_hyphen.id,

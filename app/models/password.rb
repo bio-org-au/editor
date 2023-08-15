@@ -30,36 +30,37 @@ class Password < ActiveType::Object
     validate_arguments
     change_password
     true
-  rescue => e
+  rescue StandardError => e
     # Hide the params because they contain password
-    Rails.logger.error("Error changing password: #{e.to_s.sub(/ for .*/,'...')}")
-    @error = e.to_s.sub(/ for .*/,'...')
+    Rails.logger.error("Error changing password: #{e.to_s.sub(/ for .*/, '...')}")
+    @error = e.to_s.sub(/ for .*/, "...")
     false
   end
 
   def error
-    @error ||= ''
+    @error ||= ""
   end
 
   private
 
   def validate_arguments
-    raise "No current password entered" if current_password.blank? 
-    raise "No new password entered" if new_password.blank? 
-    raise "Please also re-type the new password." if new_password_confirmation.blank? 
-    unless new_password == new_password_confirmation
-      raise "The new password doesn't match the re-typed new password."
-    end
-    unless new_password != current_password
-      raise "The new password is the same as the current password you entered."
-    end
+    raise "No current password entered" if current_password.blank?
+    raise "No new password entered" if new_password.blank?
+    raise "Please also re-type the new password." if new_password_confirmation.blank?
+    raise "The new password doesn't match the re-typed new password." unless new_password == new_password_confirmation
+    raise "The new password is the same as the current password you entered." unless new_password != current_password
     raise "The new password is not long enough." if new_password.size < 8
     raise "The new password is too long." if new_password.size > 50
-    if Rails.configuration.try('ldap_via_active_directory')
-      raise "The new password must contain at least one upper-case character A-Z." unless new_password.match(/[[:upper:]]/)
-      raise "The new password must contain at least one lower-case character a-z." unless new_password.match(/[[:lower:]]/)
-      raise "The new password must contain at least one symbol or digit." unless new_password.match(/[\d\W]/) # a digit or non-word char
+
+    return unless Rails.configuration.try("ldap_via_active_directory")
+    unless new_password.match(/[[:upper:]]/)
+      raise "The new password must contain at least one upper-case character A-Z."
     end
+    unless new_password.match(/[[:lower:]]/)
+      raise "The new password must contain at least one lower-case character a-z."
+    end
+    # a digit or non-word char
+    raise "The new password must contain at least one symbol or digit." unless new_password.match(/[\d\W]/)
   end
 
   def change_password
@@ -67,11 +68,12 @@ class Password < ActiveType::Object
     ldap.username = username
     ldap.password = current_password
     ldap.user_cn = user_cn
-    raise 'current password is wrong' unless ldap.verify_current_password
-    ldap.change_password(username, new_password,random_seed)
+    raise "current password is wrong" unless ldap.verify_current_password
+
+    ldap.change_password(username, new_password, random_seed)
   end
 
   def random_seed
-    (0...8).map { (97 + rand(26)).chr }.join
+    (0...8).map { rand(97..122).chr }.join
   end
 end

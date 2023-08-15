@@ -27,39 +27,48 @@ class Loader::Name::Match < ActiveRecord::Base
   belongs_to :instance
   belongs_to :instance_type, foreign_key: :relationship_instance_type_id, optional: true
   belongs_to :standalone_instance, class_name: "::Instance",
-    foreign_key: "standalone_instance_id", optional: true
+                                   foreign_key: "standalone_instance_id", optional: true
   belongs_to :relationship_instance, class_name: "::Instance",
-    foreign_key: "relationship_instance_id", optional: true
+                                     foreign_key: "relationship_instance_id", optional: true
   belongs_to :source_for_copy, class_name: "::Instance",
-    foreign_key: "source_for_copy_instance_id", optional: true
+                               foreign_key: "source_for_copy_instance_id", optional: true
   validates :loader_name_id, uniqueness: true,
-            unless: Proc.new {|a| a.loader_name.record_type == 'misapplied'}
-  #validates :standalone_instance_id, absence: true, if: :using_default_ref?
-  #validates :standalone_instance_found, exclusion: {in: [true], message: 'not found'}, if: :using_default_ref?
-  #validates :use_batch_default_reference, exclusion: {in: [true], message:'not both'}, if: :standalone?
-  #validate :choice_must_match_details
+                             unless: proc { |a| a.loader_name.record_type == "misapplied" }
+  validate :misapp_pref_matches_from_only_one_name
+
   before_destroy :can_destroy?
+
+  def misapp_pref_matches_from_only_one_name
+    return unless self.loader_name.misapplied?
+
+    return if Loader::Name::Match.where(loader_name_id: loader_name_id)
+                                 .where.not(name_id: name_id)
+                                 .count == 0
+
+    errors.add :base,
+      "Misapplications cannot select matches from more than one name"
+  end
 
   # how does this work when reversing?
   def choice_must_match_details
     if instance_choice_confirmed == true &&
        !(use_batch_default_reference ||
          standalone_instance_id.present?)
-       errors.add('Choice must be batch default ref or an identified instance')
+      errors.add("Choice must be batch default ref or an identified instance")
     elsif instance_choice_confirmed == false &&
           (use_batch_default_reference ||
            standalone_instance_id.present?)
-       errors.add('Choice has been made, so must be noted')
+      errors.add("Choice has been made, so must be noted")
     end
   end
-  
+
   def can_destroy?
     throw :abort
   end
 
   def old_taxonomy_choice_made?
     use_batch_default_reference ||
-    standalone_instance_id.present?
+      standalone_instance_id.present?
   end
 
   def using_default_ref?
@@ -71,7 +80,7 @@ class Loader::Name::Match < ActiveRecord::Base
   end
 
   def standalone?
-    throw 'standalone? what does this mean?'
+    throw "standalone? what does this mean?"
     !standalone_instance_id.blank? && !copy_append_from_existing_use_batch_def_ref
   end
 
@@ -88,28 +97,26 @@ class Loader::Name::Match < ActiveRecord::Base
   end
 
   def current_taxonomy_instance_choice
-    case
-      when use_batch_default_reference then
-       'Use the batch default reference'
-      when copy_append_from_existing_use_batch_def_ref then
-       'Copy and append'
-      when standalone_instance_id.present? then
-       'Use an existing instance'
-      else
-       'No choice made'
+    if use_batch_default_reference
+      "Use the batch default reference"
+    elsif copy_append_from_existing_use_batch_def_ref
+      "Copy and append"
+    elsif standalone_instance_id.present?
+      "Use an existing instance"
+    else
+      "No choice made"
     end
   end
 
   def current_taxonomy_instance_choice_details
-    case
-      when use_batch_default_reference then
-       'create a draft instance based on the batch default reference'
-      when copy_append_from_existing_use_batch_def_ref then
-       'create a draft instance for the default reference, attach synonyms from a selected source instance, then append loader details, including synonyms (but not duplicates of sourced synonyms), distribution and comment.'
-      when standalone_instance_id.present? then
-       "don't create an instance"
-      else
-       ''
+    if use_batch_default_reference
+      "create a draft instance based on the batch default reference"
+    elsif copy_append_from_existing_use_batch_def_ref
+      "create a draft instance for the default reference, attach synonyms from a selected source instance, then append loader details, including synonyms (but not duplicates of sourced synonyms), distribution and comment."
+    elsif standalone_instance_id.present?
+      "don't create an instance"
+    else
+      ""
     end
   end
 
@@ -136,18 +143,18 @@ class Loader::Name::Match < ActiveRecord::Base
   end
 
   def note_standalone_instance_found(instance)
-    throw 'Already noted as found' if standalone_instance_found
-    throw 'Already noted as created' if standalone_instance_created
+    throw "Already noted as found" if standalone_instance_found
+    throw "Already noted as created" if standalone_instance_created
 
     self.standalone_instance_id = instance.id
     self.standalone_instance_found = true
     self.updated_by = "job for #{@user}"
-    self.save!
+    save!
   end
 
   def clear_relationship_instance
-    throw 'cannot clear relationship' unless self.can_do_relationship_instance?
-    throw 'has standalone' if self.has_standalone?
+    throw "cannot clear relationship" unless can_do_relationship_instance?
+    throw "has standalone" if has_standalone?
 
     self.relationship_instance_id = nil
     self.relationship_instance_created = false
@@ -157,18 +164,34 @@ class Loader::Name::Match < ActiveRecord::Base
   end
 
   def can_do_relationship_instance?
-    self.loader_name.synonym? ||
-      self.loader_name.misapp?
+    loader_name.synonym? ||
+      loader_name.misapp?
   end
 
   def has_standalone?
-    self.standalone_instance_id.present? ||
-    self.standalone_instance_found ||
-    self.standalone_instance_created
+    standalone_instance_id.present? ||
+      standalone_instance_found ||
+      standalone_instance_created
   end
 
   def excluded?
     loader_name.excluded? || loader_name.parent&.excluded?
   end
-end
 
+  # Tree ops can occur outside the loader
+  # 
+  # This method checks whether the name is on a draft
+  #
+  # If not, it removes the drafted flag.
+  def verify_drafted_flag
+    Rails.logger.debug('verify_drafted_flag')
+    return 'Verified' if really_drafted?
+    self.drafted = false
+    self.save!
+    return 'Not verified - drafted flag was removed'
+  end
+
+  def really_drafted?
+    TreeJoinV.draft.where("instance_id = ?", standalone_instance_id).present?
+  end
+end

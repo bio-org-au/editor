@@ -31,7 +31,7 @@ class AuthARTA4DupeOfIdWPartStrMatchingAnotherAuthor < ActiveSupport::TestCase
     )
     assert_equal author_2.id,
                  result.value,
-                 "Should get a matching id for the first author with "\
+                 "Should get a matching id for the first author with " \
                  "matching partial name despite mismatched ID"
   end
 end

@@ -22,13 +22,13 @@ class Audit::DefinedQuery::WhereClause::Authorise
   def initialize(sql, user)
     debug("Start user.username: #{user.username};")
 
-    if user.qa?
-      @sql = sql
-    else
-      @sql = sql.where("created_by = ? or updated_by = ?",
+    @sql = if user.qa?
+             sql
+           else
+             sql.where("created_by = ? or updated_by = ?",
                        user.username,
                        user.username)
-    end
+           end
     debug(@sql.to_sql)
   end
 

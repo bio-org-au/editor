@@ -3,33 +3,35 @@
   <p>Note: setting a default batch will apply that batch to Loader Name searches.
   <tr><th>Field</th><th>Description</th></tr>
   <% [
-    {field: 'has-review-comment:',
+    {field_name: 'has-review-comment:',
      descr: "Search for loader names that have been commented on. (Full context returned.)"},
-    {field: 'review-comment:',
+    {field_name: 'review-comment:',
      descr: "Search for loader names that have a comment matching a given string. (Full context returned.)"},
-    {field: 'has-review-comment-by:',
+    {field_name: 'has-review-comment-by:',
      descr: "Search for loader names that have been commented on by a particular user (user-id). (Full context returned.)"},
-    {field: 'concept-note:',
+    {field_name: 'concept-note:',
      descr: "Search for loader names that have a concept note matching a given string. (Full context returned.)"},
-    {field: 'distribution:',
+    {field_name: 'distribution:',
      descr: "Search for loader names that have a distribution matching a given string. (Full context returned.)"},
-    {field: 'distribution-not:',
+    {field_name: 'distribution-not:',
      descr: "Search for loader names that have a distribution without a given string. (Full context returned.)"},
-    {field: 'no-distribution:',
+    {field_name: 'no-distribution:',
      descr: "Search for loader names that have no distribution string. (Full context returned.)"},
-    {field: 'family:',
+    {field_name: 'family:',
      descr: "Search for loader names for a given family name. (Full context returned.)"},
-    {field: 'family-id:',
+    {field_name: 'family-id:',
      descr: "Search for loader names for a given family ID. (Full context returned.)"},
-    {field: 'remark:',
+    {field_name: 'remark:',
      descr: "Search for loader names containing a remark to reviewers - wildcards are added automatically."},
-    {field: 'higher-rank-comment:',
+    {field_name: 'higher-rank-comment:',
      descr: "Search for loader names containing a higher-rank-comment - wildcards are added automatically."},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
-      <a href="javascript:void(0)" class="xyz searchable-field width-100-percent" title='Add "<%= val[:field] %>" field to search.'>
-        <span class="blue"><%= val[:field] %></span>
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
       </a>
     </td>
     <td><%= val[:descr].html_safe %></td>

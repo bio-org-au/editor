@@ -1,0 +1,5 @@
+
+$('.message-container').addClass('hidden');
+$('#<%= dom_id(@instance) %>').html('<%= escape_javascript(@message) %>').removeClass('hidden');
+
+

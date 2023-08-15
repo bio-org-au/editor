@@ -32,21 +32,15 @@ class Loader::Name::MakeOneMatchTask
     created = result[0]
     declined = result[1]
     errors = result[2]
-    return [created, declined, errors]
+    [created, declined, errors]
   end
 
   def no_further_processing
     log("Declined - no further processing")
-    [0,1,0]
-  end
-    
-  def created
-    @created
+    [0, 1, 0]
   end
 
-  def errors
-    @errors
-  end
+  attr_reader :created, :errors
 
   def log_create_action(count)
     entry = "Create preferred match counted #{count} #{'record'.pluralize(count)}"
@@ -62,9 +56,9 @@ class Loader::Name::MakeOneMatchTask
   end
 
   def record_failure(msg)
-    msg.sub!(/uncaught throw /,'')
-    msg.gsub!(/"/,'')
-    msg.sub!(/^Failing/,'')
+    msg.sub!(/uncaught throw /, "")
+    msg.gsub!(/"/, "")
+    msg.sub!(/^Failing/, "")
     Rails.logger.error("Loader::Name::AsPreferredMatcher failure: #{msg}")
     log("Loader::Name::AsPreferredMatcher failure: #{msg}")
   end

@@ -21,19 +21,18 @@ class NameCategory < ActiveRecord::Base
   self.table_name = "name_category"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  SCIENTIFIC_CATEGORY = 'scientific'
-  SCIENTIFIC_HYBRID_FORMULA_CATEGORY = 'scientific hybrid formula'
+  SCIENTIFIC_CATEGORY = "scientific"
+  SCIENTIFIC_HYBRID_FORMULA_CATEGORY = "scientific hybrid formula"
   SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY =
-    'scientific hybrid formula unknown 2nd parent'
-  PHRASE_NAME = 'phrase name'
-  CULTIVAR_CATEGORY = 'cultivar'
-  CULTIVAR_HYBRID_CATEGORY = 'cultivar hybrid'
-  OTHER_CATEGORY = 'other'
-
+    "scientific hybrid formula unknown 2nd parent"
+  PHRASE_NAME = "phrase name"
+  CULTIVAR_CATEGORY = "cultivar"
+  CULTIVAR_HYBRID_CATEGORY = "cultivar hybrid"
+  OTHER_CATEGORY = "other"
 
   has_many :name_types
   def self.phrase_name
-    self.where("name = 'phrase name'").first
+    where("name = 'phrase name'").first
   end
 
   def needs_top_buttons?
@@ -75,9 +74,9 @@ class NameCategory < ActiveRecord::Base
 
   def takes_rank?
     takes_rank
-  rescue => e
+  rescue StandardError => e
     # transitional code
-    Rails.logger.error('Falling back to static takes_rank criteria because name_category.takes_rank was not found')
+    Rails.logger.error("Falling back to static takes_rank criteria because name_category.takes_rank was not found")
     scientific? ||
       scientific_hybrid_formula? ||
       cultivar? ||

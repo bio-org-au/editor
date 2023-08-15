@@ -50,14 +50,14 @@ class NameType < ActiveRecord::Base
 
   def self.query_form_options
     not_deprecated.sort_by(&:name)
-                  .collect { |n| [n.capitalised_name, n.name.to_s, class: ""] }
+                  .collect { |n| [n.capitalised_name, n.name.to_s, { class: "" }] }
                   .unshift(["Include common, cultivars", "type:*"])
                   .unshift(["Exclude common, cultivars", ""])
   end
 
   def self.options
     all.sort_by(&:name)
-       .collect { |n| [n.capitalised_name, n.id, class: ""] }
+       .collect { |n| [n.capitalised_name, n.id, { class: "" }] }
   end
 
   def self.option_ids_for_category(name_category)
@@ -88,20 +88,19 @@ class NameType < ActiveRecord::Base
   end
 
   def self.options_for_category(for_category)
-    case 
-    when for_category.scientific?
+    if for_category.scientific?
       scientific_1_parent_options
-    when for_category.scientific_hybrid_formula?
+    elsif for_category.scientific_hybrid_formula?
       scientific_2_parent_options
-    when for_category.scientific_hybrid_formula_unknown_2nd_parent?
+    elsif for_category.scientific_hybrid_formula_unknown_2nd_parent?
       scientific_hybrid_formula_unknown_2nd_parent_options
-    when for_category.cultivar_hybrid?
+    elsif for_category.cultivar_hybrid?
       cultivar_hybrid_options
-    when for_category.cultivar?
+    elsif for_category.cultivar?
       cultivar_options
-    when for_category.phrase_name?
+    elsif for_category.phrase_name?
       phrase_options
-    when for_category.other?
+    elsif for_category.other?
       other_options
     # when "all"
     #   options
@@ -143,7 +142,7 @@ class NameType < ActiveRecord::Base
       .where(" name not in ('cultivar hybrid formula', 'graft/chimera')")
       .sort_by(&:name)
       .collect do |n|
-      [n.name, n.id, class: "cultivar_hybrid"]
+      [n.name, n.id, { class: "cultivar_hybrid" }]
     end
   end
 
@@ -155,7 +154,7 @@ class NameType < ActiveRecord::Base
       .where(" name not in ('cultivar hybrid formula', 'graft/chimera')")
       .sort_by(&:name)
       .collect do |n|
-      [n.name, n.id, class: "cultivar"]
+      [n.name, n.id, { class: "cultivar" }]
     end
   end
 
@@ -163,7 +162,7 @@ class NameType < ActiveRecord::Base
     where(scientific: false).where(cultivar: false)
                             .sort_by(&:name)
                             .collect do |n|
-      [n.name, n.id, class: "other"]
+      [n.name, n.id, { class: "other" }]
     end
   end
 

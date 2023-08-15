@@ -3,7 +3,7 @@
   <head>
     <%= javascript_importmap_tags %>
 
-    <title> <%= page_title || 'NEDR6' %> </title>
+    <title> <%= page_title || 'Editor' %> </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <script>
@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.js"
             integrity="sha512-bvV1V1YSjP1fbfKJjTlNmdnUO2XpsLYUdKwmz5UXBi5U+x40rx9JpA0ooQUMZfpz1MaaBC0ydNLoC6r0sitPUQ=="
             crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/bf212265e9.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/bf212265e9.js" crossorigin="anonymous"  data-mutate-approach="sync"></script>
 
     <% if Rails.env == "development" || params[:debug] == 'true' %>
       <script> debugSwitch = true; </script>

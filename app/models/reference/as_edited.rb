@@ -26,11 +26,10 @@ class Reference::AsEdited < Reference
   def self.create(params, typeahead_params, username)
     reference = Reference::AsEdited.new(params)
     reference.resolve_typeahead_params(typeahead_params)
-    if reference.save_with_username(username)
-      reference.set_citation!
-    else
-      raise reference.errors.full_messages.first.to_s
-    end
+    raise reference.errors.full_messages.first.to_s unless reference.save_with_username(username)
+
+    reference.set_citation!
+
     reference
   end
 
@@ -74,9 +73,7 @@ class Reference::AsEdited < Reference
   # Empty strings as parameters for string fields are interpreted as a change.
   def empty_strings_to_nils(params)
     params.each do |key, value|
-      if value.class == String
-        params[key] = nil if value == ""
-      end
+      params[key] = nil if value.instance_of?(String) && (value == "")
     end
     params
   end

@@ -22,18 +22,18 @@ class Tree::Workspace::Excluded < ActiveType::Object
   attribute :username, :string
 
   def update
-
     url = build_url
     payload = { taxonUri: element_link,
                 excluded: excluded }
     logger.info "Calling #{url} with #{payload}"
     raise errors.full_messages.first unless valid?
+
     RestClient.post(url, payload.to_json,
                     { content_type: :json, accept: :json })
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::Workspace::Excluded error: #{e}")
     raise
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Tree::Workspace::Excluded other error: #{e}")
     raise
   end
@@ -41,5 +41,4 @@ class Tree::Workspace::Excluded < ActiveType::Object
   def build_url
     Tree::AsServices.excluded_url(username)
   end
-
 end

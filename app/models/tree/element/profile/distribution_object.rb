@@ -24,13 +24,10 @@ class Tree::Element::Profile::DistributionObject
   end
 
   def as_hash
-    h = Hash.new
-    h['value'] = @distribution_string
-    h['created_at'] = h['updated_at'] = Time.now
-    h['created_by'] = h['updated_by'] = @username
+    h = {}
+    h["value"] = @distribution_string
+    h["created_at"] = h["updated_at"] = Time.now
+    h["created_by"] = h["updated_by"] = @username
     h
   end
 end
-
-
-

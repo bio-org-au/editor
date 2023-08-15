@@ -22,7 +22,7 @@ class Reference::AsQuery < Reference
   def self.options
     {
       "citation" => "with citation",
-      "t"  => "with title",
+      "t" => "with title",
       "ra" => "with author name",
       "id" => "with ID",
       "ids" => "with ID in list",

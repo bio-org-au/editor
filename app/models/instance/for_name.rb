@@ -82,6 +82,7 @@ class Instance::ForName
   def show_relationship_instance(name, instance)
     citing_instance = instance.this_is_cited_by
     return if @already_shown.include?(citing_instance.id)
+
     relationship_instance_records(name, citing_instance).each do |element|
       element.consider_apc = false
       @results.push(element)
@@ -96,6 +97,7 @@ class Instance::ForName
     records_cited_by_relationship(instance)
       .each do |cited_by_original_instance|
       next unless cited_by_original_instance.name.id == name.id
+
       cited_by_original_instance.expanded_instance_type =
         cited_by_original_instance.instance_type.name
       results.push(with_display_as(cited_by_original_instance))
@@ -104,11 +106,11 @@ class Instance::ForName
   end
 
   def with_display_as(instance)
-    if instance.misapplied?
-      instance.display_as = "cited-by-relationship-instance"
-    else
-      instance.display_as = "cited-by-relationship-instance-name-only"
-    end
+    instance.display_as = if instance.misapplied?
+                            "cited-by-relationship-instance"
+                          else
+                            "cited-by-relationship-instance-name-only"
+                          end
     instance
   end
 

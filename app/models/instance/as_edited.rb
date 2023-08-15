@@ -33,7 +33,7 @@ class Instance::AsEdited < Instance
     else
       "No change"
     end
-  rescue => e
+  rescue StandardError => e
     logger.error("Instance::AsEdited with params: #{params}")
     logger.error("Instance::AsEdited with params: #{e}")
     raise
@@ -42,9 +42,9 @@ class Instance::AsEdited < Instance
   private
 
   def prevent_double_overrides
-    if multiple_primary_override && duplicate_instance_override
-      self.multiple_primary_override = self.duplicate_instance_override = false
-    end
+    return unless multiple_primary_override && duplicate_instance_override
+
+    self.multiple_primary_override = self.duplicate_instance_override = false
   end
   private :prevent_double_overrides
   # Prevent empty or blank-filled params being treated as changes to empty

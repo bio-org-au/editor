@@ -38,4 +38,3 @@ class Search::OnName::WithInstances
     @names_with_instances = results
   end
 end
-

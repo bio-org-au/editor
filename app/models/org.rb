@@ -30,7 +30,7 @@ class Org < ActiveRecord::Base
   end
 
   def display_as
-    'Organisation'
+    "Organisation"
   end
 
   def allow_delete?

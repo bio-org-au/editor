@@ -24,14 +24,13 @@ class Author::AsTypeahead < Author
 
   def self.on_abbrev(term)
     if term.blank?
-      results = []
+      []
     else
-      results = Author.lower_abbrev_like(term + "%")\
-                      .where("duplicate_of_id is null")\
-                      .order("abbrev").limit(SEARCH_LIMIT)\
-                      .collect { |n| { value: n.abbrev.to_s, id: n.id.to_s } }
+      Author.lower_abbrev_like(term + "%") \
+            .where("duplicate_of_id is null") \
+            .order("abbrev").limit(SEARCH_LIMIT) \
+            .collect { |n| { value: n.abbrev.to_s, id: n.id.to_s } }
     end
-    results
   end
 
   # Tokenize search terms so word order is not important.
@@ -71,8 +70,8 @@ abbrev, count(reference.id) as ref_count")
       Author.lower_name_like(term + "%")
             .not_duplicate
             .where([" author.id <> ?", excluded_id])
-            .joins("left outer join reference on "\
-               "reference.author_id = author.id")
+            .joins("left outer join reference on " \
+                   "reference.author_id = author.id")
             .select("author.name as name, author.id as id, author.abbrev as \
 abbrev, count(reference.id) as ref_count")
             .group("lower(author.name),author.id")
@@ -85,9 +84,7 @@ abbrev, count(reference.id) as ref_count")
 
   def self.formatted_search_result(auth)
     result = auth.name
-    unless auth.ref_count.zero?
-      result << " | #{auth.ref_count} #{'ref'.pluralize(auth.ref_count)}"
-    end
+    result << " | #{auth.ref_count} #{'ref'.pluralize(auth.ref_count)}" unless auth.ref_count.zero?
     result << " | #{auth.abbrev}" if auth.abbrev.present?
     result
   end

@@ -54,7 +54,6 @@ class InstanceDeleteService200WithErrorMessageTest < ActiveSupport::TestCase
       Instance::AsServices.delete(@id)
     end
     assert_match 'uncaught throw "Check after 3s shows record not deleted"',
-      exception.message, "Wrong message"
+                 exception.message, "Wrong message"
   end
-
 end

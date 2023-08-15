@@ -34,7 +34,7 @@ class ServicesController < ApplicationController
   end
 
   def build
-    render partial: 'build',
+    render partial: "build",
            format: :text,
            status: :ok,
            layout: false

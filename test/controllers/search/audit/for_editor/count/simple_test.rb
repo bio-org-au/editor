@@ -24,7 +24,7 @@ class SearchAuditCountSimpleTest < ActionController::TestCase
 
   test "count records created in the last 50 days" do
     get(:search,
-        params: { query_target: "review", query_string: "count 50" },
+        params: { query_target: "activity", query_string: "count 50" },
         session: { username: "greg",
                    user_full_name: "Fred Jones",
                    groups: [] })

@@ -1,6 +1,6 @@
 <%= divider %>
 <h4>The Drafted Flags</h4>
-<% if @loader_name.accepted? %>
+<% if @loader_name.accepted? || @loader_name.excluded? %>
   The drafted flags can apply to this record type.
   <br>
   <% if @loader_name.loader_name_matches.size == 0 %>
@@ -8,8 +8,20 @@
   <% elsif @loader_name.loader_name_matches.size > 1 %>
     There's multiple saved matches to Name records - this is unexpected and confusing. Please alert IBIS.
   <% else %>
+
     <% if @loader_name.loader_name_matches.first.drafted? %>
-      This loader-name is already drafted.
+      <% preferred_match = @loader_name.loader_name_matches.first %>
+       <% if preferred_match.drafted? %>
+         <span class='flag on-tree-indicator' title='Standalone instance has been placed on a draft tree'>Drafted</span>
+         Loader asserts the preferred match has been placed on a draft tree
+         <br> 
+         <%= link_to "Verify drafted flag", loader_name_matches_verify_drafted_path(preferred_match),
+             title: "Verify drafted flag is correct - tree work outside the loader may not be detected",
+             class: 'blue', method: :patch, remote: true %>
+          <span id="verify-drafted-info-message-container" class="message-container"></span>
+       <% end %>
+       </br>
+
     <% else %>
       This loader-name is matched but not yet drafted.
       <br>

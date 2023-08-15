@@ -34,10 +34,10 @@ class Loader::Name::MakeOneMatch
     return heading if @loader_name.heading?
     return parent_using_existing if @loader_name.parent&.preferred_match&.use_existing_instance
 
-    return make_preferred_match?
-  rescue => e
-    Rails.logger.error("#{@tag}: #{e.to_s}")
-    log("#{ERROR} - #{e.to_s}")
+    make_preferred_match?
+  rescue StandardError => e
+    Rails.logger.error("#{@tag}: #{e}")
+    log("#{ERROR} - #{e}")
     COUNT_ERROR
   end
 
@@ -46,7 +46,7 @@ class Loader::Name::MakeOneMatch
   end
 
   def preferred_match?
-    return !@loader_name.preferred_matches.empty?
+    !@loader_name.preferred_matches.empty?
   end
 
   def already_exists
@@ -76,8 +76,8 @@ class Loader::Name::MakeOneMatch
 
   def make_preferred_match?
     if exactly_one_matching_name? &&
-         matching_name_has_primary? &&
-         matching_name_has_exactly_one_primary?
+       matching_name_has_primary? &&
+       matching_name_has_exactly_one_primary?
       create_match
       log(CREATED)
       COUNT_CREATED
@@ -110,7 +110,8 @@ class Loader::Name::MakeOneMatch
 
   def relationship_instance_type_id
     return nil if @loader_name.accepted?
-    return @loader_name.riti
+
+    @loader_name.riti
   end
 
   def simple_name
@@ -119,8 +120,8 @@ class Loader::Name::MakeOneMatch
 
   def log(entry)
     tag = " ##{@loader_name.id}, batch: #{@loader_name.batch.name},  " +
-      "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
-      " (#{@loader_name.record_type})"
+          "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
+          " (#{@loader_name.record_type})"
     payload = "#{entry} #{tag}"
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
   end

@@ -17,6 +17,5 @@
 #   limitations under the License.
 #
 class Search::Org::FieldAbbrev
-  ABBREVS = {
-  }.freeze
+  ABBREVS = {}.freeze
 end

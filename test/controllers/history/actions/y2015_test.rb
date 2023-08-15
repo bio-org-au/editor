@@ -24,8 +24,8 @@ class HistoryActionsY2015Test < ActionController::TestCase
   tests HistoryController
 
   test "history actions for year 2015 page" do
-    get('for_year',
-        params: {"year"=>"2015"},
+    get("for_year",
+        params: { "year" => "2015" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: [] },
@@ -34,7 +34,7 @@ class HistoryActionsY2015Test < ActionController::TestCase
     assert_select "h3",
                   /\b2015 Changes\b/,
                   "Should find heading for 2015 Changes"
-    assert_match /14-May-2015/, response.body
-    assert_match /NSL-1110/, response.body
+    assert_match(/14-May-2015/, response.body)
+    assert_match(/NSL-1110/, response.body)
   end
 end

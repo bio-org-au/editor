@@ -18,7 +18,7 @@
                   title: "Name ID: #{matching_name.id}") %>
     &nbsp;<%= reason_to_disable if disable_radio_button %>
 
-        | <%= link_to("#{ShardConfig.name_space} Editor #{editor_icon('binoculars')}".html_safe,
+        | <%= link_to("#{sanitize(ShardConfig.name_space)} Editor #{editor_icon('binoculars')}".html_safe,
                 search_path(query_string: "id: #{matching_name.id} show-instances:",query_target: 'names'),
                           tabindex: increment_tab_index,
                           title: "Search for #{matching_name.full_name}",

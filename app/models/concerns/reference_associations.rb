@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Reference Associations
 module ReferenceAssociations
   extend ActiveSupport::Concern
@@ -14,7 +13,7 @@ module ReferenceAssociations
     belongs_to :parent, class_name: "Reference", foreign_key: "parent_id", optional: true
     has_many :children,
              class_name: "Reference",
-             foreign_key:  "parent_id",
+             foreign_key: "parent_id",
              dependent: :restrict_with_exception
 
     # acts_as_tree foreign_key: :duplicate_of_id, order: "title"

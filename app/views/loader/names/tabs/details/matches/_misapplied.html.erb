@@ -57,6 +57,7 @@
             <%= f.submit "Add", id: "add-link-#{instance.id}", tabindex: increment_tab_index, title: 'Add instance link', class: 'btn btn-primary width-3em' %>
             <%= f.submit "Remove", id: "remove-link-#{instance.id}", tabindex: increment_tab_index, title: 'Remove instance link', class: 'hidden bgorange btn width-5em' %>
           <% end %>
+          <br><span id='<%= dom_id(instance) %>' class="message-container error-container hidden"></span>
         <% end %>
         <br>
 

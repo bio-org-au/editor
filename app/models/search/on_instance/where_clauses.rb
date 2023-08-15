@@ -107,11 +107,13 @@ class Search::OnInstance::WhereClauses
 
   def apply_order(rule)
     return unless rule.order
+
     @sql = @sql.order(rule.order)
   end
 
   def apply_join(rule)
     return unless rule.join_name
+
     @sql = @sql.joins(:name)
   end
 end

@@ -20,12 +20,11 @@
 class OrchidProcessingLog < ActiveRecord::Base
   strip_attributes
 
-  def self.log(info, username = 'unknown')
-    self.new(log_entry: info, logged_by: username).save!
+  def self.log(info, username = "unknown")
+    new(log_entry: info, logged_by: username).save!
   end
 
   def fresh?
     logged_at > 1.hour.ago
   end
 end
-

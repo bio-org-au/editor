@@ -26,8 +26,8 @@ class PasswordsController < ApplicationController
     else
       edit_inner
     end
-  rescue => e
-    logger.error("Password change error: #{e.to_s}")
+  rescue StandardError => e
+    logger.error("Password change error: #{e}")
     render :edit_error
   end
 
@@ -58,7 +58,7 @@ class PasswordsController < ApplicationController
     else
       render :edit
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error(e.to_s)
     render :edit
   end

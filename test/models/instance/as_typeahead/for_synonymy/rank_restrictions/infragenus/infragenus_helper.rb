@@ -21,13 +21,13 @@ def check_infrageneric_exclusions
      Subfamilia Tribus Subtribus Species Subspecies Nothovarietas Varietas
      Subvarietas Forma Subforma].each do |rank_string|
     escaped_s = Regexp.escape(rank_string)
-    assert @rank_names.select { |e| e.match(/\A#{escaped_s}\z/) }.empty?,
+    assert @rank_names.none? { |e| e.match(/\A#{escaped_s}\z/) },
            "Expect no #{rank_string} to be suggested"
   end
 end
 
 def check_infrageneric_inclusions
-  assert @rank_names.select { |e| e.match(/\AGenus\z/) }.size >= 5,
+  assert @rank_names.select { |e| e == "Genus" }.size >= 5,
          "Expect correct number of genera to be suggested"
   %w(Subgenus Sectio Subsectio Series
      Subseries Superspecies [infragenus] [unranked]).each do |rank_string|

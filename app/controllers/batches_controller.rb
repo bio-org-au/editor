@@ -1,4 +1,3 @@
 class BatchesController < ApplicationController
-  def index
-  end
+  def index; end
 end

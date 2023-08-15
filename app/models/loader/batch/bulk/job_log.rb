@@ -26,9 +26,7 @@ class Loader::Batch::Bulk::JobLog
   end
 
   def write
-    entry = %Q(Job #<span title="Full job number: #{@job_number}">...#{@job_number.to_s[-4..-1] || @job_number}</span>: #{@log_payload})
+    entry = %(Job #<span title="Full job number: #{@job_number}">...#{@job_number.to_s[-4..-1] || @job_number}</span>: #{@log_payload})
     BulkProcessingLog.log(entry, "Bulk job for #{@logged_by}")
   end
 end
-
-

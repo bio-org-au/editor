@@ -15,15 +15,20 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+#
+require "test_helper"
+load "test/models/search/users.rb"
 
-#  A tree - usually a classification
-class TreeVw < ActiveRecord::Base
-  self.table_name = "tree_vw"
-
-  belongs_to :instance
-  belongs_to :name
-
-  def readonly?
-    true
+# Single Search model test on Instance search.
+class SearchOnInstanceNameStatusSimpleTest < ActiveSupport::TestCase
+  test "search on instance name status simple" do
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target: "instance",
+      query_string: "name-status: n*",
+      include_common_and_cultivar_session: false,
+      current_user: build_edit_user
+    )
+    search = Search::Base.new(params)
+    assert !search.executed_query.results.empty?, "Results expected."
   end
 end

@@ -22,16 +22,16 @@ class Loader::Name::BulkSearchAcceptedOrExcludedOnly
 
   def initialize(search_s, batch_id)
     @batch_id = batch_id
-    @search_s= search_s
+    @search_s = search_s
     @search = bulk_processing_search
   end
 
   def bulk_processing_search
     if @search_s.match(/\Afamily:/i)
-      family_string = @search_s.sub(/\Afamily: */i,'')
+      family_string = @search_s.sub(/\Afamily: */i, "")
       search = Loader::Name.family_string_search(family_string)
     else
-      search= Loader::Name.bulk_operations_search(@search_s)
+      search = Loader::Name.bulk_operations_search(@search_s)
     end
     search.joins(:loader_batch)
           .where(loader_batch: { id: @batch_id })

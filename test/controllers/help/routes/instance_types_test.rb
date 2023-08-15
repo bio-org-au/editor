@@ -27,4 +27,3 @@ class HelpRoutesInstanceTypesTest < ActionController::TestCase
                    action: "instance_types"
   end
 end
-

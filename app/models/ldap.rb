@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Ldap  < ActiveType::Object
+class Ldap < ActiveType::Object
   attribute :username, :string
   attribute :password, :string
   attribute :user_cn, :string
@@ -26,25 +26,25 @@ class Ldap  < ActiveType::Object
 
   validate :validate_user_credentials
 
-  HOST = Rails.configuration.try('ldap_host')
+  HOST = Rails.configuration.try("ldap_host")
   # e.g. ldap_host = "ldaps.biodiversity.org.au"
-  PORT = Rails.configuration.try('ldap_port')
-  BASE = Rails.configuration.try('ldap_base')
+  PORT = Rails.configuration.try("ldap_port")
+  BASE = Rails.configuration.try("ldap_base")
   # e.g. Rails.configuration.try('ldap_base') = "ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
-  GROUPS_PATH = Rails.configuration.try('ldap_groups')
+  GROUPS_PATH = Rails.configuration.try("ldap_groups")
   # e.g. ldap_groups = "ou=groups,cn=dev,dc=nsl,dc=bio,dc=org,dc=au"
-  USERID_FIELD = Rails.configuration.try('ldap_userid_field') || 'samAccountName'
+  USERID_FIELD = Rails.configuration.try("ldap_userid_field") || "samAccountName"
   # e.g. ldap_userid_field = "uid"            (openldap)
   # e.g. ldap_userid_field = "samAccountName" (active directory)
-  VERIFY_CERT = Rails.configuration.try('ldap_verify_certificate')
-  USERS = Rails.configuration.try('ldap_users')
+  VERIFY_CERT = Rails.configuration.try("ldap_verify_certificate")
+  USERS = Rails.configuration.try("ldap_users")
   # e.g. ldap_users: "ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
-  ADMIN_USERNAME = Rails.configuration.try('ldap_admin_username')
+  ADMIN_USERNAME = Rails.configuration.try("ldap_admin_username")
   # e.g. ldap_admin_username = "cn=NSL Admin,ou=users,ou=nsl,dc=cloud,dc=biodiversity,dc=org,dc=au"
-  ADMIN_PASSWORD = Rails.configuration.try('ldap_admin_password')
-  GENERIC_USERS = Rails.configuration.try('ldap_generic_users')
+  ADMIN_PASSWORD = Rails.configuration.try("ldap_admin_password")
+  GENERIC_USERS = Rails.configuration.try("ldap_generic_users")
   # e.g. ldap_generic_users: "cn=Users,dc=cloud,dc=biodiversity,dc=org,dc=au"
-  GROUP_FILTER_REGEX = Rails.configuration.try('ldap_group_filter_regex') 
+  GROUP_FILTER_REGEX = Rails.configuration.try("ldap_group_filter_regex")
   # Rails.configuration.try('group_filter_regex') = 'ou=dev,ou=nsl'
 
   def users_groups
@@ -56,7 +56,7 @@ class Ldap  < ActiveType::Object
   end
 
   def user_cn
-    @user_cn || 'unknown'
+    @user_cn || "unknown"
   end
 
   def generic_active_directory_user
@@ -89,22 +89,21 @@ class Ldap  < ActiveType::Object
     if admin_connection.get_operation_result.error_message.present?
       raise admin_connection.get_operation_result.error_message
     end
+
     result
   end
 
   # See https://github.com/ruby-ldap/ruby-net-ldap/issues/290
-  def change_password(uid,new_password,salt)
+  def change_password(uid, new_password, _salt)
     conn = admin_connection
-    ops = [ [ :replace, :unicodePwd, unicode_password(new_password) ] ]
-    person = conn.search(base: USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD,uid))
-    if person.blank?
-      person = conn.search(base: GENERIC_USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD,uid))
-    end
+    ops = [[:replace, :unicodePwd, unicode_password(new_password)]]
+    person = conn.search(base: USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD, uid))
+    person = conn.search(base: GENERIC_USERS, filter: Net::LDAP::Filter.eq(USERID_FIELD, uid)) if person.blank?
     Rails.logger.debug("person.first.dn: #{person.first.dn}")
-    if conn.replace_attribute(person.first.dn, 'unicodePwd', unicode_password(new_password))
-      Rails.logger.debug('password changed!')
+    if conn.replace_attribute(person.first.dn, "unicodePwd", unicode_password(new_password))
+      Rails.logger.debug("password changed!")
     else
-      Rails.logger.error('password NOT changed!')
+      Rails.logger.error("password NOT changed!")
       Rails.logger.error(conn.get_operation_result.error_message)
       raise "#{conn.get_operation_result.error_message}"
     end
@@ -116,16 +115,16 @@ class Ldap  < ActiveType::Object
 
   def admin_connection
     Rails.logger.info("Connecting to Active Directory")
-    ldap = Net::LDAP.new  :host => HOST,
-        :port => PORT,
-        :base => BASE,
-        :encryption => {:method => :simple_tls,
-                        :tls_options => tls_options },
-        :auth => {
-          :method => :simple,
-          :username => ADMIN_USERNAME,
-          :password => ADMIN_PASSWORD
-        }
+    ldap = Net::LDAP.new host: HOST,
+                         port: PORT,
+                         base: BASE,
+                         encryption: { method: :simple_tls,
+                                       tls_options: tls_options },
+                         auth: {
+                           method: :simple,
+                           username: ADMIN_USERNAME,
+                           password: ADMIN_PASSWORD
+                         }
     unless ldap.bind
       Rails.logger.error("LDAP: #{ldap.get_operation_result.error_message}")
       raise "Failed admin connection!"
@@ -142,7 +141,7 @@ class Ldap  < ActiveType::Object
   def tls_options
     case VERIFY_CERT
     when false
-      { :verify_mode => OpenSSL::SSL::VERIFY_NONE }
+      { verify_mode: OpenSSL::SSL::VERIFY_NONE }
     else
       # verify
       {}
@@ -155,14 +154,12 @@ class Ldap  < ActiveType::Object
       filter: Net::LDAP::Filter.eq(USERID_FIELD, username),
       password: password
     )
-    if bind_as
-      set_bind_as_instance_variables(bind_as)
-      @generic_active_directory_user = false
-      return true
-    else
-      return validate_generic_user_in_active_directory
-    end
-  rescue => e
+    return validate_generic_user_in_active_directory unless bind_as
+
+    set_bind_as_instance_variables(bind_as)
+    @generic_active_directory_user = false
+    true
+  rescue StandardError => e
     Rails.logger.error("Exception in validate_user_credentials")
     Rails.logger.error(e.to_s)
     errors.add(:connection, "connection failed with exception")
@@ -170,7 +167,9 @@ class Ldap  < ActiveType::Object
 
   def set_bind_as_instance_variables(bind_as)
     @display_name = bind_as.first[:displayname].first
-    @groups = bind_as.first[:memberof].select {|x| x.match(/#{GROUP_FILTER_REGEX}/i)}.collect {|x| x.split(',').first.split('=').last}
+    @groups = bind_as.first[:memberof].select do |x|
+                x.match(/#{GROUP_FILTER_REGEX}/i)
+              end.collect { |x| x.split(",").first.split("=").last }
     @user_cn = bind_as.first[:dn].first
   end
 
@@ -183,25 +182,25 @@ class Ldap  < ActiveType::Object
     if bind_as
       set_bind_as_instance_variables(bind_as)
       @generic_active_directory_user = true
-      return true
+      true
     else
       errors.add(:connection, "failed")
       Rails.logger.error("Validating alt user credentials failed for username: #{username} against AD #{USERID_FIELD}.")
-      return false
+      false
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Exception in validate_generic_user_credentials")
     Rails.logger.error(e.to_s)
     errors.add(:connection, "connection failed with exception")
   end
-  
+
   def ldap_full_name(result)
-    result.first[:dn].first.split(',')
-      .select {|x| x =~ /cn=/}.first.split('=').second
-  rescue => e
+    result.first[:dn].first.split(",")
+          .select { |x| x =~ /cn=/ }.first.split("=").second
+  rescue StandardError => e
     Rails.logger.error("Error getting user full_name from LDAP")
     Rails.logger.error(e.to_s)
-    return username
+    username
   end
 
   # Groups user is assigned to.
@@ -210,16 +209,16 @@ class Ldap  < ActiveType::Object
     Ldap.new.admin_search(GROUPS_PATH,
                           "uniqueMember",
                           "uid=#{username}", "cn")
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Error in Ldap#ldap_user_groups for username: #{username}")
     Rails.logger.error(e.to_s)
-    return ["error getting groups"]
+    ["error getting groups"]
   end
 
   def unicode_password(clear_text_password)
     unicode_string = ""
     quoted_text = '"' + clear_text_password + '"'
-    quoted_text.length.times{|i| unicode_string+= "#{quoted_text[i..i]}\000" }
-    return unicode_string
+    quoted_text.length.times { |i| unicode_string += "#{quoted_text[i..i]}\000" }
+    unicode_string
   end
 end

@@ -17,7 +17,6 @@
 #   limitations under the License.
 #
 class Loader::Batch::Review::ModeController < ApplicationController
-
   def switch_on
     session[:view_mode_set_by_user] = true
     @view_mode = session[:view_mode] = ::ViewMode::REVIEW

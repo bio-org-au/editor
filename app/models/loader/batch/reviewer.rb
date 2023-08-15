@@ -27,8 +27,8 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   alias_attribute :period, :batch_review_period
   belongs_to :user_table, class_name: "UserTable", foreign_key: "user_id"
   alias_attribute :user, :user_table
-  belongs_to :org 
-  belongs_to :batch_review_role, class_name: "Loader::Batch::Review::Role" 
+  belongs_to :org
+  belongs_to :batch_review_role, class_name: "Loader::Batch::Review::Role"
   alias_attribute :role, :batch_review_role
   has_many :name_review_comments, class_name: "Loader::Name::Review::Comment", foreign_key: "batch_reviewer_id"
 
@@ -37,7 +37,7 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   validates :batch_review_role_id, presence: true
   validates :batch_review_period_id, presence: true
   validates :user_id, uniqueness: { scope: :batch_review_period_id,
-    message: "should only be added once per review period" }
+                                    message: "should only be added once per review period" }
   attr_accessor :give_me_focus, :message
 
   def fresh?
@@ -45,7 +45,7 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   end
 
   def display_as
-    'Batch Reviewer'
+    "Batch Reviewer"
   end
 
   def allow_delete?
@@ -61,17 +61,15 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   end
 
   def self.create(params, username)
-    batch_reviewer = self.new(params)
-    if batch_reviewer.save_with_username(username)
-      batch_reviewer
-    else
-      raise batch_reviewer.errors.full_messages.first.to_s
-    end
+    batch_reviewer = new(params)
+    raise batch_reviewer.errors.full_messages.first.to_s unless batch_reviewer.save_with_username(username)
+
+    batch_reviewer
   end
 
   def save_with_username(username)
     self.created_by = self.updated_by = username
-    #set_defaults
+    # set_defaults
     save
   end
 

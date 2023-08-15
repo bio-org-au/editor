@@ -37,8 +37,8 @@ class SessionsController < ApplicationController
     else
       render "new"
     end
-  rescue => e
-    logger.error("Exception signing in: #{e.to_s.gsub(/password:[^,]*/,'password: [filtered]')}")
+  rescue StandardError => e
+    logger.error("Exception signing in: #{e.to_s.gsub(/password:[^,]*/, 'password: [filtered]')}")
     redirect_to :retry_start_sign_in
   end
 

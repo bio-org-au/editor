@@ -17,13 +17,12 @@
 #   limitations under the License.
 #
 class OrchidBatchJobLock < ActiveRecord::Base
-
   def self.lock!(name)
     rec = OrchidBatchJobLock.new
     rec.name = name
     rec.save!
     true
-  rescue => e
+  rescue StandardError => e
     false
   end
 
@@ -34,8 +33,7 @@ class OrchidBatchJobLock < ActiveRecord::Base
   def self.unlock!
     OrchidBatchJobLock.destroy_all
     true
-  rescue => e
+  rescue StandardError => e
     false
   end
 end
-

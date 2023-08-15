@@ -19,7 +19,6 @@
 
 # Instances connect Names to References.
 class Instance < ActiveRecord::Base
-
   include ActionView::Helpers::TextHelper
   include InstanceTreeable
   include InstanceInTaxonomy
@@ -35,6 +34,7 @@ class Instance < ActiveRecord::Base
                 :concept_warning_bypassed,
                 :multiple_primary_override,
                 :duplicate_instance_override
+
   SEARCH_LIMIT = 50
   MULTIPLE_PRIMARY_WARNING = "Saving this instance would result in multiple primary instances for the same name."
   DUPLICATE_INSTANCE_WARNING = "already has an instance with the same reference, type and page."
@@ -45,7 +45,7 @@ class Instance < ActiveRecord::Base
            dependent: :restrict_with_exception
 
   def self.to_csv
-    attributes = %w(id)
+    attributes = %w[id]
     headings = ["Instance ID", "Name ID", "Full Name", "Reference ID",
                 "Reference Citation", "Number of Notes", "Instance notes"]
     CSV.generate(headers: true) do |csv|
@@ -60,17 +60,17 @@ class Instance < ActiveRecord::Base
                 instance.collected_notes]
       end
     end
-  rescue => e
+  rescue StandardError => e
     logger.error("Could not create CSV file for instance")
     logger.error(e.to_s)
     raise
   end
 
   def collected_notes
-    instance_notes.map {|note| "#{note.instance_note_key.name}: #{note.value}"}.join(",")
+    instance_notes.map { |note| "#{note.instance_note_key.name}: #{note.value}" }.join(",")
   end
 
-  scope :ordered_by_name, -> {joins(:name).order(Arel.sql("simple_name asc"))}
+  scope :ordered_by_name, -> { joins(:name).order(Arel.sql("simple_name asc")) }
   # The page ordering aims to emulate a numeric ordering process that
   # handles assorted text and page ranges in the character data.
   scope :ordered_by_page, lambda {
@@ -107,55 +107,54 @@ class Instance < ActiveRecord::Base
 
   scope :in_nested_instance_type_order, lambda {
     order(Arel.sql(
-        "          case instance_type.name " \
-      "          when 'basionym' then 1 " \
-      "          when 'replaced synonym' then 2 " \
-      "          when 'common name' then 99 " \
-      "          when 'vernacular name' then 99 " \
-      "          else 3 end, " \
-      "          case nomenclatural " \
-      "          when true then 1 " \
-      "          else 2 end, " \
-      "          case taxonomic " \
-      "          when true then 2 " \
-      "          else 1 end "
-    )
-    )
+            "          case instance_type.name           " \
+            "when 'basionym' then 1           " \
+            "when 'replaced synonym' then 2           " \
+            "when 'common name' then 99           " \
+            "when 'vernacular name' then 99           " \
+            "else 3 end,           " \
+            "case nomenclatural           " \
+            "when true then 1           " \
+            "else 2 end,           " \
+            "case taxonomic           " \
+            "when true then 2           " \
+            "else 1 end "
+          ))
   }
 
   scope :created_n_days_ago,
-        ->(n) {where("current_date - created_at::date = ?", n)}
+        ->(n) { where("current_date - created_at::date = ?", n) }
   scope :updated_n_days_ago,
-        ->(n) {where("current_date - updated_at::date = ?", n)}
-  query = "current_date - created_at::date = ? "\
+        ->(n) { where("current_date - updated_at::date = ?", n) }
+  query = "current_date - created_at::date = ? " \
           "or current_date - updated_at::date = ?"
   scope :changed_n_days_ago,
-        ->(n) {where(query, n, n)}
+        ->(n) { where(query, n, n) }
 
   scope :created_in_the_last_n_days,
-        ->(n) {where("current_date - created_at::date < ?", n)}
+        ->(n) { where("current_date - created_at::date < ?", n) }
   scope :updated_in_the_last_n_days,
-        ->(n) {where("current_date - updated_at::date < ?", n)}
+        ->(n) { where("current_date - updated_at::date < ?", n) }
 
-  scope :for_ref, ->(ref_id) {where(reference_id: ref_id)}
+  scope :for_ref, ->(ref_id) { where(reference_id: ref_id) }
   scope :for_ref_and_correlated_on_name_id, lambda \
-    {|ref_id|
-    where(["exists (select null from instance i2
+    { |ref_id|
+                                              where(["exists (select null from instance i2
              where i2.reference_id = ? and instance.name_id = i2.name_id)",
-           ref_id])
-  }
+                                                     ref_id])
+                                            }
   # scope :order_by_name_full_name, -> { joins(:name).order(name: [:full_name])}
-  scope :order_by_name_full_name, -> {joins(:name).order(Arel.sql(" name.full_name "))}
+  scope :order_by_name_full_name, -> { joins(:name).order(Arel.sql(" name.full_name ")) }
 
   belongs_to :namespace, class_name: "Namespace", foreign_key: "namespace_id"
   belongs_to :reference
   belongs_to :author, optional: true
   # Name and instance type are not optional but the belongs_to change
-  # was causing test failures, probably because it was intervening 
+  # was causing test failures, probably because it was intervening
   # too early in the process
   #
   # rails 6 change to explictly make name optional when checking fk
-  belongs_to :name, optional: true 
+  belongs_to :name, optional: true
   # rails 6 change to explictly make instance_type optional when checking fk
   belongs_to :instance_type, optional: true
   belongs_to :this_cites, class_name: "Instance", foreign_key: "cites_id", optional: true
@@ -165,8 +164,8 @@ class Instance < ActiveRecord::Base
            foreign_key: "cites_id"
   has_many :citeds, class_name:
       "Instance",
-           inverse_of: :this_cites,
-           foreign_key: "cites_id"
+                    inverse_of: :this_cites,
+                    foreign_key: "cites_id"
 
   belongs_to :this_is_cited_by,
              class_name: "Instance",
@@ -198,7 +197,7 @@ class Instance < ActiveRecord::Base
   #         where ink.name in ('APC Comment', 'APC Dist.')" }
 
   has_many :comments
-  # ToDo: remove if redundant
+  # TODO: remove if redundant
   has_many :nodes, class_name: "TreeNode"
   has_many :tree_elements, class_name: "Tree::Element"
 
@@ -210,15 +209,14 @@ class Instance < ActiveRecord::Base
   validates :name_id,
             unless: :duplicate_instance_override?,
             uniqueness:
-                {scope: [:reference_id,
-                         :instance_type_id,
-                         :cites_id,
-                         :cited_by_id,
-                         :page],
-                         message: ->(object, data) do
-        " - instance for Name #{data[:value]} already exists with the same reference, type and page."
-                         end
-                 }
+                { scope: %i[reference_id
+                            instance_type_id
+                            cites_id
+                            cited_by_id
+                            page],
+                  message: lambda do |_object, data|
+                             " - instance for Name #{data[:value]} already exists with the same reference, type and page."
+                           end }
 
   validate :relationship_ref_must_match_cited_by_instance_ref,
            :synonymy_name_must_match_cites_instance_name,
@@ -248,6 +246,7 @@ class Instance < ActiveRecord::Base
     return if concept_warning_bypassed?
     return if standalone_or_unpublished_citation?
     return unless this_is_cited_by.accepted_concept?
+
     errors.add(:base, "You are trying to change an accepted concept's synonymy.")
   end
 
@@ -257,8 +256,8 @@ class Instance < ActiveRecord::Base
 
   def both_names_are_accepted_concepts?
     this_is_cited_by.name.present? &&
-        this_is_cited_by.name.accepted_concept? &&
-        this_cites.name.accepted_concept?
+      this_is_cited_by.name.accepted_concept? &&
+      this_cites.name.accepted_concept?
   end
 
   # Okay if no instance type (need instance type for next test)
@@ -275,6 +274,7 @@ class Instance < ActiveRecord::Base
     return if name.primary_instances.empty?
     return if current_record_is_the_only_primary_instance?
     return if an_update_not_changing_type?
+
     errors.add(:base, MULTIPLE_PRIMARY_WARNING)
   end
 
@@ -285,7 +285,7 @@ class Instance < ActiveRecord::Base
   # current record is the only primary instance (being updated)
   def current_record_is_the_only_primary_instance?
     name.primary_instances.map(&:id).include?(id) &&
-        name.primary_instances.size == 1
+      name.primary_instances.size == 1
   end
 
   # Don't reject updates that do not change instance type
@@ -301,6 +301,7 @@ class Instance < ActiveRecord::Base
     return if standalone?
     return if unpublished_citation?
     return unless double_synonym?
+
     if misapplied?
       errors.add(:base, "A name cannot be placed in synonymy twice
       (non-misapplication synonym is already present).")
@@ -336,26 +337,27 @@ class Instance < ActiveRecord::Base
     !Instance.where(["instance.id != ? and instance.cited_by_id = ?",
                      id || 0,
                      this_is_cited_by.id])
-         .joins(:this_cites)
-         .where(this_cites_instance: {name_id: name.id})
-         .joins(:instance_type)
-         .where(instance_type: {misapplied: false})
-         .empty?
+             .joins(:this_cites)
+             .where(this_cites_instance: { name_id: name.id })
+             .joins(:instance_type)
+             .where(instance_type: { misapplied: false })
+             .empty?
   end
 
   def double_synonym_case_b?
     !Instance.where(["instance.id != ? and instance.cited_by_id = ?",
                      id || 0,
                      this_is_cited_by.id])
-         .joins(:this_cites)
-         .where(this_cites_instance: {name_id: name.id})
-         .empty?
+             .joins(:this_cites)
+             .where(this_cites_instance: { name_id: name.id })
+             .empty?
   end
 
   def name_cannot_be_synonym_of_itself
     return if cited_by_id.blank?
     return if cites_id.blank?
     return unless this_is_cited_by.name_id == this_cites.name_id
+
     errors.add(:base, "A name cannot be a synonym of itself")
   end
 
@@ -368,7 +370,7 @@ class Instance < ActiveRecord::Base
   end
 
   def self.changed_in_the_last_n_days(n)
-    Instance.where("current_date - created_at::date < ? "\
+    Instance.where("current_date - created_at::date < ? " \
                    "or current_date - updated_at::date < ?",
                    n, n)
   end
@@ -380,8 +382,9 @@ class Instance < ActiveRecord::Base
   # A standalone instance with no dependents can change reference.
   def standalone_reference_id_can_change_if_no_dependents
     return unless reference_id_changed? &&
-        standalone? &&
-        reverse_of_this_is_cited_by.present?
+                  standalone? &&
+                  reverse_of_this_is_cited_by.present?
+
     errors(:base, "this instance has relationships, ")
     errors(:base, "so you cannot alter the reference.")
   end
@@ -392,8 +395,8 @@ class Instance < ActiveRecord::Base
   # instance children.
   def update_allowed?
     !name_id_changed? &&
-        (!reference_id_changed? ||
-            (standalone? && reverse_of_this_is_cited_by.blank?))
+      (!reference_id_changed? ||
+          (standalone? && reverse_of_this_is_cited_by.blank?))
   end
 
   def update_reference_allowed?
@@ -402,7 +405,8 @@ class Instance < ActiveRecord::Base
 
   def relationship_ref_must_match_cited_by_instance_ref
     return unless relationship? &&
-        !(reference.id == this_is_cited_by.reference.id)
+                  !(reference.id == this_is_cited_by.reference.id)
+
     errors.add(:reference_id,
                "must match cited by instance reference")
   end
@@ -412,33 +416,38 @@ class Instance < ActiveRecord::Base
     \nref: #{reference.try('citation')}; \ncited_by: #{cited_by_id}
     \ncited by ref: #{this_is_cited_by.try('reference').try('citation')}
     \ncites name: #{this_cites.try('name').try('full_name')}"
-  rescue => e
+  rescue StandardError => e
     "Error in to_s: #{e}"
   end
 
   def synonymy_name_must_match_cites_instance_name
     return if !synonymy? || name.id == this_cites.name.id
+
     errors.add(:name_id, "must match cites instance name")
   end
 
   def cites_id_with_no_cited_by_id_is_invalid
     return unless cites_id.present? && cited_by_id.blank?
+
     errors(:base, "A cites id with no cited by id is invalid.")
   end
 
   def cannot_cite_itself
     return if !synonymy? || id != cites_id
+
     errors.add(:base, "cannot cite itself")
   end
 
   def cannot_be_cited_by_itself
     return if !relationship? || id != cited_by_id
+
     errors.add(:name_id, "cannot be cited by itself")
   end
 
   def synonymy_must_keep_cites_id
     return if cites_id.present?
     return if Instance.find(id).cites_id.nil? || data_fix_in_process
+
     errors.add(:cites_id, "cannot be removed once saved")
   end
 
@@ -471,11 +480,11 @@ class Instance < ActiveRecord::Base
   end
 
   def type_of_instance
-    if standalone? then
+    if standalone?
       "Standalone"
-    elsif synonymy? then
+    elsif synonymy?
       "Synonymy"
-    elsif unpublished_citation? then
+    elsif unpublished_citation?
       "Unpublished citation"
     else
       "Unknown - unrecognised type"
@@ -491,6 +500,7 @@ class Instance < ActiveRecord::Base
 
   def cites_this
     return if cited_by_id.nil?
+
     instance = Instance.find_by_id(cited_by_id)
     instance.expanded_instance_type = instance_type.name + " of"
     instance.display_as = "cites-this-instance"
@@ -513,16 +523,16 @@ class Instance < ActiveRecord::Base
 
   def allow_delete?
     instance_notes.blank? &&
-        reverse_of_this_cites.blank? &&
-        reverse_of_this_is_cited_by.blank? &&
-        comments.blank? &&
-        !in_apc? &&
-        children.empty? &&
-        not_linked_to_orchids_names? &&
-        not_linked_to_loader_name_matches?
+      reverse_of_this_cites.blank? &&
+      reverse_of_this_is_cited_by.blank? &&
+      comments.blank? &&
+      !in_apc? &&
+      children.empty? &&
+      not_linked_to_orchids_names? &&
+      not_linked_to_loader_name_matches?
   end
 
-  # This is not handled via an instance association because orchids are only 
+  # This is not handled via an instance association because orchids are only
   # in the apni database
   # Don't look for orchids data unless the database is aware of orchids
   def linked_to_orchids_names?
@@ -533,29 +543,29 @@ class Instance < ActiveRecord::Base
     end
   end
 
-  # This is not handled via an instance association because orchids are only 
+  # This is not handled via an instance association because orchids are only
   # in the apni database
   # Don't look for orchids data unless the database is aware of orchids
   def not_linked_to_orchids_names?
-    !(linked_to_orchids_names?)
+    !linked_to_orchids_names?
   end
 
-  # This is not handled via an instance association because the loader is only 
+  # This is not handled via an instance association because the loader is only
   # in the apni database for now.
   def linked_to_loader_name_matches?
     if Rails.configuration.try(:batch_loader_aware)
       Loader::Name::Match.where(instance_id: id).size > 0 ||
-      Loader::Name::Match.where(standalone_instance_id: id).size > 0 ||
-      Loader::Name::Match.where(relationship_instance_id: id).size > 0
+        Loader::Name::Match.where(standalone_instance_id: id).size > 0 ||
+        Loader::Name::Match.where(relationship_instance_id: id).size > 0
     else
       false
     end
   end
- 
+
   # This is not handled via an instance association because the loader is so far
   # only in the apni database.
   def not_linked_to_loader_name_matches?
-    !(linked_to_loader_name_matches?)
+    !linked_to_loader_name_matches?
   end
 
   def anchor_id
@@ -599,11 +609,11 @@ class Instance < ActiveRecord::Base
   end
 
   def self.find_references
-    ->(title) {Reference.where(" lower(title) = lower(?)", title)}
+    ->(title) { Reference.where(" lower(title) = lower(?)", title) }
   end
 
   def self.find_names
-    ->(term) {Name.where(" lower(simple_name) = lower(?)", term)}
+    ->(term) { Name.where(" lower(simple_name) = lower(?)", term) }
   end
 
   def self.expansion(search_string)
@@ -625,8 +635,7 @@ class Instance < ActiveRecord::Base
 
   def self.get_id_for(search_string, query_token)
     pair = extract_query_token(search_string, query_token)
-    id = pair.gsub(/#{query_token}:/, "")
-    id
+    pair.gsub(/#{query_token}:/, "")
   end
 
   def self.reverse_of_cites_id_query(instance_id)
@@ -660,7 +669,7 @@ class Instance < ActiveRecord::Base
   def delete_as_user(username)
     update_attribute(:updated_by, username)
     Instance::AsServices.delete(id)
-  rescue => e
+  rescue StandardError => e
     logger.error("delete_as_user exception: #{e}")
     raise
   end
@@ -669,17 +678,17 @@ class Instance < ActiveRecord::Base
   # view of an instance.
   def fields_for_csv
     attributes
-        .values_at("id", "name_id")
-        .concat(name.attributes.values_at("full_name"))
-        .concat(attributes.values_at("reference_id"))
-        .concat(reference.attributes.values_at("citation"))
-        .concat(instance_notes
+      .values_at("id", "name_id")
+      .concat(name.attributes.values_at("full_name"))
+      .concat(attributes.values_at("reference_id"))
+      .concat(reference.attributes.values_at("citation"))
+      .concat(instance_notes
                     .sort do |x, y|
-          x.instance_note_key.sort_order <=> y.instance_note_key.sort_order
-        end
+                x.instance_note_key.sort_order <=> y.instance_note_key.sort_order
+              end
                     .each
-                    .collect {|n| [n.instance_note_key.name, n.value]})
-        .flatten
+                    .collect { |n| [n.instance_note_key.name, n.value] })
+      .flatten
   end
 
   # Sometimes need to know if an instance has an APC Dist. instance note.
@@ -690,7 +699,7 @@ class Instance < ActiveRecord::Base
   end
 
   def can_have_apc_dist?
-    instance_notes.to_a.keep_if {|n| n.instance_note_key.apc_dist?}.size.zero?
+    instance_notes.to_a.keep_if { |n| n.instance_note_key.apc_dist? }.size.zero?
   end
 
   def year
@@ -698,17 +707,17 @@ class Instance < ActiveRecord::Base
   end
 
   def listing_citation
-    (reference.present? ? reference.citation_html : '') +
-    (page.present? ? ": #{page}" : '') +
-    (show_primary_instance_type && instance_type&.primary_instance? ? " [#{instance_type.name}]" : '') +
-    (consider_apc && show_apc? ? ": #{accepted_taxonomy_widget}" : '') +
-    ( draft? ? "<span class='highlight'>[DRAFT]</span>" : '' )
+    (reference.present? ? reference.citation_html : "") +
+      (page.present? ? ": #{page}" : "") +
+      (show_primary_instance_type && instance_type&.primary_instance? ? " [#{instance_type.name}]" : "") +
+      (consider_apc && show_apc? ? ": #{accepted_taxonomy_widget}" : "") +
+      (draft? ? "<span class='highlight'>[DRAFT]</span>" : "")
   end
 
   def accepted_taxonomy_widget
-    '<span class="apc-container no-decoration">' + 
-    ( name.excluded_concept? ? "<i class='fa fa-ban apc' aria-hidden='true'></i><span class='apc small strong' title='Excluded from APC'>APC</span>" : '' ) +
-    ( !name.excluded_concept? ? "<i class='fa fa-check apc' aria-hidden='true'></i><span class='apc small strong' title='In APC'>APC</span>" : '' ) +
-    '</span>'
+    '<span class="apc-container no-decoration">' +
+      (name.excluded_concept? ? "<i class='fa fa-ban apc' aria-hidden='true'></i><span class='apc small strong' title='Excluded from APC'>APC</span>" : "") +
+      (name.excluded_concept? ? "" : "<i class='fa fa-check apc' aria-hidden='true'></i><span class='apc small strong' title='In APC'>APC</span>") +
+      "</span>"
   end
 end

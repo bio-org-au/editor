@@ -123,16 +123,16 @@ class Reference < ActiveRecord::Base
 
   def part_parent_year
     return nil unless ref_type.part?
+
     parent.iso_publication_date
   end
 
   def iso_pub_date_for_sorting
-    iso_publication_date || parent.try('iso_publication_date') || '9999'
+    iso_publication_date || parent.try("iso_publication_date") || "9999"
   end
 
   def self.ref_types
     sql = "select rt.name, count(*) total from reference r join ref_type rt on r.ref_type_id = rt.id group by rt.name order by rt.name"
     records_array = ActiveRecord::Base.connection.execute(sql)
   end
-
 end

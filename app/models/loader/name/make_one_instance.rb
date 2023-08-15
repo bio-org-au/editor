@@ -61,12 +61,11 @@ class Loader::Name::MakeOneInstance
     return heading if @loader_name.heading?
     return no_further_processing if @loader_name.no_further_processing?
 
-    case
-    when @loader_name.accepted?, @loader_name.excluded_rt?
+    if @loader_name.accepted? || @loader_name.excluded_rt?
       create_standalone
-    when @loader_name.synonym?
+    elsif @loader_name.synonym?
       create_synonymy
-    when @loader_name.misapplied?
+    elsif @loader_name.misapplied?
       create_misapp
     else
       throw "Don't know how to handle loader_name #{@loader_name.id}"
@@ -136,8 +135,8 @@ class Loader::Name::MakeOneInstance
 
   def log(entry)
     tag = " ##{@loader_name.id}, batch: #{@loader_name.batch.name},  " +
-      "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
-      " (#{@loader_name.record_type})"
+          "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
+          " (#{@loader_name.record_type})"
     payload = "#{entry} #{tag}"
     Loader::Batch::Bulk::JobLog.new(@job_number, payload, @user).write
   end

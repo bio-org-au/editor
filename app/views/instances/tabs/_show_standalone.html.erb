@@ -9,7 +9,7 @@
     <%= render(partial: 'instances/apc/widgets', locals: {instance: @instance}) %>
 <% end %>
 &nbsp;
-<%= link_to("#{ShardConfig.name_space}&nbsp;#{editor_icon('external-link-square')}".html_safe,
+<%= link_to("#{sanitize(ShardConfig.name_space)}&nbsp;#{external_link_square_icon}".html_safe,
             "#{Rails.configuration.try('nsl_links')}apni-format/display/#{@instance.name_id}",
             title: "#{ShardConfig.name_space} search. Opens in another named tab or window.",
             class: 'rebeccapurple',

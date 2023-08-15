@@ -18,16 +18,16 @@
 #
 class Loader::NamesController < ApplicationController
   before_action :find_loader_name,
-                only: [:show, :destroy, :tab, :update, :set_preferred_match]
+                only: %i[show destroy tab update set_preferred_match]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
     set_tab
     set_tab_index
-    @take_focus = params[:take_focus] == 'true'
-    new_comment if params[:tab] =~ /\Atab_review\z/
-    if @view_mode == ::ViewMode::REVIEW then
+    @take_focus = params[:take_focus] == "true"
+    new_comment if params[:tab] == "tab_review"
+    if @view_mode == ::ViewMode::REVIEW
       render "loader/names/review/show", layout: false
     else
       render "show", layout: false
@@ -47,7 +47,6 @@ class Loader::NamesController < ApplicationController
     end
   end
 
-
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     respond_to do |format|
@@ -58,9 +57,9 @@ class Loader::NamesController < ApplicationController
 
   def update
     @message = @loader_name.update_if_changed(loader_name_params,
-                                               current_user.username)
+                                              current_user.username)
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Names#update rescuing #{e}")
     @message = e.to_s
     render "update_error", status: :unprocessable_entity
@@ -71,24 +70,25 @@ class Loader::NamesController < ApplicationController
   def set_preferred_match
     @message = update_matches
     render
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Names#set_preferred_match rescuing #{e}")
     @message = e.to_s
     render "set_preferred_match_error", status: :unprocessable_entity
   end
 
   def update_matches
-    Rails.logger.debug('update_matches')
+    Rails.logger.debug("update_matches")
     @loader_name_matches = Loader::Name::Match.where(loader_name_id: @loader_name.id)
     stop_if_nothing_changed
-    return 'No change' if params[:loader_name].blank? 
+    return "No change" if params[:loader_name].blank?
 
-    #remove_unwanted_orchid_names
+    # remove_unwanted_orchid_names
     create_preferred_match unless clearing_all_preferred_matches?
   end
 
   def stop_if_nothing_changed
-    return if @loader_name_matches.blank? 
+    return if @loader_name_matches.blank?
+
     changed = false
     @loader_name_matches.each do |loader_name_match|
       unless loader_name_match.name_id == loader_name_params[:name_id].to_i &&
@@ -96,7 +96,7 @@ class Loader::NamesController < ApplicationController
         changed = true
       end
     end
-    raise 'no change required' unless changed
+    raise "no change required" unless changed
   end
 
   def create_preferred_match
@@ -113,7 +113,7 @@ class Loader::NamesController < ApplicationController
   # The aim of clear is to remove all chosen matches
   # i.e. don't set a preferred match
   def clearing_all_preferred_matches?
-    false #orchid_params[:name_id].to_i < 0
+    false # orchid_params[:name_id].to_i < 0
   end
 
   def parent_suggestions
@@ -124,15 +124,15 @@ class Loader::NamesController < ApplicationController
   def create
     @loader_name = Loader::Name.create(loader_name_params, current_user.username)
     render "create"
-  rescue => e
+  rescue StandardError => e
     logger.error("Controller:Loader::Names:create:rescuing exception #{e}")
     @error = e.to_s
     render "create_error", status: :unprocessable_entity
   end
- 
+
   def destroy
     @loader_name.delete
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::NamesController#destroy rescuing #{e}")
     @message = e.to_s
     render "destroy_error", status: :unprocessable_entity
@@ -140,6 +140,7 @@ class Loader::NamesController < ApplicationController
 
   #############################################################################
   private
+
   def find_loader_name
     @loader_name = Loader::Name.find(params[:id])
   rescue ActiveRecord::RecordNotFound
@@ -149,13 +150,13 @@ class Loader::NamesController < ApplicationController
 
   def loader_name_params
     params.require(:loader_name).permit(:simple_name, :full_name, :name_id,
-                                   :instance_id, :record_type, :parent,
-                                   :parent_id, :name_status, :ex_base_author,
-                                   :base_author, :ex_author, :author,
-                                   :synonym_type, :comment, :seq,
-                                   :doubtful, :family, :excluded,
-                                   :no_further_processing, :notes,
-                                   :distribution, :loader_batch_id)
+                                        :instance_id, :record_type, :parent,
+                                        :parent_id, :name_status, :ex_base_author,
+                                        :base_author, :ex_author, :author,
+                                        :synonym_type, :comment, :seq,
+                                        :doubtful, :family, :excluded,
+                                        :no_further_processing, :notes,
+                                        :distribution, :loader_batch_id)
   end
 
   def set_tab
@@ -171,28 +172,31 @@ class Loader::NamesController < ApplicationController
   end
 
   def new_comment
-    if reviewer?
-      @name_review_comment = @loader_name.name_review_comments.new(
-        batch_reviewer_id: reviewer.id,
-        loader_name_id: @loader_name.id,
-        review_period_id: period.id)
-    else
-      nil
-    end
+    return unless reviewer?
+
+    @name_review_comment = @loader_name.name_review_comments.new(
+      batch_reviewer_id: reviewer.id,
+      loader_name_id: @loader_name.id,
+      review_period_id: period.id
+    )
   end
 
-  # Todo: handle multiple periods, including active and inactive
+  # TODO: handle multiple periods, including active and inactive
   def period
     @loader_name.batch.reviews&.first&.periods&.first
   end
 
-  # Todo: handle multiple periods, including active and inactive
+  # TODO: handle multiple periods, including active and inactive
   def reviewer?
-    @loader_name.batch.reviews&.first&.periods&.first&.reviewers&.collect {|x| x.user.userid}&.include?(@current_user.username)
+    @loader_name.batch.reviews&.first&.periods&.first&.reviewers&.collect do |x|
+      x.user.userid
+    end&.include?(@current_user.username)
   end
-  
-  # Todo: handle multiple periods, including active and inactive
+
+  # TODO: handle multiple periods, including active and inactive
   def reviewer
-    @loader_name.batch.reviews&.first&.periods&.first.reviewers.select {|x| x.user.userid == @current_user.username}&.first
+    @loader_name.batch.reviews&.first&.periods&.first&.reviewers&.select do |x|
+      x.user.userid == @current_user.username
+    end&.first
   end
 end

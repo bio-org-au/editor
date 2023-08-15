@@ -17,17 +17,15 @@
 #   limitations under the License.
 #
 class Loader::Batch::ReviewersController < ApplicationController
-  before_action :find_batch_reviewer, only: [:show, :destroy, :tab, :update]
+  before_action :find_batch_reviewer, only: %i[show destroy tab update]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
     set_tab
     set_tab_index
-    if params[:tab] =~ /\Atab_reviewers\z/
-      @batch_reviewer = Loader::Batch::Reviewer.new
-    end
-    @take_focus = params[:take_focus] == 'true'
+    @batch_reviewer = Loader::Batch::Reviewer.new if params[:tab] == "tab_reviewers"
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -43,9 +41,9 @@ class Loader::Batch::ReviewersController < ApplicationController
 
   def create
     @batch_reviewer = ::Loader::Batch::Reviewer.create(batch_reviewer_params,
-                                               current_user.username)
+                                                       current_user.username)
     render "create"
-  rescue => e
+  rescue StandardError => e
     logger.error("Controller:Loader::Batch::ReviewersController#create:rescuing exception #{e}")
     @error = e.to_s
     render "create_error", status: :unprocessable_entity
@@ -65,7 +63,8 @@ class Loader::Batch::ReviewersController < ApplicationController
   end
 
   def batch_reviewer_params
-    params.require(:loader_batch_reviewer).permit(:id, :name, :batch_review_period_id, :user_id, :org_id, :batch_review_role_id)
+    params.require(:loader_batch_reviewer).permit(:id, :name, :batch_review_period_id, :user_id, :org_id,
+                                                  :batch_review_role_id)
   end
 
   def set_tab

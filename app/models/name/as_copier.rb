@@ -22,9 +22,8 @@ class Name::AsCopier < Name
   def copy_with_username(new_name_element, as_username)
     Rails.logger.debug("#{NAC}#copy with username
                        new_name_element: #{new_name_element}")
-    if new_name_element.eql?(name_element)
-      raise "Copied record would have the same name."
-    end
+    raise "Copied record would have the same name." if new_name_element.eql?(name_element)
+
     new = dup
     new.name_element = new_name_element
     new.created_by = new.updated_by = as_username

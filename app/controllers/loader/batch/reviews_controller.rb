@@ -17,17 +17,15 @@
 #   limitations under the License.
 #
 class Loader::Batch::ReviewsController < ApplicationController
-  before_action :find_batch_review, only: [:show, :destroy, :tab, :update]
+  before_action :find_batch_review, only: %i[show destroy tab update]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
     set_tab
     set_tab_index
-    if params[:tab] =~ /\Atab_periods\z/
-      @review_period = Loader::Batch::Review::Period.new
-    end
-    @take_focus = params[:take_focus] == 'true'
+    @review_period = Loader::Batch::Review::Period.new if params[:tab] == "tab_periods"
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -50,7 +48,7 @@ class Loader::Batch::ReviewsController < ApplicationController
     @batch_review.created_by = current_user.username
     @batch_review.save!
     render "create"
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Batch::Review.create:rescuing exception #{e}")
     @error = e.to_s
     render "create_error", status: :unprocessable_entity
@@ -61,7 +59,7 @@ class Loader::Batch::ReviewsController < ApplicationController
     @message = @batch_review.update_if_changed(batch_review_params,
                                                current_user.username)
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Batch::Review.update:rescuing exception #{e}")
     @error = e.to_s
     render "update_error", status: :unprocessable_entity
@@ -69,7 +67,7 @@ class Loader::Batch::ReviewsController < ApplicationController
 
   def destroy
     @batch_review.destroy
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Batch::Review.destroy:rescuing exception #{e}")
     @error = e.to_s
     render "destroy_error", status: :unprocessable_entity

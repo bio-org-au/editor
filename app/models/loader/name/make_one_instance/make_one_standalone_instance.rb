@@ -31,37 +31,36 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
     return stand_already_noted if standalone_instance_already_noted?
     return stand_already_for_default_ref if standalone_instance_for_default_ref?
 
-    case
-    when @match.instance_choice_confirmed == false
+    if @match.instance_choice_confirmed == false
       @match.use_batch_default_reference = true
       @match.instance_choice_confirmed = true
       @match.save!
-      return create_using_default_ref
-    when @match.use_batch_default_reference == true
-      return create_using_default_ref
-    when @match.copy_append_from_existing_use_batch_def_ref == true
-      return copy_and_append
+      create_using_default_ref
+    elsif @match.use_batch_default_reference == true
+      create_using_default_ref
+    elsif @match.copy_append_from_existing_use_batch_def_ref == true
+      copy_and_append
     else
-      return unknown_option
+      unknown_option
     end
   end
 
-  def create_using_default_ref 
+  def create_using_default_ref
     UseDefaultRef.new(@loader_name, @user, @job).create
   end
 
-  def copy_and_append 
+  def copy_and_append
     CopyAndAppend.new(@loader_name, @user, @job).create
   end
 
   def using_existing_instance?
-    @match.use_existing_instance == true 
+    @match.use_existing_instance == true
   end
 
   def using_existing_instance
     log("#{Constants::DECLINED_INSTANCE} - using existing " +
                  " instance for #{@loader_name.simple_name} #{@loader_name.id}")
-    return Constants::DECLINED
+    Constants::DECLINED
   end
 
   def stand_already_noted
@@ -73,14 +72,14 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
 
   def find_standalone_instances_for_default_ref
     Instance.where(name_id: @match.name_id)
-             .where(reference_id:
+            .where(reference_id:
                     @loader_name.loader_batch.default_reference.id)
-             .joins(:instance_type)
-             .where(instance_type: { standalone: true})
+            .joins(:instance_type)
+            .where(instance_type: { standalone: true })
   end
 
   def standalone_instance_for_default_ref?
-    instances =  find_standalone_instances_for_default_ref
+    instances = find_standalone_instances_for_default_ref
     case instances.size
     when 0
       false
@@ -88,7 +87,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
       @match.note_standalone_instance_found(instances.first)
       true
     else
-      throw 'Unexpected 2+ standalone instances'
+      throw "Unexpected 2+ standalone instances"
     end
   end
 
@@ -101,7 +100,8 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
 
   def unknown_option
     log(
-      "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}")
+      "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}"
+    )
     log_error("Unknown option: ##{@match.id} #{@match.loader_name_id}")
     log_error("#{@match.inspect}")
     Constants::ERROR

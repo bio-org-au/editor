@@ -30,7 +30,7 @@ class SearchParsedRequestDefinedQueriesAllTest < ActiveSupport::TestCase
     "instance is cited" => "instance-is-cited",
     "instance is cited by" => "instance-is-cited-by",
     "audit" => "audit",
-    "review" => "audit"
+    "activity" => "audit"
   }.freeze
 
   test "search parsed request defined query all" do

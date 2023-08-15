@@ -35,21 +35,21 @@ class Loader::Batch < ActiveRecord::Base
   end
 
   def display_as
-    'Loader Batch'
+    "Loader Batch"
   end
 
   def all_periods_of_all_reviews
-    reviews.collect {|r| r.periods}.sort {|x,y| x.start_date <=> y.start_date}.flatten
+    reviews.collect { |r| r.periods }.sort { |x, y| x.start_date <=> y.start_date }.flatten
   end
 
   def all_active_periods_of_all_reviews
-    all_periods_of_all_reviews.select {|p| p.active?}
+    all_periods_of_all_reviews.select { |p| p.active? }
   end
 
   def active_reviews
     return [] if all_active_periods_of_all_reviews.empty?
 
-    all_active_periods_of_all_reviews.collect {|period| period.review}
+    all_active_periods_of_all_reviews.collect { |period| period.review }
   end
 
   def active_reviews?
@@ -57,7 +57,7 @@ class Loader::Batch < ActiveRecord::Base
   end
 
   def self.user_reviewable(user_name)
-    Loader::Batch.joins(batch_reviews: [{review_periods: {batch_reviewers: [:user_table]}}]).where(user_table: {name: user_name}).order('name')
+    Loader::Batch.joins(batch_reviews: [{ review_periods: { batch_reviewers: [:user_table] } }]).where(user_table: { name: user_name }).order("name")
   end
 
   def self.id_of(canonical_query_target)
@@ -66,7 +66,7 @@ class Loader::Batch < ActiveRecord::Base
 
   def update_if_changed(params, username)
     params[:default_reference_id] = nil if params[:default_reference_typeahead].blank?
-    params.reject! {|name, value| name == 'default_reference_typeahead'}
+    params.reject! { |name, _value| name == "default_reference_typeahead" }
     assign_attributes(params)
     if changed?
       self.updated_by = username
@@ -77,4 +77,3 @@ class Loader::Batch < ActiveRecord::Base
     end
   end
 end
-

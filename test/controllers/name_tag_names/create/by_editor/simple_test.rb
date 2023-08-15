@@ -29,15 +29,15 @@ class NameTagNamesCreateByEditorSimpleTest < ActionController::TestCase
     name_tag = name_tags(:acra)
     puts NameTagName.count
     @request.headers["Accept"] = "application/javascript"
-    #assert_difference("NameTagName.count") do
-      post(:create,
-           params: { name_tag_name: { "name_id" => name.id,
-                                      "tag_id" => name_tag.id }, "commit"=>"Add"},
-           session: { username: "fred",
-                      user_full_name: "Fred Jones",
-                      groups: ["edit"] })
-      puts NameTagName.count
-    #end
+    # assert_difference("NameTagName.count") do
+    post(:create,
+         params: { name_tag_name: { "name_id" => name.id,
+                                    "tag_id" => name_tag.id }, "commit" => "Add" },
+         session: { username: "fred",
+                    user_full_name: "Fred Jones",
+                    groups: ["edit"] })
+    puts NameTagName.count
+    # end
     assert_response :success
   end
 end

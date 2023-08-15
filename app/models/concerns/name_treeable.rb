@@ -1,18 +1,8 @@
 # frozen_string_literal: true
 
-
 # Names can be in a classification tree
 module NameTreeable
   extend ActiveSupport::Concern
-
-  def apc_as_json
-    Rails.cache.fetch("#{cache_key}/apc_info", expires_in: 2.minutes) do
-      JSON.load(URI.open(Name::AsServices.in_apc_url(id), "Accept" => "text/json"))
-    end
-  rescue => e
-    logger.error("apc_as_json: #{e} for : #{Name::AsServices.in_apc_url(id)}")
-    "[unknown - service error]"
-  end
 
   def accepted_tree_version_element
     Tree.accepted.first.current_tree_version.name_in_version(self)
@@ -24,8 +14,10 @@ module NameTreeable
 
   def draft_instance_id(draft_version)
     return nil unless draft_version.present?
+
     tree_version_element = draft_version.name_in_version(self)
     return nil unless tree_version_element.present?
+
     tree_version_element.tree_element.instance.id
   end
 

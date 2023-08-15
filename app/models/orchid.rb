@@ -19,41 +19,40 @@
 # Orchids table
 class Orchid < ActiveRecord::Base
   strip_attributes
-  REF_ID = 51316736
+  REF_ID = 51_316_736
   attr_accessor :name_id, :instance_id
-    belongs_to :parent, class_name: "Orchid", foreign_key: "parent_id", optional: true
-    has_many :children,
-             class_name: "Orchid",
-             foreign_key: "parent_id",
-             dependent: :restrict_with_exception
-    has_many :orchids_name
-    has_many :preferred_match, class_name: "OrchidsName", foreign_key: :orchid_id
-    scope :avoids_id, ->(avoid_id) { where("orchids.id != ?", avoid_id) }
+
+  belongs_to :parent, class_name: "Orchid", foreign_key: "parent_id", optional: true
+  has_many :children,
+           class_name: "Orchid",
+           foreign_key: "parent_id",
+           dependent: :restrict_with_exception
+  has_many :orchids_name
+  has_many :preferred_match, class_name: "OrchidsName", foreign_key: :orchid_id
+  scope :avoids_id, ->(avoid_id) { where("orchids.id != ?", avoid_id) }
 
   def self.create(params, username)
     orchid = Orchid.new(params)
     orchid.id = next_sequence_id
-    orchid.family = 'Orchidaceae'
-    if orchid.save_with_username(username)
-      orchid
-    else
-      raise orchid.errors.full_messages.first.to_s
-    end
+    orchid.family = "Orchidaceae"
+    raise orchid.errors.full_messages.first.to_s unless orchid.save_with_username(username)
+
+    orchid
   end
 
-  # Passing string to be evaluated in :if and :unless conditional options is 
+  # Passing string to be evaluated in :if and :unless conditional options is
   # not supported.
-  # Pass a symbol for an instance method, or a lambda, proc or block, instead. 
+  # Pass a symbol for an instance method, or a lambda, proc or block, instead.
   validates :synonym_type,
-            presence: { if: -> { record_type == 'synonym' },
+            presence: { if: -> { record_type == "synonym" },
                         message: "is required." }
- 
+
   def display_as
-    'Orchid'
+    "Orchid"
   end
 
   def synonym?
-    record_type == 'synonym'
+    record_type == "synonym"
   end
 
   def fresh?
@@ -64,10 +63,10 @@ class Orchid < ActiveRecord::Base
     !parent_id.blank?
   end
 
-  # Note: not case-insensitive. Perhaps should be.
+  # NOTE: not case-insensitive. Perhaps should be.
   def names_simple_name_matching_taxon
-    Name.where(["simple_name = ? or simple_name = ?",taxon, alt_taxon_for_matching])
-        .joins(:name_type).where(name_type: {scientific: true})
+    Name.where(["simple_name = ? or simple_name = ?", taxon, alt_taxon_for_matching])
+        .joins(:name_type).where(name_type: { scientific: true })
         .order("simple_name, name.id")
   end
 
@@ -76,29 +75,33 @@ class Orchid < ActiveRecord::Base
   end
 
   def name_match_no_primary?
-    !Name.where(["(name.simple_name = ? or name.simple_name = ?) and exists (select null from name_type nt where name.name_type_id = nt.id and scientific) and not exists (select null from instance i join instance_type t on i.instance_type_id = t.id where i.name_id = name.id and t.primary_instance)",taxon, alt_taxon_for_matching]).empty?
+    !Name.where([
+                  "(name.simple_name = ? or name.simple_name = ?) and exists (select null from name_type nt where name.name_type_id = nt.id and scientific) and not exists (select null from instance i join instance_type t on i.instance_type_id = t.id where i.name_id = name.id and t.primary_instance)", taxon, alt_taxon_for_matching
+                ]).empty?
   end
 
   def matches_with_primary
-    Name.where(["(name.simple_name = ? or name.simple_name = ?) and exists (select null from name_type nt where name.name_type_id = nt.id and scientific) and exists (select null from instance i join instance_type t on i.instance_type_id = t.id where i.name_id = name.id and t.primary_instance)", taxon, alt_taxon_for_matching])
+    Name.where([
+                 "(name.simple_name = ? or name.simple_name = ?) and exists (select null from name_type nt where name.name_type_id = nt.id and scientific) and exists (select null from instance i join instance_type t on i.instance_type_id = t.id where i.name_id = name.id and t.primary_instance)", taxon, alt_taxon_for_matching
+               ])
   end
 
   def no_matches_with_primary?
     matches_with_primary.empty?
   end
-  
+
   def synonym_type_with_interpretation
     "#{synonym_type} #{interpreted_synonym_type_in_brackets}"
   end
 
   def interpreted_synonym_type_in_brackets
     case synonym_type
-    when 'homotypic'
-      '(nomenclatural)'
-    when 'heterotypic'
-      '(taxonomic)'
+    when "homotypic"
+      "(nomenclatural)"
+    when "heterotypic"
+      "(taxonomic)"
     else
-      ''
+      ""
     end
   end
 
@@ -111,12 +114,12 @@ class Orchid < ActiveRecord::Base
   end
 
   def misapplied?
-    record_type == 'misapplied'
+    record_type == "misapplied"
   end
 
   def homotypic?
-    synonym_type == 'homotypic' || 
-      synonym_type == 'nomenclatural synonym'
+    synonym_type == "homotypic" ||
+      synonym_type == "nomenclatural synonym"
   end
 
   def nomenclatural?
@@ -124,8 +127,8 @@ class Orchid < ActiveRecord::Base
   end
 
   def heterotypic?
-    synonym_type == 'heterotypic' || 
-      synonym_type == 'taxonomic synonym'
+    synonym_type == "heterotypic" ||
+      synonym_type == "taxonomic synonym"
   end
 
   def taxonomic?
@@ -133,7 +136,7 @@ class Orchid < ActiveRecord::Base
   end
 
   def pp?
-    partly == 'p.p.'
+    partly == "p.p."
   end
 
   # r relationship
@@ -142,19 +145,18 @@ class Orchid < ActiveRecord::Base
   # i id
   def riti
     return nil if accepted?
-    return InstanceType.find_by_name('misapplied').id if misapplied?
+    return InstanceType.find_by_name("misapplied").id if misapplied?
+
     if taxonomic?
-      if pp?
-        return InstanceType.find_by_name('pro parte taxonomic synonym').id
-      else
-        return InstanceType.find_by_name('taxonomic synonym').id
-      end
+      return InstanceType.find_by_name("pro parte taxonomic synonym").id if pp?
+
+      return InstanceType.find_by_name("taxonomic synonym").id
+
     elsif nomenclatural?
-      if pp?
-        return InstanceType.find_by_name('pro parte nomenclatural synonym').id
-      else
-        return InstanceType.find_by_name('nomenclatural synonym').id
-      end
+      return InstanceType.find_by_name("pro parte nomenclatural synonym").id if pp?
+
+      return InstanceType.find_by_name("nomenclatural synonym").id
+
     elsif InstanceType.where(name: synonym_type).size == 1
       return InstanceType.find_by_name(synonym_type).id
     elsif synonym_type.blank?
@@ -173,7 +175,7 @@ class Orchid < ActiveRecord::Base
   # We use a custom sequence because the data is initially loaded from a CSV file with allocated IDs.
   # This is only for subsequent records we add.
   def self.next_sequence_id
-    ActiveRecord::Base.connection.execute("select nextval('orchids_seq')").first['nextval']
+    ActiveRecord::Base.connection.execute("select nextval('orchids_seq')").first["nextval"]
   end
 
   def update_if_changed(params, username)
@@ -190,13 +192,13 @@ class Orchid < ActiveRecord::Base
 
   # Empty strings as parameters for string fields are interpreted as a change.
   def empty_strings_should_be_nils(params)
-    %w(hybrid, family, hr_comment, subfamily, tribe, subtribe, rank, nsl_rank, taxon,
- ex_base_author, base_author, ex_author, author, author_rank, name_status, name_comment,
- partly, auct_non, synonym_type, doubtful, hybrid_level, isonym, article_author, article_title,
- article_title_full, in_flag, author_2, title, title_full, edition, volume, page,
- year, date_, publ_partly, publ_note, note, footnote, distribution, comment,
- remark, original_text).each do |field|
-    params[field] = nil if params[field] == ""
+    %w[hybrid, family, hr_comment, subfamily, tribe, subtribe, rank, nsl_rank, taxon,
+       ex_base_author, base_author, ex_author, author, author_rank, name_status, name_comment,
+       partly, auct_non, synonym_type, doubtful, hybrid_level, isonym, article_author, article_title,
+       article_title_full, in_flag, author_2, title, title_full, edition, volume, page,
+       year, date_, publ_partly, publ_note, note, footnote, distribution, comment,
+       remark, original_text].each do |field|
+      params[field] = nil if params[field] == ""
     end
     params
   end
@@ -206,15 +208,15 @@ class Orchid < ActiveRecord::Base
   end
 
   def accepted?
-    record_type == 'accepted'
+    record_type == "accepted"
   end
 
   def hybrid_cross?
-    record_type == 'hybrid_cross'
+    record_type == "hybrid_cross"
   end
 
   def misapplied?
-    record_type == 'misapplied'
+    record_type == "misapplied"
   end
 
   def doubtful?
@@ -222,29 +224,29 @@ class Orchid < ActiveRecord::Base
   end
 
   def excluded?
-    record_type == 'accepted' && doubtful == true
+    record_type == "accepted" && doubtful == true
   end
 
   def accepted_and_not_doubtful?
-    record_type == 'accepted' && doubtful != true
+    record_type == "accepted" && doubtful != true
   end
 
-  # This search emulates the default search for Orchids, the 
+  # This search emulates the default search for Orchids, the
   # taxon-string: search.
   def self.taxon_string_search(taxon_string)
-    self.taxon_string_search_no_excluded(taxon_string)
+    taxon_string_search_no_excluded(taxon_string)
   end
 
   def self.taxon_string_search_no_excluded(taxon_string)
-    ts = taxon_string.downcase.gsub(/\*/,'%')
-    Orchid.where([ "((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and not doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and not doubtful))",
-                   ts, ts, ts, ts, ts, ts])
+    ts = taxon_string.downcase.gsub(/\*/, "%")
+    Orchid.where(["((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and not doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and not doubtful))",
+                  ts, ts, ts, ts, ts, ts])
   end
 
   def self.taxon_string_search_for_excluded(taxon_string)
-    ts = taxon_string.downcase.gsub(/\*/,'%')
-    Orchid.where([ "((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful))",
-                   ts, ts, ts, ts, ts, ts])
+    ts = taxon_string.downcase.gsub(/\*/, "%")
+    Orchid.where(["((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful))",
+                  ts, ts, ts, ts, ts, ts])
   end
 
   def create_preferred_match(authorising_user)
@@ -253,9 +255,9 @@ class Orchid < ActiveRecord::Base
 
   def self.create_preferred_matches(taxon_s, authorising_user, work_on_accepted)
     if work_on_accepted
-      self.create_preferred_matches_for_accepted_taxa(taxon_s, authorising_user)
+      create_preferred_matches_for_accepted_taxa(taxon_s, authorising_user)
     else
-      self.create_preferred_matches_for_excluded_taxa(taxon_s, authorising_user)
+      create_preferred_matches_for_excluded_taxa(taxon_s, authorising_user)
     end
   end
 
@@ -266,8 +268,8 @@ class Orchid < ActiveRecord::Base
       records += match.create_preferred_match(authorising_user)
     end
     entry = "Job finished: create preferred matches for accepted taxa matching #{taxon_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
-    OrchidProcessingLog.log(entry, 'job controller')
-    return attempted, records
+    OrchidProcessingLog.log(entry, "job controller")
+    [attempted, records]
   end
 
   def self.create_preferred_matches_for_excluded_taxa(taxon_s, authorising_user)
@@ -277,17 +279,17 @@ class Orchid < ActiveRecord::Base
       records += match.create_preferred_match(authorising_user)
     end
     entry = "Job finished: create preferred matches for excluded taxa matching #{taxon_s}, #{authorising_user}; attempted: #{attempted}, created: #{records}"
-    OrchidProcessingLog.log(entry, 'job controller')
-    return attempted, records
+    OrchidProcessingLog.log(entry, "job controller")
+    [attempted, records]
   end
 
   def self.create_instance_for_accepted_or_excluded(taxon_s, authorising_user, work_on_accepted)
-    if work_on_accepted
-      search = Orchid.taxon_string_search_no_excluded(taxon_s)
-    else
-      search = Orchid.taxon_string_search_for_excluded(taxon_s)
-    end
-    self.create_instance_for(taxon_s, authorising_user, search)
+    search = if work_on_accepted
+               Orchid.taxon_string_search_no_excluded(taxon_s)
+             else
+               Orchid.taxon_string_search_for_excluded(taxon_s)
+             end
+    create_instance_for(taxon_s, authorising_user, search)
   end
 
   def self.create_instance_for(taxon_s, authorising_user, search)
@@ -300,8 +302,8 @@ class Orchid < ActiveRecord::Base
       errors += creator.errors || 0
     end
     entry = "Job finished: create instance for preferred matches for '#{taxon_s}', #{authorising_user}; records created: #{records}; errors: #{errors}"
-    OrchidProcessingLog.log(entry, 'job controller')
-    return records, errors
+    OrchidProcessingLog.log(entry, "job controller")
+    [records, errors]
   end
 
   def instance_creator_for_preferred_matches(authorising_user)
@@ -310,19 +312,19 @@ class Orchid < ActiveRecord::Base
     throw "No ref with id: #{REF_ID}!" if @ref.blank?
     AsInstanceCreator.new(self, @ref, authorising_user)
   end
- 
+
   # check for preferred name
   def self.add_to_tree_for(draft_tree, taxon_s, authorising_user, work_on_accepted)
     if work_on_accepted
-      search = Orchid.taxon_string_search_no_excluded(taxon_s).where(record_type: 'accepted').where(doubtful: false).order(:seq)
-      tag = 'accepted'
+      search = Orchid.taxon_string_search_no_excluded(taxon_s).where(record_type: "accepted").where(doubtful: false).order(:seq)
+      tag = "accepted"
     else
-      search = Orchid.taxon_string_search_for_excluded(taxon_s).where(record_type: 'accepted').where(doubtful: true).order(:seq)
-      tag = 'excluded'
+      search = Orchid.taxon_string_search_for_excluded(taxon_s).where(record_type: "accepted").where(doubtful: true).order(:seq)
+      tag = "excluded"
     end
-    self.add_to_tree(draft_tree, taxon_s, authorising_user, search, tag)
+    add_to_tree(draft_tree, taxon_s, authorising_user, search, tag)
   end
-    
+
   def self.add_to_tree(draft_tree, taxon_s, authorising_user, search, tag)
     placed_tally = error_tally = preflight_stop_tally = 0
     search.each do |match|
@@ -332,20 +334,22 @@ class Orchid < ActiveRecord::Base
       preflight_stop_tally += placer.preflight_stop_count
     end
     entry = "Job finished: add to tree for #{tag} taxa matching #{taxon_s}, #{authorising_user}; placed: #{placed_tally}, errors: #{error_tally}, preflight stops: #{preflight_stop_tally}"
-    OrchidProcessingLog.log(entry, 'job controller')
-    return placed_tally, error_tally, preflight_stop_tally,''
+    OrchidProcessingLog.log(entry, "job controller")
+    [placed_tally, error_tally, preflight_stop_tally, ""]
   rescue GenusTaxonomyPlacementError => e
     logger.error(e.message)
-    return placed_tally, error_tally + 1, preflight_stop_tally, e.message
+    [placed_tally, error_tally + 1, preflight_stop_tally, e.message]
   end
 
   def isonym?
     return false if isonym.blank?
+
     true
   end
 
   def orth_var?
     return false if name_status.blank?
+
     name_status.downcase.match(/\Aorth/)
   end
 
@@ -359,8 +363,8 @@ class Orchid < ActiveRecord::Base
   end
 
   def true_record_type
-    if record_type == 'accepted' && doubtful?
-      'excluded'
+    if record_type == "accepted" && doubtful?
+      "excluded"
     else
       record_type
     end
@@ -375,6 +379,4 @@ class Orchid < ActiveRecord::Base
   def self.debug(msg)
     Rails.logger.debug("Orchid##{msg}")
   end
-
 end
-

@@ -1,6 +1,5 @@
-#   encoding: utf-8
-
 # frozen_string_literal: true
+
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -22,7 +21,7 @@ class History
   def self.changes(year)
     load_changes_for(year)
   end
-private
+
   def self.load_changes_for(year)
     YAML.load(File.read("config/history/changes-#{year}.yml"))
   end

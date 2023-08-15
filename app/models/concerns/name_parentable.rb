@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Name scopes
 module NameParentable
   extend ActiveSupport::Concern
@@ -11,7 +10,7 @@ module NameParentable
              foreign_key: "parent_id",
              dependent: :restrict_with_exception
     belongs_to :second_parent, optional: true,
-               class_name: "Name", foreign_key: "second_parent_id"
+                               class_name: "Name", foreign_key: "second_parent_id"
     has_many :second_children,
              class_name: "Name",
              foreign_key: "second_parent_id",

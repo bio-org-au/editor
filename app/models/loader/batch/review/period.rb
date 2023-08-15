@@ -23,11 +23,14 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  validates :name, presence: true, uniqueness: {scope: :batch_review_id, message: 'has been used for another period in the same batch review'}
+  validates :name, presence: true,
+                   uniqueness: { scope: :batch_review_id, message: "has been used for another period in the same batch review" }
   validates :start_date, presence: true
   validate :start_date_cannot_be_in_the_past
-  validates :start_date, uniqueness: {scope: :batch_review_id, message: 'has been used for another period in the same batch review'}
-  #validate :start_date_cannot_be_changed_once_past, on: :update
+  validates :start_date,
+            uniqueness: { scope: :batch_review_id,
+                          message: "has been used for another period in the same batch review" }
+  # validate :start_date_cannot_be_changed_once_past, on: :update
   validate :end_date_cannot_be_in_the_past
   validate :end_date_must_be_after_start_date
   before_destroy :abort_if_review_periods
@@ -48,18 +51,24 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
 
   attr_accessor :give_me_focus, :message
 
-  def loader_name_comments(loader_name_id, scope = 'unrestricted')
-    return comments.order(:created_at).collect.select {|x| x.loader_name_id == loader_name_id} if scope == 'unrestricted'
+  def loader_name_comments(loader_name_id, scope = "unrestricted")
+    if scope == "unrestricted"
+      return comments.order(:created_at).collect.select do |x|
+               x.loader_name_id == loader_name_id
+             end
+    end
 
-    comments.order(:created_at).collect.select {|x| x.loader_name_id == loader_name_id}.select {|x| x.context.downcase == scope.downcase}
+    comments.order(:created_at).collect.select do |x|
+      x.loader_name_id == loader_name_id
+    end.select { |x| x.context.downcase == scope.downcase }
   end
 
   def fresh?
-    true #created_at > 1.hour.ago
+    true # created_at > 1.hour.ago
   end
 
   def display_as
-    'Review Period'
+    "Review Period"
   end
 
   def allow_delete?
@@ -79,59 +88,55 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
 
   # The table isn't in all schemas, so check it's there
   def self.exists?
-    begin 
-      BatchReviewPeriod.all.count
-    end
+    BatchReviewPeriod.all.count
+
     true
-  rescue => e
+  rescue StandardError => e
     false
   end
 
   def start_date_cannot_be_in_the_past
-    if will_save_change_to_start_date? 
-      if start_date.present? && start_date < Date.today
-        errors.add(:start_date, "can't be in the past")
-      end
-    end
+    return unless will_save_change_to_start_date?
+    return unless start_date.present? && start_date < Date.today
+
+    errors.add(:start_date, "can't be in the past")
   end
 
   def end_date_cannot_be_in_the_past
-    if end_date.present? && end_date < Date.today
-      errors.add(:end_date, "can't be changed to a past date")
-    end
+    return unless end_date.present? && end_date < Date.today
+
+    errors.add(:end_date, "can't be changed to a past date")
   end
 
   def end_date_must_be_after_start_date
-    if end_date.present? && end_date < start_date
-      errors.add(:end_date, "must be after start date")
-    end
+    return unless end_date.present? && end_date < start_date
+
+    errors.add(:end_date, "must be after start date")
   end
 
   def start_date_cannot_be_changed_once_past
-    if will_save_change_to_start_date? 
-      db_record = BatchReviewPeriod.find(id)
-      if db_record.start_date < Date.yesterday
-        errors.add(:start_date, "can't be changed once the period has started")
-      end
-    end
+    return unless will_save_change_to_start_date?
+
+    db_record = BatchReviewPeriod.find(id)
+    return unless db_record.start_date < Date.yesterday
+
+    errors.add(:start_date, "can't be changed once the period has started")
   end
 
   def record_type
-    'BatchReviewPeriod'
+    "BatchReviewPeriod"
   end
 
   def self.create(params, username)
-    batch_review_period = self.new(params)
-    if batch_review_period.save_with_username(username)
-      batch_review_period
-    else
-      raise batch_review_period.errors.full_messages.first.to_s
-    end
+    batch_review_period = new(params)
+    raise batch_review_period.errors.full_messages.first.to_s unless batch_review_period.save_with_username(username)
+
+    batch_review_period
   end
 
   def save_with_username(username)
     self.created_by = self.updated_by = username
-    #set_defaults
+    # set_defaults
     save
   end
 
@@ -145,7 +150,7 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   def update_if_changed(params, username)
     assign_attributes(params_without_dates(params))
     apply_start_date_if_changed(params)
-    apply_end_date_if_changed(params) unless params['end_date(1i)'].blank?
+    apply_end_date_if_changed(params) unless params["end_date(1i)"].blank?
     if has_changes_to_save?
       logger.debug("changes_to_save: #{changes_to_save.inspect}")
       self.updated_by = username
@@ -157,41 +162,41 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   end
 
   def params_without_dates(params)
-    h = Hash.new
-    params.each do |key, val| 
+    h = {}
+    params.each do |key, val|
       logger.debug("key: #{key}; val: #{val}")
       unless key =~ /start.date/ || key =~ /end.date/
         logger.debug("Adding key #{key} to hash")
-        h[key] = val 
+        h[key] = val
       end
     end
     h
   end
 
   def apply_start_date_if_changed(params)
-    year = params['start_date(1i)']
-    month = "%02d" % params['start_date(2i)']
-    day = "%02d" % params['start_date(3i)']
+    year = params["start_date(1i)"]
+    month = "%02d" % params["start_date(2i)"]
+    day = "%02d" % params["start_date(3i)"]
     start_date_string = "#{year}-#{month}-#{day}"
     logger.debug("proposed start_date: #{start_date_string}")
     if start_date.to_s == start_date_string
-      logger.debug('no start date change')
+      logger.debug("no start date change")
     else
-      logger.debug('start date has changed')
+      logger.debug("start date has changed")
       self.start_date = Date.parse(start_date_string)
     end
   end
 
   def apply_end_date_if_changed(params)
-    year = params['end_date(1i)']
-    month = "%02d" % params['end_date(2i)']
-    day = "%02d" % params['end_date(3i)']
+    year = params["end_date(1i)"]
+    month = "%02d" % params["end_date(2i)"]
+    day = "%02d" % params["end_date(3i)"]
     end_date_string = "#{year}-#{month}-#{day}"
     logger.debug("proposed end_date: #{end_date_string}")
     if end_date.to_s == end_date_string
-      logger.debug('no end_date date change')
+      logger.debug("no end_date date change")
     else
-      logger.debug('end_date date has changed')
+      logger.debug("end_date date has changed")
       self.end_date = Date.parse(end_date_string)
     end
   end
@@ -209,9 +214,9 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   end
 
   def status
-    return 'future' if future?
-    return 'past' if past?
-    return 'active' if active?
+    return "future" if future?
+    return "past" if past?
+    return "active" if active?
   end
 
   def future?
@@ -224,15 +229,15 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
 
   def active?
     start_date < Time.now &&
-    (end_date.blank? || end_date > Time.now)
+      (end_date.blank? || end_date > Time.now)
   end
 
   def reviewer?(username)
-    reviewers.select {|r| r.user.name.downcase == username.downcase}.size > 0
+    reviewers.select { |r| r.user.name.downcase == username.downcase }.size > 0
   end
 
   def reviewer_id(username)
-    reviewers.select {|r| r.user.name.downcase == username.downcase}.first.id
+    reviewers.select { |r| r.user.name.downcase == username.downcase }.first.id
   end
 
   def finite?
@@ -244,7 +249,6 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   def abort_if_review_periods
     return unless reviewers.exists? || name_comments.exists?
 
-    throw 'Cannot delete period because it has reviewers or comments'
+    throw "Cannot delete period because it has reviewers or comments"
   end
 end
-  

@@ -17,6 +17,5 @@
 #   limitations under the License.
 #
 class Search::Loader::Batch::Review::FieldAbbrev
-  ABBREVS = {
-  }.freeze
+  ABBREVS = {}.freeze
 end

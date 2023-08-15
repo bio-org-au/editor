@@ -17,4 +17,3 @@ task :build_prod do
   sh "rm -rf .gitignore"
   puts "Ready to tar"
 end
-

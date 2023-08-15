@@ -33,7 +33,7 @@ class Search::Base
   def initialize(params)
     @params = params
     @params[:canonical_query_target] = @params[:query_target]
-    @params[:canonical_query_target] = @params[:canonical_query_target].downcase.gsub(', ','_').gsub(' ','_')
+    @params[:canonical_query_target] = @params[:canonical_query_target].downcase.gsub(", ", "_").gsub(" ", "_")
     set_defaults
     run_query
   end
@@ -46,7 +46,7 @@ class Search::Base
       run_plain_query
     end
   end
- 
+
   def debug(s)
     Rails.logger.debug("Search::Base #{s}")
   end
@@ -90,7 +90,7 @@ class Search::Base
       when /^users$/ then Search::OnModel::Base.new(@parsed_request)
       when /^org$/ then Search::OnModel::Base.new(@parsed_request)
       when /^bulk.processing.log$/ then Search::OnModel::Base.new(@parsed_request)
-      else raise 'unknown target table'
+      else raise "unknown target table"
       end
   end
 
@@ -124,7 +124,7 @@ class Search::Base
       when /\Areferences.shared.names\z/i
         Reference::DefinedQuery::ReferencesSharedNames.new(@parsed_request)
       else
-        Rails.logger.error("Search::Base failed to run defined query: "\
+        Rails.logger.error("Search::Base failed to run defined query: " \
                            "#{@parsed_request.defined_query}")
         raise "No such defined query: #{@parsed_request.defined_query}"
       end

@@ -68,7 +68,7 @@ module ApplicationHelper
 
   def formatted_date(date)
     date
-    #date.strftime("%d-%b-%Y")
+    # date.strftime("%d-%b-%Y")
   end
 
   def ext_mapper_url
@@ -76,9 +76,9 @@ module ApplicationHelper
   end
 
   def mapper_link(type, id)
-    #this is brittle. Replace with getting the URI from the object or the mapper directly.
-    #see name and instance examples below.
-    %(<a href="#{ext_mapper_url}#{type}/#{ShardConfig.name_space.downcase}/#{id}" title="#{type.capitalize} #{id}"><i class="fa fa-link"></i></a>).html_safe
+    # this is brittle. Replace with getting the URI from the object or the mapper directly.
+    # see name and instance examples below.
+    %(<a href="#{ext_mapper_url}#{type}/#{sanitize(ShardConfig.name_space.downcase)}/#{id}" title="#{type.capitalize} #{id}"><i class="fa fa-link"></i></a>).html_safe
   end
 
   def mapper_instance_link(instance)
@@ -89,27 +89,36 @@ module ApplicationHelper
     %(<a href="#{ext_mapper_url}#{name.uri}" title="NAME #{name.id}"><i class="fa fa-link"></i></a>).html_safe
   end
 
-  def page_title
-    unless Rails.configuration.try('tag').blank?
-      return "#{Rails.configuration.try('tag')}"
+  def badge
+    return "#{Rails.configuration.try('tag')}" unless Rails.configuration.try("tag").blank?
+
+    case Rails.configuration.try("environment")
+    when /\Adev/i
+      "Dev Editor"
+    when /^test/i
+      "Test Editor"
+    when /^stag/i
+      "Stage Editor"
+    when /^prod/i
+      "#{ShardConfig.shard_group_name} Editor"
     else
-      case Rails.configuration.try("environment")
-      when /\Adev/i
-        "Dev Editor"
-      when /^test/i
-        "Test Editor"
-      when /^stag/i
-        "Stage Editor"
-      when /^prod/i
-        "#{ShardConfig.shard_group_name} Editor"
-      else
-        "#{ShardConfig.shard_group_name} Editor"
-      end
+      "#{ShardConfig.shard_group_name} Editor"
     end
   end
 
-  def badge
-    page_title
+  def page_title
+    case Rails.configuration.try("environment")
+    when /\Adev/i
+      "Dev"
+    when /^test/i
+      "Test"
+    when /^stag/i
+      "Stage"
+    when /^prod/i
+      "#{ShardConfig.shard_group_name}"
+    else
+      "#{ShardConfig.shard_group_name}"
+    end + ':' + (params["query_target"] || 'Editor').gsub(/_/,' ').titleize
   end
 
   def development?
@@ -127,4 +136,3 @@ class String
     tr("_", " ").upcase
   end
 end
-

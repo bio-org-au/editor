@@ -10,18 +10,18 @@
         class="btn btn-primary left"
         name="update_distribution[update]"
         tabindex="<%= increment_tab_index %>"
-        title="Update this distribution"
+        title="Update this distribution on the draft"
         onclick="$('#update_distribution_btn').find('i.fa').addClass('fa-spin'); $('option').removeAttr('disabled');"
->Update distribution <i class="fa fa-refresh"></i>
+>Update distribution on draft <i class="fa fa-refresh"></i>
 </button>
 <button type="button"
         id="delete_distribution_btn"
         class="btn btn-warning right"
         name="delete_distribution_btn"
         tabindex="<%= increment_tab_index %>"
-        title="delete this distribution"
+        title="delete this distribution on the draft"
         onclick="$('#confirm_delete_distribution').show();$('#update_distribution_btn').hide();$('#delete_distribution_btn').prop('disabled', true);$('#cancel_delete_distribution_btn').focus();"
->Delete distribution
+>Delete distribution on draft
 </button>
 <div style="display: none" id="confirm_delete_distribution">
   <button type="submit"
@@ -29,18 +29,18 @@
           class="btn btn-danger left"
           name="update_distribution[delete]"
           tabindex="<%= tab_index(2) %>"
-          title="Update this distribution"
+          title="Update this distribution on the draft"
           onclick="$('#confirm_delete_distribution_btn').find('i.fa').addClass('fa-spin');$('#update_distribution_dist').val('')"
-  >Confirm delete <i class="fa fa-trash-o"></i>
+  >Confirm delete on draft <i class="fa fa-trash-o"></i>
   </button>
   <button type="button"
           id="cancel_delete_distribution_btn"
           class="btn right"
           name="update_distribution[delete]"
           tabindex="<%= increment_tab_index %>"
-          title="delete this distribution"
+          title="delete this distribution on the draft"
           onclick="$('#confirm_delete_distribution').hide();$('#update_distribution_btn').show();$('#delete_distribution_btn').prop('disabled', false);$('#confirm_delete_distribution_btn').find('i.fa').removeClass('fa-spin');"
-  >Cancel delete
+  >Cancel delete on draft
   </button>
   <% increment_tab_index %>
 </div>

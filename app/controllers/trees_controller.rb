@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -20,9 +19,8 @@
 #   Trees are classification graphs for taxa.
 #   There are several types of trees - see the model.
 class TreesController < ApplicationController
-  before_action :find_tree, only: [:show, :tab]
-  def index;
-  end
+  before_action :find_tree, only: %i[show tab]
+  def index; end
 
   # GET /trees/1
   # GET /trees/1.json
@@ -31,8 +29,8 @@ class TreesController < ApplicationController
   def show
     logger.debug("TreesController#show for tree: #{@tree}")
     pick_a_tab("tab_details")
-    #pick_a_tab_index
-    @take_focus = params[:take_focus] == 'true'
+    # pick_a_tab_index
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
   alias tab show
@@ -118,13 +116,15 @@ class TreesController < ApplicationController
 
   def reports
     @diff_link = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id)
-    @diff_link_raw = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id).gsub(/embed=true/,'embed=false')
+    @diff_link_raw = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id).gsub(
+      /embed=true/, "embed=false"
+    )
     @syn_link = Tree::AsServices.syn_link(@working_draft.tree.id)
-    @syn_link_raw = Tree::AsServices.syn_link(@working_draft.tree.id).gsub(/embed=true/,'embed=false')
+    @syn_link_raw = Tree::AsServices.syn_link(@working_draft.tree.id).gsub(/embed=true/, "embed=false")
     @val_link = Tree::AsServices.val_link(@working_draft.id)
-    @val_link_raw = Tree::AsServices.val_link(@working_draft.id).gsub(/embed=true/,'embed=false')
+    @val_link_raw = Tree::AsServices.val_link(@working_draft.id).gsub(/embed=true/, "embed=false")
     @val_syn_link = Tree::AsServices.val_syn_link(@working_draft.id)
-    @val_syn_link_raw = Tree::AsServices.val_syn_link(@working_draft.id).gsub(/embed=true/,'embed=false')
+    @val_syn_link_raw = Tree::AsServices.val_syn_link(@working_draft.id).gsub(/embed=true/, "embed=false")
   end
 
   def update_synonymy
@@ -252,7 +252,7 @@ class TreesController < ApplicationController
                                   excluded: params[:excluded]).update
   rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
     @message = json_error(e)
-    render :text => @message, :status => 401
+    render text: @message, status: 401
   end
 
   def update_tree_parent
@@ -278,10 +278,10 @@ class TreesController < ApplicationController
   # runs slowly...10 seconds maybe
   def run_cas
     url = Tree::AsServices.val_syn_link(@working_draft.id)
-    @result = RestClient.get(url, {content_type: :html, accept: :html})
-  rescue => e
+    @result = RestClient.get(url, { content_type: :html, accept: :html })
+  rescue StandardError => e
     @message = e.to_s
-    render 'trees/reports/run_cas_error'
+    render "trees/reports/run_cas_error"
   end
 
   def show_diff
@@ -291,10 +291,11 @@ class TreesController < ApplicationController
   # may run slowly
   def run_diff
     url = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id)
-    @result = RestClient.get(url, {content_type: :html, accept: :html})
-    if @result.match(/Nothing to see here.*no changes, nothing, zip/)
-      @result = @result.sub(/<h3>Nothing to see here.<\/h3> *<p>We have no changes, nothing, zip.<\/p>/,'<h4>No changes.</h4>')
-    end
+    @result = RestClient.get(url, { content_type: :html, accept: :html })
+    return unless @result.match(/Nothing to see here.*no changes, nothing, zip/)
+
+    @result = @result.sub(%r{<h3>Nothing to see here.</h3> *<p>We have no changes, nothing, zip.</p>},
+                          "<h4>No changes.</h4>")
   end
 
   def show_valrep
@@ -304,7 +305,7 @@ class TreesController < ApplicationController
   # runs slowly...30 seconds maybe
   def run_valrep
     url = Tree::AsServices.val_link(@working_draft.id)
-    @result = RestClient.get(url, {content_type: :html, accept: :html})
+    @result = RestClient.get(url, { content_type: :html, accept: :html })
   end
 
   private
@@ -318,7 +319,7 @@ class TreesController < ApplicationController
     else
       "Tree Error: #{json&.to_s || err.to_s}"
     end
-  rescue
+  rescue StandardError
     err.to_s
   end
 
@@ -333,7 +334,7 @@ class TreesController < ApplicationController
 
   def json_result(result)
     json_payload(result)&.message || result.to_s
-  rescue
+  rescue StandardError
     result.to_s
   end
 
@@ -351,62 +352,63 @@ class TreesController < ApplicationController
   end
 
   def process_problems(payload)
-    payload['problems']
+    payload["problems"]
   end
 
   def list_problems(key, problems)
-    return '' if problems.nil? || problems.empty?
+    return "" if problems.nil? || problems.empty?
+
     "<strong>#{key}:</strong><ul><li>" +
-        problems.join("</li><li>") +
-        "</li></ul>"
+      problems.join("</li><li>") +
+      "</li></ul>"
   end
 
   def move_name_params
     params.require(:move_placement)
-        .permit(:element_link,
-                :parent_element_link,
-                :instance_id,
-                :comment,
-                :excluded,
-                distribution: [])
+          .permit(:element_link,
+                  :parent_element_link,
+                  :instance_id,
+                  :comment,
+                  :excluded,
+                  distribution: [])
   end
 
   def place_name_params
     params.require(:place_name)
-        .permit(:name_id,
-                :instance_id,
-                :parent_element_link,
-                :comment,
-                :excluded,
-                :version_id,
-                :parent_name_typeahead_string,
-                :place,
-                distribution: [])
+          .permit(:name_id,
+                  :instance_id,
+                  :parent_element_link,
+                  :comment,
+                  :excluded,
+                  :version_id,
+                  :parent_name_typeahead_string,
+                  :place,
+                  distribution: [])
   end
 
   def update_comment_params
     params.require(:update_comment)
-        .permit(:element_link,
-                :comment,
-                :update,
-                :delete)
+          .permit(:element_link,
+                  :comment,
+                  :update,
+                  :delete)
   end
 
   def update_distribution_params
     params.require(:update_distribution)
-        .permit(:element_link,
-                :distribution,
-                :update,
-                :delete,
-                dist: [])
+          .permit(:element_link,
+                  :distribution,
+                  :update,
+                  :delete,
+                  dist: [])
   end
 
   def update_parent_params
     params.require(:update_parent)
-        .permit(:element_link,
-                :parent_element_link,
-                :update,
-                :parent_name_typeahead_string)
+          .permit(:element_link,
+                  :parent_element_link,
+                  :update,
+                  :parent_name_typeahead_string)
   end
 
   def remove_name_placement_params

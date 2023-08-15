@@ -18,7 +18,6 @@
 #
 # Handle an manipulate profile data for trees
 class Tree::ProfileData
-
   attr_reader :profile_data
 
   def initialize(user, tree_version, profile_data)
@@ -36,7 +35,7 @@ class Tree::ProfileData
   end
 
   def update_distribution(distribution)
-    dist_str = distribution&.join(', ') || ''
+    dist_str = distribution&.join(", ") || ""
     update_profile(@tree_version.distribution_key, dist_str)
   end
 
@@ -45,12 +44,11 @@ class Tree::ProfileData
       if value.blank?
         @profile_data.delete(key)
       else
-        @profile_data[key] = {value: value,
-                              updated_by: @current_user.username,
-                              updated_at: Time.now.utc.iso8601}
+        @profile_data[key] = { value: value,
+                               updated_by: @current_user.username,
+                               updated_at: Time.now.utc.iso8601 }
       end
     end
     @profile_data
   end
-
 end

@@ -1,0 +1,22 @@
+<% if defined? @previous_distribution %>
+  <% unless @previous_distribution.blank? %>
+  <tr class="search-result accepted distribution">
+      <td>
+        <span class="distribution-inset">&nbsp;</span><%= @previous_distribution %>
+      </td>
+  </tr>
+  <% @previous_distribution = '' %>
+  <% end %>
+<% end %>
+
+<% if defined? @previous_comment %>
+  <% unless @previous_comment.blank? %>
+  <tr class="search-result accepted comment">
+      <td>
+        <span class="comment-inset">&nbsp;</span>&nbsp;<%= sanitize(@previous_comment, tags: %w(i)).html_safe %>
+      </td>
+  </tr>
+  <% @previous_comment = '' %>
+  <% end %>
+<% end %>
+

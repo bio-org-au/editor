@@ -75,6 +75,6 @@ class TreePlacementCreateTest < ActionController::TestCase
     assert_response :success
     assert_equal "place_name", @controller.action_name,
                  "Action should be 'place_name'"
-    assert_equal "Placed", @controller.instance_variable_get(:"@message")
+    assert_equal "Placed", @controller.instance_variable_get(:@message)
   end
 end

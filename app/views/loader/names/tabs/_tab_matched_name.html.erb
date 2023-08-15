@@ -21,8 +21,7 @@
                InstanceType.synonym_options, {include_blank: true},
                {value: loader_name_match.relationship_instance_type_id, data: {update_url: instance_path},
                 class: 'form-control width-50-percent', title: 'Enter instance type',
-                required: true, tabindex: increment_tab_index})
-  %>
+                required: true, tabindex: increment_tab_index}) %>
 
             <%= f.submit "Change", id: "change-instance-type-#{loader_name_match.id}",
               tabindex: increment_tab_index,
@@ -35,7 +34,8 @@
     </ul>
 <% end %>
 </ol>
-<%= render partial: 'loader/names/tabs/manually_drafted' %>
+
+<%= render partial: 'loader/names/tabs/matched_name/drafted' %>
 <span id="search-result-details-info-message-container" class="message-container"></span>
 <span id="search-result-details-error-message-container" class="error-container"></span>
 <br>

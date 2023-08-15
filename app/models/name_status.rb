@@ -21,7 +21,7 @@ class NameStatus < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
   belongs_to :name_group
-  scope :ordered_by_name, -> {order(Arel.sql(%(replace(name, '[', 'z') collate "C")))}
+  scope :ordered_by_name, -> { order(Arel.sql(%(replace(name, '[', 'z') collate "C"))) }
   scope :not_deprecated, -> { where("not deprecated") }
 
   NA = "[n/a]"
@@ -33,11 +33,11 @@ class NameStatus < ActiveRecord::Base
   end
 
   def legitimate?
-    name =~ /\Alegitimate\z/
+    name == "legitimate"
   end
 
   def manuscript?
-    name =~ /\Amanuscript\z/
+    name == "manuscript"
   end
 
   def na?
@@ -77,12 +77,11 @@ class NameStatus < ActiveRecord::Base
   end
 
   def self.options_for_category(name_category)
-    case 
-    when name_category.scientific?
+    if name_category.scientific?
       scientific_options
-    when name_category.cultivar_hybrid?
+    elsif name_category.cultivar_hybrid?
       na_default_and_deleted_options
-    when name_category.cultivar?
+    elsif name_category.cultivar?
       na_default_and_deleted_options
     else
       na_option

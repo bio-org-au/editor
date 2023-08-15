@@ -35,7 +35,7 @@ class HelpControllerTest < ActionController::TestCase
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: [] },
-       xhr: true)
+        xhr: true)
     assert_response :success
   end
 
@@ -45,7 +45,7 @@ class HelpControllerTest < ActionController::TestCase
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: [:edit] },
-       xhr: true)
+        xhr: true)
     assert_response :success
   end
 end

@@ -69,7 +69,7 @@ class Loader::Batch::Stats::ForAllNames
 
   def core_search
     if @name_string.match(/\Afamily:/i)
-      family_string = @name_string.sub(/\Afamily: */i,'')
+      family_string = @name_string.sub(/\Afamily: */i, "")
       Loader::Name.family_string_search(family_string)
                   .joins(:loader_batch)
                   .where(loader_batch: { id: @batch_id })

@@ -17,14 +17,14 @@
 #   limitations under the License.
 #
 class OrgsController < ApplicationController
-  before_action :find_org, only: [:show, :destroy, :tab, :update]
+  before_action :find_org, only: %i[show destroy tab update]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
     set_tab
     set_tab_index
-    @take_focus = params[:take_focus] == 'true'
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 

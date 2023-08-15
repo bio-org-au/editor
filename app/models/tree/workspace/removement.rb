@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -25,11 +24,12 @@ class Tree::Workspace::Removement < ActiveType::Object
 
   def remove
     url = build_url
-    payload = {taxonUri: target.element_link}
+    payload = { taxonUri: target.element_link }
     logger.info "Calling #{url}"
     raise errors.full_messages.first unless valid?
-    RestClient.post(url, payload.to_json, {content_type: :json, accept: :json})
-  rescue => e
+
+    RestClient.post(url, payload.to_json, { content_type: :json, accept: :json })
+  rescue StandardError => e
     Rails.logger.error("Tree::Workspace::Removement error: #{e}")
     raise
   end
@@ -37,5 +37,4 @@ class Tree::Workspace::Removement < ActiveType::Object
   def build_url
     Tree::AsServices.remove_placement_url(username)
   end
-
 end

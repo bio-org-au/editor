@@ -26,7 +26,7 @@ class InstSearchUpdAftFromDropdownSimpleSingularTest < ActiveSupport::TestCase
     search = Search::Base
              .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "10 instances-only:",
-                       query_target: "review",
+                       query_target: "Activity",
                        current_user: build_edit_user))
     assert_equal Array, search.executed_query.results.class,
                  "Results should be an Array"

@@ -108,7 +108,7 @@ class Author < ActiveRecord::Base
     self.namespace_id = Namespace.default.id if namespace_id.blank?
   end
 
-  #Todo: replace with calls to squish!
+  # TODO: replace with calls to squish!
   def compress_whitespace
     self.name = name.gsub(/ +/, " ") unless name.nil?
     self.abbrev = abbrev.gsub(/ +/, " ") unless abbrev.nil?
@@ -142,10 +142,12 @@ class Author < ActiveRecord::Base
   end
 
   def normalised_name
-    Author.find_by_sql(["select f_unaccent(name) as normalised_name from author where id = ?",id]).first["normalised_name"]
+    Author.find_by_sql(["select f_unaccent(name) as normalised_name from author where id = ?",
+                        id]).first["normalised_name"]
   end
 
   def normalised_abbrev
-    Author.find_by_sql(["select f_unaccent(abbrev) as normalised_abbrev from author where id = ?",id]).first["normalised_abbrev"]
+    Author.find_by_sql(["select f_unaccent(abbrev) as normalised_abbrev from author where id = ?",
+                        id]).first["normalised_abbrev"]
   end
 end

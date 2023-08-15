@@ -35,8 +35,9 @@
 class Name::AsTypeahead::ForFamily
   attr_reader :suggestions,
               :params
+
   SEARCH_LIMIT = 50
-  GROUP_BY = "name.id,name.full_name,name_rank.name,name_status.name,"\
+  GROUP_BY = "name.id,name.full_name,name_rank.name,name_status.name," \
              "name_rank.sort_order"
 
   def initialize(params)
@@ -66,7 +67,6 @@ class Name::AsTypeahead::ForFamily
     @qry.family_name
   end
 
-
   def instance_phrase(count)
     ActionController::Base.helpers.pluralize(count, "instance")
   end
@@ -77,8 +77,8 @@ class Name::AsTypeahead::ForFamily
     @qry = @qry.select_fields_for_family_typeahead
                .group(GROUP_BY)
                .collect do |n|
-      { value: "#{n.full_name} | #{n.name_rank_name} | "\
-               "#{n.name_status_name} | "\
+      { value: "#{n.full_name} | #{n.name_rank_name} | " \
+               "#{n.name_status_name} | " \
                "#{instance_phrase(n.instance_count)} ",
         id: n.id }
     end

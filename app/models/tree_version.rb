@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -33,40 +32,40 @@ class TreeVersion < ActiveRecord::Base
   # Returns a TreeVersionElement for this TreeVersion which contains the name
   def name_in_version(name)
     tree_version_elements.joins(:tree_element)
-        .where(tree_element: {name: name}).first
+                         .where(tree_element: { name: name }).first
   end
 
   # Returns a TreeVersionElement for this TreeVersion which contains the name
   def instance_in_version(instance)
     tree_version_elements.joins(:tree_element)
-        .where(tree_element: {instance: instance}).first
+                         .where(tree_element: { instance: instance }).first
   end
 
   def query_name_in_version(term)
     tree_version_elements
-        .joins(:tree_element)
-        .where(["lower(tree_element.simple_name) like lower(?)", term])
-        .order(:name_path)
-        .limit(50)
+      .joins(:tree_element)
+      .where(["lower(tree_element.simple_name) like lower(?)", term])
+      .order(:name_path)
+      .limit(50)
   end
 
   def query_name_in_version_at_rank(term, rank_name)
     tree_version_elements
-        .joins(:tree_element)
-        .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank = ?", term, rank_name])
-        .limit(15)
+      .joins(:tree_element)
+      .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank = ?", term, rank_name])
+      .limit(15)
   end
 
   def query_name_version_ranks(term, rank_names)
     tree_version_elements
-        .joins(:tree_element)
-        .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank in (?)", term, rank_names])
-        .order(:name_path)
-        .limit(15)
+      .joins(:tree_element)
+      .where(["lower(tree_element.simple_name) like lower(?) and tree_element.rank in (?)", term, rank_names])
+      .order(:name_path)
+      .limit(15)
   end
 
   def last_update
-    self.tree_version_elements.order(updated_at: :desc).first
+    tree_version_elements.order(updated_at: :desc).first
   end
 
   def user_can_edit?(user)

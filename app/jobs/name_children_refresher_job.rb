@@ -1,4 +1,3 @@
-
 # A SuckerPunch job to refresh names.
 class NameChildrenRefresherJob
   include SuckerPunch::Job

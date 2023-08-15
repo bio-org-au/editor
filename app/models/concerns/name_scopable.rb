@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # Name scopes
 module NameScopable
   extend ActiveSupport::Concern
@@ -47,7 +46,7 @@ module NameScopable
            end)
     # sorry this repeated code forced on me by needing to set the name of name.full_name
     scope :order_by_rank_and_full_name_for_parent_typeahead,
-          -> {order("name_rank.sort_order, lower(name.full_name)")}
+          -> { order("name_rank.sort_order, lower(name.full_name)") }
     # sorry this repeated code forced on me by needing to set the name of name.full_name
     scope :lower_full_name_like_for_parent_typeahead,
           (lambda do |string|
@@ -56,7 +55,7 @@ module NameScopable
           end)
     scope :select_fields_for_parent_typeahead,
           (lambda do
-            select(" name.id, name.full_name, name.family_id,
+             select(" name.id, name.full_name, name.family_id,
                     families_name.full_name family_full_name,
                     name_rank.name name_rank_name,
                     name_status.name name_status_name, count(instance.id)

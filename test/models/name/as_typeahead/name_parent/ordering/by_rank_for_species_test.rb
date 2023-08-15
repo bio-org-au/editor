@@ -53,7 +53,7 @@ class NameSuggestionsParentOrderingForSpeciesTest < ActiveSupport::TestCase
       @first = false
     else
       assert rank.sort_order >= @previous_rank_sort_order,
-             %(Rank "#{rank.name}" is higher than previously )\
+             %(Rank "#{rank.name}" is higher than previously ) \
              "listed rank '#{@previous_rank.name}'"
     end
     @previous_rank_sort_order = rank.sort_order

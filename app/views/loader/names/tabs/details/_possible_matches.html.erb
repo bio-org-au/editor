@@ -6,7 +6,7 @@
   <br>
   <% @loader_name.matches_tweaked_for_phrase_name.each do |name| %>
   <code><%= name.simple_name %></code>
-    <%= link_to("query #{editor_icon('external-link-square')}".html_safe,
+    <%= link_to("query #{external_link_square_icon}".html_safe,
                 "search?query_target=names&query_string=id:#{name.id}",
             title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
             class: "rebeccapurple",

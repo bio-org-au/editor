@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Tree::ElementsController < ApplicationController
-  before_action :find_tree_element, only: [:show, :tab, :update_profile]
+  before_action :find_tree_element, only: %i[show tab update_profile]
 
   # GET /tree_vesions/1
   # GET /tree_vesions/1/tab/:tab
@@ -26,8 +26,8 @@ class Tree::ElementsController < ApplicationController
   def show
     @tab = choose_tab
     @tab_index = choose_index
-    @take_focus = params[:take_focus] == 'true'
-    @tree_version = TreeVersion.find(params['tree-version-id'])
+    @take_focus = params[:take_focus] == "true"
+    @tree_version = TreeVersion.find(params["tree-version-id"])
     render "show", layout: false
   end
 
@@ -35,24 +35,26 @@ class Tree::ElementsController < ApplicationController
 
   # Update a mini schema of data with optional fields in a jsonb structure.
   # This process is messy - jsonb not a good choice for data that changes imo.
-  # Note: this code is separate from the tree controller code for 
+  # Note: this code is separate from the tree controller code for
   # setting up profile data in a tree draft via services.  This code was added
-  # later to allow editing of profile data in a way that does not involve 
+  # later to allow editing of profile data in a way that does not involve
   # a new version of the taxonomy i.e. CRUD directly into the database.
   def update_profile
-    scope = 'Distribution'
+    scope = "Distribution"
     @distribution_message, dist_refresh = @tree_element.update_distribution(
-      tree_element_params[:distribution_value], @current_user.username)
-    scope = 'Comment'
+      tree_element_params[:distribution_value], @current_user.username
+    )
+    scope = "Comment"
     # After working on distribution part of the schema
     # start with a fresh record from the database to work on the
     # comment part of the schema
     find_tree_element # Pick up refreshed data from database to avoid overwrite
     @comment_message, comment_refresh = @tree_element.update_comment(
-      tree_element_params[:comment_value].gsub(/\n/,' ').strip,
-      @current_user.username)
+      tree_element_params[:comment_value].gsub(/\n/, " ").strip,
+      @current_user.username
+    )
     @refresh = dist_refresh || comment_refresh
-  rescue => e
+  rescue StandardError => e
     logger.error("Tree::ElementsController:update_profile:rescuing #{scope} exception #{e}")
     @message = "#{scope} update error: #{e}"
     render :update_profile_error, status: :unprocessable_entity
@@ -69,7 +71,7 @@ class Tree::ElementsController < ApplicationController
 
   def tree_element_params
     params.require(:tree_element).permit(:draft_name, :distribution_value,
-                                        :comment_value)
+                                         :comment_value)
   end
 
   def choose_tab
@@ -84,5 +86,3 @@ class Tree::ElementsController < ApplicationController
     (params[:tabIndex] || "1").to_i
   end
 end
-
-

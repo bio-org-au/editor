@@ -63,7 +63,7 @@ class Search::OnOrchidProcessingLogs::Predicate
   def apply_rule_overflow(rule)
     @multiple_values = rule[:multiple_values] || false
     @predicate = build_predicate(rule)
-    @tokenize = rule[:tokenize] && !@is_null || false
+    @tokenize = (rule[:tokenize] && !@is_null) || false
   end
 
   def apply_scope

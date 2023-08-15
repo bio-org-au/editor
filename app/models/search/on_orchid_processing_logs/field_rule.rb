@@ -18,11 +18,11 @@
 #
 class Search::OnOrchidProcessingLogs::FieldRule
   RULES = {
-    "latest:"              => { where_clause: "1=1",
-                                order: "logged_at desc"},
-    "log-entry:"              => { leading_wildcard: true,
-                                   trailing_wildcard: true,
-                                   where_clause: "lower(log_entry) like ?",
-                                   order: "logged_at desc" },
+    "latest:" => { where_clause: "1=1",
+                   order: "logged_at desc" },
+    "log-entry:" => { leading_wildcard: true,
+                      trailing_wildcard: true,
+                      where_clause: "lower(log_entry) like ?",
+                      order: "logged_at desc" },
   }.freeze
 end

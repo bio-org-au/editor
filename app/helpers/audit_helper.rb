@@ -42,7 +42,7 @@ module AuditHelper
   end
 
   def meaningful_update_when_no_created_at(record)
-    %(Created or last updated 
+    %(Created or last updated
     <span class="purple">#{time_ago_in_words(record.updated_at)}&nbsp;ago
     </span> by #{record.updated_by.downcase} #{formatted_timestamp(
       record.updated_at

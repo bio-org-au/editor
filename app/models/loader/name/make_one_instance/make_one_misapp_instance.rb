@@ -15,19 +15,16 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     return parent_using_existing if @loader_name.parent
                                                 .preferred_match
                                                 .use_existing_instance == true
-    if @loader_name.parent.preferred_match.try("standalone_instance_id").blank?
-      return parent_no_standalone
-    end
+    return parent_no_standalone if @loader_name.parent.preferred_match.try("standalone_instance_id").blank?
     return no_relationship_instance_type if @match
                                             .relationship_instance_type_id
                                             .blank?
 
     create_misapp_instance
-  rescue => e
+  rescue StandardError => e
     failed(e)
     raise
   end
-
 
   def failed(error)
     entry = "#{Constants::FAILED_INSTANCE} for #{@loader_name.simple_name} "
@@ -43,15 +40,15 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
 
   def parent_no_standalone
     log(declined_entry(
-      "parent has no standalone instance so cannot proceed")
-    )
+          "parent has no standalone instance so cannot proceed"
+        ))
     Constants::DECLINED
   end
 
   def already_noted
     log(declined_entry(
-        "relationship instance already noted (##{@match.relationship_instance_id})")
-    )
+          "relationship instance already noted (##{@match.relationship_instance_id})"
+        ))
     Constants::DECLINED
   end
 
@@ -69,7 +66,7 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
   def declined_entry(message)
     "#{Constants::DECLINED_INSTANCE}: #{message} for #{@loader_name.simple_name} ##{@loader_name.id}"
   end
- 
+
   def misapp_already_attached?
     return false if @loader_name.parent.loader_name_matches.blank?
     return false if @loader_name.parent.loader_name_matches.first.try("standalone_instance_id").blank?
@@ -79,7 +76,7 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
                         .where(cited_by_id: @loader_name.parent.loader_name_matches.first.try("standalone_instance_id"))
     !instances.blank?
   end
-      
+
   def record_misapp_already_there
     instances = Instance.where(name_id: @match.name_id)
                         .where(cites_id: @match.instance_id)
@@ -103,9 +100,9 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     new_instance.save!
     note_misapp_created(new_instance)
     Constants::CREATED
-  rescue => error
-    Rails.logger.error("MakeOneMisappInstance#create_misapp_instance: #{e.to_s}")
-    failed(error)
+  rescue StandardError => e
+    Rails.logger.error("MakeOneMisappInstance#create_misapp_instance: #{e}")
+    failed(e)
   end
 
   def note_misapp_created(instance)

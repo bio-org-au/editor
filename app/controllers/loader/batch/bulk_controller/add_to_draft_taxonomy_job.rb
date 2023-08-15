@@ -44,9 +44,9 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
   def do_one_loader_name(loader_name)
     @attempts += 1
     taxo_adder = ::Loader::Name::DraftTaxonomyAdder.new(loader_name,
-                                             @working_draft,
-                                             @authorising_user,
-                                             @job_number)
+                                                        @working_draft,
+                                                        @authorising_user,
+                                                        @job_number)
     taxo_adder.add
     @adds += taxo_adder.added
     @declines += taxo_adder.declined
@@ -82,9 +82,9 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
     @message += " with #{@declines} declined and  #{errors} #{'error'.pluralize(errors)} for "
     @message += "#{@name_string} (job ##{@job_number})"
   end
-  
+
   def debug(s)
-    tag = "Loader::Name::AddToDraftTaxonomy" 
+    tag = "Loader::Name::AddToDraftTaxonomy"
     Rails.logger.debug("#{tag}: #{s}")
   end
 end

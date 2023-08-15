@@ -10,7 +10,7 @@ table.search-results.for-print {
 tr.search-result.heading {
   font-weight: bold;
   font-size: 15pt;
-  height: 6em;
+  height: 2em;
 }
 
 tr.search-result.heading td.text {
@@ -21,21 +21,40 @@ tr.search-result span.loader-name.remark-to-reviewers {
   background: yellow;
 }
 
-tr.search-result span.loader-name.simple-name.accepted {
+tr.search-result span.loader-name.full-name.accepted {
   font-weight: bold;
 }
 
-tr.search-result span.loader-name.simple-name.excluded {
+tr.search-result span.loader-name.full-name.excluded {
   font-style: italic;
 }
 
-tr.search-result span.loader-name.simple-name.synonym {
+tr.search-result span.loader-name.full-name.synonym {
+  font-style: italic;
+}
+
+tr.search-result span.loader-name.full-name.misapplied {
+  font-style: italic;
+}
+
+tr.search-result span.name-status {
   font-style: italic;
 }
 
 tr.search-result.distribution span.distribution-inset {
   width: 6em;
   display: inline-block;
+}
+
+tr.search-result.comment span.comment-inset {
+  width: 6em;
+  display: inline-block;
+}
+
+tr.search-result.comment span.distribution-inset {
+  width: 6em;
+  display: inline-block;
+  color: red;
 }
 
 tr.search-result.excluded-header {

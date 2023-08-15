@@ -14,7 +14,7 @@
   <div class="bggray big-vertical-padding" ><h4 class="white">No Further Processing via parent</h4></div>
 <% end %>
 
-  <%= link_to("#{ShardConfig.name_space} #{editor_icon('external-link-square')}".html_safe,
+  <%= link_to("#{sanitize(ShardConfig.name_space)} #{external_link_square_icon}".html_safe,
               "#{Rails.configuration.try('nsl_links')}search/names?product=APNI&name=#{url_encode(@loader_name.simple_name)}",
             title: "#{ShardConfig.name_space} search. Opens in another tab or window.",
             class: "rebeccapurple",

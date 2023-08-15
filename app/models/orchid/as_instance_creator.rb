@@ -32,23 +32,15 @@ class Orchid::AsInstanceCreator
     @created = 0
     @errors = 0
     @orchid.preferred_match.each do |preferred_match|
-      begin
-        @created += preferred_match.create_instance(@ref, @authorising_user)
-        log_create_action(@created)
-      rescue => e
-        @errors += 1
-        log_to_table("Errors creating instance for preferred match #{preferred_match.id} - #{e.message}")
-      end 
+      @created += preferred_match.create_instance(@ref, @authorising_user)
+      log_create_action(@created)
+    rescue StandardError => e
+      @errors += 1
+      log_to_table("Errors creating instance for preferred match #{preferred_match.id} - #{e.message}")
     end
   end
 
-  def created
-    @created
-  end
-
-  def errors
-    @errors
-  end
+  attr_reader :created, :errors
 
   def log_create_action(count)
     entry = "Create instance counted #{count} #{'record'.pluralize(count)}"
@@ -57,19 +49,20 @@ class Orchid::AsInstanceCreator
 
   def log_to_table(entry)
     OrchidProcessingLog.log("#{entry} #{@tag}", @authorising_user)
-  rescue => e
-    Rails.logger.error("Couldn't log to table: #{e.to_s}")
+  rescue StandardError => e
+    Rails.logger.error("Couldn't log to table: #{e}")
   end
 
   def stop_everything?
     if @orchid.exclude_from_further_processing?
       return true
-    elsif @orchid.parent.try('exclude_from_further_processing?')
+    elsif @orchid.parent.try("exclude_from_further_processing?")
       return true
     elsif @orchid.hybrid_cross?
       debug("stop_everything?  Orchid is a hybrid cross - not going to process these.")
       return true
     end
+
     false
   end
 
@@ -78,9 +71,9 @@ class Orchid::AsInstanceCreator
   end
 
   def record_failure(msg)
-    msg.sub!(/uncaught throw /,'')
-    msg.gsub!(/"/,'')
-    msg.sub!(/^Failing/,'')
+    msg.sub!(/uncaught throw /, "")
+    msg.gsub!(/"/, "")
+    msg.sub!(/^Failing/, "")
     Rails.logger.error("Orchid::AsInstanceCreator failure: #{msg}")
     log_to_table("Orchid::AsInstanceCreator failure: #{msg}")
   end

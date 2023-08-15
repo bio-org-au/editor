@@ -34,6 +34,7 @@ class Reference::AsTypeahead::OnCitationForDuplicate
   # Allow for an ID to exclude, but default it to a meaningless value
   # but not null.
   attr_reader :results
+
   SEARCH_LIMIT = 50
   def initialize(terms, current_id)
     @results = query(terms, current_id).collect do |ref|

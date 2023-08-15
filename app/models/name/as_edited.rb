@@ -27,25 +27,24 @@ class Name::AsEdited < Name::AsTypeahead
     name.resolve_typeahead_params(typeahead_params)
     create_hybrid_name_element(name)
     create_name_path(name)
-    if name.save_with_username(username)
-      name.set_names!
-    else
-      raise name.errors.full_messages.first.to_s
-    end
+    raise name.errors.full_messages.first.to_s unless name.save_with_username(username)
+
+    name.set_names!
+
     name
   end
 
   # see NSL-2884
   def self.create_hybrid_name_element(name)
-    if name.name_category.scientific_hybrid_formula?
-      name.name_element = "#{name.parent.name_element} #{name.name_type.connector} #{name.second_parent.name_element}"
-    end
+    return unless name.name_category.scientific_hybrid_formula?
+
+    name.name_element = "#{name.parent.name_element} #{name.name_type.connector} #{name.second_parent.name_element}"
   end
 
   def build_hybrid_name_element
-    if name_category.scientific_hybrid_formula?
-      self.name_element = "#{self.parent.name_element} #{self.name_type.connector} #{self.second_parent.name_element}"
-    end
+    return unless name_category.scientific_hybrid_formula?
+
+    self.name_element = "#{parent.name_element} #{name_type.connector} #{second_parent.name_element}"
   end
 
   def self.create_name_path(name)

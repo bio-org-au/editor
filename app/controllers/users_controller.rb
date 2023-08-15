@@ -17,17 +17,15 @@
 #   limitations under the License.
 #
 class UsersController < ApplicationController
-  before_action :find_user, only: [:show, :destroy, :tab, :update]
+  before_action :find_user, only: %i[show destroy tab update]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
     set_tab
     set_tab_index
-    if params[:tab] =~ /\Atab_periods\z/
-      @user = UserTable.new
-    end
-    @take_focus = params[:take_focus] == 'true'
+    @user = UserTable.new if params[:tab] == "tab_periods"
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
 
@@ -45,26 +43,26 @@ class UsersController < ApplicationController
   def create
     @user = UserTable.new
     render "create"
-  rescue => e
+  rescue StandardError => e
     logger.error("UserController.create:rescuing exception #{e}")
     @error = e.to_s
     render "create_error", status: :unprocessable_entity
   end
 
   # POST /users
-# def update
-#   @message = @batch_review.update_if_changed(batch_review_params,
-#                                              current_user.username)
-#   render "update"
-# rescue => e
-#   logger.error("Loader::Batch::Review.update:rescuing exception #{e}")
-#   @error = e.to_s
-#   render "update_error", status: :unprocessable_entity
-# end
+  # def update
+  #   @message = @batch_review.update_if_changed(batch_review_params,
+  #                                              current_user.username)
+  #   render "update"
+  # rescue => e
+  #   logger.error("Loader::Batch::Review.update:rescuing exception #{e}")
+  #   @error = e.to_s
+  #   render "update_error", status: :unprocessable_entity
+  # end
 
-# def destroy
-#   @batch_review.destroy
-# end
+  # def destroy
+  #   @batch_review.destroy
+  # end
 
   private
 

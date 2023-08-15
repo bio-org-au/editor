@@ -1,4 +1,5 @@
 
+<%= render partial: 'application/search_results/print/records/loader/record_types/prev_rec_dist_comments' %>
 
 <tr class="search-result excluded top-spacer"><td>&nbsp;</td></tr>
 
@@ -17,13 +18,13 @@
   <td class="text name main-content" >
 
 
-    <span class='loader-name <%= search_result.record_type %> simple-name'>
-        <%= "#{search_result.simple_name}" %>
-    </span>
-    <span class='loader-name <%= search_result.record_type %> authority'>
-        <%= "#{search_result.full_name.sub(Regexp.new(search_result.simple_name),'')}" %>
-    </span>
+    <span class='loader-name <%= search_result.record_type %> full-name'>
+        <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
 
+        <% unless search_result.name_status.blank? %>
+          <%= "#{search_result.name_status}" %>
+        <% end %>
+    </span>
 
     <% unless search_result.remark_to_reviewers.blank? %>
         <span class="review loader-name remark-to-reviewers">
@@ -39,4 +40,8 @@
 
   </td>
 </tr>
+
+
+<% @previous_comment = search_result.comment unless search_result.comment.blank? %>
+
 

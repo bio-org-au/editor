@@ -46,7 +46,7 @@ class Name < ApplicationRecord
   has_many :comments
   has_many :name_tag_names
   has_many :name_tags, through: :name_tag_names
-  has_many :tree_nodes  # not sure what this is, looks like a thought bubble
+  has_many :tree_nodes # not sure what this is, looks like a thought bubble
   has_many :tree_elements
 
   SEARCH_LIMIT = 50
@@ -64,7 +64,7 @@ class Name < ApplicationRecord
   end
 
   def save_with_username(username)
-    set_defaults  # under rails 6 the before_create was not getting called (in time)
+    set_defaults # under rails 6 the before_create was not getting called (in time)
     self.created_by = self.updated_by = username
     save
   end
@@ -95,10 +95,10 @@ class Name < ApplicationRecord
   end
 
   def allow_delete?
-    instances.blank? && 
-      children.blank? && 
+    instances.blank? &&
+      children.blank? &&
       comments.blank? &&
-      duplicates.blank? && 
+      duplicates.blank? &&
       !family_dependents?
   end
 
@@ -106,13 +106,14 @@ class Name < ApplicationRecord
     return false unless name_rank.family?
 
     # From here on, must be a family
-    return false if family_members.empty?  # 0 members
+    return false if family_members.empty? # 0 members
     return true if family_members.length > 1 # 2 or more members
 
     # From here on, only 1 family member
     return true if family_id.blank? # 1 but null so not itself
-    return false if family_id = self.id # 1 but is itself
-    return true if family_id != self.id # 1 but it is not itself
+    return false if family_id = id # 1 but is itself
+    return true if family_id != id # 1 but it is not itself
+
     true # fail safe - shouldn't get here
   end
 
@@ -152,7 +153,7 @@ class Name < ApplicationRecord
 
   def orchids
     if Rails.configuration.try(:orchids_aware)
-      OrchidsName.where(name_id: id).collect {|orcn| orcn.orchid}
+      OrchidsName.where(name_id: id).collect { |orcn| orcn.orchid }
     else
       []
     end
@@ -181,27 +182,27 @@ class Name < ApplicationRecord
     dd.transfer_dependents(dependent_type)
   end
 
-  def self.children_of_duplicates_count 
+  def self.children_of_duplicates_count
     sql = "select count(*) total from name n join name parent on n.parent_id = parent.id where parent.duplicate_of_id is not null"
     records_array = ActiveRecord::Base.connection.execute(sql)
-    records_array.first['total'] 
+    records_array.first["total"]
   end
 
-  def self.instances_of_duplicates_count 
+  def self.instances_of_duplicates_count
     sql = "select count(*) total from name join instance on name.id = instance.name_id where name.duplicate_of_id is not null"
     records_array = ActiveRecord::Base.connection.execute(sql)
-    records_array.first['total'] 
+    records_array.first["total"]
   end
 
-  def self.family_members_of_duplicates_count 
+  def self.family_members_of_duplicates_count
     sql = "select count(*) total from name join name family on name.family_id = family.id where family.duplicate_of_id is not null"
     records_array = ActiveRecord::Base.connection.execute(sql)
-    records_array.first['total'] 
+    records_array.first["total"]
   end
 
   def self.transfer_all_dependents(dependent_type)
     total = 0
-    Name.where('duplicate_of_id is not null').each do |duplicate|
+    Name.where("duplicate_of_id is not null").each do |duplicate|
       dd = Name::DeDuper.new(duplicate)
       total += dd.transfer_dependents(dependent_type)
     end

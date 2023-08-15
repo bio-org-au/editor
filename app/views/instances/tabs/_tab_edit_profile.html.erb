@@ -1,8 +1,10 @@
 <h5>
   Edit Profile for <%= @instance.name.full_name %>
 </h5>
-
-<p>Profile in the latest published taxonomy:
+  <p>All operations on this tab change the published tree directly.
+  <br>Use the Tree tab to make changes to the draft tree.</p>
+<dl class="dl-horizontal">
+<br>
 
 <% current_te = @instance.accepted_tree_version_element.tree_element %>
 

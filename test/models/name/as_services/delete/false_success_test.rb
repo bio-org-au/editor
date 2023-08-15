@@ -32,8 +32,8 @@ class NameAsServicesDeleteFalseSuccessTest < ActiveSupport::TestCase
 
   def body
     {
-      "ok": false,
-      "errors": [
+      ok: false,
+      errors: [
         "some silly error"
       ]
 

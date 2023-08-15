@@ -19,9 +19,10 @@
 #   Shard Config model
 class ShardConfig < ActiveRecord::Base
   self.table_name = "shard_config"
+  NAME_SPACE = "name space"
 
   def self.name_space
-    @name_space ||= ShardConfig.find_by(name: "name space").value
+    @name_space ||= ShardConfig.find_by(name: NAME_SPACE).value
   end
 
   def self.classification_tree_key
@@ -33,6 +34,7 @@ class ShardConfig < ActiveRecord::Base
     results = ShardConfig.where(name: "name parent rank restriction")
     return true if results.blank?
     return true if results.first.value == "on"
+
     false
   end
 
@@ -41,7 +43,6 @@ class ShardConfig < ActiveRecord::Base
   end
 
   def self.shard_group_name
-    ShardConfig.find_by(name: 'shard group name').try('value') || 'NSL'
+    ShardConfig.find_by(name: "shard group name").try("value") || "NSL"
   end
 end
-

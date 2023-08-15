@@ -31,20 +31,21 @@ class Tree::Workspace::Replacement < ActiveType::Object
   def replace
     url = build_url
     payload = {
-        currentElementUri: target.element_link,
-        newParentElementUri: parent.element_link,
-        instanceUri: instance_url,
-        excluded: excluded,
-        profile: profile
+      currentElementUri: target.element_link,
+      newParentElementUri: parent.element_link,
+      instanceUri: instance_url,
+      excluded: excluded,
+      profile: profile
     }
     logger.info "Calling #{url}"
     raise errors.full_messages.first unless valid?
+
     RestClient.put(url, payload.to_json,
-                   {content_type: :json, accept: :json})
+                   { content_type: :json, accept: :json })
   rescue RestClient::ExceptionWithResponse => e
     Rails.logger.error("Tree::Workspace::Replacement error: #{e}")
     raise
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Tree::Workspace::Replacement other error: #{e}")
     raise
   end
@@ -56,5 +57,4 @@ class Tree::Workspace::Replacement < ActiveType::Object
   def build_url
     Tree::AsServices.replace_placement_url(username)
   end
-
 end

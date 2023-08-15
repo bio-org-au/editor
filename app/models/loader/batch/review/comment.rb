@@ -24,10 +24,10 @@ class Loader::Batch::Review::Comment < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :batch_review, class_name: "Loader::Batch::Review",
-             foreign_key: "batch_review_id"
+                            foreign_key: "batch_review_id"
   alias_attribute :review, :batch_review
   belongs_to :batch_review, class_name: "Loader::Batch::Review",
-             foreign_key: "batch_review_id"
+                            foreign_key: "batch_review_id"
   validates :comment, presence: true
 
   attr_accessor :give_me_focus, :message
@@ -37,7 +37,7 @@ class Loader::Batch::Review::Comment < ActiveRecord::Base
   end
 
   def display_as
-    'Review Period'
+    "Review Period"
   end
 
   def allow_delete?
@@ -46,11 +46,10 @@ class Loader::Batch::Review::Comment < ActiveRecord::Base
 
   # The table isn't in all schemas, so check it's there
   def self.exists?
-    begin 
-      BatchReviewPeriod.all.count
-    end
+    BatchReviewPeriod.all.count
+
     true
-  rescue => e
+  rescue StandardError => e
     false
   end
 
@@ -59,16 +58,16 @@ class Loader::Batch::Review::Comment < ActiveRecord::Base
   end
 
   def record_type
-    'BatchReviewComment'
+    "BatchReviewComment"
   end
 
   def save_with_username(username)
     self.created_by = self.updated_by = username
-    #set_defaults
+    # set_defaults
     save
   end
 
-  def update_if_changed(params, username)
+  def update_if_changed(_params, username)
     if has_changes_to_save?
       logger.debug("changes_to_save: #{changes_to_save.inspect}")
       self.updated_by = username
@@ -79,4 +78,3 @@ class Loader::Batch::Review::Comment < ActiveRecord::Base
     end
   end
 end
-  

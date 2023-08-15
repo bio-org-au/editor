@@ -19,7 +19,7 @@
 #   Add instance to draft taxonomy for a raw loader_name
 class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
   attr_reader :added, :declined, :errors, :result
-  
+
   # replacer = Replacer.new(preferred_match, @draft, @tree_version_element, @user, @job)
   def initialize(preferred_match, draft, tree_version_element, user, job)
     @preferred_match = preferred_match
@@ -37,11 +37,11 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
     Rails.logger.debug("replace: @tree_version_element.instance_id: #{@tree_version_element.tree_element.instance_id}")
     Rails.logger.debug("replace: calling Tree::Workspace::Replacement.new for instance: #{@preferred_match.standalone_instance_id}")
     replacement = Tree::Workspace::Replacement.new(username: @user,
-                                                 target: @tree_version_element,
-                                                 parent: parent_tve(@preferred_match),
-                                                 instance_id: @preferred_match.standalone_instance_id,
-                                                 excluded: @preferred_match.excluded?,
-                                                 profile: profile)
+                                                   target: @tree_version_element,
+                                                   parent: parent_tve(@preferred_match),
+                                                   instance_id: @preferred_match.standalone_instance_id,
+                                                   excluded: @preferred_match.excluded?,
+                                                   profile: profile)
     @response = replacement.replace
     log_to_table("Replace #{@preferred_match.loader_name.simple_name}, id: #{@preferred_match.loader_name.id}, seq: #{@preferred_match.loader_name.seq}")
     @preferred_match.drafted = true
@@ -54,7 +54,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
   end
 
   def status
-    return [@added, @declined, @errors, @result]
+    [@added, @declined, @errors, @result]
   end
 
   private
@@ -63,30 +63,30 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
     @draft.name_in_version(preferred_match.name.parent)
   end
 
-  # I did try to use the Tree::ProfileData class, 
+  # I did try to use the Tree::ProfileData class,
   # but it couldn't find the comment_key or distribution_key
-  # without new methods and (more importantly) it requires 
+  # without new methods and (more importantly) it requires
   # a @current_user, which the batch job doesn't have.
   def profile
     hash = {}
     unless @loader_name.comment.blank?
-      hash['APC Comment'] = { value: @loader_name.comment,
+      hash["APC Comment"] = { value: @loader_name.comment,
                               updated_by: @user,
-                              updated_at: Time.now.utc.iso8601}
+                              updated_at: Time.now.utc.iso8601 }
     end
     unless @loader_name.distribution.blank?
-      hash['APC Dist.'] =
-        { value: @loader_name.distribution.split(' | ').join(', '),
+      hash["APC Dist."] =
+        { value: @loader_name.distribution.split(" | ").join(", "),
           updated_by: @user,
-          updated_at: Time.now.utc.iso8601
-        }
+          updated_at: Time.now.utc.iso8601 }
     end
     hash
   end
 
   def debug(msg)
     Rails.logger.debug(
-      "Loader::Name::DraftTaxonomyAdder::PlaceOrReplace::Replacer: #{msg}")
+      "Loader::Name::DraftTaxonomyAdder::PlaceOrReplace::Replacer: #{msg}"
+    )
   end
 
   def log_to_table(payload)

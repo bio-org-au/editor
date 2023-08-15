@@ -1,13 +1,13 @@
-<tr id="search-result-<%= search_result.id %>" 
-    class="search-result <%= search_result.record_type %>"  
-    >
+<%= render partial: 'application/search_results/print/records/loader/record_types/prev_rec_dist_comments' %>
 
-  <td class="text name main-content"
-      >
+<tr class="search-result accepted top-spacer"><td>&nbsp;</td></tr>
+<tr class="search-result accepted top-spacer"><td>&nbsp;</td></tr>
+<tr class="search-result accepted top-spacer"><td>&nbsp;</td></tr>
+<tr class="search-result accepted top-spacer"><td>&nbsp;</td></tr>
 
-<%= "#{search_result.simple_name.upcase}" %>
-
-
+<tr id="search-result-<%= search_result.id %>" class="search-result <%= search_result.record_type %>"  >
+  <td class="text name main-content" >
+     <%= "#{search_result.simple_name.upcase}" %>
   </td>
 </tr>
 

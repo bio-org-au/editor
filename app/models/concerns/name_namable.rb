@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-
 # Name scopes
 module NameNamable
   extend ActiveSupport::Concern
   def apni_json
     logger.info("apni_json; service call unless cached...")
     Rails.cache.fetch("#{cache_key}/in_apni", expires_in: 1.minutes) do
-      JSON.load(URI.open(Name::AsServices.in_apni_url(id), "Accept" => "text/json", read_timeout: 1))
+      JSON.load(RestClient.get(Name::AsServices.in_apni_url(id), "Accept" => "text/json", read_timeout: 1))
     end
-  rescue => e
+  rescue StandardError => e
     logger.error("Name#apni_json error: #{e}")
     raise
   end
@@ -17,7 +16,7 @@ module NameNamable
   def apni?
     json = apni_json
     json["inAPNI"] == true
-  rescue => e
+  rescue StandardError => e
     logger.error("Is this in APNI name error.")
     logger.error(e.to_s)
     false
@@ -25,14 +24,14 @@ module NameNamable
 
   def apni_family_json
     Rails.cache.fetch("#{cache_key}/apni_info", expires_in: 1.minutes) do
-      JSON.load(URI.open(Name::AsServices.apni_family_url(id), "Accept" => "text/json", read_timeout: 1))
+      JSON.load(RestClient.get(Name::AsServices.apni_family_url(id), "Accept" => "text/json", read_timeout: 1))
     end
   end
 
   def apni_family_name
     json = apni_family_json
     json["familyName"]["name"]["simpleName"]
-  rescue => e
+  rescue StandardError => e
     logger.error("apni_family_name error: #{e}")
     "apni family unknown - service error: #{e}"
   end
@@ -41,7 +40,7 @@ module NameNamable
     logger.debug("get_names_json start for id: #{id}")
     logger.debug("Name::AsServices.name_strings_url(id) for
                  id: #{id}: #{Name::AsServices.name_strings_url(id)}")
-    JSON.load(URI.open(Name::AsServices.name_strings_url(id), "Accept" => "text/json"))
+    JSON.load(RestClient.get(Name::AsServices.name_strings_url(id), "Accept" => "text/json"))
   end
 
   # Use update_columns to avoid validation errors, stale object
@@ -63,7 +62,7 @@ module NameNamable
     else
       0
     end
-  rescue => e
+  rescue StandardError => e
     logger.error("refresh_constructed_name_field! exception: #{e}")
     raise
   end
@@ -77,7 +76,7 @@ module NameNamable
     self.simple_name_html = names_json["result"]["simpleMarkedUpName"]
     self.sort_name = names_json["result"]["sortName"]
     save!(touch: false)
-  rescue => e
+  rescue StandardError => e
     logger.error("set_names! exception: #{e}")
     logger.error("set_names! retrying...")
     retry_set_names!(names_json)
@@ -91,7 +90,7 @@ module NameNamable
     self.simple_name_html = names_json["result"]["simpleMarkedUpName"]
     self.sort_name = names_json["result"]["sortName"]
     save!(touch: false)
-  rescue => e
+  rescue StandardError => e
     logger.error("retry_set_names! exception: #{e}")
     raise "Unable to set up the name via Services.  Please report this error to App Support."
   end

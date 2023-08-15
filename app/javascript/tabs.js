@@ -1,9 +1,9 @@
   debug = function(s) {
     var error;
     try {
-      //if (debugSwitch === true) {
+      if (debugSwitch === true) {
         return console.log('debug: ' + s);
-      //}
+      }
     } catch (error1) {
       error = error1;
     }
@@ -16,23 +16,23 @@ function getContentOnDemand(theThis) {
     var ray = targetID.split("-for-dynamic-target-");
     var displayElementID = ray[0];
     debug("displayElementID: "+ displayElementID);
-  //  var dynamicTarget = ray[1];
-  //  debug("dynamicTarget: "+ dynamicTarget);
   } else {
     var displayElementID = targetID;
   }
   if (displayElementID === undefined || displayElementID == '') {
     debug("displayElementID is undefined or empty - you need to set it ");
   } else {
-      debug("else displayElementID: "+ displayElementID);
-      debug($('#' + displayElementID).length);
+      debug("we have displayElementID: "+ displayElementID);
       var $targetElement = $('#' + displayElementID);
       if ($targetElement.attr('data-loaded') === undefined) {
         debug("No entry for " + displayElementID);
         debug("You need to add a target div in search/tab_inners/_*target_divs.html or similar");
       }
       if ($targetElement.attr('data-loaded') == 'false') {
-        debug('loading');
+        debug('data-loaded false, so loading now');
+        debug("displayElementID: "+ displayElementID);
+        debug("targetID: "+ targetID);
+        debug("$targetElement.attr('id'): "+ $targetElement.attr('id'));
         $targetElement.html('Loading...');
         $.get(window.relative_url_root + "/search/help/" + targetID, function (data) {
           $targetElement.html(data);
@@ -192,12 +192,6 @@ $( document ).on('turbo:load', function() {
       showOrHideCultivarCommonCbox(e.target.innerHTML);
       e.preventDefault()
     }
-  });
-
-  $('a.searchable-field').on('click', function (e) {
-    debug('searchable-field clicked');
-    $('#query-string-field').val($('#query-string-field').val() + ' ' + $(this).html().replace(/<[^>]*>/g, '').trim());
-    $('#query-string-field').focus();
   });
 
   $('a.search-help-link').on('click', function (e) {

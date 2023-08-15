@@ -17,21 +17,19 @@
 #   limitations under the License.
 #
 class Loader::Batch::Review::PeriodsController < ApplicationController
-  before_action :find_review_period, only: [:show, :destroy, :tab, :update]
+  before_action :find_review_period, only: %i[show destroy tab update]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
     set_tab
     set_tab_index
-    @take_focus = params[:take_focus] == 'true'
+    @take_focus = params[:take_focus] == "true"
     calendar_events
     render "show", layout: false
   end
 
   alias tab show
-
-
 
   def calendar
     calendar_events
@@ -40,30 +38,29 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
   def calendar_events
     @review_days = []
     start_date = @review_period.start_date
-    end_date = @review_period.end_date || start_date + 30
+    end_date = @review_period.end_date || (start_date + 30)
     (start_date..end_date).each do |day|
-      case 
-      when day === Date.today
-      css_class = 'today'
-      when day < Date.today
-      css_class = 'past-day'
-      else
-      css_class = 'review-day'
-      end
+      css_class = if day === Date.today
+                    "today"
+                  elsif day < Date.today
+                    "past-day"
+                  else
+                    "review-day"
+                  end
       @review_days.push(
-        OpenStruct.new(name: "#{css_class}",start_time: Date.parse(day.to_s))
+        OpenStruct.new(name: "#{css_class}", start_time: Date.parse(day.to_s))
       )
     end
-    #@review_days.push(OpenStruct.new(name: 'today',start_time: Date.today))
+    # @review_days.push(OpenStruct.new(name: 'today',start_time: Date.today))
   end
   private :calendar_events
 
   # POST /review_periods
   def create
     @batch_review_period = ::Loader::Batch::Review::Period.create(review_period_params,
-                                               current_user.username)
+                                                                  current_user.username)
     render "create"
-  rescue => e
+  rescue StandardError => e
     logger.error("Controller:Loader::Batch::Review::PeriodsController#create:rescuing exception #{e}")
     @error = e.to_s
     render "create_error", status: :unprocessable_entity
@@ -74,7 +71,7 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
     @message = @review_period.update_if_changed(review_period_params,
                                                 current_user.username)
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Batch::Review.update:rescuing exception #{e}")
     @error = e.to_s
     render "update_error", status: :unprocessable_entity
@@ -82,7 +79,7 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
 
   def destroy
     @review_period.destroy!
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Batch::Review::Period.destroy:rescuing exception #{e}")
     @error = e.to_s
     render "destroy_error", status: :unprocessable_entity

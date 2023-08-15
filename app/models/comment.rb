@@ -40,7 +40,7 @@ class Comment < ActiveRecord::Base
 
   def update_attributes_with_username(attributes, username)
     update_attributes_with_username!(attributes, username)
-  rescue
+  rescue StandardError
     false
   end
 

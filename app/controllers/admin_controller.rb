@@ -20,8 +20,7 @@
 class AdminController < ApplicationController
   before_action :hide_details, :empty_search
 
-  def index
-  end
+  def index; end
 
   def throw
     raise "Exception!!!"

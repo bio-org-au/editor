@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
                 :authenticate,
                 :authorise,
                 :set_view_mode
-#  around_action :user_tagged_logging
+  #  around_action :user_tagged_logging
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :show_login_page
   rescue_from CanCan::AccessDenied do |_exception|

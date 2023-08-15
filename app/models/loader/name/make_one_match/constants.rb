@@ -16,12 +16,11 @@
 #
 # Loader Name entity
 module Loader::Name::MakeOneMatch::Constants
-  COUNT_CREATED = [1,0,0]
-  COUNT_DECLINED = [0,1,0]
-  COUNT_ERROR = [0,0,1]
+  COUNT_CREATED = [1, 0, 0]
+  COUNT_DECLINED = [0, 1, 0]
+  COUNT_ERROR = [0, 0, 1]
 
   DECLINED = "<span class='firebrick'>Declined to make preferred match</span>"
   ERROR = "<span class='red'>Error: failed to make preferred match </span>"
   CREATED = "<span class='darkgreen'>Made preferred match</span>"
 end
-

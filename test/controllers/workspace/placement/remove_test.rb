@@ -58,6 +58,6 @@ class TreePlacementRemoveTest < ActionController::TestCase
     assert_response :success
     assert_equal "remove_name_placement", @controller.action_name,
                  "Action should be 'remove_name_placement'"
-    assert_equal "Removed", @controller.instance_variable_get(:"@message")
+    assert_equal "Removed", @controller.instance_variable_get(:@message)
   end
 end

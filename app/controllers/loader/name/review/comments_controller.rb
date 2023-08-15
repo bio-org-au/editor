@@ -17,14 +17,14 @@
 #   limitations under the License.
 #
 class Loader::Name::Review::CommentsController < ApplicationController
-  before_action :find_comment, only: [:edit, :cancel_edit, :destroy, :dialog_to_delete, :cancel_dialog_to_delete]
+  before_action :find_comment, only: %i[edit cancel_edit destroy dialog_to_delete cancel_dialog_to_delete]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
     set_tab
     set_tab_index
-    @take_focus = params[:take_focus] == 'true'
+    @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
   alias tab show
@@ -41,19 +41,19 @@ class Loader::Name::Review::CommentsController < ApplicationController
     @review_comment = Loader::Name::Review::Comment.new(review_comment_params)
     @review_comment.save_with_username(current_user.username)
     render "create"
-  # rescue => e
+    # rescue => e
     # logger.error("Loader::Name::Review::Comment.create:rescuing exception #{e}")
     # @error = e.to_s
     # render "create_error", status: :unprocessable_entity
   end
 
   def update
-    logger.debug('update')
+    logger.debug("update")
     @review_comment = Loader::Name::Review::Comment.find(review_comment_params[:id])
     @message = @review_comment.update_if_changed(review_comment_params,
                                                  current_user.username)
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Name::Review::Comment#update rescuing #{e}")
     @message = e.to_s
     render "update_error", status: :unprocessable_entity
@@ -77,7 +77,7 @@ class Loader::Name::Review::CommentsController < ApplicationController
 
   def destroy
     @review_comment.destroy
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Name::Review::Comment#destroy rescuing #{e}")
     @message = e.to_s
     render "destroy_error", status: :unprocessable_entity
@@ -89,7 +89,7 @@ class Loader::Name::Review::CommentsController < ApplicationController
     @review_comment = Loader::Name::Review::Comment.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the name review comment record."
-    #redirect_to loader_batches_path
+    # redirect_to loader_batches_path
   end
 
   def review_comment_params

@@ -1,0 +1,31 @@
+<h4>Bulk Processing Logs Search Directives</h4>
+
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: '',
+     description: "Default search is the same as the latest: search"},
+    {field_name: 'latest:',
+     description: "The default, ignores any search term and retrieves the most recently created logs, with the freshest at the top"},
+    {field_name: 'log-entry:',
+     description: "Searches for the search term in the log entries. Adds wildcards before and after the term you enter. Case-insensitive."},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>"
+        title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+

@@ -27,20 +27,20 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef
   end
 
   def create
-    Rails.logger.debug('create')
+    Rails.logger.debug("create")
     instance = Instance.new
     instance.draft = true
     instance.name_id = @match.name_id
-    instance.reference_id = @loader_name.batch.default_reference_id 
+    instance.reference_id = @loader_name.batch.default_reference_id
     instance.instance_type_id = InstanceType.secondary_reference.id
     instance.created_by = instance.updated_by = "bulk for #{@user}"
     instance.save!
     note_standalone_instance_created(instance)
-    return Constants::CREATED
+    Constants::CREATED
   rescue StandardError => e
-    Rails.logger.error("#{self.class}#create: #{e.to_s}")
+    Rails.logger.error("#{self.class}#create: #{e}")
     Rails.logger.error e.backtrace.join("\n")
-    @message = e.to_s.sub(/uncaught throw/,'').gsub(/"/,'')
+    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
     raise
   end
 
@@ -72,10 +72,11 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef
 
   def unknown_option
     log(
-      "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}")
+      "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}"
+    )
     log_error("Unknown option: ##{@match.id} #{@match.loader_name_id}")
     log_error("#{@match.inspect}")
-    return Constants::ERROR
+    Constants::ERROR
   end
 
   def standalone_instance_already_noted?
@@ -83,7 +84,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef
   end
 
   def xstandalone_instance_for_default_ref?
-    instances =  find_standalone_instances_for_default_ref
+    instances = find_standalone_instances_for_default_ref
     case instances.size
     when 0
       false
@@ -91,7 +92,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef
       note_standalone_instance(instances.first)
       true
     else
-      throw 'Unexpected 2+ standalone instances'
+      throw "Unexpected 2+ standalone instances"
     end
   end
 
@@ -106,7 +107,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef
   end
 
   def note_standalone_instance(instance)
-    Rails.logger.debug('note_standalone_instance')
+    Rails.logger.debug("note_standalone_instance")
     @match.standalone_instance_id = instance.id
     @match.standalone_instance_found = true
     @match.updated_by = "job for #{@user}"

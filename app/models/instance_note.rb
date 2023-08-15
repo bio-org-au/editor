@@ -57,6 +57,7 @@ class InstanceNote < ActiveRecord::Base
     return unless InstanceNoteKey.apc_dist.present?
     return unless instance_note_key_id == InstanceNoteKey.apc_dist.first.id
     return if instance.can_have_apc_dist?
+
     errors.add(:instance_note_key_id,
                "for APC Dist. Instance already has an APC Dist. note. \
                 Only one APC Dist. Note allowed per instance.")
@@ -66,6 +67,7 @@ class InstanceNote < ActiveRecord::Base
     return if instance.can_have_apc_dist?
     return unless changed_attributes.key?(:instance_note_key_id)
     return unless instance_note_key.apc_dist?
+
     errors.add(:instance_note_key_id,
                "for APC Dist. Instance already has an APC Dist. note. \
                 Only one APC Dist. Note allowed per instance.")
@@ -74,6 +76,7 @@ class InstanceNote < ActiveRecord::Base
   def deprecated_instance_note_key_cannot_be_used
     return unless instance_note_key_id_changed?
     return unless instance_note_key.deprecated
+
     errors.add(:instance_note_key_id, "is deprecated, cannot be used")
   end
 

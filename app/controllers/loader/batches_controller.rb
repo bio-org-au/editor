@@ -17,19 +17,17 @@
 #   limitations under the License.
 #
 class Loader::BatchesController < ApplicationController
-  before_action :find_loader_batch, only: [:show, :destroy, :tab, :update]
+  before_action :find_loader_batch, only: %i[show destroy tab update]
 
-
-  def index
-  end
+  def index; end
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
     set_tab
     set_tab_index
-    @take_focus = params[:take_focus] == 'true'
-    if params[:tab] =~ /\Atab_batch_review\z/
+    @take_focus = params[:take_focus] == "true"
+    if params[:tab] == "tab_batch_review"
       @batch_review = Loader::Batch::Review.new
       @batch_review.batch = @loader_batch
     end
@@ -49,7 +47,7 @@ class Loader::BatchesController < ApplicationController
     @message = @loader_batch.update_if_changed(loader_batch_params,
                                                current_user.username)
     render "update"
-  rescue => e
+  rescue StandardError => e
     logger.error("Loader::Batches#update rescuing #{e}")
     @message = e.to_s
     render "update_error", status: :unprocessable_entity
@@ -59,29 +57,28 @@ class Loader::BatchesController < ApplicationController
     find_loader_batch
     session[:default_loader_batch_id] = params[:id]
     session[:default_loader_batch_name] = @loader_batch.name
-    @message = 'Done'
+    @message = "Done"
   end
 
   def clear_default
     session[:default_loader_batch_id] = nil
     session[:default_loader_batch_name] = nil
-    @message = 'Done'
+    @message = "Done"
   end
 
   def stats
     @stats = Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
-      .new('*', session[:default_loader_batch_id]||0).report
+             .new("*", session[:default_loader_batch_id] || 0).report
   end
 
   def processing_overview
-    render 'processing_overview'
+    render "processing_overview"
   end
 
-  def hide_processing_overview
-  end
+  def hide_processing_overview; end
 
   def bulk_operation
-    render 'bulk/operation'
+    render "bulk/operation"
   end
 
   def default_reference_suggestions
@@ -91,7 +88,7 @@ class Loader::BatchesController < ApplicationController
 
   def unlock
     Loader::Batch::Bulk::JobLock.unlock!
-    render js:  "$('#emergency-unlock-link').hide();" 
+    render js: "$('#emergency-unlock-link').hide();"
   end
 
   private
@@ -105,7 +102,7 @@ class Loader::BatchesController < ApplicationController
 
   def loader_batch_params
     params.require(:loader_batch).permit(:name, :description,
-       :default_reference_id, :default_reference_typeahead)
+                                         :default_reference_id, :default_reference_typeahead)
   end
 
   def set_tab

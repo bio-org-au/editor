@@ -21,11 +21,11 @@ class Loader::Batch::Bulk::JobLock < ActiveRecord::Base
   self.primary_key = "id"
 
   def self.lock!(name)
-    rec = self.new
+    rec = new
     rec.job_name = name
     rec.save!
     true
-  rescue => e
+  rescue StandardError => e
     false
   end
 
@@ -36,9 +36,7 @@ class Loader::Batch::Bulk::JobLock < ActiveRecord::Base
   def self.unlock!
     destroy_all
     true
-  rescue => e
+  rescue StandardError => e
     false
   end
 end
-
-

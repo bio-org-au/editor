@@ -1,7 +1,9 @@
 <div>
-  <h1>Edit placement:
+  <h5>Edit placement:
     <%= render partial: "instances/workspace/widgets/placement_indicator", locals: {tree_version_element: @tree_version_element} %>
-  </h1>
+  </h5>
+  <p>All operations on this tab change the selected draft tree.
+  <br>Use the Edit Profile tab to make immediate changes to the published tree.</p>
   <% if @accepted_tve && @accepted_tve&.tree_element_id != @tree_version_element.tree_element_id %>
     (changed from <%= @accepted_tve&.tree_version&.tree&.name %>)
   <% end %>
@@ -17,7 +19,7 @@
       <%= check_box_tag("ExcludedElement", true, @tree_version_element.tree_element.excluded,
                         title: "Exclude this",
                         onchange: "updateExcluded(this,'" + @tree_version_element.element_link + "');") %>
-      <label for="ExcludedElement" class="exclude-label">exclude</label>
+      <label for="ExcludedElement" class="exclude-label">exclude on draft</label>
 
     </dd>
 
@@ -64,7 +66,7 @@
                 tabindex="<%= increment_tab_index %>"
                 title="Update the parent of this taxon"
                 onclick="$('#update_parent_btn').find('i.fa').addClass('fa-spin');"
-        >Update parent <i class="fa fa-refresh"></i>
+        >Update parent on draft <i class="fa fa-refresh"></i>
         </button>
         <div id="movement-message-container"
              class="message-container hidden">
@@ -102,6 +104,7 @@
     <dt>apni format</dt>
     <dd>
       <a href="<%= %Q(#{Rails.configuration.try('nsl_links')}apni-format/display/#{@instance.name_id}?versionId=#{@tree_version_element.tree_version.id}&drafts=true) %>"
+         rel="noopener noreferrer"
          title="apni format" target="_blank">
         <i class="fa fa-external-link-square"></i>
         ... <%= "apni-format/display/#{@instance.name_id}" %>

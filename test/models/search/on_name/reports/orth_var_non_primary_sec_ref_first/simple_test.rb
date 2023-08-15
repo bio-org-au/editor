@@ -32,7 +32,7 @@ class SrchOnNamRepOrthVarNonPrimSecRefFirstSimpleTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     confirm_results_class(search.executed_query.results)
     assert !search.executed_query.results.empty?,
-           "Expected at least some result for "\
+           "Expected at least some result for " \
            "is-orth-var-and-non-primary-sec-ref-first:"
   end
 end

@@ -19,12 +19,11 @@
 class CommentsController < ApplicationController
   # All text/html requests should go to the search page.
   before_action :javascript_only
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_comment, only: %i[show edit update destroy]
 
   # GET /comments/1
   # GET /comments/1.json
-  def show
-  end
+  def show; end
 
   # POST /comments
   # POST /comments.json
@@ -54,8 +53,8 @@ class CommentsController < ApplicationController
   # I had to hack it a bit and it certainly needs more looking at, but
   # the check for a javascript request seemed not important enough to delay for.
   def destroy
-   throw 'request must be js' unless request.format == "text/javascript" || request.format == "application/json"
-   username = current_user.username
+    throw "request must be js" unless request.format == "text/javascript" || request.format == "application/json"
+    username = current_user.username
     if @comment.update(updated_by: username) && @comment.destroy
       respond_to do |format|
         format.html { redirect_to comments_url, notice: "Comment deleted." }
@@ -65,7 +64,7 @@ class CommentsController < ApplicationController
     else
       throw "There was a problem deleting that record."
     end
-  rescue => e
+  rescue StandardError => e
     @message = e.to_s
     render "destroy_failed", status: 503
   end

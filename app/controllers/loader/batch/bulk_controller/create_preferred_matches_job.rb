@@ -33,7 +33,7 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
       do_one_loader_name(loader_name)
     end
     log_finish
-    return @attempts, @creates, @declines, @errors
+    [@attempts, @creates, @declines, @errors]
   end
 
   private
@@ -41,13 +41,13 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
   def do_one_loader_name(loader_name)
     @attempts += 1
     matcher = ::Loader::Name::MakeOneMatchTask.new(loader_name,
-                                                     @authorising_user,
-                                                     @job_number)
+                                                   @authorising_user,
+                                                   @job_number)
     @result = matcher.create
     tally_result_parts
-  rescue => e
+  rescue StandardError => e
     entry = "<span class='red'>Error: failed to make preferred match </span>"
-    entry += "##{loader_name.id} #{loader_name.simple_name} - error in do_one_loader_name: #{e.to_s}"
+    entry += "##{loader_name.id} #{loader_name.simple_name} - error in do_one_loader_name: #{e}"
     log(entry)
     @errors += 1
   end
@@ -76,7 +76,7 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
   end
 
   def debug(s)
-    tag = "Loader::Name::AsCreatePreferredMatchesJob" 
+    tag = "Loader::Name::AsCreatePreferredMatchesJob"
     Rails.logger.debug("#{tag}: #{s}")
   end
 end

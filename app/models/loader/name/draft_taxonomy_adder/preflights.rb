@@ -19,7 +19,7 @@
 #   Create a draft instance for a raw loader_name matched with a name record
 class Loader::Name::DraftTaxonomyAdder::Preflights
   attr_reader :added, :declined, :errors, :clear
-  
+
   def initialize(loader_name, draft, user, job)
     @loader_name = loader_name
     @draft = draft
@@ -28,26 +28,25 @@ class Loader::Name::DraftTaxonomyAdder::Preflights
   end
 
   def check
-    case 
-    when @draft.blank?
+    if @draft.blank?
       stop = true
       preflight_error = "Please choose a draft version"
-    when @loader_name.no_further_processing?
+    elsif @loader_name.no_further_processing?
       stop = true
       preflight_error = "no further processing"
-    when @loader_name.preferred_match.blank?
+    elsif @loader_name.preferred_match.blank?
       stop = true
       preflight_error = "No preferred matching name for #{@loader_name.simple_name}"
-    when @loader_name.preferred_match.blank? || @loader_name.preferred_match.standalone_instance_id.blank?
+    elsif @loader_name.preferred_match.blank? || @loader_name.preferred_match.standalone_instance_id.blank?
       stop = true
       preflight_error = "No instance identified for #{@loader_name.simple_name}"
-    when @loader_name.preferred_match.drafted?
+    elsif @loader_name.preferred_match.drafted?
       stop = true
       preflight_error = "Stopping because #{@loader_name.simple_name} is already on the draft tree"
-    when @loader_name.preferred_match.manually_drafted?
+    elsif @loader_name.preferred_match.manually_drafted?
       stop = true
       preflight_error = "Stopping because #{@loader_name.simple_name} is flagged as manually drafted"
-    when @loader_name.parent.try('no_further_processing?')
+    elsif @loader_name.parent.try("no_further_processing?")
       stop = true
       preflight_error = "Parent of #{@loader_name.simple_name} is excluded from further processing"
     end
@@ -65,6 +64,4 @@ class Loader::Name::DraftTaxonomyAdder::Preflights
   rescue StandardError => e
     Rails.logger.error("Couldn't log to table: #{e}")
   end
-
 end
-

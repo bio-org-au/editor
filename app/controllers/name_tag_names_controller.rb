@@ -17,12 +17,11 @@
 #   limitations under the License.
 #
 class NameTagNamesController < ApplicationController
-  before_action :set_name_tag_name, only: [:show, :edit, :update, :destroy]
+  before_action :set_name_tag_name, only: %i[show edit update destroy]
 
   # GET /name_tag_names/1
   # GET /name_tag_names/1.json
-  def show
-  end
+  def show; end
 
   # GET /name_tag_names/new
   def new
@@ -34,7 +33,7 @@ class NameTagNamesController < ApplicationController
   def create
     @name_tag_name = NameTagName.new(name_tag_name_params)
     @name_tag_name.save_new_record_with_username(current_user.username)
-  rescue => e
+  rescue StandardError => e
     logger.error("Name Tag Name create failed: #{e}")
     @message = "Could not attach that tag because #{e}"
     render :create_failed, format: :js, status: :unprocessable_entity

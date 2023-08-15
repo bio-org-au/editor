@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-
 # Name author associations and methods
 # covering the various types of authors a name may have
 module NameAuthorable
   extend ActiveSupport::Concern
   included do
-    BASE = 'base'
-    EX = 'ex'
-    EX_BASE = 'ex_base'
-    SANCTIONING = 'sanctioning'
+    BASE = "base"
+    EX = "ex"
+    EX_BASE = "ex_base"
+    SANCTIONING = "sanctioning"
     belongs_to :author, optional: true
     belongs_to :ex_author, class_name: "Author", optional: true
     belongs_to :base_author, class_name: "Author", optional: true
@@ -41,11 +40,10 @@ module NameAuthorable
   # and name category configuration
   # for a set of author types.
   def takes_this_type_of_author?(type_of_author)
-    unless [EX, BASE, EX_BASE, SANCTIONING].include?(type_of_author)
-      throw 'Unknown type of author'
-    end
+    throw "Unknown type of author" unless [EX, BASE, EX_BASE, SANCTIONING].include?(type_of_author)
     return false unless category_for_edit.takes_authors?
     return false unless author_type_allowed_in_config(type_of_author)
+
     true
   end
 
@@ -62,7 +60,7 @@ module NameAuthorable
   end
 
   def takes_author?
-   takes_authors? || takes_author_only?
+    takes_authors? || takes_author_only?
   end
 
   def takes_author_only?
@@ -70,15 +68,16 @@ module NameAuthorable
   end
 
   def author_and_ex_author_must_differ
-    if author_id.present? && ex_author_id.present? && author_id == ex_author_id
-      errors.add(:base, "The ex-author cannot be the same as the author.")
-    end
+    return unless author_id.present? && ex_author_id.present? && author_id == ex_author_id
+
+    errors.add(:base, "The ex-author cannot be the same as the author.")
   end
 
   def base_author_and_ex_base_author_must_differ
     return unless base_author_id.present? &&
                   ex_base_author_id.present? &&
                   base_author_id == ex_base_author_id
+
     errors.add(:base, "The ex-base author cannot be the same as the base author.")
   end
 end

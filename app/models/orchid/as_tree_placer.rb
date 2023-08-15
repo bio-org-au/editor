@@ -16,11 +16,11 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-
 #  We need to place Orchids on a draft tree.
 class Orchid::AsTreePlacer
   attr_reader :placed_count, :error_count, :preflight_stop_count
-  ERROR = 'error'
+
+  ERROR = "error"
   def initialize(draft_tree, orchid, authorising_user)
     debug("Authorising user: #{authorising_user}")
     @draft_tree = draft_tree
@@ -43,45 +43,46 @@ class Orchid::AsTreePlacer
     else
       json&.to_s || err.to_s
     end
-  rescue
+  rescue StandardError
     err.to_s
   end
 
   def preflight_checks
-    case 
-    when @draft_tree.blank?
+    if @draft_tree.blank?
       @preflight_failed = true
       @preflight_error = "Please choose a draft version"
-    when @orchid.exclude_from_further_processing?
+    elsif @orchid.exclude_from_further_processing?
       @preflight_failed = true
       @preflight_error = "#{@orchid.taxon} is excluded from further processing"
-    when @orchid.preferred_match.blank?
+    elsif @orchid.preferred_match.blank?
       @preflight_failed = true
       @preflight_error = "No preferred matching name for #{@orchid.taxon}"
-    when @orchid.orchids_name.blank? || @orchid.orchids_name.first.standalone_instance_id.blank?
+    elsif @orchid.orchids_name.blank? || @orchid.orchids_name.first.standalone_instance_id.blank?
       @preflight_failed = true
       @preflight_error = "No instance identified for #{@orchid.taxon}"
-    when @orchid.orchids_name.first.drafted?
+    elsif @orchid.orchids_name.first.drafted?
       @preflight_failed = true
       @preflight_error = "Stopping because #{@orchid.taxon} is already on the draft tree"
-    when @orchid.orchids_name.first.manually_drafted?
+    elsif @orchid.orchids_name.first.manually_drafted?
       @preflight_failed = true
       @preflight_error = "Stopping because #{@orchid.taxon} is flagged as manually drafted"
-    when @orchid.parent.try('exclude_from_further_processing?')
+    elsif @orchid.parent.try("exclude_from_further_processing?")
       @preflight_failed = true
       @preflight_error = "Parent of #{@orchid.taxon} is excluded from further processing"
-    when @orchid.hybrid_cross?
+    elsif @orchid.hybrid_cross?
       @preflight_failed = true
       @preflight_error = "#{@orchid.taxon} is a hybrid cross - not ready to process these"
     end
-    if @preflight_failed
-      @preflight_stop_count = 1
-      log_to_table("Preflight check prevented placing/replacing on tree: #{@orchid.taxon}, id: #{@orchid.id}, seq: #{@orchid.seq}: #{@preflight_error}", @authorising_user)
-    end
+    return unless @preflight_failed
+
+    @preflight_stop_count = 1
+    log_to_table(
+      "Preflight check prevented placing/replacing on tree: #{@orchid.taxon}, id: #{@orchid.id}, seq: #{@orchid.seq}: #{@preflight_error}", @authorising_user
+    )
   end
 
   def peek
-    debug("#{'peek '*20}")
+    debug("#{'peek ' * 20}")
     debug("@orchid.class: #{@orchid.class}")
     debug("@draft_tree.class: #{@draft_tree.class}")
     debug("@draft_tree.tree.config: #{@draft_tree.tree.config}")
@@ -90,7 +91,7 @@ class Orchid::AsTreePlacer
   end
 
   # From @orchid work out the name and instance you're interested in.
-  # 
+  #
   # for all the preferred names/instances of the orchid
   # loop
   #   if the name is on the draft
@@ -100,7 +101,7 @@ class Orchid::AsTreePlacer
   #   end
   # end
   def place_or_replace
-    debug('place_or_replace')
+    debug("place_or_replace")
     @orchid.orchids_name.each do |one_orchid_name|
       if one_orchid_name.standalone_instance_id.blank?
         debug "No instance, therefore cannot place this on the APC Tree."
@@ -109,14 +110,14 @@ class Orchid::AsTreePlacer
       else
         @tree_version_element = @draft_tree.name_in_version(one_orchid_name.name)
         if @tree_version_element.present?
-          debug 'name is on the draft: replace it'
+          debug "name is on the draft: replace it"
           return replace_name(one_orchid_name)
-        #elsif one_orchid_name.name.draft_instance_id(@draft_tree).present?
-        #elsif one_orchid_name.standalone_instance.name.draft_instance_id(@draft_tree) != one_orchid_name.standalone_instance.id
-          #debug 'name is in the draft already'
-          #replace_name(one_orchid_name)
+          # elsif one_orchid_name.name.draft_instance_id(@draft_tree).present?
+          # elsif one_orchid_name.standalone_instance.name.draft_instance_id(@draft_tree) != one_orchid_name.standalone_instance.id
+          # debug 'name is in the draft already'
+          # replace_name(one_orchid_name)
         else
-          debug 'name is not on the draft: just place it'
+          debug "name is not on the draft: just place it"
           return place_name(one_orchid_name)
         end
       end
@@ -125,15 +126,17 @@ class Orchid::AsTreePlacer
     @placed_count = 0
     @error_count = 1
     @error = json_error(e)
-    log_to_table("Error placing or replacing on tree: #{@orchid.taxon}, id: #{@orchid.id}: #{@error}", @authorising_user)
-    if inferred_rank.downcase == 'genus'
-      raise GenusTaxonomyPlacementError.new("Stopping because failed to add genus #{@orchid.taxon}")
-    else
-      0
+    log_to_table("Error placing or replacing on tree: #{@orchid.taxon}, id: #{@orchid.id}: #{@error}",
+                 @authorising_user)
+    if inferred_rank.downcase == "genus"
+      raise GenusTaxonomyPlacementError, "Stopping because failed to add genus #{@orchid.taxon}"
     end
-  rescue => e
+
+    0
+  rescue StandardError => e
     Rails.logger.error("place_or_replace: Error placing or replacing orchid on tree #{e.message}")
-    log_to_table("Error placing/replacing on tree: #{@orchid.taxon}, id: #{@orchid.id}: #{e.message}", @authorising_user)
+    log_to_table("Error placing/replacing on tree: #{@orchid.taxon}, id: #{@orchid.id}: #{e.message}",
+                 @authorising_user)
     raise
   end
 
@@ -141,14 +144,14 @@ class Orchid::AsTreePlacer
     (@orchid.nsl_rank ||
      @orchid.rank ||
      @orchid&.orchids_name&.first&.name&.name_rank&.name ||
-     'cannot infer rank')
+     "cannot infer rank")
   end
 
   def place_name(orchids_name)
     tree_version = @draft_tree
     debug("parent_element_link: #{parent_tve(orchids_name).element_link}") unless parent_tve(orchids_name).nil?
     placement = Tree::Workspace::Placement.new(username: @authorising_user,
-                                               parent_element_link: parent_tve(orchids_name).try('element_link'),
+                                               parent_element_link: parent_tve(orchids_name).try("element_link"),
                                                instance_id: orchids_name.standalone_instance_id,
                                                excluded: orchids_name.excluded?,
                                                profile: profile,
@@ -163,17 +166,17 @@ class Orchid::AsTreePlacer
   def replace_name(orchids_name)
     parent_tve = parent_tve(orchids_name)
     replacement = Tree::Workspace::Replacement.new(username: @authorising_user,
-                                                 target: @tree_version_element,
-                                                 parent: parent_tve(orchids_name),
-                                                 instance_id: orchids_name.standalone_instance_id,
-                                                 excluded: orchids_name.excluded?,
-                                                 profile: profile)
+                                                   target: @tree_version_element,
+                                                   parent: parent_tve(orchids_name),
+                                                   instance_id: orchids_name.standalone_instance_id,
+                                                   excluded: orchids_name.excluded?,
+                                                   profile: profile)
     @response = replacement.replace
     log_to_table("Replace #{@orchid.taxon}, id: #{@orchid.id}, seq: #{@orchid.seq}", @authorising_user)
     orchids_name.drafted = true
     orchids_name.save!
     1
-  end 
+  end
 
   def parent_tve(orchids_name)
     @draft_tree.name_in_version(orchids_name.name.parent)
@@ -181,27 +184,27 @@ class Orchid::AsTreePlacer
 
   def json_result(result)
     json_payload(result)&.message || result.to_s
-  rescue
+  rescue StandardError
     result.to_s
   end
 
-  # I did try to use the Tree::ProfileData class, 
+  # I did try to use the Tree::ProfileData class,
   # but it couldn't find the comment_key or distribution_key
-  # without new methods and (more importantly) it requires 
+  # without new methods and (more importantly) it requires
   # a @current_user, which the batch job doesn't have.
   def profile
     hash = {}
     unless @orchid.comment.blank?
-      hash['APC Comment'] = { value: @orchid.comment,
+      hash["APC Comment"] = { value: @orchid.comment,
                               updated_by: @authorising_user,
-                              updated_at: Time.now.utc.iso8601}
+                              updated_at: Time.now.utc.iso8601 }
     end
     unless @orchid.distribution.blank?
-      hash['APC Dist.'] = {
-                             value: @orchid.distribution.split(' | ').join(', '),
-                             updated_by: @authorising_user,
-                             updated_at: Time.now.utc.iso8601
-                             }
+      hash["APC Dist."] = {
+        value: @orchid.distribution.split(" | ").join(", "),
+        updated_by: @authorising_user,
+        updated_at: Time.now.utc.iso8601
+      }
     end
     hash
   end
@@ -214,14 +217,13 @@ class Orchid::AsTreePlacer
 
   def log_to_table(entry, user)
     OrchidProcessingLog.log(entry, user)
-  rescue => e
-    Rails.logger.error("Couldn't log to table: #{e.to_s}")
+  rescue StandardError => e
+    Rails.logger.error("Couldn't log to table: #{e}")
   end
 end
 
-
 class GenusTaxonomyPlacementError < StandardError
-  def initialize(msg="Failed to place a genus in taxonomy.", exception_type="custom")
+  def initialize(msg = "Failed to place a genus in taxonomy.", exception_type = "custom")
     @exception_type = exception_type
     super(msg)
   end

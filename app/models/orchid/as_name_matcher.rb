@@ -27,21 +27,21 @@ class Orchid::AsNameMatcher
 
   def find_or_create_preferred_match
     if preferred_match?
-      return 0
-    elsif @orchid.exclude_from_further_processing? || 
-       @orchid.parent.try('exclude_from_further_processing?')
-      return 0
+      0
+    elsif @orchid.exclude_from_further_processing? ||
+          @orchid.parent.try("exclude_from_further_processing?")
+      0
     elsif @orchid.misapplied?
-      return 0
+      0
     elsif make_preferred_match?
-      return 1
+      1
     else
-      return 0
+      0
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error(e.to_s)
-    log_to_table("Error: preferred match problem for #{@orchid.id}, seq: #{@orchid.seq} #{@orchid.taxon} - #{e.to_s}")
-    return 0
+    log_to_table("Error: preferred match problem for #{@orchid.id}, seq: #{@orchid.seq} #{@orchid.taxon} - #{e}")
+    0
   end
 
   def stop(msg)
@@ -49,13 +49,13 @@ class Orchid::AsNameMatcher
   end
 
   def preferred_match?
-    return !@orchid.preferred_match.empty?
+    !@orchid.preferred_match.empty?
   end
 
   def make_preferred_match?
     if exactly_one_matching_name? &&
-         matching_name_has_primary? &&
-         matching_name_has_exactly_one_primary?
+       matching_name_has_primary? &&
+       matching_name_has_exactly_one_primary?
       create_match
       true
     else
@@ -68,11 +68,11 @@ class Orchid::AsNameMatcher
     if exactly_one_matching_name?
       reason += "matching names's instance is not primary; " unless matching_name_has_primary?
       reason += "matching names has more than one primary instance; " unless matching_name_has_exactly_one_primary?
-      reason = 'Unknown reason' if reason.blank?
+      reason = "Unknown reason" if reason.blank?
     else
       reason = "#{@orchid.matches.size} matching names"
     end
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error(e.to_s)
     reason = "couldn't determine reason"
   end
@@ -89,8 +89,8 @@ class Orchid::AsNameMatcher
 
   def log_to_table(entry)
     OrchidProcessingLog.log("#{entry} #{@log_tag}", @authorising_user)
-  rescue => e
-    Rails.logger.error("Couldn't log to table: #{e.to_s}")
+  rescue StandardError => e
+    Rails.logger.error("Couldn't log to table: #{e}")
   end
 
   def exactly_one_matching_name?
@@ -107,7 +107,8 @@ class Orchid::AsNameMatcher
 
   def relationship_instance_type_id
     return nil if @orchid.accepted?
-    return @orchid.riti
+
+    @orchid.riti
   end
 
   def taxon

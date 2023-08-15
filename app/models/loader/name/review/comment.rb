@@ -24,15 +24,15 @@ class Loader::Name::Review::Comment < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :loader_name, class_name: "Loader::Name",
-             foreign_key: "loader_name_id"
+                           foreign_key: "loader_name_id"
   belongs_to :batch_review_period, class_name: "Loader::Batch::Review::Period",
-             foreign_key: "review_period_id"
+                                   foreign_key: "review_period_id"
   belongs_to :batch_reviewer, class_name: "Loader::Batch::Reviewer",
-             foreign_key: "batch_reviewer_id"
+                              foreign_key: "batch_reviewer_id"
   alias_attribute :reviewer, :batch_reviewer
 
   belongs_to :name_review_comment_type, class_name: "Loader::Name::Review::Comment::Type",
-             foreign_key: "name_review_comment_type_id"
+                                        foreign_key: "name_review_comment_type_id"
   alias_attribute :type, :name_review_comment_type
 
   validates :comment, presence: true
@@ -44,7 +44,7 @@ class Loader::Name::Review::Comment < ActiveRecord::Base
   end
 
   def display_as
-    'Name Review Comment'
+    "Name Review Comment"
   end
 
   def allow_delete?
@@ -52,13 +52,13 @@ class Loader::Name::Review::Comment < ActiveRecord::Base
   end
 
   def record_type
-    'NameReviewComment'
+    "NameReviewComment"
   end
 
   def save_with_username(username)
-    Rails.logger.debug('save_with_username')
+    Rails.logger.debug("save_with_username")
     self.created_by = self.updated_by = username
-    #set_defaults
+    # set_defaults
     save!
   end
 
@@ -80,16 +80,14 @@ class Loader::Name::Review::Comment < ActiveRecord::Base
 
   def self.context_for(focus)
     case focus
-    when 'distribution' then
-      'distribution'
-    when 'concept-note' then
-      'concept-note'
-    when 'synonymy' then
-      'synonymy'
+    when "distribution"
+      "distribution"
+    when "concept-note"
+      "concept-note"
+    when "synonymy"
+      "synonymy"
     else
-      'main name entry'
+      "main name entry"
     end
   end
-
 end
-  

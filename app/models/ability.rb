@@ -97,7 +97,7 @@ class Ability
     can "names_deletes",      :all
     can "references",         :all
     can "names/typeaheads/for_unpub_cit", :all
-    can "loader/batch/review/mode",    'switch_off'
+    can "loader/batch/review/mode", "switch_off"
   end
 
   def qa_auth
@@ -151,9 +151,9 @@ class Ability
 
   def reviewer_auth
     can "loader/name/review/comments", :all
-    can "loader/batch/review/mode",    'switch_on'
-    can "loader/names",                'show' 
-    can "loader/names",                'tab_details' 
-    can "loader/names",                'tab_comment' 
+    can "loader/batch/review/mode",    "switch_on"
+    can "loader/names",                "show"
+    can "loader/names",                "tab_details"
+    can "loader/names",                "tab_comment"
   end
 end

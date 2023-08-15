@@ -66,7 +66,7 @@ class Instance::AsArray::ForReference < Array
             .joins(:name)
             .includes(name: :name_status)
             .includes(:instance_type)
-            .includes(this_is_cited_by: [:name, :instance_type])
+            .includes(this_is_cited_by: %i[name instance_type])
     @sort_by == "page" ? query.ordered_by_page : query.ordered_by_name
   end
 

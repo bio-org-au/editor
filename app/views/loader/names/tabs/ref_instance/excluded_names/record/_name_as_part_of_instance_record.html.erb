@@ -18,7 +18,7 @@
       <% if record.duplicate? %> [Duplicate] <% end %>
     </span>
     <span class="pull-right">
-      <%= link_to("#{ShardConfig.name_space} #{editor_icon('external-link-square')}".html_safe,
+      <%= link_to("#{sanitize(ShardConfig.name_space)} #{external_link_square_icon}".html_safe,
               "#{Rails.configuration.try('nsl_links')}rest/name/apni/#{record.id}/api/apni-format",
             title: "#{ShardConfig.name_space} search by ID. Opens in another tab or window.",
             class: "rebeccapurple",

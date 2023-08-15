@@ -30,7 +30,7 @@ class RefAuthorRole < ActiveRecord::Base
   end
 
   def self.author
-    #where(name: "Author").push(order("name").limit(1).first).first
+    # where(name: "Author").push(order("name").limit(1).first).first
     where(name: "Author").first
   end
 
@@ -43,6 +43,6 @@ class RefAuthorRole < ActiveRecord::Base
   end
 
   def self.query_form_options
-    all.sort_by(&:name).collect { |n| [n.name, n.name.downcase, class: ""] }
+    all.sort_by(&:name).collect { |n| [n.name, n.name.downcase, { class: "" }] }
   end
 end

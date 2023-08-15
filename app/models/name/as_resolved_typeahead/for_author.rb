@@ -88,10 +88,8 @@ class Name::AsResolvedTypeahead::ForAuthor
     possibles_with_id = ::Author
                         .where(id: @id_string.to_i)
                         .lower_abbrev_equals(@text)
-    if possibles_with_id.size == 1
-      @value = possibles_with_id.first.id
-    else
-      raise "please choose #{@field_name} from suggestions (> 1 match)"
-    end
+    raise "please choose #{@field_name} from suggestions (> 1 match)" unless possibles_with_id.size == 1
+
+    @value = possibles_with_id.first.id
   end
 end

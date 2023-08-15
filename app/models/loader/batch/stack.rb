@@ -26,7 +26,7 @@ class Loader::Batch::Stack < ActiveRecord::Base
   end
 
   def display_asx
-    'Loader Batch Stack'
+    "Loader Batch Stack"
   end
 
   def allow_delete?
@@ -34,6 +34,6 @@ class Loader::Batch::Stack < ActiveRecord::Base
   end
 
   def xdescription
-    'some description'
+    "some description"
   end
 end

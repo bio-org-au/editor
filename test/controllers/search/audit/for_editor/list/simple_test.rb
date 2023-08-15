@@ -24,7 +24,7 @@ class SearchAuditListSimpleTest < ActionController::TestCase
 
   test "search for records created in the last 50 days" do
     get(:search,
-        params: { query_target: "review", query_string: "50" },
+        params: { query_target: "activity", query_string: "50" },
         session: { username: "greg",
                    user_full_name: "Fred Jones",
                    groups: [] })

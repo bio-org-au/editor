@@ -24,6 +24,7 @@
 class Orchid::AsTypeahead::ForParent
   attr_reader :suggestions,
               :params
+
   SEARCH_LIMIT = 50
 
   def initialize(params)
@@ -40,19 +41,19 @@ class Orchid::AsTypeahead::ForParent
   end
 
   def core_query
-    Orchid.where(record_type: 'accepted')
-        .where(["lower(taxon) like ?",prepared_search_term])
-        .avoids_id(@params[:avoid_id].try("to_i") || -1)
-        .order("taxon")
-        .limit(SEARCH_LIMIT)
+    Orchid.where(record_type: "accepted")
+          .where(["lower(taxon) like ?", prepared_search_term])
+          .avoids_id(@params[:avoid_id].try("to_i") || -1)
+          .order("taxon")
+          .limit(SEARCH_LIMIT)
   end
 
   def query
     @qry = core_query
-    @qry = @qry.select('id, taxon')
+    @qry = @qry.select("id, taxon")
                .collect do |n|
-      {value: "#{n.taxon} (#{n.id}) ",
-       id: n.id}
+      { value: "#{n.taxon} (#{n.id}) ",
+        id: n.id }
     end
   end
 end

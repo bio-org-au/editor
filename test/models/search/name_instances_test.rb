@@ -24,19 +24,19 @@ class SearchNameInstancesTest < ActiveSupport::TestCase
   # Search model run_search for Instance for :
   # "id: 86355" in "name-instances", up to 1000000000 record(s)
   test "search with show-instances" do
-    run_search('show-instances:')
+    run_search("show-instances:")
   end
 
   test "search with s-i abbrev" do
-    run_search('s-i:')
+    run_search("s-i:")
   end
 
   test "search with si abbrev" do
-    run_search('si:')
+    run_search("si:")
   end
 
   test "search with i abbrev" do
-    run_search('i:')
+    run_search("i:")
   end
 
   def run_search(directive)
@@ -51,7 +51,7 @@ class SearchNameInstancesTest < ActiveSupport::TestCase
                  "The search should be a Search."
     assert_equal 2,
                  search.executed_query.results.size,
-                 "Expect 2 recs for name search on Plantae Haeckel "\
+                 "Expect 2 recs for name search on Plantae Haeckel " \
                  "showing instances."
   end
 end

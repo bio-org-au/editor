@@ -26,7 +26,7 @@ class Loader::Name < ActiveRecord::Base
 
   def self.for_batch(batch_id)
     if batch_id.nil? || batch_id == -1
-      where("1=1")    
+      where("1=1")
     else
       where("loader_batch_id = ?", batch_id)
     end
@@ -45,9 +45,9 @@ class Loader::Name < ActiveRecord::Base
            dependent: :restrict_with_exception
 
   belongs_to :parent,
-           class_name: "Loader::Name",
-           foreign_key: "parent_id",
-           optional: true
+             class_name: "Loader::Name",
+             foreign_key: "parent_id",
+             optional: true
 
   has_many :loader_name_matches, class_name: "Loader::Name::Match", foreign_key: "loader_name_id"
   alias_attribute :preferred_matches, :loader_name_matches
@@ -62,7 +62,7 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def display_as
-    'Loader Name'
+    "Loader Name"
   end
 
   def has_parent?
@@ -72,7 +72,7 @@ class Loader::Name < ActiveRecord::Base
   def update_if_changed(params, username)
     # strip_attributes is in place and should make this unnecessary
     # but it's not working in the way I expect
-    params.keys.each { |key| params[key] = nil if params[key] == '' } 
+    params.keys.each { |key| params[key] = nil if params[key] == "" }
     assign_attributes(params)
     if changed?
       self.updated_by = username
@@ -84,8 +84,8 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def compress_whitespace
-    self.simple_name.squish!
-    self.full_name.squish!
+    simple_name.squish!
+    full_name.squish!
   end
 
   def name_match_no_primary?
@@ -94,6 +94,7 @@ class Loader::Name < ActiveRecord::Base
 
   def orth_var?
     return false if name_status.blank?
+
     name_status.downcase.match(/\Aorth/)
   end
 
@@ -113,31 +114,31 @@ class Loader::Name < ActiveRecord::Base
     name_review_comments.size > 0
   end
 
-  def reviewer_comments(scope = 'any')
+  def reviewer_comments(scope = "any")
     name_review_comments
       .includes(batch_reviewer: [:batch_review_role])
-      .select {|comment| comment.reviewer.role.name == Loader::Batch::Review::Role::NAME_REVIEWER}
-      .select {|comment| comment.context == scope || scope == 'any'}
+      .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::NAME_REVIEWER }
+      .select { |comment| comment.context == scope || scope == "any" }
   end
 
-  def reviewer_comments?(scope = 'any')
+  def reviewer_comments?(scope = "any")
     reviewer_comments(scope).size > 0
   end
 
-  def compiler_comments(scope = 'any')
+  def compiler_comments(scope = "any")
     name_review_comments
       .includes(batch_reviewer: [:batch_review_role])
-      .select {|comment| comment.reviewer.role.name == Loader::Batch::Review::Role::COMPILER}
-      .select {|comment| comment.context == scope || scope == 'any'}
+      .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::COMPILER }
+      .select { |comment| comment.context == scope || scope == "any" }
   end
 
-  def compiler_comments?(scope = 'any')
+  def compiler_comments?(scope = "any")
     compiler_comments(scope).size > 0
   end
 
   def self.record_to_flush_results
     r = OpenStruct.new
-    r.record_type = 'accepted'
+    r.record_type = "accepted"
     r.id = -1
     r.flushing = true
     r
@@ -151,7 +152,7 @@ class Loader::Name < ActiveRecord::Base
   # not have all its syonyms following it in the set - because of the limit
   # applied to the query.
   #
-  # If there is only one accepted record in the set, then all synonyms will 
+  # If there is only one accepted record in the set, then all synonyms will
   # be there.
   #
   # An accepted record is a "main" or non-synonym record in this model.
@@ -159,16 +160,14 @@ class Loader::Name < ActiveRecord::Base
   # Only need to trim if the result set is larger than the limit - that rule
   # is applied before here.
   #
-  # Algorithm: remove records from the end of the result set until you reach an 
+  # Algorithm: remove records from the end of the result set until you reach an
   # accepted record, then remove that accepted record, but only if there's
   # more than one accepted record in the set
   #
   def self.trim_results(results)
     ary = results.to_ary
-    if ary.size > 1 && ary.select {|r| r.record_type == 'accepted'}.size > 1
-      until ary[-1].record_type == 'accepted'
-        ary.pop
-      end
+    if ary.size > 1 && ary.select { |r| r.record_type == "accepted" }.size > 1
+      ary.pop until ary[-1].record_type == "accepted"
       ary.pop
     end
     ary
@@ -177,17 +176,19 @@ class Loader::Name < ActiveRecord::Base
   def names_simple_or_full_name_matching_taxon_scientific
     ::Name.where(
       ["simple_name = ? or full_name = ?",
-       simple_name, simple_name])
-        .where(duplicate_of_id: nil)
-        .joins(:name_type).where(name_type: {scientific: true})
-        .order("simple_name, name.id")
+       simple_name, simple_name]
+    )
+          .where(duplicate_of_id: nil)
+          .joins(:name_type).where(name_type: { scientific: true })
+          .order("simple_name, name.id")
   end
 
   def names_unaccent_simple_name_matching_taxon
     ::Name.where(
-      ["lower(f_unaccent(simple_name)) like lower(f_unaccent(?))", simple_name])
-        .joins(:name_type).where(name_type: {scientific: true})
-        .order("simple_name, name.id")
+      ["lower(f_unaccent(simple_name)) like lower(f_unaccent(?))", simple_name]
+    )
+          .joins(:name_type).where(name_type: { scientific: true })
+          .order("simple_name, name.id")
   end
 
   def matches(type: :strict)
@@ -202,28 +203,27 @@ class Loader::Name < ActiveRecord::Base
     end
   end
 
-
   def accepted?
-    record_type == 'accepted'
+    record_type == "accepted"
   end
   alias_attribute :standalone?, :accepted?
 
   def synonym?
-    record_type == 'synonym'
+    record_type == "synonym"
   end
 
   def misapplied?
-    record_type == 'misapplied'
+    record_type == "misapplied"
   end
   alias_attribute :misapp?, :misapplied?
 
   def heading?
-    record_type == 'heading'
+    record_type == "heading"
   end
 
   # not ideal
   def excluded_rt?
-    record_type == 'excluded'
+    record_type == "excluded"
   end
 
   # record types 'excluded' and 'synonym' can be excluded names
@@ -231,17 +231,18 @@ class Loader::Name < ActiveRecord::Base
     excluded == true
   end
 
-
   def likely_phrase_name?
-    simple_name =~ /Herbarium/ || simple_name =~ /sp\./ || simple_name =~ /[0-9][0-9][0-9]/ 
+    simple_name =~ /Herbarium/ || simple_name =~ /sp\./ || simple_name =~ /[0-9][0-9][0-9]/
   end
 
   # Simple name match, but ignoring herbarium string and parentheses
   # Also, no requirement for scientific name type
   def matches_tweaked_for_phrase_name
-    ::Name.where(["regexp_replace(simple_name,'[)(]','','g') = regexp_replace(regexp_replace(?,' [A-z][A-z]* Herbarium','','i'),'[)(]','','g')", simple_name])
-      .where(duplicate_of_id: nil)
-      .order("simple_name, name.id")
+    ::Name.where([
+                   "regexp_replace(simple_name,'[)(]','','g') = regexp_replace(regexp_replace(?,' [A-z][A-z]* Herbarium','','i'),'[)(]','','g')", simple_name
+                 ])
+          .where(duplicate_of_id: nil)
+          .order("simple_name, name.id")
   end
 
   def likely_cultivar?
@@ -267,19 +268,18 @@ class Loader::Name < ActiveRecord::Base
     return nil if accepted?
     return nil if excluded_rt?
 
-    return InstanceType.find_by_name('misapplied').id if misapplied?
+    return InstanceType.find_by_name("misapplied").id if misapplied?
+
     if taxonomic?
-      if pp?
-        return InstanceType.find_by_name('pro parte taxonomic synonym').id
-      else
-        return InstanceType.find_by_name('taxonomic synonym').id
-      end
+      return InstanceType.find_by_name("pro parte taxonomic synonym").id if pp?
+
+      return InstanceType.find_by_name("taxonomic synonym").id
+
     elsif nomenclatural?
-      if pp?
-        return InstanceType.find_by_name('pro parte nomenclatural synonym').id
-      else
-        return InstanceType.find_by_name('nomenclatural synonym').id
-      end
+      return InstanceType.find_by_name("pro parte nomenclatural synonym").id if pp?
+
+      return InstanceType.find_by_name("nomenclatural synonym").id
+
     elsif InstanceType.where(name: synonym_type).size == 1
       return InstanceType.find_by_name(synonym_type).id
     elsif synonym_type.blank?
@@ -291,44 +291,42 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def taxonomic?
-    synonym_type == 'taxonomic synonym'
+    synonym_type == "taxonomic synonym"
   end
 
   def nomenclatural?
-    synonym_type == 'nomenclatural synonym'
+    synonym_type == "nomenclatural synonym"
   end
 
   def pp?
-    partly == 'p.p.'
+    partly == "p.p."
   end
 
   # This is different to the default name search
   def self.bulk_operations_search(name_string)
-    ns = name_string.downcase.gsub(/\*/,'%')
-    Loader::Name.where([ Constants::BULK_OPERATIONS_WHERE_FRAG,
-                         ns, ns, ns, ns, ns, ns])
+    ns = name_string.downcase.gsub(/\*/, "%")
+    Loader::Name.where([Constants::BULK_OPERATIONS_WHERE_FRAG,
+                        ns, ns, ns, ns, ns, ns])
   end
 
-  # This is used in bulk jobs when the user wants to process names in a family. 
+  # This is used in bulk jobs when the user wants to process names in a family.
   def self.family_string_search(family_string)
-    fam = family_string.downcase.gsub(/\*/,'%')
-    Loader::Name.where([ "lower(family) like lower(?) ", fam])
+    fam = family_string.downcase.gsub(/\*/, "%")
+    Loader::Name.where(["lower(family) like lower(?) ", fam])
   end
 
   def self.create(params, username)
     loader_name = Loader::Name.new(params)
     loader_name.created_manually = true
     if loader_name.loader_batch_id.blank?
-      loader_name.loader_batch_id = self.find(params[:parent_id])
-                                        .loader_batch_id
+      loader_name.loader_batch_id = find(params[:parent_id])
+                                    .loader_batch_id
     end
     loader_name.doubtful = false
     loader_name.full_name = loader_name.simple_name
-    if loader_name.save_with_username(username)
-      loader_name
-    else
-      raise loader_name.errors.full_messages.first.to_s
-    end
+    raise loader_name.errors.full_messages.first.to_s unless loader_name.save_with_username(username)
+
+    loader_name
   end
 
   def save_with_username(username)
@@ -345,7 +343,7 @@ class Loader::Name < ActiveRecord::Base
     children.empty? && loader_name_matches.empty?
   end
 
-  def new_child(base_seq = self.seq)
+  def new_child(base_seq = seq)
     loader_name = Loader::Name.new
     loader_name.parent_id = id
     loader_name.simple_name = loader_name.full_name = nil
@@ -355,24 +353,24 @@ class Loader::Name < ActiveRecord::Base
     loader_name
   end
 
-  def new_synonym(base_seq: self.seq)
+  def new_synonym(base_seq: seq)
     loader_name = new_child(base_seq)
-    loader_name.record_type = 'synonym'
+    loader_name.record_type = "synonym"
     loader_name
   end
 
-  def new_misapp(base_seq: self.seq)
+  def new_misapp(base_seq: seq)
     loader_name = new_child(base_seq)
-    loader_name.record_type = 'misapplied'
+    loader_name.record_type = "misapplied"
     loader_name
   end
 
   def record_type_as_context
     case record_type
-      when 'misapplied' then 'synonymy'
-      when 'synonym' then 'synonymy'
-      when 'accepted' then 'main'
-      else 'unknown'
+    when "misapplied" then "synonymy"
+    when "synonym" then "synonymy"
+    when "accepted" then "main"
+    else "unknown"
     end
   end
 
@@ -382,18 +380,19 @@ class Loader::Name < ActiveRecord::Base
 
   def preferred_match
     return nil unless preferred_match?
-    throw 'more than one preferred match' unless preferred_matches.size == 1
+
+    throw "more than one preferred match" unless preferred_matches.size == 1
     preferred_matches.first
   end
 
   def true_record_type
-    if record_type == 'accepted' && excluded?
-      'excluded'
+    if record_type == "accepted" && excluded?
+      "excluded"
     else
       record_type
     end
   end
-  
+
   def self.create_instance_for(taxon_s, authorising_user, search)
     records = errors = 0
     @ref = Reference.find(REF_ID)
@@ -404,11 +403,18 @@ class Loader::Name < ActiveRecord::Base
       errors += creator.errors || 0
     end
     entry = "Job finished: create instance for preferred matches for '#{taxon_s}', #{authorising_user}; records created: #{records}; errors: #{errors}"
-    OrchidProcessingLog.log(entry, 'job controller')
-    return records, errors
+    OrchidProcessingLog.log(entry, "job controller")
+    [records, errors]
   end
 
   def match_for_name_id(name_id)
     loader_name_matches.where(name_id: name_id)
+  end
+
+  def misapp_html
+    if misapp? && original_text.present?
+      Rails::Html::FullSanitizer.new.sanitize(original_text)
+   end
+
   end
 end

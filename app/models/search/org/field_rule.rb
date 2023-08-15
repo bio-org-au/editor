@@ -18,9 +18,9 @@
 #
 class Search::Org::FieldRule
   RULES = {
-    "id:"     => { where_clause: " id = ? " },
-    "name_or_abbrev:"     => { where_clause: " lower(name) like ?  or lower(abbrev) like ?" },
-    "name:"     => { where_clause: " lower(name) like ? " },
-    "abbrev:"     => { where_clause: " lower(abbrev) like ? " },
+    "id:" => { where_clause: " id = ? " },
+    "name_or_abbrev:" => { where_clause: " lower(name) like ?  or lower(abbrev) like ?" },
+    "name:" => { where_clause: " lower(name) like ? " },
+    "abbrev:" => { where_clause: " lower(abbrev) like ? " },
   }.freeze
 end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
 #   Copyright 2015 Australian National Botanic Gardens
 #
 #   This file is part of the NSL Editor.
@@ -37,7 +35,7 @@ def stub_it
     .with(headers: { "Accept" => "text/json",
                      "Accept-Encoding" =>
                      "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-                     "User-Agent" => "Ruby" })
+                     "User-Agent" => /rest-client.*ruby.*/ })
     .to_return(status: 200, body: body.to_json, headers: {})
 end
 
