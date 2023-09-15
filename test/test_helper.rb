@@ -24,22 +24,17 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 # require File.expand_path("../../config/environment", __FILE__)
-# require "rails/test_help"
 
-# require "minitest"
-# require "minitest/rails"
-# require "minitest/unit"
 require "mocha"
-require "mocha/setup"
-# require "mocha/mini_test"
+# Mocha deprecation warning at /Users/gclarke/.gem/ruby/3.2.2/gems/zeitwerk-2.6.11/lib/zeitwerk/kernel.rb:38:in
+# `require': Require 'mocha/test_unit', 'mocha/minitest' or 'mocha/api' instead of 'mocha/setup'.
+require "mocha/api"
 require "webmock/minitest"
-#
-# https://thoughtbot.com/blog/stubbing-and-setting-expectations-on-http-requests-is-now-easy-with-webmock
-# require 'webmock/test_unit'
-include WebMock::API
 
-# Uncomment for awesome colorful output
-# require "minitest/pride"
+
+
+# https://thoughtbot.com/blog/stubbing-and-setting-expectations-on-http-requests-is-now-easy-with-webmock
+include WebMock::API
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers

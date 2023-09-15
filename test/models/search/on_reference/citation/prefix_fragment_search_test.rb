@@ -24,8 +24,7 @@ class SearchOnRefCitationPrefixFragmentSearchTest < ActiveSupport::TestCase
   test "search on reference citation for prefix fragment" do
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "reference",
-      query_string: "citation: duplic",
-      include_common_and_cultivar_session: true,
+      query_string: "citation-text: duplic",
       current_user: build_edit_user
     )
     search = Search::Base.new(params)

@@ -1,39 +1,16 @@
-<% unless match.standalone_instance_created %>
-    <%= form_with(url: loader_name_match_clear_taxonomy_nomination_path(match.id),
-                  role: 'form', remote: true, method: :patch) do |f| -%>
-      <%= f.submit "Clear the choice",
-                    id: 'clear-choice-button',
-                    tabindex: increment_tab_index,
-                    title: 'Clear the choice for how to set up the instance',
-                    class: "btn btn-primary width-10em pull-right" -%>
-  <% end -%>
+<% if match.drafted %>
+  No undo - instance has been drafted to taxonomy
 <% else %>
-  <% if match.standalone_instance_created == true &&
-        match.standalone_instance.draft == true %>
-      A draft standalone instance has been created.
-      <br>You cannot clear the choice without undoing that.
-      <br>
-      <br>
-      <%= form_with(url: loader_name_match_clear_and_delete_draft_standalone_instance_path(match.id),
-                    role: 'form', remote: true, method: :patch) do |f| -%>
-        <%= f.submit "Undo choice: clear standalone instance and delete the draft instance",
-                      id: 'clear-and-delete-draft-standalone-instance-button',
-                      tabindex: increment_tab_index,
-                      title: 'Clear reference to the standalone instance and delete the draft instance',
-                      class: "btn btn-primary width-35em pull-right" -%>
-      <% end -%>
+
+  <% path = 'loader/names/tabs/ref_instance/accepted_names/undo_choice' %>
+  <% if match.standalone_instance_id.blank? %>
+    <%= render partial: "#{path}/no_standalone_instance_created_or_chosen", locals: {match: match} %>
+  <% else %>
+    <% if match.standalone_instance_created %>
+      <%= render partial: "#{path}/draft_already_created", locals: {match: match} %>
     <% elsif match.standalone_instance_found == true %>
-      <br>A standalone instance has been chosen.
-      <br>You cannot clear the choice without undoing that.
-      <%= form_with(url: loader_name_match_clear_standalone_instance_path(match.id),
-                    role: 'form', remote: true, method: :patch) do |f| -%>
-        <%= f.submit "Undo choice: clear standalone instance",
-                      id: 'clear-standalone-instance-button',
-                      tabindex: increment_tab_index,
-                      title: 'Clear the standalone instance',
-                      class: "btn btn-primary width-28em pull-right" -%>
-      <% end -%>
-      <br>
-      <br>
-    <% end -%>
+      <%= render partial: "#{path}/existing_instance_chosen", locals: {match: match} %>
+    <% end %>
+  <% end %>
+
 <% end %>

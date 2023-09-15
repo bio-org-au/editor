@@ -25,7 +25,6 @@ class SearchOnInstanceCommentsExactCaseInsensitiveTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "comments-exact: INSTANCE MyText xYz",
-      include_common_and_cultivar_session: true,
       current_user: build_edit_user
     )
     search = Search::Base.new(params)

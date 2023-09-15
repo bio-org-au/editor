@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Search::OnReference::WhereClauses
+class Search::Reference::DefinedQuery::WhereClauses
   attr_reader :sql
 
   DEFAULT_FIELD = "citation-text:"
@@ -28,7 +28,7 @@ class Search::OnReference::WhereClauses
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnReference::WhereClause - #{s}")
+    Rails.logger.debug("Search::Reference::DefinedQuery::WhereClause - #{s}")
   end
 
   def build_sql
@@ -58,7 +58,7 @@ class Search::OnReference::WhereClauses
 
   def add_field_clause(field, value)
     field_or_default = field.blank? ? DEFAULT_FIELD : field
-    rule = Search::OnReference::Predicate.new(field_or_default,
+    rule = Search::Reference::DefinedQuery::Predicate.new(field_or_default,
                                               value)
     apply_rule(rule)
     apply_order(rule)

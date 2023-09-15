@@ -62,12 +62,8 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
     @placed_count = 0
     @errors = 1
     @error = json_error(e)
+    Rails.logger.error("Error from Services placing/replacing on taxonomy: #{@loader_name.simple_name}, ##{@loader_name.id}: #{@error}")
     log_to_table("<span class='red'>Error from Services placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{@error}")
-    # if inferred_rank.downcase == 'genus'
-    # raise GenusTaxonomyPlacementError.new("Stopping because failed to add genus #{@loader_name.simple_name}")
-    # else
-    # 0
-    # end
   rescue => e
     @placed_count = 0
     @errors = 1

@@ -25,7 +25,6 @@ class SearchOnReferenceAbbrevRefTypeTest < ActiveSupport::TestCase
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
                    query_string: "ref-type: book",
-                   include_common_and_cultivar_session: true,
                    current_user: build_edit_user)
     search = Search::Base.new(params)
     assert !search.executed_query.results.empty?, "Results expected."

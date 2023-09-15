@@ -37,8 +37,8 @@ class Tree::Workspace::Replacement < ActiveType::Object
       excluded: excluded,
       profile: profile
     }
-    logger.info "Calling #{url}"
     raise errors.full_messages.first unless valid?
+    logger.info "REPLACEMENT calling #{url} WITH PAYLOAD: #{payload}"
 
     RestClient.put(url, payload.to_json,
                    { content_type: :json, accept: :json })

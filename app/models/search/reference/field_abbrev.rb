@@ -19,8 +19,18 @@
 # Field abbreviations available for building predicates
 class Search::Reference::FieldAbbrev
   ABBREVS = {
-    "c:" => "citation:",
+    "c:" => "citation-token:",
     "ct:" => "citation-text:",
+    "cte:" => "citation-text:",
+    "ctex:" => "citation-text:",
+    "ctext:" => "citation-text:",
+    "ctoken:" => "citation-token:",
+    "citation:" => "citation-token:",
+    "citation-tokens:" => "citation-token:",
+    "cex:" => "citation-exact:",
+    "cexa:" => "citation-exact:",
+    "cexac:" => "citation-exact:",
+    "cexact:" => "citation-exact:",
     "t:" => "title:",
     "ti:" => "title:",
     "ty:" => "type:",

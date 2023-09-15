@@ -26,7 +26,6 @@ class SearchOnReferenceDuplicateOfIdSimpleTest < ActiveSupport::TestCase
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
                    query_string: "duplicate-of-id: #{reference.id}",
-                   include_common_and_cultivar_session: true,
                    current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

@@ -1,0 +1,12 @@
+      A draft standalone instance has been created.
+      <br>You cannot clear the choice without undoing that.
+      <br>
+      <br>
+      <%= form_with(url: loader_name_match_clear_and_delete_draft_standalone_instance_path(match.id),
+                    role: 'form', remote: true, method: :patch) do |f| -%>
+        <%= f.submit "Undo choice: clear standalone instance and delete the draft instance",
+                      id: 'clear-and-delete-draft-standalone-instance-button',
+                      tabindex: increment_tab_index,
+                      title: 'Clear reference to the standalone instance and delete the draft instance',
+                      class: "btn btn-primary width-35em pull-right" -%>
+      <% end -%>

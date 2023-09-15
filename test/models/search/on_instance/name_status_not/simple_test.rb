@@ -25,7 +25,6 @@ class SearchOnInstanceNameStatusNotSimpleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "name-status-not: legit*",
-      include_common_and_cultivar_session: false,
       current_user: build_edit_user
     )
     search = Search::Base.new(params)

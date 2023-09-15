@@ -20,19 +20,15 @@ require "test_helper"
 load "test/models/search/users.rb"
 
 # Single Search model test for Reference target.
-class SearchOnReferenceIdTest < ActiveSupport::TestCase
-  test "search on reference ID" do
-    reference = references(:simple)
+class SearchOnReferenceCitationExactSimpleAccentedTest < ActiveSupport::TestCase
+  test "search on reference citation exact simple accented" do
+    reference = references(:hulten_with_diacritic)
+    citation_wo_accent = 'citation includes hulten with diacritic'
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
-                   query_string: "id: #{reference.id}",
-                   include_common_and_cultivar_session: true,
+                   query_string: %(citation-exact: #{citation_wo_accent}),
                    current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert_equal 1,
-                 search.executed_query.results.size,
-                 "Expect exactly one record."
+    assert !search.executed_query.results.empty?, "Results expected."
   end
 end

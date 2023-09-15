@@ -1,0 +1,45 @@
+<h5>Text search on Reference citations</h5>
+<p/>Each reference has a citation - a text string that identifies it.  
+<p/>Each reference citation is constructed in a standard way based on the type of reference.  
+<p/>For example, a citation for a <%= link_to('paper',search_path(query_string: 'id: 44128', query_target: 'reference'),title:"Query the paper by its ID",class:'blue') %>: 
+<pre>
+Short, P.S. (1986), Notes on Trachymene humilis (J.D.Hook.) Benth. (Umbelliferae). Muelleria 6(3)
+</pre>
+<p/>Searches that would retrieve this paper include:
+<ul>
+  <li><%= link_to('short trach',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>
+  <li><%= link_to('trach short',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>
+  <li><%= link_to('short 1986',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>
+  <li><%= link_to('trach 1986',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>
+  <li><%= link_to('muell 1986 humil',search_path(query_string: 'muell 1986 humil', query_target: 'reference'),title:"Sample query",class:'blue') %> 
+</ul>
+
+<p/>These all default to the 
+<pre>
+citation-text: 
+</pre>
+search directive.
+<br>
+<br>
+<p/>Another example is this search for <%= link_to('"hookers icon pl"',search_path(query_string: 'hookers icon pl', query_target: 'reference'),title:"Run the query.",class:'blue') %> which works because the search engine understands that "hookers" should match "Hooker's" and so will match citations such as:
+<pre>
+ Bentham, G. (1876), Plagiocarpus axillaris Benth. Hooker's Icones Plantarum 12 
+</pre>
+<br>
+<br>
+<p/>A search for <%= link_to('"münchh"',search_path(query_string: 'münchh', query_target: 'reference'),title:"Run the query.",class:'blue') %> retrieves the same records as a search 
+for <%= link_to('"munchh"',search_path(query_string: 'munchh', query_target: 'reference'),title:"Run the query.",class:'blue') %> showing that the default reference search ignores accents.
+Here is the citation of one of the records retrieved:
+<pre>
+Münchhausen, Otto, Freiherr von (1765-1773), Der Hausvater 
+</pre>
+<br>
+<h5>Alternatives to text search</h5>
+<p/>The text search engine is very powerful, but it has some limitations.  
+<p/>For example, it is word-oriented and prefix-oriented, so a search for <%= link_to('"hookers icon ant"',search_path(query_string: 'hookers icon ant', query_target: 'reference'),title:"Run the query.",class:'blue') %> returns no records because "ant", although part of the word "Plantarum", is not a prefix.  That is, it is not preceded by a space nor is it at the start of the citation.
+
+<p/>For pure wildcarded fragments use the "citation:" field name, or "c:" for short.  
+<p/>This applies a "tokenizing" process to the search term: each term you provide is used to search for citations - the citations returned for the search must contain all the terms supplied, but in any order and with any intervening characters.  We do this to let you start with a wide range of possible results you can then narrow down.
+<p/>For example, a search for <%= link_to('"citation:hook icon ant"',search_path(query_string: 'citation:hook icon ant', query_target: 'reference'),title:"Run the query.",class:'blue') %> does return records.  But note "hook" instead of "hookers" in the search.
+<br>
+<br>

@@ -93,29 +93,26 @@
 <% end %>
 
 <% unless @reference.isbn.blank? %>
-  <%= render partial: 'detail_line', locals: {info: "#{@reference.isbn}&nbsp;&nbsp;(no look-up available)", label: 'ISBN'} %>
+  <%= render partial: 'detail_line',
+             locals: {info: "ISBN: #{@reference.isbn}&nbsp;&nbsp; (No lookup known)", label: ''} %>
 <% end %>
 
 <% unless @reference.issn.blank? %>
   <div class="detail-line">
     <span class="pull-left">
-             <a href='<%= "https://portal.issn.org/resource/ISSN/#{@reference.issn}" %>'
-                class='blue'
-                title="Link to the reference the ISSN portal">
-                <%= @reference.issn %>
-             </a>
-    </span>
-    <span class="pull-right align-right field-label">
-      <label class="align-right">ISSN</label>
+      <%= link_to("ISSN #{editor_icon('external-link')}".html_safe ,
+                  %Q(<a href=#{"https://portal.issn.org/resource/ISSN/#{@reference.issn}"}),
+                  title: "Link to the ISSN portal entry.") %>
     </span>
   </div>
-  <br/>
 <% end %>
 <% unless @reference.bhl_url.blank? %>
   <br/>
+  <br/>
+  <div class="detail-line">
   <%= link_to("BHL #{editor_icon('external-link')}".html_safe ,@reference.bhl_url, title: "Link to the BHL entry.") %>
+  </div>
 <% end %>
-
 <% unless @reference.tl2.blank? %>
   <br/>
   <%= link_to('TL2',@reference.tl2, title: "Link to the TL2 entry.") %>

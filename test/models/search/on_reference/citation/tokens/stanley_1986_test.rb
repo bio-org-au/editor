@@ -21,11 +21,10 @@ load "test/models/search/users.rb"
 
 # Single Search model test for Reference target.
 class SearchOnReferenceCitationTokensStanley1986Test < ActiveSupport::TestCase
-  test "search on reference citation tokens stanley 1986" do
+  test "search on reference citation token stanley 1986" do
     params = ActiveSupport::HashWithIndifferentAccess
              .new(query_target: "reference",
-                  query_string: "citation: stanley 1986",
-                  include_common_and_cultivar_session: true,
+                  query_string: "citation-token: stanley 1986",
                   current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),

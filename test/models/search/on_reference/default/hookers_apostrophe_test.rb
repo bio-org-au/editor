@@ -24,14 +24,13 @@ class SearchOnReferenceDefaultHookersApostropheTest < ActiveSupport::TestCase
   test "search on reference default for hookers apostrophe" do
     params = ActiveSupport::HashWithIndifferentAccess
              .new(query_target: "reference",
-                  query_string: "hookers icon pl",
-                  include_common_and_cultivar_session: true,
+                  query_string: "plant icon hooker icon plant",
                   current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
            "Results should be an ActiveRecord::Relation."
     assert_equal 1,
                  search.executed_query.results.size,
-                 "Exactly 1 result is expected."
+                 "Exactly 1 result is expected. Default search is token based"
   end
 end

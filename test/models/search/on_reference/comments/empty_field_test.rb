@@ -24,8 +24,7 @@ class SearchOneReferenceCommentsEmptyFieldTest < ActiveSupport::TestCase
   def setup
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
-                   query_string: "handbook vascular plants sydney",
-                   include_common_and_cultivar_session: true,
+                   query_string: "citation-text: handbook vascular plants sydney",
                    current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.size == 1, "One result expected."
@@ -36,7 +35,6 @@ class SearchOneReferenceCommentsEmptyFieldTest < ActiveSupport::TestCase
               .new(query_target: "reference",
                    query_string:
                    "handbook vascular plants sydney comments: ",
-                   include_common_and_cultivar_session: true,
                    current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?, "No results expected."

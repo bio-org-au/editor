@@ -127,14 +127,14 @@ from ref_type where lower(name) like lower(?))" },
                                  duplicate_of_id = ?" },
 
     "citation-exact:" => { where_clause:
-                                 " lower(citation) like lower(?)" },
+                                 " lower(f_unaccent(citation)) like lower(f_unaccent(?))" },
 
     "citation-text:" => { scope_: "search_citation_text_for" },
 
-    "citation:" => { trailing_wildcard: true,
+    "citation-token:" => { trailing_wildcard: true,
                      leading_wildcard: true, tokenize: true,
                      where_clause:
-                                 " lower(citation) like lower(?) " },
+                                 " lower(f_unaccent(citation)) like lower(f_unaccent(?)) " },
 
     "author:" => { trailing_wildcard: true,
                    leading_wildcard: true,

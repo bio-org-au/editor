@@ -1,3 +1,61 @@
+- :date: 04-Sep-2023
+  :jira_id: '4634'
+  :description: |-
+    Loader: Fix <code>acc:</code> search directive
+- :date: 31-Aug-2023
+  :jira_id: '4627'
+  :description: |-
+    Loader: Add INFO logs statements in Editor to show calls to Services API for Tree ops - for tracing current Tree-op problems
+- :date: 30-Aug-2023
+  :jira_id: '4625'
+  :description: |-
+    Security patch: Update Editor to Rails 7.0.7.2 and matching gems
+- :date: 30-Aug-2023
+  :jira_id: ''
+  :description: |-
+    Loader: Write an error log entry when Services reports a Rest Request error - e.g. for taxonomy changes
+- :date: 28-Aug-2023
+  :jira_id: '4623'
+  :description: |-
+    Loader: Tighten up Reference Instance tab Undo Choice display and validations, including for "use an existing instance" case once drafted to taxonomy
+- :date: 25-Aug-2023
+  :jira_id: '4621'
+  :description: |-
+    Loader: Further adjust taxonomy instance choice query <code>no-nomination:</code> to include excluded names too
+- :date: 24-Aug-2023
+  :jira_id: '4621'
+  :description: |-
+    Loader: Fix taxonomy instance choice queries <code>no-nomination:</code> and <code>copy-and-append:</code>
+- :date: 22-Aug-2023
+  :jira_id: '4619'
+  :description: |-
+    Loader: First cut of printable output showing review comments
+- :date: 21-Aug-2023
+  :jira_id: '4615'
+  :description: |-
+    Reference search: Internal technical changes to Reference special searches in the Search Target list
+- :date: 18-Aug-2023
+  :jira_id: '4475'
+  :description: |-
+    Reference search: Changes to standardise and clarify citation search directives and related help text - no change to the default reference search
+- :date: 17-Aug-2023
+  :jira_id: '4611'
+  :description: |-
+    Reference search: Allow for accented characters in <code>citation:</code> and <code>citation-exact:</code> searches
+- :date: 16-Aug-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: Print output -- display accepted genus names in upper-case
+- :date: 15-Aug-2023
+  :jira_id: '4594'
+  :description: |-
+    Tree tab: Add extra help text pointing users to the Edit Profile tab
+- :date: 15-Aug-2023
+  :jira_id: '4523'
+  :description: |-
+    ISSN, ISBN: Display ISSN link in style of BHL, don't rely on RHS label for ISBN, validate field lengths of 16 chars
+- :date: 15-Aug-2023
+  :release: true
 - :date: 10-Aug-2023
   :jira_id: '4608'
   :description: |-

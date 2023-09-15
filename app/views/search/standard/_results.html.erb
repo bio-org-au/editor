@@ -109,6 +109,9 @@
       <% when 'UserQuery' %>  
         <%= render partial: 'user_query_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
+      <% when 'Name Review Comment' %>  
+        <%= render partial: 'application/search_results/main/loader/name/review/comment_record', 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% else %>
         <tr>
           <td class="width-1-percent"></td>

@@ -1,12 +1,30 @@
-<h5>Quick start</h5>
-<p/>Type one or two terms or leading fragments of words from the 
-<ul>
-  <li>title, or
-  <li>author surname
-</ul>
-<p/>into the search field and press Enter, or click Search.  
-<p/>The Editor will search for Reference citations containing those words or word prefixes.
+<h4>Quick start</h4>
+
+<p/>The simplest way is to type a wildcard <code>*</code> (asterisk) into the search field, then press Enter or click Search.  That search will match any references and you will get the first 100 records. (Note: doesn't work if <code>citation-text:</code> is the default search.  Use 'plant' instead to get an idea.)
+
+
+<br>
+<br>
+<p/>You can get a smaller set of results by adding small fragments of text to the search field - perhaps part of a title or author name - then press Enter or click Search. You don't need to keep the asterisk/wildcard in the search field, but it's important to know you can use wildcards.
+
+<p/>Hitting Enter will start Reference search, which is on reference citation by default, the line of text that summarises the reference details
+
+<p/>You don't have to type full words or long sections of text, and it's usually better to begin with smaller fragments.
+
 <p/> E.g.  <%= link_to('bent hook notes', search_path(query_string: 'bent hook notes', query_target: 'reference'),class:'blue',title: 'example search') %>
 or <%= link_to('bent hook notes 1841', search_path(query_string: 'bent hook notes 1841', query_target: 'reference'),class:'blue',title: 'example search') %>
 <br>
-<p/>Order of terms is not important for default reference searches.
+<p/>You can supply wildcards: <code>*</code> or <code>%</code>, but the default search will add its own wildcards.
+<p/>The order of your search terms doesn't have to match the order in which the terms appear in the citation - for the default search.
+
+<br>
+<br>
+<h4>Default search</h4>
+<p/>As explained above, the default search operates when you simply type one or more search term into the search field.  Below we explain search directives.
+<p/>Just note for now that the current default search matches the <q>citation-text:</q> search directive.
+<br>
+<br>
+<h4>If you get no results...</h4>
+<p/>Try again with less or shorter search terms.
+<p/>It's better to start with some results then refine them, step by step, than to start with no results and be none-the-wiser.
+<br>

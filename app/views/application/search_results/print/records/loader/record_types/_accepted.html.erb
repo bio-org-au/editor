@@ -5,11 +5,15 @@
 
 <tr id="search-result-<%= search_result.id %>" 
     class="search-result <%= search_result.record_type %> ">
-  <td class="text name main-content" >
+  <td class="text name main-content" colspan="2" >
 
 
     <span class='loader-name <%= search_result.record_type %> full-name'>
-      <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
+      <% if search_result.rank == 'genus'  %>
+        <%= "#{search_result.full_name.upcase}" %><%= ',' unless search_result.name_status.blank? %>
+      <% else %>
+        <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
+      <% end %>
 
       <% unless search_result.name_status.blank? %>
         <%= "#{search_result.name_status}" %>

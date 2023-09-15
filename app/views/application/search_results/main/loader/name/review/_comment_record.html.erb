@@ -1,0 +1,16 @@
+<tr id="search-result-<%= search_result.id %>" 
+  class="search-result show-details <%= 'fresh' unless search_result.fresh? %>"  
+  data-get-url=""
+  data-edit-url="<%= review_period_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-base-url=""
+  data-tab-url="<%= review_period_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-record-id="<%= search_result.id %>"
+  data-record-type="name-review-comment"
+  tabindex="<%= increment_tab_index(100) %>"
+    >
+  <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%#= record_icon('orchid') %></td>
+  <td class="text xtakes-focus name main-content min-width-40-percent max-width-60-percent width-50-percent <%= 'give-me-focus' if give_me_focus %>">
+      <%= render partial: 'application/search_results/link_texts/loader/name/review/comment', locals: {search_result: search_result} %>
+  </td>
+  <td class="takes-focus width-5-percent filler">&nbsp;</td>
+</tr>

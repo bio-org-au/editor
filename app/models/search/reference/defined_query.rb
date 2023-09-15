@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Search::OnReference::Base
+class Search::Reference::DefinedQuery
   attr_reader :results,
               :limited,
               :info_for_display,
@@ -47,7 +47,7 @@ class Search::OnReference::Base
   end
 
   def run_count_query
-    count_query = Search::OnReference::CountQuery.new(@parsed_request)
+    count_query = Search::Reference::DefinedQuery::Count.new(@parsed_request)
     @relation = count_query.sql
     @total = @count = relation.count
     @limited = false
@@ -59,7 +59,7 @@ class Search::OnReference::Base
   end
 
   def run_list_query
-    list_query = Search::OnReference::ListQuery.new(@parsed_request)
+    list_query = Search::Reference::DefinedQuery::List.new(@parsed_request)
     @relation = list_query.sql
     @references = relation.all
     @info_for_display = list_query.info_for_display
@@ -97,7 +97,7 @@ class Search::OnReference::Base
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnReference::Base: #{s}")
+    Rails.logger.debug("Search::Reference::DefinedQuery: #{s}")
   end
 
   def csv?

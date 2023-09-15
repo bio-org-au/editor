@@ -1,0 +1,21 @@
+
+<% if defined? @row_toggle %>
+  <% @row_toggle = !@row_toggle %>
+<% else %>
+  <% @row_toggle = true %>
+<% end %>
+<% if @row_toggle %>
+  <% color_class = 'odd' %>
+<% else %>
+  <% color_class = 'even' %>
+<% end %>
+
+<tr id="search-result-<%= search_result.id %>" class="search-result review-comment <%= color_class %>">
+  <td class="text review-comment indent" ></td>
+  <td class="text review-comment main-content">
+    <span class="main-content <%= color_class%>" >
+     <%= render partial: 'application/search_results/link_texts/loader/name/review/comment', locals: {search_result: search_result} %>
+    </span>
+  </td>
+</tr>
+

@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Search::OnReference::Predicate
+class Search::Reference::DefinedQuery::Predicate
   attr_reader :canon_field,
               :canon_value,
               :trailing_wildcard,
@@ -36,7 +36,7 @@ class Search::OnReference::Predicate
     @field = field
     @value = value
     @canon_field = build_canon_field(field)
-    rule = Search::OnReference::FieldRule::RULES[@canon_field] || EMPTY_RULE
+    rule = Search::Reference::FieldRule::RULES[@canon_field] || EMPTY_RULE
     @is_null = value.blank?
     apply_rule(rule)
     @canon_value = build_canon_value(value)
@@ -46,11 +46,11 @@ class Search::OnReference::Predicate
   end
 
   def debug(s)
-    Rails.logger.debug("Search::OnReference::Predicate - #{s}")
+    Rails.logger.debug("Search::Reference::Predicate - #{s}")
   end
 
   def inspect
-    "Search::OnReference::Predicate: canon_field: #{@canon_field}"
+    "Search::Reference::Predicate: canon_field: #{@canon_field}"
   end
 
   def apply_rule(rule)
@@ -118,12 +118,12 @@ class Search::OnReference::Predicate
   end
 
   def build_canon_field(field)
-    if Search::OnReference::FieldRule::RULES.key?(field)
+    if Search::Reference::FieldRule::RULES.key?(field)
       field
-    elsif Search::OnReference::FieldRule::RULES.key?(
-      Search::OnReference::FieldAbbrev::ABBREVS[field]
+    elsif Search::Reference::FieldRule::RULES.key?(
+      Search::Reference::FieldAbbrev::ABBREVS[field]
     )
-      Search::OnReference::FieldAbbrev::ABBREVS[field]
+      Search::Reference::FieldAbbrev::ABBREVS[field]
     else
       raise "Cannot search references for: #{field}. You may need to try another
       search term or target."

@@ -16,25 +16,20 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# Field abbreviations available for building predicates
-class Search::OnReference::FieldAbbrev
-  ABBREVS = {
-    "c:" => "citation:",
-    "ct:" => "citation-text:",
-    "t:" => "title:",
-    "ti:" => "title:",
-    "ty:" => "type:",
-    "ref-type:" => "type:",
-    "rt:" => "type:",
-    "a:" => "author:",
-    "y:" => "year:",
-    "iso-publication-date:" => "published-in-or-on:",
-    "date:" => "published-in-or-on:",
-    "iso:" => "published-in-or-on:",
-    "date-matches:" => "iso-pub-date-matches:",
-    "pd:" => "publication-date:",
-    "is-duplicate:" => "is-a-duplicate:",
-    "duplicate:" => "is-a-duplicate:",
-    "page:" => "pages:",
-  }.freeze
+class Search::Reference::DefinedQuery::Count
+  attr_reader :sql, :info_for_display, :common_and_cultivar_included
+
+  def initialize(parsed_request)
+    @parsed_request = parsed_request
+    prepare_query
+    @info_for_display = "nothing yet from count query"
+  end
+
+  def prepare_query
+    Rails.logger.debug("Search::Reference::Count#prepare_query")
+    prepared_query = Reference.includes(:ref_type)
+    where_clauses = Search::Reference::DefinedQuery::WhereClauses.new(@parsed_request, prepared_query)
+    prepared_query = where_clauses.sql
+    @sql = prepared_query
+  end
 end

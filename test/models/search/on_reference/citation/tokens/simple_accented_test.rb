@@ -20,20 +20,16 @@ require "test_helper"
 load "test/models/search/users.rb"
 
 # Single Search model test for Reference target.
-class SearchOnRefCitationSuffixFragmentSearchTest < ActiveSupport::TestCase
-  test "search on reference citation for suffix fragment" do
-    params = ActiveSupport::HashWithIndifferentAccess.new(
-      query_target: "reference",
-      query_string: "uplicate",
-      include_common_and_cultivar_session: true,
-      current_user: build_edit_user
-    )
+class SearchOnReferenceCitationTokenSimpleAccentedTest < ActiveSupport::TestCase
+  test "search on reference citation token simple accented" do
+    reference = references(:hulten_with_diacritic)
+    citation_wo_accent = 'citation includes hulten with diacritic'
+    params =  ActiveSupport::HashWithIndifferentAccess
+              .new(query_target: "reference",
+                   query_string: %(citation-token: #{citation_wo_accent}),
+                   current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
-           "Results should be an ActiveRecord::Relation."
-    assert_equal 0,
-                 search.executed_query.results.size,
-                 "No results are expected.  Citation text search does not
-                 support suffix text fragments."
+    # Expect hulten wih and without diacritic
+    assert search.executed_query.results.size == 2, "2 result expected."
   end
 end

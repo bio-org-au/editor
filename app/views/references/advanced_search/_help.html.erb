@@ -1,79 +1,18 @@
-<h4>Reference search</h4>
+<h3>Reference search</h3>
 <p/>References include books, papers, journals etc.
+<p/>You are seeing this Reference help because the search target field (the top-left dropdown) is set to Reference.
+<p/>Note: some of the help text here depends on APNI data - we apologise for that but, for the present, think it's better to have some examples rather than none.
 <br>
 <br>
 <%= render partial: 'references/advanced_search/quick_start_help' %>
 <br>
 <br>
-<h5>Search directives</h5>
-<p/>Example:  citation-text: 
-<p/>which could be used like this:
-<pre>
-citation-text: angophora
-</pre>
-<p/>Search directives are words you add to the search field to direct the search to particular fields or attributes.
-<p/>Search directives always end in a colon (<q>:</q>) and never include any embedded spaces.  
-<p/>Reference search directives are listed and explained below.
-<p/>Most search directives expect one or more search terms to follow, but a few need no search terms.  The help below will make clear what is required for each search directive.
-<br>
-<br>
-<h5>Default Reference search</h5>
-<p/>The default search occurs when you do <strong>not</strong> enter a search directive into the search field when supplying a search term.
-<p/>In other words, entering bare search terms into the search fields invokes the default search on those terms.  That is, the Editor will assume you mean the default search directive.
-<p/>The current default search directive is <q>citation-text:</q>
-<br>
-<br>
-<h5>Text search on Reference citations</h5>
-<p/>Each reference has a citation - a text string that identifies it.  
-<p/>Each reference citation is constructed in a standard way based on the type of reference.  
-<p/>For example, a citation for a <%= link_to('paper',search_path(query_string: 'id: 44128', query_target: 'reference'),title:"Query the paper by its ID",class:'blue') %>: 
-<pre>
-Short, P.S. (1986), Notes on Trachymene humilis (J.D.Hook.) Benth. (Umbelliferae). Muelleria 6(3)
-</pre>
-<p/>Searches that would retrieve this paper include:
-<ul>
-  <li><%= link_to('short trach',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>
-  <li><%= link_to('trach short',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>
-  <li><%= link_to('short 1986',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>
-  <li><%= link_to('trach 1986',search_path(query_string: 'short trach', query_target: 'reference'),title:"Sample query",class:'blue') %>
-  <li><%= link_to('muell 1986 humil',search_path(query_string: 'muell 1986 humil', query_target: 'reference'),title:"Sample query",class:'blue') %> 
-</ul>
+<%= render partial: 'references/advanced_search/directives_intro' %>
+<%#= render partial: 'references/advanced_search/text_search_help' %>
 
-<p/>These all default to the 
-<pre>
-citation-text: 
-</pre>
-search directive.
-<br>
-<br>
-<p/>Another example is this search for <%= link_to('"hookers icon pl"',search_path(query_string: 'hookers icon pl', query_target: 'reference'),title:"Run the query.",class:'blue') %> which works because the search engine understands that "hookers" should match "Hooker's" and so will match citations such as:
-<pre>
- Bentham, G. (1876), Plagiocarpus axillaris Benth. Hooker's Icones Plantarum 12 
-</pre>
-<br>
-<br>
-<p/>A search for <%= link_to('"münchh"',search_path(query_string: 'münchh', query_target: 'reference'),title:"Run the query.",class:'blue') %> retrieves the same records as a search 
-for <%= link_to('"munchh"',search_path(query_string: 'munchh', query_target: 'reference'),title:"Run the query.",class:'blue') %> showing that the default reference search ignores accents.
-Here is the citation of one of the records retrieved:
-<pre>
-Münchhausen, Otto, Freiherr von (1765-1773), Der Hausvater 
-</pre>
-<br>
-<h5>Alternatives to text search</h5>
-<p/>The text search engine is very powerful, but it has some limitations.  
-<p/>For example, it is word-oriented and prefix-oriented, so a search for <%= link_to('"hookers icon ant"',search_path(query_string: 'hookers icon ant', query_target: 'reference'),title:"Run the query.",class:'blue') %> returns no records because "ant", although part of the word "Plantarum", is not a prefix.  That is, it is not preceded by a space nor is it at the start of the citation.
-
-<p/>For pure wildcarded fragments use the "citation:" field name, or "c:" for short.  
-<p/>This applies a "tokenizing" process to the search term: each term you provide is used to search for citations - the citations returned for the search must contain all the terms supplied, but in any order and with any intervening characters.  We do this to let you start with a wide range of possible results you can then narrow down.
-<p/>For example, a search for <%= link_to('"citation:hook icon ant"',search_path(query_string: 'citation:hook icon ant', query_target: 'reference'),title:"Run the query.",class:'blue') %> does return records.  But note "hook" instead of "hookers" in the search.
-<br>
-<br>
-<h5>Other Reference searches</h5>
-<p/>While most searches will be default searches, you can specify other fields for the search using search directives.  These are listed below.
-<br>
-<br>
-<h5>Show instances</h5>
-Add <code>show-instances:</code> or <code>show-instances-by-page:</code> to also retrieve instances.
+<h4>Show instances</h4>
+<p/>You may often want to see the instances for a reference as well and here is how you can do that.
+<p/>Add <code>show-instances:</code> or <code>show-instances-by-page:</code> to also retrieve instances.
 <p>
 <p>
 The <code>show-instances:</code> directive also has abbreviations: <code>s-i:</code>, <code>si:</code>, and <code>i:</code> that all do the same thing.
@@ -81,7 +20,5 @@ The <code>show-instances:</code> directive also has abbreviations: <code>s-i:</c
 Add <code>instance-offset: 999</code> to offset the instances for each reference retrieved.
 <br>
 <br>
-<br>
-<br>
-<%= render partial: 'references/advanced_search/field_help' %>
+<%= render partial: 'references/advanced_search/directives_list' %>
 

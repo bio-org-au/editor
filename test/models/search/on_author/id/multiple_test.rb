@@ -27,7 +27,6 @@ class SearchOnAuthorIdMultipleTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "author",
       query_string: "id: #{author.id}, #{a2.id}",
-      include_common_and_cultivar_session: true,
       current_user: build_edit_user
     )
     search = Search::Base.new(params)

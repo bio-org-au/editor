@@ -26,7 +26,6 @@ class SearchOnReferenceYearSimpleTest < ActiveSupport::TestCase
     @params =  ActiveSupport::HashWithIndifferentAccess
                .new(query_target: "reference",
                     query_string: "year: #{@reference.iso_publication_date}",
-                    include_common_and_cultivar_session: true,
                     current_user: build_edit_user)
   end
 

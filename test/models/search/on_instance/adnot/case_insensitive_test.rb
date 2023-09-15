@@ -25,7 +25,6 @@ class SearchOnInstanceAdnotCaseInsensitiveTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(
       query_target: "instance",
       query_string: "adnot: instance mYtEXT XyZ",
-      include_common_and_cultivar_session: true,
       current_user: build_edit_user
     )
     search = Search::Base.new(params)

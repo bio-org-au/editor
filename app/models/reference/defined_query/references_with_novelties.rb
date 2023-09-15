@@ -38,16 +38,11 @@ class Reference::DefinedQuery::ReferencesWithNovelties
   end
 
   def run_query(parsed_request)
-    debug("")
-    debug("parsed_request.where_arguments: #{parsed_request.where_arguments}")
-    debug("parsed_request.defined_query_arg: #{parsed_request.defined_query_arg}")
-    debug("parsed_request.count: #{parsed_request.count}")
-    debug("parsed_request.limit: #{parsed_request.limit}")
     @show_csv = false
     if parsed_request.count
       debug("run_query counting")
       debug(parsed_request.inspect)
-      query = Search::OnReference::Base.new(parsed_request.as_a_list_request)
+      query = Search::Reference::DefinedQuery.new(parsed_requestt)
       results = []
       query.results.each do |ref|
         results.concat(list_novelties(ref, 100_000))
@@ -57,7 +52,7 @@ class Reference::DefinedQuery::ReferencesWithNovelties
       @common_and_cultivar_included = query.common_and_cultivar_included
     else
       debug("run_query listing with limit: #{parsed_request.limit}")
-      query = Search::OnReference::Base.new(parsed_request)
+      query = Search::Reference::DefinedQuery.new(parsed_request)
       debug(query.results.size)
       results = []
       @limited = false

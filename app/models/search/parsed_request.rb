@@ -58,7 +58,8 @@ class Search::ParsedRequest
               :original_query_target,
               :original_query_target_for_display,
               :print,
-              :display
+              :display,
+              :show_loader_name_comments
 
   DEFAULT_LIST_LIMIT = 100
   SIMPLE_QUERY_TARGETS = {
@@ -186,6 +187,7 @@ class Search::ParsedRequest
   }
 
   SHOW_INSTANCES = "show-instances:"
+  SHOW_REVIEW_COMMENTS = "show-review-comments:"
 
   def initialize(params)
     @params = params
@@ -235,6 +237,8 @@ class Search::ParsedRequest
     unused_qs_tokens = inflate_show_instances_abbrevs(unused_qs_tokens)
     unused_qs_tokens = parse_show_instances(unused_qs_tokens)
     unused_qs_tokens = parse_order_instances(unused_qs_tokens)
+    unused_qs_tokens = inflate_show_review_comments_abbrevs(unused_qs_tokens)
+    unused_qs_tokens = parse_show_review_comments(unused_qs_tokens)
     unused_qs_tokens = parse_view(unused_qs_tokens)
     @where_arguments = unused_qs_tokens.join(" ")
   end
@@ -502,6 +506,22 @@ class Search::ParsedRequest
       @show_instances = false
     end
     tokens
+  end
+
+  def parse_show_review_comments(tokens)
+    return tokens unless @target_table == 'loader name'
+
+    if tokens.include?("show-review-comments:")
+      @show_loader_name_comments = true
+      tokens.delete_if { |x| x.match(/show-review-comments:/) }
+    else
+      @show_loader_name_comments = false
+    end
+    tokens
+  end
+
+  def inflate_show_review_comments_abbrevs(tokens)
+    tokens = inflate_token(tokens, "src:", SHOW_REVIEW_COMMENTS)
   end
 
   def show_instances_allowed?

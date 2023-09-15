@@ -1,5 +1,6 @@
 <div id="example-search-reference" class="example-search-tab">
 <h4>Reference search examples</h4>
+Note: some examples here depend on APNI data - we apologise for that but for the present think it's better to have some examples than none.
 
 <h5 class="">List references</h5>
 <table class="example-searches table table-striped">
@@ -8,11 +9,11 @@
       {search_target: 'References', search_string: "nuytsia", explanation: %Q(Reference searches match on citation by default.  Leading and trailing wildcards are added automatically.)},
       {search_target: 'References', search_string: "nuytsia limit: 5", explanation: %Q(Limit the search results.)},
       {search_target: 'References', search_string: "title:nuytsia", explanation: %Q(Search on title.  A trailing wildcard is added automatically.)},
-      {search_target: 'References', search_string: "citation: nuytsia", explanation: %Q(Refer explicitly to the citation field.)},
-      {search_target: 'References', search_string: "citation: nuytsia limit: 15", explanation: %Q(Search explicitly on citation field and limit the results.)},
-      {search_target: 'References', search_string: "citation: nuytsia 1985 limit: 15", explanation: %Q(Search explicitly on citation field with text and a date and limit the results.)},
-      {search_target: 'References', search_string: "citation: 1985 maslin", explanation: %Q(More than one search fragment for a citation search - order does not matter.)},
-      {search_target: 'References', search_string: "citation: maslin 1985", explanation: %Q(More than one search fragment for a citation search - order does not matter.)},
+      {search_target: 'References', search_string: "citation: nuytsia", explanation: %Q(Refer explicitly to the citation field. Leading and trailing wildcards are added automatically - leading because the citation is a complex assembled string)},
+      {search_target: 'References', search_string: "citation-text: nuytsia limit: 15", explanation: %Q(Text search on citation limit the results.)},
+      {search_target: 'References', search_string: "citation-token: nuytsia 1985 limit: 15", explanation: %Q(Token search on citation with text and a date and limit the results -- order of token doesn't matter and wildcards are added automatically.)},
+      {search_target: 'References', search_string: "citation-text: 1985 maslin", explanation: %Q(More than one search fragment for a citation search - order does not matter.)},
+      {search_target: 'References', search_string: "citation-token: maslin 1985", explanation: %Q(More than one search fragment for a citation search - order does not matter.)},
       {search_target: 'References', search_string: "nuytsia type:journal", explanation: %Q(Restrict by type.)},
       {search_target: 'References', search_string: "nuytsia ty:journal ti:nuytsia", explanation: %Q(Use field abbreviations.)}
       ].each do |val| %>
@@ -43,7 +44,7 @@
 <h5 class="">Count references</h5>
 <table class="example-searches table table-striped">
   <% [{search_target: 'References', search_string: "count",explanation: %Q(Start with "count ref" to count references.)},
-      {search_target: 'References', search_string: "count nuytsia", explanation: %Q(Counting without listing should be faster than listing for large sets.)},
+      {search_target: 'References', search_string: "count citation: nuytsia", explanation: %Q(Counting without listing should be faster than listing for large sets.)},
       {search_target: 'References', search_string: "count type:journal", explanation: %Q(Because it's faster, counting may suit different types of searches.)},
       {search_target: 'References', search_string: "count type:journal is-not-a-parent:", explanation: %Q(Use an assertion.)},
       {search_target: 'References', search_string: "count type:paper has-no-parent:", explanation: %Q(Use a different assertion)},
@@ -67,7 +68,7 @@
 <table class="example-searches table table-striped">
   <% [
       {search_target: 'References', search_string: "citation: * limit:10 show-instances:",explanation: %Q(First 10 references sorted by citation.)},
-      {search_target: 'References', search_string: "nuytsia show-instances:", explanation: %Q(Reference searches match on citation by default.  Leading and trailing wildcards are added automatically.)},
+      {search_target: 'References', search_string: "nuytsia i:", explanation: %Q(Reference searches match on citation by default.  Leading and trailing wildcards are added automatically. Uses abbreviation for show-instances:)},
       {search_target: 'References', search_string: "nuytsia limit: 5 show-instances:", explanation: %Q(Limit the search results.)},
       {search_target: 'References', search_string: "nuytsia limit: 5 show-instances-by-page:", explanation: %Q(Limit the search results.)},
       {search_target: 'References', search_string: "title:nuytsia show-instances:", explanation: %Q(Search on title.  A trailing wildcard is added automatically.)},

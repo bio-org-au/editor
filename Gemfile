@@ -13,7 +13,7 @@ gem "sprockets-rails"
 gem "pg", "~> 1.1"
 
 # Use Puma as the app server [https://github.com/puma/puma]
-gem "puma", "= 6.1.1" # NOTE: was ">= 5..." but bundle update couldn't install puma 6.3.0, so hard-coding to 6.1.1 for now
+gem "puma", ">= 6.3.1" 
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
@@ -54,14 +54,14 @@ end
 
 group :test do
   # gem 'capybara', '>= 2.15'
-  gem "selenium-webdriver"
+  #gem "selenium-webdriver"
   # Easy installation and use of web drivers to run system tests with browsers
   gem "launchy"
   gem "minitest"
   gem "minitest-rails"
   gem "minitest-reporters"
-  gem "mocha", "~> 1.1.0"
-  gem "webdrivers"
+  gem 'mocha', '~> 1.11', '>= 1.11.2'
+  #gem "webdrivers"
   # NoMethodError: assert_template has been extracted to a gem. To continue using it, add:
   gem "rails-controller-testing"
 end

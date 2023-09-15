@@ -129,6 +129,7 @@ class Loader::Name::Match < ActiveRecord::Base
   end
 
   def undo_taxonomic_choice
+    raise 'Cannot undo taxonomic choice once drafted to taxonomy' if drafted?
     self.standalone_instance_id = nil
     self.standalone_instance_found = false
     self.standalone_instance_created = false

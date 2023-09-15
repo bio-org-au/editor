@@ -54,7 +54,7 @@ class Reference::DefinedQuery::ReferencesNamesFullSynonymy
   def ref_query_for_count
     force_list = true
     @limited = false
-    @ref_query = Search::OnReference::Base.new(@parsed_request, force_list)
+    @ref_query = Search::Reference::DefinedQuery.new(@parsed_request, force_list)
   end
 
   def count_query
@@ -71,7 +71,7 @@ class Reference::DefinedQuery::ReferencesNamesFullSynonymy
   end
 
   def list_query
-    @ref_query = Search::OnReference::Base.new(@parsed_request)
+    @ref_query = Search::Reference::DefinedQuery.new(@parsed_request)
     @results = []
     @limited = false
     @ref_query.results.each do |ref|

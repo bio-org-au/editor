@@ -36,8 +36,8 @@ class Tree::Workspace::Placement < ActiveType::Object
                 excluded: excluded,
                 profile: profile,
                 versionId: version_id }
-    logger.info "Calling #{url} with #{payload}"
     raise errors.full_messages.first unless valid?
+    logger.info "PLACEMENT calling #{url} WITH PAYLOAD: #{payload}"
 
     RestClient.put(url, payload.to_json,
                    { content_type: :json, accept: :json })

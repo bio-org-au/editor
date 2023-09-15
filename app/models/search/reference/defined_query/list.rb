@@ -16,20 +16,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Search::OnReference::CountQuery
-  attr_reader :sql, :info_for_display, :common_and_cultivar_included
+class Search::Reference::DefinedQuery::List
+  attr_reader :sql, :limited, :info_for_display, :common_and_cultivar_included
 
   def initialize(parsed_request)
     @parsed_request = parsed_request
     prepare_query
-    @info_for_display = "nothing yet from count query"
+    @limited = parsed_request.limited
+    @info_for_display = ""
   end
 
   def prepare_query
-    Rails.logger.debug("Search::OnReference::CountQuery#prepare_query")
+    Rails.logger.debug("Search::Reference::DefinedQuery::List#prepare_query")
     prepared_query = Reference.includes(:ref_type)
-    where_clauses = Search::OnReference::WhereClauses.new(@parsed_request, prepared_query)
+    where_clauses = Search::Reference::DefinedQuery::WhereClauses.new(@parsed_request,
+                                                          prepared_query)
     prepared_query = where_clauses.sql
+    prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
     @sql = prepared_query
   end
 end

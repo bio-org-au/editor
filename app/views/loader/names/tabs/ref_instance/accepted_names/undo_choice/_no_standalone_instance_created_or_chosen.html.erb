@@ -1,0 +1,9 @@
+<b>Undo choice</b>
+    <%= form_with(url: loader_name_match_clear_taxonomy_nomination_path(match.id),
+                  role: 'form', remote: true, method: :patch) do |f| -%>
+      <%= f.submit "Clear the choice",
+                    id: 'clear-choice-button',
+                    tabindex: increment_tab_index,
+                    title: 'Clear the choice for how to set up the instance',
+                    class: "btn btn-primary width-10em pull-right" -%>
+  <% end -%>

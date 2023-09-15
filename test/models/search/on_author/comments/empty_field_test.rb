@@ -25,7 +25,6 @@ class SearchOneAuthorCommentsEmptyFieldTest < ActiveSupport::TestCase
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "author",
                    query_string: "haeckel",
-                   include_common_and_cultivar_session: true,
                    current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.size == 1, "1 result expected."
@@ -35,7 +34,6 @@ class SearchOneAuthorCommentsEmptyFieldTest < ActiveSupport::TestCase
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "author",
                    query_string: "haeckel comments:",
-                   include_common_and_cultivar_session: true,
                    current_user: build_edit_user)
     search = Search::Base.new(params)
     assert search.executed_query.results.empty?, "No results expected."

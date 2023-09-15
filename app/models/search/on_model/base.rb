@@ -65,6 +65,7 @@ class Search::OnModel::Base
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
     consider_instances(parsed_request)
+    consider_loader_name_comments(parsed_request)
     @count = @results.size
     calculate_total
   end
@@ -91,6 +92,25 @@ class Search::OnModel::Base
 
   def instances_sort_key(parsed_request)
     parsed_request.order_instances_by_page ? "page" : "name"
+  end
+
+  def consider_loader_name_comments(parsed_request)
+    return unless parsed_request.show_loader_name_comments
+
+    show_loader_name_comments(parsed_request)
+  end
+
+  def show_loader_name_comments(parsed_request)
+    results_with_comments = []
+    @results.each do |rec|
+      results_with_comments << rec
+      comments_query = Loader::Name::Review::Comment::AsArray::ForLoaderName
+                        .new(rec,
+                             parsed_request.limit,
+                             parsed_request.instance_offset)
+      comments_query.results.each { |i| results_with_comments << i }
+    end
+    @results = results_with_comments
   end
 
   def debug(s)

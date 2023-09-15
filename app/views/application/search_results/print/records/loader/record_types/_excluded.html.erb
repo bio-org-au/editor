@@ -7,7 +7,7 @@
 <%# Presumes excludeds etc are grouped at the end of a family %>
 <% if !(defined? @family_excluded_header_shown) || (@family_excluded_header_shown != search_result.family) %>
   <tr class="search-result excluded-header">
-    <td>UNPLACED, DOUBTFUL AND EXCLUDED NAMES</td>
+    <td colspan="2">UNPLACED, DOUBTFUL AND EXCLUDED NAMES</td>
   </tr>
   <% @family_excluded_header_shown = search_result.family %>
 <% end %>
@@ -15,7 +15,7 @@
 
 <tr id="search-result-<%= search_result.id %>" 
     class="search-result <%= search_result.record_type %> ">
-  <td class="text name main-content" >
+  <td class="text name main-content" colspan="2" >
 
 
     <span class='loader-name <%= search_result.record_type %> full-name'>

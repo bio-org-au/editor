@@ -30,8 +30,8 @@ class Tree::Workspace::Reparent < ActiveType::Object
       currentElementUri: target.element_link,
       newParentElementUri: parent.element_link
     }
-    logger.info "Calling #{url}"
     raise errors.full_messages.first unless valid?
+    logger.info "REPARENT REPLACE calling #{url} WITH PAYLOAD: #{payload}"
 
     RestClient.put(url, payload.to_json,
                    { content_type: :json, accept: :json })

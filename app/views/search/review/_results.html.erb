@@ -18,6 +18,8 @@
         <%= render partial: 'application/search_results/review/loader_name_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
         <% @flush_loader_name = true %>
+      <% when 'Name Review Comment' %>  
+        <%# Do nothing for now %>
       <% else %>
         <tr>
           <td class="width-1-percent"></td>

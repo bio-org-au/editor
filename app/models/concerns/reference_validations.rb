@@ -45,6 +45,12 @@ module ReferenceValidations
     validate :validate_fields_for_part
     validate :validate_uniqueness
     validate :validate_iso_publication_date
+    validates_length_of :issn,
+                        maximum: 16,
+                        message: "cannot be longer than 16 characters"
+    validates_length_of :isbn,
+                        maximum: 16,
+                        message: "cannot be longer than 16 characters"
   end
 
   def validate_uniqueness

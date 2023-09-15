@@ -6,6 +6,9 @@ h1.showme {
 table.search-results.for-print {
   padding-left: 3em;
 }
+xtable.search-results.for-print tr td {
+  border: 1px solid black;
+}
 
 tr.search-result.heading {
   font-weight: bold;
@@ -46,15 +49,27 @@ tr.search-result.distribution span.distribution-inset {
   display: inline-block;
 }
 
-tr.search-result.comment span.comment-inset {
+tr.search-result.distribution td.indent,
+tr.search-result.compiler-comment td.indent,
+{
   width: 6em;
-  display: inline-block;
 }
 
-tr.search-result.comment span.distribution-inset {
-  width: 6em;
-  display: inline-block;
-  color: red;
+tr.search-result.review-comment td.indent {
+  width: 8em;
+  background: white;
+}
+
+tr.search-result.review-comment span.main-content {
+}
+tr.search-result.review-comment span.even {
+  background: lightsteelblue;
+  border-bottom: 4px solid lightsteelblue;
+}
+
+tr.search-result.review-comment span.odd {
+  background: lightgray;
+  border-bottom: 4px solid lightgray;
 }
 
 tr.search-result.excluded-header {
