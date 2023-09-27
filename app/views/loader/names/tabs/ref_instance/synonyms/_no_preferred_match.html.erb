@@ -1,12 +1,13 @@
 
 <% case %>
+<% when @loader_name.parent.preferred_match.blank? %>
+  No preferred match, and parent has no preferred match - nothing to do here until preferred matches made.  <br>
 <% when @loader_name.parent.preferred_match.use_batch_default_reference %>
-  No preferred match, nothing to do here until there is a preferred match.  <br>
-  (Use batch default reference.)
+  Parent choice is to use batch default reference - nothing to do here until there is a preferred match.
 <% when @loader_name.parent.preferred_match.use_existing_instance %>
-  The choice made for the parent name is to place an existing instance in taxonomy. <br>
+  Parent choice is to place an existing instance in taxonomy. <br>
 This synonym will therefore play no further part in the process, and there is no need to set a preferred match.
 <% when @loader_name.parent.preferred_match.copy_append_from_existing_use_batch_def_ref %>
-  No preferred match, nothing to do here until there is a preferred match.  <br>
-  (Copy and append.)
+  Parent choice is use an existing instance and append synonymy to it - nothing to do here until there is a preferred match.
 <% end %>
+

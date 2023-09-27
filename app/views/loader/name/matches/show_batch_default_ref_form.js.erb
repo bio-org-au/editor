@@ -1,3 +1,4 @@
 $('#progress-message-container').html("Nomination started, please confirm below");
 $('#progress-message-container').removeClass('hidden');
 $('#use-batch-default-ref-form-container').html('<%= j render partial: 'loader/names/tabs/ref_instance/accepted_names/use_batch_default_ref_form', locals: {match: @match} %>');
+$('#existing-instances-display').addClass('hidden');

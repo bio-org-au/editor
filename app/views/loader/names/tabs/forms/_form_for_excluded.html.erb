@@ -51,25 +51,12 @@
       <%= f.text_field :record_type, class: 'form-control', disabled: true %>
     </div>
 
-    <div class="form-group">
-      <br>
-      <label class="form-check-label">
-        <%= f.check_box(:excluded, {class: 'xform-control', title: 'Excluded.', tabindex: increment_tab_index}) %>
-        Exclude from the taxonomy
-      </label>
-    </div>
-
     <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
     <%#= render partial: "authors", locals: {f: f} %>
 
     <div class="form-group">
       <label for="comment">Comment</label>
       <%= f.text_area :comment, class: 'form-control', title: "Enter comment", tabindex: increment_tab_index, autofocus: true %>
-    </div>
-
-    <div class="form-group">
-      <label for="distribution">Distribution</label>
-      <%= f.text_field(:distribution, {class: 'form-control', title: 'Distribution of the taxon', tabindex: increment_tab_index}) %>
     </div>
 
     <div class="form-group">

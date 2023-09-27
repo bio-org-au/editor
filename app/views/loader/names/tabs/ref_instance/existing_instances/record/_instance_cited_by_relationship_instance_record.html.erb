@@ -1,0 +1,24 @@
+<tr id="search-result-<%= record.id %>"
+    class="search-result instance-cited-by-relationship-instance-record <%= 'fresh' if record.fresh? %>"
+    data-row-type="instance_cited_by_relationship_instance_record"
+    tabindex="<%= increment_tab_index(100) %>"
+>
+  <td colspan="1" class="align-top text width-5-percent"> &mdash; </td>
+  <td colspan="1" class="text">
+    <span
+    id="<%= %Q(#{record.class}-#{record.id}) %>"
+    class="show-details-link indent-level-2 <%= "draft" if record.draft? %>"
+    title="Instance cited by relationship instance record.  Select to show details."
+    tabindex="<%= increment_tab_index %>">
+      <%= record.instance_type.of_label %>
+      <%= "<b>#{record.this_is_cited_by.name.full_name}</b>".html_safe %>
+      <%= "[#{record.this_is_cited_by.name.name_status.name}]" unless record.this_is_cited_by.name.name_status.blank? %>
+      by
+      <%= "#{record.this_cites.try('reference').try('citation')}" %>
+      <%= "#{record.page}" %>
+      <%= render(partial: 'draft', locals: { search_result: record }) %>
+
+    </span>
+  </td>
+</tr>
+ 

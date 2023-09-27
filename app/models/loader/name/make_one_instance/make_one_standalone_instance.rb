@@ -24,6 +24,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
     @user = user
     @job = job
     @match = loader_name.preferred_match
+    @task_start_time = Time.now
   end
 
   def create
@@ -58,13 +59,13 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
   end
 
   def using_existing_instance
-    log("#{Constants::DECLINED_INSTANCE} - using existing " +
+    log_to_table("#{Constants::DECLINED_INSTANCE} - using existing " +
                  " instance for #{@loader_name.simple_name} #{@loader_name.id}")
     Constants::DECLINED
   end
 
   def stand_already_noted
-    log("#{Constants::DECLINED_INSTANCE} - standalone instance " +
+    log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "already noted for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
     Constants::DECLINED
@@ -92,14 +93,14 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
   end
 
   def stand_already_for_default_ref
-    log("#{Constants::DECLINED_INSTANCE} - standalone instance " +
+    log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "exists for def ref for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
     Constants::DECLINED
   end
 
   def unknown_option
-    log(
+    log_to_table(
       "Error - unknown option for #{@loader_name.simple_name} #{@loader_name.id}"
     )
     log_error("Unknown option: ##{@match.id} #{@match.loader_name_id}")
@@ -111,7 +112,10 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
     return true unless @match.standalone_instance_id.blank?
   end
 
-  def log(payload)
+  def log_to_table(payload)
+    payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
+  rescue StandardError => e
+    Rails.logger.error("Couldn't log to bulk processing log table: #{e}")
   end
 end

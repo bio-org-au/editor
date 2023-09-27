@@ -1,8 +1,8 @@
 <% increment_tab_index(0) %>
 <% if @loader_name.accepted? %>
   <%= render partial: 'loader/names/tabs/forms/form_for_accepted', locals: { loader_name: @loader_name } %>
-<% elsif @loader_name.excluded_rt? %>
-  <%= render partial: 'loader/names/tabs/forms/form_for_excluded_record_type', locals: { loader_name: @loader_name } %>
+<% elsif @loader_name.excluded? %>
+  <%= render partial: 'loader/names/tabs/forms/form_for_excluded', locals: { loader_name: @loader_name } %>
 <% elsif @loader_name.synonym? %>
   <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: { loader_name: @loader_name } %>
 <% elsif @loader_name.misapp? %>

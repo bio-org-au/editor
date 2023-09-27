@@ -10,7 +10,8 @@
 
     <span class='loader-name <%= search_result.record_type %> full-name'>
       <% if search_result.rank == 'genus'  %>
-        <%= "#{search_result.full_name.upcase}" %><%= ',' unless search_result.name_status.blank? %>
+         <%= "#{search_result.full_name.sub(/ .*/,'').upcase}" %>
+         <%= "#{search_result.full_name.sub(/.* /,' ')}" %><%= ',' unless search_result.name_status.blank? %>
       <% else %>
         <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
       <% end %>

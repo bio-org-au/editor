@@ -1,4 +1,7 @@
 <% case %>
+<% when @loader_name.parent.preferred_match.blank? %>
+  Parent has no preferred match.<br>
+
 <% when @loader_name.parent.preferred_match.use_batch_default_reference %>
   <%= render partial: 'loader/names/tabs/ref_instance/misapps/one_preferred_match/use_batch_default_ref' %> 
 

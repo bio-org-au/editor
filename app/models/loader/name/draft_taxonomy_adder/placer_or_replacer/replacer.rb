@@ -30,6 +30,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
     @job = job
     @added = @declined = @errors = 0
     @result = false
+    @task_start_time = Time.now
   end
 
   def replace
@@ -90,8 +91,9 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
   end
 
   def log_to_table(payload)
+    payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
   rescue StandardError => e
-    Rails.logger.error("Couldn't log to table: #{e}")
+    Rails.logger.error("Couldn't log to bulk processing log table: #{e}")
   end
 end

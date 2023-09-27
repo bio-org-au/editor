@@ -1,3 +1,39 @@
+- :date: 11-Sep-2023
+  :jira_id: '4643'
+  :description: |- 
+    Loader: Manually added excluded names are now flagged as Excluded in search results
+  :jira_id: '4523'
+- :date: 08-Sep-2023
+  :jira_id: '4642'
+  :description: |- 
+    Loader: Add rescue clauses to log_to_table methods - will avoid any unforeseen logging problems falsely reporting a transaction failed - :date: 08-Sep-2023
+  :jira_id: '4523'
+  :description: |-
+    Reference ISSN: Fix display and link
+- :date: 08-Sep-2023
+  :jira_id: '4497'
+  :description: |-
+    Loader: Printable version - genera name portion only should now be upper-case (also applied upper-case to excluded genera names)
+- :date: 08-Sep-2023
+  :jira_id: '4528'
+  :description: |-
+    Loader: List the usage references of the preferred match on the Reference Instance tab, if no reference choice yet made
+- :date: 07-Sep-2023
+  :jira_id: '4640'
+  :description: |-
+    Loader: Trial query that allows for 'MS' suffixes on Name simple-names
+- :date: 06-Sep-2023
+  :jira_id: '4639'
+  :description: |-
+    Loader: Reference Instance tab now displays for synonyms and misapplications
+- :date: 06-Sep-2023
+  :jira_id: '4636'
+  :description: |-
+    Loader: Fix method name bug introduced yesterday when adding elapsed time to bulk processing log entries
+- :date: 05-Sep-2023
+  :jira_id: '4636'
+  :description: |-
+    Loader: Add elapsed time to the log entry for each task recorded in the bulk processing log
 - :date: 04-Sep-2023
   :jira_id: '4634'
   :description: |-

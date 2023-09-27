@@ -1,6 +1,8 @@
   Preferred match: <%= @loader_name.preferred_match.name.full_name %><br>
   <br>
   <% case %>
+  <% when @loader_name.parent.preferred_match.blank? %>
+      No parent preferred match - nothing to do here for now.
   <% when @loader_name.parent.preferred_match.use_batch_default_reference %>
     <%= render partial: 'loader/names/tabs/ref_instance/synonyms/one_preferred_match/use_batch_default_ref' %> 
 

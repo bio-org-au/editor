@@ -25,6 +25,7 @@ class Loader::Name::MakeOneMatch
     @loader_name = loader_name
     @user = user
     @job = job
+    @task_start_time = Time.now
   end
 
   def find_or_create_preferred_match
@@ -37,7 +38,7 @@ class Loader::Name::MakeOneMatch
     make_preferred_match?
   rescue StandardError => e
     Rails.logger.error("#{@tag}: #{e}")
-    log("#{ERROR} - #{e}")
+    log_to_table("#{ERROR} - #{e}")
     COUNT_ERROR
   end
 
@@ -50,27 +51,27 @@ class Loader::Name::MakeOneMatch
   end
 
   def already_exists
-    log("#{DECLINED} - existing")
+    log_to_table("#{DECLINED} - existing")
     COUNT_DECLINED
   end
 
   def misapp
-    log("#{DECLINED} - misapplications are not eligible")
+    log_to_table("#{DECLINED} - misapplications are not eligible")
     COUNT_DECLINED
   end
 
   def heading
-    log("#{DECLINED} - headings don't get processed")
+    log_to_table("#{DECLINED} - headings don't get processed")
     COUNT_DECLINED
   end
 
   def no_further_processing
-    log("#{DECLINED} - no further processing")
+    log_to_table("#{DECLINED} - no further processing")
     COUNT_DECLINED
   end
 
   def parent_using_existing
-    log("#{DECLINED} - parent is using an existing instance")
+    log_to_table("#{DECLINED} - parent is using an existing instance")
     COUNT_DECLINED
   end
 
@@ -79,10 +80,10 @@ class Loader::Name::MakeOneMatch
        matching_name_has_primary? &&
        matching_name_has_exactly_one_primary?
       create_match
-      log(CREATED)
+      log_to_table(CREATED)
       COUNT_CREATED
     else
-      log("#{DECLINED} - no single match found")
+      log_to_table("#{DECLINED} - no single match found")
       COUNT_DECLINED
     end
   end
@@ -118,12 +119,15 @@ class Loader::Name::MakeOneMatch
     @loader_name.simple_name
   end
 
-  def log(entry)
+  def log_to_table(entry)
     tag = " ##{@loader_name.id}, batch: #{@loader_name.batch.name},  " +
           "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
           " (#{@loader_name.record_type})"
+    tag = "#{tag} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
     payload = "#{entry} #{tag}"
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
+  rescue StandardError => e
+    Rails.logger.error("Couldn't log to bulk processing log table: #{e}")
   end
 
   def debug(msg)

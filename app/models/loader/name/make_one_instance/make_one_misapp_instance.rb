@@ -7,6 +7,7 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     @match = match
     @user = user
     @job = job
+    @task_start_time = Time.now
   end
 
   def create
@@ -29,24 +30,24 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
   def failed(error)
     entry = "#{Constants::FAILED_INSTANCE} for #{@loader_name.simple_name} "
     entry += "#{@loader_name.id} - error in do_one_loader_name: #{error}"
-    log(entry)
+    log_to_table(entry)
     Constants::ERROR
   end
 
   def no_relationship_instance_type
-    log(declined_entry("No relationship instance type id "))
+    log_to_table(declined_entry("No relationship instance type id "))
     Constants::DECLINED
   end
 
   def parent_no_standalone
-    log(declined_entry(
+    log_to_table(declined_entry(
           "parent has no standalone instance so cannot proceed"
         ))
     Constants::DECLINED
   end
 
   def already_noted
-    log(declined_entry(
+    log_to_table(declined_entry(
           "relationship instance already noted (##{@match.relationship_instance_id})"
         ))
     Constants::DECLINED
@@ -54,12 +55,12 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
 
   def misapp_already_attached
     record_misapp_already_there(@user)
-    log(declined_entry("misapp already there"))
+    log_to_table(declined_entry("misapp already there"))
     Constants::DECLINED
   end
 
   def parent_using_existing
-    log(declined_entry("parent is using existing instance"))
+    log_to_table(declined_entry("parent is using existing instance"))
     Constants::DECLINED
   end
 
@@ -110,10 +111,13 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     @match.relationship_instance_id = instance.id
     @match.updated_by = "bulk for #{@user}"
     @match.save!
-    log("#{Constants::CREATED_INSTANCE} for loader_name ##{@loader_name.id} #{@loader_name.simple_name}")
+    log_to_table("#{Constants::CREATED_INSTANCE} for loader_name ##{@loader_name.id} #{@loader_name.simple_name}")
   end
 
-  def log(payload)
+  def log_to_table(payload)
+    payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
+  rescue StandardError => e
+    Rails.logger.error("Couldn't log to bulk processing log table: #{e}")
   end
 end

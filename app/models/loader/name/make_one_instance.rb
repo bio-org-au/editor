@@ -24,6 +24,7 @@ class Loader::Name::MakeOneInstance
     @loader_name = loader_name
     @authorising_user = authorising_user
     @job_number = job_number
+    @task_start_time = Time.now
   end
 
   ###########################################################
@@ -61,7 +62,7 @@ class Loader::Name::MakeOneInstance
     return heading if @loader_name.heading?
     return no_further_processing if @loader_name.no_further_processing?
 
-    if @loader_name.accepted? || @loader_name.excluded_rt?
+    if @loader_name.accepted? || @loader_name.excluded?
       create_standalone
     elsif @loader_name.synonym?
       create_synonymy
@@ -73,17 +74,17 @@ class Loader::Name::MakeOneInstance
   end
 
   def no_further_processing
-    log("#{Constants::DECLINED_INSTANCE} - no further processing for #{@loader_name.id}")
+    log_to_table("#{Constants::DECLINED_INSTANCE} - no further processing for #{@loader_name.id}")
     Constants::DECLINED
   end
 
   def no_preferred_match
-    log("#{Constants::DECLINED_INSTANCE} - no preferred match for ##{@loader_name.id} #{@loader_name.simple_name}")
+    log_to_table("#{Constants::DECLINED_INSTANCE} - no preferred match for ##{@loader_name.id} #{@loader_name.simple_name}")
     Constants::DECLINED
   end
 
   def heading
-    log("#{Constants::DECLINED_INSTANCE} - heading entries not processed ##{@loader_name.id} #{@loader_name.simple_name}")
+    log_to_table("#{Constants::DECLINED_INSTANCE} - heading entries not processed ##{@loader_name.id} #{@loader_name.simple_name}")
     Constants::DECLINED
   end
 
@@ -130,15 +131,18 @@ class Loader::Name::MakeOneInstance
 
   def log_create_action(count)
     entry = "Create instance counted #{count} #{'record'.pluralize(count)}"
-    log(entry)
+    log_to_table(entry)
   end
 
-  def log(entry)
+  def log_to_table(payload)
     tag = " ##{@loader_name.id}, batch: #{@loader_name.batch.name},  " +
           "seq: #{@loader_name.seq} <b>#{@loader_name.simple_name}</b> " +
           " (#{@loader_name.record_type})"
-    payload = "#{entry} #{tag}"
+    tag = "#{tag} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if @task_start_time
+    payload = "#{payload} #{tag}"
     Loader::Batch::Bulk::JobLog.new(@job_number, payload, @user).write
+  rescue StandardError => e
+    Rails.logger.error("Couldn't save log to bulk processing log table: #{e}")
   end
 
   def scientific_name
@@ -150,7 +154,7 @@ class Loader::Name::MakeOneInstance
     msg.gsub!(/"/, "")
     msg.sub!(/^Failing/, "")
     Rails.logger.error("Loader::Name::AsInstanceCreator failure: #{msg}")
-    log("Loader::Name::AsInstanceCreator failure: #{msg}")
+    log_to_table("Loader::Name::AsInstanceCreator failure: #{msg}")
   end
 
   def debug(msg)

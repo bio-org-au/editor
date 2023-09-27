@@ -52,17 +52,11 @@
     </div>
 
     <div class="form-group">
-      <label for="record_type">Record type*</label>
-      <%= f.hidden_field :record_type, value: 'accepted' %>
-      <%= f.text_field :record_type, class: 'form-control', value: 'accepted', disabled: true %>
-    </div>
-
-    <div class="form-group">
-      <br>
-      <label class="form-check-label">
-        <%= f.check_box(:excluded, {class: 'xform-control', title: 'Excluded.', tabindex: increment_tab_index}) %>
-        Exclude from the taxonomy
-      </label>
+      <label for="record_type">Record type - accepted or excluded *</label>
+      <%= f.select :record_type, ["accepted", "excluded"], {include_blank: true},
+        class: 'form-control',
+        required: true,
+        title: 'Top level records can be accepted or excluded' %>
     </div>
 
     <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>

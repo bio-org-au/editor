@@ -34,6 +34,9 @@
       <div id="search-result-details-error-message-container" class="error-container"></div>
 <% else %>
       <%= render partial: 'loader/names/tabs/ref_instance/excluded_names/three_way_choice_form', locals: {match: match} %>
+      <div id="existing-instances-display">
+        <%= render partial: 'loader/names/tabs/ref_instance/existing_instances/main', locals: {match: match} %> 
+      </div>
       <br><br>
       <div id="search-result-details-info-message-container" class="message-container"></div>
       <div id="search-result-details-error-message-container" class="error-container"></div>
