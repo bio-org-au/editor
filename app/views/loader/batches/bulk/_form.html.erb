@@ -1,5 +1,9 @@
 <h5>Search for names in the batch <%= session[:default_loader_batch_name] %></h5>
-Note: loader name searches work here, but you need to explicitly add wildcards — they are not added automatically. (Adding them automatically would stop you specifying non-wildcarded sets of names to process.)
+Default search assumes any leading string is a name string.<br>
+Directives available here: <code>family: [family name string]</code>,  <code>acc: [accepted name string]</code>,  <code>exc: [excluded name string]</code>
+<br>
+Wildcards are allowed but are <b>not</b> added automatically.<br>
+(Adding them automatically would stop you specifying non-wildcarded sets of names to process.)<br>
 <%= form_tag({controller: "loader/batch/bulk", action: "operation"}, method: "post", remote: true) do %>
 
   <div class="width-64em">

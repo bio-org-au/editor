@@ -1,0 +1,27 @@
+<% link = "link-new-loader-name-#{@random_id}" %>
+
+<tr id="new-loader-name-<%= @random_id %>" 
+  class="new-record new-loader-name"  
+  data-record-type="loader-name"
+  data-edit-url="<%= loader_name_new_with_random_id_path(@random_id) %>"
+  tabindex="<%= increment_tab_index(100) %>"
+    >
+  <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%= record_icon('loader_name') %></td>
+  <td class="text takes-focus name main-content min-width-40-percent max-width-100-percent width-90-percent give-me-focus" colspan="9">
+    <%= link_to('New Loader Name heading', loader_name_heading_new_with_random_id_path(@random_id,tabIndex: increment_tab_index(0) + 5), 
+                id: "#{link}",
+                class: "show-details-link", 
+                tabindex: "#{ increment_tab_index }", 
+                title: "New loader name heading record.  Select to see details.",
+                remote: true) %>
+  </td>
+  <td class="takes-focus width-5-percent filler">&nbsp;
+  </td>
+</tr>
+
+<script>
+  $(document).ready(function () {
+    document.getElementById("<%= link %>").click();
+  })
+</script>
+

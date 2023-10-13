@@ -1,0 +1,128 @@
+
+The file as received from Rex isn't really csv and my postgresql csv command barfs on it.
+
+I load the file into Numbers then export it as CSV and then my postgresql csv command loves it.
+
+[local]:5432 nsl@nsl_dev=# \i b-load-raw-data.sql
+COPY 1721
+Time: 41.105 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i d-copy-raw-to-loader-name.sql
+INSERT 0 9088
+Time: 204.957 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i e-bulk-update-loader-name-parent-id.sql
+UPDATE 5522
+Time: 6125.794 ms (00:06.126)
+
+[local]:5432 nsl@nsl_dev=# \i f-clean-tags-out-of-remark-to-reviewers.sal
+BEGIN
+Time: 9.940 ms
+UPDATE 1892
+Time: 67.208 ms
+UPDATE 0
+Time: 6.110 ms
+UPDATE 41
+Time: 6.731 ms
+UPDATE 4
+Time: 5.478 ms
+UPDATE 4
+Time: 4.742 ms
+UPDATE 4
+Time: 4.518 ms
+COMMIT
+Time: 1.671 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i g-replace-multiplication-signs.sql
+BEGIN
+Time: 1.693 ms
+ count
+-------
+    21
+(1 row)
+
+Time: 45.360 ms
+UPDATE 21
+Time: 13.885 ms
+ count
+-------
+     0
+(1 row)
+
+Time: 13.204 ms
+ id | simple_name
+----+-------------
+(0 rows)
+
+Time: 13.023 ms
+ count
+-------
+   337
+(1 row)
+
+Time: 10.332 ms
+UPDATE 337
+Time: 20.122 ms
+ count
+-------
+     0
+(1 row)
+
+Time: 8.681 ms
+ id | simple_name
+----+-------------
+(0 rows)
+
+Time: 7.958 ms
+COMMIT
+Time: 0.179 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i h-set-long-dash-to-dash.sql
+BEGIN
+Time: 4.868 ms
+ count
+-------
+    13
+(1 row)
+
+Time: 20.607 ms
+UPDATE 13
+Time: 11.872 ms
+COMMIT
+Time: 0.664 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i i-translate-synonym-types.sql
+BEGIN
+Time: 0.840 ms
+UPDATE 1591
+Time: 46.791 ms
+UPDATE 3546
+Time: 70.037 ms
+COMMIT
+Time: 1.075 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i j-remove-trailing-white-simple-name.sql
+UPDATE 0
+Time: 47.314 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i k-remove-trailing-white-full-name.sql
+UPDATE 9
+Time: 52.534 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i l-set-record-type-excluded.sql
+UPDATE 560
+Time: 41.955 ms
+
+
+[local]:5432 nsl@nsl_dev=# \i m-update-family-records-to-headings.sql
+UPDATE 175
+Time: 50.358 ms
+

@@ -28,7 +28,9 @@ class Search::OnModel::Base
               :id,
               :count,
               :show_csv,
-              :total
+              :total,
+              :limit,
+              :do_count_totals
 
   def initialize(parsed_request)
     run_query(parsed_request)
@@ -38,10 +40,12 @@ class Search::OnModel::Base
     @has_relation = true
     @show_csv = false
     @rejected_pairings = []
+    @do_count_totals = true
     if parsed_request.count
       run_count_query(parsed_request)
     else
       run_list_query(parsed_request)
+      @limit = parsed_request.limit
     end
   end
 
@@ -64,10 +68,15 @@ class Search::OnModel::Base
     @limited = list_query.limited
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
+    @do_count_totals = list_query.do_count_totals
     consider_instances(parsed_request)
     consider_loader_name_comments(parsed_request)
-    @count = @results.size
-    calculate_total
+    if @do_count_totals then
+      @count = @results.size
+      calculate_total
+    else
+      @count = @total = 0
+    end
   end
 
   def consider_instances(parsed_request)

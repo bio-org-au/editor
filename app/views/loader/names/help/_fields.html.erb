@@ -368,7 +368,7 @@
   <% end %>
 </table>
 
-  <h4>Processing queries</h4>
+  <h4>Processing and taxonomy queries</h4>
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th></tr>
   <% [
@@ -386,6 +386,10 @@
      description: "search for loader names matched to a name and flagged as drafted"},
     {field_name: 'manually-drafted:',
      description: "search for loader names matched to a name and flagged as manually drafted"},
+    {field_name: 'syn-match-in-tree:',
+     description: "search for loader name synonyms matched to a name that's already in the current accepted tree - NOTE: this is a slow query, can run for minutes at a time, so best to combine it with another directive to reduce the search time e.g. family: xyz, "},
+    {field_name: 'name-match-in-syn:',
+     description: "search for loader name accepted or excluded records matched to a name that's already in synonymy in the current accepted tree - NOTE: this is a slow query, can run for minutes at a time, so best to combine it with another directive to reduce the search time"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

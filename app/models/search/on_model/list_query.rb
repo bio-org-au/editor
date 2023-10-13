@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Search::OnModel::ListQuery
-  attr_reader :sql, :limited, :info_for_display, :common_and_cultivar_included
+  attr_reader :sql, :limited, :info_for_display, :common_and_cultivar_included, :do_count_totals
 
   def initialize(parsed_request)
     @parsed_request = parsed_request
@@ -40,18 +40,22 @@ class Search::OnModel::ListQuery
     Rails.logger.debug("Search::OnModel::ListQuery#prepare_query sql: #{prepared_query.to_sql}")
     Rails.logger.debug("===========================================================================================")
     where_clauses = Search::OnModel::WhereClauses.new(@parsed_request, prepared_query)
+    @do_count_totals = where_clauses.do_count_totals
     prepared_query = where_clauses.sql
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
+    Rails.logger.debug(prepared_query.to_sql)
     prepared_query = prepared_query.offset(@parsed_request.offset) if @parsed_request.offsetted
-    Rails.logger.debug("This Search::OnModel::ListQuery#prepare_query sql: #{prepared_query.to_sql}")
     prepared_query = prepared_query.order(Arel.sql("#{@parsed_request.default_order_column}"))
-    Rails.logger.debug("Search::OnModel::ListQuery#prepare_query sql: #{prepared_query.to_sql}")
-    Rails.logger.debug("===========================================================================================")
     @sql = prepared_query
   end
 
   def trim_results(results)
-    if @parsed_request.trim_results? && results.size >= @parsed_request.limit
+    results
+  end
+
+  # Seems redundant
+  def xtrim_results(results)
+    if @parsed_request.trim_results? && results.size > @parsed_request.limit
       @model_class.trim_results(results)
     else
       results

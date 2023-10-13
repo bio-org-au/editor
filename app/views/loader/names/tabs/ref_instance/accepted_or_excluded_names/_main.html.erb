@@ -1,0 +1,18 @@
+<% if @loader_name.preferred_matches.size == 0 %>
+  <br><br>
+  No preferred match, nothing to do here until there is a preferred match.
+<% else %>
+  <% @loader_name.preferred_matches.each do |match| %>
+    <% if match.taxonomy_choice_made? %>
+      <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/copy_and_append/choice_made', locals: {match: match} %> 
+    <% else %>
+      <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/three_way_choice_form', locals: {match: match} %>
+      <div id="search-result-details-info-message-container" class="message-container"></div>
+      <div id="search-result-details-error-message-container" class="error-container"></div>
+      <div id="existing-instances-display">
+        <%= render partial: 'loader/names/tabs/ref_instance/existing_instances/main', locals: {match: match} %> 
+      </div>
+    <% end %>
+  <% end %>
+  <br><br>
+<% end %>

@@ -104,14 +104,45 @@
       <% end %>
 
       <% if Rails.configuration.try('batch_loader_aware') && @current_user.batch_loader? %>
+        <% if session[:default_loader_batch_id].blank? %> 
+        <li role="presentation">
+          Set default batch to enable: 
+        </li>
+        <li role="presentation">
+          Loader name accepted or excluded record (needs default batch set)
+        </li>
+        <li role="presentation">
+          Loader name heading (needs default batch set)
+        </li>
+        <li role="presentation">
+          Loader name note (needs default batch set)
+        </li>
+      <% else %>
+        <li role="presentation">
+          <%= link_to "Loader Name accepted or excluded record",
+                    loader_name_new_row_path,
+                    {
+                    title: 'Add a new "accepted" or "excluded" loader-name (raw data) within the current loader-batch',
+                    remote: true,
+                    tabindex: '-1'} %>
+        </li>
 
         <li role="presentation">
-          <%= link_to "Loader Name (main record)",
-                    loader_name_new_row_path,
-                    title: 'Add a new "accepted" loader-name (raw data) within the current loader-batch',
+          <%= link_to "Loader Name heading",
+                    loader_name_new_heading_row_path,
+                    title: 'Add a new "heading" loader-name within the current loader-batch',
                     remote: true,
                     tabindex: '-1' %>
         </li>
+
+        <li role="presentation">
+          <%= link_to "Loader Name note",
+                    loader_name_new_note_row_path,
+                    title: 'Add a new "note" loader-name within the current loader-batch',
+                    remote: true,
+                    tabindex: '-1' %>
+        </li>
+        <% end %>
       <% end %>
 
     </ul>

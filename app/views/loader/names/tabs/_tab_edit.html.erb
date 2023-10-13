@@ -7,6 +7,10 @@
   <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: { loader_name: @loader_name } %>
 <% elsif @loader_name.misapp? %>
   <%= render partial: 'loader/names/tabs/forms/form_for_misapp', locals: { loader_name: @loader_name } %>
+<% elsif @loader_name.heading? %>
+  <%= render partial: 'loader/names/tabs/forms/form_for_heading', locals: { loader_name: @loader_name } %>
+<% elsif @loader_name.note? %>
+  <%= render partial: 'loader/names/tabs/forms/form_for_note', locals: { loader_name: @loader_name } %>
 <% end %>
 
 <% if @take_focus %>

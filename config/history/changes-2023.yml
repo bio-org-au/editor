@@ -1,8 +1,69 @@
+- :date: 28-Sep-2023
+  :jira_id: '4671'
+  :description: |- 
+    Loader: Fix queries for <code>acc:</code> and <code>exc:</code> so they include results for synonms and misapplications
+- :date: 27-Sep-2023
+  :jira_id: '4678'
+  :description: |- 
+    Loader: Prevent alternative match being selected after first selected match has been drafted - covers accepted, excluded, synonyms record types
+- :date: 27-Sep-2023
+  :jira_id: '4677'
+  :description: |- 
+    Loader: Allow entry, edit, and display of a <code>loader_name</code> note record type within a batch.
+- :date: 27-Sep-2023
+  :jira_id: '4674'
+  :description: |- 
+    Loader: Fix bug stopping details tab displaying in cases where the matching name has no primary instance
+- :date: 26-Sep-2023
+  :jira_id: '4671'
+  :description: |- 
+    Loader: Allow for <code>acc:</code> and <code>exc:</code> directives to be combined with <code>family:</code> directive in Loader tab searches
+- :date: 22-Sep-2023
+  :jira_id: '4669'
+  :description: |- 
+    Loader: Allow entry of heading records - from the menu path <code>New</code> > <code>Loader Name heading record</code> (Second cut)
+- :date: 21-Sep-2023
+  :jira_id: '4663'
+  :description: |- 
+    Loader: Allow rank to be entered for <code>loader_name</code> records, including accepted, excluded, synonym, and misapplication types.
+- :date: 21-Sep-2023
+  :jira_id: '4661'
+  :description: |- 
+    Loader: Reference Instance tab no longer offers instance delete as an undo option for synonym or misapplication <code>loader_name</code> records if the parent record is marked as drafted or manually drafted
+- :date: 20-Sep-2023
+  :jira_id: '4623'
+  :description: |- 
+    Loader: Reference Instance tab - manually drafted accepted or excluded names are no longer offered an undo option
+- :date: 20-Sep-2023
+  :jira_id: '4660'
+  :description: |- 
+    Loader: Reference Instance tab for synonym is no longer blank if parent has preferred match, parent has no decision made, synonym has no preferred match.
+- :date: 19-Sep-2023
+  :jira_id: '4623'
+  :description: |- 
+    Loader: Reference Instance tab - fix the undo message for accepted and excluded names once drafted i.e. make clear they cannot be undone
+- :date: 19-Sep-2023
+  :jira_id: '4657'
+  :description: |- 
+    Loader: Fix <code>loader_name</code> search directive <code>use-existing-instance:</code>
+- :date: 18-Sep-2023
+  :jira_id: '4641'
+  :description: |- 
+    Loader: Change <code>syn-match-in-tree:</code> directive to query using <code>taxon_mv</code> instead of <code>tree_join_v</code> - should be faster
+- :date: 18-Sep-2023
+  :jira_id: '4653'
+  :description: |- 
+    Search: Build a programmer switch for slow searches that omits totals and thereby speeds up the total search time - apply to <code>syn-match-in-tree:</code> and <code>name-match-in-syn:</code>
+- :date: 12-Sep-2023
+  :jira_id: '4641'
+  :description: |- 
+    Loader: Warn on detail tab when a loader name match conflicts with the current tree; add <code>syn-match-in-tree:</code> and <code>name-match-in-syn:</code> directives to list such cases
+- :date: 28-Sep-2023
+  :release: true
 - :date: 11-Sep-2023
   :jira_id: '4643'
   :description: |- 
     Loader: Manually added excluded names are now flagged as Excluded in search results
-  :jira_id: '4523'
 - :date: 08-Sep-2023
   :jira_id: '4642'
   :description: |- 
@@ -34,6 +95,8 @@
   :jira_id: '4636'
   :description: |-
     Loader: Add elapsed time to the log entry for each task recorded in the bulk processing log
+- :date: 18-Sep-2023
+  :release: true
 - :date: 04-Sep-2023
   :jira_id: '4634'
   :description: |-

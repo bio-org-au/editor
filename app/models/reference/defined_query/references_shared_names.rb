@@ -26,11 +26,13 @@ class Reference::DefinedQuery::ReferencesSharedNames
               :relation,
               :count,
               :show_csv,
-              :total
+              :total,
+              :do_count_totals
 
   def initialize(parsed_request)
     debug("start")
     @parsed_request = parsed_request
+    @do_count_totals = true
     run_query
   end
 

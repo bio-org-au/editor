@@ -1,4 +1,4 @@
 $('#progress-message-container').html("Nomination started, please complete details below");
 $('#progress-message-container').removeClass('hidden');
-$('#copy-and-append-form-container').html('<%= j render partial: 'loader/names/tabs/ref_instance/accepted_names/copy_and_append_form', locals: {match: @match} %>');
+$('#copy-and-append-form-container').html('<%= j render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/copy_and_append_form', locals: {match: @match} %>');
 $('#existing-instances-display').addClass('hidden');

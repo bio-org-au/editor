@@ -6,6 +6,7 @@ module Loader::NamesHelper
     reason_to_disable += "matching name has no primary instance; " unless matching_name.has_primary_instance?
     reason_to_disable += "matching name is a duplicate; " if matching_name.duplicate?
     reason_to_disable += "this synonym has no type; " if loader_name.synonym_without_synonym_type?
+    reason_to_disable += "match cannot be cleared; " if !loader_name.can_clear_matches? 
     reason_to_disable += "]"
     reason_to_disable.sub!("; ]", "]")
     reason_to_disable

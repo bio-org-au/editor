@@ -1,0 +1,5 @@
+$('div#search-result-details').html("<%= escape_javascript(h(render partial: 'new_note')) %>");
+$('.showing-details').removeClass('showing-details');
+$('tr#new-loader-name-<%= params[:random_id] %>').addClass('showing-details');
+$('#search-result-details').show();
+$('#search-result-details').removeClass('hidden');

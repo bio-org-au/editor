@@ -1,0 +1,49 @@
+<% unless @loader_name.ok_to_delete? %>
+  Cannot delete this record 
+<% else %>
+  This button deletes the <b>current</b> note record.  
+  <br>
+  #<%= @loader_name.id %>
+<br>
+<% increment_tab_index(0) %>
+
+<%= divider %>
+<% delete_link = link_to("Delete...",
+                         '#',
+                         id: "loader-name-delete-link",
+                         class: "btn btn-warning unconfirmed-delete-link pull-right delete-widget",
+                         tabindex: increment_tab_index,
+                         title: "Delete the loader-name.",
+                         data: {show_this_id: "confirm-or-cancel-link-container"})
+%>
+<% confirm_delete_link = link_to("Confirm delete",
+                                 loader_name_path(@loader_name.id),
+                                 class: "btn btn-danger delete-widget",
+                                 tabindex: increment_tab_index,
+                                 title: "Confirm you want to delete the loader name.",
+                                 remote: true,
+                                 method: :delete)
+%>
+
+<% cancel_delete_link = link_to("Cancel delete",
+                                '#',
+                                id: "cancel-delete-link",
+                                class: "btn btn-default cancel-link delete-widget",
+                                tabindex: increment_tab_index,
+                                title: "Cancel the delete dialog for the loader name.",
+                                data: {enable_this_id: 'loader-name-delete-link',
+                                       hide_this_id: 'confirm-or-cancel-link-container'})
+%>
+
+<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-container"
+                                  class="instance-note confirm-or-cancel-delete-link pull-right hidden">
+                                  #{confirm_delete_link}
+#{cancel_delete_link}</div>)
+%>
+
+<div class="actions"> <%= delete_link.html_safe %> </div>
+<div class="width-100-percent"> <%= confirm_or_cancel_element.html_safe %> </div>
+<div id="delete-info-message-container" class="message-container"></div>
+<div id="delete-error-message-container" class="message-container"></div>
+
+<% end %>

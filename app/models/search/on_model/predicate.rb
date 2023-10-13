@@ -30,10 +30,12 @@ class Search::OnModel::Predicate
               :value,
               :has_scope,
               :scope_,
-              :order
+              :order,
+              :do_count_totals
 
   def initialize(parsed_request, field, value)
     @parsed_request = parsed_request
+    @do_count_totals = true
     @field = field
     @value = value
     Rails.logger.debug("rules class string: Search::#{@parsed_request.target_model}::FieldRule::RULES")
@@ -69,6 +71,17 @@ class Search::OnModel::Predicate
     @multiple_values = rule[:multiple_values] || false
     @predicate = build_predicate(rule)
     @tokenize = (rule[:tokenize] && !@is_null) || false
+    check_do_count_totals(rule)
+  end
+
+  # Allow for an explicit false value, otherwise default to true
+  def check_do_count_totals(rule)
+    Rails.logger.debug("check_do_count_totals for rule: #{rule}")
+    if rule[:do_count_totals] == false
+      @do_count_totals = false
+    else
+      @do_count_totals = true
+    end
   end
 
   def apply_scope

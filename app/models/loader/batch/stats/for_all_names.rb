@@ -22,6 +22,7 @@ class Loader::Batch::Stats::ForAllNames
   def initialize(name_string, batch_id)
     @name_string = name_string.downcase.gsub(/\*/, "%")
     @batch_id = batch_id
+    core_search
     @report = {}
   end
 
@@ -37,19 +38,19 @@ class Loader::Batch::Stats::ForAllNames
     @report[:lock] = { status: lock_status }
     @report[:record_types] = record_types
     @report[:no_further_processing_by_record_type] =
-      NoFurtherProcessingByRecordType.new(core_search).report
+      NoFurtherProcessingByRecordType.new(@core_search).report
   end
 
   def middle
-    @report[:matched] = Matched.new(core_search).report
-    @report[:unmatched] = Unmatched.new(core_search).report
+    @report[:matched] = Matched.new(@core_search).report
+    @report[:unmatched] = Unmatched.new(@core_search).report
   end
 
   def end_part
-    @report[:matched_with_decision] = MatchedWithDecision.new(core_search)
+    @report[:matched_with_decision] = MatchedWithDecision.new(@core_search)
                                                          .report
-    @report[:instances] = Instances.new(core_search).report
-    @report[:instances_breakdown] = InstancesBreakdown.new(core_search).report
+    @report[:instances] = Instances.new(@core_search).report
+    @report[:instances_breakdown] = InstancesBreakdown.new(@core_search).report
   end
 
   def search
@@ -68,6 +69,11 @@ class Loader::Batch::Stats::ForAllNames
   end
 
   def core_search
+    new_core_search
+  end
+
+  def old_core_search
+    @core_search = 
     if @name_string.match(/\Afamily:/i)
       family_string = @name_string.sub(/\Afamily: */i, "")
       Loader::Name.family_string_search(family_string)
@@ -80,8 +86,12 @@ class Loader::Batch::Stats::ForAllNames
     end
   end
 
+  def new_core_search
+    @core_search = Loader::Name::BulkSearch.new(@name_string, @batch_id).search
+  end
+
   def names_and_synonyms_count
-    core_search.count
+    @core_search.count
   end
 
   def lock_status
@@ -89,27 +99,27 @@ class Loader::Batch::Stats::ForAllNames
   end
 
   def accepteds
-    core_search.where("record_type = 'accepted'").count
+    @core_search.where("record_type = 'accepted'").count
   end
 
   def excludeds
-    core_search.where("record_type = 'excluded'").count
+    @core_search.where("record_type = 'excluded'").count
   end
 
   def synonyms
-    core_search.where("record_type = 'synonym'").count
+    @core_search.where("record_type = 'synonym'").count
   end
 
   def misapplieds
-    core_search.where("record_type = 'misapplied'").count
+    @core_search.where("record_type = 'misapplied'").count
   end
 
   def headings
-    core_search.where("record_type = 'heading'").count
+    @core_search.where("record_type = 'heading'").count
   end
 
   def none_of_the_aboves
-    core_search.where("record_type not in " +
+    @core_search.where("record_type not in " +
                       " ('accepted','excluded','synonym','misapplied'," +
                       "'heading')")
                .count

@@ -18,11 +18,12 @@
 #
 # Build where clauses for model searches.
 class Search::OnModel::WhereClauses
-  attr_reader :sql
+  attr_reader :sql, :do_count_totals
 
   def initialize(parsed_request, incoming_sql)
     @parsed_request = parsed_request
     @sql = incoming_sql
+    @do_count_totals = true
     build_sql
   end
 
@@ -59,6 +60,7 @@ class Search::OnModel::WhereClauses
       rule = Search::OnModel::Predicate.new(@parsed_request,
                                             field_or_default,
                                             value)
+      @do_count_totals = false if rule.do_count_totals == false
       apply_rule(rule)
       apply_order(rule)
     end

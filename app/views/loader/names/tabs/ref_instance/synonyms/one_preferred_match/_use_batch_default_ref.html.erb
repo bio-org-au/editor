@@ -1,7 +1,7 @@
 
   <% if @loader_name.parent.preferred_match.instance_choice_confirmed %>
     Parent's instance choice confirmed:
-    <%= render partial: 'loader/names/tabs/ref_instance/accepted_names/show_current_choice_brief', locals: {match: @loader_name.parent.preferred_match} %>
+    <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/show_current_choice_brief', locals: {match: @loader_name.parent.preferred_match} %>
   <% end %>
  <br><br>
   <% if @loader_name.parent.preferred_match.standalone_instance_id.present? %>
@@ -26,7 +26,6 @@
                 title: "Show the instance",
                 class: 'blue') %>
   <%= divider %>
-  <h5>Undo</h5>
   <%= render partial:
     'loader/names/tabs/ref_instance/synonyms/rollback_ref_instance',
     locals: {match: @loader_name.preferred_match} %>

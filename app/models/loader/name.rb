@@ -35,6 +35,7 @@ class Loader::Name < ActiveRecord::Base
   scope :avoids_id, ->(avoid_id) { where("loader_name.id != ?", avoid_id) }
 
   validates :record_type, presence: true
+  validate :validate_family_record
 
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
   alias_attribute :batch, :loader_batch
@@ -235,6 +236,10 @@ class Loader::Name < ActiveRecord::Base
     record_type == "heading"
   end
 
+  def note?
+    record_type == "note"
+  end
+
   def excluded?
     record_type == "excluded"
   end
@@ -317,10 +322,38 @@ class Loader::Name < ActiveRecord::Base
                         ns, ns, ns, ns, ns, ns])
   end
 
-  # This is used in bulk jobs when the user wants to process names in a family.
+  def self.simple_name_search(name_string)
+    self.bulk_operations_search(name_string)
+  end
+
+  # This is used in bulk jobs
   def self.family_string_search(family_string)
     fam = family_string.downcase.gsub(/\*/, "%")
     Loader::Name.where(["lower(family) like lower(?) ", fam])
+  end
+
+  # This is used in bulk jobs
+  def self.acc_string_search(acc_string)
+    name = acc_string.downcase.gsub(/\*/, "%")
+    Loader::Name.where(["(record_type = 'accepted' and lower(simple_name) like lower(?))  or
+                        (exists (select null from loader_name parent 
+                                  where parent.id = loader_name.parent_id
+                                    and parent.record_type = 'accepted'
+                                    and lower(parent.simple_name) like lower(?)))", name, name])
+  end
+
+  # This is used in bulk jobs 
+  def self.exc_string_search(exc_string)
+    name = exc_string.downcase.gsub(/\*/, "%")
+    Loader::Name.where(["(record_type = 'excluded' and lower(simple_name) like lower(?))  or
+                        (exists (select null from loader_name parent 
+                                  where parent.id = loader_name.parent_id
+                                    and parent.record_type = 'excluded'
+                                    and lower(parent.simple_name) like lower(?)))", name, name])
+  end
+
+  def self.accepted_or_excluded_search
+    Loader::Name.where("record_type in ('accepted','excluded')")
   end
 
   def self.create(params, username)
@@ -414,7 +447,15 @@ class Loader::Name < ActiveRecord::Base
   def misapp_html
     if misapp? && original_text.present?
       Rails::Html::FullSanitizer.new.sanitize(original_text)
-   end
-
+    end
   end
+
+  def validate_family_record
+    return if rank.blank?
+    return unless rank.downcase == 'family'
+    unless simple_name == family
+      errors.add(:simple_name, "must match family name for a family")
+    end
+  end
+
 end

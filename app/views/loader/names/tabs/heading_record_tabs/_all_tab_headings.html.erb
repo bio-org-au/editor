@@ -1,0 +1,38 @@
+<ul class="nav nav-tabs">
+  <%= render partial: 'loader/names/tabs/tab',
+             locals: {first: true,
+                      last: false,
+                      this_tab: 'tab_details', 
+                      link_text: 'Details<br/>&nbsp;'.html_safe, 
+                      link_id: 'loader-name-details-tab', 
+                      link_title: 'View a summary',
+                      tab_index: @tab_index,
+                      prev_tab: 'loader-names-details-tab', 
+                      next_tab: 'loader-names-details-tab' } %> 
+
+  <% if can? 'loader/names', 'update' %>
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_edit', 
+                                      link_text: 'Edit <br/> Raw'.html_safe, 
+                                      link_id: 'loader-name-edit-tab', 
+                                      link_title: 'Edit Loader Name.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-details-tab', 
+                                      next_tab: 'loader-name-matched-name-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: true,
+                                      this_tab: 'tab_delete_raw', 
+                                      link_text: 'Delete <br/> Raw'.html_safe, 
+                                      link_id: 'loader-name-delete-raw-tab', 
+                                      link_title: 'Delete raw loader name record.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-matched-name-tab', 
+                                      next_tab: 'loader-name-create-syn-tab'} %> 
+
+  <% end %>
+
+</ul>
+

@@ -1,5 +1,7 @@
       <% if @search.executed_query.try('summary').present? %>
         <%= @search.executed_query.summary %>
+      <% elsif !@search.executed_query.do_count_totals %>
+        Not counting totals
       <% elsif @search.executed_query.count == 0 %>
         <% records_found = false %>
         No records found. 

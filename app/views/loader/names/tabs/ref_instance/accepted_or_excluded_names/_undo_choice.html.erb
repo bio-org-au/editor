@@ -1,0 +1,18 @@
+<% if match.drafted %>
+  No undo - instance has been drafted to taxonomy
+<% elsif match.manually_drafted %>
+  No undo - instance has been manually drafted to taxonomy
+<% else %>
+
+  <% path = 'loader/names/tabs/ref_instance/accepted_or_excluded_names/undo_choice' %>
+  <% if match.standalone_instance_id.blank? %>
+    <%= render partial: "#{path}/no_standalone_instance_created_or_chosen", locals: {match: match} %>
+  <% else %>
+    <% if match.standalone_instance_created %>
+      <%= render partial: "#{path}/draft_already_created", locals: {match: match} %>
+    <% elsif match.standalone_instance_found == true %>
+      <%= render partial: "#{path}/existing_instance_chosen", locals: {match: match} %>
+    <% end %>
+  <% end %>
+
+<% end %>

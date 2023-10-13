@@ -1,4 +1,9 @@
-<% if match.relationship_instance_found %>
+<% if @loader_name.parent&.preferred_match&.drafted %>
+  Parent record has been drafted - no undo options from here.
+<% elsif @loader_name.parent&.preferred_match&.manually_drafted %>
+  Parent record has been manually drafted - no undo options from here.
+<% elsif match.relationship_instance_found %>
+    <h5>Undo</h5>
 
     <%= form_with(url: loader_name_match_clear_relationship_instance_path(match.id),
                   role: 'form', remote: true, method: :patch) do |f| -%>
@@ -10,6 +15,7 @@
     <% end %>
 
 <% elsif match.relationship_instance_created %>
+    <h5>Undo</h5>
 
     <%= form_with(url: loader_name_match_clear_and_delete_relationship_instance_path(match.id),
                   role: 'form', remote: true, method: :patch) do |f| -%>

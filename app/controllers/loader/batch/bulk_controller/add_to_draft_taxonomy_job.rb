@@ -26,7 +26,8 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
     @authorising_user = authorising_user
     @working_draft = working_draft
     @job_number = job_number
-    @search = ::Loader::Name::BulkSearchAcceptedOrExcludedOnly.new(search_string, batch_id).search
+    accepted_or_excluded_only = true
+    @search = ::Loader::Name::BulkSearch.new(search_string, batch_id, accepted_or_excluded_only).search
   end
 
   def run

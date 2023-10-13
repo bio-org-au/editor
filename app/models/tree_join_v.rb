@@ -20,11 +20,39 @@
 class TreeJoinV < ActiveRecord::Base
   self.table_name = "tree_join_v"
   scope :draft, -> { where('not published') }
+  scope :accepted, -> { where('accepted_tree = true') }
+  scope :current, -> { where('tree_version_id = current_tree_version_id') }
 
   belongs_to :instance
   belongs_to :name
 
   def readonly?
     true
+  end
+
+  def self.name_in_synonymy_query(name_id)
+    TreeJoinV.accepted.current
+             .where(['instance_id in
+                        (select cited_by_id 
+                           from instance 
+                          where name_id = ?)', name_id])
+             .count
+  end
+
+  def self.name_in_synonymy?(name_id)
+    self.name_in_synonymy_query(name_id) > 0
+  end
+
+  def self.synonym_in_names_query(name_id)
+    TreeJoinV.accepted.current
+             .where(['instance_id in 
+                       (select id 
+                          from instance 
+                         where name_id = ?)', name_id])
+             .count
+  end
+
+  def self.synonym_in_names?(name_id)
+    self.synonym_in_names_query(name_id) > 0
   end
 end

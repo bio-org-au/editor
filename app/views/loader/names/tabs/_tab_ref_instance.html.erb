@@ -1,11 +1,11 @@
 <% increment_tab_index(0) %>
 <% case %>
 <% when @loader_name.accepted? %>
-    <%= render partial: 'loader/names/tabs/ref_instance/accepted_names/main' %>
+    <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/main' %>
 <% when @loader_name.synonym? %>
     <%= render partial: 'loader/names/tabs/ref_instance/synonyms/main' %>
 <% when @loader_name.excluded? %>
-    <%= render partial: 'loader/names/tabs/ref_instance/excluded_names/main' %>
+    <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/main' %>
 <% when @loader_name.misapp? %>
     <%= render partial: 'loader/names/tabs/ref_instance/misapps/main' %>
 <% else %>

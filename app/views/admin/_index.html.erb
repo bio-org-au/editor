@@ -1,11 +1,12 @@
+<div id="admin-page">
     <table  id="search-results-table" class="table table-condensed search-results" data-summary="Results of the latest search.">
     <tr><td colspan="99" width="80-percent">
         
-    <h2>Admin</h2>
-    <h3>Configuration</h3>
+    <h3>Admin</h3>
+    <h4>Configuration</h4>
 
 
-    <h4>Application environment</h4>
+    <h5>Application environment</h5>
     <table class="table table-condensed search-results width-100-percent">
 
     <tr><td class="width-40-percent min-width-10em">Rails.env</td><td> <%= Rails.env %> </td></tr>
@@ -29,7 +30,7 @@
     <tr><td colspan="2">&nbsp;</td></tr>
     </table>
 
-    <h4>Database environment</h4>
+    <h5>Database environment</h5>
     <table class="table table-condensed search-results width-100-percent">
       <tr><td class="width-40-percent min-width-10em" >Database</td><td> <%= Rails.configuration.database_configuration[Rails.env]["database"] %> </td></tr>
       <tr><td>Adapter</td><td> <%= Rails.configuration.database_configuration[Rails.env]["adapter"] %> </td></tr>
@@ -41,7 +42,7 @@
       <tr><td colspan="2">&nbsp;</td></tr>
     </table>
 
-    <h4>Rails timezone</h4>
+    <h5>Rails timezone</h5>
     <table class="table table-condensed search-results width-100-percent">
     <tr><td class="width-40-percent min-width-10em">Time.zone</td><td> <%= Time.zone %> </td></tr>
     <tr><td>Time.zone.now</td><td> <%= Time.zone.now %> </td></tr>
@@ -50,7 +51,7 @@
     <tr><td colspan="2">&nbsp;</td></tr>
     </table>
 
-    <h4>Rails configuration</h4>
+    <h5>Rails configuration</h5>
 
     <table class="table table-condensed search-results width-100-percent">
 
@@ -82,7 +83,7 @@
     </table>
 
 
-        <h4>LDAP</h4>
+        <h5>LDAP</h5>
     <table class="table table-condensed search-results width-100-percent">
 
     <tr><td class="width-40-percent min-width-10em" >ldap_host</td><td> <%= Rails.configuration.try(:ldap_host) %> </td></tr>
@@ -100,7 +101,7 @@
     <tr><td colspan="2">&nbsp;</td></tr>
     </table>
 
-    <h4>Services</h4>
+    <h5>Services</h5>
     <table class="table table-condensed search-results width-100-percent">
       <tr>
         <td class="text">services_clientside_root_url</td>
@@ -124,8 +125,6 @@
 
     <tr><td>nsl_host_and_port</td>
         <td> <%= Rails.configuration.try(:nsl_host_and_port) %> </td></tr>
-    <tr><td>search_address</td>
-        <td> <%= Rails.configuration.try(:search_address) %> </td></tr>
     <tr><td colspan="2">&nbsp;</td></tr>
 
     <tr><td class="width-40-percent min-width-10em" colspan="2"><strong>Services used in the editor</strong></td></tr>
@@ -154,7 +153,7 @@
     </table>
 
     
-    <h4>Mapper</h4>
+    <h5>Mapper</h5>
     <table class="table table-condensed search-results width-100-percent">
       <tr>
         <td class="width-40-percent min-width-10em" >
@@ -177,12 +176,12 @@
       </tr>
     </table>
 
-    <h4>Exception logging</h4>
+    <h5>Exception logging</h5>
     <table class="table table-condensed search-results width-100-percent">
     <tr><td>Test exception logging.</td><td><%= link_to editor_icon('bomb','',class: 'black fa-2x'), throw_path, title:"Throw a harmless exception" %></td></tr>
     </table>
 
-    <h4>ICN/ICZN Switches</h4>
+    <h5>ICN/ICZN Switches</h5>
     <table class="table table-condensed search-results width-100-percent">
     <tr><td class="width-40-percent min-width-10em">allow_name_changed_combination </td><td> <%= Rails.configuration.try(:allow_name_changed_combination) %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">allow_name_ex_author </td><td> <%= Rails.configuration.try(:allow_name_ex_author) %> </td></tr>
@@ -192,7 +191,7 @@
     <tr><td class="width-5-percent">&nbsp;</td></tr>
     </table>
 
-    <h4>Feature switches</h4>
+    <h5>Feature Flags</h5>
     <table class="table table-condensed search-results width-100-percent">
     <tr><td class="width-40-percent min-width-10em">orchids_aware </td><td> <%= Rails.configuration.try(:orchids_aware) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">allow_orchid_tree_operations </td><td> <%= Rails.configuration.try(:allow_orchid_tree_operations) || false %> </td></tr>
@@ -201,17 +200,16 @@
     <tr><td class="width-40-percent min-width-10em">profile_edit_aware </td><td> <%= Rails.configuration.try(:profile_edit_aware) || false %> </td></tr>
     </table>
     <br> <br>
-    <h4>Instance delete delay</h4>
+    <h5>Instance delete delay</h5>
     <table class="table table-condensed search-results width-100-percent">
     <tr><td class="width-40-percent min-width-10em">instance_delete_delay_seconds</td><td> <%= Rails.configuration.try(:instance_delete_delay_seconds) %> </td></tr>
     </table>
     <br>
-    <h4>Configuration file</h4>
+    <h5>Configuration file</h5>
     <table class="table table-condensed search-results width-100-percent">
     <tr><td class="width-40-percent min-width-10em">env_editor_config_file </td><td> <%= Rails.configuration.try(:env_editor_config_file) || '' %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">resolved_editor_config_file </td><td> <%= Rails.configuration.try(:resolved_editor_config_file) || '' %> </td></tr>
     </table>
     <br>
-  </div>
 </div>
 

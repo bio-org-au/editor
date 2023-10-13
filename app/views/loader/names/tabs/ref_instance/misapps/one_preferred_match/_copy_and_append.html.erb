@@ -1,7 +1,7 @@
 
   <% if @loader_name.parent.preferred_match.instance_choice_confirmed %>
     Parent's instance choice confirmed:
-    <%= render partial: 'loader/names/tabs/ref_instance/accepted_names/show_current_choice_brief',
+    <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/show_current_choice_brief',
     locals: {match: @loader_name.parent.preferred_match} %> <br><br>
   <% end %>
 

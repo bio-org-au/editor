@@ -9,5 +9,7 @@
 This synonym will therefore play no further part in the process, and there is no need to set a preferred match.
 <% when @loader_name.parent.preferred_match.copy_append_from_existing_use_batch_def_ref %>
   Parent choice is use an existing instance and append synonymy to it - nothing to do here until there is a preferred match.
+<% when @loader_name.parent.preferred_match.present? %>
+  Parent has a preferred match but no choice has been made. Nothing to do here until a parent choice is made.
 <% end %>
 

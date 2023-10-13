@@ -1,0 +1,30 @@
+<ul class="nav nav-tabs">
+Heading entry
+</ul>
+
+<% members = Loader::Name.where(family: @loader_name.simple_name).where(loader_batch_id: @loader_name.loader_batch_id).count - 1 %>
+<% if @loader_name.rank == 'family' %>
+  <%= render partial: 'detail_line', 
+             locals: {info: link_to("Members of #{@loader_name.family}",
+         search_path(query_target: "loader names",
+                     query_string: "family-id: #{@loader_name.id}",
+                     focus_id: "loader-name-#{@loader_name.id}"),
+                     title: 'Query family members',
+                     class: 'blue underline'), 
+                     label: "query family #{members} members"} %>
+<% end %>
+<br>
+
+<h5>Metadata</h5>
+<%= render partial: 'detail_line', locals: {info: @loader_name.id, label: 'ID'} %>
+<%= render partial: 'detail_line',
+      locals: {label: 'batch',
+               info: link_to(@loader_name.batch.name,
+                        search_path(
+                          query_target: 'loader batch',
+                          query_string: "id: #{@loader_name.batch.id}"),
+               title:"Query the loader batch",class:'blue')} %>
+
+<%= created_by_whom_and_when(@loader_name).html_safe %>
+<br>
+<%= updated_by_whom_and_when(@loader_name).html_safe %>

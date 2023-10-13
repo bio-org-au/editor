@@ -35,5 +35,6 @@ class Search::Loader::Name::FieldAbbrev
     "manually-created:" => "created-manually:",
     "cm:" => "created-manually:",
     "mc:" => "created-manually:",
+    "syn-match-in-tree:" => "syn-match-in-tree-taxon-mv:",
   }.freeze
 end

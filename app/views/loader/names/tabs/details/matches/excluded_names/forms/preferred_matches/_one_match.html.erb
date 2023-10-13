@@ -1,7 +1,8 @@
 
     <% disable_radio_button = !matching_name.has_primary_instance? ||
                               matching_name.duplicate? ||
-                              @loader_name.synonym_without_synonym_type? %>
+                              @loader_name.synonym_without_synonym_type? ||
+                              !@loader_name.can_clear_matches? %>
 
     <% if disable_radio_button then %>
       <% reason_to_disable = 
@@ -21,11 +22,14 @@
   | <%= link_to("#{sanitize(ShardConfig.name_space)} Editor #{editor_icon('binoculars')}".html_safe,
               search_path(query_string: "id: #{matching_name.id} show-instances:",
                           query_target: 'names',
-                          focus_id: "Instance-#{matching_name.id}"),
+                          focus_id: "Instance-#{matching_name.primary_instances.first.id}"),
                           tabindex: increment_tab_index,
                           title: "Search for #{matching_name.full_name}",
                           class: 'blue') %>
 
+    <% if TreeJoinV.name_in_synonymy?(matching_name.id) %>
+      <span class="red">Warning: name is in synonymy in the accepted tree</span>
+    <% end %>
       <br>
     <% matching_name.primary_instances.each do |p_i| %>
       <span class="brown"><%= p_i.instance_type.name %></span>&nbsp;

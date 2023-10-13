@@ -311,3 +311,10 @@ span.heading {
   font-size: 13pt
 }
 
+span.loader_name.note,
+span.loader_name.note:focus,
+span.note:focus,
+span.note {
+  background-color: yellow;
+  color: black;
+}

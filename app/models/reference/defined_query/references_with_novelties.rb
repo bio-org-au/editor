@@ -26,10 +26,12 @@ class Reference::DefinedQuery::ReferencesWithNovelties
               :relation,
               :count,
               :show_csv,
-              :total
+              :total,
+              :do_count_totals
 
   def initialize(parsed_request)
     run_query(parsed_request)
+    @do_count_totals = true
   end
 
   def debug(s)

@@ -26,11 +26,13 @@ class Reference::DefinedQuery::ReferencesNamesFullSynonymy
               :relation,
               :count,
               :show_csv,
-              :total
+              :total,
+              :do_count_totals
 
   TAG = "Reference::DefinedQuery::ReferencesNamesFullSynonymy"
   def initialize(parsed_request)
     @parsed_request = parsed_request
+    @do_count_totals = true
     run_query
   end
 
