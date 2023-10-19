@@ -318,3 +318,23 @@ span.note {
   background-color: yellow;
   color: black;
 }
+
+a.inline {
+  display: inline;
+}
+
+a.display-only-when-showing-details {
+  display: none;
+}
+
+tr.showing-details a.display-only-when-showing-details {
+  display: inline;
+}
+
+div.gap-to-plus {
+  display: inline-block;
+  width: 1em;
+}
+
+
+

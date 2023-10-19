@@ -37,8 +37,10 @@ class Loader::NamesController < ApplicationController
   alias tab show
 
   def new
+    @anchor =  Loader::Name.find(params[:loader_name_id]) unless params[:loader_name_id].blank?
     @loader_name = ::Loader::Name.new
     @loader_name.simple_name = nil
+    @loader_name.seq = @anchor.seq + 1 unless @anchor.blank?
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
     respond_to do |format|
@@ -94,6 +96,10 @@ class Loader::NamesController < ApplicationController
       format.html { redirect_to new_search_path }
       format.js {}
     end
+  end
+
+  def new_row_here
+    @random_id = (Random.new.rand * 10_000_000_000).to_i
   end
 
   def update
@@ -163,6 +169,7 @@ class Loader::NamesController < ApplicationController
   end
 
   def create
+    raise 'Please set a default batch' if session[:default_loader_batch_name].blank?
     @loader_name = Loader::Name.create(loader_name_params, current_user.username)
     render "create"
   rescue StandardError => e

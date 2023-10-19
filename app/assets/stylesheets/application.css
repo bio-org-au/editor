@@ -32,6 +32,7 @@
  *= require layout-2021
  *= require batch-loader
  *= require admin
+ *= require jira
  *= require_self
  */
 

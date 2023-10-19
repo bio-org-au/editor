@@ -45,7 +45,7 @@
   You cannot delete this instance.
   <br>
   <% if @instance.in_apc? %>
-    Instance is in APC.
+    Instance is in <%= ShardConfig.classification_tree_key %>.
     <br>
   <% end %>
   <% if @instance.instance_notes.size > 0 %>

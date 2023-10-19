@@ -22,13 +22,15 @@
   | <%= link_to("#{sanitize(ShardConfig.name_space)} Editor #{editor_icon('binoculars')}".html_safe,
               search_path(query_string: "id: #{matching_name.id} show-instances:",
                           query_target: 'names',
-                          focus_id: "Instance-#{matching_name.id}"),
+                          focus_id: "Name-#{matching_name.id}"),
                           tabindex: increment_tab_index,
                           title: "Search for #{matching_name.full_name}",
                           class: 'blue') %>
 
-    <% if TreeJoinV.name_in_synonymy?(matching_name.id) %>
-      <span class="red">Warning: name is in synonymy in the accepted tree</span>
+    <% unless @loader_name.preferred_match&.drafted? %>
+      <% if Loader::Name::NameMatchInSynonymy.new(matching_name.id).result %>
+        <span class="red">Warning: name is in synonymy in the current, accepted tree</span>
+      <% end %>
     <% end %>
       <br>
     <% matching_name.primary_instances.each do |p_i| %>

@@ -733,19 +733,29 @@ having count(*)                     >  1
        do_count_totals: false},
     "name-match-in-syn:" => { where_clause: " record_type in ('accepted', 'excluded')
        and exists (
-        select null
-          from loader_name_match
-        where loader_name.id  = loader_name_match.loader_name_id
-          and exists (
-            select null
-              from tree_join_v
-            where accepted_tree
-              and tree_version_id = current_tree_version_id
-              and instance_id in (
-                select cited_by_id
-                  from instance
-     where name_id         = loader_name_match.name_id)))",
-       order: "seq",
-       do_count_totals: false },
+
+       select null
+       from loader_name_match
+       join name pref_name
+       on loader_name_match.name_id = pref_name.id
+       join instance pref_name_instance
+       on pref_name_instance.name_id = loader_name_match.name_id
+       join instance_type pni_type
+       on pref_name_instance.instance_type_id = pni_type.id
+       join tree_join_v
+       on pref_name_instance.cited_by_id = tree_join_v.instance_id
+       join name name_on_tree
+       on tree_join_v.name_id = name_on_tree.id
+       join instance tree_name_instance
+       on tree_name_instance.name_id = name_on_tree.id
+ WHERE (1=1)
+   and loader_name.id  = loader_name_match.loader_name_id
+   and not loader_name_match.drafted
+   and not loader_name_match.manually_drafted
+   and tree_join_v.tree_version_id = tree_join_v.current_tree_version_id
+   and pni_type.synonym
+   and not pni_type.pro_parte
+     )",
+       order: "seq" },
   }.freeze
 end

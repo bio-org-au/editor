@@ -1,5 +1,5 @@
 
-<% title_text = "View this issue in JIRA. Opens in a new tab or window." %>
+<% title_text = "view this issue in JIRA. Opens in a new tab or window." %>
 <div id="search-results" 
      class="col-xs-12 col-sm-12 col-md-12 col-lg-12 
      nothing-selected stylish-scrollbar">
@@ -8,6 +8,17 @@
        col-lg-12 search-results-inner">
     <h3><%= the_year %> Changes</h3>
     <p>This week in the Editor...</p>
+    <% unless Rails.configuration.try('jira_key').nil? %>
+      <p>
+      <%= link_to "Changes #{params[:year]} showing Jira statuses", history_for_year_path(params[:year],'true'), title: 'Changes history', class: 'blue with-underline' %>
+      (Can be slower when not cached.)
+      </p>
+      <% if Rails.env == "development" %>
+        <p><b>
+        Developer note: caching is switched off in development by default.
+        </b></p>
+      <% end %>
+    <% end %>
     <% if defined? the_note %>
       <p><%= the_note %></p>
     <% end %>
@@ -16,8 +27,9 @@
     <% unless the_list.blank? %>
 
     <ul class="list-group">  
-     <% the_list.each do |val| %>
+     <% the_list.each_with_index do |val, ndx| %>
        <% if val.has_key?(:release) %>
+       <% down_to_first_release = true %>
        <li class="list-group-item bglavender">
         <span>
           <%= val[:date] %>
@@ -32,13 +44,15 @@
           <%= val[:jira_project]||'NSL' %>-<%= val[:jira_id] %>:&nbsp;
         <% end %>
         <%= (val[:description]).html_safe %>
+        <% jira_status = 'Unknown' %>
           <% if val[:jira_id].present? %>
-           <span class="badge">
+            <% jira_status = Jira.new('NSL-'+val[:jira_id]).status if params[:show_status] == 'true' %>
+            <span class="badge jira <%= jira_status.downcase.gsub(/ /,'-') %>">
              <%= link_to "(#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}) 
                #{editor_icon('external-link fa-lg')}".html_safe, 
              "https://ibis-cloud.atlassian.net/browse/#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}",
                class:"white hover-white",
-               title: "#{title_text}",
+               title: "Status: #{jira_status} - #{title_text}",
                target: "other" %>
              
            </span>

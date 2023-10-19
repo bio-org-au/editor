@@ -27,8 +27,10 @@
                           title: "Search for #{matching_name.full_name}",
                           class: 'blue') %>
 
-    <% if TreeJoinV.name_in_synonymy?(matching_name.id) %>
-      <span class="red">Warning: name is in synonymy in the accepted tree</span>
+    <% unless @loader_name.preferred_match&.drafted? %>
+      <% if Loader::Name::NameMatchInSynonymy.new(matching_name.id).result %>
+        <span class="red">Warning: name is in synonymy in the current, accepted tree</span>
+      <% end %>
     <% end %>
       <br>
     <% matching_name.primary_instances.each do |p_i| %>

@@ -20,6 +20,11 @@
 
     <br>
     <div class="form-group">
+      <label for="seq">Seq*</label>
+      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
+    </div>
+
+    <div class="form-group">
       <label for="simple_name">Simple Name*</label>
       <%= f.text_field :simple_name, class: 'form-control give-me-focus', required: true, title: "Enter simple name - the value of simple name, as loaded is retained in simple name as loaded", tabindex: increment_tab_index, autofocus: true %>
       <% unless loader_name.simple_name == loader_name.simple_name_as_loaded %>
@@ -62,11 +67,6 @@
     <div class="form-group">
       <label for="comment">Comment</label>
       <%= f.text_area :comment, class: 'form-control', title: "Enter comment", tabindex: increment_tab_index, autofocus: true %>
-    </div>
-
-    <div class="form-group">
-      <label for="seq">Seq*</label>
-      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
     </div>
 
     <div class="form-group">

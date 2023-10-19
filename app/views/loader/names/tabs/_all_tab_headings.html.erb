@@ -15,7 +15,7 @@
   <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
                                       last: false,
                                       this_tab: 'tab_edit', 
-                                      link_text: 'Edit <br/> Raw'.html_safe, 
+                                      link_text: 'Edit <br/> &nbsp;'.html_safe, 
                                       link_id: 'loader-name-edit-tab', 
                                       link_title: 'Edit Loader Name.',
                                       tab_index: @tab_index,
@@ -30,14 +30,14 @@
                                       link_title: 'Edit Loader Name Match.',
                                       tab_index: @tab_index,
                                       prev_tab: 'loader-name-edit-tab', 
-                                      next_tab: 'loader-name-delete-raw-tab'} %> 
+                                      next_tab: 'loader-name-delete-tab'} %> 
 
   <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
                                       last: true,
-                                      this_tab: 'tab_delete_raw', 
-                                      link_text: 'Delete <br/> Raw'.html_safe, 
-                                      link_id: 'loader-name-delete-raw-tab', 
-                                      link_title: 'Delete raw loader name record.',
+                                      this_tab: 'tab_delete', 
+                                      link_text: 'Delete <br/> &nbsp;'.html_safe, 
+                                      link_id: 'loader-name-delete-tab', 
+                                      link_title: 'Delete loader name record.',
                                       tab_index: @tab_index,
                                       prev_tab: 'loader-name-matched-name-tab', 
                                       next_tab: 'loader-name-create-syn-tab'} %> 
@@ -49,7 +49,7 @@
                                       link_id: 'loader-name-create-syn-tab', 
                                       link_title: 'Create loader name synonym record.',
                                       tab_index: @tab_index,
-                                      prev_tab: 'loader-name-delete-raw-tab', 
+                                      prev_tab: 'loader-name-delete-tab', 
                                       next_tab: 'loader-name-create-misapp-tab'} %> 
 
   <%= render partial: 'loader/names/tabs/tab', locals: {first: false,

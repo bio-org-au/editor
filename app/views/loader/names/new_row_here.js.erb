@@ -1,0 +1,43 @@
+
+function addRow(at_index, for_id) {
+  // Get a reference to the table
+  //alert('for_id: ' + for_id);
+  let tableRef = document.getElementById('search-results-table');
+  let newRow = tableRef.insertRow(at_index + 1);
+  $(newRow).attr('id', 'new-loader-name-<%= @random_id %>');
+  $(newRow).addClass('new-record').addClass('new-loader-name');
+  //$(newRow).addClass('search-result');
+  $(newRow).attr('data-record-type', 'loader-name');
+  $(newRow).attr('data-record-id', for_id.toString());
+  $(newRow).attr('data-edit-url', '<%= loader_name_new_with_random_id_path(@random_id) %>')
+  $(newRow).attr('tabindex', '3000');
+
+  // Insert a cell in the row at index 0
+  let firstCell = newRow.insertCell(0);
+  $(firstCell).addClass('nsl-tiny-icon-container').addClass('takes-focus width-1-percent');
+
+  let secondCell = newRow.insertCell(1);
+  $(secondCell).addClass('text').addClass('takes-focus').addClass('name');
+  $(secondCell).addClass('main-content').addClass('give-me-focus');
+  $(secondCell).addClass('min-width-40-percent').addClass('max-width-100-percent').addClass('width-90-percent');
+  // Append a text node to the cell
+  let label = document.createTextNode('New Loader Name Record');
+  let link = document.createElement('a');
+  $(link).addClass('show-details-link');
+  $(link).attr('title','New loader name record. Select to see details');
+  $(link).attr('tabindex','1000');
+  $(link).attr('data-remote','true');
+  //$(link).attr('href', "<%#= loader_name_new_with_random_id_path(@random_id,tabIndex: 5000) %>"), 
+  let href = "<%= loader_name_new_with_random_id_and_start_id_path(@random_id,tabIndex: 5000, loader_name_id: 7007007007007007) %>";
+  //let href = "<%#= loader_name_new_with_random_id_path(@random_id,tabIndex: 5000) %>";
+  href = href.replace(/7007007007007007/,for_id);
+  $(link).attr('href', href);
+  link.appendChild(label)
+  secondCell.appendChild(link);
+}
+
+
+addRow($('#search-result-<%= params[:id] %>').closest('TR').index(), <%= params[:id] %>);
+
+
+

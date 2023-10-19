@@ -1,4 +1,4 @@
-
+CCCC
   <% if @loader_name.parent.preferred_match.instance_choice_confirmed %>
     Parent's instance choice confirmed:
     <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/show_current_choice_brief', locals: {match: @loader_name.parent.preferred_match} %> <br><br>
@@ -26,4 +26,7 @@ Parent is using batch default reference to create a new instance with synonymy c
                 title: "Show the instance",
                 class: 'blue') %>
 
+  <%= divider %>
+  <%= render partial: 'loader/names/tabs/ref_instance/synonyms/rollback_ref_instance',
+    locals: {match: @loader_name.preferred_match} %>
   <% end %>

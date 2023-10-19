@@ -4,7 +4,9 @@
         <span class='apc small strong' title="Excluded from APC">APC</span>
       <% else %>
         <%= editor_icon('check','',class: 'apc') %>
-        <span class='apc small strong' title="In APC">APC</span>
+        <span class='apc small strong' title="In taxonomy">
+          <%= ShardConfig.classification_tree_key %>
+        </span>
       <% end %>
       </span>
 

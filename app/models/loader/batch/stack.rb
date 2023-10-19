@@ -19,7 +19,7 @@
 # Loader Batch Stack query view
 class Loader::Batch::Stack < ActiveRecord::Base
   strip_attributes
-  self.table_name = "batch_stack_vw"
+  self.table_name = "batch_stack_v"
 
   def fresh?
     created_at > 2.hour.ago

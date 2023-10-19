@@ -1,3 +1,59 @@
+- :date: 13-Oct-2023
+  :jira_id: '4669'
+  :description: |- 
+    Loader: Give a more understandable error message if user tries to create a loader_name record without setting a default batch
+- :date: 13-Oct-2023
+  :jira_id: '4713'
+  :description: |- 
+    Loader: Correct the query used on the loader_name detail tab to detect and warn about name-match-in-synonymy cases.
+- :date: 12-Oct-2023
+  :jira_id: '4641'
+  :description: |- 
+    Loader: New, revised and faster query for <code>name-match-in-syn</code> which excludes misapplications and pro parte synonyms from the results.
+- :date: 12-Oct-2023
+  :jira_id: ''
+  :description: |- 
+    Loader: Fix detail tab not displaying for loader name records with no preferred match - for accepted names, and also for excluded names
+- :date: 11-Oct-2023
+  :jira_id: '4660'
+  :description: |- 
+    Loader: Adjust Reference Instance tab wording as requested
+- :date: 10-Oct-2023
+  :jira_id: '4709'
+  :description: |- 
+    Loader: Correctly record context of name review comments when created - so we know if the comment was for a distribution, synonym, etc
+- :date: 10-Oct-2023
+  :jira_id: '4654'
+  :description: |- 
+    Change History: Adjust colors to show different Jira statuses more clearly
+- :date: 09-Oct-2023
+  :jira_id: '4654'
+  :description: |- 
+    Change History: Set up change history page to report the status of jiras
+- :date: 05-Oct-2023
+  :jira_id: '4670'
+  :description: |- 
+    Loader: Allow user to insert new top-level record (ie. accepted or excluded record) at a defined point
+- :date: 05-Oct-2023
+  :jira_id: '4661'
+  :description: |- 
+    Loader: Make conditional text about undo options for synonyms/misapps of drafted names, with copy-and-append chosen, consistent with other choices
+- :date: 05-Oct-2023
+  :jira_id: '4641'
+  :description: |- 
+    Loader: Adjust <code>name-match-in-syn</code> and associated detail logic to ignore drafted and manually drafted matched records
+- :date: 29-Sep-2023
+  :jira_id: '4688'
+  :description: |- 
+    Loader: Order batch stack by batch create date
+- :date: 29-Sep-2023
+  :jira_id: '4682'
+  :description: |- 
+    Taxonomy: Replace hard-coded reference to 'APC' with appropriate term for the local taxonomy on the instance details tab
+- :date: 29-Sep-2023
+  :jira_id: '4682'
+  :description: |- 
+    Taxonomy: Replace hard-coded reference to 'APC' with appropriate term for the local taxonomy when reporting an instance is not eligible for deletion.
 - :date: 28-Sep-2023
   :jira_id: '4671'
   :description: |- 

@@ -23,4 +23,7 @@ Parent is using batch default reference to create a new instance with synonymy c
                 tabindex: increment_tab_index,
                 title: "Show the instance",
                 class: 'blue') %>
+  <%= divider %>
+  <%= render partial: 'loader/names/tabs/ref_instance/synonyms/rollback_ref_instance',
+    locals: {match: @loader_name.preferred_match} %>
   <% end %>
