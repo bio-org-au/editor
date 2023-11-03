@@ -15,9 +15,9 @@
     <% if @loader_name.record_type == 'heading' %>
       <%= render partial: 'loader/names/tabs/heading_record_tabs/all_tab_headings' %>
       <%= render partial: "loader/names/tabs/heading_record_tabs/#{@tab}" %>
-    <% elsif @loader_name.record_type == 'note' %>
-      <%= render partial: 'loader/names/tabs/note_record_tabs/all_tab_headings' %>
-      <%= render partial: "loader/names/tabs/note_record_tabs/#{@tab}" %>
+    <% elsif @loader_name.record_type == 'in-batch-note' %>
+      <%= render partial: 'loader/names/tabs/in_batch_note_record_tabs/all_tab_headings' %>
+      <%= render partial: "loader/names/tabs/in_batch_note_record_tabs/#{@tab}" %>
     <% else %>
       <%= render partial: 'loader/names/tabs/all_tab_headings' %>
       <%= render partial: "loader/names/tabs/#{@tab}" %>

@@ -7,7 +7,7 @@ params component: <%= params[:component] %>
  name_review_comment = @loader_name.name_review_comments.new(
         batch_reviewer_id: period.reviewer_id(@current_user.username),
         loader_name_id: @loader_name.id,
-        context:  "#{params[:component]}",
+        context:  "#{params[:component].gsub(/ /,'-')}",
         review_period_id: period.id)
  %>
 

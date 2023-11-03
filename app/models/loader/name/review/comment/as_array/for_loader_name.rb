@@ -27,16 +27,13 @@
 class Loader::Name::Review::Comment::AsArray::ForLoaderName < Array
   attr_reader :results
 
-  def initialize(loader_name, limit = 1000, offset = 0)
+  def initialize(loader_name, context = '%')
     debug("init #{loader_name.simple_name}")
     @results = []
     @already_shown = []
     @loader_name = loader_name
-    @count = 0
-    @limit = limit
     @sort_by = sort_by
-    @offset = offset || 0
-    @limit += @offset if @limit < @offset
+    @context = context
     find_comments
   end
 
@@ -47,28 +44,22 @@ class Loader::Name::Review::Comment::AsArray::ForLoaderName < Array
 
   def find_comments
     debug "find_comments"
-    @count = 1
     find_comments_for_loader_name
-    @limited = true if @count > @limit
     @results
   end
 
   def built_query
     query = @loader_name
             .name_review_comments
+            .where(["lower(name_review_comment.context) like lower(?)", @context])
             .includes(:batch_reviewer)
-            .order(:created_at)
+            .includes(:name_review_comment_type)
+            .order('name_review_comment_type.name, name_review_comment.created_at')
   end
 
   def find_comments_for_loader_name
     built_query.each do |review_comment|
-      if @count < @offset
-        @count += 1
-      elsif @count < @limit
-        @count += 1
-        @results.push(review_comment)
-      end
-      break if @count > @limit
+      @results.push(review_comment)
     end
   end
 end

@@ -35,8 +35,8 @@ class HistoryActionsY2016Test < ActionController::TestCase
         xhr: true)
     assert_response :success
     assert_select "h3",
-                  /\b2016 Changes\b/,
-                  "Should find heading for 2016 Changes"
+                  /\bChanges 2016\b/,
+                  "Should find heading for Changes 2016"
     assert_select "body", /\b24-Oct-2016/,
                   "Should find 24-Oct-2016 a"
     assert_select "body", /24-Oct.2016/

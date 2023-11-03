@@ -236,8 +236,8 @@ class Loader::Name < ActiveRecord::Base
     record_type == "heading"
   end
 
-  def note?
-    record_type == "note"
+  def in_batch_note?
+    record_type == "in-batch-note"
   end
 
   def excluded?

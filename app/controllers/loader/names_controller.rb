@@ -40,6 +40,7 @@ class Loader::NamesController < ApplicationController
     @anchor =  Loader::Name.find(params[:loader_name_id]) unless params[:loader_name_id].blank?
     @loader_name = ::Loader::Name.new
     @loader_name.simple_name = nil
+    @loader_name.full_name = nil
     @loader_name.seq = @anchor.seq + 1 unless @anchor.blank?
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
@@ -69,13 +70,13 @@ class Loader::NamesController < ApplicationController
     end
   end
 
-  def new_note
+  def new_in_batch_note
     @loader_name = ::Loader::Name.new
-    @loader_name.simple_name = 'not applicable'
-    @loader_name.family = 'not applicable'
+    @loader_name.simple_name = 'In-Batch-Note'
+    @loader_name.family = 'In-Batch-Note'
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    @loader_name.record_type = 'note'
+    @loader_name.record_type = 'in-batch-note'
     respond_to do |format|
       format.html {}
       format.js {}
@@ -90,7 +91,7 @@ class Loader::NamesController < ApplicationController
     end
   end
 
-  def new_note_row
+  def new_in_batch_note_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     respond_to do |format|
       format.html { redirect_to new_search_path }
@@ -129,7 +130,6 @@ class Loader::NamesController < ApplicationController
     stop_if_nothing_changed
     return "No change" if params[:loader_name].blank?
 
-    # remove_unwanted_orchid_names
     create_preferred_match unless clearing_all_preferred_matches?
   end
 
@@ -160,7 +160,7 @@ class Loader::NamesController < ApplicationController
   # The aim of clear is to remove all chosen matches
   # i.e. don't set a preferred match
   def clearing_all_preferred_matches?
-    false # orchid_params[:name_id].to_i < 0
+    false # orc hid_params[:name_id].to_i < 0
   end
 
   def parent_suggestions
@@ -205,7 +205,7 @@ class Loader::NamesController < ApplicationController
                                         :doubtful, :family, :excluded,
                                         :no_further_processing, :notes,
                                         :distribution, :loader_batch_id,
-                                        :rank)
+                                        :rank, :remark_to_reviewers)
   end
 
   def set_tab

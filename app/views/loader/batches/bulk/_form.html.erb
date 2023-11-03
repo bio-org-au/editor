@@ -67,8 +67,8 @@ Wildcards are allowed but are <b>not</b> added automatically.<br>
 
 <div id="bulk-ops-stats-info-container" class="message-container"></div>
 <div id="bulk-ops-stats-error-container" class="error-container message-container"></div>
-<div id="global-tab-orchid-batch-status-info-message-container" class="message-container"></div>
-<div id="global-tab-orchid-batch-status-error-message-container" class="error-container message-container"></div>
+<div id="global-tab-loader-batch-status-info-message-container" class="message-container"></div>
+<div id="global-tab-loader-batch-status-error-message-container" class="error-container message-container"></div>
 <div id="bulk-operations-error-message-container" class="error-container message-container"></div>
 <div id="create-preferred-matches-info-message-container" class="message-container"></div>
 <div id="create-preferred-matches-error-message-container" class="error-container message-container"></div>
@@ -77,7 +77,7 @@ Wildcards are allowed but are <b>not</b> added automatically.<br>
 <div id="add-to-draft-taxonomy-info-message-container" class="message-container"></div>
 <div id="add-to-draft-taxonomy-error-message-container" class="error-container message-container"></div>
 <br>
-<%= link_to "[clear messages]", orchids_batch_clear_path, class:"hidden message-clearer with-underline", remote: true, title: "Clear the messages" %> 
+<%= link_to "[clear messages]", loader_batch_clear_path, class:"hidden message-clearer with-underline", remote: true, title: "Clear the messages" %> 
 <br>
 <%= link_to "Recent logs", search_path(query_string: "latest:",query_target: 'bulk_processing_logs'), title: "See logs", class: "with-underline" %> 
 <br>

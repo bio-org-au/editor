@@ -26,9 +26,11 @@ class Instance::DefinedQuery::IsCitedBy
               :relation,
               :results,
               :show_csv,
-              :total
+              :total,
+              :do_count_totals
 
   def initialize(parsed_request)
+    @do_count_totals = true
     run_query(parsed_request)
   end
 

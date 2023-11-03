@@ -133,25 +133,6 @@
   <% end %>
 </table>
 
-<h5 class="">Finding processing anomalies</h5>
-<table class="example-searches table table-striped">
-  <% [
-      {search_target: 'Loader Names', search_string: "name-sharing-name-id:",explanation: %Q(Two or more orchids with a preferred match to the same name record.)},
-      {search_target: 'Loader Names', search_string: "name-sharing-name-id: is-misapplied:",explanation: %Q(Any orchid that is misapplied sharing a preferred name match with another orchid (misapplied or not))},
-      {search_target: 'Loader Names', search_string: "name-sharing-name-id: is-not-misapplied:",explanation: %Q(Any orchid that is not misapplied sharing a preferred name match with another orchid (misapplied or not).)},
-      {search_target: 'Loader Names', search_string: "non-misapp-name-sharing-name-id:",explanation: %Q(Any non-misapplied orchid that shares a preferred name ID match with at least one other non-misapplied orchid.)},
-      {search_target: 'Loader Names', search_string: "non-misapp-name-sharing-name-id-not-pp:",explanation: %Q(Any non-misapplied orchid that shares a preferred name ID match with at least one other non-misapplied orchid but excluding cases where all the relationships are partial. Use this in tandem with non-misapp-name-sharing-name-id)},
-      ].each do |val| %>
-  <tr>
-    <td class="width-30-percent">
-      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
-    </td>
-    <td>
-      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
-    </td>
-  </tr>
-  <% end %>
-</table>
 
 <h5 class="">Doubtful and excluded loader names examples</h5>
 <table class="example-searches table table-striped">
@@ -173,9 +154,6 @@
 <h5 class="">Already in taxonomy examples</h5>
 <table class="example-searches table table-striped">
   <% [
-      {search_target: 'Loader Names', search_string: "Acianthus in-current-taxonomy:",explanation: %Q(Find orchids within Acianthus that are already in the current taxonomy)},
-      {search_target: 'Loader Names', search_string: "Liparis in-current-taxonomy:",explanation: %Q(Find orchids within Liparis that are already in the current taxonomy)},
-      {search_target: 'Loader Names', search_string: "Bulb* not-in-current-taxonomy:",explanation: %Q(Find orchids starting with Bulb that aren't already in the current taxonomy)},
       {search_target: 'Loader Names', search_string: "Family: Goodeniaceae name-match-in-syn:",explanation: %Q(find loader name accepted or excluded records in Goodeniaceae matched to a name that's already in synonymy in the current accepted tree - NOTE: this is a slow query)},
       {search_target: 'Loader Names', search_string: "Family: Goodeniaceae syn-match-in-tree:",explanation: %Q(search for loader name synonyms matched to a name that's already in the current accepted tree - NOTE: this is a slow query)},
       ].each do |val| %>
@@ -190,22 +168,5 @@
   <% end %>
 </table>
 
-<h5 class="">Status page query examples</h5>
-<table class="example-searches table table-striped">
-  <% [
-      {search_target: 'Loader Names', search_string: "Pra* misapp-matched-without-cross-ref:",explanation: %Q(Find orchids within Pra* that are matched misapplications without a cross-reference)},
-      {search_target: 'Loader Names', search_string: "corymb* misapp-matched-without-cross-ref:",explanation: %Q(Find orchids within corymb* that are matched misapplications without a cross-reference)},
-      ].each do |val| %>
-  <tr>
-    <td class="width-30-percent">
-      <%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
-    </td>
-    <td>
-      <%= link_to(val[:explanation], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %>
-    </td>
-  </tr>
-  <% end %>
-</table>
 
-<%= render partial: 'loader/names/stats/high_level_stats' %>
 

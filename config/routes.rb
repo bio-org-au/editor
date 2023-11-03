@@ -442,6 +442,7 @@ Rails.application.routes.draw do
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
   match "loader_batch/clear-default", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post
+  match "loader/batch/clear", as: "loader_batch_clear", to: "loader/batches#clear", via: :get
   match "loader/batch/unlock", as: "loader_batch_unlock", to: "loader/batch/job_lock#unlock", via: :post
   match "loader/batch/bulk/enable_add", as: "loader_batch_bulk_enable_add", to: "loader/batch/bulk#enable_add",
                                         via: :post
@@ -450,14 +451,14 @@ Rails.application.routes.draw do
 
   namespace :loader do
     resources :names, only: [:new]
-    match "names/new_row", as: "name_new_row", to: "names#new_row", via: :get
-    match "names/new_heading_row", as: "name_new_heading_row", to: "names#new_heading_row", via: :get
-    match "names/new_note_row", as: "name_new_note_row", to: "names#new_note_row", via: :get
+    match "names/new-row", as: "name_new_row", to: "names#new_row", via: :get
+    match "names/new-heading-row", as: "name_new_heading_row", to: "names#new_heading_row", via: :get
+    match "names/new-in-batch-note-row", as: "name_new_in_batch_note_row", to: "names#new_in_batch_note_row", via: :get
     match "names/new/:random_id", as: "name_new_with_random_id", to: "names#new", via: :get
     match "names/new/:random_id/:loader_name_id", as: "name_new_with_random_id_and_start_id", to: "names#new", via: :get
-    match "names_heading/new/:random_id", as: "name_heading_new_with_random_id", to: "names#new_heading", via: :get
-    match "names_note/new/:random_id", as: "name_note_new_with_random_id", to: "names#new_note", via: :get
-    match "names/new_row_here/:id", as: "name_new_row_here", to: "names#new_row_here", via: :get
+    match "names/heading/new/:random_id", as: "name_heading_new_with_random_id", to: "names#new_heading", via: :get
+    match "names/in-batch-note/new/:random_id", as: "name_in_batch_note_new_with_random_id", to: "names#new_in_batch_note", via: :get
+    match "names/new-row-here/:id", as: "name_new_row_here", to: "names#new_row_here", via: :get
     resources :names, only: %i[create update destroy]
     namespace :name do
       match "matches/create/:id", as: "matches_set", to: "matches#set", via: :patch

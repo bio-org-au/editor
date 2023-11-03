@@ -1,3 +1,4 @@
+
     <% for record in @search.executed_query.results %>
       <% display_as = record.class.name == 'Hash' ? record[:display_as] || record.class.to_s  : record.try('display_as') || record.class.to_s %>
       <%# TODO: standardize on strings or symbols, at least for the instance record variants. %>
@@ -11,24 +12,20 @@
       <% else %>
         <tr>
           <td class="width-1-percent"></td>
-          <td class="min-with-40-percent width-50-percent max-width-60-percent">
+          <td class="min-with-40-percent width-50-percent max-width-60-percent" colspan="4">
             <%= display_as %> is an unknown type of print search result
           </td>
           <td class="width-5-perent filler"></td>
         </tr>
       <% end %>
     <% end %>
-    <%# trailing callback %>
-    <% if defined?(@previous_comment) || defined?(@previous_distribution) %>
-      <%= render partial: 'application/search_results/print/records/loader/record_types/prev_rec_dist_comments' %>
-    <% end %>
 
     <tr>
-      <td class="width-1-percent"></td>
-      <td class="min-with-40-percent width-50-percent max-width-60-percent">
+      <td class="min-with-40-percent width-50-percent max-width-90-percent" colspan="99">
         <br> <br> <br> <br> <br>
       </td>
-      <td class="width-5-percent filler"></td>
     </tr>
+
+
 
 

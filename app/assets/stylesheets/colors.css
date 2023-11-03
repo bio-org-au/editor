@@ -182,10 +182,22 @@ a:hover.blue           { color: blue; }
   background: sienna;
   color: white;
 }
-
-.search-result .flag {
-  padding: 0.4em 0.3em 0.2em 0.4em;
+ 
+.in-batch-note {
+  background: yellow;
+  color: black;
 }
+ 
+.compiler-note {
+  background: darkgreen;
+  color: white;
+}
+
+.search-result .flag,
+.search-result .fat {
+  padding: 0.1em 0.3em 0.1em 0.4em;
+}
+
 
 .search-result span.isonym {
   background: peru;

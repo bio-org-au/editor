@@ -2,7 +2,7 @@
 
 
 <% if search_result.loader_name_matches.first.manually_drafted? %>
-  <span class='flag on-tree-indicator' title='This has been manually drafted'>manually drafted</span>
+  <span class='flag on-tree-indicator' title='This has been manually drafted'>Manually Drafted</span>
 <% end %>
 
 <% preferreds = search_result.loader_name_matches.collect{|o| "#{o.name_id}/#{o.instance_id}" } %>
@@ -45,7 +45,7 @@
 <% end %>
 
 <% if standalones&.first&.drafted? %>
-  <span class='flag on-tree-indicator' title='Standalone instance has been added to a draft tree'>drafted</span>
+  <span class='flag on-tree-indicator' title='Standalone instance has been added to a draft tree'>Drafted</span>
 <% end %>
 
 

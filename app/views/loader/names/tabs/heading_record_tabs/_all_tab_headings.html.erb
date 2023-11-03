@@ -15,7 +15,7 @@
   <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
                                       last: false,
                                       this_tab: 'tab_edit', 
-                                      link_text: 'Edit <br/> Raw'.html_safe, 
+                                      link_text: 'Edit <br/> &nbsp;'.html_safe, 
                                       link_id: 'loader-name-edit-tab', 
                                       link_title: 'Edit Loader Name.',
                                       tab_index: @tab_index,
@@ -24,10 +24,10 @@
 
   <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
                                       last: true,
-                                      this_tab: 'tab_delete_raw', 
-                                      link_text: 'Delete <br/> Raw'.html_safe, 
-                                      link_id: 'loader-name-delete-raw-tab', 
-                                      link_title: 'Delete raw loader name record.',
+                                      this_tab: 'tab_delete', 
+                                      link_text: 'Delete <br/> &nbsp;'.html_safe, 
+                                      link_id: 'loader-name-delete-tab', 
+                                      link_title: 'Delete loader name record.',
                                       tab_index: @tab_index,
                                       prev_tab: 'loader-name-matched-name-tab', 
                                       next_tab: 'loader-name-create-syn-tab'} %> 

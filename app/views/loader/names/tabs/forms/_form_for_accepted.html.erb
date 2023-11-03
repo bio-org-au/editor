@@ -17,7 +17,7 @@
       <% else %>
       <%= session[:default_loader_batch_name] %>
       <br>
-      <%= f.hidden_field :loader_batch_id, class: 'form-control give-me-focus', required: true, value: "#{session[:default_loader_batch_id]}", title: "loader batch id", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.hidden_field :loader_batch_id, class: 'form-control', required: true, value: "#{session[:default_loader_batch_id]}", title: "loader batch id", tabindex: increment_tab_index, autofocus: true %>
       <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
       <% end %>
     <% end %>
@@ -26,32 +26,30 @@
 
     <div class="form-group">
       <label for="seq">Seq*</label>
-      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
+      <%= f.text_field(:seq, {class: 'form-control give-me-focus', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
     </div>
 
     <div class="form-group">
       <label for="simple_name">Simple Name*</label>
-      <%= f.text_field :simple_name, class: 'form-control give-me-focus', required: true, title: "Enter simple name - the value of simple name, as loaded is retained in simple name as loaded", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_field :simple_name, class: 'form-control', required: true, title: "Enter simple name - the value of simple name, as loaded is retained in simple name as loaded", tabindex: increment_tab_index, autofocus: true %>
       <% unless loader_name.simple_name == loader_name.simple_name_as_loaded %>
         <p>As originally loaded: <%= loader_name.simple_name_as_loaded %></p>
         <p>Simple Name is used for matching with name records, so editing it will likely change the matches.</p>
       <% end %>
     </div>
 
-    <% unless loader_name.new_record? %>
 
-      <div class="form-group">
-        <label for="full_name">Full Name*</label>
-        <%= f.text_field :full_name, class: 'form-control give-me-focus',
-          required: true, title: "Enter full name",
-          tabindex: increment_tab_index, autofocus: true %>
-      </div>
+    <div class="form-group">
+      <label for="full_name">Full Name*</label>
+      <%= f.text_field :full_name, class: 'form-control',
+        required: true, title: "Enter full name",
+        tabindex: increment_tab_index, autofocus: true %>
+    </div>
 
-    <% end %>
 
     <div class="form-group">
       <label for="family">Family Name*</label>
-      <%= f.text_field :family, class: 'form-control give-me-focus',
+      <%= f.text_field :family, class: 'form-control',
         required: true, title: "Enter family name", tabindex: increment_tab_index %>
     </div>
 
@@ -65,11 +63,11 @@
       <%= f.select :record_type, ["accepted", "excluded"], {include_blank: true},
         class: 'form-control',
         required: true,
-        title: 'Top level records can be accepted or excluded' %>
+        title: 'Top level records can be accepted or excluded',
+        tabindex: increment_tab_index %>
     </div>
 
     <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
-    <%#= render partial: "authors", locals: {f: f} %>
 
     <div class="form-group">
       <label for="comment">Comment</label>
@@ -84,6 +82,11 @@
     <div class="form-group">
       <label for="notes">Notes</label>
       <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label for="remark_to_reviewers">Remark to reviewers</label>
+      <%= f.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <%= divider %>

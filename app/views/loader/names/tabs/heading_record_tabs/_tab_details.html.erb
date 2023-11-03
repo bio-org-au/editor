@@ -3,7 +3,7 @@ Heading entry
 </ul>
 
 <% members = Loader::Name.where(family: @loader_name.simple_name).where(loader_batch_id: @loader_name.loader_batch_id).count - 1 %>
-<% if @loader_name.rank == 'family' %>
+<% if @loader_name.rank&.downcase == 'family' %>
   <%= render partial: 'detail_line', 
              locals: {info: link_to("Members of #{@loader_name.family}",
          search_path(query_target: "loader names",

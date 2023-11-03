@@ -53,9 +53,16 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
       new_syn.created_by = new_syn.updated_by = "bulk for #{@user}"
       new_syn.name_id = source_synonym.name_id
       new_syn.reference_id = @new_standalone.reference_id
-      new_syn.save!
-      syns_copied += 1
-      log_to_table("#{Constants::COPIED_SYN} #{new_syn.name.full_name}")
+
+      begin
+        new_syn.save!
+        syns_copied += 1
+        log_to_table("#{Constants::COPIED_SYN} #{new_syn.name.full_name}")
+      rescue => e
+        errors += 1
+        log_to_table("#{Constants::FAILED_SYN} #{e.to_s} for #{new_syn.name.full_name}")
+      end
+
     end
     created += syns_copied
     [created, declined, errors]

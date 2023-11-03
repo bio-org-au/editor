@@ -1,13 +1,11 @@
 
-<%= render partial: 'application/search_results/print/records/loader/record_types/prev_rec_dist_comments' %>
-
-<tr class="search-result excluded top-spacer"><td>&nbsp;</td></tr>
+<tr class="search-result excluded top-spacer"><td colspan="5">&nbsp;</td></tr>
 
 <%# Show this heading once per family at most and only on the first occurrence %>
 <%# Presumes excludeds etc are grouped at the end of a family %>
 <% if !(defined? @family_excluded_header_shown) || (@family_excluded_header_shown != search_result.family) %>
   <tr class="search-result excluded-header">
-    <td colspan="2">UNPLACED, DOUBTFUL AND EXCLUDED NAMES</td>
+    <td colspan="5">UNPLACED, DOUBTFUL AND EXCLUDED NAMES</td>
   </tr>
   <% @family_excluded_header_shown = search_result.family %>
 <% end %>
@@ -15,13 +13,13 @@
 
 <tr id="search-result-<%= search_result.id %>" 
     class="search-result <%= search_result.record_type %> ">
-  <td class="text name main-content" colspan="2" >
+  <td class="text name main-content" colspan="5" >
 
 
     <span class='loader-name <%= search_result.record_type %> full-name'>
-        <% if search_result.rank == 'genus'  %>
-          <%= "#{search_result.full_name.sub(/ .*/,'').upcase}" %>
-          <%= "#{search_result.full_name.sub(/.* /,' ')}" %><%= ',' unless search_result.name_status.blank? %>
+        <% if search_result.rank&.downcase == 'genus'  %>
+         <%= search_result.full_name.split(/ /).first.upcase %>
+         <%= search_result.full_name.split(/ /).drop(1).join(' ') %><%= ',' unless search_result.name_status.blank? %>
         <% else %>
           <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
         <% end %>
@@ -37,6 +35,14 @@
         </span>
     <% end %>
 
+    <% unless search_result.notes.blank? %>
+      <% if can?("batches", :index) %>
+        <span class="review loader-name compiler-note">
+           <%= search_result.notes.html_safe %>
+        </span>
+      <% end %>
+    <% end %>
+
     <% unless search_result.higher_rank_comment.blank? %>
         <span class="review loader-name remark-to-reviewers">
           <%= search_result.higher_rank_comment.html_safe %>
@@ -45,8 +51,5 @@
 
   </td>
 </tr>
-
-
-<% @previous_comment = search_result.comment unless search_result.comment.blank? %>
 
 

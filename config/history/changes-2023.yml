@@ -1,3 +1,81 @@
+- :date: 24-Oct-2023
+  :jira_id: '4736'
+  :description: |- 
+    Loader: Allow tabbing to the <code>record_type</code> field in natural order when adding or editing <code>loader_name</code> records
+- :date: 24-Oct-2023
+  :jira_id: '4737'
+  :description: |- 
+    Loader: Allow entry of <code>remark_to_reviewers</code>
+- :date: 24-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: Print - concept notes and distributions now appear with or without the <code>src:</code> (<code>show-review-comments:</code>) directive
+- :date: 23-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: Print - comments on excluded names now appear
+- :date: 23-Oct-2023
+  :jira_id: '4731'
+  :description: |- 
+    Loader: Freshen and refine the appearance of the processing flags - reduce their height, standardise capitalisation, abbreviate long text
+- :date: 20-Oct-2023
+  :jira_id: '4728'
+  :description: |- 
+    Loader: Fix <code>instance-is-cited:</code> query
+- :date: 20-Oct-2023
+  :jira_id: '4727'
+  :description: |- 
+    Loader: Remove loader code dependencies on orchid code in the Editor
+- :date: 19-Oct-2023
+  :jira_id: '4725'
+  :description: |- 
+    Loader: Show notes (for compilers) on the LHS and on printout, but not for reviewers. Highlight in green.
+- :date: 19-Oct-2023
+  :jira_id: ''
+  :description: |- 
+    Loader: Change history pages - heading for these pages now matches the menu label ie. "Changes 9999" rather than "9999 Changes"
+- :date: 19-Oct-2023
+  :jira_id: '4722'
+  :description: |- 
+    Loader: Remove comment field from input forms for synonyms, misapplieds, and headings
+- :date: 19-Oct-2023
+  :jira_id: '4721'
+  :description: |- 
+    Loader: Features based on rank should match case-insensitively - e.g. family heading records should work with 'family' or 'Family'
+- :date: 19-Oct-2023
+  :jira_id: '4720'
+  :description: |- 
+    Loader: Allow entry of full name when creating a new loader name record
+- :date: 19-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: Further improvements to print output based on review yesterday as noted in Jira
+- :date: 18-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: Second cut of print output showing review comments etc, with layout fixes and logic fixes (before any user testing)
+- :date: 18-Oct-2023
+  :jira_id: '4619'
+  :description: |- 
+    Loader: First cut of print output showing review comments, including for distribution and concept notes placed after synonymy
+- :date: 17-Oct-2023
+  :jira_id: '4715'
+  :description: |- 
+    Loader: Loader Name note records are now called in-batch-notes; fixed loader-name detail tabbing bug
+- :date: 16-Oct-2023
+  :jira_id: '4707'
+  :description: |- 
+    Loader: Copy-and-Append synonymy creation now completes even if a copied synonym fails validation - error is logged, but process continues
+- :date: 16-Oct-2023
+  :jira_id: '4677'
+  :description: |- 
+    Loader: Allow note records to print and print them with a yellow background
+- :date: 13-Oct-2023
+  :jira_id: '4712'
+  :description: |- 
+    Loader: Do not print genus names twice (even) when they have no authority 
+- :date: 20-Oct-2023
+  :release: true
 - :date: 13-Oct-2023
   :jira_id: '4669'
   :description: |- 
@@ -54,6 +132,8 @@
   :jira_id: '4682'
   :description: |- 
     Taxonomy: Replace hard-coded reference to 'APC' with appropriate term for the local taxonomy when reporting an instance is not eligible for deletion.
+- :date: 16-Oct-2023
+  :release: true
 - :date: 28-Sep-2023
   :jira_id: '4671'
   :description: |- 

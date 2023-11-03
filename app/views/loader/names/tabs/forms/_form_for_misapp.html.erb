@@ -15,19 +15,21 @@
 
     <div class="form-group">
       <label for="seq">Seq*</label>
-      <%= f.number_field(:seq, {class: 'form-control', title: 'For listing the name in the correct order'}) %>
+      <%= f.number_field(:seq, {class: 'form-control give-me-focus',
+                                title: 'For listing the name in the correct order',
+                                tabindex: increment_tab_index}) %>
     </div>
 
     <div class="form-group">
       <label for="simple_name">Simple Name*</label>
-      <%= f.text_field :simple_name, class: 'form-control give-me-focus', required: true, title: "Enter simple name", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_field :simple_name, class: 'form-control', required: true, title: "Enter simple name", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <% unless loader_name.new_record? %>
 
       <div class="form-group">
         <label for="full_name">Full Name*</label>
-        <%= f.text_field :full_name, class: 'form-control give-me-focus', required: true, title: "Enter full name", tabindex: increment_tab_index, autofocus: true %>
+        <%= f.text_field :full_name, class: 'form-control', required: true, title: "Enter full name", tabindex: increment_tab_index, autofocus: true %>
       </div>
 
     <% end %>
@@ -39,13 +41,15 @@
 
     <div class="form-group">
       <label for="family">Family*</label>
-      <%= f.text_field :family, class: 'form-control give-me-focus', required: true, title: "Enter family name", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_field :family, class: 'form-control', required: true, title: "Enter family name", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <div class="form-group">
-      <label for="record_type">Record type*</label>
-      <%= f.hidden_field :record_type, value: 'misapplied' %>
-      <%= f.text_field :record_type, class: 'form-control', value: 'misapplied', disabled: true %>
+      <label for="record_type">Record type - misapplied *</label>
+      <%= f.select :record_type, ["misapplied"], {include_blank: false},
+        class: 'form-control',
+        title: 'This is a misapplied record, you cannot change that.',
+        tabindex: increment_tab_index %>
     </div>
 
     <% unless loader_name.new_record? %>
@@ -72,13 +76,13 @@
     <%#= render partial: "authors", locals: {f: f} %>
 
     <div class="form-group">
-      <label for="comment">Comment</label>
-      <%= f.text_area :comment, class: 'form-control', title: "Enter comment", tabindex: increment_tab_index, autofocus: true %>
+      <label for="notes">Notes</label>
+      <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <div class="form-group">
-      <label for="notes">Notes</label>
-      <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
+      <label for="remark_to_reviewers">Remark to reviewers</label>
+      <%= f.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <%= divider %>

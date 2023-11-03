@@ -20,7 +20,7 @@
 # Provide typeahead suggestions based on a search term.
 #
 # Offer parents
-# Only accepted orchids
+# Only accepted names
 class Loader::Name::AsTypeahead::ForParent
   attr_reader :suggestions,
               :params

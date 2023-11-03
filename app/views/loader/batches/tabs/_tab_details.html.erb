@@ -51,10 +51,19 @@
                             focus_id: "loader-batch-#{@loader_batch.id}"),
                  title:"Query the batch stack",class:'blue')} %>
 
+  <%= render partial: 'detail_line',
+    locals: {label: 'for this batch',
+             info: link_to("Loader Names",
+                          search_path(
+                            query_string: "* batch-id: #{@loader_batch.id}",
+                            query_target: 'loader names',
+                            focus_id: "loader-batch-#{@loader_batch.id}"),
+                 title:"Query the loader names within this batch",class:'blue')} %>
+
 
 <% end %>
 
-
+<br>
 <%= divider %>
 <%= render partial: 'loader/batches/tabs/set_default_batch' %>
 <%= divider %>

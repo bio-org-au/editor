@@ -509,13 +509,12 @@ class Search::ParsedRequest
   end
 
   def parse_show_review_comments(tokens)
+    @show_loader_name_comments = false
     return tokens unless @target_table == 'loader name'
 
     if tokens.include?("show-review-comments:")
       @show_loader_name_comments = true
       tokens.delete_if { |x| x.match(/show-review-comments:/) }
-    else
-      @show_loader_name_comments = false
     end
     tokens
   end

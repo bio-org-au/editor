@@ -20,7 +20,8 @@ tr.search-result.heading td.text {
   text-align: center;
 }
 
-tr.search-result span.loader-name.remark-to-reviewers {
+tr.search-result span.loader-name.remark-to-reviewers,
+tr.in-batch-note {
   background: yellow;
 }
 
@@ -78,3 +79,8 @@ tr.search-result.excluded-header {
   height: 4em;
 }
 
+ 
+span.compiler-note {
+  background: lightgreen;
+  color: black;
+}

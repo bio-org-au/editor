@@ -1,6 +1,6 @@
 <%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
     <div class="form-group align-right">
-      <div class="nsl-inline-block align-left pull-left"><h5><%= loader_name.new_record? ?  'Create' : 'Edit' %> Note Record</h5></div>
+      <div class="nsl-inline-block align-left pull-left"><h5><%= loader_name.new_record? ?  'Create' : 'Edit' %> In-Batch-Note Record</h5></div>
       <% if loader_name.id.blank? -%>
         <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new loader_name", data: {element_id: "new-loader-name-#{params[:random_id]}"}, tabindex: increment_tab_index %>
       <% end %>
@@ -26,15 +26,18 @@
 
     <div class="form-group">
       <label for="seq">Seq*</label>
-      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
+      <%= f.text_field(:seq, {class: 'form-control give-me-focus',
+                              title: 'For listing the taxon in the correct order', 
+                              tabindex: increment_tab_index}) %>
     </div>
 
 
     <div class="form-group">
       <label for="record_type">Record type - note *</label>
-      <%= f.select :record_type, ["note"], {include_blank: false},
+      <%= f.select :record_type, ["in-batch-note"], {include_blank: false},
         class: 'form-control',
-        title: 'This is a note record' %>
+        title: 'This is an in-batch-note record',
+        tabindex: increment_tab_index %>
     </div>
 
     <div class="form-group">

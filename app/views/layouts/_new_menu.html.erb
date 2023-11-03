@@ -115,7 +115,7 @@
           Loader name heading (needs default batch set)
         </li>
         <li role="presentation">
-          Loader name note (needs default batch set)
+          Loader name in-batch-note (needs default batch set)
         </li>
       <% else %>
         <li role="presentation">
@@ -136,9 +136,9 @@
         </li>
 
         <li role="presentation">
-          <%= link_to "Loader Name note",
-                    loader_name_new_note_row_path,
-                    title: 'Add a new "note" loader-name within the current loader-batch',
+          <%= link_to "Loader Name in-batch-note",
+                    loader_name_new_in_batch_note_row_path,
+                    title: 'Add a new "in-batch-note" loader-name within the current loader-batch',
                     remote: true,
                     tabindex: '-1' %>
         </li>

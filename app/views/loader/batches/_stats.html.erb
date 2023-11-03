@@ -2,7 +2,7 @@
 
 <% @stats.each do | key, value | %> 
   <%= "<h5>#{key.to_s.gsub(/_/,' ').capitalize}</h5>".html_safe %>
-  <table class="orchids status table-striped" border="1px solid black">
+  <table class="status table-striped" border="1px solid black">
     <%= render partial: 'stats_table', locals: { a_hash: value } %>
   </table>
 <% end %>

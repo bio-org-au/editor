@@ -1,5 +1,5 @@
 <% increment_tab_index(0) -%>
-<%= render partial: 'loader/batch/reviews/forms/edit_form', locals: { orchid: @batch_review } %>
+<%= render partial: 'loader/batch/reviews/forms/edit_form' %>
 <%= divider %>
 <%= render 'loader/batch/reviews/widgets/delete_widgets' if @batch_review.allow_delete? %>
 <div id="search-result-details-info-message-container" class="message-container"></div>

@@ -52,7 +52,7 @@ class Search::OnModel::Base
   def run_count_query(parsed_request)
     count_query = Search::OnModel::CountQuery.new(parsed_request)
     @relation = count_query.sql
-    @count = relation.count
+    @count = @relation.count
     @limited = false
     @info_for_display = count_query.info_for_display
     @common_and_cultivar_included = count_query.common_and_cultivar_included
@@ -63,14 +63,14 @@ class Search::OnModel::Base
   def run_list_query(parsed_request)
     list_query = Search::OnModel::ListQuery.new(parsed_request)
     @relation = list_query.sql
-    @results = relation.all
+    @results = @relation.all
     @results = list_query.trim_results(@results)
     @limited = list_query.limited
     @info_for_display = list_query.info_for_display
     @common_and_cultivar_included = list_query.common_and_cultivar_included
     @do_count_totals = list_query.do_count_totals
     consider_instances(parsed_request)
-    consider_loader_name_comments(parsed_request)
+    consider_loader_name_extras(parsed_request)
     if @do_count_totals then
       @count = @results.size
       calculate_total
@@ -103,27 +103,17 @@ class Search::OnModel::Base
     parsed_request.order_instances_by_page ? "page" : "name"
   end
 
-  def consider_loader_name_comments(parsed_request)
-    return unless parsed_request.show_loader_name_comments
+  def consider_loader_name_extras(parsed_request)
+    return unless parsed_request.target_model == 'Loader::Name'
+    return unless parsed_request.print
 
-    show_loader_name_comments(parsed_request)
-  end
-
-  def show_loader_name_comments(parsed_request)
-    results_with_comments = []
-    @results.each do |rec|
-      results_with_comments << rec
-      comments_query = Loader::Name::Review::Comment::AsArray::ForLoaderName
-                        .new(rec,
-                             parsed_request.limit,
-                             parsed_request.instance_offset)
-      comments_query.results.each { |i| results_with_comments << i }
-    end
-    @results = results_with_comments
+    show_comments = parsed_request.show_loader_name_comments
+    @results = Search::Loader::Name::RewriteResultsShowingExtras
+      .new(@results, show_comments).results
   end
 
   def debug(s)
-    Rails.logger.debug("Search::User::Base: #{s}")
+    Rails.logger.debug("Search::OnModel::Base: #{s}")
   end
 
   def csv?

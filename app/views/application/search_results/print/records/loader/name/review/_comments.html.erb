@@ -11,7 +11,10 @@
 <% end %>
 
 <tr id="search-result-<%= search_result.id %>" class="search-result review-comment <%= color_class %>">
-  <td class="text review-comment indent" ></td>
+  <td width="50" class="review-comment first-indent" ></td>
+  <td width="50" class="review-comment second-indent" ></td>
+  <td width="50" class="review-comment third-indent" ></td>
+  <td width="50" class="review-comment fourth-indent" ></td>
   <td class="text review-comment main-content">
     <span class="main-content <%= color_class%>" >
      <%= render partial: 'application/search_results/link_texts/loader/name/review/comment', locals: {search_result: search_result} %>

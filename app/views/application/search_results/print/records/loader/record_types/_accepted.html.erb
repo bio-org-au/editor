@@ -1,17 +1,17 @@
 
-<%= render partial: 'application/search_results/print/records/loader/record_types/prev_rec_dist_comments' %>
 
-<tr class="search-result accepted top-spacer"><td>&nbsp;</td></tr>
+<tr class="search-result accepted top-spacer"><td colspan="5">&nbsp;</td></tr>
 
 <tr id="search-result-<%= search_result.id %>" 
     class="search-result <%= search_result.record_type %> ">
-  <td class="text name main-content" colspan="2" >
 
+
+  <td class="text name main-content" colspan="5" >
 
     <span class='loader-name <%= search_result.record_type %> full-name'>
-      <% if search_result.rank == 'genus'  %>
-         <%= "#{search_result.full_name.sub(/ .*/,'').upcase}" %>
-         <%= "#{search_result.full_name.sub(/.* /,' ')}" %><%= ',' unless search_result.name_status.blank? %>
+      <% if search_result.rank&.downcase == 'genus'  %>
+         <%= search_result.full_name.split(/ /).first.upcase %>
+         <%= search_result.full_name.split(/ /).drop(1).join(' ') %><%= ',' unless search_result.name_status.blank? %>
       <% else %>
         <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
       <% end %>
@@ -28,6 +28,14 @@
         </span>
     <% end %>
 
+    <% unless search_result.notes.blank? %>
+      <% if can?("batches", :index) %>
+        <span class="review loader-name compiler-note">
+           <%= search_result.notes.html_safe %>
+        </span>
+      <% end %>
+    <% end %>
+
     <% unless search_result.higher_rank_comment.blank? %>
         <span class="review loader-name remark-to-reviewers">
           <%= search_result.higher_rank_comment.html_safe %>
@@ -35,9 +43,8 @@
     <% end %>
 
   </td>
+
 </tr>
 
-<% @previous_distribution = search_result.distribution %>
-<% @previous_comment = search_result.comment %>
 
 
