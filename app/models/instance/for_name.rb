@@ -74,6 +74,9 @@ class Instance::ForName
 
   def records_cited_by_standalone(instance)
     Instance.joins(:instance_type, :name, :reference)
+            .joins('inner join instance cites on instance.cites_id = cites.id')
+            .joins('inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id')
+            .joins('inner join name_status ns on name.name_status_id = ns.id')
             .where(cited_by_id: instance.id)
             .in_nested_instance_type_order
             .order("reference.iso_publication_date,lower(name.full_name)")
@@ -115,7 +118,10 @@ class Instance::ForName
   end
 
   def records_cited_by_relationship(instance)
-    Instance.joins(:instance_type)
+    Instance.joins(:instance_type, :name, :reference)
+            .joins('inner join instance cites on instance.cites_id = cites.id')
+            .joins('inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id')
+            .joins('inner join name_status ns on name.name_status_id = ns.id')
             .where(cited_by_id: instance.id)
             .in_nested_instance_type_order
   end

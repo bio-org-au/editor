@@ -1,5 +1,13 @@
 <% increment_tab_index(0) %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.family, label: 'family'} %>
+<%= render partial: 'detail_line', 
+           locals: {info: link_to("#{@loader_name.family}",
+         search_path(query_target: "loader names",
+                     query_string: "family: #{@loader_name.family}",
+                     focus_id: "loader-name-#{@loader_name.family}"),
+                     title: 'Query family members',
+                     class: 'blue underline'), 
+                     label: "query family members"} %>
+
 <%= render partial: 'detail_line', locals: {info: @loader_name.subfamily, label: 'subfamily'} unless @loader_name.subfamily.blank?  %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.simple_name, label: 'simple name aka taxon'} unless @loader_name.simple_name.blank? %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.simple_name_as_loaded, label: 'simple name as loaded'} unless @loader_name.simple_name_as_loaded.blank? || @loader_name.simple_name == @loader_name.simple_name_as_loaded %>
@@ -37,5 +45,11 @@
     <% end %>
 <%= render partial: 'loader/names/tabs/details/link_to_context_view' %>
 
+<% if @loader_name.batch.use_sort_key_for_ordering %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.sort_key, label: 'value for sorting'} %>
+<% else %>
+  This batch uses seq field for sorting. Alt value for sorting should be empty<br>
+<%= render partial: 'detail_line', locals: {info: @loader_name.sort_key, label: 'alt value for sorting'} %>
+<% end %>
 
 

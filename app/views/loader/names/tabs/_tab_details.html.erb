@@ -9,7 +9,11 @@
 <h5>Metadata</h5>
 <%= render partial: 'detail_line', locals: {info: @loader_name.id, label: 'ID'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.raw_id, label: 'raw ID (from the CSV data)'} %>
+<% if @loader_name.batch.use_sort_key_for_ordering %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.seq, label: 'seq (not used for this batch)'} %>
+<% else %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.seq, label: 'seq (for sorted display)'} %>
+<% end %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.record_type, label: 'record type'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.parent_id, label: 'parent_id'} unless @loader_name.parent_id.blank? %>
 <%= render partial: 'detail_line',

@@ -72,8 +72,7 @@ class Loader::NamesController < ApplicationController
 
   def new_in_batch_note
     @loader_name = ::Loader::Name.new
-    @loader_name.simple_name = 'In-Batch-Note'
-    @loader_name.family = 'In-Batch-Note'
+    @loader_name.simple_name = @loader_name.full_name = nil
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
     @loader_name.record_type = 'in-batch-note'
@@ -199,13 +198,14 @@ class Loader::NamesController < ApplicationController
   def loader_name_params
     params.require(:loader_name).permit(:simple_name, :full_name, :name_id,
                                         :instance_id, :record_type, :parent,
-                                        :parent_id, :name_status, :ex_base_author,
-                                        :base_author, :ex_author, :author,
+                                        :parent_id, :name_status,
+                                        :ex_base_author, :base_author,
+                                        :ex_author, :author,
                                         :synonym_type, :comment, :seq,
                                         :doubtful, :family, :excluded,
                                         :no_further_processing, :notes,
                                         :distribution, :loader_batch_id,
-                                        :rank, :remark_to_reviewers)
+                                        :rank, :remark_to_reviewers, :sort_key)
   end
 
   def set_tab

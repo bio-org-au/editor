@@ -1,3 +1,59 @@
+- :date: 06-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Allow optional entry of Family and Simple Name for <code>in-batch-notes</code> and, if entered, use them in the <code>sort_key</code>
+- :date: 06-Nov-2023
+  :jira_id: '4757'
+  :description: |- 
+    Loader: Allow users to add and save full name on create
+- :date: 03-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Fix the <code>sort_key</code> component for taxonomic synonyms so they do really sort after nomenclatural synonyms, and update misapp <code>sort_key</code> to still sort to the bottom.
+- :date: 03-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Sorting - make <code>rank</code> a required field for heading records, but also give it a default value of 'family'.
+- :date: 02-Nov-2023
+  :jira_id: '4720'
+  :description: |- 
+    Loader: On insert <code>loader_name.simple_name</code> is now not copied over the top of <code>full_name</code>.
+- :date: 02-Nov-2023
+  :jira_id: '4756'
+  :description: |- 
+    Loader: Misapplication names now re-appearing in print output.
+- :date: 02-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Adjust the algorithm for the synonymy sort key to match revised synonym ordering spec. Rename <code>sort_col</code> to <code>sort_key</code>.
+- :date: 01-Nov-2023
+  :jira_id: '4747'
+  :description: |- 
+    Loader: Allow conversion between excluded and accepted statuses
+- :date: 31-Oct-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Add a new sorting mechanism for loader_name records, an alternative to plain sequence sorting; with adjustments. Added some refinements.
+- :date: 27-Oct-2023
+  :jira_id: '4744'
+  :description: |- 
+    Loader: Add clash search <code>syn-clash-with-syn:</code>. Second cut: shows synonyms in question as well.
+- :date: 27-Oct-2023
+  :jira_id: '4743'
+  :description: |- 
+    Loader: Improve the ordering of synonymy when the <code>show-instance:</code> directive is used
+- :date: 26-Oct-2023
+  :jira_id: '4740'
+  :description: |- 
+    Loader: Fix create-draft error triggered by "use existing instance" when synonymy contains misapplication/s (revised)
+- :date: 24-Oct-2023
+  :jira_id: '4735'
+  :description: |- 
+    Loader: Link from any loader_name details tab to its family and the family's members
+- :date: 24-Oct-2023
+  :jira_id: '4734'
+  :description: |- 
+    Loader: Improve the link to loader names on the batch details tab
 - :date: 24-Oct-2023
   :jira_id: '4736'
   :description: |- 

@@ -24,13 +24,7 @@
 
     <br>
 
-    <div class="form-group">
-      <label for="seq">Seq*</label>
-      <%= f.text_field(:seq, {class: 'form-control give-me-focus',
-                              title: 'For listing the taxon in the correct order', 
-                              tabindex: increment_tab_index}) %>
-    </div>
-
+    <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
     <div class="form-group">
       <label for="record_type">Record type - note *</label>
@@ -40,9 +34,27 @@
         tabindex: increment_tab_index %>
     </div>
 
+    <%= divider %>
     <div class="form-group">
-      <label for="notes">Notes</label>
-      <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, rows: 10, autofocus: true %>
+      <label for="family">Family Name</label>
+      <%= f.text_field :family, class: 'form-control',
+        title: "Enter family name if note is to appear with family",
+        tabindex: increment_tab_index %>
+    <p> Enter Family if note is to appear with the family. Otherwise leave it empty or with the default value.</p>
+    </div>
+
+    <div class="form-group">
+      <label for="simple_name">Simple Name</label>
+      <%= f.text_field :simple_name, class: 'form-control',
+        title: "Enter simple name if note is to appear with that name",
+        tabindex: increment_tab_index %>
+      <p> Enter Family and Name if note is to appear with the Name. Otherwise leave them empty or with the default value.</p>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes *</label>
+      <%= f.text_area :notes, class: 'form-control', title: "Enter notes",
+        required: true, tabindex: increment_tab_index, rows: 10 %>
     </div>
 
     <%= divider %>
@@ -56,7 +68,4 @@
     </div>
     <div id="search-result-details-info-message-container2" class="message-container"></div>
     <div id="search-result-details-error-message-container2" class="message-container"></div>
-    <%= f.hidden_field :family %>
-    <%= f.hidden_field :simple_name %>
-    <%= f.hidden_field :full_name %>
 <% end %>

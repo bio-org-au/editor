@@ -54,7 +54,7 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
   end
 
   def misapp_already_attached
-    record_misapp_already_there(@user)
+    record_misapp_already_there
     log_to_table(declined_entry("misapp already there"))
     Constants::DECLINED
   end

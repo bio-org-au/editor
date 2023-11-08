@@ -19,7 +19,7 @@
       <%= "#{search_result.page}" %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
     </a>
-    <%= "</td><td>[#{search_result.type}]::#{ search_result.try('display_as') || search_result.class.to_s};#{search_result.id }(by)---- #{Pathname.new(__FILE__).basename}".html_safe if @debug %>
+     <%= render(partial: 'record_debug', locals: { search_result: search_result }) if @debug %>
 
   </td>
   <td class="takes-focus width-10-percent filler">&nbsp;</td>

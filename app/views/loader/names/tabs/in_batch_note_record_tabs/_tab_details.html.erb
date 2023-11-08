@@ -8,6 +8,12 @@ Notes:<br>
 <br>
 <br>
 <br>
+<br>
+<%= divider %>
+<p>Family or Family and Name, if given, will help generate a sort key that positions the note in the batch</p>
+<%= render partial: 'detail_line', locals: {info: @loader_name.sort_key, label: 'value for sorting'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.family, label: 'family'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.simple_name, label: 'simple name'} %>
 <%= divider %>
 <h5>Metadata</h5>
 <%= render partial: 'detail_line', locals: {info: @loader_name.id, label: 'ID'} %>

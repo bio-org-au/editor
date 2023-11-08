@@ -19,6 +19,9 @@
 # Loader Name entity
 class Loader::Name < ActiveRecord::Base
   include PreferredMatch
+  include SortKeyBulkChanges
+  NA = 'N/A'
+
   strip_attributes
   self.table_name = "loader_name"
   self.primary_key = "id"
@@ -36,6 +39,10 @@ class Loader::Name < ActiveRecord::Base
 
   validates :record_type, presence: true
   validate :validate_family_record
+  validates :family, presence: true
+  validates :simple_name, presence: true
+  validates :simple_name_as_loaded, presence: true
+  validates :full_name, presence: true
 
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
   alias_attribute :batch, :loader_batch
@@ -58,7 +65,8 @@ class Loader::Name < ActiveRecord::Base
   attr_accessor :give_me_focus, :message
 
   # before_create :set_defaults # rails 6 this was not being called before the validations
-  before_save :compress_whitespace
+  before_validation :set_in_batch_note_defaults
+  before_save :compress_whitespace, :set_sort_key
 
   def fresh?
     created_at > 1.hour.ago
@@ -86,9 +94,90 @@ class Loader::Name < ActiveRecord::Base
     end
   end
 
+  def set_in_batch_note_defaults
+    if record_type == 'in-batch-note'
+      self.simple_name_as_loaded = NA
+      self.family = NA if family.blank?
+      self.simple_name = NA if simple_name.blank?
+      self.full_name = self.simple_name
+    end
+  end
+
   def compress_whitespace
     simple_name.squish!
     full_name.squish!
+  end
+
+  def set_sort_key
+    normalise_sort_key unless sort_key.blank?
+    if sort_key.blank?
+      case record_type
+      when 'accepted'
+        self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase}"
+      when 'excluded'
+        self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase}"
+      when 'synonym'
+        self.sort_key = "#{parent.sort_key}.a-syn.#{synonym_sort_key_tail}"
+      when 'misapplied'
+        self.sort_key = "#{parent.sort_key}.b-mis.z-mis"
+      when 'heading'
+        if rank.blank? || rank.downcase == 'family'
+          self.sort_key = "#{family.downcase}.family"
+        else
+          self.sort_key = "aaa-rank-#{rank}-heading"
+        end
+      when 'in-batch-note'
+        self.sort_key = in_batch_note_sort_key if sort_key.blank?
+      else
+        self.sort_key = "aaaaaa-unexpected-record-type-#{record_type}"
+      end
+    end
+  rescue => e
+    puts e.to_s
+    puts "set_sort_key: record_type: #{record_type}; rank: #{rank}; family: #{family}"
+    raise
+  end
+
+  def normalise_sort_key
+    self.sort_key = sort_key.downcase unless sort_key == sort_key.downcase
+  end
+
+  def in_batch_note_sort_key
+    case
+    when family == NA && simple_name == NA
+      'aaaa-in-batch-note'
+    when simple_name == NA
+      "#{family.downcase}.family.a.in-batch-note"
+    else
+      "#{family.downcase}.family.accepted.#{simple_name.downcase}.x.in-batch-note"
+    end
+  end
+
+  def synonym_sort_key_tail
+    case synonym_type
+    when "isonym" then
+      "a-isonym"
+    when "orthographic variant" then
+      "b-orth-var"
+    when "basionym" then
+      "c-basionym"
+    when "replaced synonym" then
+      "d-replaced-syn"
+    when "alternative name" then
+      "e-alt-name"
+    when "nomenclatural synonym" then
+      "f-nom-syn"
+    when "taxonomic synonym" then
+      "g-tax-syn"
+    when "doubtful pro parte taxonomic synonym" then
+      "g-tax-syn"
+    when "doubtful-taxonomic-synonym" then
+      "g-tax-syn"
+    when "pro parte taxonomic synonym" then
+      "g-tax-syn"
+    else
+      "x-is-unknown-#{synonym_type}"
+    end
   end
 
   def name_match_no_primary?
@@ -364,7 +453,6 @@ class Loader::Name < ActiveRecord::Base
                                     .loader_batch_id
     end
     loader_name.doubtful = false
-    loader_name.full_name = loader_name.simple_name
     raise loader_name.errors.full_messages.first.to_s unless loader_name.save_with_username(username)
 
     loader_name
@@ -397,12 +485,14 @@ class Loader::Name < ActiveRecord::Base
   def new_synonym(base_seq: seq)
     loader_name = new_child(base_seq)
     loader_name.record_type = "synonym"
+    loader_name.sort_key = sort_key + '.a-synonym.'+'user-to-complete'
     loader_name
   end
 
   def new_misapp(base_seq: seq)
     loader_name = new_child(base_seq)
     loader_name.record_type = "misapplied"
+    loader_name.sort_key = sort_key + '.b-misapp.'+'user-to-complete'
     loader_name
   end
 

@@ -7,6 +7,15 @@
 
 <% path = 'application/search_results/link_texts/loader/name' %>
 
+<span class='loader-name <%= search_result.record_type %> full-name'>
+  <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
+</span>
+
+<% unless search_result.name_status.blank? %>
+  <span class='name-status'><%= "#{search_result.name_status}" %></span>
+<% end %>
+
+
 <span class="misapplied-by-whom-where"><%= search_result.misapp_html&.gsub(/\*\*[^*]+\*\*/,'')&.html_safe  %></span>
 
 <% unless search_result.remark_to_reviewers.blank? %>

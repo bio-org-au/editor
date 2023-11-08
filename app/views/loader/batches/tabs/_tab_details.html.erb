@@ -11,12 +11,17 @@
            label: 'default reference'} %>
 
 <%= render partial: 'detail_line',
-      locals: {label: 'loader names',
-               info: link_to( @loader_batch.loader_names.size,
-                        search_path(
-                          query_string: "batch-id: #{@loader_batch.id}",
-                          query_target: 'loader names'),
-               title:"Query loader names",class:'blue')} %>
+  locals: {info: @loader_batch.use_sort_key_for_ordering,
+           label: 'order using sort-col'} %>
+
+  <%= render partial: 'detail_line',
+    locals: {label: 'for this batch',
+             info: link_to("Loader Names",
+                          search_path(
+                            query_string: "* batch-id: #{@loader_batch.id}",
+                            query_target: 'loader names',
+                            focus_id: "loader-batch-#{@loader_batch.id}"),
+                 title:"Query the loader names within this batch",class:'blue')} %>
 
 <% if @view_mode == ViewMode::STANDARD %>
 
@@ -50,16 +55,6 @@
                             query_target: 'batch stacks',
                             focus_id: "loader-batch-#{@loader_batch.id}"),
                  title:"Query the batch stack",class:'blue')} %>
-
-  <%= render partial: 'detail_line',
-    locals: {label: 'for this batch',
-             info: link_to("Loader Names",
-                          search_path(
-                            query_string: "* batch-id: #{@loader_batch.id}",
-                            query_target: 'loader names',
-                            focus_id: "loader-batch-#{@loader_batch.id}"),
-                 title:"Query the loader names within this batch",class:'blue')} %>
-
 
 <% end %>
 

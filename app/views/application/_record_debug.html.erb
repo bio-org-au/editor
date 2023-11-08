@@ -1,6 +1,7 @@
 <%= "<span class='purple'><br>instance:#{search_result.id}".html_safe +
-            " </span><span class='sienna'>name:#{search_result.name_id}".html_safe +
-            " </span><span class='purple'>reference:#{search_result.reference_id}".html_safe +
-            " </span><span class='sienna'>cites id:#{search_result.cites_id}".html_safe +
-            " </span><span class='red'>cited by id:#{search_result.cited_by_id}".html_safe +
-            " </span><span class='sienna'>[#{search_result.type}]</span><span class='red'> #{ search_result.try('display_as') || search_result.class.to_s}</span>".html_safe if @debug %>
+            " </span> <span class='sienna'>name:#{search_result.name_id}".html_safe +
+            " </span> <span class='purple'>reference:#{search_result.reference_id}".html_safe +
+            " </span> <span class='sienna'>cites id:#{search_result.cites_id}".html_safe +
+            " </span> <span class='red'>cited by id:#{search_result.cited_by_id}".html_safe +
+            " </span> <span class='sienna'>[#{search_result.type}]</span><span class='red'> #{ search_result.try('display_as') || search_result.class.to_s}</span>".html_safe if @debug %>
+

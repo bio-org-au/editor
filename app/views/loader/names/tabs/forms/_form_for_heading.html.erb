@@ -24,10 +24,7 @@
 
     <br>
 
-    <div class="form-group">
-      <label for="seq">Seq*</label>
-      <%= f.text_field(:seq, {class: 'form-control', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
-    </div>
+    <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
     <div class="form-group">
       <label for="simple_name">Simple Name*</label>
@@ -57,7 +54,7 @@
 
     <div class="form-group">
       <label for="rank">Rank</label>
-      <%= f.text_field :rank, class: 'form-control', title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_field :rank, class: 'form-control', required: true, value: "family", title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <div class="form-group">

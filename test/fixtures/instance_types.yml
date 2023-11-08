@@ -316,7 +316,7 @@ doubtful_pro_parte_taxonomic_synonym:
   sort_order: 13
   standalone: false
   synonym: false
-  taxonomic: false
+  taxonomic: true
   unsourced: false
 
 doubtful_taxonomic_synonym:
@@ -332,7 +332,7 @@ doubtful_taxonomic_synonym:
   sort_order: 12
   standalone: false
   synonym: false
-  taxonomic: false
+  taxonomic: true
   unsourced: false
 
 excluded_name:
@@ -540,7 +540,7 @@ pro_parte_taxonomic_synonym:
   sort_order: 3
   standalone: false
   synonym: false
-  taxonomic: false
+  taxonomic: true
   unsourced: false
 
 replaced_synonym:
@@ -620,7 +620,7 @@ taxonomic_synonym:
   sort_order: 10
   standalone: false
   synonym: false
-  taxonomic: false
+  taxonomic: true
   unsourced: false
 
 trade_name:

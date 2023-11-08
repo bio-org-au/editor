@@ -39,6 +39,10 @@ As above, this app doesn't carry the information necessary to create the databas
 
 ## How to run the test suite
 
+Presumes: you have a copy of an NSL database
+Preparation - run:  rails db:schema:dump to produce db/structure.sql
+Preparation - edit: db/structure.sql to remove min/max constraints on nsl_global_seq
+
 Create a test database, load the sql structure, run tests: 
     createdb -O nsldev ned_test
     RAILS_ENV=test rake db:structure:load 
