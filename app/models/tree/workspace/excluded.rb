@@ -26,6 +26,7 @@ class Tree::Workspace::Excluded < ActiveType::Object
     payload = { taxonUri: element_link,
                 excluded: excluded }
     raise errors.full_messages.first unless valid?
+
     logger.info "EXCLUDED UPDATE calling #{url} WITH PAYLOAD: #{payload}"
 
     RestClient.post(url, payload.to_json,

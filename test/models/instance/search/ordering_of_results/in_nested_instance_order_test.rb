@@ -40,18 +40,18 @@ class InNestedInstanceOrderTest < ActiveSupport::TestCase
     )
   end
 
-  # Todo: revise after ordering code changes
+  # TODO: revise after ordering code changes
   test "instances in nested instance type order" do
     run_query
     test1
-    #test2
+    # test2
   end
 
   def run_query
     @results = Instance.joins(:instance_type, :name, :reference)
-                       .joins('inner join name_status ns on name.name_status_id = ns.id')
-                       .joins('inner join instance cites on instance.cites_id = cites.id')
-                       .joins('inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id')
+                       .joins("inner join name_status ns on name.name_status_id = ns.id")
+                       .joins("inner join instance cites on instance.cites_id = cites.id")
+                       .joins("inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
                        .in_nested_instance_type_order
                        .where(
                          instance_type: {
@@ -68,27 +68,27 @@ class InNestedInstanceOrderTest < ActiveSupport::TestCase
     # end
   end
 
-#  Expected set (but not expected order)
-#  0: basionym: Metrosideros costata Gaertn. - not taxonomic
-#  1: basionym: name in secondary ref - not taxonomic
-#  2: common name: nothing - not taxonomic
-#  3: common name: Rusty Gum - not taxonomic
-#  4: doubtful nomenclatural synonym: name one for eflora - not taxonomic
-#  5: doubtful pro parte taxonomic synonym: name one for eflora - taxonomic
-#  6: doubtful taxonomic synonym: name one for eflora - taxonomic
-#  7: nomenclatural synonym: Metrosideros costata Gaertn. - not taxonomic
-#  8: nomenclatural synonym: Metrosideros costata - not taxonomic
-#  9: pro parte nomenclatural synonym: name one for eflora - not taxonomic
-#  10: taxonomic synonym: Angophora lanceolata - taxonomic
-#  11: vernacular name: Rusty Gum - not taxonomic
+  #  Expected set (but not expected order)
+  #  0: basionym: Metrosideros costata Gaertn. - not taxonomic
+  #  1: basionym: name in secondary ref - not taxonomic
+  #  2: common name: nothing - not taxonomic
+  #  3: common name: Rusty Gum - not taxonomic
+  #  4: doubtful nomenclatural synonym: name one for eflora - not taxonomic
+  #  5: doubtful pro parte taxonomic synonym: name one for eflora - taxonomic
+  #  6: doubtful taxonomic synonym: name one for eflora - taxonomic
+  #  7: nomenclatural synonym: Metrosideros costata Gaertn. - not taxonomic
+  #  8: nomenclatural synonym: Metrosideros costata - not taxonomic
+  #  9: pro parte nomenclatural synonym: name one for eflora - not taxonomic
+  #  10: taxonomic synonym: Angophora lanceolata - taxonomic
+  #  11: vernacular name: Rusty Gum - not taxonomic
 
   def test1
     assert_with_args(@results, 0, "taxonomic synonym")
     assert_with_args(@results, 1, "basionym")
-    #assert_with_args(@results, 2, "doubtful nomenclatural synonym")
-    #assert_with_args(@results, 3, "doubtful pro parte taxonomic synonym")
-    #assert_with_args(@results, 4, "doubtful taxonomic synonym")
-    #assert_with_args(@results, 5, "nomenclatural synonym")
+    # assert_with_args(@results, 2, "doubtful nomenclatural synonym")
+    # assert_with_args(@results, 3, "doubtful pro parte taxonomic synonym")
+    # assert_with_args(@results, 4, "doubtful taxonomic synonym")
+    # assert_with_args(@results, 5, "nomenclatural synonym")
   end
 
   def test2

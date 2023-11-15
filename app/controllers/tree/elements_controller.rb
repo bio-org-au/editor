@@ -50,7 +50,7 @@ class Tree::ElementsController < ApplicationController
     # comment part of the schema
     find_tree_element # Pick up refreshed data from database to avoid overwrite
     @comment_message, comment_refresh = @tree_element.update_comment(
-      tree_element_params[:comment_value].gsub(/\n/, " ").strip,
+      tree_element_params[:comment_value].gsub("\n", " ").strip,
       @current_user.username
     )
     @refresh = dist_refresh || comment_refresh

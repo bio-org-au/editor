@@ -83,7 +83,7 @@ class Search::Reference::DefinedQuery::Predicate
   end
 
   def build_predicate(rule)
-    if @multiple_values && @value.split(/,/).size > 1
+    if @multiple_values && @value.split(",").size > 1
       rule[:multiple_values_where_clause]
     else
       build_scalar_predicate(rule)
@@ -102,13 +102,13 @@ class Search::Reference::DefinedQuery::Predicate
     if rule[:not_exists_clause].present?
       rule[:not_exists_clause]
     else
-      rule[:where_clause].gsub(/= \?/, "is null")
-                         .gsub(/like lower\(\?\)/, "is null")
+      rule[:where_clause].gsub("= ?", "is null")
+                         .gsub("like lower(?)", "is null")
     end
   end
 
   def build_canon_value(val)
-    if @multiple_values && @value.split(/,/).size > 1
+    if @multiple_values && @value.split(",").size > 1
       val.split(",").collect(&:strip)
     elsif @leave_asterisks
       val

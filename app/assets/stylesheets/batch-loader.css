@@ -71,7 +71,8 @@ table tr.review-result.taxonomy-comment.showing-details td a span.review.loader-
   padding: 0 0.2em 0 0.2em;
 }
 
-.review.loader-name.remark-to-reviewers {
+.review.loader-name.remark-to-reviewers,
+table#search-results-table tr.showing-details td span.review.loader-name.remark-to-reviewers a {
   background-color: yellow;
   font-size: 9pt;
   color: black;

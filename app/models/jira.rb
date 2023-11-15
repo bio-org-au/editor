@@ -16,34 +16,35 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Jira 
+class Jira
   attr_reader :key, :status
-  URI = "https://ibis-cloud.atlassian.net/rest/api/latest/issue/"
-  FIELDS= "fields=status", 
 
-  def initialize(key)
-    @key = key
-    @error = false
-    @status = call_api
-  end
+  URI = "https://ibis-cloud.atlassian.net/rest/api/latest/issue/"
+  FIELDS = "fields=status",
+
+           def initialize(key)
+             @key = key
+             @error = false
+             @status = call_api
+           end
 
   def timeout
-    Rails.configuration.try('jira_api_timeout') || 10.minute
+    Rails.configuration.try("jira_api_timeout") || 10.minute
   end
 
   def call_api
     Rails.cache.fetch(@key, expires_in: timeout) do
       Rails.logger.debug("Cache block executing for key: #{@key}")
       @response = RestClient.get("#{URI}#{@key}?fields=status",
-                     {:Authorization => "Basic #{api_key}"})
-      JSON.parse(@response)['fields']['status']['name'] unless @error
-  end
-  rescue => e
+                                 { Authorization: "Basic #{api_key}" })
+      JSON.parse(@response)["fields"]["status"]["name"] unless @error
+    end
+  rescue StandardError => e
     @error = true
     Rails.logger.error(e.to_s)
   end
 
   def api_key
-    Rails.configuration.try('jira_key')
+    Rails.configuration.try("jira_key")
   end
 end

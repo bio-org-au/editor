@@ -29,7 +29,7 @@ class ForFullCitationWithNameRefYearPageTest < ActiveSupport::TestCase
       names(:a_species).id
     )
     assert typeahead.results.instance_of?(Array), "Results should be an array."
-    assert typeahead.results.size.zero?,
+    assert typeahead.results.empty?,
            "No results expected but also no exception should be thrown."
   end
 end

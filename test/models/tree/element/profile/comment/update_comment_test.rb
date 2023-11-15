@@ -23,7 +23,7 @@ class UpdateCommentTest < ActiveSupport::TestCase
     original_updated_at = @te.updated_at
     assert_nil(@te.profile, "Expect no profile to start this test")
     assert_nil(@te.comment, "Expect no profile comment to start this test")
-    comment, refresh = @te.update_comment(new_comment, "np2nncuser")
+    @te.update_comment(new_comment, "np2nncuser")
     te_changed = Tree::Element.find(@te.id)
     assert_equal(te_changed.comment_value, new_comment)
     assert_not_equal(original_updated_at, te_changed.updated_at)
@@ -38,7 +38,7 @@ class UpdateCommentTest < ActiveSupport::TestCase
     original_updated_at = @te.updated_at
     assert_nil(@te.profile, "Expect no profile to start this test")
     assert_nil(@te.comment, "Expect no profile comment to start this test")
-    comment, refresh = @te.update_comment(new_comment, "unc2nnvuser")
+    @te.update_comment(new_comment, "unc2nnvuser")
     te_changed = Tree::Element.find(@te.id)
     assert_equal(te_changed.comment_value, new_comment)
     assert_not_equal(original_updated_at, te_changed.updated_at)
@@ -53,7 +53,7 @@ class UpdateCommentTest < ActiveSupport::TestCase
     original_updated_at = @te.updated_at
     assert_not_nil(@te.profile, "Expect profile to exist to start this test")
     assert_not_nil(@te.comment, "Expect profile comment to exist to start this test")
-    comment, refresh = @te.update_comment(new_comment, "unnc2nvuser")
+    @te.update_comment(new_comment, "unnc2nvuser")
     te_changed = Tree::Element.find(@te.id)
     assert_nil(te_changed.comment_value)
     assert_not_equal(original_updated_at, te_changed.updated_at)
@@ -68,7 +68,7 @@ class UpdateCommentTest < ActiveSupport::TestCase
     original_updated_at = @te.updated_at
     assert_nil(@te.profile, "Expect no profile to start this test")
     assert_nil(@te.comment, "Expect profile comment to be null to start this test")
-    comment, refresh = @te.update_comment(new_comment, "nncuser")
+    @te.update_comment(new_comment, "nncuser")
     te_changed = Tree::Element.find(@te.id)
     assert_nil(te_changed.comment_value)
     assert_equal(original_updated_at, te_changed.updated_at)
@@ -83,7 +83,7 @@ class UpdateCommentTest < ActiveSupport::TestCase
     original_updated_at = @te.updated_at
     assert_not_nil(@te.profile, "Expect profile to exist to start this test")
     assert_not_nil(@te.comment, "Expect profile comment to exist to start this test")
-    comment, refresh = @te.update_comment(new_comment, "nncuser")
+    @te.update_comment(new_comment, "nncuser")
     te_changed = Tree::Element.find(@te.id)
     assert_equal(new_comment, te_changed.comment_value)
     assert_not_equal(original_updated_at, te_changed.updated_at)
@@ -98,7 +98,7 @@ class UpdateCommentTest < ActiveSupport::TestCase
     assert_not_nil(@te.profile, "Expect profile to exist to start this test")
     assert_not_nil(@te.comment, "Expect profile comment to exist to start this test")
     new_comment = @te.comment_value
-    comment, refresh = @te.update_comment(new_comment, "unnc2uvuser")
+    @te.update_comment(new_comment, "unnc2uvuser")
     te_changed = Tree::Element.find(@te.id)
     assert_equal(new_comment, te_changed.comment_value)
     assert_equal(original_updated_at, te_changed.updated_at)

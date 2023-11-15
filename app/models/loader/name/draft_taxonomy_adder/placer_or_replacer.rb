@@ -46,8 +46,8 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
         debug "No instance, therefore cannot place this on the Taxonomy."
       elsif preferred_match.drafted?
         debug "Stopping because already drafted."
-      elsif  @draft.name_in_version(preferred_match.name.parent).blank?
-        raise 'No parent on tree, cannot proceed'
+      elsif @draft.name_in_version(preferred_match.name.parent).blank?
+        raise "No parent on tree, cannot proceed"
       else
         @tree_version_element = @draft.name_in_version(preferred_match.name)
         if @tree_version_element.present?
@@ -65,7 +65,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
     @error = json_error(e)
     Rails.logger.error("Error from Services placing/replacing on taxonomy: #{@loader_name.simple_name}, ##{@loader_name.id}: #{@error}")
     log_to_table("<span class='red'>Error from Services placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{@error}")
-  rescue => e
+  rescue StandardError => e
     @placed_count = 0
     @errors = 1
     Rails.logger.error("PlaceOrReplace: Error (non-Services) placing or replacing loader_name on taxonomy #{e.message}")

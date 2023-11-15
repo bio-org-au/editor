@@ -5,7 +5,7 @@
     >
     <td class="width-5-percent filler concept-note-indent">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     <td class="min-with-90-percent width-90-percent max-width-90-percent" colspan="4">
-       <%= search_result[:payload] %>
+      <%= sanitize search_result[:payload], tags: %w(a i br), attributes: %w(href class) %>
     </td>
 </tr>
 

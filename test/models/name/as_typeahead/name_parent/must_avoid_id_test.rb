@@ -38,7 +38,7 @@ class NameParentSuggestionsMustAvoidIdTest < ActiveSupport::TestCase
                                        rank_id: name_ranks(:unranked).id)
     assert(typeahead.suggestions.is_a?(Array),
            "SUggestions should be an array")
-    assert(typeahead.suggestions.size.zero?,
+    assert(typeahead.suggestions.empty?,
            "Suggestions for 'angophora costata' should have no elements
            since it is told to avoid Angophora costata's id.")
   end

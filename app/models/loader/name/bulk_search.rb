@@ -21,8 +21,8 @@
 class Loader::Name::BulkSearch
   attr_reader :search
 
-  SPLITTER = ';;;;;;'
-  DEFAULT_DIRECTIVE = 'simple-name:'
+  SPLITTER = ";;;;;;"
+  DEFAULT_DIRECTIVE = "simple-name:"
 
   def initialize(search_s, batch_id, accepted_or_excluded_only = false)
     @batch_id = batch_id
@@ -45,7 +45,7 @@ class Loader::Name::BulkSearch
   end
 
   def remove_empty_default_directive(array)
-    array.delete_if{|e| e.match(/\A#{DEFAULT_DIRECTIVE} *\z/)}
+    array.delete_if { |e| e.match(/\A#{DEFAULT_DIRECTIVE} *\z/) }
     array
   end
 
@@ -61,25 +61,25 @@ class Loader::Name::BulkSearch
   end
 
   def add_simple_name_clause
-    sn_directive = @search_a.select {|i| i[/simple-name:/]}.first
+    sn_directive = @search_a.select { |i| i[/simple-name:/] }.first
     sn_string = sn_directive.sub(/\Asimple-name: */i, "").strip
     @core_query.simple_name_search(sn_string)
   end
 
   def add_family_clause
-    family_directive = @search_a.select {|i| i[/family:/]}.first
+    family_directive = @search_a.select { |i| i[/family:/] }.first
     family_string = family_directive.sub(/\Afamily: */i, "").strip
     @core_query.family_string_search(family_string)
   end
 
   def add_acc_clause
-    acc_directive = @search_a.select {|i| i[/acc:/]}.first
+    acc_directive = @search_a.select { |i| i[/acc:/] }.first
     acc_string = acc_directive.sub(/\Aacc: */i, "").strip
     @core_query.acc_string_search(acc_string)
   end
 
   def add_exc_clause
-    exc_directive = @search_a.select {|i| i[/exc:/]}.first
+    exc_directive = @search_a.select { |i| i[/exc:/] }.first
     exc_string = exc_directive.sub(/\Aexc: */i, "").strip
     @core_query.exc_string_search(exc_string)
   end

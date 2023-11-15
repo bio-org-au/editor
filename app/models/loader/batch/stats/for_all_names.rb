@@ -20,7 +20,7 @@
 # Returns a hash
 class Loader::Batch::Stats::ForAllNames
   def initialize(name_string, batch_id)
-    @name_string = name_string.downcase.gsub(/\*/, "%")
+    @name_string = name_string.downcase.gsub("*", "%")
     @batch_id = batch_id
     core_search
     @report = {}
@@ -73,17 +73,17 @@ class Loader::Batch::Stats::ForAllNames
   end
 
   def old_core_search
-    @core_search = 
-    if @name_string.match(/\Afamily:/i)
-      family_string = @name_string.sub(/\Afamily: */i, "")
-      Loader::Name.family_string_search(family_string)
-                  .joins(:loader_batch)
-                  .where(loader_batch: { id: @batch_id })
-    else
-      Loader::Name.bulk_operations_search(@name_string)
-                  .joins(:loader_batch)
-                  .where(loader_batch: { id: @batch_id })
-    end
+    @core_search =
+      if @name_string.match(/\Afamily:/i)
+        family_string = @name_string.sub(/\Afamily: */i, "")
+        Loader::Name.family_string_search(family_string)
+                    .joins(:loader_batch)
+                    .where(loader_batch: { id: @batch_id })
+      else
+        Loader::Name.bulk_operations_search(@name_string)
+                    .joins(:loader_batch)
+                    .where(loader_batch: { id: @batch_id })
+      end
   end
 
   def new_core_search
@@ -122,6 +122,6 @@ class Loader::Batch::Stats::ForAllNames
     @core_search.where("record_type not in " +
                       " ('accepted','excluded','synonym','misapplied'," +
                       "'heading')")
-               .count
+                .count
   end
 end

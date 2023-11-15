@@ -44,7 +44,7 @@ class Audit::DefinedQuery::WhereClause::Predicate
       canonical_field = canon_field(field)
       canonical_value = value.blank? ? "" : canon_value(value)
       if ALLOWS_MULTIPLE_VALUES.key?(canonical_field) &&
-         canonical_value.split(/,/).size > 1
+         canonical_value.split(",").size > 1
       elsif RECORD_TYPE_ASSERTIONS.key?("#{@record_type}-#{canonical_field}")
         @sql = @sql.where(RECORD_TYPE_ASSERTIONS["#{@record_type}-#{canonical_field}"])
       elsif WHERE_ASSERTION_HASH.key?(canonical_field)

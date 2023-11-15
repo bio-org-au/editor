@@ -202,7 +202,7 @@ class NamesController < ApplicationController
     @message = "#{count} transferred"
     render "names/de_duplication/transfer_dependents/success"
   rescue StandardError => e
-    @message = e.to_s.sub(/uncaught throw/, "").sub(/\A *"/, "").sub(/" *\z/, "")
+    @message = e.to_s.sub("uncaught throw", "").sub(/\A *"/, "").sub(/" *\z/, "")
     render "names/de_duplication/transfer_dependents/error"
   end
 
@@ -212,7 +212,7 @@ class NamesController < ApplicationController
     @message = "#{count} transferred"
     render "names/de_duplication/transfer_all_dependents/success"
   rescue StandardError => e
-    @message = e.to_s.sub(/uncaught throw/, "").sub(/\A *"/, "").sub(/" *\z/, "")
+    @message = e.to_s.sub("uncaught throw", "").sub(/\A *"/, "").sub(/" *\z/, "")
     render "names/de_duplication/transfer_all_dependents/error"
   end
 

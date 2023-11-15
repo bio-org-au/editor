@@ -41,15 +41,15 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
 
   def parent_no_standalone
     log_to_table(declined_entry(
-          "parent has no standalone instance so cannot proceed"
-        ))
+                   "parent has no standalone instance so cannot proceed"
+                 ))
     Constants::DECLINED
   end
 
   def already_noted
     log_to_table(declined_entry(
-          "relationship instance already noted (##{@match.relationship_instance_id})"
-        ))
+                   "relationship instance already noted (##{@match.relationship_instance_id})"
+                 ))
     Constants::DECLINED
   end
 

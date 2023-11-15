@@ -20,7 +20,7 @@
 class Loader::Name < ActiveRecord::Base
   include PreferredMatch
   include SortKeyBulkChanges
-  NA = 'N/A'
+  NA = "N/A"
 
   strip_attributes
   self.table_name = "loader_name"
@@ -66,7 +66,7 @@ class Loader::Name < ActiveRecord::Base
 
   # before_create :set_defaults # rails 6 this was not being called before the validations
   before_validation :set_in_batch_note_defaults
-  before_save :compress_whitespace, :set_sort_key
+  before_save :compress_whitespace, :consider_sort_key
 
   def fresh?
     created_at > 1.hour.ago
@@ -95,12 +95,12 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def set_in_batch_note_defaults
-    if record_type == 'in-batch-note'
-      self.simple_name_as_loaded = NA
-      self.family = NA if family.blank?
-      self.simple_name = NA if simple_name.blank?
-      self.full_name = self.simple_name
-    end
+    return unless record_type == "in-batch-note"
+
+    self.simple_name_as_loaded = NA
+    self.family = NA if family.blank?
+    self.simple_name = NA if simple_name.blank?
+    self.full_name = simple_name
   end
 
   def compress_whitespace
@@ -108,32 +108,40 @@ class Loader::Name < ActiveRecord::Base
     full_name.squish!
   end
 
+  def consider_sort_key
+    if loader_batch.use_sort_key_for_ordering
+      set_sort_key
+    else
+      self.sort_key = nil
+    end
+  end
+
   def set_sort_key
     normalise_sort_key unless sort_key.blank?
     if sort_key.blank?
       case record_type
-      when 'accepted'
+      when "accepted"
         self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase}"
-      when 'excluded'
+      when "excluded"
         self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase}"
-      when 'synonym'
+      when "synonym"
         self.sort_key = "#{parent.sort_key}.a-syn.#{synonym_sort_key_tail}"
-      when 'misapplied'
+      when "misapplied"
         self.sort_key = "#{parent.sort_key}.b-mis.z-mis"
-      when 'heading'
-        if rank.blank? || rank.downcase == 'family'
-          self.sort_key = "#{family.downcase}.family"
-        else
-          self.sort_key = "aaa-rank-#{rank}-heading"
-        end
-      when 'in-batch-note'
+      when "heading"
+        self.sort_key = if rank.blank? || rank.downcase == "family"
+                          "#{family.downcase}.family"
+                        else
+                          "aaa-rank-#{rank}-heading"
+                        end
+      when "in-batch-note"
         self.sort_key = in_batch_note_sort_key if sort_key.blank?
       else
         self.sort_key = "aaaaaa-unexpected-record-type-#{record_type}"
       end
     end
-  rescue => e
-    puts e.to_s
+  rescue StandardError => e
+    puts e
     puts "set_sort_key: record_type: #{record_type}; rank: #{rank}; family: #{family}"
     raise
   end
@@ -143,10 +151,9 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def in_batch_note_sort_key
-    case
-    when family == NA && simple_name == NA
-      'aaaa-in-batch-note'
-    when simple_name == NA
+    if family == NA && simple_name == NA
+      "aaaa-in-batch-note"
+    elsif simple_name == NA
       "#{family.downcase}.family.a.in-batch-note"
     else
       "#{family.downcase}.family.accepted.#{simple_name.downcase}.x.in-batch-note"
@@ -155,25 +162,25 @@ class Loader::Name < ActiveRecord::Base
 
   def synonym_sort_key_tail
     case synonym_type
-    when "isonym" then
+    when "isonym"
       "a-isonym"
-    when "orthographic variant" then
+    when "orthographic variant"
       "b-orth-var"
-    when "basionym" then
+    when "basionym"
       "c-basionym"
-    when "replaced synonym" then
+    when "replaced synonym"
       "d-replaced-syn"
-    when "alternative name" then
+    when "alternative name"
       "e-alt-name"
-    when "nomenclatural synonym" then
+    when "nomenclatural synonym"
       "f-nom-syn"
-    when "taxonomic synonym" then
+    when "taxonomic synonym"
       "g-tax-syn"
-    when "doubtful pro parte taxonomic synonym" then
+    when "doubtful pro parte taxonomic synonym"
       "g-tax-syn"
-    when "doubtful-taxonomic-synonym" then
+    when "doubtful-taxonomic-synonym"
       "g-tax-syn"
-    when "pro parte taxonomic synonym" then
+    when "pro parte taxonomic synonym"
       "g-tax-syn"
     else
       "x-is-unknown-#{synonym_type}"
@@ -267,8 +274,7 @@ class Loader::Name < ActiveRecord::Base
 
   def names_simple_or_full_name_matching
     ::Name.where(["simple_name = ? or full_name = ?",
-                  simple_name, simple_name]
-                )
+                  simple_name, simple_name])
           .where(duplicate_of_id: nil)
           .joins(:name_type).where(name_type: { scientific: true })
           .order("simple_name, name.id")
@@ -276,8 +282,7 @@ class Loader::Name < ActiveRecord::Base
 
   def names_simple_or_full_name_matching_allow_for_ms
     ::Name.where(["simple_name = ? or full_name = ? or simple_name = ? or full_name = ?",
-                  simple_name, simple_name, simple_name + ' MS', simple_name + ' MS']
-                )
+                  simple_name, simple_name, simple_name + " MS", simple_name + " MS"])
           .where(duplicate_of_id: nil)
           .joins(:name_type).where(name_type: { scientific: true })
           .order("simple_name, name.id")
@@ -295,8 +300,8 @@ class Loader::Name < ActiveRecord::Base
 
   def matches(type: :strict)
     if type == :strict
-      #names_simple_or_full_name_matching
-      #names_unaccent_simple_name_matching
+      # names_simple_or_full_name_matching
+      # names_unaccent_simple_name_matching # 20 x slower
       names_simple_or_full_name_matching_allow_for_ms
     elsif type == :cultivar
       matches_tweaked_for_cultivar
@@ -406,36 +411,36 @@ class Loader::Name < ActiveRecord::Base
 
   # This is different to the default name search
   def self.bulk_operations_search(name_string)
-    ns = name_string.downcase.gsub(/\*/, "%")
+    ns = name_string.downcase.gsub("*", "%")
     Loader::Name.where([Constants::BULK_OPERATIONS_WHERE_FRAG,
                         ns, ns, ns, ns, ns, ns])
   end
 
   def self.simple_name_search(name_string)
-    self.bulk_operations_search(name_string)
+    bulk_operations_search(name_string)
   end
 
   # This is used in bulk jobs
   def self.family_string_search(family_string)
-    fam = family_string.downcase.gsub(/\*/, "%")
+    fam = family_string.downcase.gsub("*", "%")
     Loader::Name.where(["lower(family) like lower(?) ", fam])
   end
 
   # This is used in bulk jobs
   def self.acc_string_search(acc_string)
-    name = acc_string.downcase.gsub(/\*/, "%")
+    name = acc_string.downcase.gsub("*", "%")
     Loader::Name.where(["(record_type = 'accepted' and lower(simple_name) like lower(?))  or
-                        (exists (select null from loader_name parent 
+                        (exists (select null from loader_name parent
                                   where parent.id = loader_name.parent_id
                                     and parent.record_type = 'accepted'
                                     and lower(parent.simple_name) like lower(?)))", name, name])
   end
 
-  # This is used in bulk jobs 
+  # This is used in bulk jobs
   def self.exc_string_search(exc_string)
-    name = exc_string.downcase.gsub(/\*/, "%")
+    name = exc_string.downcase.gsub("*", "%")
     Loader::Name.where(["(record_type = 'excluded' and lower(simple_name) like lower(?))  or
-                        (exists (select null from loader_name parent 
+                        (exists (select null from loader_name parent
                                   where parent.id = loader_name.parent_id
                                     and parent.record_type = 'excluded'
                                     and lower(parent.simple_name) like lower(?)))", name, name])
@@ -485,14 +490,18 @@ class Loader::Name < ActiveRecord::Base
   def new_synonym(base_seq: seq)
     loader_name = new_child(base_seq)
     loader_name.record_type = "synonym"
-    loader_name.sort_key = sort_key + '.a-synonym.'+'user-to-complete'
+    unless sort_key.blank?
+      loader_name.sort_key = sort_key + ".a-synonym." + "user-to-complete"
+    end
     loader_name
   end
 
   def new_misapp(base_seq: seq)
     loader_name = new_child(base_seq)
     loader_name.record_type = "misapplied"
-    loader_name.sort_key = sort_key + '.b-misapp.'+'user-to-complete'
+    unless sort_key.blank?
+      loader_name.sort_key = sort_key + ".b-misapp." + "user-to-complete"
+    end
     loader_name
   end
 
@@ -535,17 +544,17 @@ class Loader::Name < ActiveRecord::Base
   end
 
   def misapp_html
-    if misapp? && original_text.present?
-      Rails::Html::FullSanitizer.new.sanitize(original_text)
-    end
+    return unless misapp? && original_text.present?
+
+    Rails::Html::FullSanitizer.new.sanitize(original_text)
   end
 
   def validate_family_record
     return if rank.blank?
-    return unless rank.downcase == 'family'
-    unless simple_name == family
-      errors.add(:simple_name, "must match family name for a family")
-    end
-  end
+    return unless rank.downcase == "family"
 
+    return if simple_name == family
+
+    errors.add(:simple_name, "must match family name for a family")
+  end
 end

@@ -37,10 +37,11 @@ class Loader::NamesController < ApplicationController
   alias tab show
 
   def new
-    @anchor =  Loader::Name.find(params[:loader_name_id]) unless params[:loader_name_id].blank?
+    @anchor = Loader::Name.find(params[:loader_name_id]) unless params[:loader_name_id].blank?
     @loader_name = ::Loader::Name.new
-    @loader_name.simple_name = nil
-    @loader_name.full_name = nil
+    @loader_name.simple_name = @loader_name.full_name = nil
+    @loader_name.record_type = "accepted"
+    @loader_name.rank = "species"
     @loader_name.seq = @anchor.seq + 1 unless @anchor.blank?
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
@@ -63,7 +64,7 @@ class Loader::NamesController < ApplicationController
     @loader_name.simple_name = nil
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    @loader_name.record_type = 'heading'
+    @loader_name.record_type = "heading"
     respond_to do |format|
       format.html {}
       format.js {}
@@ -75,7 +76,7 @@ class Loader::NamesController < ApplicationController
     @loader_name.simple_name = @loader_name.full_name = nil
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    @loader_name.record_type = 'in-batch-note'
+    @loader_name.record_type = "in-batch-note"
     respond_to do |format|
       format.html {}
       format.js {}
@@ -168,7 +169,8 @@ class Loader::NamesController < ApplicationController
   end
 
   def create
-    raise 'Please set a default batch' if session[:default_loader_batch_name].blank?
+    raise "Please set a default batch" if session[:default_loader_batch_name].blank?
+
     @loader_name = Loader::Name.create(loader_name_params, current_user.username)
     render "create"
   rescue StandardError => e

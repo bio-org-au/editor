@@ -56,8 +56,8 @@ class Loader::Name::MakeOneMatchTask
   end
 
   def record_failure(msg)
-    msg.sub!(/uncaught throw /, "")
-    msg.gsub!(/"/, "")
+    msg.sub!("uncaught throw ", "")
+    msg.gsub!('"', "")
     msg.sub!(/^Failing/, "")
     Rails.logger.error("Loader::Name::AsPreferredMatcher failure: #{msg}")
     log("Loader::Name::AsPreferredMatcher failure: #{msg}")

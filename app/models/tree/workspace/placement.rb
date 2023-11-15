@@ -37,6 +37,7 @@ class Tree::Workspace::Placement < ActiveType::Object
                 profile: profile,
                 versionId: version_id }
     raise errors.full_messages.first unless valid?
+
     logger.info "PLACEMENT calling #{url} WITH PAYLOAD: #{payload}"
 
     RestClient.put(url, payload.to_json,

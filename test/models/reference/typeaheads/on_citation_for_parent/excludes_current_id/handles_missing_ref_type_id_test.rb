@@ -25,7 +25,7 @@ class TypeaheadsOnCit4ParHandlesMissingParamRefType < ActiveSupport::TestCase
     typeahead = Reference::AsTypeahead::OnCitationForParent.new("simple",
                                                                 curr.id,
                                                                 "")
-    assert typeahead.results.size.zero?,
+    assert typeahead.results.empty?,
            "Should be no results for missing reference type"
   end
 end

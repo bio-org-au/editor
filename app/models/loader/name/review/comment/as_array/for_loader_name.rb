@@ -27,7 +27,7 @@
 class Loader::Name::Review::Comment::AsArray::ForLoaderName < Array
   attr_reader :results
 
-  def initialize(loader_name, context = '%')
+  def initialize(loader_name, context = "%")
     debug("init #{loader_name.simple_name}")
     @results = []
     @already_shown = []
@@ -39,7 +39,7 @@ class Loader::Name::Review::Comment::AsArray::ForLoaderName < Array
 
   def debug(s)
     Rails.logger
-      .debug("Loader::Name::Review::Comment::AsArray::ForLoaderName: #{s}")
+         .debug("Loader::Name::Review::Comment::AsArray::ForLoaderName: #{s}")
   end
 
   def find_comments
@@ -54,7 +54,7 @@ class Loader::Name::Review::Comment::AsArray::ForLoaderName < Array
             .where(["lower(name_review_comment.context) like lower(?)", @context])
             .includes(:batch_reviewer)
             .includes(:name_review_comment_type)
-            .order('name_review_comment_type.name, name_review_comment.created_at')
+            .order("name_review_comment_type.name, name_review_comment.created_at")
   end
 
   def find_comments_for_loader_name
@@ -63,4 +63,3 @@ class Loader::Name::Review::Comment::AsArray::ForLoaderName < Array
     end
   end
 end
-

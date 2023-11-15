@@ -97,7 +97,7 @@ class InstanceATest < ActiveSupport::TestCase
     synonymy_instance =
       instances(:metrosideros_costata_is_basionym_of_angophora_costata)
     assert_not synonymy_instance.name_id == names(:angophora_costata)
-    synonymy_instance.name_id =  names(:angophora_costata).id
+    synonymy_instance.name_id = names(:angophora_costata).id
     assert_not synonymy_instance.valid?, "should not be valid"
   end
 end

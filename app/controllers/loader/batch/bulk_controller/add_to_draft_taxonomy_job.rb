@@ -65,7 +65,9 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
   end
 
   def log_finish
-    entry = "<b>FINISHED</b>: add to draft taxonomy records attempted: #{@attempts}; "
+    entry = "<b>FINISHED</b>: add to draft taxonomy for batch: "
+    entry += "#{@batch.name} accepted taxa matching #{@search_string}"
+    entry += "; records attempted: #{@attempts}; "
     entry += "records added: #{@adds}; "
     entry += "declined: #{@declines}; errors: #{@errors}"
     log(entry)

@@ -41,7 +41,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef
   rescue StandardError => e
     Rails.logger.error("#{self.class}#create: #{e}")
     Rails.logger.error e.backtrace.join("\n")
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     raise
   end
 
@@ -81,7 +81,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::UseDefaultRef
   end
 
   def standalone_instance_already_noted?
-    return true unless @match.standalone_instance_id.blank?
+    true unless @match.standalone_instance_id.blank?
   end
 
   def xstandalone_instance_for_default_ref?

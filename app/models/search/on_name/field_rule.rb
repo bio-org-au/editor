@@ -23,6 +23,6 @@ class Search::OnName::FieldRule
   end
 
   def self.load_rules
-    @rules = YAML.load(File.read("config/name-searches.yml"))
+    @rules = YAML.load_file("config/name-searches.yml")
   end
 end

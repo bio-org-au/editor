@@ -22,7 +22,7 @@ require "test_helper"
 class CopyOfItselfTest < ActiveSupport::TestCase
   test "cannot make copy of itself" do
     reference = Reference.first
-    copy = Reference.new reference.attributes
+    Reference.new reference.attributes
     assert_raises(ActiveRecord::RecordInvalid) { reference.save! }
   end
 end

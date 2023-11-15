@@ -1,9 +1,6 @@
-
-
 # Always show concept-notes and distributions
 # Optionally show review comments
-class Search::Loader::Name::RewriteResultsShowingExtras 
-
+class Search::Loader::Name::RewriteResultsShowingExtras
   def initialize(results, show_review_comments)
     @show_review_comments = show_review_comments
     @results = results
@@ -16,20 +13,21 @@ class Search::Loader::Name::RewriteResultsShowingExtras
     @results.each do |rec|
       one_record(rec)
     end
+    flush_data_for_last_record
     @results_with_comments
   end
 
   private
 
   def one_record(rec)
-    top_level_record(rec) if ['accepted', 'excluded'].include? rec[:record_type]
-    push_preceding if ['in-batch-note', 'heading'].include? rec[:record_type]
+    top_level_record(rec) if %w[accepted excluded].include? rec[:record_type]
+    push_preceding if %w[in-batch-note heading].include? rec[:record_type]
     @results_with_comments << rec
     review_comments(rec) if @show_review_comments
   end
 
   def top_level_record(rec)
-    if @first_top_level_record then
+    if @first_top_level_record
       handle_first_top_level_record(rec)
     else
       handle_second_or_later_top_level_record(rec)
@@ -49,11 +47,15 @@ class Search::Loader::Name::RewriteResultsShowingExtras
   end
 
   def push_preceding
-    unless @previous_top_level_rec.nil?
-      concept_note_and_cn_comments(@previous_top_level_rec)
-      dist_and_dist_comments(@previous_top_level_rec)
-      @previous_top_level_rec = nil
-    end
+    return if @previous_top_level_rec.nil?
+
+    concept_note_and_cn_comments(@previous_top_level_rec)
+    dist_and_dist_comments(@previous_top_level_rec)
+    @previous_top_level_rec = nil
+  end
+
+  def flush_data_for_last_record
+    push_preceding
   end
 
   def dist_and_dist_comments(rec)
@@ -62,21 +64,21 @@ class Search::Loader::Name::RewriteResultsShowingExtras
   end
 
   def dist(rec)
-    unless rec['distribution'].blank?
-      dist = Hash.new
-      dist[:display_as] = 'Loader Name'
-      dist[:record_type] = 'distribution'
-      dist[:payload] = rec['distribution']
-      @results_with_comments << dist
-    end
+    return if rec["distribution"].blank?
+
+    dist = {}
+    dist[:display_as] = "Loader Name"
+    dist[:record_type] = "distribution"
+    dist[:payload] = rec["distribution"]
+    @results_with_comments << dist
   end
 
   def dist_comments(rec)
-    if @show_review_comments
-      dist_comments = Loader::Name::Review::Comment::AsArray::ForLoaderName
-                        .new(rec, 'distribution')
-      dist_comments.results.each { |i| @results_with_comments << i }
-    end
+    return unless @show_review_comments
+
+    dist_comments = Loader::Name::Review::Comment::AsArray::ForLoaderName
+                    .new(rec, "distribution")
+    dist_comments.results.each { |i| @results_with_comments << i }
   end
 
   def concept_note_and_cn_comments(rec)
@@ -85,30 +87,30 @@ class Search::Loader::Name::RewriteResultsShowingExtras
   end
 
   def concept_note(rec)
-    unless rec['comment'].blank?
-      h = Hash.new
-      h[:display_as] = 'Loader Name'
-      h[:record_type] = 'concept-note'
-      h[:payload] = rec['comment']
-      @results_with_comments << h
-    end
+    return if rec["comment"].blank?
+
+    h = {}
+    h[:display_as] = "Loader Name"
+    h[:record_type] = "concept-note"
+    h[:payload] = rec["comment"]
+    @results_with_comments << h
   end
 
   def cn_comments(rec)
-    if @show_review_comments
-      comments_query = Loader::Name::Review::Comment::AsArray::ForLoaderName
-                          .new(rec, 'concept-note')
-      comments_query.results.each { |i| @results_with_comments << i }
-    end
+    return unless @show_review_comments
+
+    comments_query = Loader::Name::Review::Comment::AsArray::ForLoaderName
+                     .new(rec, "concept-note")
+    comments_query.results.each { |i| @results_with_comments << i }
   end
 
   def review_comments(rec)
     comments_query = Loader::Name::Review::Comment::AsArray::ForLoaderName
-                      .new(rec, rec[:record_type])
+                     .new(rec, rec[:record_type])
     comments_query.results.each { |i| @results_with_comments << i }
   end
 
   def debug(s)
-    #Rails.logger.debug("========= #{s} =====================================")
+    # Rails.logger.debug("========= #{s} =====================================")
   end
 end

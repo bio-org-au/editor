@@ -26,6 +26,7 @@ class Tree::Workspace::Profile < ActiveType::Object
     payload = { taxonUri: element_link, profile: profile_data.profile_data }
 
     raise errors.full_messages.first unless valid?
+
     logger.info "PROFILE UPDATE calling #{url} WITH PAYLOAD: #{payload}"
 
     RestClient.post(url, payload.to_json,

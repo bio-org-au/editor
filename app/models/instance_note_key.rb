@@ -80,7 +80,7 @@ class InstanceNoteKey < ActiveRecord::Base
 
   def self.string_has_embedded_note_key?(str)
     if str.match(/#{NOTE_MATCHES}\z/i)
-      possible_key = str.sub(/#{NOTE_MATCHES}\z/i, "").gsub(/-/, " ")
+      possible_key = str.sub(/#{NOTE_MATCHES}\z/i, "").gsub("-", " ")
       where(["lower(name) = lower(?)", possible_key]).size == 1
     else
       false

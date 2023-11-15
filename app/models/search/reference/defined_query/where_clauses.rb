@@ -59,7 +59,7 @@ class Search::Reference::DefinedQuery::WhereClauses
   def add_field_clause(field, value)
     field_or_default = field.blank? ? DEFAULT_FIELD : field
     rule = Search::Reference::DefinedQuery::Predicate.new(field_or_default,
-                                              value)
+                                                          value)
     apply_rule(rule)
     apply_order(rule)
   end

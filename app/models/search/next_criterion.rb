@@ -27,7 +27,7 @@ class Search::NextCriterion
   end
 
   def get
-    string = @criteria_string.sub(/:/, ": ").sub(/:  /, ": ")
+    string = @criteria_string.sub(":", ": ").sub(":  ", ": ")
     @tokens = string.split(/ /)
     if first_is_a_field
       get_field

@@ -101,7 +101,7 @@ class OrchidsName < ActiveRecord::Base
   rescue StandardError => e
     logger.error("OrchidsName#create_standalone_instance: #{e}")
     logger.error e.backtrace.join("\n")
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     raise
   end
 

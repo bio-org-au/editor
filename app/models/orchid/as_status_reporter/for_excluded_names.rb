@@ -19,7 +19,7 @@
 #  We need to place Orchids on a draft tree.
 class Orchid::AsStatusReporter::ForExcludedNames
   def initialize(taxon_string)
-    @taxon_string = taxon_string.downcase.gsub(/\*/, "%")
+    @taxon_string = taxon_string.downcase.gsub("*", "%")
   end
 
   def report

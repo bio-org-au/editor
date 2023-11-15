@@ -63,7 +63,9 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
   end
 
   def log_finish
-    entry = "<b>FINISHED</b>: records attempted: #{@attempts}; "
+    entry = "<b>FINISHED</b>: create preferred matches for batch: "
+    entry += "#{@batch.name} loader names matching #{@search_string}; "
+    entry += "records attempted: #{@attempts}; "
     entry += "records created: #{@creates}; "
     entry += "declined: #{@declines}; errors: #{@errors}"
     log(entry)

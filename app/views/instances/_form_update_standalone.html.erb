@@ -42,9 +42,7 @@
                             class: "form-control width-50-percent #{'give-me-focus' unless focus_taken}",
                             title: "Select instance type", required: true, tabindex: increment_tab_index}) %>
     on page
-    <br>
-    <%= f.text_field :page, title: "Enter page details", tabindex: increment_tab_index %>
-    <br>
+    <%= f.text_field :page, class: 'form-control', title: "Enter page details", tabindex: increment_tab_index %>
     with verbatim name
     <br>
     <%= f.text_field :verbatim_name_string, class: "form-control", title: "Enter verbatim name", tabindex: increment_tab_index %>

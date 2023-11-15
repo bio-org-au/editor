@@ -19,6 +19,5 @@
 class HistoryController < ApplicationController
   before_action :hide_details, :empty_search
 
-  def history
-  end
+  def history; end
 end

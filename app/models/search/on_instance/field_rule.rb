@@ -318,7 +318,7 @@ from instance i
   def self.resolve(field)
     if InstanceNoteKey.string_has_embedded_note_key?(field)
       hash = {}
-      key = field.sub(/#{InstanceNoteKey::NOTE_MATCHES}/i, "").gsub(/-/, %( ))
+      key = field.sub(/#{InstanceNoteKey::NOTE_MATCHES}/i, "").gsub("-", %( ))
       hash[field] = { where_clause: %( exists (select null
                                  from instance_note
                                  where instance_id = instance.id

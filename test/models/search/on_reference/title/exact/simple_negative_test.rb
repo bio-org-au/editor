@@ -30,6 +30,6 @@ class SearchOnReferenceTitleExactSimpleNegativeTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
            "Results should be an ActiveRecord::Relation."
-    assert search.executed_query.results.size.zero?, "No results expected."
+    assert search.executed_query.results.empty?, "No results expected."
   end
 end

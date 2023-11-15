@@ -71,7 +71,7 @@ class Search::OnModel::Base
     @do_count_totals = list_query.do_count_totals
     consider_instances(parsed_request)
     consider_loader_name_extras(parsed_request)
-    if @do_count_totals then
+    if @do_count_totals
       @count = @results.size
       calculate_total
     else
@@ -104,12 +104,12 @@ class Search::OnModel::Base
   end
 
   def consider_loader_name_extras(parsed_request)
-    return unless parsed_request.target_model == 'Loader::Name'
+    return unless parsed_request.target_model == "Loader::Name"
     return unless parsed_request.print
 
     show_comments = parsed_request.show_loader_name_comments
     @results = Search::Loader::Name::RewriteResultsShowingExtras
-      .new(@results, show_comments).results
+               .new(@results, show_comments).results
   end
 
   def debug(s)

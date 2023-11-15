@@ -33,7 +33,7 @@ class TypeaheadsOnCitForDuplicateExcludesCurrentIdTest < ActiveSupport::TestCase
     typeahead_2 = Reference::AsTypeahead::OnCitationForDuplicate.new(
       "simple", curr_ref.id
     )
-    assert typeahead_2.results.size.zero?,
+    assert typeahead_2.results.empty?,
            "Should be no records found if current reference is excluded."
   end
 end

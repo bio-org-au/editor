@@ -117,14 +117,14 @@ class TreesController < ApplicationController
   def reports
     @diff_link = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id)
     @diff_link_raw = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id).gsub(
-      /embed=true/, "embed=false"
+      "embed=true", "embed=false"
     )
     @syn_link = Tree::AsServices.syn_link(@working_draft.tree.id)
-    @syn_link_raw = Tree::AsServices.syn_link(@working_draft.tree.id).gsub(/embed=true/, "embed=false")
+    @syn_link_raw = Tree::AsServices.syn_link(@working_draft.tree.id).gsub("embed=true", "embed=false")
     @val_link = Tree::AsServices.val_link(@working_draft.id)
-    @val_link_raw = Tree::AsServices.val_link(@working_draft.id).gsub(/embed=true/, "embed=false")
+    @val_link_raw = Tree::AsServices.val_link(@working_draft.id).gsub("embed=true", "embed=false")
     @val_syn_link = Tree::AsServices.val_syn_link(@working_draft.id)
-    @val_syn_link_raw = Tree::AsServices.val_syn_link(@working_draft.id).gsub(/embed=true/, "embed=false")
+    @val_syn_link_raw = Tree::AsServices.val_syn_link(@working_draft.id).gsub("embed=true", "embed=false")
   end
 
   def update_synonymy

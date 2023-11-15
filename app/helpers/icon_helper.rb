@@ -59,7 +59,7 @@ module IconHelper
   end
 
   def external_link_square_icon
-    editor_icon('external-link-square')
+    editor_icon("external-link-square")
   end
 
   def icon_content_class(icon, html_options = {})

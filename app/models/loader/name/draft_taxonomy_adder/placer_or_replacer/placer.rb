@@ -58,7 +58,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Placer
 
   def parent_tve(preferred_match)
     @draft.name_in_version(preferred_match.name.parent).element_link
-  rescue => e
+  rescue StandardError => e
     raise "Error identifying tree parent"
   end
 
@@ -91,7 +91,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Placer
   def log_to_table(payload)
     payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error("Couldn't log to bulk processing log table: #{e}")
   end
 end

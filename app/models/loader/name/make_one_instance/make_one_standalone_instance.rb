@@ -109,7 +109,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
   end
 
   def standalone_instance_already_noted?
-    return true unless @match.standalone_instance_id.blank?
+    true unless @match.standalone_instance_id.blank?
   end
 
   def log_to_table(payload)

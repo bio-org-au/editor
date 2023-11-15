@@ -39,14 +39,14 @@ class Loader::Name::Match < ActiveRecord::Base
   before_destroy :can_destroy?
 
   def misapp_pref_matches_from_only_one_name
-    return unless self.loader_name.misapplied?
+    return unless loader_name.misapplied?
 
     return if Loader::Name::Match.where(loader_name_id: loader_name_id)
                                  .where.not(name_id: name_id)
                                  .count == 0
 
     errors.add :base,
-      "Misapplications cannot select matches from more than one name"
+               "Misapplications cannot select matches from more than one name"
   end
 
   # how does this work when reversing?
@@ -129,7 +129,8 @@ class Loader::Name::Match < ActiveRecord::Base
   end
 
   def undo_taxonomic_choice
-    raise 'Cannot undo taxonomic choice once drafted to taxonomy' if drafted?
+    raise "Cannot undo taxonomic choice once drafted to taxonomy" if drafted?
+
     self.standalone_instance_id = nil
     self.standalone_instance_found = false
     self.standalone_instance_created = false
@@ -180,16 +181,17 @@ class Loader::Name::Match < ActiveRecord::Base
   end
 
   # Tree ops can occur outside the loader
-  # 
+  #
   # This method checks whether the name is on a draft
   #
   # If not, it removes the drafted flag.
   def verify_drafted_flag
-    Rails.logger.debug('verify_drafted_flag')
-    return 'Verified' if really_drafted?
+    Rails.logger.debug("verify_drafted_flag")
+    return "Verified" if really_drafted?
+
     self.drafted = false
-    self.save!
-    return 'Not verified - drafted flag was removed'
+    save!
+    "Not verified - drafted flag was removed"
   end
 
   def really_drafted?

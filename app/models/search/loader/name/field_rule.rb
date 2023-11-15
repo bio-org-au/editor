@@ -367,11 +367,11 @@ class Search::Loader::Name::FieldRule
     "not-misapplied:" => { where_clause: "record_type != 'misapplied'",
                            order: "seq" },
     "is-hybrid:" => { where_clause: "hybrid_flag = 'hybrid'",
-                   order: "seq" },
+                      order: "seq" },
     "is-intergrade:" => { where_clause: "hybrid_flag = 'intergrade'",
-                       order: "seq" },
+                          order: "seq" },
     "is-mso-normal:" => { where_clause: "hybrid_flag = 'MsoNormal'",
-                       order: "seq" },
+                          order: "seq" },
     "syn-but-no-syn-type:" => { where_clause: "record_type = 'synonym' and synonym_type is null",
                                 order: "seq" },
     "no-name-match:" => { where_clause: "not exists (
@@ -527,7 +527,7 @@ having count(*) > 2
     "name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match group by name_id having count(*) > 1))",
                                  order: "sort_key, seq" },
     "xnon-misapp-name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match where loader_name_id in (select id from orchids where record_type != 'misapplied') group by name_id having count(*) > 1))",
-                                            order: "sort_key, seq" },
+                                             order: "sort_key, seq" },
     "xnon-misapp-name-sharing-name-id-not-pp:" => { where_clause: "id in (select loader_name_id
   from loader_name_match
  where name_id in (
@@ -547,7 +547,7 @@ having count(*) > 2
     group by name_id
 having count(*)                     >  1
        ))",
-                                                   order: "sort_key, seq" },
+                                                    order: "sort_key, seq" },
     "has-preferred-name:" => { where_clause: " exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)",
                                order: "sort_key, seq" },
     "has-preferred-name-without-instance:" => { where_clause: " exists (select null from loader_name_match orn where loader_name.id = orn.loader_name_id and orn.standalone_instance_id is null and orn.relationship_instance_id is null)",
@@ -573,7 +573,7 @@ having count(*)                     >  1
    and loader_name_match.copy_append_from_existing_use_batch_def_ref)",
                             order: "sort_key, seq" },
     "no-nomination:" => {
-       where_clause: " loader_name.record_type in ('accepted','excluded')
+      where_clause: " loader_name.record_type in ('accepted','excluded')
                 and exists (
                    select null
                      from loader_name_match
@@ -581,7 +581,8 @@ having count(*)                     >  1
                      and not loader_name_match.use_batch_default_reference
                      and not copy_append_from_existing_use_batch_def_ref
                      and loader_name_match.standalone_instance_id is null)",
-       order: "sort_key, seq" },
+      order: "sort_key, seq"
+    },
     "has-no-preferred-name:" => { where_clause: " not exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)" },
     "created-by:" => { where_clause: "created_by = ?",
                        order: "sort_key, seq" },
@@ -602,7 +603,7 @@ having count(*)                     >  1
     "no-hybrid-flag:" => { where_clause: "hybrid_flag is null",
                            order: "sort_key, seq" },
     "xno-further-processing:" => { where_clause: " no_further_processing or exists (select null from loader_name kids where kids.parent_id = loader_name.id and kids.no_further_processing) or exists (select null from orchids pa where pa.id = orchids.parent_id and pa.no_further_processing)",
-                                  order: "sort_key, seq" },
+                                   order: "sort_key, seq" },
     "isonym:" => { where_clause: "isonym is not null",
                    order: "sort_key, seq" },
     "orth-var:" => { where_clause: "name_status like 'orth%'",
@@ -696,9 +697,9 @@ having count(*)                     >  1
     "drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where drafted)",
                     order: "sort_key, seq" },
     "xmisapp-matched-without-cross-ref:" => { where_clause: " id in (select o.id from orchids o join loader_name_match orn on o.id = orn.loader_name_id where o.record_type = 'misapplied' and orn.relationship_instance_id is null)",
-                                             order: "sort_key, seq" },
+                                              order: "sort_key, seq" },
     "created-manually:" => { where_clause: "created_manually" },
-    "any-batch:" => {where_clause: "1=1"},
+    "any-batch:" => { where_clause: "1=1" },
     "syn-match-in-tree-tree-join-v:" => { where_clause: " record_type = 'synonym'
        and exists (
         select null
@@ -713,8 +714,8 @@ having count(*)                     >  1
                 select id
                   from instance
      where name_id         = loader_name_match.name_id)))",
-       order: "sort_key, seq",
-       do_count_totals: false},
+                                          order: "sort_key, seq",
+                                          do_count_totals: false },
     "syn-match-in-tree-taxon-mv:" => { where_clause: " record_type = 'synonym'
        and exists (
         select null
@@ -729,8 +730,8 @@ having count(*)                     >  1
                 select id
                   from instance
                  where name_id = loader_name_match.name_id)))",
-       order: "sort_key, seq",
-       do_count_totals: false},
+                                       order: "sort_key, seq",
+                                       do_count_totals: false },
     "name-match-in-syn:" => { where_clause: " record_type in ('accepted', 'excluded')
        and exists (
 
@@ -756,7 +757,7 @@ having count(*)                     >  1
    and pni_type.synonym
    and not pni_type.pro_parte
      )",
-       order: "sort_key, seq" },
+                              order: "sort_key, seq" },
     "syn-clash-with-syn:" => { where_clause: "
                                  ( exists (
        select null
@@ -818,6 +819,6 @@ having count(*)                     >  1
    and parent_match.name_id != cot_name.id
    and child.record_type != 'misapplied'
      ))",
-       order: "sort_key, seq" },
+                               order: "sort_key, seq" },
   }.freeze
 end

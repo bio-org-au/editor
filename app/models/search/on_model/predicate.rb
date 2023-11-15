@@ -77,11 +77,7 @@ class Search::OnModel::Predicate
   # Allow for an explicit false value, otherwise default to true
   def check_do_count_totals(rule)
     Rails.logger.debug("check_do_count_totals for rule: #{rule}")
-    if rule[:do_count_totals] == false
-      @do_count_totals = false
-    else
-      @do_count_totals = true
-    end
+    @do_count_totals = !(rule[:do_count_totals] == false)
   end
 
   def apply_scope
@@ -100,7 +96,7 @@ class Search::OnModel::Predicate
   end
 
   def build_predicate(rule)
-    if @multiple_values && @value.split(/,/).size > 1
+    if @multiple_values && @value.split(",").size > 1
       rule[:multiple_values_where_clause]
     else
       build_scalar_predicate(rule)
@@ -119,14 +115,14 @@ class Search::OnModel::Predicate
     if rule[:not_exists_clause].present?
       rule[:not_exists_clause]
     else
-      rule[:where_clause].gsub(/= \?/, "is null")
-                         .gsub(/like lower\(\?\)/, "is null")
-                         .gsub(/like lower\(f_unaccent\(\?\)\)/, "is null")
+      rule[:where_clause].gsub("= ?", "is null")
+                         .gsub("like lower(?)", "is null")
+                         .gsub("like lower(f_unaccent(?))", "is null")
     end
   end
 
   def build_canon_value(val)
-    if @multiple_values && @value.split(/,/).size > 1
+    if @multiple_values && @value.split(",").size > 1
       val.split(",").collect(&:strip)
     elsif @leave_asterisks
       val

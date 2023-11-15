@@ -29,9 +29,9 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
 
   setup do
     @results = Instance.joins(:instance_type, :reference, :name)
-                       .joins('inner join name_status ns on name.name_status_id = ns.id')
-                       .joins('inner join instance cites on instance.cites_id = cites.id')
-                       .joins('inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id')
+                       .joins("inner join name_status ns on name.name_status_id = ns.id")
+                       .joins("inner join instance cites on instance.cites_id = cites.id")
+                       .joins("inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
                        .where.not(page: "exclude-from-ordering-test")
                        .in_nested_instance_type_order
                        .order(Arel.sql('reference.iso_publication_date,lower(name.full_name) collate "C"'))
@@ -42,8 +42,8 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
   test "instances in nested simple instance order" do
     skip "doesn't handle new version of the in_nested_instance_type_order - seems to be for testing page and rank ordering, needs review"
     # Very useful debug
-    @results.each_with_index do |i,ndx|
-      puts "#{ndx}: #{i.page} - #{i.name.full_name}" 
+    @results.each_with_index do |i, ndx|
+      puts "#{ndx}: #{i.page} - #{i.name.full_name}"
     end
     test1
     test2
@@ -57,7 +57,6 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
     test10
   end
 end
-
 
 #  Unordered data returned October 2023
 

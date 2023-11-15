@@ -9,8 +9,10 @@
 <span title="Potential Matches Count"><%= search_result.matches.size %>m</span>
 
 <% if search_result.created_manually? %>
-  <span class='flag bgdarkslateblue white'
-        title='Loader name record was manually created'>Handmade</span>
+   <% unless search_result.loader_batch.use_sort_key_for_ordering %>
+     <span class='flag bgdarkslateblue white'
+           title='Loader name record was manually created'>Handmade</span>
+   <% end %>
 <% end %>
 
 <% if search_result.loader_name_matches.blank? %>

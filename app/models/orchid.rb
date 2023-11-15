@@ -238,13 +238,13 @@ class Orchid < ActiveRecord::Base
   end
 
   def self.taxon_string_search_no_excluded(taxon_string)
-    ts = taxon_string.downcase.gsub(/\*/, "%")
+    ts = taxon_string.downcase.gsub("*", "%")
     Orchid.where(["((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and not doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and not doubtful))",
                   ts, ts, ts, ts, ts, ts])
   end
 
   def self.taxon_string_search_for_excluded(taxon_string)
-    ts = taxon_string.downcase.gsub(/\*/, "%")
+    ts = taxon_string.downcase.gsub("*", "%")
     Orchid.where(["((lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful) or (parent_id in (select id from orchids where (lower(taxon) like ? or lower(taxon) like 'x '||? or lower(taxon) like '('||?) and record_type = 'accepted' and doubtful))",
                   ts, ts, ts, ts, ts, ts])
   end

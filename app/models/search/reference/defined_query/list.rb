@@ -30,7 +30,7 @@ class Search::Reference::DefinedQuery::List
     Rails.logger.debug("Search::Reference::DefinedQuery::List#prepare_query")
     prepared_query = Reference.includes(:ref_type)
     where_clauses = Search::Reference::DefinedQuery::WhereClauses.new(@parsed_request,
-                                                          prepared_query)
+                                                                      prepared_query)
     prepared_query = where_clauses.sql
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
     @sql = prepared_query

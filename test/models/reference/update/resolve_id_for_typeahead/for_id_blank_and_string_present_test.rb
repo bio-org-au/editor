@@ -21,8 +21,7 @@ require "test_helper"
 # Single Reference model test.
 class ForIdBlankAndStringPresent < ActiveSupport::TestCase
   test "id blank string present" do
-    assert Resolvable::TEXT_ONLY ==
-           Reference::AsResolvedTypeahead::ForDuplicateOf
-           .new("", "").resolve("", "xyz")
+    assert Reference::AsResolvedTypeahead::ForDuplicateOf
+      .new("", "").resolve("", "xyz") == Resolvable::TEXT_ONLY
   end
 end

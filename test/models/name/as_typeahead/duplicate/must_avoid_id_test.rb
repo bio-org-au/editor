@@ -27,7 +27,7 @@ class NameDuplicateSuggestionsMustAvoidIdTest < ActiveSupport::TestCase
       name.id
     )
     assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(suggestions.size.zero?,
+    assert(suggestions.empty?,
            'suggestions for "angophora costata" should have no elements')
   end
 end

@@ -23,6 +23,6 @@ class History
   end
 
   def self.load_changes_for(year)
-    YAML.load(File.read("config/history/changes-#{year}.yml"))
+    YAML.load_file("config/history/changes-#{year}.yml")
   end
 end

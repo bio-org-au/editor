@@ -71,8 +71,8 @@ class Orchid::AsInstanceCreator
   end
 
   def record_failure(msg)
-    msg.sub!(/uncaught throw /, "")
-    msg.gsub!(/"/, "")
+    msg.sub!("uncaught throw ", "")
+    msg.gsub!('"', "")
     msg.sub!(/^Failing/, "")
     Rails.logger.error("Orchid::AsInstanceCreator failure: #{msg}")
     log_to_table("Orchid::AsInstanceCreator failure: #{msg}")

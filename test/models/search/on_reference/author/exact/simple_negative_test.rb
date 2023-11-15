@@ -27,6 +27,6 @@ class SearchOnReferenceAuthorSimpleNegativeTest < ActiveSupport::TestCase
                   query_string: "author-exact: eVaNs",
                   current_user: build_edit_user)
     search = Search::Base.new(params)
-    assert search.executed_query.results.size.zero?, "No results expected."
+    assert search.executed_query.results.empty?, "No results expected."
   end
 end

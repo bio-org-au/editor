@@ -22,8 +22,7 @@ require "test_helper"
 class ForIdPresentAndStringPresent < ActiveSupport::TestCase
   test "id present string present" do
     ref = references(:hookers_icones_plantarum)
-    assert Resolvable::ID_AND_TEXT ==
-           Reference::AsResolvedTypeahead::ForDuplicateOf
-           .new(ref.id, ref.citation).resolve("ref.id", "ref.citation")
+    assert Reference::AsResolvedTypeahead::ForDuplicateOf
+      .new(ref.id, ref.citation).resolve("ref.id", "ref.citation") == Resolvable::ID_AND_TEXT
   end
 end

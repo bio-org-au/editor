@@ -3,12 +3,12 @@ module Loader::Name::SortKeyBulkChanges
 
   class_methods do
     def count_all
-      puts self.all.size
+      puts all.size
     end
 
-    # Note: this will reset all loader_name sorting for the batch
+    # NOTE: this will reset all loader_name sorting for the batch
     def set_sort_key(batch, record_type)
-      n = 0 
+      n = 0
       batch.loader_names.where(record_type: record_type).each do |rec|
         puts "#{rec.simple_name} - #{rec.sort_key}"
         rec.sort_key = nil
@@ -22,8 +22,8 @@ module Loader::Name::SortKeyBulkChanges
 
     # This will reset empty in-batch-note sort_keys only
     def set_sort_key_for_in_batch_note(batch)
-      n = 0 
-      batch.loader_names.where(record_type: 'in-batch-note').each do |rec|
+      n = 0
+      batch.loader_names.where(record_type: "in-batch-note").each do |rec|
         puts "#{rec.simple_name} - #{rec.sort_key}"
         if rec.sort_key.blank?
           rec.set_sort_key
@@ -43,14 +43,12 @@ module Loader::Name::SortKeyBulkChanges
     # WARNING: this will reset all loader_name sorting for the batch
     # ##############################################################
     def set_sort_key_for_all_record_types(batch)
-      set_sort_key(batch,'heading')
-      set_sort_key(batch,'accepted')
-      set_sort_key(batch,'excluded')
-      set_sort_key(batch,'synonym')
-      set_sort_key(batch,'misapplied')
+      set_sort_key(batch, "heading")
+      set_sort_key(batch, "accepted")
+      set_sort_key(batch, "excluded")
+      set_sort_key(batch, "synonym")
+      set_sort_key(batch, "misapplied")
       set_sort_key_for_in_batch_note(batch)
     end
-
   end # class_methods
-
 end

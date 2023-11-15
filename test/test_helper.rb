@@ -31,8 +31,6 @@ require "mocha"
 require "mocha/api"
 require "webmock/minitest"
 
-
-
 # https://thoughtbot.com/blog/stubbing-and-setting-expectations-on-http-requests-is-now-easy-with-webmock
 include WebMock::API
 
@@ -170,7 +168,7 @@ def make_sure_details_are_showing
 end
 
 def search_results_with_details?
-  return unless search_results?
+  return false unless search_results?
   return true if details_are_showing?
 
   show_details

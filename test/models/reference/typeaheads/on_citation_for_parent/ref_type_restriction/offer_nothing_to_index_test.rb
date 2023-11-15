@@ -27,7 +27,7 @@ class TAOnCitn4ParRefTypeRestrictionNothingForIndex < ActiveSupport::TestCase
       current_reference.id,
       ref_types(:index).id
     )
-    assert typeahead.results.size.zero?,
+    assert typeahead.results.empty?,
            "Should be no results because index takes no parent."
   end
 end

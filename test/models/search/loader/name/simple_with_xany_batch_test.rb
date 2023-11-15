@@ -29,10 +29,10 @@ class SearchLoaderNameWithXanyBatchTest < ActiveSupport::TestCase
                                                           "* xany-batch:",
                                                           current_user:
                                                           build_edit_user)
-    
-    error = assert_raises(RuntimeError) {
-      search = Search::Base.new(params)
-    }
+
+    error = assert_raises(RuntimeError) do
+      Search::Base.new(params)
+    end
     assert_match(/Please set a default batch, or specify a/i, error.message)
     assert_match(/'batch-id:', a 'batch-name:' or 'any-batch:'/i, error.message)
   end

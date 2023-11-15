@@ -216,7 +216,8 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   def status
     return "future" if future?
     return "past" if past?
-    return "active" if active?
+
+    "active" if active?
   end
 
   def future?

@@ -58,11 +58,10 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
         new_syn.save!
         syns_copied += 1
         log_to_table("#{Constants::COPIED_SYN} #{new_syn.name.full_name}")
-      rescue => e
+      rescue StandardError => e
         errors += 1
-        log_to_table("#{Constants::FAILED_SYN} #{e.to_s} for #{new_syn.name.full_name}")
+        log_to_table("#{Constants::FAILED_SYN} #{e} for #{new_syn.name.full_name}")
       end
-
     end
     created += syns_copied
     [created, declined, errors]
@@ -122,7 +121,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
   end
 
   def standalone_instance_already_noted?
-    return true unless @match.standalone_instance_id.blank?
+    true unless @match.standalone_instance_id.blank?
   end
 
   def note_standalone_instance_created(instance)

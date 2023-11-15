@@ -118,7 +118,7 @@ module ApplicationHelper
       "#{ShardConfig.shard_group_name}"
     else
       "#{ShardConfig.shard_group_name}"
-    end + ':' + (params["query_target"] || 'Editor').gsub(/_/,' ').titleize
+    end + ":" + (params["query_target"] || "Editor").gsub("_", " ").titleize
   end
 
   def development?

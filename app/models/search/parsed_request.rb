@@ -196,7 +196,7 @@ class Search::ParsedRequest
     @query_target = (@params["canonical_query_target"] || "").strip.downcase
     @user = @params[:current_user]
     @original_query_target = @query_target
-    @default_query_scope = ''
+    @default_query_scope = ""
     @apply_default_query_scope = false
     @original_query_target = @query_target
     parse_request
@@ -250,7 +250,7 @@ class Search::ParsedRequest
     if @query_string.blank?
       ""
     else
-      @query_string.strip.gsub(/:/, ": ").gsub(/:  /, ": ")
+      @query_string.strip.gsub(":", ": ").gsub(":  ", ": ")
     end
   end
 
@@ -397,21 +397,19 @@ class Search::ParsedRequest
   end
 
   def preprocess_target(tokens)
-    case 
-      when PREPROCESSING_TARGETS.include?(@query_target)
-        method = PREPROCESSING_TARGETS[@query_target]
-        send(method)
-      when SIMPLE_QUERY_TARGETS.include?(@query_target)
-      when ADDITIONAL_NON_PREPROCESSED_TARGETS.include?(@query_target)
-      when loader_batch_preprocessing?
-      else
-        throw "Unknown query target: #{@query_target}"
+    if PREPROCESSING_TARGETS.include?(@query_target)
+      method = PREPROCESSING_TARGETS[@query_target]
+      send(method)
+    elsif SIMPLE_QUERY_TARGETS.include?(@query_target)
+    elsif ADDITIONAL_NON_PREPROCESSED_TARGETS.include?(@query_target)
+    elsif loader_batch_preprocessing?
+    else
+      throw "Unknown query target: #{@query_target}"
     end
-    tokens 
+    tokens
   end
 
-
-  # ToDo: this should be in the loader/name/ code
+  # TODO: this should be in the loader/name/ code
   # Note limitation of any-batch: - it does not override a default batch
   # Note limitation of the checks: doesn't care if result of search is in only
   # one batch.
@@ -419,10 +417,10 @@ class Search::ParsedRequest
   # Called via send
   def preprocess_loader_names
     result = loader_batch_preprocessing?
-    unless @params['query_string'].match(/\bdefault-batch:/) ||
-           @params['query_string'].match(/\bbatch-id:/) ||
-           @params['query_string'].match(/\bbatch-name:/) ||
-           @params['query_string'].match(/\bany-batch:/)
+    unless @params["query_string"].match(/\bdefault-batch:/) ||
+           @params["query_string"].match(/\bbatch-id:/) ||
+           @params["query_string"].match(/\bbatch-name:/) ||
+           @params["query_string"].match(/\bany-batch:/)
       raise "Please set a default batch, or specify a 'batch-id:', a 'batch-name:' or 'any-batch:'"
     end
   end
@@ -442,7 +440,7 @@ class Search::ParsedRequest
       debug("@default_query_scope: #{default_query_scope}")
       @target_button_text = @query_target
       @original_query_target = @query_target
-      @query_target = 'loader_names'
+      @query_target = "loader_names"
       @apply_default_query_scope = true
       true
     else
@@ -452,20 +450,19 @@ class Search::ParsedRequest
 
   def parse_target(tokens)
     if @defined_query == false
-      if SIMPLE_QUERY_TARGETS.key?(@query_target)
-        @target_table = SIMPLE_QUERY_TARGETS[@query_target]
-        @target_button_text = @target_table.capitalize.pluralize
-        @original_query_target_for_display = @original_query_target.gsub('_',' ').capitalize
-        @target_model = TARGET_MODELS[@target_table]
-        @default_order_column = DEFAULT_ORDER_COLUMNS[@target_table]
-        @default_query_directive = DEFAULT_QUERY_DIRECTIVES[@target_table]
-        if INCLUDE_INSTANCES_FOR.include?(@target_table)
-          @include_instances = true
-          @include_instances_class = INCLUDE_INSTANCES_CLASS[@target_table]
-        end
-      else
-        raise "Cannot parse target: #{@query_target}."
+      raise "Cannot parse target: #{@query_target}." unless SIMPLE_QUERY_TARGETS.key?(@query_target)
+
+      @target_table = SIMPLE_QUERY_TARGETS[@query_target]
+      @target_button_text = @target_table.capitalize.pluralize
+      @original_query_target_for_display = @original_query_target.gsub("_", " ").capitalize
+      @target_model = TARGET_MODELS[@target_table]
+      @default_order_column = DEFAULT_ORDER_COLUMNS[@target_table]
+      @default_query_directive = DEFAULT_QUERY_DIRECTIVES[@target_table]
+      if INCLUDE_INSTANCES_FOR.include?(@target_table)
+        @include_instances = true
+        @include_instances_class = INCLUDE_INSTANCES_CLASS[@target_table]
       end
+
     end
     tokens
   end
@@ -510,7 +507,7 @@ class Search::ParsedRequest
 
   def parse_show_review_comments(tokens)
     @show_loader_name_comments = false
-    return tokens unless @target_table == 'loader name'
+    return tokens unless @target_table == "loader name"
 
     if tokens.include?("show-review-comments:")
       @show_loader_name_comments = true

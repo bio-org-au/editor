@@ -22,8 +22,7 @@ require "test_helper"
 # Testing a model concern this way is a bit fragile.
 class ForIdBlankAndStringBlank < ActiveSupport::TestCase
   test "id blank string blank" do
-    assert Resolvable::NO_ID_OR_TEXT ==
-           Reference::AsResolvedTypeahead::ForDuplicateOf
-           .new("", "").resolve("", "")
+    assert Reference::AsResolvedTypeahead::ForDuplicateOf
+      .new("", "").resolve("", "") == Resolvable::NO_ID_OR_TEXT
   end
 end

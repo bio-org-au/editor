@@ -32,17 +32,18 @@ class SearchController < ApplicationController
     logger.debug("help params: #{params.inspect}")
     if params[:help_id].match(/-for-dynamic-target-/)
       @dynamic_target = params[:help_id].sub(/.{0,500}-for-dynamic-target-/, "")
-                                        .gsub(/-/, " ")
+                                        .gsub("-", " ")
       params[:help_id].sub!(/-for-dynamic-target-.*/, "")
       logger.debug("@dynamic_target: #{@dynamic_target}")
     else
       @dynamic_target = nil
     end
     help_content_path = Search::Help::PageMappings.new(params, @view_mode)
-    raise 'no help content path' if help_content_path.partial.blank?
+    raise "no help content path" if help_content_path.partial.blank?
+
     logger.debug("help_content_path: #{help_content_path}")
     render partial: help_content_path.partial
-  rescue => e
+  rescue StandardError => e
     logger.error("SearchController#help error displaying #{help_content_path}")
     logger.error(e.to_s)
     logger.error(params.inspect)

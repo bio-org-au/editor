@@ -27,7 +27,7 @@ class TAOnCitn4ParRefTypeRestrictionNothingForJournal < ActiveSupport::TestCase
       current_reference.id,
       ref_types(:journal).id
     )
-    assert typeahead.results.size.zero?,
+    assert typeahead.results.empty?,
            "Should be no results because journal takes no parent."
   end
 end

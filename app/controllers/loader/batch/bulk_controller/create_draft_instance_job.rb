@@ -53,11 +53,6 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
     @errors += 1
   end
 
-  def xlog(payload)
-    entry = "Job ##{@job_number}: #{payload}"
-    BulkProcessingLog.log(entry, "Bulk job for #{@authorising_user}")
-  end
-
   def log(payload)
     Loader::Batch::Bulk::JobLog.new(@job_number, payload, @authorising_user).write
   end
@@ -69,7 +64,9 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
   end
 
   def log_finish
-    entry = "<b>FINISHED</b>: records attempted: #{@attempts}; "
+    entry = "<b>FINISHED</b>: create draft instances for batch: "
+    entry += "#{@batch.name} accepted taxa matching #{@search_string}"
+    entry += "; records attempted: #{@attempts}; "
     entry += "records created: #{@creates}; "
     entry += "declined: #{@declines}; errors: #{@errors}"
     log(entry)

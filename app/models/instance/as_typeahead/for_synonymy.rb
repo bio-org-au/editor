@@ -46,7 +46,7 @@ class Instance::AsTypeahead::ForSynonymy
   def initialize(terms, name_id)
     @results = []
     @name_binds = []
-    terms_without_year = terms.gsub(/[0-9]/, "").strip.gsub(/  /, " ")
+    terms_without_year = terms.gsub(/[0-9]/, "").strip.gsub("  ", " ")
     return if terms_without_year.blank?
 
     @name_binds.push(" lower(f_unaccent(full_name)) like lower(f_unaccent(?)) ")

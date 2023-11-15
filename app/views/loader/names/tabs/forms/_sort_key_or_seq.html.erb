@@ -1,13 +1,15 @@
-<% unless loader_name.new_record? %>
+<% if (loader_name.try('loader_batch') || Loader::Batch.find(session[:default_loader_batch_id])).use_sort_key_for_ordering %>
+   <% unless loader_name.new_record? %>
    <div class="form-group">
-   <% if (loader_name.try('loader_batch') || Loader::Batch.find(session[:default_loader_batch_id])).use_sort_key_for_ordering %>
         <label for="sort_key">Sort key</label>
         <%= f.text_field :sort_key, class: 'form-control', title: "Enter sorting value", tabindex: increment_tab_index %>
         <p>This value is generated automatically when you clear it or leave it blank.  Edit it for special cases only.</p>
-   <% else %>
+   </div>
+   <% end %>
+<% else %>
+   <div class="form-group">
         <label for="seq">Seq*</label>
         <%= f.text_field(:seq, {class: 'form-control give-me-focus', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
-   <% end %>
    </div>
 <% end %>
 

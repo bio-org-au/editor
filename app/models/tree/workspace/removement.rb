@@ -26,6 +26,7 @@ class Tree::Workspace::Removement < ActiveType::Object
     url = build_url
     payload = { taxonUri: target.element_link }
     raise errors.full_messages.first unless valid?
+
     logger.info "REMOVEMENT calling #{url} WITH PAYLOAD: #{payload}"
 
     RestClient.post(url, payload.to_json, { content_type: :json, accept: :json })

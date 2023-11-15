@@ -20,7 +20,7 @@ class UpdateDistributionTest < ActiveSupport::TestCase
     updated_by = trel.updated_by
     updated_at = trel.updated_at
     _message, _refresh = trel.update_distribution(new_dist, "d2nulluser")
-    return_te = confirm_unchanged_nil(trel, updated_at, updated_by, "d2nulluser")
+    confirm_unchanged_nil(trel, updated_at, updated_by, "d2nulluser")
   end
 
   def confirm_unchanged_nil(trel, updated_at, updated_by, agent)
@@ -41,7 +41,7 @@ class UpdateDistributionTest < ActiveSupport::TestCase
     message, refresh = trel.update_distribution(new_dist, "dist user")
     assert_match(/Distribution added to .* profile/, message, "Wrong message '#{message}' for #{tag}")
     assert(refresh, "Expect refresh for #{tag}")
-    return_te = confirm_changed(new_dist, trel, tag)
+    confirm_changed(new_dist, trel, tag)
   end
 
   def confirm_changed(new_dist, trel, tag)

@@ -27,7 +27,7 @@ class HybridParentSuggestsShldNotIncludeDuplicatesTest < ActiveSupport::TestCase
     )
     assert(suggestions.is_a?(Array),
            "suggestions should be an array")
-    assert(suggestions.size.zero?,
+    assert(suggestions.empty?,
            'suggestions for "a duplicate species" should be empty')
   end
 end

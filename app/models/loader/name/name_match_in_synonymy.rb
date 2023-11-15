@@ -1,16 +1,13 @@
-
-
 # Result is true if the supplied name_id is "in synonymy" in the
 # current accepted tree. Result is false otherwise.
 #
 # Intended for use building the Details tab for loader_name records.
 #
-# This sql is comolex enough to take some wrangling and comes 
-# from work on the name-match-in-syn: directive, in fact from the 
-# join select that I used to work out the sub-query required for 
+# This sql is comolex enough to take some wrangling and comes
+# from work on the name-match-in-syn: directive, in fact from the
+# join select that I used to work out the sub-query required for
 # name-match-in-syn:
 class Loader::Name::NameMatchInSynonymy
-
   attr_reader :result
 
   RAW_SELECT = "SELECT count(*) qty
@@ -45,9 +42,9 @@ class Loader::Name::NameMatchInSynonymy
   end
 
   def main
-    query = Loader::Name.send(:sanitize_sql,[RAW_SELECT, @name_id])
+    query = Loader::Name.send(:sanitize_sql, [RAW_SELECT, @name_id])
     connection = ActiveRecord::Base.connection
     query_result = connection.execute(query).first
-    @result = query_result['qty'] > 0
+    @result = query_result["qty"] > 0
   end
 end

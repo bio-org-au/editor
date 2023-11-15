@@ -37,7 +37,7 @@ class TypeaheadsOnCit4ParExcludesCurrentIdTest < ActiveSupport::TestCase
       current_reference.id,
       ref_types(:unknown).id
     )
-    assert typeahead_2.results.size.zero?,
+    assert typeahead_2.results.empty?,
            "Should be no records found if current reference is excluded."
   end
 end

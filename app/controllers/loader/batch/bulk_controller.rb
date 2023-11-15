@@ -59,7 +59,7 @@ class Loader::Batch::BulkController < ApplicationController
     logger.error("LoaderBatchBulkController#create_preferred_matches: #{e}")
     logger.error e.backtrace.join("\n")
     pull_down_job
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
   end
 
@@ -81,7 +81,7 @@ class Loader::Batch::BulkController < ApplicationController
     logger.error("LoaderBatchBulkController#create_draft_instances: #{e}")
     logger.error e.backtrace.join("\n")
     pull_down_job
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
   end
 
@@ -100,7 +100,7 @@ class Loader::Batch::BulkController < ApplicationController
     logger.error("LoaderBatchBulkController#add_to_draft_taxonomy: #{e}")
     logger.error e.backtrace.join("\n")
     pull_down_job
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
   end
 

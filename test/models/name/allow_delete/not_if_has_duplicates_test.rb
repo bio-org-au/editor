@@ -29,7 +29,7 @@ class NotIfHasDuplicatesTest < ActiveSupport::TestCase
       duplicate.save
     end
     changed_name = Name.find(name.id)
-    assert changed_name.duplicates.size.zero?, "Now should not have duplicates"
+    assert changed_name.duplicates.empty?, "Now should not have duplicates"
     assert changed_name.allow_delete?, "Should allow delete now"
   end
 end

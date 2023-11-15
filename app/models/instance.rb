@@ -111,8 +111,8 @@ class Instance < ActiveRecord::Base
   scope :in_nested_instance_type_order, lambda {
     raw_sql = <<-SQL
     case taxonomic
-        when true then 
-          case pro_parte 
+        when true then#{' '}
+          case pro_parte#{' '}
             when true then 2
             else 1
           end

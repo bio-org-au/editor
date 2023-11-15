@@ -37,4 +37,3 @@ class SearchLoaderNameIsIntergradeTest < ActiveSupport::TestCase
                  "Exactly 0 result is expected."
   end
 end
-

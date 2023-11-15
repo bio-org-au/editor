@@ -53,7 +53,7 @@ class OrchidsBatchController < ApplicationController
   rescue StandardError => e
     logger.error("OrchidsBatchController#create_preferred_matches: #{e}")
     logger.error e.backtrace.join("\n")
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
   end
 
@@ -67,7 +67,7 @@ class OrchidsBatchController < ApplicationController
   rescue StandardError => e
     logger.error("OrchidsBatchController#create_instances_for_preferred_matches: #{e}")
     logger.error e.backtrace.join("\n")
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
   end
 
@@ -83,7 +83,7 @@ class OrchidsBatchController < ApplicationController
   rescue StandardError => e
     logger.error("OrchidsBatchController#add_instances_to_draft_tree: #{e}")
     logger.error e.backtrace.join("\n")
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
   end
 
@@ -115,7 +115,7 @@ class OrchidsBatchController < ApplicationController
     end
   rescue StandardError => e
     logger.error("change_data error: #{e}")
-    @message = e.to_s.sub(/uncaught throw/, "").gsub(/"/, "")
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: "orchid-batch-status-" }
   end
 

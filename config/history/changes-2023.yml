@@ -1,3 +1,69 @@
+- :date: 15-Nov-2023
+  :jira_id: '4782'
+  :description: |- 
+    Name query with instances: "Unpublished" relationship instances are again being displayed
+- :date: 14-Nov-2023
+  :jira_id: '4763'
+  :description: |- 
+    Loader: Bulk jobs: the trailing log entry for each job now includes the job's search criteria
+- :date: 14-Nov-2023
+  :jira_id: '4778'
+  :description: |- 
+    Loader: Display "Handmade" on manually created <code>loader_name</code> records only for batches parsed from Word docs
+- :date: 13-Nov-2023
+  :jira_id: '4777'
+  :description: |- 
+    Loader: Update Ruby libraries to latest versions, including Rails from 7.0.7.2 to 7.0.8
+- :date: 13-Nov-2023
+  :jira_id: '4775'
+  :description: |- 
+    Loader: Don't show the "Too Many Matches" message on <code>loader_name</code> details tab when a preferred match has been chosen
+- :date: 10-Nov-2023
+  :jira_id: '3323'
+  :description: |- 
+    Instances: Make page field full width to avoid scrolling for long entries
+- :date: 10-Nov-2023
+  :jira_id: '4761'
+  :description: |- 
+    Loader: Handle use of html tags for italics and hyperlinks in remarks to reviewers in print: and Editor display
+- :date: 09-Nov-2023
+  :jira_id: '4770'
+  :description: |- 
+    Loader: Make <code>seq</code> number field available when adding <code>loader_name</code> records to batches that order by <code>seq</code>
+- :date: 09-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Fix bug preventing access to Create Synonym or Create Misapp tabs for batches ordered by seq
+- :date: 09-Nov-2023
+  :jira_id: '4760'
+  :description: |- 
+    Loader: Print output: distribution and comments for the last record in a print out now display. 
+- :date: 08-Nov-2023
+  :jira_id: '4769'
+  :description: |- 
+    General: Ran rubocop auto-correction -a options - testing needs to confirm BAU for main workflows.
+- :date: 08-Nov-2023
+  :jira_id: '4745'
+  :description: |- 
+    Loader: Fixed case of <code>loader_name</code> records in batches that don't use <code>sort_key</code> being allocated a <code>sort_key</code> value on update.
+- :date: 08-Nov-2023
+  :jira_id: '4761'
+  :description: |- 
+    Loader: Handle use of html tags for italics and hyperlinks in compiler comments (not review comments)
+- :date: 08-Nov-2023
+  :jira_id: '4759'
+  :description: |- 
+    Loader: Set record type to accepted by default for top-level names (accepted/misapplied)
+- :date: 08-Nov-2023
+  :jira_id: '4758'
+  :description: |- 
+    Loader: Set default rank to species for record creation
+- :date: 08-Nov-2023
+  :jira_id: '4738'
+  :description: |- 
+    Loader: The <code>any-batch:</code> directive now works even if you have set a default batch.
+- :date: 09-Nov-2023
+  :release: true
 - :date: 06-Nov-2023
   :jira_id: '4745'
   :description: |- 
@@ -54,6 +120,8 @@
   :jira_id: '4734'
   :description: |- 
     Loader: Improve the link to loader names on the batch details tab
+- :date: 03-Nov-2023
+  :release: true
 - :date: 24-Oct-2023
   :jira_id: '4736'
   :description: |- 

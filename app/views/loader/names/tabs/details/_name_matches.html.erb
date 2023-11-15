@@ -4,7 +4,9 @@
 <% end %>
 <% if name_match_count > 0 %>
   <% if name_match_count > 1 %>
-    <div class="bggray big-vertical-padding" ><h4 class="white">Too Many Matching Names</h4></div>
+    <% if @loader_name.loader_name_matches.empty? %>
+       <div class="bggray big-vertical-padding" ><h4 class="white">Too Many Matching Names</h4></div>
+    <% end %>
   <% end %>
 <% end %>
 <% if @loader_name.no_further_processing? %>

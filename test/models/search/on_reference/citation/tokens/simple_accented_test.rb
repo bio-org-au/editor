@@ -22,8 +22,8 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 class SearchOnReferenceCitationTokenSimpleAccentedTest < ActiveSupport::TestCase
   test "search on reference citation token simple accented" do
-    reference = references(:hulten_with_diacritic)
-    citation_wo_accent = 'citation includes hulten with diacritic'
+    references(:hulten_with_diacritic)
+    citation_wo_accent = "citation includes hulten with diacritic"
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
                    query_string: %(citation-token: #{citation_wo_accent}),

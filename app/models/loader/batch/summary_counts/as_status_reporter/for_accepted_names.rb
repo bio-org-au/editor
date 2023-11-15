@@ -19,7 +19,7 @@
 #  We need to place Orchids on a draft tree.
 class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
   def initialize(search_string, batch_id)
-    @search_string = search_string.downcase.gsub(/\*/, "%")
+    @search_string = search_string.downcase.gsub("*", "%")
     @batch_id = batch_id
   end
 
