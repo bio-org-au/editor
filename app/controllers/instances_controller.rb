@@ -243,12 +243,13 @@ class InstancesController < ApplicationController
   # Different types of instances require different sets of tabs.
   def tabs_to_offer
     offer = %w[tab_show_1 tab_edit tab_edit_notes]
-    if @instance.simple?
+    if @instance.standalone?
       offer << "tab_synonymy"
       offer << "tab_unpublished_citation"
       offer << "tab_classification"
       offer << "tab_profile_details" if @instance.profile?
       offer << "tab_edit_profile" if @instance.profile? && @instance.show_apc?
+      offer << "tab_batch_loader" if Rails.configuration.try('batch_loader_aware')
     end
     offer << "tab_comments"
     offer << "tab_copy_to_new_reference" if offer_tab_copy_to_new_ref?
@@ -256,7 +257,7 @@ class InstancesController < ApplicationController
   end
 
   def offer_tab_copy_to_new_ref?
-    @instance.simple? &&
+    @instance.standalone? &&
       params["row-type"] == "instance_as_part_of_concept_record"
   end
 

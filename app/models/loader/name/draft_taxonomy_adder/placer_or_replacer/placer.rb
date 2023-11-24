@@ -18,17 +18,16 @@
 
 #   Add instance to draft taxonomy for a raw loader_name
 class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Placer
-  attr_reader :added, :declined, :errors, :result
+  attr_reader :result, :result_h
 
   def initialize(preferred_match, draft, user, job)
     @preferred_match = preferred_match
     @loader_name = preferred_match.loader_name
     @draft = draft
-    @preferred_match = preferred_match
     @user = user
     @job = job
-    @added = @declined = @errors = 0
     @result = false
+    @result_h = {}
     @task_start_time = Time.now
   end
 
@@ -43,15 +42,15 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Placer
     log_to_table("Place #{@loader_name.simple_name}, id: #{@loader_name.id}, seq: #{@loader_name.seq}")
     @preferred_match.drafted = true
     @preferred_match.save!
-    @added = 1
+    @result_h = {adds: 1, placed: 1}
     @result = true
   rescue RestClient::ExceptionWithResponse => e
-    @errors = 1
+    @result_h = {errors: 1, error_reasons: {"#{e.to_s}": 1}}
     raise
   end
 
   def status
-    [@added, @declined, @errors, @result]
+    @result_h
   end
 
   private

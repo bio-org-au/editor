@@ -169,7 +169,10 @@ class Loader::NamesController < ApplicationController
   end
 
   def create
-    raise "Please set a default batch" if session[:default_loader_batch_name].blank?
+    if session[:default_loader_batch_name].blank? && 
+        loader_name_params[:loader_batch_id].blank?
+      raise "Please set a default batch"
+    end
 
     @loader_name = Loader::Name.create(loader_name_params, current_user.username)
     render "create"
@@ -207,7 +210,8 @@ class Loader::NamesController < ApplicationController
                                         :doubtful, :family, :excluded,
                                         :no_further_processing, :notes,
                                         :distribution, :loader_batch_id,
-                                        :rank, :remark_to_reviewers, :sort_key)
+                                        :rank, :remark_to_reviewers, :sort_key,
+                                        :loaded_from_instance_id)
   end
 
   def set_tab

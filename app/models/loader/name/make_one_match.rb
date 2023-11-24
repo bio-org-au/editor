@@ -20,6 +20,7 @@
 class Loader::Name::MakeOneMatch
   include Constants
 
+
   def initialize(loader_name, user, job)
     @tag = "#{self.class} for #{loader_name.simple_name} (#{loader_name.record_type})"
     @loader_name = loader_name
@@ -39,7 +40,7 @@ class Loader::Name::MakeOneMatch
   rescue StandardError => e
     Rails.logger.error("#{@tag}: #{e}")
     log_to_table("#{ERROR} - #{e}")
-    COUNT_ERROR
+    {errors: 1}
   end
 
   def stop(msg)
@@ -51,28 +52,28 @@ class Loader::Name::MakeOneMatch
   end
 
   def already_exists
-    log_to_table("#{DECLINED} - existing")
-    COUNT_DECLINED
+    log_to_table("#{DECLINED} - already exists")
+    {declines: 1, decline_reasons: {already_exists: 1} }
   end
 
   def misapp
     log_to_table("#{DECLINED} - misapplications are not eligible")
-    COUNT_DECLINED
+    {declines: 1, decline_reasons: {misapplied_is_not_eligible: 1}}
   end
 
   def heading
     log_to_table("#{DECLINED} - headings don't get processed")
-    COUNT_DECLINED
+    {declines: 1, decline_reasons: {heading_so_not_processed: 1}}
   end
 
   def no_further_processing
     log_to_table("#{DECLINED} - no further processing")
-    COUNT_DECLINED
+    {declines: 1, decline_reasons: {no_further_processing: 1}}
   end
 
   def parent_using_existing
     log_to_table("#{DECLINED} - parent is using an existing instance")
-    COUNT_DECLINED
+    {declines: 1, decline_reasons: {parent_is_using_an_existing_instance: 1}}
   end
 
   def make_preferred_match?
@@ -81,10 +82,10 @@ class Loader::Name::MakeOneMatch
        matching_name_has_exactly_one_primary?
       create_match
       log_to_table(CREATED)
-      COUNT_CREATED
+      {creates: 1}
     else
       log_to_table("#{DECLINED} - no single match found")
-      COUNT_DECLINED
+      {declines: 1, decline_reasons: {no_single_match_found: 1}}
     end
   end
 

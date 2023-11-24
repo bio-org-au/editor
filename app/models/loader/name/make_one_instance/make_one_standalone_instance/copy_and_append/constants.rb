@@ -1,7 +1,4 @@
 module Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend::Constants
-  CREATED = [1, 0, 0]
-  DECLINED = [0, 1, 0]
-  ERROR = [0, 0, 1]
   phrase = " standalone instance using default ref (copy-and-append)"
   DECLINED_INSTANCE = "<span class='firebrick'>Declined to make#{phrase}</span>"
   CREATED_INSTANCE = "<span class='darkgreen'>Made#{phrase} </span>"

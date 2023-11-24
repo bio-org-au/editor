@@ -72,11 +72,11 @@ class Instance::AsArray::ForReference < Array
 
   def find_instances_for_ref
     built_query.each do |instance|
-      if @count < @offset
-        @count += 1
-      elsif @count < @limit
-        @count += 1
-        if instance.cited_by_id.blank?
+      if instance.cited_by_id.blank?
+        if @count < @offset
+          @count += 1
+        elsif @count < @limit
+          @count += 1
           include_standalone_instance(instance)
           include_synonym(instance) unless instance.cites_this.nil?
         end

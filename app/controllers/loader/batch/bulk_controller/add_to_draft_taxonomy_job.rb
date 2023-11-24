@@ -18,7 +18,7 @@
 
 # Record a preferred matching name for a raw loader name record.
 class Loader::Batch::BulkController::AddToDraftTaxonomyJob
-  attr_reader :attempts, :adds, :declines, :errors, :message
+  attr_reader :result
 
   def initialize(batch_id, search_string, working_draft, authorising_user, job_number)
     @batch = Loader::Batch.find(batch_id)
@@ -32,26 +32,23 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
 
   def run
     log_start
-    @attempts = @adds = @declines = @errors = 0
+    @result = {attempts: 0, adds: 0, declines: 0, errors: 0}
     @search.order(:seq).each do |loader_name|
       do_one_loader_name(loader_name)
     end
     log_finish
-    build_message
   end
 
   private
 
   def do_one_loader_name(loader_name)
-    @attempts += 1
+    @result[:attempts] += 1
     taxo_adder = ::Loader::Name::DraftTaxonomyAdder.new(loader_name,
                                                         @working_draft,
                                                         @authorising_user,
                                                         @job_number)
-    taxo_adder.add
-    @adds += taxo_adder.added
-    @declines += taxo_adder.declined
-    @errors += taxo_adder.errors
+    result = taxo_adder.add
+    @result.deep_merge!(taxo_adder.result_h) { |key, old, new| old + new}
   end
 
   def log(payload)
@@ -60,30 +57,15 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
 
   def log_start
     entry = "<b>STARTED</b>: add to draft taxonomy for batch: "
-    entry += "#{@batch.name} accepted taxa matching #{@search_string}"
+    entry += "#{@batch.name} taxa matching #{@search_string}"
     log(entry)
   end
 
   def log_finish
     entry = "<b>FINISHED</b>: add to draft taxonomy for batch: "
-    entry += "#{@batch.name} accepted taxa matching #{@search_string}"
-    entry += "; records attempted: #{@attempts}; "
-    entry += "records added: #{@adds}; "
-    entry += "declined: #{@declines}; errors: #{@errors}"
+    entry += "#{@batch.name} taxa matching #{@search_string}"
+    entry += ": #{@result.to_html_list.html_safe}"
     log(entry)
-  end
-
-  def tally_result_parts
-    @adds += @result.first
-    @declines += @result.second
-    @errors += @result.last
-  end
-
-  def build_message
-    @message = "Add to draft taxonomy attempted #{@attempts}; "
-    @message += "#{@adds} draft #{'instance'.pluralize(@adds)} added; "
-    @message += " with #{@declines} declined and  #{errors} #{'error'.pluralize(errors)} for "
-    @message += "#{@name_string} (job ##{@job_number})"
   end
 
   def debug(s)

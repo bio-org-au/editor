@@ -75,17 +75,17 @@ class Loader::Name::MakeOneInstance
 
   def no_further_processing
     log_to_table("#{Constants::DECLINED_INSTANCE} - no further processing for #{@loader_name.id}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {no_further_processing: 1}}
   end
 
   def no_preferred_match
     log_to_table("#{Constants::DECLINED_INSTANCE} - no preferred match for ##{@loader_name.id} #{@loader_name.simple_name}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {no_preferred_match: 1}}
   end
 
   def heading
     log_to_table("#{Constants::DECLINED_INSTANCE} - heading entries not processed ##{@loader_name.id} #{@loader_name.simple_name}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {heading_so_not_processed: 1}}
   end
 
   def create_standalone
@@ -107,26 +107,16 @@ class Loader::Name::MakeOneInstance
   def create_misapp
     return no_preferred_match unless @loader_name.preferred_matches.size > 0
 
-    MakeOneMisappInstance.new(@loader_name,
-                              @authorising_user,
-                              @job_number).create
-  end
-
-  def create_misapp
-    return no_preferred_match unless @loader_name.preferred_matches.size > 0
-
-    created = declined = errors = 0
+    result_h = {creates: 0, declines: 0, errors: 0}
     @loader_name.loader_name_matches.each do |misapp_match|
       Rails.logger.debug("candidate match: #{misapp_match.inspect}")
       result = MakeOneMisappInstance.new(@loader_name,
                                          misapp_match,
                                          @authorising_user,
                                          @job_number).create
-      created += result[0]
-      declined += result[1]
-      errors += result[2]
+      result_h.deep_merge!(result) { |key, old, new| old + new}
     end
-    [created, declined, errors]
+    result_h
   end
 
   def log_create_action(count)

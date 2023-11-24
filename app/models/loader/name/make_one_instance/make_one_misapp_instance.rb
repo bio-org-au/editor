@@ -13,6 +13,8 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
   def create
     return already_noted if @match.relationship_instance_id.present?
     return misapp_already_attached if misapp_already_attached?
+    return parent_no_preferred_match if @loader_name.parent
+                     .preferred_match.blank?
     return parent_using_existing if @loader_name.parent
                                                 .preferred_match
                                                 .use_existing_instance == true
@@ -29,39 +31,44 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
 
   def failed(error)
     entry = "#{Constants::FAILED_INSTANCE} for #{@loader_name.simple_name} "
-    entry += "#{@loader_name.id} - error in do_one_loader_name: #{error}"
+    entry += "#{@loader_name.id} - error in make_one_misapp_instance: #{error}"
     log_to_table(entry)
-    Constants::ERROR
+    {errors: 1, error_reasons: {"#{error}": 1}}
   end
 
   def no_relationship_instance_type
     log_to_table(declined_entry("No relationship instance type id "))
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {no_relationship_instance_type_id: 1}}
   end
 
   def parent_no_standalone
     log_to_table(declined_entry(
                    "parent has no standalone instance so cannot proceed"
                  ))
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {parent_has_no_standalone_instance: 1}}
   end
 
   def already_noted
     log_to_table(declined_entry(
                    "relationship instance already noted (##{@match.relationship_instance_id})"
                  ))
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {relationship_instance_already_noted: 1}}
   end
 
   def misapp_already_attached
     record_misapp_already_there
-    log_to_table(declined_entry("misapp already there"))
-    Constants::DECLINED
+    log_to_table(declined_entry("misapplied instance already there"))
+    {declines: 1, decline_reasons: {misapplied_instance_already_there: 1}}
   end
 
   def parent_using_existing
     log_to_table(declined_entry("parent is using existing instance"))
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {parent_is_using_existing_instance: 1}}
+  end
+
+  def parent_no_preferred_match
+    log_to_table(declined_entry("parent has no preferred match"))
+    {declines: 1, decline_reasons: {parent_has_no_preferred_match: 1}}
   end
 
   def declined_entry(message)
@@ -100,10 +107,11 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     new_instance.created_by = new_instance.updated_by = "bulk for #{@user}"
     new_instance.save!
     note_misapp_created(new_instance)
-    Constants::CREATED
+    {creates: 1}
   rescue StandardError => e
     Rails.logger.error("MakeOneMisappInstance#create_misapp_instance: #{e}")
     failed(e)
+    {errors: 1, error_reasons: {"#{e.to_s}": 1}}
   end
 
   def note_misapp_created(instance)

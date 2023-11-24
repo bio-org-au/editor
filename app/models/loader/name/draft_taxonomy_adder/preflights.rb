@@ -18,7 +18,7 @@
 
 #   Create a draft instance for a raw loader_name matched with a name record
 class Loader::Name::DraftTaxonomyAdder::Preflights
-  attr_reader :added, :declined, :errors, :clear
+  attr_reader :result_h
 
   def initialize(loader_name, draft, user, job)
     @loader_name = loader_name
@@ -29,39 +29,44 @@ class Loader::Name::DraftTaxonomyAdder::Preflights
   end
 
   def check
-    if @draft.blank?
-      stop = true
+    cleared = true
+    case
+    when @draft.blank?
+      cleared = false
       preflight_error = "Please choose a draft version"
-    elsif @loader_name.no_further_processing?
-      stop = true
+    when @loader_name.no_further_processing?
+      cleared = false
       preflight_error = "no further processing"
-    elsif @loader_name.preferred_match.blank?
-      stop = true
-      preflight_error = "No preferred matching name for #{@loader_name.simple_name}"
-    elsif @loader_name.preferred_match.blank? || @loader_name.preferred_match.standalone_instance_id.blank?
-      stop = true
-      preflight_error = "No instance identified for #{@loader_name.simple_name}"
-    elsif @loader_name.preferred_match.drafted?
-      stop = true
-      preflight_error = "Stopping because #{@loader_name.simple_name} is already on the draft tree"
-    elsif @loader_name.preferred_match.manually_drafted?
-      stop = true
-      preflight_error = "Stopping because #{@loader_name.simple_name} is flagged as manually drafted"
-    elsif @loader_name.parent.try("no_further_processing?")
-      stop = true
-      preflight_error = "Parent of #{@loader_name.simple_name} is excluded from further processing"
+    when @loader_name.preferred_match.blank?
+      cleared = false
+      preflight_error = "No preferred match"
+    when @loader_name.preferred_match.blank? || 
+         @loader_name.preferred_match.standalone_instance_id.blank?
+      cleared = false
+      preflight_error = "No instance identified"
+    when @loader_name.preferred_match.drafted?
+      cleared = false
+      preflight_error = "Already on draft tree"
+    when @loader_name.preferred_match.manually_drafted?
+      cleared = false
+      preflight_error = "Flagged as manually drafted"
+    when @loader_name.parent.try("no_further_processing?")
+      cleared = false
+      preflight_error = "Parent excluded from further processing"
     end
-    if stop
-      @clear = false
-      @preflight_stop_count = 1
-      log_to_table("#{Constants::DECLINED} preflight check prevented adding to draft: #{@loader_name.simple_name}, id: #{@loader_name.id}, seq: #{@loader_name.seq}: #{preflight_error}")
+    if cleared
+      @result_h = {}
     else
-      @clear = true
+      @result_h = {declines: 1, decline_reasons: {"#{preflight_error}": 1}}
+      log_to_table("#{Constants::DECLINED} preflight check failed: " +
+                   "for #{@loader_name.simple_name}, id: " +
+                   "#{@loader_name.id}: " + "#{preflight_error}")
     end
+    cleared
   end
 
   def log_to_table(payload)
-    payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
+    payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)"
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
   rescue StandardError => e
     Rails.logger.error("Couldn't log to bulk processing log table: #{e}")

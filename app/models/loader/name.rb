@@ -20,6 +20,7 @@
 class Loader::Name < ActiveRecord::Base
   include PreferredMatch
   include SortKeyBulkChanges
+  include Adder
   NA = "N/A"
 
   strip_attributes

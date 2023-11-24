@@ -28,28 +28,30 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
 
   def run
     log_start
-    @attempts = @creates = @declines = @errors = 0
+    @job_h = {attempts: 0, creates: 0, declines: 0, errors: 0}
     @search.order(:seq).each do |loader_name|
       do_one_loader_name(loader_name)
     end
     log_finish
-    [@attempts, @creates, @declines, @errors]
+    @job_h
   end
 
   private
 
   def do_one_loader_name(loader_name)
-    @attempts += 1
+    @job_h[:attempts] += 1
+
     matcher = ::Loader::Name::MakeOneMatchTask.new(loader_name,
                                                    @authorising_user,
                                                    @job_number)
-    @result = matcher.create
-    tally_result_parts
+    result = matcher.create
+    @job_h.deep_merge!(result) { |key, old, new| old + new}
   rescue StandardError => e
+    Rails.logger.error(e.to_s)
     entry = "<span class='red'>Error: failed to make preferred match </span>"
     entry += "##{loader_name.id} #{loader_name.simple_name} - error in do_one_loader_name: #{e}"
     log(entry)
-    @errors += 1
+    @job_h.deep_merge({errors: 1}) { | key, old, new | old + new }
   end
 
   def log(payload)
@@ -65,16 +67,8 @@ class Loader::Batch::BulkController::CreatePreferredMatchesJob
   def log_finish
     entry = "<b>FINISHED</b>: create preferred matches for batch: "
     entry += "#{@batch.name} loader names matching #{@search_string}; "
-    entry += "records attempted: #{@attempts}; "
-    entry += "records created: #{@creates}; "
-    entry += "declined: #{@declines}; errors: #{@errors}"
+    entry += "#{@job_h.to_html_list.html_safe}"
     log(entry)
-  end
-
-  def tally_result_parts
-    @creates += @result.first
-    @declines += @result.second
-    @errors += @result.last
   end
 
   def debug(s)

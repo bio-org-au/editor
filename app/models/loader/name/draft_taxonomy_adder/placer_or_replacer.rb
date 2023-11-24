@@ -18,16 +18,16 @@
 
 #   Place or replace instance in draft taxonomy
 class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
-  attr_reader :added, :declined, :errors, :result
+  attr_reader :result, :result_h
 
   def initialize(loader_name, draft, user, job)
     @loader_name = loader_name
     @draft = draft
     @user = user
     @job = job
-    @added = @declined = @errors = 0
     @result = false
     @task_start_time = Time.now
+    @result_h = {}
   end
 
   # From @loader_name work out the name and instance you're interested in.
@@ -60,20 +60,14 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
       end
     end
   rescue RestClient::ExceptionWithResponse => e
-    @placed_count = 0
-    @errors = 1
-    @error = json_error(e)
-    Rails.logger.error("Error from Services placing/replacing on taxonomy: #{@loader_name.simple_name}, ##{@loader_name.id}: #{@error}")
-    log_to_table("<span class='red'>Error from Services placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{@error}")
+    e_to_s = json_error(e)
+    @result_h = {errors: 1, error_reasons: {"#{e_to_s}": 1}}
+    Rails.logger.error("Error from Services placing/replacing on taxonomy: #{@loader_name.simple_name}, ##{@loader_name.id}: #{e_to_s}")
+    log_to_table("<span class='red'>Error from Services placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{e_to_s}")
   rescue StandardError => e
-    @placed_count = 0
-    @errors = 1
+    @result_h = {errors: 1, error_reasons: {"#{e.to_s}": 1}}
     Rails.logger.error("PlaceOrReplace: Error (non-Services) placing or replacing loader_name on taxonomy #{e.message}")
     log_to_table("<span class='red'>Error placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{e.message}")
-  end
-
-  def counts
-    [@added, @declined, @errors]
   end
 
   private
@@ -85,13 +79,13 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
   def place_name(preferred_match)
     placer = Placer.new(preferred_match, @draft, @user, @job)
     placer.place
-    @added, @declined, @errors, @result = placer.status
+    @result_h = placer.result_h
   end
 
   def replace_name(preferred_match)
     replacer = Replacer.new(preferred_match, @draft, @tree_version_element, @user, @job)
     replacer.replace
-    @added, @declined, @errors, @result = replacer.status
+    @result_h = replacer.result_h
   end
 
   def json_error(err)
@@ -105,7 +99,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
     err.to_s
   end
 
-  def inferred_rank
+  def xinferred_rank
     (@loader_name.rank_nsl ||
      @loader_name.rank ||
      @loader_name&.preferred_matches&.first&.name&.name_rank&.name ||

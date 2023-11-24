@@ -141,11 +141,23 @@
                                         link_title: 'Edit Profile',
                                         tab_index: increment_tab_index,
                                         prev_tab: 'instance-profile-edit-tab',
-                                        next_tab: '.search-result.show-details' } %>
+                                        next_tab: 'instance-batch-loader-tab' } %>
       <% end %>
     <% end %>
   <% end %>
 
+  <% if @tabs_to_offer.include?('tab_batch_loader') %>
+     <% if can?('loader/batches', 'process') %>
+        <%= render partial: 'instances/tabs/tab', locals: {first: false,
+                                        last: true,
+                                        this_tab: 'tab_batch_loader', 
+                                        link_text: "Loader".html_safe,
+                                        link_id: 'instance-batch-loader-tab', 
+                                        link_title: 'Batch Loader operations',
+                                        tab_index: increment_tab_index,
+                                        prev_tab: 'instance-edit-profile-tab',
+                                        next_tab: '.search-result.show-details' } %>
+      <% end %>
+  <% end %>
+
 </ul>
-
-

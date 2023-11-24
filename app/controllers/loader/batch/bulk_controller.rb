@@ -48,11 +48,7 @@ class Loader::Batch::BulkController < ApplicationController
                                         params[:name_string],
                                         @current_user.username,
                                         @job_number)
-    attempted, created, declined, errors = job.run
-    @message = "Create preferred matches attempted #{attempted}; "
-    @message += "created #{created} preferred #{'match'.pluralize(created)} with"
-    @message += " #{declined} declined and #{errors} error(s) for "
-    @message += "#{params[:name_string]} (job ##{@job_number})"
+    @message_h = job.run
     Loader::Batch::Bulk::JobLock.unlock!
     render "create_preferred_matches", locals: { message_container_id_prefix: prefix }
   rescue StandardError => e
@@ -64,17 +60,13 @@ class Loader::Batch::BulkController < ApplicationController
   end
 
   def create_draft_instances
-    add_name_string_to_session
     prefix = "create-draft-instances-"
+    add_name_string_to_session
     job = CreateDraftInstanceJob.new(session[:default_loader_batch_id],
                                      params[:name_string],
                                      @current_user.username,
                                      @job_number)
-    attempted, created, declined, errors = job.run
-    @message = "Create draft instances attempted #{attempted}; "
-    @message += "created #{created} draft #{'instance'.pluralize(created)} with"
-    @message += " #{declined} declined and #{errors} #{'error'.pluralize(errors)} for "
-    @message += "#{params[:name_string]} (job ##{@job_number})"
+    @message_h = job.run
     Loader::Batch::Bulk::JobLock.unlock!
     render "create_draft_instances", locals: { message_container_id_prefix: prefix }
   rescue StandardError => e
@@ -93,7 +85,7 @@ class Loader::Batch::BulkController < ApplicationController
                                     @current_user.username,
                                     @job_number)
     job.run
-    @message = job.message
+    @message_h = job.result
     Loader::Batch::Bulk::JobLock.unlock!
     render "add_to_draft_taxonomy", locals: { message_container_id_prefix: prefix }
   rescue StandardError => e

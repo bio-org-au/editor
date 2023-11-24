@@ -61,14 +61,14 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
   def using_existing_instance
     log_to_table("#{Constants::DECLINED_INSTANCE} - using existing " +
                  " instance for #{@loader_name.simple_name} #{@loader_name.id}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {using_existing_instance: 1}}
   end
 
   def stand_already_noted
     log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "already noted for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {standalone_instance_already_noted: 1}}
   end
 
   def find_standalone_instances_for_default_ref
@@ -96,7 +96,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
     log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "exists for def ref for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {standalone_instance_already_exists_for_default_ref: 1}}
   end
 
   def unknown_option
@@ -105,7 +105,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
     )
     log_error("Unknown option: ##{@match.id} #{@match.loader_name_id}")
     log_error("#{@match.inspect}")
-    Constants::ERROR
+    {errors: 1, error_reasons: {unknown_option: 1}}
   end
 
   def standalone_instance_already_noted?

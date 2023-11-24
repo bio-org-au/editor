@@ -1,0 +1,72 @@
+<% loader_name = Loader::Name.new %>
+<% loader_name.simple_name = @instance.name.simple_name %>
+<% loader_name.full_name = @instance.name.full_name %>
+<% loader_name.family = @instance.name.family.simple_name %>
+<% loader_name.rank = @instance.name.name_rank.name.downcase %>
+<% loader_name.record_type = 'accepted' %>
+<% loader_name.loaded_from_instance_id = @instance.id %>
+
+<%= form_with(model: loader_name, role: 'form', remote: true) do |form| %>
+    <div class="form-group">
+      <label for="loader_batch_id">Batch*</label>
+      <%= form.select :loader_batch_id,
+        Loader::Batch.where(use_sort_key_for_ordering: true).order(:name).map { |batch| [batch.name, batch.id] },
+        {include_blank: true},
+        class: 'form-control',
+        required: true,
+        title: 'Must be within a batch',
+        tabindex: increment_tab_index %>
+    </div>
+
+    Simple name: <%= loader_name.simple_name %><br>
+    Full name: <%= loader_name.full_name %><br>
+    Family: <%= loader_name.family %> <br>
+    Rank: <%= loader_name.rank %> <br>
+    <br>
+    <%= form.hidden_field :simple_name %>
+    <%= form.hidden_field :full_name %>
+    <%= form.hidden_field :family %>
+    <%= form.hidden_field :rank %>
+    <%= form.hidden_field :loaded_from_instance_id %>
+
+    <div class="form-group">
+      <label for="record_type">Record type - accepted or excluded *</label>
+      <%= form.select :record_type, ["accepted", "excluded"], {include_blank: true},
+        class: 'form-control',
+        required: true,
+        title: 'Top level records can be accepted or excluded',
+        tabindex: increment_tab_index %>
+    </div>
+
+    <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: form} %>
+
+    <div class="form-group">
+      <label for="comment">Comment</label>
+      <%= form.text_area :comment, class: 'form-control', title: "Enter comment", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label for="distribution">Distribution</label>
+      <%= form.text_field(:distribution, {class: 'form-control', title: 'Distribution of the taxon', tabindex: increment_tab_index}) %>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <%= form.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label for="remark_to_reviewers">Remark to reviewers</label>
+      <%= form.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <%= divider %>
+
+    <div class="form-group align-right">
+      <%= form.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', 
+        title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+    </div>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container"></div>
+<% end %>
+

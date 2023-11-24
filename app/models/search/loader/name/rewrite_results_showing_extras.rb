@@ -6,7 +6,7 @@ class Search::Loader::Name::RewriteResultsShowingExtras
     @results = results
   end
 
-  def results
+  def rewrite_results
     @results_with_comments = []
     @waiting_for_next_top_level_record = false
     @first_top_level_record = true

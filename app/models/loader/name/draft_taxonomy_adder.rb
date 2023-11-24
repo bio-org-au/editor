@@ -18,7 +18,7 @@
 
 #   Add instance to draft taxonomy
 class Loader::Name::DraftTaxonomyAdder
-  attr_reader :added, :declined, :errors
+  attr_reader :result_h
 
   def initialize(loader_name, draft, user, job)
     @loader_name = loader_name
@@ -29,33 +29,28 @@ class Loader::Name::DraftTaxonomyAdder
   end
 
   def add
-    @added = @declined = @errors = 0
-    preflights_clear = preflights
-    place_or_replace if preflights_clear
+    if preflights_ok?
+      place_or_replace
+    else
+      @result_h
+    end
   end
 
-  def preflights
+  def preflights_ok?
     preflights = Preflights.new(@loader_name, @draft, @user, @job)
-    preflights.check
-    @declined += 1 unless preflights.clear
-    preflights.clear
+    if preflights.check
+      true
+    else
+      @result_h = preflights.result_h
+      false
+    end
   end
 
   def place_or_replace
     placer_or_replacer = PlacerOrReplacer.new(@loader_name, @draft, @user, @job)
     placer_or_replacer.place_or_replace
-    @added, @declined, @errors = placer_or_replacer.counts
+    @result_h = placer_or_replacer.result_h
     placer_or_replacer.result
-  end
-
-  def no_preferred_match
-    log_to_table("#{Constants::DECLINED_INSTANCE} - no preferred match for ##{@loader_name.id} #{@loader_name.simple_name}")
-    Constants::DECLINED
-  end
-
-  def heading
-    log_to_table("#{Constants::DECLINED_INSTANCE} - heading entries not processed ##{@loader_name.id} #{@loader_name.simple_name}")
-    Constants::DECLINED
   end
 
   def log_to_table(payload)

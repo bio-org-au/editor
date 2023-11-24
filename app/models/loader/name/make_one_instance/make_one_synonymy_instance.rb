@@ -15,33 +15,33 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
       entry += "noted (##{@match.relationship_instance_id}) for "
       entry += "#{@loader_name.simple_name} ##{@loader_name.id}"
       log_to_table(entry)
-      return Constants::DECLINED
+      return {declines: 1, decline_reasons: {relationship_instance_already_noted: 1}}
     end
     if @loader_name.parent.preferred_match.blank?
       entry = "#{Constants::DECLINED_INSTANCE} -: parent has no preferred match"
       entry += " #{@loader_name.simple_name} ##{@loader_name.id}"
       log_to_table(entry)
-      return Constants::DECLINED
+      return {declines: 1, decline_reasons: {parent_has_no_preferred_match: 1}}
     end
     if @loader_name.parent.preferred_match.use_existing_instance == true
       entry = "#{Constants::DECLINED_INSTANCE} -: parent is using existing instance for "
       entry += "#{@loader_name.simple_name} ##{@loader_name.id}"
       log_to_table(entry)
-      return Constants::DECLINED
+      return {declines: 1, decline_reasons: {parent_is_using_existing_instance: 1}}
     end
     if synonym_already_attached?
       record_synonym_already_there
-      entry = "#{Constants::DECLINED_INSTANCE} -: synonym already there for "
+      entry = "#{Constants::DECLINED_INSTANCE} -: synonym already in place for "
       entry += "#{@loader_name.simple_name} ##{@loader_name.id}"
       log_to_table(entry)
-      return Constants::DECLINED
+      return {declines: 1, decline_reasons: {synonym_already_in_place: 1}}
     end
     create_relationship_instance
   rescue StandardError => e
     entry = "#{Constants::ERROR_INSTANCE} - for #{@loader_name.simple_name} "
-    entry += "##{@loader_name.id} - error in do_one_loader_name: #{e}"
+    entry += "##{@loader_name.id} - error in create: #{e}"
     log_to_table(entry)
-    Constants::ERROR
+    {errors: 1, error_reasons: {"#{e.to_s}": 1}}
   end
 
   def synonym_already_attached?
@@ -73,7 +73,7 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
               " has no standalone instance so cannot proceed " +
               "#{@loader_name.simple_name} ##{@loader_name.id}"
       log_to_table(entry)
-      return Constants::DECLINED
+      return {declines: 1, decline_reasons: {parent_has_no_standalone_instance: 1}}
     else
       Rails.logger.debug("qfter three")
     end
@@ -91,13 +91,13 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
     new_instance.created_by = new_instance.updated_by = "#{@user}"
     new_instance.save!
     note_created(new_instance)
-    Constants::CREATED
+    {creates: 1}
   rescue StandardError => e
     entry = "LoaderNameMatch#create_relationship_instance: #{e}"
     Rails.logger.error(entry)
     entry = "#{Constants::FAILED_INSTANCE}: #{e}"
     log_to_table(entry)
-    Constants::ERROR
+    {errors: 1, error_reasons: {"#{e.to_s}": 1}}
   end
 
   def note_created(instance)

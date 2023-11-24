@@ -28,16 +28,12 @@ class Loader::Name::MakeOneMatchTask
 
   def create
     matcher = Loader::Name::MakeOneMatch.new(@loader_name, @user, @job_number)
-    result = matcher.find_or_create_preferred_match
-    created = result[0]
-    declined = result[1]
-    errors = result[2]
-    [created, declined, errors]
+    matcher.find_or_create_preferred_match
   end
 
   def no_further_processing
     log("Declined - no further processing")
-    [0, 1, 0]
+    {declines: 1, decline_reasons: {no_further_processing: 1} }
   end
 
   attr_reader :created, :errors

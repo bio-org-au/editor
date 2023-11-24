@@ -1,3 +1,25 @@
+- :date: 22-Nov-2023
+  :jira_id: '4794'
+  :description: |-
+    Synonymy: Can now list instances by name in Hershkovitz (2020) reference - and can now also list instances in other cases affected by this problem
+- :date: 21-Nov-2023
+  :jira_id: '4793'
+  :description: |-
+    Synonymy: Sort nomenclatural synonyms before taxonomic synonyms
+- :date: 21-Nov-2023
+  :jira_id: '4790'
+  :description: |-
+    Loader: Provide an add-to-batch form on a new "Loader" tab for a standalone instance - first cut, with minor adjustment
+- :date: 17-Nov-2023
+  :jira_id: '4779'
+  :description: |-
+    Loader: Bulk jobs: Provide informative job summaries, especially reasons for declines and errors, on the page and in the log
+- :date: 16-Nov-2023
+  :jira_id: '4779'
+  :description: |-
+    Loader: Bulk jobs: Provide summary of declined additions in loader logs "end" message - first cut for create preferred match and create draft instances
+- :date: 15-Nov-2023
+  :release: true
 - :date: 15-Nov-2023
   :jira_id: '4782'
   :description: |- 

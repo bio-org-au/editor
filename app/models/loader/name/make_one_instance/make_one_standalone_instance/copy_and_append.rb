@@ -63,8 +63,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
         log_to_table("#{Constants::FAILED_SYN} #{e} for #{new_syn.name.full_name}")
       end
     end
-    created += syns_copied
-    [created, declined, errors]
+    {creates: created + syns_copied}
   end
 
   def create_the_standalone
@@ -82,33 +81,33 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
   def no_def_ref
     log_to_table("#{Constants::DECLINED_INSTANCE} - no default reference " +
                  "for #{@loader_name.simple_name} #{@loader_name.id}", @user, @job)
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {no_default_ref: 1} }
   end
 
   def no_source_for_copy
     log_to_table("#{Constants::DECLINED_INSTANCE} - no source instance to " +
                  "copy #{@loader_name.simple_name} #{@loader_name.id}", @user, @job)
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {no_source_instance_to_copy: 1} }
   end
 
   def stand_already_noted
     log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "already noted for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {standalone_instance_already_noted: 1} }
   end
 
   def stand_already_for_default_ref
     log_to_table("#{Constants::DECLINED_INSTANCE} - standalone instance " +
                  "exists for def ref for #{@loader_name.simple_name} " +
                  "#{@loader_name.id}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {standalone_instance_exists_for_default_ref: 1} }
   end
 
   def using_existing_instance
     log_to_table("#{Constants::DECLINED_INSTANCE} - using existing " +
                  " instance for #{@loader_name.simple_name} #{@loader_name.id}")
-    Constants::DECLINED
+    {declines: 1, decline_reasons: {using_existing_instance: 1} }
   end
 
   def unknown_option
@@ -117,7 +116,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
     )
     log_error("Unknown option: ##{@match.id} #{@match.loader_name_id}")
     log_error("#{@match.inspect}")
-    Constants::ERROR
+    {errors: 1, error_reasons: {unknown_option: 1} }
   end
 
   def standalone_instance_already_noted?

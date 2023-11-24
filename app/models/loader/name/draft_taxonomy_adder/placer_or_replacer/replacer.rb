@@ -18,7 +18,7 @@
 
 #   Add instance to draft taxonomy for a raw loader_name
 class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
-  attr_reader :added, :declined, :errors, :result
+  attr_reader :result, :result_h
 
   # replacer = Replacer.new(preferred_match, @draft, @tree_version_element, @user, @job)
   def initialize(preferred_match, draft, tree_version_element, user, job)
@@ -28,15 +28,12 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
     @tree_version_element = tree_version_element
     @user = user
     @job = job
-    @added = @declined = @errors = 0
     @result = false
+    @result_h = {}
     @task_start_time = Time.now
   end
 
   def replace
-    Rails.logger.debug("replace: #{@tree_version_element.inspect}")
-    Rails.logger.debug("replace: @tree_version_element.instance_id: #{@tree_version_element.tree_element.instance_id}")
-    Rails.logger.debug("replace: calling Tree::Workspace::Replacement.new for instance: #{@preferred_match.standalone_instance_id}")
     replacement = Tree::Workspace::Replacement.new(username: @user,
                                                    target: @tree_version_element,
                                                    parent: parent_tve(@preferred_match),
@@ -47,15 +44,15 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
     log_to_table("Replace #{@preferred_match.loader_name.simple_name}, id: #{@preferred_match.loader_name.id}, seq: #{@preferred_match.loader_name.seq}")
     @preferred_match.drafted = true
     @preferred_match.save!
-    @added = 1
+    @result_h = {adds: 1, replaced: 1}
     @result = true
   rescue RestClient::ExceptionWithResponse => e
-    @errors = 1
+    @result_h = {errors: 1, error_reasons: {"#{e.to_s}": 1}}
     raise
   end
 
   def status
-    [@added, @declined, @errors, @result]
+    @result_h
   end
 
   private

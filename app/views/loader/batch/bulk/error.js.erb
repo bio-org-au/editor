@@ -1,3 +1,7 @@
+alert('error');
 $('.message-container').html('');
-$('#<%= message_container_id_prefix %>error-message-container').html("<%= escape_javascript(@message) %>");
+$('#<%= message_container_id_prefix %>error-message-container').html("Error: <%= escape_javascript(@message) %>");
+$('#<%= message_container_id_prefix %>error-message-container').removeClass('hidden');
 $('.message-clearer').removeClass('hidden');
+
+

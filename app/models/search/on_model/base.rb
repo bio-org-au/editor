@@ -109,7 +109,7 @@ class Search::OnModel::Base
 
     show_comments = parsed_request.show_loader_name_comments
     @results = Search::Loader::Name::RewriteResultsShowingExtras
-               .new(@results, show_comments).results
+               .new(@results, show_comments).rewrite_results
   end
 
   def debug(s)

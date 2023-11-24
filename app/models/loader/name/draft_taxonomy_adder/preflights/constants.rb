@@ -16,10 +16,6 @@
 #
 # Loader Name entity
 module Loader::Name::DraftTaxonomyAdder::Preflights::Constants
-  COUNT_CREATED = [1, 0, 0]
-  COUNT_DECLINED = [0, 1, 0]
-  COUNT_ERROR = [0, 0, 1]
-
   DECLINED = "<span class='firebrick'>Declined to add to draft</span>"
   ERROR = "<span class='red'>Error: failed to add to draft</span>"
   CREATED = "<span class='darkgreen'>Added to draft</span>"
