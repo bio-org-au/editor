@@ -62,6 +62,7 @@ class Loader::NamesController < ApplicationController
   def new_heading
     @loader_name = ::Loader::Name.new
     @loader_name.simple_name = nil
+    @loader_name.full_name = nil
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
     @loader_name.record_type = "heading"
@@ -175,6 +176,10 @@ class Loader::NamesController < ApplicationController
     end
 
     @loader_name = Loader::Name.create(loader_name_params, current_user.username)
+    unless loader_name_params["loaded_from_instance_id"].blank?
+      @loader_name.create_match_to_loaded_from_instance_name(current_user.username)
+    end
+
     render "create"
   rescue StandardError => e
     logger.error("Controller:Loader::Names:create:rescuing exception #{e}")

@@ -12,7 +12,7 @@ module Search::QueryDefaults
       remove_old_defaults
       return false
     end
-    return false if value_already_applied?
+    return false if value_already_applied? || value_not_needed?
 
     true
   end
@@ -26,6 +26,16 @@ module Search::QueryDefaults
       params[:query_string] =~ name_regex ||
       params[:query_string] =~ default_name_regex ||
       params[:query_string] =~ any_batch_regex
+  end
+
+  # gsub on dashes needed because they count as word-boundaries,
+  # hence 'family-id:' was matching /\bid:/
+  # had to stop that
+  def value_not_needed?
+    id_regex = /\bid:/
+    id_with_syn_regex = /\bid-with-syn:/
+    params[:query_string].gsub(/-/,'') =~ id_regex ||
+      params[:query_string] =~ id_with_syn_regex
   end
 
   def apply_default_loader_batch

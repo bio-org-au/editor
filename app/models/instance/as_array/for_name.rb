@@ -100,7 +100,7 @@ class Instance::AsArray::ForName < Array
             .joins("inner join name_status ns on name.name_status_id = ns.id")
             .includes(:instance_type)
             .where(cited_by_id: instance.id)
-            .in_nested_instance_type_order
+            .in_synonymy_order
             .order("reference.iso_publication_date,lower(name.full_name)")
   end
 
@@ -147,6 +147,6 @@ class Instance::AsArray::ForName < Array
             .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
             .joins("inner join name_status ns on name.name_status_id = ns.id")
             .where(cited_by_id: instance.id)
-            .in_nested_instance_type_order
+            .in_synonymy_order
   end
 end

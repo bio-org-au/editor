@@ -35,16 +35,12 @@
       <% end %>
     </div>
 
-    <% unless loader_name.new_record? %>
-
-      <div class="form-group">
-        <label for="full_name">Full Name*</label>
-        <%= f.text_field :full_name, class: 'form-control give-me-focus',
-          required: true, title: "Enter full name",
-          tabindex: increment_tab_index, autofocus: true %>
-      </div>
-
-    <% end %>
+    <div class="form-group">
+      <label for="full_name">Full Name*</label>
+      <%= f.text_field :full_name, class: 'form-control give-me-focus',
+        required: true, title: "Enter full name",
+        tabindex: increment_tab_index, autofocus: true %>
+    </div>
 
     <div class="form-group">
       <label for="family">Family Name*</label>

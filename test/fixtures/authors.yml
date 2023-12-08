@@ -140,7 +140,8 @@ unique_abbrev:
   updated_by: greg
 
 gaertn:
-  abbrev: "Gaertn."
+  abbrev: Gaertn.
+  name: Gaertner, J.
   namespace: apni
   created_by: greg
   updated_by: greg
@@ -561,3 +562,18 @@ master_with_abbrev:
   namespace: apni
   created_by: greg
   updated_by: greg
+
+pfeiff:
+  name: Pfeiffer, L.K.G.
+  abbrev: Pfeiff.
+  namespace: apni
+  created_by: greg
+  updated_by: greg
+
+juss:
+  name: Jussieu, A.L. de
+  abbrev: Juss.
+  namespace: apni
+  created_by: greg
+  updated_by: greg
+

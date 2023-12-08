@@ -420,7 +420,10 @@ class Search::ParsedRequest
     unless @params["query_string"].match(/\bdefault-batch:/) ||
            @params["query_string"].match(/\bbatch-id:/) ||
            @params["query_string"].match(/\bbatch-name:/) ||
-           @params["query_string"].match(/\bany-batch:/)
+           @params["query_string"].match(/\bany-batch:/) ||
+           @params["query_string"].match(/[^-]id:/) ||
+           @params["query_string"].match(/\Aid:/) ||
+           @params["query_string"].match(/\bid-with-syn:/) 
       raise "Please set a default batch, or specify a 'batch-id:', a 'batch-name:' or 'any-batch:'"
     end
   end

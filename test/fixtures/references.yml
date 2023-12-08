@@ -2275,3 +2275,17 @@ ref_for_name_in_taxonomy:
   created_by: tester
   updated_by: tester
 
+syntrinema_genus_novum:
+  title: Syntrinema genus novum Cyperacearum Brasiliensium
+  citation: "Pfeiffer, H. (1925), Syntrinema genus novum Cyperacearum Brasiliensium. Repertorium Specierum Novarum Regni Vegetabilis 21(8-20) : 238-240"
+  citation_html: "Pfeiffer, H. (1925), Syntrinema genus novum Cyperacearum Brasiliensium. Repertorium Specierum Novarum Regni Vegetabilis 21(8-20) : 238-240"
+  display_title: Syntrinema genus novum Cyperacearum Brasiliensium
+  author: pfeiff
+  ref_author_role: author
+  language: undetermined
+  namespace: apni
+  ref_type: paper
+  iso_publication_date: 1925
+  volume: 21(8-20)
+  created_by: tester
+  updated_by: tester

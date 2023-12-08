@@ -40,7 +40,7 @@ britten_created_angophora_costata:
 inst_species_or_below_to_be_synonym:
   reference: ref_4_genus_or_above_to_be_synonym
   name: species_or_below_to_be_synonym
-  instance_type: synonym
+  instance_type: nomenclatural_synonym
   page: exclude-from-ordering-test
   verbatim_name_string: m
   namespace: apni
@@ -78,7 +78,7 @@ xyz_costata_is_synonym_of_angophora_costata:
   name: metrosideros_costata
   this_is_cited_by: britten_created_angophora_costata
   this_cites: gaertner_created_metrosideros_costata
-  instance_type: synonym
+  instance_type: nomenclatural_synonym
   verbatim_name_string: 
   namespace: apni
   created_by: tester
@@ -871,7 +871,7 @@ species_or_below_syn_with_genus_or_above:
   name: species_or_below_to_be_synonym
   this_is_cited_by: inst_genus_or_above_to_be_synomised
   this_cites: inst_species_or_below_to_be_synonym
-  instance_type: synonym
+  instance_type: nomenclatural_synonym
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim7
   namespace: apni
@@ -937,7 +937,7 @@ for_to_have_a_double_in_ref:
 for_to_be_a_double_in_ref:
   reference: for_to_be_a_double_synonym
   name: to_be_a_double_synonym
-  instance_type: unknown
+  instance_type: nomenclatural_synonym
   page: exclude-from-ordering-test
   verbatim_name_string: xaax
   namespace: apni
@@ -959,7 +959,7 @@ first_syn_for_to_have_a_double:
   this_is_cited_by: for_to_have_a_double_in_ref
   this_cites: for_to_be_a_double_in_ref
   reference: for_to_have_a_double_synonym
-  instance_type: synonym
+  instance_type: nomenclatural_synonym
   page: exclude-from-ordering-test
   verbatim_name_string: d
   namespace: apni
@@ -1041,4 +1041,14 @@ instance_for_name_in_taxonomy:
   source_id_string: gcmc
   page: exclude-from-ordering-test
   verbatim_name_string: k
+
+instance_for_name_in_taxonomy:
+  reference: syntrinema_genus_novum
+  name: ptychocaryum_ghaeri 
+  instance_type: comb_nov
+  namespace: apni
+  created_by: tester
+  updated_by: tester
+  source_id_string: gcmd
+  page: exclude-from-ordering-test
 

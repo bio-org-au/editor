@@ -21,6 +21,7 @@ class Loader::Name < ActiveRecord::Base
   include PreferredMatch
   include SortKeyBulkChanges
   include Adder
+  include SeqCalculator
   NA = "N/A"
 
   strip_attributes
@@ -453,6 +454,7 @@ class Loader::Name < ActiveRecord::Base
 
   def self.create(params, username)
     loader_name = Loader::Name.new(params)
+    loader_name.seq = calc_seq(params) if consider_seq(params)
     loader_name.created_manually = true
     if loader_name.loader_batch_id.blank?
       loader_name.loader_batch_id = find(params[:parent_id])
@@ -463,7 +465,7 @@ class Loader::Name < ActiveRecord::Base
 
     loader_name
   end
-
+  
   def save_with_username(username)
     self.created_by = self.updated_by = username
     set_defaults
@@ -483,6 +485,7 @@ class Loader::Name < ActiveRecord::Base
     loader_name.parent_id = id
     loader_name.simple_name = loader_name.full_name = nil
     loader_name.family = family
+    loader_name.loader_batch_id = loader_batch_id
     loader_name.seq = base_seq + 1
     loader_name.created_manually = true
     loader_name

@@ -111,6 +111,8 @@ GEM
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
+    indefinite_article (0.2.5)
+      activesupport
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -348,6 +350,7 @@ DEPENDENCIES
   exception_notification
   font-awesome-sass (~> 6.4.0)
   importmap-rails
+  indefinite_article
   jbuilder (~> 2.7)
   kramdown (>= 2.3.0)
   launchy

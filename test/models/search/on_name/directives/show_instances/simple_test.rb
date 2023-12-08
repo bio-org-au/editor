@@ -65,14 +65,16 @@ class SimpleTest < ActiveSupport::TestCase
     confirm_disp(search, 5, "instance_as_part_of_concept")
     confirm_inst(search, 5, "Angophora costata (Gaertn.) Britten")
     confirm_disp(search, 6, "instance-is-cited-by")
-    confirm_inst(search, 6, "Angophora lanceolata Cav.")
+    confirm_inst(search, 6, "Metrosideros costata Gaertn.")
     confirm_disp(search, 7, "instance-is-cited-by")
     confirm_inst(search, 7, "Metrosideros costata Gaertn.")
+    confirm_disp(search, 8, "instance-is-cited-by")
+    confirm_inst(search, 8, "Angophora lanceolata Cav.")
   end
 
   def show_results(search)
-    search.executed_query.results.each do |result|
-      puts "#{result.id} #{result.display_as} #{name_info(result)}"
+    search.executed_query.results.each_with_index do |result, ndx|
+      puts "#{ndx}. #{result.id} #{result.instance_type.name if result.class == Instance} #{result.display_as} #{name_info(result)}"
     end
   end
 

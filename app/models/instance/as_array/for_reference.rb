@@ -77,7 +77,7 @@ class Instance::AsArray::ForReference < Array
           @count += 1
         elsif @count < @limit
           @count += 1
-          include_standalone_instance(instance)
+          include_standalone_instance_and_synonymy(instance)
           include_synonym(instance) unless instance.cites_this.nil?
         end
       end
@@ -85,10 +85,11 @@ class Instance::AsArray::ForReference < Array
     end
   end
 
-  def include_standalone_instance(instance)
+  def include_standalone_instance_and_synonymy(instance)
     instance.display_within_reference
     @results.push(instance)
-    instance.is_cited_by.each do |cited_by|
+    instance.is_cited_by
+            .each do |cited_by|
       @count += 1
       cited_by.expanded_instance_type = cited_by.instance_type.name
       @results.push(cited_by)

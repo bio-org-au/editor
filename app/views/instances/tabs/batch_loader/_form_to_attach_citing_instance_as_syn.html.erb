@@ -1,0 +1,88 @@
+
+<% loader_name = Loader::Name.new %>
+<% citer = @instance.this_is_cited_by %>
+<% loader_name.simple_name = citer.name.simple_name %>
+<% loader_name.full_name = citer.name.full_name %>
+<% loader_name.family = citer.name.family.simple_name %>
+<% loader_name.rank = citer.name.name_rank.name.downcase %>
+<% loader_name.record_type = 'synonym' %>
+<% loader_name.loaded_from_instance_id = citer.id %>
+<% loader_name.loader_batch_id = parent_loader_name.loader_batch_id %>
+<% loader_name.parent_id = parent_loader_name.id %>
+<% if parent_loader_name.loader_batch.use_sort_key_for_ordering %>
+  <% loader_name.seq = 0 %>
+<% else %>
+  <% loader_name.seq = parent_loader_name.seq + 1 %>
+<% end %>
+
+
+<h5>Add <%= loader_name.simple_name %> </h5>
+<ul>
+    <li/>to batch <%= loader_name.loader_batch.name %> 
+    <li/>as synonym of <%= parent_loader_name.simple_name %></h5>
+</ul>
+
+<%= form_with(model: loader_name, role: 'form', remote: true) do |form| %>
+
+    <%= form.hidden_field :simple_name %>
+    <%= form.hidden_field :full_name %>
+    <%= form.hidden_field :family %>
+    <%= form.hidden_field :rank %>
+    <%= form.hidden_field :loader_batch_id %>
+    <%= form.hidden_field :loaded_from_instance_id %>
+    <%= form.hidden_field :parent_id %>
+    <%= form.hidden_field :seq %>
+
+    <div class="form-group">
+      <label for="record_type">Record type - accepted or excluded *</label>
+      <%= form.select :record_type, ["synonym", "misapplied"], {include_blank: true},
+        class: 'form-control',
+        required: true,
+        title: 'Top level records can be accepted or excluded',
+        tabindex: increment_tab_index %>
+    </div>
+    
+    <div class="form-group">
+      <label for="synonym_type">Synonym type<span class="red">*</span>
+      </label>
+      <%= form.select :synonym_type, 
+        ['alternative name',
+         'basionym',
+         'doubtful misapplied',
+         'doubtful pro parte misapplied',
+         'doubtful pro parte taxonomic synonym',
+         'doubtful taxonomic synonym',
+         'isonym',
+         'misapplied',
+         'nomenclatural synonym',
+         'orthographic variant',
+         'pro parte misapplied',
+         'pro parte taxonomic synonym',
+         'replaced synonym',
+         'taxonomic synonym'],
+         {include_blank: true},
+         class: 'form-control',
+      title: "Synonym type",
+      required: true,
+      tabindex: increment_tab_index %>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes for Compilers</label>
+      <%= form.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group">
+      <label for="remark_to_reviewers">Remark to reviewers</label>
+      <%= form.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <div class="form-group align-right">
+      <%= form.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', 
+        title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+    </div>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container"></div>
+<% end %>
+
+

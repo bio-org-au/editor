@@ -77,12 +77,12 @@ class Instance < ActiveRecord::Base
     raw_sql = <<-SQL
     Lpad(
       Regexp_replace(
-        Regexp_replace(page, '[A-z. ]','','g'),
+        Regexp_replace(instance.page, '[A-z. ]','','g'),
             '[^0-9]*([0-9][0-9]*).*', '\\1')
             ||
             Regexp_replace(
               Regexp_replace(
-                Regexp_replace(page, '.*-.*', '~'),
+                Regexp_replace(instance.page, '.*-.*', '~'),
               '[^~].*','0'),
               '~','Z'),
           12,'0'),
@@ -108,15 +108,19 @@ class Instance < ActiveRecord::Base
           page"))
   }
 
-  scope :in_nested_instance_type_order, lambda {
+  scope :in_synonymy_order, lambda {
     raw_sql = <<-SQL
-      case nomenclatural
+    case nomenclatural
+      when true then
+      case instance_type.name = 'basionym'
         when true then 1
-      else 2
-      end,
+        else 2
+      end
+      else 3
+    end,
     case taxonomic
-        when true then#{' '}
-          case pro_parte#{' '}
+        when true then
+          case pro_parte
             when true then 2
             else 1
           end
@@ -131,20 +135,59 @@ class Instance < ActiveRecord::Base
               98
           end
         else 99
-      end,
-      ref_that_cites.iso_publication_date,
-      instance_type.sort_order,
-      case instance_type.name
-        when 'basionym' then 1
-        when 'replaced synonym' then 2
-        when 'common name' then 99
-        when 'vernacular name' then 99
-        else 3
-      end,
-      case ns.name
+    end,
+    ref_that_cites.iso_publication_date,
+    instance_type.sort_order,
+    case instance_type.name
+      when 'replaced synonym' then 2
+      when 'common name' then 99
+      when 'vernacular name' then 99
+      else 3
+    end,
+    case ns.name
       when 'orth. var.' then 2
       else 1
-      end
+    end
+    SQL
+    order(Arel.sql(raw_sql))
+  }
+
+  scope :ref_synonymy_order, lambda {
+    raw_sql = <<-SQL
+    case nomenclatural
+      when true then 1
+      else 2
+    end,
+    case taxonomic
+        when true then
+          case pro_parte
+            when true then 2
+            else 1
+          end
+        when false then
+          case nomenclatural
+            when true then
+              case pro_parte
+                when true then 4
+                else 3
+              end
+            else
+              98
+          end
+        else 99
+    end,
+    instance_type.sort_order,
+    case instance_type.name
+      when 'basionym' then 1
+      when 'replaced synonym' then 2
+      when 'common name' then 99
+      when 'vernacular name' then 99
+      else 3
+    end,
+    case name_status.name
+      when 'orth. var.' then 2
+      else 1
+    end
     SQL
     order(Arel.sql(raw_sql))
   }
@@ -215,6 +258,10 @@ class Instance < ActiveRecord::Base
 
   has_many :instance_notes,
            dependent: :restrict_with_error
+
+  has_many :loader_names,
+           class_name: "Loader::Name",
+           foreign_key: "loaded_from_instance_id"
 
   # has_many :apc_instance_notes,
   #         class_name: "InstanceNote",
@@ -519,7 +566,13 @@ class Instance < ActiveRecord::Base
   end
 
   def is_cited_by
-    Instance.where(cited_by_id: id).collect do |instance|
+    Instance.where(cited_by_id: id)
+            .joins(:instance_type, :name)
+            .joins("inner join name_status ns on name.name_status_id = ns.id")
+            .joins("left outer join instance cites on instance.cites_id = cites.id")
+            .joins("left outer join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
+            .in_synonymy_order
+            .collect do |instance|
       instance.display_as = "cited-by-instance"
       instance
     end

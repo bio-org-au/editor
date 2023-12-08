@@ -2646,3 +2646,37 @@ name_in_taxonomy:
   updated_by: greg
   created_by: greg
 
+cyperaceae:
+  simple_name: Cyperaceae
+  full_name: Cyperaceae Juss.
+  name_element: Cyperaceae
+  name_rank: familia
+  name_status: legitimate
+  name_type: scientific
+  namespace: apni
+  parent: an_ordo
+  family: cyperaceae
+  author: juss
+  name_path: 'Plantae/Magnoliophyta/an_ordo/'
+  uri: agf
+  updated_by: greg
+  created_by: greg
+
+ptychocaryum_ghaeri: 
+  simple_name: Ptychocaryum ghaeri
+  full_name: Ptychocaryum ghaeri (Gaertn.) Pfeiff.
+  name_element: ghaeri
+  name_rank: species
+  name_status: legitimate
+  name_type: scientific
+  namespace: apni
+  parent: angophora
+  family: cyperaceae
+  author: pfeiff
+  base_author: gaertn
+  name_path: 'Plantae/Magnoliophyta/an_ordo/cyperaceae'
+  uri: agg
+  updated_by: greg
+  created_by: greg
+
+

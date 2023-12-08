@@ -1,3 +1,61 @@
+- :date: 04-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Add appropriate misapp instance types to the synonym type drop down on the instance-to-synonym flipper form
+- :date: 01-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Gather comment and distribution data from the accepted concept (or excluded concept for comment) into the synonym add-to-batch flipper form when appropriate
+- :date: 01-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Tighten controls on when an add-to-batch Loader tab is offered: user must be a batch loader and not offered for unpub synonyms
+- :date: 30-Nov-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: When creating a loader_name record from an existing name/instance, automatically also create a preferred match to that name/instance
+- :date: 30-Nov-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: After adding a loader_name record from an existing instance the Loader (details) tab will be automatically refreshed after about 1 second
+- :date: 29-Nov-2023
+  :jira_id: '4807'
+  :description: |-
+    Loader: Problem with <code>family-id:</code> directive fixed
+- :date: 29-Nov-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Add fields for Notes and Remarks to citing-record-as-syn add-to-batch form - more to come
+- :date: 29-Nov-2023
+  :jira_id: '4807'
+  :description: |-
+    Loader: Fix bug preventing normal <code>loader_name</code> searching with default batch in place
+- :date: 29-Nov-2023
+  :jira_id: '4802'
+  :description: |-
+    Loader: Allow synonym instance data to be flipped into a batch as an accepted/excluded name; allow citing name to become its synonym in the loader
+- :date: 29-Nov-2023
+  :jira_id: '4807'
+  :description: |-
+    Loader: Searches on <code>loader_name</code> with <code>id:</code> or <code>id-with-syn:</code> directives do not get the <code>default-batch:</code> directive imposed on them
+- :date: 28-Nov-2023
+  :jira_id: '4801'
+  :description: |-
+    Loader: Fix seq handling for create synonym and misapplied - broken by previous change
+- :date: 27-Nov-2023
+  :jira_id: '4801'
+  :description: |-
+    Loader: Extend add-to-batch for a standalone instance to all batches, including seq-ordered batches - determine an approximate initial sequence
+- :date: 24-Nov-2023
+  :jira_id: '4800'
+  :description: |-
+    Loader: Add <code>full_name</code> field to form for creating a <code>loader_name</code> heading record; add name fields to details tab
+- :date: 24-Nov-2023
+  :jira_id: '4796'
+  :description: |-
+    Synonymy: Further improvements to synonymy sorting for reference queries showing instances
+- :date: 24-Nov-2023
+  :release: true
 - :date: 22-Nov-2023
   :jira_id: '4794'
   :description: |-

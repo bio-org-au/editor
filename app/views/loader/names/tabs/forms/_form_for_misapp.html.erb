@@ -61,6 +61,7 @@
 
     <% end %>
     <%= f.hidden_field(:parent_id, {}) %>
+    <%= f.hidden_field(:loader_batch_id, {}) %>
 
     <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
     <%#= render partial: "authors", locals: {f: f} %>

@@ -5,12 +5,23 @@
 <% loader_name.rank = @instance.name.name_rank.name.downcase %>
 <% loader_name.record_type = 'accepted' %>
 <% loader_name.loaded_from_instance_id = @instance.id %>
+<% loader_name.loader_batch_id = session[:default_loader_batch_id] %>
+<% loader_name.name_status = @instance.name.name_status.name.downcase %>
+<% loader_name.comment = @instance.name.accepted_or_excluded_comment %>
+<% loader_name.distribution = @instance.name.accepted_distribution %>
 
+
+<h5>Add <%= loader_name.simple_name %> to a batch</h5>
+<ul>
+  <li/>in the <%= loader_name.family %> family
+  <li/> as an accepted or excluded name
+  <li/> with <%= loader_name.rank %> rank and <%= loader_name.name_status %> status
+</ul>
 <%= form_with(model: loader_name, role: 'form', remote: true) do |form| %>
     <div class="form-group">
       <label for="loader_batch_id">Batch*</label>
       <%= form.select :loader_batch_id,
-        Loader::Batch.where(use_sort_key_for_ordering: true).order(:name).map { |batch| [batch.name, batch.id] },
+        Loader::Batch.order(:name).map { |batch| [batch.name, batch.id] },
         {include_blank: true},
         class: 'form-control',
         required: true,
@@ -18,15 +29,11 @@
         tabindex: increment_tab_index %>
     </div>
 
-    Simple name: <%= loader_name.simple_name %><br>
-    Full name: <%= loader_name.full_name %><br>
-    Family: <%= loader_name.family %> <br>
-    Rank: <%= loader_name.rank %> <br>
-    <br>
     <%= form.hidden_field :simple_name %>
     <%= form.hidden_field :full_name %>
     <%= form.hidden_field :family %>
     <%= form.hidden_field :rank %>
+    <%= form.hidden_field :name_status %>
     <%= form.hidden_field :loaded_from_instance_id %>
 
     <div class="form-group">
@@ -38,10 +45,8 @@
         tabindex: increment_tab_index %>
     </div>
 
-    <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: form} %>
-
     <div class="form-group">
-      <label for="comment">Comment</label>
+      <label for="comment">Public Taxonomy Comment</label>
       <%= form.text_area :comment, class: 'form-control', title: "Enter comment", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
@@ -51,7 +56,7 @@
     </div>
 
     <div class="form-group">
-      <label for="notes">Notes</label>
+      <label for="notes">Notes for Compilers</label>
       <%= form.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
@@ -59,8 +64,6 @@
       <label for="remark_to_reviewers">Remark to reviewers</label>
       <%= form.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index, autofocus: true %>
     </div>
-
-    <%= divider %>
 
     <div class="form-group align-right">
       <%= form.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', 

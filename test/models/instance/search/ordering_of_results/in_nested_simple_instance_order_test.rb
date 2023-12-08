@@ -33,14 +33,14 @@ class InNestedSimpleInstanceOrderTest < ActiveSupport::TestCase
                        .joins("inner join instance cites on instance.cites_id = cites.id")
                        .joins("inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
                        .where.not(page: "exclude-from-ordering-test")
-                       .in_nested_instance_type_order
+                       .in_synonymy_order
                        .order(Arel.sql('reference.iso_publication_date,lower(name.full_name) collate "C"'))
                        .order(Arel.sql("instance_type.name")) # make test order definitive
     # how does having .order statements here help to test the app?
   end
 
-  test "instances in nested simple instance order" do
-    skip "doesn't handle new version of the in_nested_instance_type_order - seems to be for testing page and rank ordering, needs review"
+  test "instances in synonymy order" do
+    skip "doesn't handle new version of the in_synonymy_order - seems to be for testing page and rank ordering, needs review"
     # Very useful debug
     @results.each_with_index do |i, ndx|
       puts "#{ndx}: #{i.page} - #{i.name.full_name}"

@@ -62,4 +62,22 @@ module NameTreeable
     end
     @tally
   end
+
+  def accepted_distribution
+    if accepted_concept?
+      accepted_tree_version_element.tree_element.distribution_value
+    else
+      ''
+    end
+  end
+
+  def accepted_or_excluded_comment
+    if accepted_concept?
+      accepted_tree_version_element.tree_element.comment_value
+    elsif excluded_concept?
+      accepted_tree_version_element.tree_element.comment_value
+    else
+      ''
+    end
+  end
 end

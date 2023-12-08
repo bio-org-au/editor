@@ -19,9 +19,10 @@
 require "test_helper"
 
 # Single instance model test.
-class SynonymIsUnsourcedTest < ActiveSupport::TestCase
-  test "synonym instance is unsourced" do
-    synonym = instances(:species_or_below_syn_with_genus_or_above)
-    assert synonym.unsourced?, "Plain synonym instance should be unsourced."
+class BasionymInstanceTypeIssourcedTest < ActiveSupport::TestCase
+  test "basionym instance type is sourced" do
+    basionym_type = instance_types(:basionym)
+    assert_not basionym_type.unsourced?,
+      "Basionym instance type should be sourced."
   end
 end

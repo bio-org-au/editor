@@ -41,30 +41,25 @@ class InNestedInstanceOrderTest < ActiveSupport::TestCase
   end
 
   # TODO: revise after ordering code changes
-  test "instances in nested instance type order" do
+  test "instances in synonymy order" do
     run_query
     test1
     # test2
   end
 
+  # This emulates synonymy ordering in the Editor, note especially the scope in_synonymy_order.
   def run_query
     @results = Instance.joins(:instance_type, :name, :reference)
                        .joins("inner join name_status ns on name.name_status_id = ns.id")
                        .joins("inner join instance cites on instance.cites_id = cites.id")
                        .joins("inner join reference ref_that_cites on cites.reference_id = ref_that_cites.id")
-                       .in_nested_instance_type_order
-                       .where(
-                         instance_type: {
-                           name: INSTANCE_TYPE_NAMES
-                         }
-                       )
-                       .order("instance_type.name")
+                       .in_synonymy_order
     # extra order clause to make definitive and
     # repeatable ordering for these tests
     #
     # Debug
     # @results.each_with_index do |i,ndx|
-    #  puts "#{ndx}: #{i.instance_type.name}: #{i.name.simple_name} - #{i.instance_type.taxonomic ? 'taxonomic' : 'not taxonomic'}" if ndx < 30
+     # puts "#{ndx}: #{i.instance_type.name}: #{i.name.simple_name} - #{i.instance_type.taxonomic ? 'taxonomic' : 'not taxonomic'}" if ndx < 30
     # end
   end
 
@@ -83,8 +78,11 @@ class InNestedInstanceOrderTest < ActiveSupport::TestCase
   #  11: vernacular name: Rusty Gum - not taxonomic
 
   def test1
-    assert_with_args(@results, 0, "taxonomic synonym")
-    assert_with_args(@results, 1, "basionym")
+    assert_with_args(@results, 0, "basionym")
+    assert_with_args(@results, 1, "nomenclatural synonym")
+    assert_with_args(@results, 2, "nomenclatural synonym")
+    assert_with_args(@results, 3, "nomenclatural synonym")
+    assert_with_args(@results, 4, "taxonomic synonym")
     # assert_with_args(@results, 2, "doubtful nomenclatural synonym")
     # assert_with_args(@results, 3, "doubtful pro parte taxonomic synonym")
     # assert_with_args(@results, 4, "doubtful taxonomic synonym")

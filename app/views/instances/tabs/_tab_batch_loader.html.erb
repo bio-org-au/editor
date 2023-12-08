@@ -1,3 +1,6 @@
-<h5>Add Concept to Batch</h5>
-<%= render partial: "instances/tabs/loader_batch/form_for_accepted_excluded" %>
+<% if @instance.standalone? %>
+<%= render partial: "instances/tabs/batch_loader/standalone_ops" %>
+<% else %>
+<%= render partial: "instances/tabs/batch_loader/synonym_ops" %>
+<% end %>
 
