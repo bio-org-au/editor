@@ -3,12 +3,6 @@
   <h5>Create misapplication for <%= @loader_name.simple_name %></h5>
   <% loader_name = @loader_name.new_misapp %>
   <%= render partial: 'loader/names/tabs/forms/form_for_misapp', locals: {loader_name: loader_name} %>
-<% else %>
-  <h5>Create misapplication for <%= @loader_name.parent.simple_name %></h5>
-  <% loader_name = @loader_name.parent.new_misapp(base_seq: @loader_name.seq) %>
-  <%= render partial: 'loader/names/tabs/forms/form_for_misapp', locals: {loader_name: loader_name} %>
-<% end %>
-
 <% if @take_focus %>
   <script>
     $(document).ready(function () {
@@ -16,5 +10,9 @@
     })
   </script>
 <% end %>
+<% else %>
+  This tab doesn't apply to the current record.
+<% end %>
+
 
 

@@ -62,11 +62,9 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
   rescue RestClient::ExceptionWithResponse => e
     e_to_s = json_error(e)
     @result_h = {errors: 1, error_reasons: {"#{e_to_s}": 1}}
-    Rails.logger.error("Error from Services placing/replacing on taxonomy: #{@loader_name.simple_name}, ##{@loader_name.id}: #{e_to_s}")
     log_to_table("<span class='red'>Error from Services placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{e_to_s}")
   rescue StandardError => e
     @result_h = {errors: 1, error_reasons: {"#{e.to_s}": 1}}
-    Rails.logger.error("PlaceOrReplace: Error (non-Services) placing or replacing loader_name on taxonomy #{e.message}")
     log_to_table("<span class='red'>Error placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{e.message}")
   end
 
@@ -110,6 +108,6 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
     payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if defined? @task_start_time
     Loader::Batch::Bulk::JobLog.new(@job, payload, @user).write
   rescue StandardError => e
-    Rails.logger.error("Couldn't log to bulk processing log table: #{e}")
+    Rails.logger.error("PlaceOrReplace couldn't log to log table: #{e}")
   end
 end

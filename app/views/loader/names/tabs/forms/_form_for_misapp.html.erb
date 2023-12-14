@@ -42,6 +42,9 @@
         tabindex: increment_tab_index %>
     </div>
 
+    <%= render partial: "loader/names/tabs/forms/misapp_synonym_type", 
+               locals: {f: f, loader_name: loader_name} %>
+
     <% unless loader_name.new_record? %>
 
     <div class="form-group">

@@ -175,9 +175,14 @@ class Loader::NamesController < ApplicationController
       raise "Please set a default batch"
     end
 
-    @loader_name = Loader::Name.create(loader_name_params, current_user.username)
-    unless loader_name_params["loaded_from_instance_id"].blank?
-      @loader_name.create_match_to_loaded_from_instance_name(current_user.username)
+    ActiveRecord::Base.transaction do
+      @loader_name = Loader::Name.create(loader_name_params, current_user.username)
+      unless loader_name_params["loaded_from_instance_id"].blank?
+        @loader_name.create_match_to_loaded_from_instance_name(current_user.username)
+        if loader_name_params["add_sibling_synonyms"] == 'true'
+          siblings = @loader_name.create_sibling_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
+        end
+      end
     end
 
     render "create"
@@ -216,7 +221,8 @@ class Loader::NamesController < ApplicationController
                                         :no_further_processing, :notes,
                                         :distribution, :loader_batch_id,
                                         :rank, :remark_to_reviewers, :sort_key,
-                                        :loaded_from_instance_id)
+                                        :loaded_from_instance_id,
+                                        :add_sibling_synonyms)
   end
 
   def set_tab

@@ -3,16 +3,11 @@
   <h5>Create synonym for <%= @loader_name.simple_name %></h5>
   <% loader_name = @loader_name.new_synonym %>
   <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: {loader_name: loader_name} %>
+  <% if @take_focus %>
+    <script>
+      $(document).ready(function () { $('#loader_name_simple_name').focus(); })
+    </script>
+  <% end %>
 <% else %>
-  <h5>Create synonym for <%= @loader_name.parent.simple_name %></h5>
-  <% loader_name = @loader_name.parent.new_synonym(base_seq: @loader_name.seq) %>
-  <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: {loader_name: loader_name} %>
-<% end %>
-
-<% if @take_focus %>
-  <script>
-    $(document).ready(function () {
-      $('#loader_name_simple_name').focus();
-    })
-  </script>
+  This tab doesn't apply to the current record.
 <% end %>

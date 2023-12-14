@@ -2,7 +2,7 @@
   <%= render partial: 'instances/tabs/non_apc_note_edit_widgets',
              locals: {instance_notes: @instance.instance_notes} %>
 
-<h5>Add Note</h5>
+<h5>Add Note for <%= @instance.name.simple_name %></h5>
   <%= render partial: 'instance_notes/form_new', 
     locals: { instance_note: InstanceNote.new,
               options: InstanceNoteKey.non_apc_options } %>

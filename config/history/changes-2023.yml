@@ -1,3 +1,27 @@
+- :date: 06-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: Refinement to previous change - offer to carry across sibling synonyms only if there are any sibling synonyms - don't offer to carry zero synonyms
+- :date: 06-Dec-2023
+  :jira_id: '4808'
+  :description: |-
+    Loader: The synonym-to-loader-accepted-or-excluded flipper form now offers the option to also carry across the flipped synonym's sibling synonyms (first cut)
+- :date: 05-Dec-2023
+  :jira_id: '4797'
+  :description: |-
+    Loader: Improve robustness of loader against nonsense directives - reject invalid directives and halt operation with message
+- :date: 04-Dec-2023
+  :jira_id: '4786'
+  :description: |-
+    Loader: Allow access to misapplication modifiers at point of creation - via the synonym type field labelled Misapplied type
+- :date: 04-Dec-2023
+  :jira_id: '3319'
+  :description: |-
+    Instance notes and adnots: Make the Name context for notes and adnots clear
+- :date: 04-Dec-2023
+  :jira_id: '4812'
+  :description: |-
+    Loader: Do not offer Create Synonym or Create Misapp forms when the current (highlighted) record is neither accepted nor excluded.
 - :date: 04-Dec-2023
   :jira_id: '4808'
   :description: |-

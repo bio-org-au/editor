@@ -39,6 +39,10 @@ class Loader::Batch::BulkController < ApplicationController
       params[:name_string],
       (session[:default_loader_batch_id] || 0)
     )
+  rescue => e
+    prefix = "bulk-ops-stats-"
+    @message = "#{e.to_s}"
+    render :error, locals: { message_container_id_prefix: prefix }
   end
 
   def create_preferred_matches

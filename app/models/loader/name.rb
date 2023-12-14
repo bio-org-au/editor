@@ -20,9 +20,10 @@
 class Loader::Name < ActiveRecord::Base
   include PreferredMatch
   include SortKeyBulkChanges
-  include Adder
   include SeqCalculator
+  include SiblingSynonyms
   NA = "N/A"
+  attr_accessor :add_sibling_synonyms
 
   strip_attributes
   self.table_name = "loader_name"

@@ -44,7 +44,8 @@ class InstanceTabsNotesTest < ActionController::TestCase
   end
 
   def asserts1
-    assert_select "h5", "Add Note", "Needs correct heading."
+    assert_select "h5", "Add Note for #{@triodia_in_brassard.name.simple_name}", 
+      "Needs correct heading."
     assert_select "form#new_instance_note", true, "Needs insert form."
     assert_select "form#new_instance_note" do
       assert_select "select.instance-note-key-id-select", true, "Needs select."

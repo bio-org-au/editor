@@ -1,3 +1,6 @@
+<% if @instance.instance_notes.size > 0 %>
+<h5>Notes for <%= @instance.name.simple_name %></h5>
+<% end %>
 <% if @instance.accepts_notes? %>
   <div id="search-result-details-info-message-container" 
        class="message-container">

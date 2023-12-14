@@ -9,6 +9,9 @@
 <% loader_name.name_status = @instance.name.name_status.name.downcase %>
 <% loader_name.comment = @instance.name.accepted_or_excluded_comment %>
 <% loader_name.distribution = @instance.name.accepted_distribution %>
+<% loader_name.add_sibling_synonyms = false %>
+<% citer = @instance.this_is_cited_by %>
+<% siblings = Instance.where(cited_by_id: citer.id).where.not(id: @instance.id) %>
 
 
 <h5>Add <%= loader_name.simple_name %> to a batch</h5>
@@ -16,7 +19,9 @@
   <li/>in the <%= loader_name.family %> family
   <li/> as an accepted or excluded name
   <li/> with <%= loader_name.rank %> rank and <%= loader_name.name_status %> status
+  </li>
 </ul>
+    
 <%= form_with(model: loader_name, role: 'form', remote: true) do |form| %>
     <div class="form-group">
       <label for="loader_batch_id">Batch*</label>
@@ -35,6 +40,19 @@
     <%= form.hidden_field :rank %>
     <%= form.hidden_field :name_status %>
     <%= form.hidden_field :loaded_from_instance_id %>
+
+    <% if siblings.size > 0 %>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= form.check_box(:add_sibling_synonyms,
+                             {title: "Also take sibling synonyms across to the loader"},
+                             checked_value = 'true',
+                             unchecked_value = 'false') %>
+          Take  <%= "#{pluralize(siblings.size, 'sibling synonym')}" %> across to the loader as well
+        </label>
+      </div>
+      <br/>
+    <% end %>
 
     <div class="form-group">
       <label for="record_type">Record type - accepted or excluded *</label>

@@ -1,0 +1,15 @@
+
+  <div class="form-group">
+    <label for="synonym_type">Misapplied type*
+    </label>
+    <%= f.select :synonym_type, 
+      ['doubtful misapplied',
+       'doubtful pro parte misapplied',
+       'misapplied',
+       'pro parte misapplied'],
+       {},
+       class: 'form-control',
+    title: "Misapplied type",
+    required: true,
+    tabindex: increment_tab_index %>
+  </div>

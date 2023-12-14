@@ -29,7 +29,7 @@ class Loader::Name::BulkSearch
     @search_s = search_s
     @accepted_or_excluded_only = accepted_or_excluded_only
     @search_a = search_s_to_a
-    @search = bulk_processing_search
+    bulk_processing_search
   end
 
   def search_s_to_a
@@ -50,41 +50,49 @@ class Loader::Name::BulkSearch
   end
 
   def bulk_processing_search
-    @core_query = Loader::Name.joins(:loader_batch)
+    @search = Loader::Name.joins(:loader_batch)
                               .where(loader_batch: { id: @batch_id })
-    @core_query = add_simple_name_clause unless @search_a.grep(/\b#{DEFAULT_DIRECTIVE}/).blank?
-    @core_query = add_family_clause unless @search_a.grep(/\bfamily:/).blank?
-    @core_query = add_acc_clause unless @search_a.grep(/\bacc:/).blank?
-    @core_query = add_exc_clause unless @search_a.grep(/\bexc:/).blank?
-    @core_query = must_be_accepted_or_excluded if @accepted_or_excluded_only
-    @core_query
+    consume_directives
+    raise "Unknown search #{'directive'.pluralize(@search_a.size)}: #{@search_a.join(' ')}" unless @search_a.empty?
+  end
+
+  def consume_directives
+    @search = add_simple_name_clause unless @search_a.grep(/\b#{DEFAULT_DIRECTIVE}/).blank?
+    @search = add_family_clause unless @search_a.grep(/\bfamily:/).blank?
+    @search = add_acc_clause unless @search_a.grep(/\bacc:/).blank?
+    @search = add_exc_clause unless @search_a.grep(/\bexc:/).blank?
+    @search = must_be_accepted_or_excluded if @accepted_or_excluded_only
   end
 
   def add_simple_name_clause
     sn_directive = @search_a.select { |i| i[/simple-name:/] }.first
+    @search_a.reject! { |i| i[/simple-name:/]}
     sn_string = sn_directive.sub(/\Asimple-name: */i, "").strip
-    @core_query.simple_name_search(sn_string)
+    @search.simple_name_search(sn_string)
   end
 
   def add_family_clause
     family_directive = @search_a.select { |i| i[/family:/] }.first
+    @search_a.reject! { |i| i[/family:/]}
     family_string = family_directive.sub(/\Afamily: */i, "").strip
-    @core_query.family_string_search(family_string)
+    @search.family_string_search(family_string)
   end
 
   def add_acc_clause
     acc_directive = @search_a.select { |i| i[/acc:/] }.first
+    @search_a.reject! { |i| i[/acc:/]}
     acc_string = acc_directive.sub(/\Aacc: */i, "").strip
-    @core_query.acc_string_search(acc_string)
+    @search.acc_string_search(acc_string)
   end
 
   def add_exc_clause
     exc_directive = @search_a.select { |i| i[/exc:/] }.first
+    @search_a.reject! { |i| i[/exc:/]}
     exc_string = exc_directive.sub(/\Aexc: */i, "").strip
-    @core_query.exc_string_search(exc_string)
+    @search.exc_string_search(exc_string)
   end
 
   def must_be_accepted_or_excluded
-    @core_query.accepted_or_excluded_search
+    @search.accepted_or_excluded_search
   end
 end
