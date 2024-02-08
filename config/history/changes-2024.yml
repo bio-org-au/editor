@@ -1,0 +1,48 @@
+- :date: 15-Jan-2024
+  :jira_id: '4870'
+  :description: |-
+    Loader: Loader name search directives should all order by <code>sort_key, seq</code>
+- :date: 15-Jan-2024
+  :jira_id: '4783'
+  :description: |-
+    Loader: Exclude heading records and duplicate names from the <code>many-name-match</code> search and from similar <code>name-match</code> searches
+- :date: 12-Jan-2024
+  :jira_id: '4827'
+  :description: |-
+    Loader: The no-further-processing query directive works
+- :date: 12-Jan-2024
+  :jira_id: '4854'
+  :description: |-
+    Loader: Success message now shows when clearing instance choice
+- :date: 12-Jan-2024
+  :jira_id: '4866'
+  :description: |-
+    Security: Bundle update gems/libraries
+- :date: 11-Jan-2024
+  :jira_id: '4826'
+  :description: |-
+    Loader: Ensure batches using sort key are being processed in order
+- :date: 10-Jan-2024
+  :jira_id: '4839'
+  :description: |-
+    Loader: Don't copy common names during <quote>copy and append</quote>
+- :date: 09-Jan-2024
+  :jira_id: '4850'
+  :description: |-
+    Security: Sanitize a query param for the typeahead reference lookup when editing a synonym 
+- :date: 09-Jan-2024
+  :jira_id: '4848'
+  :description: |-
+    Security: Upgrade Puma and Nokogiri gems
+- :date: 09-Jan-2024
+  :jira_id: '4831'
+  :description: |-
+    Loader: Misapplied names created directly from name data now display better in print output
+- :date: 08-Jan-2024
+  :jira_id: '4828'
+  :description: |-
+    Copy to loader: Set copied <code>name_status</code> blank if source name status is 'legitimate'
+- :date: 08-Jan-2024
+  :jira_id: '4846'
+  :description: |-
+    History: Set up change history for 2024

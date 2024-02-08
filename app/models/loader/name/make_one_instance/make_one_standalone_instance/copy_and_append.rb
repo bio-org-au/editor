@@ -44,7 +44,11 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
     @match.save!
 
     syns_copied = 0
-    @match.source_for_copy.synonyms.each do |source_synonym|
+    @match.source_for_copy
+          .synonyms
+          .reject {|s| s.instance_type.unsourced}
+          .reject {|s| s.instance_type.name == 'trade name'}
+          .each do |source_synonym|
       debug("copy syn #{source_synonym.id}")
       new_syn = Instance.new
       new_syn.cites_id = source_synonym.cites_id

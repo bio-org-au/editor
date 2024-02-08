@@ -780,7 +780,7 @@ from comment where comment.name_id = name.id)"
 	*
 FROM
 	subordinates)"
-'bad-namepath:':
+'bad-name-path:':
   :where_clause: "id in
   (select name.id
   from name
@@ -800,5 +800,7 @@ FROM
          where r.name = 'Genus'
           )
    and child.simple_name not like parent.simple_name || '%')"
+'parent-different-to-family:':
+  :where_clause: 'name.id in (select id from name where parent_id != family_id)'
 
 

@@ -7,16 +7,44 @@
 
 <% path = 'application/search_results/link_texts/loader/name' %>
 
-<span class='loader-name <%= search_result.record_type %> full-name'>
-  <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
+<%# code formatting is to avoid embedded spaces in html output
+  e.g. after the left-square-bracket 
+  e.g. before the comma
+%>
+<% if search_result.misapp_html.blank? %>
+[<span 
+<% else %>
+<span 
+<% end %>
+       class='loader-name <%= search_result.record_type %> full-name'
+><%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
 </span>
 
 <% unless search_result.name_status.blank? %>
   <span class='name-status'><%= "#{search_result.name_status}" %></span>
 <% end %>
 
+<% if search_result.misapp_html.blank? %>
+  <% if search_result.preferred_matches.blank? %>
+    ]
+  <% else %>
+    <%= search_result.preferred_matches&.first&.name&.authorship_extracted %>:
+    <% size = search_result.preferred_matches.length %>
+    <span class="misapplied-by-whom-where">
+    <% search_result.preferred_matches.each_with_index do | match, ndx | %>
+      <% string = "#{match.instance.reference.citation}:#{match.instance.page}" %>
+      <% if size == 1 || ndx == size - 1 %>
+        <%= "#{string}]" %>
+      <% else %> 
+        <%= "#{string};" %>
+      <% end %>
+    <% end %>
+    </span>
+  <% end %>
+<% else %>
+  <span class="misapplied-by-whom-where"><%= search_result.misapp_html&.gsub(/\*\*[^*]+\*\*/,'')&.html_safe  %></span>
+<% end %>
 
-<span class="misapplied-by-whom-where"><%= search_result.misapp_html&.gsub(/\*\*[^*]+\*\*/,'')&.html_safe  %></span>
 
 <% unless search_result.remark_to_reviewers.blank? %>
   <span class="review loader-name remark-to-reviewers">

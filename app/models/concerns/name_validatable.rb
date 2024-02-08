@@ -52,6 +52,7 @@ module NameValidatable
                               only_integer: true },
               allow_blank: true
     validates :uri, uniqueness: true, allow_blank: true
+    validate :genus_parent_must_match_family_if_both_ranked_family
   end
 
   def name_element_is_stripped
@@ -59,5 +60,24 @@ module NameValidatable
     return if name_element == name_element.strip
 
     errors.add(:name_element, "has whitespace")
+  end
+
+  def name_type_must_match_category
+    return if NameType.option_ids_for_category(category_for_edit)
+                      .include?(name_type_id)
+
+    errors.add(:name_type_id,
+               "Wrong name type for category! Category: #{category_for_edit} vs
+               name type: #{name_type.name}.")
+  end
+
+  def genus_parent_must_match_family_if_both_ranked_family
+    return unless name_rank.genus?
+    return if parent_id == family_id
+    return unless parent.name_rank.family? && family.name_rank.family?
+
+    errors.add(
+      :parent_id,
+      "Family mismatch: for genus names with family-ranked parent, parent and family fields should match")
   end
 end

@@ -77,6 +77,9 @@
       {search_target: 'Names',
        search_string: "no-family-id: name-rank: familia",
        explanation: %Q(Family names with not directly connected to a family. Note the rank names can vary across databases)},
+      {search_target: 'Names',
+       search_string: "parent-different-to-family: rank: genus",
+       explanation: %Q(Genera whose parent is different to their family - could be valid, but not always)},
      ].each do |val| %>
   <tr>
     <td class="width-30-percent">

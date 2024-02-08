@@ -80,4 +80,10 @@ module NameAuthorable
 
     errors.add(:base, "The ex-base author cannot be the same as the base author.")
   end
+
+  # I wish authorship was a column in the name table, but it isn't
+  def authorship_extracted
+    doc = Nokogiri::HTML(full_name_html)
+    doc.search('author').text
+  end
 end

@@ -51,7 +51,8 @@ class Loader::Name::BulkSearch
 
   def bulk_processing_search
     @search = Loader::Name.joins(:loader_batch)
-                              .where(loader_batch: { id: @batch_id })
+                          .where(loader_batch: { id: @batch_id })
+                          .order(' sort_key, seq, id')
     consume_directives
     raise "Unknown search #{'directive'.pluralize(@search_a.size)}: #{@search_a.join(' ')}" unless @search_a.empty?
   end

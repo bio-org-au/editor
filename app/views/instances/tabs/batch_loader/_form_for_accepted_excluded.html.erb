@@ -3,7 +3,7 @@
 <% loader_name.full_name = @instance.name.full_name %>
 <% loader_name.family = @instance.name.family.simple_name %>
 <% loader_name.rank = @instance.name.name_rank.name.downcase %>
-<% loader_name.name_status = @instance.name.name_status.name.downcase %>
+<% loader_name.name_status = @instance.name.name_status.name.downcase.sub(/\Alegitimate\z/,'') %>
 <% loader_name.record_type = 'accepted' %>
 <% loader_name.loaded_from_instance_id = @instance.id %>
 <% loader_name.loader_batch_id = session[:default_loader_batch_id] %>
@@ -13,7 +13,8 @@
 <ul>
   <li/>in the <%= loader_name.family %> family
   <li/> as an accepted or excluded name
-  <li/> with <%= loader_name.rank %> rank and <%= loader_name.name_status %> status
+    <li/> with <%= loader_name.rank %> rank 
+      <% "and #{loader_name.name_status} status" unless loader_name.name_status.nil? %>
 </ul>
 
 <%= form_with(model: loader_name, role: 'form', remote: true) do |form| %>

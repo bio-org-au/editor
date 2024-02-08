@@ -337,6 +337,7 @@
 <table class="table table-striped">
   <% [
       {field_name: 'possibly-malformed:', description: "search for names attached to a genus that don't start with the genus name - they might be malformed"},
+      {field_name: 'bad-name-path:', description: "search for names that have a malformed name-path i.e. based on comparison with its parent's name-path"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -360,6 +361,7 @@
       {field_name: 'no-family-id:', description: "search for names not attached directly to a family -- tip: combine this with a name-rank: query "},
       {field_name: 'in-own-family:', description: "search for names not attached directly to themselves as a family"},
       {field_name: 'fam-in-other-family:', description: "search for family names in a family but not their own family - that is, name.id != name.family_id"},
+      {field_name: 'parent-different-to-family:', description: "search for names whose family is different to their parent - ideally combined with rank: genus to find interesting cases"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

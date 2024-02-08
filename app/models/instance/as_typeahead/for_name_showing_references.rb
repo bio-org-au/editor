@@ -23,14 +23,13 @@ class Instance::AsTypeahead::ForNameShowingReferences
     @references = []
     return if params[:instance_id].blank?
 
-    @references = Reference.find_by_sql([sql_string,
-                                         params[:instance_id].to_i,
-                                         params[:instance_id].to_i,
-                                         params[:term]])
-                           .collect do |ref|
-                             { value: formatted_reference(ref),
-                               id: ref.id }
-                           end
+    @references = Reference.find_by_sql(
+      [sql_string,
+       params[:instance_id].to_i,
+       params[:instance_id].to_i,
+       ActiveRecord::Base::sanitize_sql(params[:term])]).collect do |ref|
+         { value: formatted_reference(ref), id: ref.id }
+       end
   end
 
   def sql_string

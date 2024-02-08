@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%= javascript_importmap_tags %>
-
     <title> <%= page_title || 'Editor' %> </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= javascript_importmap_tags %>
+
     <script>
       window.relative_url_root = "<%= Rails.application.config.action_controller.relative_url_root %>";
     </script>

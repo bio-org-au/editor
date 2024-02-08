@@ -16,23 +16,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Search::OnName::FieldAbbrev
-  ABBREVS = {
-    "nr:" => "rank:",
-    "r:" => "rank:",
-    "name-rank:" => "rank:",
-    "t:" => "type:",
-    "nt:" => "type:",
-    "name-type:" => "type:",
-    "ids:" => "id:",
-    "exact-simple-name:" => "simple-name-exact:",
-    "exact-name:" => "name-exact:",
-    "exact-comments:" => "comments-exact:",
-    "exact-comment:" => "comments-exact:",
-    "comment:" => "comments:",
-    "descendants-of-id:" => "first-parent-descendants-of-id:",
-    "descendents-of-id:" => "first-parent-descendants-of-id:",
-    "exact-name-element:" => "name-element-exact:",
-    "bad-namepath:" => "bad-name-path:",
-  }.freeze
+
+require "test_helper"
+load "test/models/search/users.rb"
+load "test/models/search/on_name/test_helper.rb"
+
+# Single Search model test.
+class SearchOnNameNamePathSimpleTest < ActiveSupport::TestCase
+  test "search on name name path simple" do
+    params = ActiveSupport::HashWithIndifferentAccess.new(
+      query_target: "name",
+      query_string: "name-path: *a_genus*",
+      current_user: build_edit_user
+    )
+    search = Search::Base.new(params)
+    confirm_results_class(search.executed_query.results)
+    assert !search.executed_query.results.empty?,
+           "Expected at least one search result"
+  end
 end
+

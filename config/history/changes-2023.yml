@@ -1,4 +1,30 @@
-- :date: 06-Dec-2023
+- :date: 15-Dec-2023
+  :jira_id: '3319'
+  :description: |-
+    Instance adnots: Fix adnot spelling and show reference context on the Adnot tab
+- :date: 13-Dec-2023
+  :jira_id: '4818'
+  :description: |-
+    Names: Adjust error message
+- :date: 08-Dec-2023
+  :jira_id: '4819'
+  :description: |-
+    Names: Document Name search directive <code>bad-name-path:</code>, confirm bad-name-paths found in Name records can be fixed by Name update or <code>Refresh name path</code>
+- :date: 08-Dec-2023
+  :jira_id: '4818'
+  :description: |-
+    Names: Apply validation rule to detect parent != family when names of rank genus are saved with a parent ranked as a family
+- :date: 07-Dec-2023
+  :jira_id: '4816'
+  :description: |-
+    Names: Add query directive <code>parent-different-to-family:</code>, intended to be combined with <code>rank: genus</code> to find genera whose family isn't the same as their parent
+- :date: 07-Dec-2023
+  :jira_id: '4817'
+  :description: |-
+    Loader: Fix Name parent editing typeahead bug which set family based on parent but only if typeahead was selected, not if typeahead was autocompleted
+- :date: 15-Dec-2023
+  :release: true
+- :date: 07-Dec-2023
   :jira_id: '4808'
   :description: |-
     Loader: Refinement to previous change - offer to carry across sibling synonyms only if there are any sibling synonyms - don't offer to carry zero synonyms
@@ -22,10 +48,16 @@
   :jira_id: '4812'
   :description: |-
     Loader: Do not offer Create Synonym or Create Misapp forms when the current (highlighted) record is neither accepted nor excluded.
+- :date: 08-Dec-2023
+  :release: true
 - :date: 04-Dec-2023
   :jira_id: '4808'
   :description: |-
     Loader: Add appropriate misapp instance types to the synonym type drop down on the instance-to-synonym flipper form
+- :date: 01-Dec-2023
+  :jira_id: '4811'
+  :description: |-
+    Loader: Fix error preventing addition of synonym/misapplication without a default batch, and allow successful creation of synonym/misapplication record
 - :date: 01-Dec-2023
   :jira_id: '4808'
   :description: |-

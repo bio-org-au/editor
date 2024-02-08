@@ -31,7 +31,6 @@ module Tree::Element::Profile::Distribution::Validations
     end
 
     def self.remove_bracketed_qualifiers(s)
-      j
       s.gsub(/\([^)]*\)/, "")
     end
 

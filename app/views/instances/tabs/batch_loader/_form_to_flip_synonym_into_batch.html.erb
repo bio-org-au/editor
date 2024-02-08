@@ -6,7 +6,7 @@
 <% loader_name.record_type = 'accepted' %>
 <% loader_name.loaded_from_instance_id = @instance.id %>
 <% loader_name.loader_batch_id = session[:default_loader_batch_id] %>
-<% loader_name.name_status = @instance.name.name_status.name.downcase %>
+<% loader_name.name_status = @instance.name.name_status.name.downcase.sub(/\Alegitimate\z/,'') %>
 <% loader_name.comment = @instance.name.accepted_or_excluded_comment %>
 <% loader_name.distribution = @instance.name.accepted_distribution %>
 <% loader_name.add_sibling_synonyms = false %>
@@ -18,7 +18,8 @@
 <ul>
   <li/>in the <%= loader_name.family %> family
   <li/> as an accepted or excluded name
-  <li/> with <%= loader_name.rank %> rank and <%= loader_name.name_status %> status
+  <li/> with <%= loader_name.rank %> rank
+      <% "and #{loader_name.name_status} status" unless loader_name.name_status.nil? %>
   </li>
 </ul>
     

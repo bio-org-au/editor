@@ -483,7 +483,7 @@ acacia:
   namespace: apni
   parent: a_family
   family: a_family
-  name_path: 'Plantae/Magnoliophyta/a_family/a_genus/thingr'
+  name_path: 'Plantae/Magnoliophyta/a_family/ Acacia'
   uri: abf
   author: bentham
   updated_by: greg

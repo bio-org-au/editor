@@ -2,9 +2,13 @@
 <div id="search-result-details-error-message-container" class="message-container"></div>
 <% increment_tab_index(0) %>
 
+<% if @instance.accepts_adnots? %>
+Adnot context is <%= @instance.name.full_name %><br>
+in <%= @instance.reference.citation %>: <%= @instance.page %>
+<% end %>
 
 <% if @instance.comments.size > 0 %>
-<h5>AdNots for <%= @instance.name.simple_name %></h5>
+<h5>Adnots for <%= @instance.name.simple_name %></h5>
 <% end %>
 <div id="instance-comments-fields" >
 
@@ -15,7 +19,7 @@
     <% end %>
 
 <% if @instance.accepts_adnots? %>
-  <h5>Create AdNot for <%= @instance.name.simple_name %></h5>
+  <h5>Create Adnot for <%= @instance.name.simple_name %></h5>
     <%= render partial: 'comments/form_new', locals: {comment: Comment.new, parent_entity_type: 'instance', parent_id: @instance.id} %>
 <% else %>
   This type of instance doesn't accept adnots.

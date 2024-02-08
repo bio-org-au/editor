@@ -16,23 +16,17 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Search::OnName::FieldAbbrev
-  ABBREVS = {
-    "nr:" => "rank:",
-    "r:" => "rank:",
-    "name-rank:" => "rank:",
-    "t:" => "type:",
-    "nt:" => "type:",
-    "name-type:" => "type:",
-    "ids:" => "id:",
-    "exact-simple-name:" => "simple-name-exact:",
-    "exact-name:" => "name-exact:",
-    "exact-comments:" => "comments-exact:",
-    "exact-comment:" => "comments-exact:",
-    "comment:" => "comments:",
-    "descendants-of-id:" => "first-parent-descendants-of-id:",
-    "descendents-of-id:" => "first-parent-descendants-of-id:",
-    "exact-name-element:" => "name-element-exact:",
-    "bad-namepath:" => "bad-name-path:",
-  }.freeze
+require "test_helper"
+
+# Single Name model test.
+class NameUpdateGenusParentFamilyBothMatchTest < ActiveSupport::TestCase
+  test "name update set names simple" do
+    @name = names(:a_genus)
+    assert(@name.parent == names(:a_family), "Parent should start out as a_family")
+    assert(@name.family == names(:a_family), "Parent should start out as a_family")
+    @name.parent = names(:proteaceae)
+    @name.family = names(:proteaceae)
+    assert(@name.save!)
+  end
 end
+

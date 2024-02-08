@@ -17,7 +17,7 @@
     </td>
   </tr>
   <tr> <td colspan="2" class="text">&nbsp;</td> </tr>
-  <% results = Search::OnName::WithInstances.new([match.name]).names_with_instances %>
+  <% results = Search::OnName::WithInstancesToCopy.new([match.name]).names_with_instances %>
   <% results.each do |record| %>
     <% give_me_focus = false %>
     <% case record.display_as %>
@@ -32,10 +32,8 @@
                    allow_all_even_if_in_current_tree: true,
                    payload_field_name: :source_for_copy_instance_id }%>
       <% when 'instance-is-cited-by' %>
-        <% unless record.instance_type.name =~ /\Acommon/ %>
-          <%= render partial: "#{wd}/instance_is_cited_by",
-            locals: {record: record, form: form, give_me_focus: give_me_focus} %>
-        <% end %>
+        <%= render partial: "#{wd}/instance_is_cited_by",
+          locals: {record: record, form: form, give_me_focus: give_me_focus} %>
       <% when 'cited-by-relationship-instance-name-only' %>  
         <%= render partial: "#{wd}/instance_cited_by_relationship_instance_name_only", 
            locals: {record: record, form: form, give_me_focus: give_me_focus} %>
