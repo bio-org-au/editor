@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
-In-Batch-Note record
+  <%= @loader_name.record_type.gsub(/-/,' ').titlecase %>
 </ul>
 
 <%#= render partial: 'detail_line', locals: {info: @loader_name.notes, label: 'Notes'} %>

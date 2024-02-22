@@ -1,12 +1,7 @@
-<% loader_name = Loader::Name.new %>
-<% loader_name.simple_name = @instance.name.simple_name %>
-<% loader_name.full_name = @instance.name.full_name %>
-<% loader_name.family = @instance.name.family.simple_name %>
-<% loader_name.rank = @instance.name.name_rank.name.downcase %>
-<% loader_name.name_status = @instance.name.name_status.name.downcase.sub(/\Alegitimate\z/,'') %>
-<% loader_name.record_type = 'accepted' %>
-<% loader_name.loaded_from_instance_id = @instance.id %>
+
+<% loader_name = @instance.loader_name_for_accepted_excluded %>
 <% loader_name.loader_batch_id = session[:default_loader_batch_id] %>
+<% syn_for_copy = @instance.synonyms_for_copy_to_loader_name %>
 
 
 <h5>Add <%= loader_name.simple_name %> to a batch</h5>
@@ -16,6 +11,7 @@
     <li/> with <%= loader_name.rank %> rank 
       <% "and #{loader_name.name_status} status" unless loader_name.name_status.nil? %>
 </ul>
+
 
 <%= form_with(model: loader_name, role: 'form', remote: true) do |form| %>
     <div class="form-group">
@@ -35,6 +31,20 @@
     <%= form.hidden_field :rank %>
     <%= form.hidden_field :name_status %>
     <%= form.hidden_field :loaded_from_instance_id %>
+
+    <% if syn_for_copy.size > 0 %>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= form.check_box(:add_sourced_synonyms,
+                             {title: "Take only sourced synonyms to the loader (but not trade names)"},
+                             checked_value = 'true',
+                             unchecked_value = 'false') %>
+          Take <%= "#{pluralize(syn_for_copy.size, 'sourced synonym')}" %>
+        </label>
+      </div>
+      <br/>
+    <% end %>
+
 
     <div class="form-group">
       <label for="record_type">Record type - accepted or excluded *</label>

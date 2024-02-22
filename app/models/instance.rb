@@ -22,6 +22,7 @@ class Instance < ActiveRecord::Base
   include ActionView::Helpers::TextHelper
   include InstanceTreeable
   include InstanceInTaxonomy
+  include Instance::ForCopyToLoaderName
 
   strip_attributes
   self.table_name = "instance"

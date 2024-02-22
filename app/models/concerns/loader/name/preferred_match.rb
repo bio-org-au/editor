@@ -7,6 +7,8 @@ module Loader::Name::PreferredMatch
   end
 
   def create_match_to_loaded_from_instance_name(current_user_username)
+    return if misapplied?
+
     instance = Instance.find(loaded_from_instance_id)
     loader_name_match = ::Loader::Name::Match.new
     loader_name_match.loader_name_id = id

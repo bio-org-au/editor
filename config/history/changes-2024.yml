@@ -1,3 +1,47 @@
+- :date: 18-Jan-2024
+  :jira_id: '4845'
+  :description: |-
+    Loader: Follow up to correctly set <code>sort_key</code> values for synonyms and misapplieds
+- :date: 17-Jan-2024
+  :jira_id: '4768'
+  :description: |-
+    Loader: Display synonymy qualifiers <q>?</q>, <q>p.p.</q> for doubtful/pro parte synonyms in web and print views
+- :date: 17-Jan-2024
+  :jira_id: '4845'
+  :description: |-
+    Loader: Allow transfer of concepts from one loader batch to another
+- :date: 17-Jan-2024
+  :jira_id: '4874'
+  :description: |-
+    Loader: Cleanup redundant data and fields on forms used to create synonym and misapplied records
+- :date: 17-Jan-2024
+  :jira_id: '4804'
+  :description: |-
+    Loader: New record type <code>in-batch-compiler-note</code> is available
+- :date: 16-Jan-2024
+  :jira_id: '4847'
+  :description: |-
+    Loader: Allow addition of synonymy and profile fields along with accepted name from instance
+- :date: 16-Jan-2024
+  :jira_id: '4840'
+  :description: |-
+    Loader: Position <q>Manually drafted</q> flag in same place as <q>Drafted</q>
+- :date: 15-Jan-2024
+  :jira_id: '4784'
+  :description: |-
+    Loader: Honour <code>doubtful</code> flag for synonyms in parsed batches when creating preferred matches
+- :date: 15-Jan-2024
+  :jira_id: '4832'
+  :description: |-
+    Loader: Allow the <code>loader_name</code> <q>families</q> search directive to accept and use an argument
+- :date: 15-Jan-2024
+  :jira_id: '4805'
+  :description: |-
+    Loader: Loader Name family, for a record ranked family, can match either simple name or (now also) full name
+- :date: 15-Jan-2024
+  :jira_id: '4824'
+  :description: |-
+    Loader: Misapplication type choice now flows through to matches and to each draft instance
 - :date: 15-Jan-2024
   :jira_id: '4870'
   :description: |-

@@ -182,6 +182,9 @@ class Loader::NamesController < ApplicationController
         if loader_name_params["add_sibling_synonyms"] == 'true'
           siblings = @loader_name.create_sibling_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
         end
+        if loader_name_params["add_sourced_synonyms"] == 'true'
+          siblings = @loader_name.create_sourced_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
+        end
       end
     end
 
@@ -222,7 +225,8 @@ class Loader::NamesController < ApplicationController
                                         :distribution, :loader_batch_id,
                                         :rank, :remark_to_reviewers, :sort_key,
                                         :loaded_from_instance_id,
-                                        :add_sibling_synonyms)
+                                        :add_sibling_synonyms,
+                                        :add_sourced_synonyms)
   end
 
   def set_tab

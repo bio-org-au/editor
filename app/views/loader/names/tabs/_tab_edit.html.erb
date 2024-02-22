@@ -7,10 +7,6 @@
   <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: { loader_name: @loader_name } %>
 <% elsif @loader_name.misapp? %>
   <%= render partial: 'loader/names/tabs/forms/form_for_misapp', locals: { loader_name: @loader_name } %>
-<% elsif @loader_name.heading? %>
-  <%= render partial: 'loader/names/tabs/forms/form_for_heading', locals: { loader_name: @loader_name } %>
-<% elsif @loader_name.in_batch_note? %>
-  <%= render partial: 'loader/names/tabs/forms/form_for_in_batch_note', locals: { loader_name: @loader_name } %>
 <% else %>
   Unknown type of record to edit
 <% end %>
@@ -22,4 +18,3 @@
     })
   </script>
 <% end %>
-

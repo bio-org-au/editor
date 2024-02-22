@@ -21,7 +21,7 @@ class Search::Loader::Name::RewriteResultsShowingExtras
 
   def one_record(rec)
     top_level_record(rec) if %w[accepted excluded].include? rec[:record_type]
-    push_preceding if %w[in-batch-note heading].include? rec[:record_type]
+    push_preceding if %w[in-batch-note in-batch-compiler-note heading].include? rec[:record_type]
     @results_with_comments << rec
     review_comments(rec) if @show_review_comments
   end

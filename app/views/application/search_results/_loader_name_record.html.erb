@@ -36,6 +36,8 @@
       <% case search_result.record_type %>
       <% when 'in-batch-note' %>
         <span class="fat in-batch-note" title="In-Batch Note"><%= search_result.notes %></span>
+      <% when 'in-batch-compiler-note' %>
+        <span class="fat in-batch-compiler-note" title="In-Batch Compiler Note"><%= search_result.notes %></span>
       <% else %>
         <span class="fat compiler-note" title="Compiler Note"><%= search_result.notes %></span>
       <% end %>

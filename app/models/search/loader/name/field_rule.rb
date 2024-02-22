@@ -239,6 +239,7 @@ class Search::Loader::Name::FieldRule
       trailing_wildcard: true},
     "simple-name-not-like:" => { where_clause: "(lower(simple_name) not like '%'||?||'%')" },
     "family:" => { where_clause: "(lower(family) like ?)" },
+    "families:" => { where_clause: "lower(family) like ? || '%'  and lower(rank) = 'family'"},
     "family-id:" => { where_clause: "(lower(family) like (select lower(simple_name) from loader_name where id = ?))" },
     "record-type:" => { where_clause: " record_type = ?"},
 
@@ -572,7 +573,6 @@ having count(*)                     >  1
     "notes:" => { where_clause: "lower(notes) like ?",
                   leading_wildcard: true,
                   trailing_wildcard: true},
-    "families:" => { where_clause: "lower(rank) = 'family'"},
     "rank:" => { where_clause: "lower(rank) like ?"},
     "not-rank:" => { where_clause: "lower(rank) not like ?"},
     "no-rank:" => { where_clause: "rank is null"},

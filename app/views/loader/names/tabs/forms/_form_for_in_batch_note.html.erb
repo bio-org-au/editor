@@ -1,6 +1,6 @@
 <%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
     <div class="form-group align-right">
-      <div class="nsl-inline-block align-left pull-left"><h5><%= loader_name.new_record? ?  'Create' : 'Edit' %> In-Batch-Note Record</h5></div>
+      <div class="nsl-inline-block align-left pull-left"><h5><%= loader_name.new_record? ?  'Create' : 'Edit' %> <%= @loader_name.record_type.gsub(/-/,' ').titlecase %> </h5></div>
       <% if loader_name.id.blank? -%>
         <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new loader_name", data: {element_id: "new-loader-name-#{params[:random_id]}"}, tabindex: increment_tab_index %>
       <% end %>
@@ -27,10 +27,10 @@
     <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
     <div class="form-group">
-      <label for="record_type">Record type - note *</label>
-      <%= f.select :record_type, ["in-batch-note"], {include_blank: false},
+      <label for="record_type">Record type - note visible to all or a compiler note*</label>
+      <%= f.select :record_type, ["in-batch-note", "in-batch-compiler-note"], {include_blank: false},
         class: 'form-control',
-        title: 'This is an in-batch-note record',
+        title: 'In-batch-notes are visible to all readers, in-batch-compiler-notes are visible to compilers',
         tabindex: increment_tab_index %>
     </div>
 

@@ -1,0 +1,13 @@
+
+<% if ['accepted','excluded'].include?(@loader_name.record_type) %>
+<h5>Move record to another batch</h5>
+
+<%= render partial: 'loader/names/tabs/forms/form_to_switch_batch', locals: {loader_name: @loader_name} %>
+
+<% else %>
+  This tab doesn't apply to the current record - switching batches is only allowed for accepted or excluded records
+
+<% end %>
+ 
+
+

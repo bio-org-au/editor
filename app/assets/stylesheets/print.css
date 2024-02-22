@@ -25,6 +25,10 @@ tr.in-batch-note {
   background: yellow;
 }
 
+tr.in-batch-compiler-note {
+  background: lightgreen;
+}
+
 tr.search-result span.loader-name.full-name.accepted {
   font-weight: bold;
 }

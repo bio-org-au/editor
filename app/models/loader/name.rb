@@ -22,8 +22,11 @@ class Loader::Name < ActiveRecord::Base
   include SortKeyBulkChanges
   include SeqCalculator
   include SiblingSynonyms
-  NA = "N/A"
+  include SourcedSynonyms
+  include InBatchNote
+  include InBatchCompilerNote
   attr_accessor :add_sibling_synonyms
+  attr_accessor :add_sourced_synonyms
 
   strip_attributes
   self.table_name = "loader_name"
@@ -68,8 +71,26 @@ class Loader::Name < ActiveRecord::Base
   attr_accessor :give_me_focus, :message
 
   # before_create :set_defaults # rails 6 this was not being called before the validations
-  before_validation :set_in_batch_note_defaults
+  before_validation :set_in_batch_note_defaults, :set_in_batch_compiler_note_defaults
   before_save :compress_whitespace, :consider_sort_key
+
+  before_save :set_children_to_new_batch_id, if: :will_save_change_to_loader_batch_id?
+
+  def set_children_to_new_batch_id
+    children.each do |child|
+      child.loader_batch_id = loader_batch_id
+      # Have to set sort_key here - the default callback to set it fails
+      # because at that point in processing the parent's sort_key is empty
+      child.sort_key = if child.record_type == 'synonym' 
+                         synonym_sort_key(sort_key, child.synonym_type)
+                       elsif child.record_type = 'misapplied'
+                         misapp_sort_key(sort_key)
+                       else
+                         "unknown record type: #{child.record_type}"
+                       end
+      child.save!
+    end
+  end
 
   def fresh?
     created_at > 1.hour.ago
@@ -97,15 +118,6 @@ class Loader::Name < ActiveRecord::Base
     end
   end
 
-  def set_in_batch_note_defaults
-    return unless record_type == "in-batch-note"
-
-    self.simple_name_as_loaded = NA
-    self.family = NA if family.blank?
-    self.simple_name = NA if simple_name.blank?
-    self.full_name = simple_name
-  end
-
   def compress_whitespace
     simple_name.squish!
     full_name.squish!
@@ -128,9 +140,9 @@ class Loader::Name < ActiveRecord::Base
       when "excluded"
         self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase}"
       when "synonym"
-        self.sort_key = "#{parent.sort_key}.a-syn.#{synonym_sort_key_tail}"
+        self.sort_key = synonym_sort_key(parent.sort_key)
       when "misapplied"
-        self.sort_key = "#{parent.sort_key}.b-mis.z-mis"
+        self.sort_key = misapp_sort_key(parent.sort_key)
       when "heading"
         self.sort_key = if rank.blank? || rank.downcase == "family"
                           "#{family.downcase}.family"
@@ -139,6 +151,8 @@ class Loader::Name < ActiveRecord::Base
                         end
       when "in-batch-note"
         self.sort_key = in_batch_note_sort_key if sort_key.blank?
+      when "in-batch-compiler-note"
+        self.sort_key = in_batch_compiler_note_sort_key if sort_key.blank?
       else
         self.sort_key = "aaaaaa-unexpected-record-type-#{record_type}"
       end
@@ -153,18 +167,16 @@ class Loader::Name < ActiveRecord::Base
     self.sort_key = sort_key.downcase unless sort_key == sort_key.downcase
   end
 
-  def in_batch_note_sort_key
-    if family == NA && simple_name == NA
-      "aaaa-in-batch-note"
-    elsif simple_name == NA
-      "#{family.downcase}.family.a.in-batch-note"
-    else
-      "#{family.downcase}.family.accepted.#{simple_name.downcase}.x.in-batch-note"
-    end
+  def synonym_sort_key(parent_sort_key, syn_type = synonym_type)
+    "#{parent_sort_key}.a-syn.#{synonym_sort_key_tail(syn_type)}"
   end
 
-  def synonym_sort_key_tail
-    case synonym_type
+  def misapp_sort_key(parent_sort_key)
+    "#{parent_sort_key}.b-mis.z-mis"
+  end
+
+  def synonym_sort_key_tail(syn_type = synonym_type)
+    case syn_type
     when "isonym"
       "a-isonym"
     when "orthographic variant"
@@ -186,7 +198,7 @@ class Loader::Name < ActiveRecord::Base
     when "pro parte taxonomic synonym"
       "g-tax-syn"
     else
-      "x-is-unknown-#{synonym_type}"
+      "x-is-unknown-#{syn_type}"
     end
   end
 
@@ -333,10 +345,6 @@ class Loader::Name < ActiveRecord::Base
     record_type == "heading"
   end
 
-  def in_batch_note?
-    record_type == "in-batch-note"
-  end
-
   def excluded?
     record_type == "excluded"
   end
@@ -378,14 +386,22 @@ class Loader::Name < ActiveRecord::Base
     return nil if accepted?
     return nil if excluded?
 
-    return InstanceType.find_by_name("misapplied").id if misapplied?
+    return InstanceType.find_by_name(synonym_type).id if misapplied?
 
     if taxonomic?
+      return InstanceType.find_by_name("doubtful pro parte taxonomic synonym").id if doubtful? && pp?
+      
+      return InstanceType.find_by_name("doubtful taxonomic synonym").id if doubtful?
+
       return InstanceType.find_by_name("pro parte taxonomic synonym").id if pp?
 
       return InstanceType.find_by_name("taxonomic synonym").id
 
     elsif nomenclatural?
+      return InstanceType.find_by_name("doubtful pro parte nomenclatural synonym").id if doubtful? && pp?
+
+      return InstanceType.find_by_name("doubtful nomenclatural synonym").id if doubtful?
+
       return InstanceType.find_by_name("pro parte nomenclatural synonym").id if pp?
 
       return InstanceType.find_by_name("nomenclatural synonym").id
@@ -558,8 +574,9 @@ class Loader::Name < ActiveRecord::Base
     return if rank.blank?
     return unless rank.downcase == "family"
 
-    return if simple_name == family
+    return if family == simple_name
+    return if family == full_name
 
-    errors.add(:simple_name, "must match family name for a family")
+    errors.add(:family, "must match simple name or full name for a family")
   end
 end

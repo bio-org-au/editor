@@ -1,17 +1,4 @@
 <%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
-    <div class="form-group align-right">
-      <% if loader_name.id.blank? %>
-        <%= link_to 'Cancel', '/cancel-new-form', id: "loader-name-cancel",
-          class: "btn btn-primary cancel-new-record-link",
-          title: "Cancel new loader name",
-          tabindex: increment_tab_index,
-          data: {element_id: "new-loader-name-#{params[:random_id]}"} %>
-      <% end %>
-      <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
-    <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
-    </div>
-    <div id="search-result-details-info-message-container" class="message-container"></div>
-    <div id="search-result-details-error-message-container" class="message-container"></div>
 
     <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
@@ -30,14 +17,7 @@
       <label for="rank">Rank</label>
       <%= f.text_field :rank, class: 'form-control', value: 'species', title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
     </div>
-
-    <div class="form-group">
-      <label for="record_type">Record type - synonym *</label>
-      <%= f.select :record_type, ["synonym"], {include_blank: false},
-        class: 'form-control',
-        title: 'This is a synonym record, you cannot change that.',
-        tabindex: increment_tab_index %>
-    </div>
+    <%= f.hidden_field :record_type, value: 'synonym' %>
 
     <%= render partial: "loader/names/tabs/forms/synonym_type", locals: {f: f, loader_name: loader_name} %>
 
@@ -101,6 +81,6 @@
     <% end %>
 
     <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
-    <div id="search-result-details-info-message-container2" class="message-container"></div>
-    <div id="search-result-details-error-message-container2" class="message-container"></div>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container"></div>
 <% end %>

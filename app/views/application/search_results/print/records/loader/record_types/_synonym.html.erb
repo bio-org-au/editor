@@ -7,6 +7,7 @@
 
 <% path = 'application/search_results/link_texts/loader/name' %>
 
+    <%= "?" if search_result.synonym_type.match(/doubtful/) %>
     <span class='loader-name <%= search_result.record_type %> full-name'>
       <%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
     </span>
@@ -14,6 +15,7 @@
     <% unless search_result.name_status.blank? %>
       <span class='name-status'><%= "#{search_result.name_status}" %></span>
     <% end %>
+      <%= "p.p." if search_result.synonym_type.match(/pro parte/) %>
 
 
 

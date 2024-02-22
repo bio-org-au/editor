@@ -1,0 +1,25 @@
+<%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
+    Current batch: <%= loader_name.batch.name %>
+    <div class="form-group">
+      <label for="loader_batch_id">Batch <span class='red'>*</span></label>
+     
+      <%= f.select("loader_batch_id", Loader::Batch.all.reject {|b| b.id == loader_name.batch.id}.collect {|b| [ b.name, b.id ] }, { include_blank: true }, 
+        class: 'form-control',
+        required: true,
+        title: 'A record must be in a batch',
+        tabindex: increment_tab_index) %>
+      <% if loader_name.children.size > 0 %>
+      <p><%= pluralize(loader_name.children.size, 'Synonymy record') %> will also move to the selected batch on Save</p>
+      <% end %>
+    </div>
+
+    <%= divider %>
+
+    <div class="form-group align-right">
+      <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+    </div>
+    <div id="search-result-details-info-message-container2" class="message-container"></div>
+    <div id="search-result-details-error-message-container2" class="message-container"></div>
+<% end %>
+
+

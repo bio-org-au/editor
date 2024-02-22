@@ -188,6 +188,11 @@ a:hover.blue           { color: blue; }
   color: black;
 }
  
+.in-batch-compiler-note {
+  background: lightgreen;
+  color: black;
+}
+ 
 .compiler-note {
   background: darkgreen;
   color: white;

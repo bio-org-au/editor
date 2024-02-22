@@ -64,6 +64,16 @@
 
   <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
                                       last: false,
+                                      this_tab: 'tab_switch_batch', 
+                                      link_text: 'Switch <br /> batch'.html_safe, 
+                                      link_id: 'loader-name-switch-batch-tab', 
+                                      link_title: 'Switch to another batch.',
+                                      tab_index: @tab_index,
+                                      prev_tab: 'loader-name-create-misapp-tab', 
+                                      next_tab: 'loader-name-ref-instance-tab'} %> 
+
+  <%= render partial: 'loader/names/tabs/tab', locals: {first: false,
+                                      last: false,
                                       this_tab: 'tab_ref_instance', 
                                       link_text: 'Reference<br/>Instance'.html_safe, 
                                       link_id: 'loader-name-ref-instance-tab', 

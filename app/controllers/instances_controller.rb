@@ -28,11 +28,10 @@ class InstancesController < ApplicationController
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
-    logger.debug("InstancesController::show")
     @tab = tab_or_default_tab
     @tab_index = (params[:tabIndex] || "1").to_i
     @tabs_to_offer = tabs_to_offer
-    # Really only need to do this if the "class" tab is chosen.
+    # Really only need to do this if the "classification" tab is chosen.
     unless @working_draft.blank?
       @tree_version_element = @working_draft.name_in_version(@instance.name)
       @parent_tve = find_a_parent(@instance.name)
