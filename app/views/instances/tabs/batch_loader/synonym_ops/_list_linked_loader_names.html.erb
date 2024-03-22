@@ -1,0 +1,37 @@
+  <% @instance.loader_names.each do |loader_name| %>
+
+
+    <%= link_to(loader_name.simple_name,
+                search_path(query_target: "loader_names",
+                            query_string: "id: #{loader_name.id} batch-id: #{loader_name.loader_batch.id}"),
+                            title: "Show the linked loader name record",
+                            class: "blue") %>
+
+        is in batch <i><%= loader_name.loader_batch.name %></i> 
+        as <%= loader_name.record_type.with_indefinite_article %> record
+
+    <% citer = @instance.this_is_cited_by %>
+    <% if citer.loader_names.size > 0 %>
+      <br>
+      <br>
+      <% citer.loader_names.each do |citer_ln| %>
+
+         <%= link_to(citer_ln.simple_name,
+                search_path(query_target: "loader_names",
+                            query_string: "id: #{citer_ln.id} batch-id: #{citer_ln.loader_batch.id}"),
+                            title: "Show the linked loader name record",
+                            class: "blue") %>
+                is in batch <i><%= citer_ln.loader_batch.name %></i>
+                as a <%= citer_ln.record_type.with_indefinite_article %> 
+
+          <% if citer_ln.parent.blank? %>
+            record
+          <% else %>
+            of <%= citer_ln.parent.simple_name %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= render partial: "instances/tabs/batch_loader/form_to_attach_citing_instance_as_syn", locals: {parent_loader_name: loader_name} %>
+      <% end %>
+
+  <% end %>

@@ -20,11 +20,13 @@
 class Loader::Name < ActiveRecord::Base
   include PreferredMatch
   include SortKeyBulkChanges
+  include SortKey
   include SeqCalculator
   include SiblingSynonyms
   include SourcedSynonyms
   include InBatchNote
   include InBatchCompilerNote
+  include HeadingRecord
   attr_accessor :add_sibling_synonyms
   attr_accessor :add_sourced_synonyms
 
@@ -33,7 +35,7 @@ class Loader::Name < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  def self.for_batch(batch_id)
+   def self.for_batch(batch_id)
     if batch_id.nil? || batch_id == -1
       where("1=1")
     else
@@ -49,6 +51,7 @@ class Loader::Name < ActiveRecord::Base
   validates :simple_name, presence: true
   validates :simple_name_as_loaded, presence: true
   validates :full_name, presence: true
+  validate :validate_distribution
 
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
   alias_attribute :batch, :loader_batch
@@ -121,85 +124,6 @@ class Loader::Name < ActiveRecord::Base
   def compress_whitespace
     simple_name.squish!
     full_name.squish!
-  end
-
-  def consider_sort_key
-    if loader_batch.use_sort_key_for_ordering
-      set_sort_key
-    else
-      self.sort_key = nil
-    end
-  end
-
-  def set_sort_key
-    normalise_sort_key unless sort_key.blank?
-    if sort_key.blank?
-      case record_type
-      when "accepted"
-        self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase}"
-      when "excluded"
-        self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase}"
-      when "synonym"
-        self.sort_key = synonym_sort_key(parent.sort_key)
-      when "misapplied"
-        self.sort_key = misapp_sort_key(parent.sort_key)
-      when "heading"
-        self.sort_key = if rank.blank? || rank.downcase == "family"
-                          "#{family.downcase}.family"
-                        else
-                          "aaa-rank-#{rank}-heading"
-                        end
-      when "in-batch-note"
-        self.sort_key = in_batch_note_sort_key if sort_key.blank?
-      when "in-batch-compiler-note"
-        self.sort_key = in_batch_compiler_note_sort_key if sort_key.blank?
-      else
-        self.sort_key = "aaaaaa-unexpected-record-type-#{record_type}"
-      end
-    end
-  rescue StandardError => e
-    puts e
-    puts "set_sort_key: record_type: #{record_type}; rank: #{rank}; family: #{family}"
-    raise
-  end
-
-  def normalise_sort_key
-    self.sort_key = sort_key.downcase unless sort_key == sort_key.downcase
-  end
-
-  def synonym_sort_key(parent_sort_key, syn_type = synonym_type)
-    "#{parent_sort_key}.a-syn.#{synonym_sort_key_tail(syn_type)}"
-  end
-
-  def misapp_sort_key(parent_sort_key)
-    "#{parent_sort_key}.b-mis.z-mis"
-  end
-
-  def synonym_sort_key_tail(syn_type = synonym_type)
-    case syn_type
-    when "isonym"
-      "a-isonym"
-    when "orthographic variant"
-      "b-orth-var"
-    when "basionym"
-      "c-basionym"
-    when "replaced synonym"
-      "d-replaced-syn"
-    when "alternative name"
-      "e-alt-name"
-    when "nomenclatural synonym"
-      "f-nom-syn"
-    when "taxonomic synonym"
-      "g-tax-syn"
-    when "doubtful pro parte taxonomic synonym"
-      "g-tax-syn"
-    when "doubtful-taxonomic-synonym"
-      "g-tax-syn"
-    when "pro parte taxonomic synonym"
-      "g-tax-syn"
-    else
-      "x-is-unknown-#{syn_type}"
-    end
   end
 
   def name_match_no_primary?
@@ -578,5 +502,18 @@ class Loader::Name < ActiveRecord::Base
     return if family == full_name
 
     errors.add(:family, "must match simple name or full name for a family")
+  end
+
+  def validate_distribution
+    return unless accepted?
+
+    dv = DistributionValidator.new(distribution,
+                                   DistRegion.all
+                                             .order(:sort_order)
+                                             .collect(&:name))
+    return if dv.validate
+
+
+    errors.add(:distribution, dv.error)
   end
 end

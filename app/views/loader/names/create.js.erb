@@ -1,3 +1,4 @@
+$('.message-container').html('');
 <% if params[:random_id].blank? %>
   $('#search-result-details-info-message-container').html("<%= escape_javascript(@message||'Created') %>");
   $('#loader-name-save').addClass('hidden');

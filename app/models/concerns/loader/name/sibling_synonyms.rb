@@ -3,8 +3,7 @@ module Loader::Name::SiblingSynonyms
     def create_sibling_synonyms_for_instance(instance_id, current_user)
       logger.debug("instance id: #{instance_id}")
       syn = Instance.find(instance_id)
-      citer = syn.this_is_cited_by
-      siblings = Instance.where(cited_by_id: citer.id).where.not(id: syn.id)
+      siblings = Instance.sourced_sibling_synonyms_and_misapps(syn)
       seq_value = loader_batch.use_sort_key_for_ordering ? 0 : seq
       logger.debug("batch id: #{loader_batch_id}")
       siblings.each do |instance| 

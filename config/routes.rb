@@ -461,6 +461,7 @@ Rails.application.routes.draw do
     match "names/in-batch-note/new/:random_id", as: "name_in_batch_note_new_with_random_id",
                                                 to: "names#new_in_batch_note", via: :get
     match "names/new-row-here/:id", as: "name_new_row_here", to: "names#new_row_here", via: :get
+    match "names/create_heading", via: :post
     resources :names, only: %i[create update destroy]
     namespace :name do
       match "matches/create/:id", as: "matches_set", to: "matches#set", via: :patch

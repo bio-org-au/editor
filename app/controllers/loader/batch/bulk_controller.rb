@@ -24,6 +24,11 @@ class Loader::Batch::BulkController < ApplicationController
                                       create_draft_instances
                                       add_to_draft_taxonomy]
 
+  before_action :add_name_string_to_session, only: %i[stats
+                                                      create_preferred_matches
+                                                      create_draft_instances
+                                                      add_to_draft_taxonomy]
+
   rescue_from JobAlreadyLockedError, with: :handle_job_already_locked
 
   def index
@@ -34,30 +39,22 @@ class Loader::Batch::BulkController < ApplicationController
   def disable_add; end
 
   def stats
-    add_name_string_to_session
     @stats = Loader::Batch::Stats::Reporter.new(
       params[:name_string],
       (session[:default_loader_batch_id] || 0)
     )
-  rescue => e
+  rescue StandardError => e
     prefix = "bulk-ops-stats-"
-    @message = "#{e.to_s}"
+    @message = e.to_s
     render :error, locals: { message_container_id_prefix: prefix }
   end
 
   def create_preferred_matches
-    add_name_string_to_session
     prefix = "create-preferred-matches-"
-    job = CreatePreferredMatchesJob.new(session[:default_loader_batch_id],
-                                        params[:name_string],
-                                        @current_user.username,
-                                        @job_number)
-    @message_h = job.run
+    run_create_preferred_matches
     Loader::Batch::Bulk::JobLock.unlock!
     render "create_preferred_matches", locals: { message_container_id_prefix: prefix }
   rescue StandardError => e
-    logger.error("LoaderBatchBulkController#create_preferred_matches: #{e}")
-    logger.error e.backtrace.join("\n")
     pull_down_job
     @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
@@ -65,17 +62,10 @@ class Loader::Batch::BulkController < ApplicationController
 
   def create_draft_instances
     prefix = "create-draft-instances-"
-    add_name_string_to_session
-    job = CreateDraftInstanceJob.new(session[:default_loader_batch_id],
-                                     params[:name_string],
-                                     @current_user.username,
-                                     @job_number)
-    @message_h = job.run
+    run_create_draft_instances
     Loader::Batch::Bulk::JobLock.unlock!
     render "create_draft_instances", locals: { message_container_id_prefix: prefix }
   rescue StandardError => e
-    logger.error("LoaderBatchBulkController#create_draft_instances: #{e}")
-    logger.error e.backtrace.join("\n")
     pull_down_job
     @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
@@ -83,18 +73,10 @@ class Loader::Batch::BulkController < ApplicationController
 
   def add_to_draft_taxonomy
     prefix = "add-to-draft-taxonomy-"
-    job = AddToDraftTaxonomyJob.new(session[:default_loader_batch_id],
-                                    params[:name_string],
-                                    @working_draft,
-                                    @current_user.username,
-                                    @job_number)
-    job.run
-    @message_h = job.result
+    run_add_to_draft_taxonomy
     Loader::Batch::Bulk::JobLock.unlock!
     render "add_to_draft_taxonomy", locals: { message_container_id_prefix: prefix }
   rescue StandardError => e
-    logger.error("LoaderBatchBulkController#add_to_draft_taxonomy: #{e}")
-    logger.error e.backtrace.join("\n")
     pull_down_job
     @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
     render "error", locals: { message_container_id_prefix: prefix }
@@ -102,20 +84,36 @@ class Loader::Batch::BulkController < ApplicationController
 
   private
 
+  def run_create_preferred_matches
+    @message_h = CreatePreferredMatchesJob.new(
+      session[:default_loader_batch_id],
+      params[:name_string],
+      @current_user.username,
+      @job_number
+    ).run
+  end
+
+  def run_create_draft_instances
+    @message_h = CreateDraftInstanceJob.new(session[:default_loader_batch_id],
+                                            params[:name_string],
+                                            @current_user.username,
+                                            @job_number).run
+  end
+
+  def run_add_to_draft_taxonomy
+    job = AddToDraftTaxonomyJob.new(session[:default_loader_batch_id],
+                                    params[:name_string],
+                                    @working_draft,
+                                    @current_user.username,
+                                    @job_number)
+    job.run
+    @message_h = job.result
+  end
+
   def add_name_string_to_session
     return if params[:name_string].blank?
 
     session[:name_string] = params[:name_string]
-  end
-
-  # what is this doing?
-  def the_prefix(str)
-    if params[:gui_submit_place].nil?
-      str
-    else
-      "#{params[:gui_submit_place]}-#{str}"
-    end
-    str
   end
 
   def clean_params
@@ -124,7 +122,9 @@ class Loader::Batch::BulkController < ApplicationController
 
   def set_up_job
     @job_number = Time.now.to_i
-    raise JobAlreadyLockedError, params[:submit] unless Loader::Batch::Bulk::JobLock.lock!(params[:submit])
+    return if Loader::Batch::Bulk::JobLock.lock!(params[:submit])
+
+    raise JobAlreadyLockedError, params[:submit]
   end
 
   def pull_down_job

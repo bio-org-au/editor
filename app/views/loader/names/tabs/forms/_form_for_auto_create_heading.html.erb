@@ -1,0 +1,15 @@
+    <%= divider %>
+    Create a heading record for this record's family <%= @loader_name.family %>?
+    <%= form_with url: loader_names_create_heading_path, remote: true do |form| %>
+      <%= form.hidden_field :family, value: @loader_name.family %>
+      <%= form.hidden_field :loader_batch_id, value: @loader_name.loader_batch_id %>
+      <%= form.submit class: 'btn btn-default',
+                      value: "Create",
+                      title: 'Create a heading record in the current batch'%>
+    <% end %>
+    <div id="create-heading-info-message-container" class="message-container"></div>
+    <div id="create-heading-error-message-container" 
+         class="error-container message-container">
+    </div>
+    <%= divider %>
+

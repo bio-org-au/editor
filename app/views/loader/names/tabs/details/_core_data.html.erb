@@ -8,6 +8,21 @@
                      class: 'blue underline'), 
                      label: "query family members"} %>
 
+<% if can? 'loader/names', 'update' %>
+   
+  <% if Loader::Name.where("loader_batch_id = ?", @loader_name.loader_batch_id)
+                    .where("simple_name = ? or full_name = ?",
+                         @loader_name.family,
+                         @loader_name.family)
+                    .empty? %>
+    <%= render partial: 'loader/names/tabs/forms/form_for_auto_create_heading',
+               locals: {params: params} %>
+
+  <% end %>
+
+<% end %>
+
+
 <%= render partial: 'detail_line', locals: {info: @loader_name.subfamily, label: 'subfamily'} unless @loader_name.subfamily.blank?  %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.simple_name, label: 'simple name aka taxon'} unless @loader_name.simple_name.blank? %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.simple_name_as_loaded, label: 'simple name as loaded'} unless @loader_name.simple_name_as_loaded.blank? || @loader_name.simple_name == @loader_name.simple_name_as_loaded %>

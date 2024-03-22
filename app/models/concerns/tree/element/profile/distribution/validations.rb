@@ -1,5 +1,5 @@
 #
-# Tree Element Profile
+# Tree Element Profile is jsonb and it may include a distribution value
 module Tree::Element::Profile::Distribution::Validations
   extend ActiveSupport::Concern
   included do

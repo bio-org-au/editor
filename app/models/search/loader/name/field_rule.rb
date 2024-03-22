@@ -634,37 +634,39 @@ having count(*)                     >  1
     "drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where drafted)"},
     "xmisapp-matched-without-cross-ref:" => { where_clause: " id in (select o.id from orchids o join loader_name_match orn on o.id = orn.loader_name_id where o.record_type = 'misapplied' and orn.relationship_instance_id is null)"},
     "created-manually:" => { where_clause: "created_manually" },
-    "syn-match-in-tree-tree-join-v:" => { where_clause: " record_type = 'synonym'
-       and exists (
-        select null
-          from loader_name_match
-        where loader_name.id  = loader_name_match.loader_name_id
-          and exists (
-            select null
-              from tree_join_v
-            where accepted_tree
-              and tree_version_id = current_tree_version_id
-              and instance_id in (
-                select id
-                  from instance
-     where name_id         = loader_name_match.name_id)))",
-                                          do_count_totals: false },
-    "syn-match-in-tree-taxon-mv:" => { where_clause: " record_type = 'synonym'
-       and exists (
-        select null
-          from loader_name_match
-        where loader_name.id  = loader_name_match.loader_name_id
-          and exists (
-            select null
-              from taxon_mv
-            where nomenclatural_status in ('legitimate','[n/a]')
-              and taxonomic_status in ('accepted','excluded')
-              and instance_id in (
-                select id
-                  from instance
-                 where name_id = loader_name_match.name_id)))",
-                                       do_count_totals: false },
-    "name-match-in-syn:" => { where_clause: " record_type in ('accepted', 'excluded')
+"syn-match-in-tree-faster-join-b:" => { where_clause: " id in (select ln.id
+  from loader_name ln 
+       join loader_name_match lnm
+       on ln.id = lnm.loader_name_id
+       join instance i
+       on lnm.name_id = i.name_id 
+       join taxon_mv tmv 
+       on i.id = tmv.instance_id 
+       join loader_batch lb
+       on ln.loader_batch_id = lb.id
+ where tmv.nomenclatural_status in ('legitimate','[n/a]')
+   and tmv.taxonomic_status in ('accepted','excluded')
+   and ln.record_type = 'synonym')"
+                                     },
+"syn-match-in-tree-faster-join:" => { where_clause: " id in (select ln.id
+  from loader_name ln 
+       join loader_name_match lnm
+       on ln.id = lnm.loader_name_id
+       join instance i
+       on lnm.name_id = i.name_id 
+       join tree_join_v tjv 
+       on i.id = tjv.instance_id 
+       join loader_batch lb
+       on ln.loader_batch_id = lb.id
+       join name 
+       on tjv.name_id = name.id
+       join name_status ns
+       on name.name_status_id= ns.id
+ where ns.name in ('legitimate','[n/a]')
+   and ln.record_type = 'synonym'
+   and not tjv.published)"
+     },
+  "name-match-in-syn:" => { where_clause: " record_type in ('accepted', 'excluded')
        and exists (
        select null
        from loader_name_match

@@ -1,3 +1,47 @@
+- :date: 29-Jan-2024
+  :jira_id: '4879'
+  :description: |-
+    Loader: Modify sql to query the draft accepted tree in <code>syn-match-in-tree</code>, not the current published tree
+- :date: 29-Jan-2024
+  :jira_id: '4878'
+  :description: |-
+    Loader: Modify sql to query the draft accepted tree in <code>syn-conflicts-with-loader-batch</code>, not the current published tree
+- :date: 24-Jan-2024
+  :jira_id: '4879'
+  :description: |-
+    Loader: Replace the sql for <code>syn-match-in-tree</code> with a faster version
+- :date: 24-Jan-2024
+  :jira_id: '4878'
+  :description: |-
+    Loader: Add Instance search directive <code>syn-conflicts-with-loader-batch</code>
+- :date: 23-Jan-2024
+  :jira_id: '4739'
+  :description: |-
+    Loader: Allow addition of new records under family (and synonyms and misapplieds) with family set in new record
+- :date: 23-Jan-2024
+  :jira_id: '4872'
+  :description: |-
+    Loader: Synonym flipper-to-accepted form does not offer to take unsourced siblings or trade names (with minor refactoring)
+- :date: 23-Jan-2024
+  :jira_id: '4877'
+  :description: |-
+    Loader: Synonym flipper-to-accepted form shouldn't be offered for trade names
+- :date: 22-Jan-2024
+  :jira_id: '4836'
+  :description: |-
+    Loader: Add button to create a loader name family heading record if no such record exists in a batch - available only to batch loaders
+- :date: 19-Jan-2024
+  :jira_id: '4875'
+  :description: |-
+    Loader: Refined <code>sort_key</code> value algorithm to fix problem with genus synonymy displaying after species
+- :date: 19-Jan-2024
+  :jira_id: '4822'
+  :description: |-
+    Loader: Don't allow invalid distribution strings in loader name records
+- :date: 18-Jan-2024
+  :jira_id: '4823'
+  :description: |-
+    Loader: Offer copy of comment text for excluded names when adding to batch
 - :date: 18-Jan-2024
   :jira_id: '4845'
   :description: |-

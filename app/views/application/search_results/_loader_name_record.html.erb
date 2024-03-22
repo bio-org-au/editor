@@ -18,8 +18,7 @@
       <%= render partial: 'application/search_results/link_texts/loader/name', locals: {search_result: search_result} %>
     </a>
 
-    <% if search_result.record_type == 'accepted' || search_result.record_type == 'excluded' %>
-      <div class='gap-to-plus'>&nbsp;</div>
+    <% if ['accepted', 'excluded', 'heading', 'synonym', 'misapplied'].include?(search_result.record_type)  %>
       <%= link_to('<i class="fa-solid fa-plus"></i>'.html_safe, loader_name_new_row_here_path(search_result.id),
                   title: 'Start a new loader-name record',
                   class: 'inline display-only-when-showing-details',

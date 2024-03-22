@@ -189,7 +189,7 @@ word "darwin" followed by a space, one or more other characters followed by "bar
   <% end %>
 </table>
 
-<h4>Tree distribution and comment searches</h4>
+<h4>Tree distribution and comment searches, other tree searches</h4>
 <table class="table table-striped">
   <tr>
     <th>Field</th>
@@ -198,6 +198,7 @@ word "darwin" followed by a space, one or more other characters followed by "bar
   <% [
          {field_name: 'tree-dist-matches:', description: "Regular expression matches on the Distribution profile on the accepted tree.  Case-insensitive."},
          {field_name: 'tree-comment-matches:', description: "Regular expression matches on the Comment profile on the accepted tree.  Case-insensitive."},
+         {field_name: 'syn-conflicts-with-loader-batch:', description: "A special loader-related search for synomyms in the current accepted tree that match accepted/excluded names in a loader batch. Note: loader is not activated for all databases."},
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">

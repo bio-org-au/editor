@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# Loader Batch entity
+# Tree Element Profile jsonb component
 class Tree::Element::Profile::CommentObject
   def initialize(username, text)
     @username = username
