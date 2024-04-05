@@ -66,18 +66,13 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
   end
 
   def create_relationship_instance
-    Rails.logger.debug("create_relationship_instance start")
     if @loader_name.parent.loader_name_matches.first.try("standalone_instance_id").blank?
-      Rails.logger.debug("loader name parent has no standalone instance so cannot create relationship instance")
       entry = "#{Constants::DECLINED_INSTANCE} - loader name parent" +
               " has no standalone instance so cannot proceed " +
               "#{@loader_name.simple_name} ##{@loader_name.id}"
       log_to_table(entry)
       return {declines: 1, decline_reasons: {parent_has_no_standalone_instance: 1}}
-    else
-      Rails.logger.debug("qfter three")
     end
-    Rails.logger.debug("Going on to create relationship instance")
     new_instance = Instance.new
     new_instance.draft = false
     new_instance.cited_by_id = @loader_name.parent.loader_name_matches.first.standalone_instance_id
@@ -93,9 +88,9 @@ class Loader::Name::MakeOneInstance::MakeOneSynonymyInstance
     note_created(new_instance)
     {creates: 1}
   rescue StandardError => e
-    entry = "LoaderNameMatch#create_relationship_instance: #{e}"
+    entry = "LoaderNameMatch#create_relationship_instance: ##{@loader_name.id} #{e}"
     Rails.logger.error(entry)
-    entry = "#{Constants::FAILED_INSTANCE}: #{e}"
+    entry = "#{Constants::FAILED_INSTANCE}: #{@loader_name.simple_name} ##{@loader_name.id} #{e}"
     log_to_table(entry)
     {errors: 1, error_reasons: {"#{e.to_s}": 1}}
   end

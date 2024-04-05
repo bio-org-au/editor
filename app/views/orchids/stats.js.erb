@@ -1,7 +1,0 @@
-$('#stats-container').removeClass('hidden');
-$('ul#search-results-tabset li').removeClass('active');
-if (!$('#stats-container').hasClass('has-data')){
-  $('#stats-container').html("<%= j render(:partial => 'orchids/stats/high_level_stats') %>")
-  $('#stats-container').addClass('has-data');
-}
-

@@ -137,6 +137,8 @@
 <%= created_by_whom_and_when(@reference).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@reference).html_safe %>
-<%= render partial: 'detail_line', locals: {label: 'System', info: "#{@reference.namespace.name}#{%Q(.#{@reference.source_system.downcase}.#{@reference.source_id}) if @reference.source_system}"} %>
+<% if @reference.source_system %>
+  <br>Loaded from <%= "#{@reference.namespace.name} #{@reference.source_system.downcase}.#{@reference.source_id}" %>
+<% end %>
 
 

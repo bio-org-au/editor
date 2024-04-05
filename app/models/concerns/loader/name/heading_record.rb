@@ -7,6 +7,7 @@ module Loader::Name::HeadingRecord
       heading.simple_name = heading.full_name = heading.family = params[:family]
       heading.simple_name_as_loaded = heading.simple_name
       heading.loader_batch_id = params[:loader_batch_id]
+      heading.rank = 'family'
       heading.save!
     end
   end

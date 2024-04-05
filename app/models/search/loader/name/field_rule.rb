@@ -503,27 +503,9 @@ having count(*) > 2
        and nt.scientific))"},
     "partly:" => { where_clause: "partly is not null"},
     "not-partly:" => { where_clause: "partly is null"},
+    "publ-partly:" => { where_clause: "publ_partly is not null"},
+    "not-publ-partly:" => { where_clause: "publ_partly is null"},
     "name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match group by name_id having count(*) > 1))"},
-    "xnon-misapp-name-sharing-name-id:" => { where_clause: " id in (select loader_name_id from loader_name_match where name_id in (select name_id from loader_name_match where loader_name_id in (select id from orchids where record_type != 'misapplied') group by name_id having count(*) > 1))"},
-    "xnon-misapp-name-sharing-name-id-not-pp:" => { where_clause: "id in (select loader_name_id
-  from loader_name_match
- where name_id in (
-    select name_id
-      from (
-        select orn.name_id, orn.loader_name_id, o.partly, orn.relationship_instance_id ,
-              coalesce(reltype.pro_parte,false) type_is_partly, reltype.name
-          from orchids o
-          join loader_name_match orn
-            on o.id                         =  orn.loader_name_id
-          left outer join instance_type reltype
-            on orn.relationship_instance_type_id     =  reltype.id
-        where o.partly is null
-      and o.record_type                != 'misapplied'
-          ) fred
-    where type_is_partly               =  'f'
-    group by name_id
-having count(*)                     >  1
-       ))"},
     "has-preferred-name:" => { where_clause: " exists (select null from loader_name_match where loader_name.id = loader_name_match.loader_name_id)"},
     "has-preferred-name-without-instance:" => { where_clause: " exists (select null from loader_name_match orn where loader_name.id = orn.loader_name_id and orn.standalone_instance_id is null and orn.relationship_instance_id is null)"},
     "use-batch-default-ref:" => { where_clause: " exists (
@@ -579,8 +561,8 @@ having count(*)                     >  1
     "nsl-rank:" => { where_clause: "lower(nsl_rank) like ?"},
     "not-nsl-rank:" => { where_clause: "lower(nsl_rank) not like ?"},
     "no-nsl-rank:" => { where_clause: "nsl_rank is null"},
-    "doubtful:" => { where_clause: "doubtful is not null"},
-    "not-doubtful:" => { where_clause: "doubtful is null"},
+    "doubtful:" => { where_clause: "doubtful"},
+    "not-doubtful:" => { where_clause: "not doubtful"},
     "excluded-with-syn:" => { trailing_wildcard: true,
                               where_clause: " (lower(simple_name) like ? and record_type = 'excluded') or (parent_id in (select id from loader_name where lower(simple_name) like ? and record_type = 'excluded'))"},
 
@@ -617,22 +599,9 @@ having count(*)                     >  1
        )
  order by o.id)",
                                 trailing_wildcard: true},
-    "not-in-current-taxonomy:" => { where_clause: "loader_name.id in (select id from orchids where record_type = 'accepted') and loader_name.id not in (select distinct o.id
-  from loader_name_match orn
-  join loader_name o
-    on orn.loader_name_id = o.id
- where orn.name_id in (
-    select name_id
-  from tree_join_v
-  where accepted_tree
-    and tree_version_id = current_tree_version_id
-       )
- order by o.id)",
-                                    trailing_wildcard: true},
     "syn-type:" => { where_clause: "lower(synonym_type) like ?"},
     "manually-drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where manually_drafted)"},
     "drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where drafted)"},
-    "xmisapp-matched-without-cross-ref:" => { where_clause: " id in (select o.id from orchids o join loader_name_match orn on o.id = orn.loader_name_id where o.record_type = 'misapplied' and orn.relationship_instance_id is null)"},
     "created-manually:" => { where_clause: "created_manually" },
 "syn-match-in-tree-faster-join-b:" => { where_clause: " id in (select ln.id
   from loader_name ln 
@@ -751,6 +720,27 @@ having count(*)                     >  1
    and parent_match.name_id != cot_name.id
    and child.record_type != 'misapplied'
      ))"},
-  "any-batch:" => { where_clause: "1=1" },
+  "any-batch:" => { where_clause: "1=1",
+                    takes_no_arg: true},
+  "no-family-heading:" => { 
+      where_clause: "id in (
+      select id 
+  from loader_name
+ where family in 
+ (select family
+  from (
+select loader_name.family, family.simple_name
+  from loader_name
+       left outer join
+       loader_name family
+       on loader_name.family = family.simple_name
+       and loader_name.loader_batch_id = family.loader_batch_id
+       and family.record_type = 'heading'
+ where loader_name.record_type in ('accepted','excluded','synonym','misapplied')
+group by loader_name.family, family.simple_name) subq
+where simple_name is null
+ )
+)",
+  },
   }.freeze
 end

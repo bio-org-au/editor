@@ -77,9 +77,6 @@
                 title: "Query the instances.") %>
     <br> 
   <% end %>
-  <% if @instance.linked_to_orchids_names? %>
-    Instance is linked to an orchid record in the data loader. 
-  <% end %>
   <% if @instance.linked_to_loader_name_matches? %>
     Instance is linked to a matched name in the batch loader.
   <% end %>

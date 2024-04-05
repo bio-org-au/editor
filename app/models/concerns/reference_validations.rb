@@ -49,8 +49,8 @@ module ReferenceValidations
                         maximum: 16,
                         message: "cannot be longer than 16 characters"
     validates_length_of :isbn,
-                        maximum: 16,
-                        message: "cannot be longer than 16 characters"
+                        maximum: 17,
+                        message: "cannot be longer than 17 characters"
   end
 
   def validate_uniqueness

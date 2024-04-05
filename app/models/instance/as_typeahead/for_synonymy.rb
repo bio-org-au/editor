@@ -38,15 +38,16 @@ class Instance::AsTypeahead::ForSynonymy
   attr_reader :results
 
   COLUMNS = " name.full_name, reference.citation,  " \
-            "reference.iso_publication_date,  " \
-            "reference.pages, instance.id, instance.source_system,  " \
+            "reference.iso_publication_date, instance.page, " \
+            "instance.id, instance.source_system,  " \
             "instance_type.name as instance_type_name"
   SEARCH_LIMIT = 50
 
   def initialize(terms, name_id)
     @results = []
     @name_binds = []
-    terms_without_year = terms.gsub(/[0-9]/, "").strip.gsub("  ", " ")
+    terms_without_year = terms.gsub(/[1,2][0-9]{3}/, "").strip.gsub("  ", " ")
+    Rails.logger.debug("terms_without_year: #{terms_without_year}")
     return if terms_without_year.blank?
 
     @name_binds.push(" lower(f_unaccent(full_name)) like lower(f_unaccent(?)) ")
@@ -99,14 +100,17 @@ class Instance::AsTypeahead::ForSynonymy
 
   def display_value(i)
     value = "#{i.full_name} in #{i.citation}:#{i.iso_publication_date}"
-    value += " [#{i.pages}]" unless i.pages.blank? || i.pages.match(/null - null/)
+    value += " [#{i.page}]" unless i.page.blank? || i.page.match(/null - null/)
     value += " [#{i.instance_type_name}]" unless i.instance_type_name == "secondary reference"
     value
   end
 
   def reference_binds(terms)
     reference_binds = []
-    reference_year = terms.gsub(/[^0-9]/, "")
+    match = terms.match(/[1,2][0-9]{3}/)
+    return reference_binds if match.blank?
+
+    reference_year = match.to_s 
     if reference_year.present? &&
        reference_year.to_i > 1000 && reference_year.to_i < 3000
       reference_binds.push(" iso_publication_date like ? ||'%' ")

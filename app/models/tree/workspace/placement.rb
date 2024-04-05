@@ -58,23 +58,3 @@ class Tree::Workspace::Placement < ActiveType::Object
     Tree::AsServices.instance_url(instance_id)
   end
 end
-
-# From the Services log:
-# =====================
-# apni-editor is running as gclarke
-# login took 6ms
-# checking gclarke has role treebuilder
-# get json http://localhost:8080/api/current-identity?uri=http%3A%2F%2Fid.biodiversity.org.au%2Finstance%2Fapni%2F51366428
-# result status is 400 [action:placeElement,
-#                       status:400,
-#                       ok:false,
-#                       error:Name Dendrobium aemulum x Dendrobium kingianum of rank Species is not below rank Species of Dendrobium aemulum.]
-#
-
-# From the Editor log for the same error:
-# ======================================
-# r6editor [gclarke] Calling http://localhost:9093/nsl/services/api/treeElement/placeElement?apiKey=dev-apni-editor&as=gclarke with {:instanceUri=>"http://id.biodiversity.org.au/instance/apni/51366428", :parentElementUri=>"/tree/51365924/51362490", :excluded=>false, :profile=>{"APC Dist."=>{:value=>"NSW", :updated_by=>"gclarke", :updated_at=>"2020-09-08T04:54:59Z"}}, :versionId=>51365924} (pid:36088)
-# r6editor [gclarke] Tree::Workspace::Placement error: 400 Bad Request (pid:36088)
-# r6editor [gclarke] OrchidsBatchController#add_instances_to_draft_tree: 400 Bad Request (pid:36088)
-# r6editor [gclarke] /Users/greg/.gem/jruby/2.5.7/gems/rest-client-2.1.0/lib/restclient/abstract_response.rb:249:in `exception_with_response'
-# ....stacktrace.....

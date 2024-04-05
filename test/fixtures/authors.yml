@@ -1,579 +1,434 @@
+
+DEFAULTS: &DEFAULTS
+  created_by: greg
+  updated_by: greg
+  namespace: apni
+
 haeckel:
+  <<: *DEFAULTS
   name: "Haeckel, Ernst Heinrich Philipp August"
   abbrev: Haeckel
-  namespace: apni
   created_by: kirstenc
   updated_by: kirstenc
 
 reveal:
+  <<: *DEFAULTS
   name: "Reveal"
   abbrev: Reveal
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 cronquist_et_al:
+  <<: *DEFAULTS
   name: "Cronquist, A.J., Takhtajan, A.L. & Zimmermann, Walter M."
   abbrev: "Cronquist, Takht. & W.Zimm."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 brongn:
+  <<: *DEFAULTS
   name: "Brongniart, A.T."
   abbrev: "Brongn."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 unknown: 
+  <<: *DEFAULTS
   name: "-"
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 brassard: 
+  <<: *DEFAULTS
   name: " Brassard [x] "
   abbrev: "brassardx"
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 heyland: 
+  <<: *DEFAULTS
   name: "   Heyland [y]  "
   abbrev: "heylandx"
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 bentham:
+  <<: *DEFAULTS
   name: "  A B Bentham "
   abbrev: "Benth."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 joe:
+  <<: *DEFAULTS
   name: "  Joe  "
   abbrev: "J."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 blume_c_l_von:
+  <<: *DEFAULTS
   name: "  Blume, C.L. [von]  "
   abbrev: "Blum."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 hooker:
+  <<: *DEFAULTS
   name: "Hooker, W.J."
   abbrev: "Hook."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 burbidge:
+  <<: *DEFAULTS
   name: "Burbidge, N.T."
   abbrev: "Burb."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 dash:
+  <<: *DEFAULTS
   name: "-"
   abbrev: "-"
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 sturm:
+  <<: *DEFAULTS
   name: "Sturm, J.W."
   abbrev: "SJW"
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 for_typeahead_on_name_null_abbrev:
+  <<: *DEFAULTS
   name: 'for typeahead on name null abbrev'
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 for_typeahead_on_name_has_abbrev:
+  <<: *DEFAULTS
   name: 'for typeahead on name null abbrev'
   abbrev: 'ftonna'
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 for_typeahead_on_name_empty_string_abbrev:
+  <<: *DEFAULTS
   name: 'for typeahead on name empty string abbrev'
   abbrev: ''
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 fred:
+  <<: *DEFAULTS
   name: "Fred"
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 britten:
+  <<: *DEFAULTS
   name: "Britten, J."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 beadle_evans_carolin:
+  <<: *DEFAULTS
   name: "Beadle, N.C.W., Evans, O.D. & Carolin, R.C."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 unique_abbrev:
+  <<: *DEFAULTS
   abbrev: "Unique."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 gaertn:
+  <<: *DEFAULTS
   abbrev: Gaertn.
   name: Gaertner, J.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 telford_and_naaykens:
+  <<: *DEFAULTS
   name: Telford, I.R.H. & Naaykens, J.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 author_that_can_be_deleted:
+  <<: *DEFAULTS
   name: Author that can be deleted
   abbrev: AuthorToDelete
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_one_name_that_is_all:
+  <<: *DEFAULTS
   name: Has One Name That Is All
   abbrev: HasOneNameThatIsAll
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_one_reference_that_is_all:
+  <<: *DEFAULTS
   name: Has One Reference That Is All
   abbrev: HasOneReferenceThatIsAll
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_one_duplicate_that_is_all:
+  <<: *DEFAULTS
   name: Has One Duplicate That Is All
   abbrev: HasOneDuplicateThatIsAll
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 is_a_duplicate_of_that_is_all:
+  <<: *DEFAULTS
   name: Is A Duplicate Of That Is All
   abbrev: IsADuplicateOfThatIsAll
   duplicate_of: has_one_duplicate_that_is_all
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 is_a_name_authority_of_every_type:
+  <<: *DEFAULTS
   name: Is A Name Authority Of Every Type
   abbrev: IsANameAuthorityOfEveryType
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_authored_one_name_that_is_all:
+  <<: *DEFAULTS
   name: Has Authored One Name That Is All
   abbrev: HasAuthoredOneNameThatIsAll
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_base_authored_one_name_that_is_all:
+  <<: *DEFAULTS
   name: Has Base Authored One Name That Is All
   abbrev: HasBaseAuthoredOneNameThatIsAll
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_ex_base_authored_one_name_that_is_all:
+  <<: *DEFAULTS
   name: Has Ex Base Authored One Name That Is All
   abbrev: HasExBaseAuthoredOneNameThatIsAll
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_ex_authored_one_name_that_is_all:
+  <<: *DEFAULTS
   name: Has Ex Authored One Name That Is All
   abbrev: HasExAuthoredOneNameThatIsAll
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_sanctioned_one_name_that_is_all:
+  <<: *DEFAULTS
   name: Has Sanctioned One Name That Is All
   abbrev: HasSanctionedOneNameThatIsAll
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_no_abbrev:
+  <<: *DEFAULTS
   name: Has No Abbrev
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 maslin_with_abbrev:
+  <<: *DEFAULTS
   name: Maslin, B.R.
   abbrev: Maslin
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 maslin_without_abbrev:
+  <<: *DEFAULTS
   name: Maslin, B.R.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 adams_l_g:
+  <<: *DEFAULTS
   name: Adams, L.G.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 albrecht_and_walsh:
+  <<: *DEFAULTS
   name: "Albrecht, D.E. & Walsh, N.G."
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_abbrev_only:
+  <<: *DEFAULTS
   abbrev: hasabbrevonly
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_name_only:
+  <<: *DEFAULTS
   name: hasnameonly
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 dummy_author_1:
+  <<: *DEFAULTS
   name: dummy 1
   abbrev: dummy 1
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 dummy_author_2:
+  <<: *DEFAULTS
   name: dummy 2
   abbrev: dummy 2
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 mueller_von:
+  <<: *DEFAULTS
   name: Mueller, F.J.H. von
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 mueller_von_and_bailey:
+  <<: *DEFAULTS
   name: Mueller, F.J.H. von & Bailey, F.M.
   abbrev: F.Muell. & F.M.Bailey
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 bailey_fm:
+  <<: *DEFAULTS
   name: Bailey, F.M.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 muller_f_with_umlaut:
+  <<: *DEFAULTS
   name: Müller, F.
   abbrev: Fr.Müll.
   full_name: Müller, Fritz (fl. 1901)
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 accent_grave_cedilla_etc:
+  <<: *DEFAULTS
   name: éàç
   abbrev: éàç
   full_name: éàç
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 stanley:
+  <<: *DEFAULTS
   name: stanley
   full_name: stanley
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 stanley_and_ross:
+  <<: *DEFAULTS
   name: Stanley & Ross
   full_name: 
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 cav:
+  <<: *DEFAULTS
   name: Cavanilles, A.J.
   abbrev: Cav.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 dummy_author_for_eflora_service:
+  <<: *DEFAULTS
   name: dummy author for eflora service
-  namespace: apni
   created_by: kirstenc
   updated_by: kirstenc
 
 chaplin:
+  <<: *DEFAULTS
   name: chaplin
   abbrev: chaplin
-  namespace: apni
   created_by: tester
   updated_by: tester
 
 has_matching_abbrev_1:
+  <<: *DEFAULTS
   name: has matching abbrev
   abbrev: has matching abbrev
-  namespace: apni
   created_by: tester
   updated_by: tester
 
 has_matching_abbrev_2:
+  <<: *DEFAULTS
   name: has matching abbrev
   abbrev: does not have matching abbrev
-  namespace: apni
   created_by: tester
   updated_by: tester
 
 has_matching_name_1:
+  <<: *DEFAULTS
   name: has matching name
   abbrev: has matching name
-  namespace: apni
   created_by: tester
   updated_by: tester
 
 has_matching_name_2:
+  <<: *DEFAULTS
   name: not has matching name
   abbrev: not has matching name
-  namespace: apni
   created_by: tester
   updated_by: tester
 
 moe:
+  <<: *DEFAULTS
   name: moe
   abbrev: moe
-  namespace: apni
   created_by: tester
   updated_by: tester
 
 walsh_walsh:
+  <<: *DEFAULTS
   name: "Walsh xyx Walsh zzz"
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 walsh_walsh_walsh:
+  <<: *DEFAULTS
   name: "Walsh xyx Walsh zzz Walsh xxxx"
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_no_dependents:
+  <<: *DEFAULTS
   name: has no dependents
   abbrev: nodeps
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 schlechter_not_a_duplicate:
+  <<: *DEFAULTS
   name: schlechter
   abbrev: schl
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 schlechter_a_duplicate:
+  <<: *DEFAULTS
   name: xschlechter
   abbrev: xschl
   duplicate_of: schlechter_not_a_duplicate
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 for_name_or_abbrev_test_a:
+  <<: *DEFAULTS
   name: xyz_name_or_abbrev_test
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 for_name_or_abbrev_test_b:
+  <<: *DEFAULTS
   abbrev: xyz_name_or_abbrev_test
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 doll_no_umlaut:
+  <<: *DEFAULTS
   abbrev: doll
   name: Doll, J.C.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 doll_with_umlaut:
+  <<: *DEFAULTS
   abbrev: döll
   name: Döll, J.C.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 hultén_with_diacritic:
+  <<: *DEFAULTS
   abbrev: hultén
   name: Hultén, O.E.G.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 hulten_without_diacritic:
+  <<: *DEFAULTS
   abbrev: hulten
   name: Hulten, O.E.G.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 hiltén_with_diacritic:
+  <<: *DEFAULTS
   abbrev: hiltén
   name: Hiltén, O.E.G.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 hilten_without_diacritic:
+  <<: *DEFAULTS
   abbrev: hilten
   name: Hilten, O.E.G.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 ollegaard_without_diacritic:
+  <<: *DEFAULTS
   name: Ollegaard, H.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 ollegaard_with_leading_diacritic:
+  <<: *DEFAULTS
   name: Øllegaard, H.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 has_multiple_embedded_spaces:
+  <<: *DEFAULTS
   name: mul  tipl   e embe   dded
   name: m  ti   e ee   d
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 clarke_1:
+  <<: *DEFAULTS
   name: clarke
-  namespace: apni
   notes: xyz
-  created_by: greg
-  updated_by: greg
 
 clarke_2:
+  <<: *DEFAULTS
   name: clarke
-  namespace: apni
   notes: abc
-  created_by: greg
-  updated_by: greg
 
 hesp_1:
+  <<: *DEFAULTS
   name: hesp
-  namespace: apni
   notes: def
-  created_by: greg
-  updated_by: greg
 
 hesp_2:
+  <<: *DEFAULTS
   name: hesp
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 hesp_3:
+  <<: *DEFAULTS
   name: hesp
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 hesp_3:
+  <<: *DEFAULTS
   name: hesp
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 duplicate_with_abbrev:
+  <<: *DEFAULTS
   name: dupe with abbrev
   abbrev: duwab
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 master_without_abbrev:
+  <<: *DEFAULTS
   name: master without abbrev
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 duplicate_without_abbrev:
+  <<: *DEFAULTS
   name: dupe without abbrev
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 master_with_abbrev:
+  <<: *DEFAULTS
   name: master with abbrev
   abbrev: muwab
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 pfeiff:
+  <<: *DEFAULTS
   name: Pfeiffer, L.K.G.
   abbrev: Pfeiff.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
 
 juss:
+  <<: *DEFAULTS
   name: Jussieu, A.L. de
   abbrev: Juss.
-  namespace: apni
-  created_by: greg
-  updated_by: greg
+
+briggs_and_leigh:
+  <<: *DEFAULTS
+  name: Briggs, J.D. & Leigh, J.H.
+  abbrev: J.D.Briggs & Leigh
 

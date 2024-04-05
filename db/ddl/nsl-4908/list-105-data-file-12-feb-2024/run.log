@@ -1,0 +1,119 @@
+?2  Mon 12 15:36 ruby 3.3.0  ~/anbg/rails/nedruby/db/ddl/nsl-4908/list-105-data-file-12-feb-2024
+% ptesta
+Expanded display is used automatically.
+Welcome to PostgreSQL!
+
+Type \q to exit.
+
+SET
+Pager usage is off.
+Timing is on.
+psql (15.5 (Homebrew), server 15.2)
+SSL connection (protocol: TLSv1.2, cipher: AES128-SHA256, compression: off)
+Type "help" for help.
+
+pgsql-test1-ibis.cloud.biodiversity.org.au:5432 nsl@apni=> \i running-sheet.sql
+CREATE TABLE
+Time: 49.426 ms
+COPY 3360
+Time: 334.644 ms
+INSERT 0 1
+Time: 23.964 ms
+INSERT 0 3360
+Time: 773.728 ms
+UPDATE 2093
+Time: 13040.568 ms (00:13.041)
+BEGIN
+Time: 11.060 ms
+UPDATE 708
+Time: 47.690 ms
+UPDATE 0
+Time: 21.342 ms
+UPDATE 21
+Time: 22.752 ms
+UPDATE 6
+Time: 19.592 ms
+UPDATE 6
+Time: 20.648 ms
+UPDATE 6
+Time: 23.113 ms
+COMMIT
+Time: 23.489 ms
+BEGIN
+Time: 9.668 ms
+ count
+-------
+    13
+(1 row)
+
+Time: 29.468 ms
+UPDATE 13
+Time: 29.079 ms
+ count
+-------
+     0
+(1 row)
+
+Time: 29.283 ms
+ id | simple_name
+----+-------------
+(0 rows)
+
+Time: 29.465 ms
+ count
+-------
+    17
+(1 row)
+
+Time: 31.261 ms
+UPDATE 17
+Time: 28.221 ms
+ count
+-------
+     0
+(1 row)
+
+Time: 26.077 ms
+ id | simple_name
+----+-------------
+(0 rows)
+
+Time: 26.472 ms
+COMMIT
+Time: 15.263 ms
+BEGIN
+Time: 11.437 ms
+ count
+-------
+    14
+(1 row)
+
+Time: 31.125 ms
+UPDATE 14
+Time: 28.756 ms
+COMMIT
+Time: 14.565 ms
+BEGIN
+Time: 9.629 ms
+UPDATE 541
+Time: 26.119 ms
+UPDATE 1402
+Time: 94.425 ms
+COMMIT
+Time: 32.208 ms
+UPDATE 2
+Time: 39.438 ms
+UPDATE 3
+Time: 31.067 ms
+UPDATE 184
+Time: 28.335 ms
+UPDATE 120
+Time: 22.593 ms
+UPDATE 16
+Time: 32.243 ms
+UPDATE 17
+Time: 32.139 ms
+UPDATE 91
+Time: 53.058 ms
+pgsql-test1-ibis.cloud.biodiversity.org.au:5432 nsl@apni=> \q
+√  Mon 12 15:38 ruby 3.3.0  ~/anbg/rails/nedruby/db/ddl/nsl-4908/list-105-data-file-12-feb-2024

@@ -609,26 +609,7 @@ class Instance < ActiveRecord::Base
       comments.blank? &&
       !in_apc? &&
       children.empty? &&
-      not_linked_to_orchids_names? &&
       not_linked_to_loader_name_matches?
-  end
-
-  # This is not handled via an instance association because orchids are only
-  # in the apni database
-  # Don't look for orchids data unless the database is aware of orchids
-  def linked_to_orchids_names?
-    if Rails.configuration.try(:orchids_aware)
-      OrchidsName.where(instance_id: id).size > 0
-    else
-      false
-    end
-  end
-
-  # This is not handled via an instance association because orchids are only
-  # in the apni database
-  # Don't look for orchids data unless the database is aware of orchids
-  def not_linked_to_orchids_names?
-    !linked_to_orchids_names?
   end
 
   # This is not handled via an instance association because the loader is only

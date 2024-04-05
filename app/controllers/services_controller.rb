@@ -19,10 +19,6 @@
 class ServicesController < ApplicationController
   skip_before_action :authenticate
 
-  def index
-    render layout: "services"
-  end
-
   def ping
     render plain: "✓", status: :ok, layout: false
   end

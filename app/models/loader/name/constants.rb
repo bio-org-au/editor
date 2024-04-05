@@ -33,20 +33,20 @@ class Loader::Name::Constants
       (
         (
           lower(simple_name) like ?
-          or lower(simple_name) like 'x '||?#{' '}
+          or lower(simple_name) like 'x '||?
           or lower(simple_name) like '('||?)
         )
         and record_type in ('accepted', 'excluded')
-      )#{' '}
-    or#{' '}
-      (parent_id in#{' '}
-        (select id#{' '}
-           from loader_name#{' '}
+      )
+    or
+      (parent_id in
+        (select id
+           from loader_name
           where (
                   (
                     lower(simple_name) like ?
                     or lower(simple_name) like 'x '||?
-                    or lower(simple_name) like '('||?)#{' '}
+                    or lower(simple_name) like '('||?)
                   )
                   and record_type in ('accepted', 'excluded')
                 )

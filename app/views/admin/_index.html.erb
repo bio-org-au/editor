@@ -193,9 +193,6 @@
 
     <h5>Feature Flags</h5>
     <table class="table table-condensed search-results width-100-percent">
-    <tr><td class="width-40-percent min-width-10em">orchids_aware </td><td> <%= Rails.configuration.try(:orchids_aware) || false %> </td></tr>
-    <tr><td class="width-40-percent min-width-10em">allow_orchid_tree_operations </td><td> <%= Rails.configuration.try(:allow_orchid_tree_operations) || false %> </td></tr>
-    <tr><td class="width-40-percent min-width-10em">excluded_orchids_willing </td><td> <%= Rails.configuration.try(:excluded_orchids_willing) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">batch_loader_aware </td><td> <%= Rails.configuration.try(:batch_loader_aware) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">profile_edit_aware </td><td> <%= Rails.configuration.try(:profile_edit_aware) || false %> </td></tr>
     </table>

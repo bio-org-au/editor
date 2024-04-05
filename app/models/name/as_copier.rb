@@ -27,7 +27,9 @@ class Name::AsCopier < Name
     new = dup
     new.name_element = new_name_element
     new.created_by = new.updated_by = as_username
-    new.uri = nil
+    new.uri = new.source_system = new.source_id_string = nil
+    new.source_id = nil
+    new.lock_version = 0
     new.save!
     new.set_names!
     new.refresh_name_paths

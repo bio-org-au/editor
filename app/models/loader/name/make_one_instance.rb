@@ -29,7 +29,7 @@ class Loader::Name::MakeOneInstance
 
   ###########################################################
   # Instance Case Options for "Accepted" Loader Names
-  # (More complicated options than for Orchids, which were all new
+  # (More complicated options than for O r c h i ds, which were all new
   # entries)
   #
   # For "accepted" (aka top-level) loader_names only.

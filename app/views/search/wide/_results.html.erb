@@ -61,12 +61,6 @@
       <% when 'instance-for-expansion' %>  
         <%= render partial: 'instance_for_expansion_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'Orchid' %>  
-        <%= render partial: 'orchid_record', 
-          locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'OrchidProcessingLog' %>  
-        <%= render partial: 'application/search_results/orchid_processing_log_record', 
-          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Loader Batch' %>  
         <%= render partial: 'application/search_results/loader_batch_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} %>

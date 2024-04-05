@@ -15,24 +15,6 @@
                  data-advanced="name-plus-instances-search-advanced" 
               >Names plus instances</a>
           </li>
-          <% if Rails.configuration.try(:orchids_aware) %>
-            <li><a id="search-target-item-orchid-names" 
-                   href="#" 
-                   title="Set the search to target orchid names" 
-                   data-help="orchids-search-help" 
-                   data-examples="orchids-search-examples"
-                   data-advanced="orchids-search-advanced" 
-                >Orchids</a>
-            </li>
-            <li><a id="search-target-item-orchid-processing-logs" 
-                   href="#" 
-                   title="Set the search to target orchid processing-logs" 
-                   data-help="orchid-processing-logs-search-help" 
-                   data-examples="orchid-processing-logs-search-examples"
-                   data-advanced="orchid-processing-logs-search-advanced" 
-                >Orchid processing logs</a>
-            </li>
-          <% end %>
           <% if Rails.configuration.try(:batch_loader_aware) %>
             <li><a id="search-target-item-loader-batch-stack" 
                    href="#" 

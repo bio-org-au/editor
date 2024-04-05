@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-#  We need to place Orchids on a draft tree.
+#  We need to place Loader Names on a draft tree.
 class Loader::Batch::SummaryCounts::AsStatusReporter::ForAcceptedNames
   def initialize(search_string, batch_id)
     @search_string = search_string.downcase.gsub("*", "%")

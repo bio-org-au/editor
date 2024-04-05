@@ -60,6 +60,17 @@ class Loader::Batch::BulkController < ApplicationController
     render "error", locals: { message_container_id_prefix: prefix }
   end
 
+  def remove_syn_conflicts
+    prefix = "remove-syn-conflicts-"
+    run_remove_syn_conflicts
+    Loader::Batch::Bulk::JobLock.unlock!
+    render "remove_syn_conflicts", locals: { message_container_id_prefix: prefix }
+  rescue StandardError => e
+    pull_down_job
+    @message = e.to_s.sub("uncaught throw", "").gsub('"', "")
+    render "error", locals: { message_container_id_prefix: prefix }
+  end
+
   def create_draft_instances
     prefix = "create-draft-instances-"
     run_create_draft_instances
@@ -86,6 +97,15 @@ class Loader::Batch::BulkController < ApplicationController
 
   def run_create_preferred_matches
     @message_h = CreatePreferredMatchesJob.new(
+      session[:default_loader_batch_id],
+      params[:name_string],
+      @current_user.username,
+      @job_number
+    ).run
+  end
+
+  def run_remove_syn_conflicts
+    @message_h = RemoveSynConflictsJob.new(
       session[:default_loader_batch_id],
       params[:name_string],
       @current_user.username,

@@ -1,3 +1,181 @@
+- :date: 04-Apr-2024
+  :jira_id: '4955'
+  :description: |-
+    Loader: Show <code>source</code> information for migrated references only
+- :date: 03-Apr-2024
+  :jira_id: '4941'
+  :description: |-
+    Loader: When copying synonymy include existing matches to the correct instance for misapplications
+- :date: 03-Apr-2024
+  :jira_id: '4879'
+  :description: |-
+    Loader: Also remove help and example notes warning about slowness of the clash searches <code>syn-match-in-tree</code> and <code>name-match-in-syn</code>
+- :date: 02-Apr-2024
+  :jira_id: '4882'
+  :description: |-
+    Loader: Apply a feature flag to the Delete Syn Conflicts button
+- :date: 27-Mar-2024
+  :jira_id: '4882'
+  :description: |-
+    Loader: Remove hard-coded batch name from query!
+- :date: 25-Mar-2024
+  :jira_id: '4975'
+  :description: |-
+    Loader: Fix "as a an" typo from listing of names in batch on the instance loader tab
+- :date: 26-Mar-2024
+  :jira_id: '4977'
+  :description: |-
+    Loader: Handle print problem that arose checking for partial misapplied records - allow for synonym type or <code>publ_partly</code>
+- :date: 25-Mar-2024
+  :jira_id: '4986'
+  :description: |-
+    Loader: Add <code>loader_name</code> search directives <code>publ-partly</code> and <code>not-publ-partly</code>
+- :date: 25-Mar-2024
+  :jira_id: '4882'
+  :description: |-
+    Loader: Make Delete-Syn-Conflicts button active
+- :date: 08-Mar-2024
+  :jira_id: '4916'
+  :description: |-
+    Loader: Remove doubtful checkbox from forms to create synonym or misapplied (reverse previous change)
+- :date: 08-Mar-2024
+  :jira_id: '4953'
+  :description: |-
+    Loader: When copying an excluded name to the loader, the record type dropdown defaults to excluded
+- :date: 08-Mar-2024
+  :jira_id: '4950'
+  :description: |-
+    Loader: The "Take N sourced synonyms" checkbox is now ticked by default
+- :date: 04-Mar-2024
+  :jira_id: '4955'
+  :description: |-
+    Copy: When a Name or Instance is copied the source fields are no longer copied into the new record
+- :date: 01-Mar-2024
+  :jira_id: ''
+  :description: |-
+    Patches: Bump Rack to 2.2.8.1 for security
+- :date: 28-Feb-2024
+  :jira_id: ''
+  :description: |-
+    Patches: Bump Rails to 7.0.8.1 for security
+- :date: 27-Feb-2024
+  :jira_id: '4945'
+  :description: |-
+    Loader: Searches on <code>any-batch:</code> with an argument will give an error message; field help now also explains it takes no argument
+- :date: 27-Feb-2024
+  :jira_id: '4948'
+  :description: |-
+    Loader: Changes to Ref Instance tab in hopes of reducing the sticky tabs problem
+- :date: 27-Feb-2024
+  :jira_id: '4942'
+  :description: |-
+    Loader: When copying accepted name ensure link to primary instance is maintained
+- :date: 26-Feb-2024
+  :jira_id: '4941'
+  :description: |-
+    Loader: When copying synonymy include existing matches for misapplications
+- :date: 26-Feb-2024
+  :jira_id: '4946'
+  :description: |-
+    Search: Remove some code no longer used 
+- :date: 26-Feb-2024
+  :jira_id: '4944'
+  :description: |-
+    Loader: Allow copy of concepts to a loader batch from target instances only
+- :date: 23-Feb-2024
+  :jira_id: '4937'
+  :description: |-
+    Loader: Display leading question marks for doubtful misapplications in print view
+- :date: 23-Feb-2024
+  :jira_id: '4940'
+  :description: |-
+    Loader: Add <code>no-family-heading:</code> search directive 
+- :date: 22-Feb-2024
+  :jira_id: '4939'
+  :description: |-
+    Loader: The <code>doubtful:</code> and <code>not-doubtful:</code> search directives for <code>Loader Name</code> now search for <code>true</code> and <code>false</code> respectively
+- :date: 22-Feb-2024
+  :jira_id: '4936'
+  :description: |-
+    Loader: Synonyms with a syn type that includes ‘pro parte' get a trailing, italicised ‘p.p.' preceded by a comma in print view
+- :date: 22-Feb-2024
+  :jira_id: '4934'
+  :description: |-
+    Loader: Add menu divider on the New menu above the Batch Loader options
+- :date: 21-Feb-2024
+  :jira_id: '4847'
+  :description: |-
+    Loader: Correct instance now being carried across when synonyms are copied into the loader from a standalone instance with synonyms
+- :date: 21-Feb-2024
+  :jira_id: '4483'
+  :description: |-
+    Services: Remove unnecessary services index page which listed the ping service.  Ping, build, and other services will still be available.
+- :date: 21-Feb-2024
+  :jira_id: '4633'
+  :description: |-
+    Loader: Minor tweak to Ref Instance tab logic to remove unneeded SQL query for synonym logic - no change to behaviour
+- :date: 19-Feb-2024
+  :jira_id: '2820'
+  :description: |-
+    Synonymy typeahead: Treat 4 consecutive digits as a year for searching, rather than just any sequence of digits; improve placeholder text
+- :date: 16-Feb-2024
+  :jira_id: '4911'
+  :description: |-
+    Loader: Report a clearly expressed error on attempt to create draft instances needing a batch default reference when no such default is set
+- :date: 16-Feb-2024
+  :jira_id: '4910'
+  :description: |-
+    Loader: Remove 'undefined method' error when creating misapplied preferred matches on parsed batches - default the relationship type to 'misapplied'
+- :date: 13-Feb-2024
+  :jira_id: '4909'
+  :description: |-
+    Instance: Apply the same rules to display of the "as a draft" checkbox on the Edit form as on the New Instance form i.e. a draft tree must be selected
+- :date: 13-Feb-2024
+  :jira_id: '3119'
+  :description: |-
+    Instance: Move "as a draft" checkbox to bottom of Edit form to match its position on the New Instance form
+- :date: 07-Feb-2024
+  :jira_id: '4897'
+  :description: |-
+    Loader: Include ID and simple taxon name in logged validation error message
+- :date: 07-Feb-2024
+  :jira_id: '4831'
+  :description: |-
+    Loader: Formatting misapplieds in print output: italicise 'p.p.' and prefix with comma-space.
+- :date: 01-Feb-2024
+  :jira_id: '4888'
+  :description: |-
+    Instances: Show citation page/figure details in typeahead suggestions for synonyms 
+- :date: 01-Feb-2024
+  :jira_id: '4844'
+  :description: |-
+    Reference ISBN: Allow for up to 17 characters
+- :date: 01-Feb-2024
+  :jira_id: ''
+  :description: |-
+    Ruby: Upgrade to Ruby 3.3.0 - Jira SYS-252
+- :date: 01-Feb-2024
+  :jira_id: '4831'
+  :description: |-
+    Loader: Formatting of misapplied names in print output: parenthetical authors now shown again
+- :date: 01-Feb-2024
+  :jira_id: '4831'
+  :description: |-
+    Loader: Formatting of misapplied names in print output: "auct. non" now in italics, p.p. added for partials, space added after colon before page
+- :date: 31-Jan-2024
+  :jira_id: '4831'
+  :description: |-
+    Loader: Formatting of misapplied names in print output: add "auct. non"; avoid doubling of authorship
+- :date: 30-Jan-2024
+  :jira_id: '4883'
+  :description: |-
+    Orchids: Remove all Orchid Loader code from the Editor
+- :date: 29-Jan-2024
+  :jira_id: '4882'
+  :description: |-
+    Loader: Add batch job that removes synonymy conflicts from draft taxonomy
+- :date: 22-Mar-2024
+  :release: true
 - :date: 29-Jan-2024
   :jira_id: '4879'
   :description: |-
@@ -42,6 +220,8 @@
   :jira_id: '4823'
   :description: |-
     Loader: Offer copy of comment text for excluded names when adding to batch
+- :date: 22-Feb-2024
+  :release: true
 - :date: 18-Jan-2024
   :jira_id: '4845'
   :description: |-
@@ -86,6 +266,8 @@
   :jira_id: '4824'
   :description: |-
     Loader: Misapplication type choice now flows through to matches and to each draft instance
+- :date: 09-Feb-2024
+  :release: true
 - :date: 15-Jan-2024
   :jira_id: '4870'
   :description: |-

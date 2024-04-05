@@ -23,6 +23,8 @@ class Instance::AsCopier < Instance
     new = dup
     new.name_id = new_name_id
     new.created_by = new.updated_by = as_username
+    new.source_system = new.source_id = new.source_id_string = nil
+    new.lock_version = 0
     new.save!
     new
   end
@@ -46,6 +48,8 @@ class Instance::AsCopier < Instance
       new.page = new_page
       new.draft = new_is_draft
       new.created_by = new.updated_by = as_username
+      new.source_system = new.source_id = new.source_id_string = nil
+      new.lock_version = 0
       new.uri = nil
       new.save!
       reverse_of_this_is_cited_by.each do |citer|

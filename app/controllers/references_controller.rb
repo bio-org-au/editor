@@ -85,12 +85,6 @@ class ReferencesController < ApplicationController
     end
   end
 
-  def copy
-    reference = Reference.find(params[:id])
-    @reference = Reference.new reference.attributes
-    render :copy
-  end
-
   # Columns such as duplicate_of_id use a typeahead search.
   def typeahead_on_citation
     render json: [] if params[:term].blank?

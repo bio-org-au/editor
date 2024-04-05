@@ -30,6 +30,7 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
   def create
     return using_existing_instance if using_existing_instance?
     return stand_already_noted if standalone_instance_already_noted?
+    return no_default_ref if no_default_ref?
     return stand_already_for_default_ref if standalone_instance_for_default_ref?
 
     if @match.instance_choice_confirmed == false
@@ -110,6 +111,16 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance
 
   def standalone_instance_already_noted?
     true unless @match.standalone_instance_id.blank?
+  end
+
+  def no_default_ref?
+    @loader_name.loader_batch.default_reference.blank?
+  end
+
+  def no_default_ref
+    log_to_table("#{Constants::DECLINED_INSTANCE} - no batch default ref " +
+                 "for #{@loader_name.simple_name} " + "#{@loader_name.id}")
+    {declines: 1, decline_reasons: {no_batch_default_ref: 1}}
   end
 
   def log_to_table(payload)

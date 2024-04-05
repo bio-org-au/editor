@@ -7,18 +7,18 @@
 
 <% path = 'application/search_results/link_texts/loader/name' %>
 
-<%# code formatting is to avoid embedded spaces in html output
+<%# strange code formatting below is to avoid embedded spaces appearing in html output
   e.g. after the left-square-bracket 
   e.g. before the comma
 %>
 <% if search_result.misapp_html.blank? %>
-[<span 
+  [<%= '?' if search_result.doubtful? %><span 
 <% else %>
 <span 
 <% end %>
        class='loader-name <%= search_result.record_type %> full-name'
-><%= "#{search_result.full_name}" %><%= ',' unless search_result.name_status.blank? %>
-</span>
+><%= "#{search_result.simple_name}" %><%= ',' unless search_result.name_status.blank? %>
+</span><i>auct. non</i>
 
 <% unless search_result.name_status.blank? %>
   <span class='name-status'><%= "#{search_result.name_status}" %></span>
@@ -32,11 +32,12 @@
     <% size = search_result.preferred_matches.length %>
     <span class="misapplied-by-whom-where">
     <% search_result.preferred_matches.each_with_index do | match, ndx | %>
-      <% string = "#{match.instance.reference.citation}:#{match.instance.page}" %>
+      <% string = "#{match.instance.reference.citation}: #{match.instance.page}" %>
+      <% pp = search_result.partial_misapplied? ? ', <i>p.p.</i>' : '' %>
       <% if size == 1 || ndx == size - 1 %>
-        <%= "#{string}]" %>
+        <%= "#{string}#{pp}]".html_safe %>
       <% else %> 
-        <%= "#{string};" %>
+        <%= "#{string}#{pp};".html_safe %>
       <% end %>
     <% end %>
     </span>

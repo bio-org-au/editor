@@ -9,7 +9,6 @@
             </ul>
         </div>
     <% end %>
-  <%= render partial: "instances/widgets/edit_draft", locals: {f: f} %>
 
   <%= link_to(@instance.name.try('full_name'),
                 search_path(query_string:
@@ -49,6 +48,7 @@
     with BHL URL
     <%= f.text_field :bhl_url, class: "form-control", title: "Enter BHL URL", tabindex: increment_tab_index %>
     <br>
+    <%= render partial: "instances/widgets/as_a_draft", locals: {f: f} %>
     <%= f.submit class: 'btn btn-primary pull-right no-right-margin', title: "Save changes", tabindex: increment_tab_index %>
     <br>
   <div id="form-update-info-message-container" class="message-container"></div>

@@ -28,7 +28,6 @@
  *= require old-application
  *= require new-for-rails-6
  *= require calendar
- *= require orchids
  *= require layout-2021
  *= require batch-loader
  *= require admin

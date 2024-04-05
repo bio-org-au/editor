@@ -52,7 +52,6 @@ class Ability
     apc_auth if user.apc?
     admin_auth if user.admin?
     treebuilder_auth if user.treebuilder?
-    orchids_matcher_auth if user.orchids_matcher?
     reviewer_auth if user.reviewer?
     batch_loader_auth if user.batch_loader?
   end
@@ -60,7 +59,6 @@ class Ability
   def basic_auth_1
     can "application",        "set_include_common_cultivars"
     can "authors",            "tab_show_1"
-    can "orchids",            "tab_show_1"
     can "help",               :all
     can "history",            :all
     can "instance_types",     "index"
@@ -141,12 +139,6 @@ class Ability
     can "loader/batch/review/periods", :all
     can "loader/batch/bulk",           :all
     can "loader/batch/job_lock",       :all
-  end
-
-  def orchids_matcher_auth
-    can "orchids",                     :all
-    can "orchids_batch",               :all
-    can "orchids_names",               :all
   end
 
   def reviewer_auth

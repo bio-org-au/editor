@@ -25,7 +25,7 @@ class TreePlacementRemoveTest < ActionController::TestCase
     @instance = instances(:usage_of_name_to_be_placed)
     @name = names(:to_be_placed)
     @parent = names(:angophora_costata)
-    @workspace = tree_version(:draft_version)
+    @workspace = tree_versions(:draft_version)
     stub_it
   end
 

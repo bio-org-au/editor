@@ -28,6 +28,13 @@ Wildcards are allowed but are <b>not</b> added automatically.<br>
   <input id="create-matches-batch-submit" name="submit" type="submit" 
          value="Create Preferred Matches" class="btn btn-primary width-15em"
          title="Create preferred matches" formaction="loader/batches/bulk/matches" />
+
+  <% if Rails.configuration.try(:batch_loader_delete_syn_conflicts_aware) %>
+  <input id="delete-syn-conflicts-batch-submit" name="submit" type="submit" 
+         value="Delete Syn Conflicts" class="btn btn-primary width-15em" method="post"
+         title="Delete Syn Conflicts" formaction="loader/batches/bulk/syn-conflicts" />
+  <% end %>
+
   <input id="create-instances-batch-submit" name="submit" type="submit" 
          value="Create Draft Instances" class="btn btn-primary width-15em" 
          title="Create draft instances" formaction="loader/batches/bulk/instances" />
@@ -72,6 +79,8 @@ Wildcards are allowed but are <b>not</b> added automatically.<br>
 <div id="bulk-operations-error-message-container" class="error-container message-container"></div>
 <div id="create-preferred-matches-info-message-container" class="message-container"></div>
 <div id="create-preferred-matches-error-message-container" class="error-container message-container"></div>
+<div id="remove-syn-conflicts-info-message-container" class="message-container"></div>
+<div id="remove-syn-conflicts-error-message-container" class="error-container message-container"></div>
 <div id="create-draft-instances-info-message-container" class="message-container"></div>
 <div id="create-draft-instances-error-message-container" class="error-container message-container"></div>
 <div id="add-to-draft-taxonomy-info-message-container" class="message-container"></div>

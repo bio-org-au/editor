@@ -27,6 +27,8 @@ class Loader::Name < ActiveRecord::Base
   include InBatchNote
   include InBatchCompilerNote
   include HeadingRecord
+  include Misapplieds
+  include Doubt
   attr_accessor :add_sibling_synonyms
   attr_accessor :add_sourced_synonyms
 
@@ -310,7 +312,7 @@ class Loader::Name < ActiveRecord::Base
     return nil if accepted?
     return nil if excluded?
 
-    return InstanceType.find_by_name(synonym_type).id if misapplied?
+    return InstanceType.find_by_name(synonym_type || "misapplied").id if misapplied?
 
     if taxonomic?
       return InstanceType.find_by_name("doubtful pro parte taxonomic synonym").id if doubtful? && pp?
@@ -480,7 +482,7 @@ class Loader::Name < ActiveRecord::Base
       errors += creator.errors || 0
     end
     entry = "Job finished: create instance for preferred matches for '#{taxon_s}', #{authorising_user}; records created: #{records}; errors: #{errors}"
-    OrchidProcessingLog.log(entry, "job controller")
+    BulkProcessingLog.log(entry, "job controller")
     [records, errors]
   end
 

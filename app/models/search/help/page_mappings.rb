@@ -73,10 +73,6 @@ class Search::Help::PageMappings
     "references/advanced_search/shared_names/examples",
     "references-shared-names-search-advanced" =>
     "references/advanced_search/shared_names/advanced",
-    "orchids-search-help" => "orchids/advanced_search/help",
-    "orchids-search-examples" => "orchids/advanced_search/examples",
-    "orchid-processing-logs-search-help" => "orchid_processing_logs/advanced_search/help",
-    "orchid-processing-logs-search-examples" => "orchid_processing_logs/advanced_search/examples",
     "loader-batch-search-help" => "loader/batches/help/fields",
     "loader-batch-search-examples" => "loader/batches/help/examples",
     "loader-batch-stack-search-help" => "loader/batch/stacks/help/fields",

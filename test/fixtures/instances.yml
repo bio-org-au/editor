@@ -1,25 +1,26 @@
 
+DEFAULTS: &DEFAULTS
+  namespace: apni
+  created_by: tester
+  updated_by: tester
+
 # Standalone instance
 gaertner_created_metrosideros_costata:
+  <<: *DEFAULTS
   reference: de_fructibus_et_seminibus_plantarum
   name: metrosideros_costata
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
   source_id_string: gcmc
   page: "xx 1"
-  created_by: tester1
-  updated_by: tester2
 
 # Relationship instance - synonymy
 triodia_in_brassard:
+  <<: *DEFAULTS
   reference: paper_by_brassard
   name: triodia_basedowii
   instance_type: primary_reference
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   created_at: <%= Time.now + (24*60*60) %>
   updated_at: <%= Time.now + (24*60*60) %>
   page: "xx 200,300"
@@ -27,46 +28,38 @@ triodia_in_brassard:
  
 # Standalone instance
 britten_created_angophora_costata:
+  <<: *DEFAULTS
   reference: paper_by_britten_on_angophora
   name: angophora_costata
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: "xx 15"
 
 # standalone
 inst_species_or_below_to_be_synonym:
+  <<: *DEFAULTS
   reference: ref_4_genus_or_above_to_be_synonym
   name: species_or_below_to_be_synonym
   instance_type: nomenclatural_synonym
   page: exclude-from-ordering-test
   verbatim_name_string: m
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 metrosideros_costata_is_basionym_of_angophora_costata:
+  <<: *DEFAULTS
   reference: paper_by_britten_on_angophora
   name: metrosideros_costata
   this_is_cited_by: britten_created_angophora_costata
   this_cites: gaertner_created_metrosideros_costata
   instance_type: basionym
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: "xx,20,900"
 
 # Standalone instance
 some_part_to_do_with_metrosideros_costata:
+  <<: *DEFAULTS
   reference: part_about_metrosideros_costata
   name: metrosideros_costata
   instance_type: comb_nov
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   source_id_string: gcmc
   page: exclude-from-ordering-test
   verbatim_name_string: n
@@ -74,570 +67,471 @@ some_part_to_do_with_metrosideros_costata:
 # Relationship instance - synonymy
 # this_cites: gaertner_created_metrosideros_costata
 xyz_costata_is_synonym_of_angophora_costata:
+  <<: *DEFAULTS
   reference: paper_by_britten_on_angophora
   name: metrosideros_costata
   this_is_cited_by: britten_created_angophora_costata
   this_cites: gaertner_created_metrosideros_costata
   instance_type: nomenclatural_synonym
   verbatim_name_string: 
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: xx,20,1000
  
 # Relationship instance - unpublished citation
 rusty_gum_is_a_common_name_of_angophora_costata:
+  <<: *DEFAULTS
   reference: de_fructibus_et_seminibus_plantarum
   name: rusty_gum
   this_is_cited_by: gaertner_created_metrosideros_costata
   instance_type: vernacular_name
   verbatim_name_string: rusty gum
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: "41"
  
 # Relationship instance - invalid unpublished citation with unmatched reference
 invalid_unpublished_citation_with_unmatched_reference:
+  <<: *DEFAULTS
   reference: paper_by_britten_on_angophora
   name: nothing_name_for_invalid_instance
   this_is_cited_by: gaertner_created_metrosideros_costata
   reference: paper_by_britten_on_angophora
   instance_type: common_name
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: "40"
 
 # Standalone instance
 invalid_publication_standalone_instance:
+  <<: *DEFAULTS
   reference: de_fructibus_et_seminibus_plantarum
   name: metrosideros_costata
   instance_type: invalid_publication
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: "2"
 
 
 # Standalone instance guaranteed to have no source_system
 no_source_system:
+  <<: *DEFAULTS
   reference: de_fructibus_et_seminibus_plantarum
   name: angophora_costata 
   instance_type: invalid_publication
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: "3"
 
 
 # Default instance so name can be offered as parent
 default_instance_for_the_regnum:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: the_regnum
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 19-20
 
 default_instance_for_a_division:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_division
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 75, t. 101
 
 secondary_reference_instance_for_a_division:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: metrosideros_costata_gaertn
   instance_type: secondary_reference
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 76
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_classis:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_classis
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 75, t. 102
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subclassis:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subclassis
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 74, t. 100
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_superordo:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_superordo
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 74, t. 99
 
 
 # Default instance so name can be offered as parent
 default_instance_for_an_ordo:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: an_ordo
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subordo:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subordo
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_family:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_family
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subfamilia:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subfamilia
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_tribus:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_tribus
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subtribus:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subtribus
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_genus:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_genus
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subgenus:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subgenus
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_sectio:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_sectio
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subsectio:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subsectio
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_series:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_series
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subseries:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subseries
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_species:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_species
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_a_superspecies:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_superspecies
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subspecies:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subspecies
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_nothovarietas:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_nothovarietas
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_varietas:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_varietas
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subvarietas:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subvarietas
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 
 # Default instance so name can be offered as parent
 default_instance_for_a_forma:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_forma
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_a_subforma:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_subforma
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_a_duplicate_genus:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_duplicate_genus
   instance_type: comb_nov
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_an_unranked:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: an_unranked_with_an_instance
   instance_type: unknown
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_a_morphological_var:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_morphological_var_with_an_instance
   instance_type: unknown
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_a_nothomorph:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: a_nothomorph_with_an_instance
   instance_type: unknown
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_an_na:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: an_na_with_an_instance
   instance_type: unknown
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: zzzz99901
 
 # Default instance so name can be offered as parent
 default_instance_for_an_unknown:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: an_unknown_with_an_instance
   instance_type: unknown
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: 999
 
 # Default instance so name can be offered as parent
 default_instance_for_an_infraspecies:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: an_infraspecies_with_an_instance
   instance_type: unknown
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: zzzz99901
 
 # Default instance so name can be offered as parent
 default_instance_for_an_infragenus:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: an_infragenus_with_an_instance
   instance_type: unknown
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: zzzz99901
 
 # Default instance so name can be offered as parent
 default_instance_for_an_infrafamily:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: an_infrafamily_with_an_instance
   instance_type: unknown
   verbatim_name_string: verbatim
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: zzzz99901
 
 casuarina_inophloia_by_mueller:
+  <<: *DEFAULTS
   reference: mueller_1882_section
   name: casuarina_inophloia
   instance_type: secondary_reference
   page: zzzz99901
   verbatim_name_string: verbatim1
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 casuarina_inophloia_by_mueller_and_bailey:
+  <<: *DEFAULTS
   reference: australasian_chemist_and_druggist
   name: casuarina_inophloia
   instance_type: tax_nov
   page: zzzz99902
   verbatim_name_string: verbatim2
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 casuarina_inophloia_in_bailey_catalogue_qld_plants:
+  <<: *DEFAULTS
   reference: bailey_catalogue_qld_plants
   name: casuarina_inophloia
   instance_type: secondary_reference
   page: zzzz99903
-  namespace: apni
   verbatim_name_string: verbatim3
-  created_by: tester
-  updated_by: tester
 
 casuarina_inophloia_in_ref_with_no_year:
+  <<: *DEFAULTS
   reference: ref_with_no_year
   name: casuarina_inophloia
   instance_type: secondary_reference
   page: exclude-from-ordering-test
   verbatim_name_string: o
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 for_a_genus_with_one_instance:
+  <<: *DEFAULTS
   reference: bailey_catalogue_qld_plants
   name: a_genus_with_one_instance
   instance_type: tax_nov
   page: zzzz99904
   verbatim_name_string: verbatim31
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 for_a_genus_with_two_instances_first:
+  <<: *DEFAULTS
   reference: bailey_catalogue_qld_plants
   name: a_genus_with_two_instances
   instance_type: tax_nov
   page: zzzz99905
   verbatim_name_string: verbatim32
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 for_a_genus_with_two_instances_second:
+  <<: *DEFAULTS
   reference: telford_in_nuytsia
   name: a_genus_with_two_instances
   instance_type: secondary_reference
   page: zzzz99906
   verbatim_name_string: verbatim33
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 for_a_genus_with_two_instances_the_same_first:
+  <<: *DEFAULTS
   reference: bailey_catalogue_qld_plants
   name: has_two_instances_the_same
   instance_type: tax_nov
   page: zzzz99907
   verbatim_name_string: verbatim34
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 for_a_genus_with_two_instances_the_same_second:
+  <<: *DEFAULTS
   reference: bailey_catalogue_qld_plants
   name: has_two_instances_the_same
   instance_type: tax_nov
   page: zzzz99907
   verbatim_name_string: verbatim35
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 angophora_costata_in_stanley:
+  <<: *DEFAULTS
   reference: stanley_in_stanley_and_ross
   name: angophora_costata
   instance_type: secondary_reference
   page: 146
-  namespace: apni
   verbatim_name_string: Angophora costata (Gaertn.) Britten
   source_id_string: acis
-  created_by: tester
-  updated_by: tester
 
 #  this_cites: gaertner_created_metrosideros_costata
 metrosideros_costata_gaertn:
+  <<: *DEFAULTS
   bhl_url:
   this_is_cited_by: angophora_costata_in_stanley
   created_at: 2011-11-29 13:00:00.000000000 Z
@@ -646,7 +540,6 @@ metrosideros_costata_gaertn:
   instance_type: nomenclatural_synonym
   name: metrosideros_costata_gaertn
   page: zzzz99909
-  namespace: apni
   nomenclatural_status:
   page: exclude-from-ordering-test
   verbatim_name_string: q
@@ -665,32 +558,29 @@ metrosideros_costata_gaertn:
 #
 # this_cites: britten_created_angophora_costata.id
 angophora_lanceolata_cav_in_stanley:
+  <<: *DEFAULTS
   reference: stanley_in_stanley_and_ross
   name: rusty_gum
   this_is_cited_by: for_to_have_a_double_in_ref
   instance_type: common_name
   verbatim_name_string: verbatim
   page: zzzz99910
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 # Relationship instance - synonymy
 # this_cites: gaertner_created_metrosideros_costata
 in_stanley_metrosideros_costata_is_a_nomenclatural_synonym_of_angophora_costata_in_britten:
+  <<: *DEFAULTS
   reference: stanley_in_stanley_and_ross
   name: metrosideros_costata
   this_is_cited_by: angophora_costata_in_stanley
   instance_type: nomenclatural_synonym
   verbatim_name_string: verbatim
   page: zzzz99911
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: xx,20,700
 
 # Relationship instance - synonymy
 in_stanley_angophora_lanceolata_is_a_taxonomic_synonym_of_angophora_costata_in_britten:
+  <<: *DEFAULTS
   reference: stanley_in_stanley_and_ross
   name: angophora_lanceolata_cav
   this_is_cited_by: angophora_costata_in_stanley
@@ -698,175 +588,143 @@ in_stanley_angophora_lanceolata_is_a_taxonomic_synonym_of_angophora_costata_in_b
   instance_type: taxonomic_synonym
   verbatim_name_string: verbatim
   page: zzzz99912
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: xx,20,600
 
 doubtful_taxonomic_synonym_instance:
+  <<: *DEFAULTS
   reference: dummy_reference_for_eflora_service
   name: legitimate_name_one_for_eflora
   instance_type: doubtful_taxonomic_synonym
   page: zzzz99913a
   verbatim_name_string: verbatim16
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   created_at: <%= Time.now + (24*60*60) %>
   updated_at: <%= Time.now + (24*60*60) %>
 
 doubtful_nomenclatural_synonym_instance:
+  <<: *DEFAULTS
   reference: dummy_reference_for_eflora_service
   name: legitimate_name_one_for_eflora
   instance_type: doubtful_nomenclatural_synonym
   page: zzzz99913b
   verbatim_name_string: verbatim17
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   created_at: <%= Time.now + (24*60*60) %>
   updated_at: <%= Time.now + (24*60*60) %>
 
 doubtful_pro_parte_nomenclatural_synonym_instance:
+  <<: *DEFAULTS
   reference: dummy_reference_for_eflora_service
   name: legitimate_name_one_for_eflora
   instance_type: doubtful_pro_parte_synonym
   page: zzzz99913c
   verbatim_name_string: verbatim18
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   created_at: <%= Time.now + (24*60*60) %>
   updated_at: <%= Time.now + (24*60*60) %>
 
 doubtful_pro_parte_taxonomic_synonym_instance:
+  <<: *DEFAULTS
   reference: dummy_reference_for_eflora_service
   name: legitimate_name_one_for_eflora
   instance_type: doubtful_pro_parte_taxonomic_synonym
   page: zzzz99913d
   verbatim_name_string: verbatim19
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   created_at: <%= Time.now + (24*60*60) %>
   updated_at: <%= Time.now + (24*60*60) %>
 
 pro_parte_nomenclatural_synonym_instance:
+  <<: *DEFAULTS
   reference: dummy_reference_for_eflora_service
   name: legitimate_name_one_for_eflora
   instance_type: pro_parte_nomenclatural_synonym
   page: zzzz99913e
   verbatim_name_string: verbatim20
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   created_at: <%= Time.now + (24*60*60) %>
   updated_at: <%= Time.now + (24*60*60) %>
  
 # Standalone instance
 has_no_page_bhl_url_verbatim_name_string:
+  <<: *DEFAULTS
   reference: dummy_reference_1
   name: dummy_name_1
   instance_type: comb_nov
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 page_57_hyphen_58:
+  <<: *DEFAULTS
   reference: reference_1_for_instance_ordering_by_page
   name: dummy_name_2
   instance_type: comb_nov
   page: 57-58
   verbatim_name_string: verbatim22
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 page_57:
+  <<: *DEFAULTS
   reference: reference_1_for_instance_ordering_by_page
   name: dummy_name_3
   instance_type: comb_nov
   verbatim_name_string: verbatim22
   page: 57
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 tax_nov_for_an_orth_var:
+  <<: *DEFAULTS
   reference: tax_nov_for_an_orth_var_ref
   name: orth_var_for_tax_nov
   instance_type: tax_nov
   page: 9999999999
   verbatim_name_string: verbatim23
-  namespace: apni
-  created_by: tester
-  updated_by: tester
  
 # Standalone instance
 has_apc_dist_note:
+  <<: *DEFAULTS
   reference: dummy_reference_1
   name: dummy_name_1
   instance_type: comb_nov
   page: exclude-from-ordering-test
-  namespace: apni
   verbatim_name_string: r
-  created_by: tester
-  updated_by: tester
 
 # Standalone instance
 has_apc_comment_note:
+  <<: *DEFAULTS
   reference: dummy_reference_1
   name: dummy_name_1
   instance_type: comb_nov
   page: exclude-from-ordering-test
   verbatim_name_string: s
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 # Standalone instance
 has_apc_dist_note_2:
+  <<: *DEFAULTS
   reference: dummy_reference_1
   name: dummy_name_2
   instance_type: comb_nov
   page: zczzzzzzzzzzz99999999999999
   verbatim_name_string: verbatim14
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 earliest_inst_sec_ref:
+  <<: *DEFAULTS
   reference: ref_for_earliest_inst_sec_ref
   name: orth_var_with_earliest_inst_sec_ref
   instance_type: secondary_reference
   page: exclude-from-ordering-test
   verbatim_name_string: xab
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 not_earliest_inst_sec_ref:
+  <<: *DEFAULTS
   reference: ref_for_not_earliest_inst_sec_ref
   name: orth_var_with_not_earliest_inst_sec_ref
   instance_type: tax_nov
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim5
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 later_inst_sec_ref:
+  <<: *DEFAULTS
   reference: ref_for_later_inst_sec_ref
   name: orth_var_with_not_earliest_inst_sec_ref
   instance_type: secondary_reference
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim6
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 # Relationship instance - unpublished citation
 species_or_below_syn_with_genus_or_above:
+  <<: *DEFAULTS
   reference: ref_4_species_or_below_to_be_synonymised
   name: species_or_below_to_be_synonym
   this_is_cited_by: inst_genus_or_above_to_be_synomised
@@ -874,87 +732,71 @@ species_or_below_syn_with_genus_or_above:
   instance_type: nomenclatural_synonym
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim7
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 # standalone
 inst_genus_or_above_to_be_synomised:
+  <<: *DEFAULTS
   reference: ref_4_species_or_below_to_be_synonymised
   name: genus_or_above_to_be_synonymised
   instance_type: synonym
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim8
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 # standalone for name earliest_instance_not_primary: 
 inst_for_name_earliest_instance_not_primary:
+  <<: *DEFAULTS
   reference: ref_4_genus_or_above_to_be_synonym
   name: earliest_instance_not_primary
   instance_type: secondary_reference
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim10
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 
 # Relationship instance - synonymy
 name_in_secondary_ref_marked_as_basionym_synonym:
+  <<: *DEFAULTS
   reference: dummy_reference_2
   name: name_in_secondary_ref
   this_is_cited_by: secondary_ref_citation
   instance_type: basionym
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim11
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 # standalone 
 secondary_ref_citation:
+  <<: *DEFAULTS
   reference: dummy_reference_for_eflora_service
   name: name_in_secondary_ref
   instance_type: secondary_reference
   page: exclude-from-ordering-test
   verbatim_name_string: verbatim12
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 for_to_have_a_double_in_ref:
+  <<: *DEFAULTS
   reference: for_to_have_a_double_synonym
   name: to_have_a_double_synonym
   instance_type: unknown
   page: exclude-from-ordering-test
   verbatim_name_string: a
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 for_to_be_a_double_in_ref:
+  <<: *DEFAULTS
   reference: for_to_be_a_double_synonym
   name: to_be_a_double_synonym
   instance_type: nomenclatural_synonym
   page: exclude-from-ordering-test
   verbatim_name_string: xaax
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 for_to_be_a_double_in_alt_ref:
+  <<: *DEFAULTS
   reference: alt_for_to_be_a_double_synonym
   name: to_be_a_double_synonym
   instance_type: unknown
   page: exclude-from-ordering-test
   verbatim_name_string: xaaa
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 first_syn_for_to_have_a_double:
+  <<: *DEFAULTS
   name: to_be_a_double_synonym
   this_is_cited_by: for_to_have_a_double_in_ref
   this_cites: for_to_be_a_double_in_ref
@@ -962,93 +804,82 @@ first_syn_for_to_have_a_double:
   instance_type: nomenclatural_synonym
   page: exclude-from-ordering-test
   verbatim_name_string: d
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 usage_of_name_to_be_placed:
+  <<: *DEFAULTS
   reference: for_name_to_be_placed
   name: to_be_placed
   instance_type: primary_reference
   page: exclude-from-ordering-test
   verbatim_name_string: e
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 first_instance_for_to_have_double_primary:
+  <<: *DEFAULTS
   name: to_have_double_primary
   reference: dummy_reference_1
   instance_type: tax_nov
   page: exclude-from-ordering-test
   verbatim_name_string: faaa
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 unsourced_misapplied_example:
+  <<: *DEFAULTS
   name: dummy_name_for_unsourced_misapps
   reference: dummy_reference_1
   instance_type: unsourced_misapplied
   page: exclude-from-ordering-test
   verbatim_name_string: g
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 # name: dummy_name_for_pro_parte_misapps
 unsourced_pro_parte_misapplied_example:
+  <<: *DEFAULTS
   name: dummy_name_for_unsourced_pro_parte_misapplied
   reference: dummy_reference_1
   instance_type: unsourced_pro_parte_misapplied
   page: exclude-from-ordering-test
   verbatim_name_string: h
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 unsourced_doubtful_pro_parte_misapplied_example:
+  <<: *DEFAULTS
   name: dummy_name_for_unsourced_doubtful_pro_parte_misapps
   reference: dummy_reference_1
   instance_type: unsourced_doubtful_pro_parte_misapplied
   page: exclude-from-ordering-test
   verbatim_name_string: i
-  namespace: apni
-  created_by: tester
-  updated_by: tester
 
 
 
 # Default instance for hybrid formula
 default_instance_for_dendrobium_hybrid_formula:
+  <<: *DEFAULTS
   reference: bucket_reference_for_default_instances
   name: dendrobium_hybrid_formula
   instance_type: tax_nov
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   page: exclude-from-ordering-test
   verbatim_name_string: j
 
 # Standalone instance
 instance_for_name_in_taxonomy:
+  <<: *DEFAULTS
   reference: ref_for_name_in_taxonomy
   name: name_in_taxonomy
   instance_type: comb_nov
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   source_id_string: gcmc
   page: exclude-from-ordering-test
   verbatim_name_string: k
 
 instance_for_name_in_taxonomy:
+  <<: *DEFAULTS
   reference: syntrinema_genus_novum
   name: ptychocaryum_ghaeri 
   instance_type: comb_nov
-  namespace: apni
-  created_by: tester
-  updated_by: tester
   source_id_string: gcmd
   page: exclude-from-ordering-test
+
+darwinia_sp_7_in_briggs_and_leigh_1996:
+  <<: *DEFAULTS
+  name: darwinia_sp_7
+  reference: rare_or_threatened_australian_plants
+  instance_type: secondary_reference
+  page: exclude-from-ordering-test
+  verbatim_name_string: l
 

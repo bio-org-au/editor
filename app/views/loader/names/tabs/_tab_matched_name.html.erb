@@ -8,7 +8,9 @@
     <ul>
       <li><%= loader_name_match.name.full_name %></li>
       <li><%= loader_name_match.instance.reference.citation %></li>
-      <li><%= loader_name_match.instance.page %></li>
+      <% unless loader_name_match.instance.page.blank? %>
+        <li><%= loader_name_match.instance.page %></li>
+      <% end %>
           <% if @loader_name.accepted? %>
             (No instance type to edit for accepted names.)
           <% else %>

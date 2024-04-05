@@ -10,6 +10,7 @@
     <%= pluralize(@loader_name.preferred_match
       .source_for_copy
       .synonyms
+      .includes(:instance_type)
       .reject {|s| s.instance_type.unsourced}
       .reject {|s| s.instance_type.name == 'trade name'}
       .size,'Synonym') %>

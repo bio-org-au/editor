@@ -28,14 +28,7 @@ class ForNameAndReferenceYearTest < ActiveSupport::TestCase
 
   test "name and incomplete year search" do
     assert @typeahead.results.instance_of?(Array), "Results should be an array."
-    assert @typeahead.results.size >= 2, "Incomplete year should be ignored."
-    assert @typeahead.results
-                     .collect { |r| r[:value] }
-                     .include?(ANGOPHORA_COSTATA_DE_FRUCT_1788_STRING),
-           ANGOPHORA_COSTATA_DE_FRUCT_1788_ERROR
-    assert @typeahead.results
-                     .collect { |r| r[:value] }
-                     .include?(ANGOPHORA_COSTATA_JOURNAL_1916_STRING),
-           ANGOPHORA_COSTATA_JOURNAL_1916_ERROR
+    assert @typeahead.results.size == 0,
+      "Incomplete year should not be ignored and no records should be returned."
   end
 end

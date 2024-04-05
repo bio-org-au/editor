@@ -33,6 +33,7 @@
     <%= form.hidden_field :loaded_from_instance_id %>
 
     <% if syn_for_copy.size > 0 %>
+      <% loader_name.add_sourced_synonyms = true %>
       <div class="form-check">
         <label class="form-check-label">
           <%= form.check_box(:add_sourced_synonyms,

@@ -64,7 +64,7 @@ if ENV["EDITOR_CONFIG_FILE"]
   Rails.configuration.resolved_editor_config_file = "#{ENV['EDITOR_CONFIG_FILE']}"
 else
   Rails.configuration.env_editor_config_file = ""
-  Rails.configuration.resolved_editor_config_file = "#{ENV.fetch('HOME', nil)}/.nsl/test/editor-r6-config.rb"
+  Rails.configuration.resolved_editor_config_file = "#{ENV.fetch('HOME', nil)}/.nsl/test/editor-r7-config.rb"
 end
 
 puts "loading config from #{Rails.configuration.resolved_editor_config_file}"

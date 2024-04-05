@@ -43,7 +43,7 @@ module IconHelper
     when "author" then "rgba(52,114,218,1.0)"
     when "reference" then "rgba(245,172,0,1.0)"
     when "instance" then "rgba(197,151,203,1.0)"
-    when "orchid" then "rgba(121,7,242,1.0)"
+    when "loader" then "rgba(121,7,242,1.0)"
     else "rgba(197,151,203,1.0)"
     end
   end

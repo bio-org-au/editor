@@ -69,24 +69,6 @@ class Loader::Batch::Stats::ForAllNames
   end
 
   def core_search
-    new_core_search
-  end
-
-  def old_core_search
-    @core_search =
-      if @name_string.match(/\Afamily:/i)
-        family_string = @name_string.sub(/\Afamily: */i, "")
-        Loader::Name.family_string_search(family_string)
-                    .joins(:loader_batch)
-                    .where(loader_batch: { id: @batch_id })
-      else
-        Loader::Name.bulk_operations_search(@name_string)
-                    .joins(:loader_batch)
-                    .where(loader_batch: { id: @batch_id })
-      end
-  end
-
-  def new_core_search
     @core_search = Loader::Name::BulkSearch.new(@name_string, @batch_id).search
   end
 

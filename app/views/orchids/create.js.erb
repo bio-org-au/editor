@@ -1,9 +1,0 @@
-<% if params[:random_id].blank? %>
-  $('#search-result-details-info-message-container').html("<%= escape_javascript(@message||'Created') %>");
-<% else %>
-  $('tr#new-orchid-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'orchid_record', locals: {search_result: @orchid, give_me_focus: true})) %>");
-  debug("create with <%= @random_id %>.");
-  $('tr#search-result-<%= @orchid.id %> td.takes-focus a.show-details-link').focus();
-<% end %>
-
-

@@ -22,7 +22,7 @@ require "test_helper"
 class WorkspaceCurrentToggleOnTest < ActionController::TestCase
   tests ::Trees::Workspaces::CurrentController
   setup do
-    @tree = tree_version(:draft_version)
+    @tree = tree_versions(:draft_version)
   end
 
   test "toggle workspace on" do

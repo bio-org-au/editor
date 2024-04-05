@@ -17,7 +17,7 @@ module Loader::Name::SourcedSynonyms
                                full_name: sou_syn.name.full_name,
                                family: sou_syn.name.family.simple_name,
                                doubtful: sou_syn.instance_type.doubtful,
-                               loaded_from_instance_id: sou_syn.id,
+                               loaded_from_instance_id: sou_syn.cites_id,
                                created_manually: true,
                                created_by: current_user.username,
                                updated_by: current_user.username,

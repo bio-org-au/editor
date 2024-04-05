@@ -16,6 +16,16 @@
 <% end %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.record_type, label: 'record type'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.parent_id, label: 'parent_id'} unless @loader_name.parent_id.blank? %>
+<% unless @loader_name.loaded_from_instance_id.blank? %>
+  <%= render partial: 'detail_line',
+      locals: {label: 'loaded from instance',
+               info: link_to(@loader_name.loaded_from_instance_id,
+                        search_path(
+                          query_target: 'instances',
+                          query_string: "id: #{@loader_name.loaded_from_instance_id}"),
+               title:"Query the instance this was loaded from",
+               class:'blue')} %>
+<% end %>
 <%= render partial: 'detail_line',
       locals: {label: 'batch',
                info: link_to(@loader_name.batch.name,

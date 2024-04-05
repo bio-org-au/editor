@@ -151,14 +151,6 @@ class Name < ApplicationRecord
     parents
   end
 
-  def orchids
-    if Rails.configuration.try(:orchids_aware)
-      OrchidsName.where(name_id: id).collect { |orcn| orcn.orchid }
-    else
-      []
-    end
-  end
-
   def de_dupe
     dd = Name::DeDuper.new(self)
     dd.de_dupe

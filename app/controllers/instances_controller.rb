@@ -251,7 +251,9 @@ class InstancesController < ApplicationController
     end
     offer << "tab_comments"
     offer << "tab_copy_to_new_reference" if offer_tab_copy_to_new_ref?
-    if Rails.configuration.try('batch_loader_aware') && can?('loader/names', 'update')
+    if Rails.configuration.try('batch_loader_aware') &&
+          can?('loader/names', 'update') &&
+          offer_loader_tab?
         offer << "tab_batch_loader" 
     end
     offer
@@ -260,6 +262,15 @@ class InstancesController < ApplicationController
   def offer_tab_copy_to_new_ref?
     @instance.standalone? &&
       params["row-type"] == "instance_as_part_of_concept_record"
+  end
+
+  def offer_loader_tab?
+    return true if @instance.standalone? &&
+      params["row-type"] == "instance_as_part_of_concept_record"
+    return true if @instance.relationship? &&
+      params["row-type"] == "instance_is_cited_by" && !@instance.unsourced?
+
+    false
   end
 
   def render_create_error(base_error_string, focus_id)

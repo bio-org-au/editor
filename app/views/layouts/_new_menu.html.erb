@@ -91,19 +91,8 @@
                     tabindex: '-1' %>
         </li>
 
-      <% if Rails.configuration.try('orchids_aware') %>
-      <li role="presentation" class="divider"></li>
-
-        <li role="presentation">
-          <%= link_to "Orchid (accepted)",
-                    orchid_new_row_path,
-                    title: 'Add a new "accepted" orchid (raw data)',
-                    remote: true,
-                    tabindex: '-1' %>
-        </li>
-      <% end %>
-
       <% if Rails.configuration.try('batch_loader_aware') && @current_user.batch_loader? %>
+        <li role="presentation" class="divider"></li>
         <% if session[:default_loader_batch_id].blank? %> 
         <li role="presentation">
           Set default batch to enable: 

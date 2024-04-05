@@ -24,7 +24,6 @@ import "typeaheads_for_instance_synonymy";
 
 import "typeaheads_for_loader_batch_default_reference";
 import "typeaheads_for_loader_name_parent";
-import "typeaheads_for_orchids_parent";
 
 import "typeaheads_for_reference_author";
 import "typeaheads_for_reference_duplicate";

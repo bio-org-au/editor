@@ -1,37 +1,47 @@
 # Editor README
 ---
-This is the names and taxonomy Editor for the NSL project. It was released in 2014 running on Rails 4.x, was recreated in Rails 6 after several years, then upgraded to Rails 7 in 2023.
+This is the names and taxonomy Editor for the NSL project, sometimes called the "NSL Editor". 
 
+## Brief History of Versions
+
+The Editor was released in 2014 running on Rails 4.x and has been in use in the NSL project since then.
+
+This repository does not go back to that original version - it goes back several years to when the Editor was upgraded to Rails 6.
+
+The Editor was upgraded to Rails 7 in 2023.
+
+### Note on repositories
+The original Rails 4.x app repository is now archived.  One unfortunate side-effect of starting a new repo for the Rails 6 upgrade was that contributions by others ended up in my (Greg Clarke's) name in the version 6.x app.  You also lose the history and context of the changes.  Neither of those results was my intention and it seemed like a good idea at a very frustrating time, so start with a clean Rails 6 application and copy in the controller, model, and view files, etc.  While most of the app going back to its origins in 2012 is down to me (GC), most of the "tree" ops were coded by others, especially Peter McNeil -- look at the archived v4.x app to find out more.
+
+
+## NSL
 NSL is the National Species List project of the IBIS team based at the Australian National Botanic Gardens (ANBG) site.  
 
-The Editor works with and relies on services provides by the Services and Mapper apps.  It uses the NSL data structures.
+The Editor works with and relies on services provides by the NSL Services and the NSL Mapper apps.  
+
+It uses the NSL data structures.
 
 
-## Current Ruby version: 3.2.2
+## Current Ruby version: 3.x
 
-Currently running on Ruby 3.2.2.
+Currently running on Ruby 3.x
 
-Note, this app was originally developed, tested, and deployed in JRuby - from 2013-2022, running finally on `jruby-9.3.2.0` in 2022.  In that year we moved to a c-ruby deployment on AWS, so it is now deveoped, tested, and deployed in Ruby.  You may find remnants of JRuby in the app but hopefully less-and-less as time goes on.
+### Previously on JRuby
+Note, this app was originally developed, tested, and deployed in JRuby - from 2013-2022, running finally on `jruby-9.3.2.0` in 2022.
 
-## System dependencies
+In that year we moved to a C-Ruby deployment on AWS, so it is now developed, tested, and deployed in C-Ruby.
 
-Developed against a Postgresql database, version 9 and 10, designed to by run as a low-privilege CRUD user.
+## Postgresql database
 
-Requires Services and Mapper for some features to work.
+Developed against a Postgresql database, designed to by run as a low-privilege CRUD user.
+
+## Authentication
 
 User authentication/authorisation is via LDAP/Active Directory - originall LDAP, more recently AD.
 
-Currently Rails 7.0.  There was an original Rails 4.* application for many years, now archived, but for the Rails 6.0 upgrade I started with a clean app and copied slabs of code across - one unfortunate side-effect was that contributions by others ended up in my name in the version 6.x app.  That wasn't my intention - while most of the app is down to me (GC), most of the "tree" ops were coded by others -- look at the archived v4.x app to find out more.
-
-## Configuration
-
-Database config file is expected at `~/.nsl/editor-database.yml`
-Configuration file is expected at `~/.nsl/development/editor-r7-config.rb` (for development).
-Sample config file below.
-
 ## Database creation
 
-This app doesn't carry the information necessary to create the database, which is created and maintained separately from this app.
+The NSL database structure was built and seeded as a separate task, away from the Editor, so you'll find no migration or seed files.
 
 ## Database initialization
 
@@ -48,30 +58,36 @@ Create a test database, load the sql structure, run tests:
     RAILS_ENV=test rake db:structure:load 
     bundle exec rails:test
 
-## Services (job queues, cache servers, search engines, etc.)
+## Services and Mapper
 
-This app is constrained to call out to the Services app for "services" such as taxonomy operations and deletes.
+Requires NSL Services and Mapper for some advanced features to work.
+
+### Services (job queues, cache servers, search engines, etc.)
+
+This app is constrained to call out to the Services app for "services" such as name construction, taxonomy operations and certain deletes.
 
 The Services app in turn relies on a Mapper app.
 
+## External Configuration files
+
+Database config file is expected at `~/.nsl/editor-database.yml`
+Configuration file is expected at `~/.nsl/development/editor-r7-config.rb` (for development).
 
 ## Deployment instructions
 
-Set up an NSL database - structure and seed data for look-up tables (seed data not in this repo).
+Set up an NSL database - structure and seed data for look-up tables (seed data files not in this repo).
 Set up editor-database.yml and editor-r7-config.rb
+The editor-r7-config.rb must identify a active LDAP authentication/authorisation service.
+The editor-database.yml user can be the table-owner in development, but should be a less-powerful user in non-devt deploys.
+You'll need a user registered in that LDAP, ideally with appropriate group memberships
 cd [app home]
 rails s
-
-
-Contact ibissupport at anbg for more information.
 
 ## Release notes
 
 There is a longish trail of release notes in annuallly rolled-over yaml files held in
 `config/history/` and visible from the help menu in the Editor.
 
+Contact ibissupport at anbg for more information.
 
-## Running
-
-To run in development run `rails s` from the command line in your project directory
 

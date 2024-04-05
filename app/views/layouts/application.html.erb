@@ -79,7 +79,6 @@ input[type="checkbox"]:not([title]) {
     <div id="main-content" class="container-fluid">
 
     <% wide_details =  '' %>
-    <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'orchids' %>
     <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'loader names' && @view_mode == ViewMode::STANDARD %>
     <div id="search-result-details" class="hidden <%= wide_details %>"> </div>
 
@@ -107,9 +106,6 @@ input[type="checkbox"]:not([title]) {
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
         </div>
         <div id="batch-container"
-             class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
-        </div>
-        <div id="orchids-batch-panel-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 hidden">
         </div>
         <div id="batch-loader-panel-container"

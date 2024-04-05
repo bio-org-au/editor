@@ -46,10 +46,6 @@ class User < ActiveType::Object
     groups.include?("treebuilder")
   end
 
-  def orchids_matcher?
-    groups.include?("orchids-matcher")
-  end
-
   def reviewer?
     groups.include?("taxonomic-review")
   end

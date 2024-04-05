@@ -154,8 +154,8 @@
 <h5 class="">Already in taxonomy examples</h5>
 <table class="example-searches table table-striped">
   <% [
-      {search_target: 'Loader Names', search_string: "Family: Goodeniaceae name-match-in-syn:",explanation: %Q(find loader name accepted or excluded records in Goodeniaceae matched to a name that's already in synonymy in the current accepted tree - NOTE: this is a slow query)},
-      {search_target: 'Loader Names', search_string: "Family: Goodeniaceae syn-match-in-tree:",explanation: %Q(search for loader name synonyms matched to a name that's already in the current accepted tree - NOTE: this is a slow query)},
+      {search_target: 'Loader Names', search_string: "Family: Goodeniaceae name-match-in-syn:",explanation: %Q(find loader name accepted or excluded records in Goodeniaceae matched to a name that's already in synonymy in the current accepted tree)},
+      {search_target: 'Loader Names', search_string: "Family: Goodeniaceae syn-match-in-tree:",explanation: %Q(search for loader name synonyms matched to a name that's already in the current accepted tree)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">

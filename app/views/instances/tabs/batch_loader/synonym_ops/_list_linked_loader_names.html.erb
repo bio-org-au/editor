@@ -22,7 +22,7 @@
                             title: "Show the linked loader name record",
                             class: "blue") %>
                 is in batch <i><%= citer_ln.loader_batch.name %></i>
-                as a <%= citer_ln.record_type.with_indefinite_article %> 
+                as <%= citer_ln.record_type.with_indefinite_article %> 
 
           <% if citer_ln.parent.blank? %>
             record

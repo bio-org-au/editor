@@ -87,18 +87,6 @@
       </li>
       <% end %>
 
-      <% if Rails.configuration.try('orchids_aware') && can?('orchids', 'update') %>
-
-        <li role="presentation" class="">
-          <%= link_to "Orchids",
-                      orchids_batch_index_path,
-                      id: "orchids-console-tab-link",
-                      class: "main-body-tab-link",
-                      remote: true,
-                      title: "Orchids processing console" %>
-        </li>
-      <% end %>
-
       <% if Rails.configuration.try('batch_loader_aware') && can?('loader/batches', 'process') %>
 
         <li role="presentation" class="">

@@ -22,6 +22,7 @@ class Search::OnModel::Predicate
               :trailing_wildcard,
               :leading_wildcard,
               :multiple_values,
+              :takes_no_arg,
               :predicate,
               :value_frequency,
               :processed_value,
@@ -38,7 +39,6 @@ class Search::OnModel::Predicate
     @do_count_totals = true
     @field = field
     @value = value
-    Rails.logger.debug("rules class string: Search::#{@parsed_request.target_model}::FieldRule::RULES")
     @rules_class = "Search::#{@parsed_request.target_model}::FieldRule::RULES".constantize
     @abbrevs_class = "Search::#{@parsed_request.target_model}::FieldAbbrev::ABBREVS".constantize
     @canon_field = build_canon_field(field)
@@ -69,6 +69,7 @@ class Search::OnModel::Predicate
 
   def apply_rule_overflow(rule)
     @multiple_values = rule[:multiple_values] || false
+    @takes_no_arg = rule[:takes_no_arg] || false
     @predicate = build_predicate(rule)
     @tokenize = (rule[:tokenize] && !@is_null) || false
     check_do_count_totals(rule)
@@ -96,6 +97,9 @@ class Search::OnModel::Predicate
   end
 
   def build_predicate(rule)
+    if @takes_no_arg && !@value.blank?
+      raise "Directive #{@field} takes no argument.  Please review your search"
+    end
     if @multiple_values && @value.split(",").size > 1
       rule[:multiple_values_where_clause]
     else

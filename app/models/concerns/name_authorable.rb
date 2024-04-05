@@ -84,6 +84,6 @@ module NameAuthorable
   # I wish authorship was a column in the name table, but it isn't
   def authorship_extracted
     doc = Nokogiri::HTML(full_name_html)
-    doc.search('author').text
+    doc.search('authors').text
   end
 end

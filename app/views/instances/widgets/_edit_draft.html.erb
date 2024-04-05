@@ -1,7 +1,0 @@
-<% if Rails.configuration.try("draft_instances") && @current_user.treebuilder? %>
-  <label class="form-check-label plain" title="Mark this instance as a draft">
-    <%= f.check_box(:draft, {tabindex: increment_tab_index}) %>
-    as a draft
-  </label>
-  <br>
-<% end %>

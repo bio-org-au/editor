@@ -20,7 +20,7 @@ module Instance::ForCopyToLoaderName
     loader_name.family = name.family.simple_name
     loader_name.rank = name.name_rank.name.downcase
     loader_name.name_status = name.name_status.name.downcase.sub(/\Alegitimate\z/,'')
-    loader_name.record_type = 'accepted'
+    loader_name.record_type = name.excluded_concept? ? 'excluded' : 'accepted'
     loader_name.loaded_from_instance_id = self.id
     loader_name.distribution = accepted_tree_version_element&.distribution
     loader_name.comment = accepted_tree_version_element&.comment

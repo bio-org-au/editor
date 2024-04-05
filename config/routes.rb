@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   match "/ping", as: "ping_service", to: "services#ping", via: :get
   match "/version", as: "version_service", to: "services#version", via: :get
   match "/build", as: "build_service", to: "services#build", via: :get
-  match "services", as: "services", to: "services#index", via: :get
 
   resources :name_tag_names, only: %i[show post create new]
   match "name_tag_names/:name_id/:tag_id",
@@ -189,47 +188,6 @@ Rails.application.routes.draw do
                        to: "authors#show",
                        via: :get, defaults: { tab: "tab_show_1" }
 
-  resources :orchids, only: %i[new create update destroy]
-  match "orchids/:id/tab/:tab", as: "orchid_tab", to: "orchids#tab", via: :get
-  match "orchids/:id", as: "orchid_update", to: "orchids#update", via: :post
-  resources :orchids_names, only: %i[new create update destroy]
-  match "orchids/new_row",
-        as: "orchid_new_row", to: "orchids#new_row", via: :get
-  match "orchids/new/:random_id",
-        as: "new_orchid_with_random_id", to: "orchids#new", via: :get
-
-  match "orchids/parent_suggestions",
-        as: "orchid_parent_suggestions",
-        to: "orchids#parent_suggestions",
-        via: :get
-
-  match "orchids/create/preferred/matches",
-        as: "create_preferred_matches",
-        to: "orchids_batch#create_preferred_matches", via: :post
-
-  match "orchids/create/instances/for/preferred/matches",
-        as: "create_instances_for_preferred_matches",
-        to: "orchids_batch#create_instances_for_preferred_matches", via: :post
-
-  match "orchids/add/instances/to/draft/tree",
-        as: "add_instances_to_draft_tree",
-        to: "orchids_batch#add_instances_to_draft_tree", via: :post
-
-  match "orchids_batch_index", as: "orchids_batch_index",
-                               to: "orchids_batch#index", via: :get
-
-  match "orchids/batch/progress", as: "orchids_batch_progress",
-                                  to: "orchids_batch#submit", via: [:post]
-
-  match "orchids/batch/clear", as: "orchids_batch_clear", to: "orchids_batch#clear", via: :get
-  match "orchids/batch/jobs/lock", as: "orchids_batch_jobs_lock", to: "orchids_batch#lock", via: :post
-  match "orchids/batch/enable/add", as: "orchids_batch_enable_add", to: "orchids_batch#enable_add", via: :post
-  match "orchids/batch/disable/add", as: "orchids_batch_disable_add", to: "orchids_batch#disable_add", via: :post
-  match "orchids/batch/unlock", as: "orchids_batch_unlock", to: "orchids_batch#unlock", via: :post
-  match "orchids/batch/work/on/excluded", as: "orchids_batch_work_on_excluded", to: "orchids_batch#work_on_excluded",
-                                          via: :post
-  match "orchids/batch/work/on/accepted", as: "orchids_batch_work_on_accepted", to: "orchids_batch#work_on_accepted",
-                                          via: :post
 
   match "trees/:id/tab/:tab", as: "tree_tab", to: "trees#tab", via: :get
 
@@ -421,6 +379,8 @@ Rails.application.routes.draw do
     match "batches/bulk/stats/hide", as: "batches_bulk_hide_stats", to: "batch/bulk#hide_stats", via: :post
     match "batches/bulk/stats", as: "batches_bulk_stats", to: "batch/bulk#stats", via: :post
     match "batches/bulk/matches", as: "batches_bulk_create_matches", to: "batch/bulk#create_preferred_matches",
+                                  via: :post
+    match "batches/bulk/syn-conflicts", as: "batches_bulk_remove_syn_conflicts", to: "batch/bulk#remove_syn_conflicts",
                                   via: :post
     match "batches/bulk/instances", as: "batches_bulk_create_instances", to: "batch/bulk#create_draft_instances",
                                     via: :post
