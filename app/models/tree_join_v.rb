@@ -55,4 +55,16 @@ class TreeJoinV < ActiveRecord::Base
   def self.synonym_in_names?(name_id)
     synonym_in_names_query(name_id) > 0
   end
+
+  def sub_taxa_in_draft_accepted_tree
+    TreeJoinV.where(accepted_tree: true).where(published: false).where(parent_id: self.element_link)
+  end
+
+  def parent_in_draft_accepted_tree
+    TreeJoinV.where(accepted_tree: true).where(published: false).find_by(element_link: self.parent_id)
+  end
+
+  def has_sub_taxa_in_draft_accepted_tree?
+    sub_taxa_in_draft_accepted_tree.size > 0
+  end
 end

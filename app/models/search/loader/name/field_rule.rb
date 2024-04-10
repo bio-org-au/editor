@@ -603,20 +603,6 @@ having count(*) > 2
     "manually-drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where manually_drafted)"},
     "drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where drafted)"},
     "created-manually:" => { where_clause: "created_manually" },
-"syn-match-in-tree-faster-join-b:" => { where_clause: " id in (select ln.id
-  from loader_name ln 
-       join loader_name_match lnm
-       on ln.id = lnm.loader_name_id
-       join instance i
-       on lnm.name_id = i.name_id 
-       join taxon_mv tmv 
-       on i.id = tmv.instance_id 
-       join loader_batch lb
-       on ln.loader_batch_id = lb.id
- where tmv.nomenclatural_status in ('legitimate','[n/a]')
-   and tmv.taxonomic_status in ('accepted','excluded')
-   and ln.record_type = 'synonym')"
-                                     },
 "syn-match-in-tree-faster-join:" => { where_clause: " id in (select ln.id
   from loader_name ln 
        join loader_name_match lnm
@@ -633,7 +619,35 @@ having count(*) > 2
        on name.name_status_id= ns.id
  where ns.name in ('legitimate','[n/a]')
    and ln.record_type = 'synonym'
-   and not tjv.published)"
+   and not tjv.published
+   and tjv.accepted_tree
+   and ln.synonym_type not like '%partial%'
+   and ln.partly is null
+   and lower(ln.simple_name) like lower(?))",
+   not_exists_clause: " needs an argument"
+     },
+"syn-match-in-tree-family:" => { where_clause: " id in (select ln.id
+  from loader_name ln 
+       join loader_name_match lnm
+       on ln.id = lnm.loader_name_id
+       join instance i
+       on lnm.name_id = i.name_id 
+       join tree_join_v tjv 
+       on i.id = tjv.instance_id 
+       join loader_batch lb
+       on ln.loader_batch_id = lb.id
+       join name 
+       on tjv.name_id = name.id
+       join name_status ns
+       on name.name_status_id= ns.id
+ where ns.name in ('legitimate','[n/a]')
+   and ln.record_type = 'synonym'
+   and not tjv.published
+   and tjv.accepted_tree
+   and ln.synonym_type not like '%partial%'
+   and ln.partly is null
+   and lower(ln.family) like lower(?))",
+   not_exists_clause: " needs an argument"
      },
   "name-match-in-syn:" => { where_clause: " record_type in ('accepted', 'excluded')
        and exists (

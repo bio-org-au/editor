@@ -72,11 +72,43 @@ class Loader::Name::BulkSearch
     @search.simple_name_search(sn_string)
   end
 
+  # Family clause can be like this
+  #
+  #     family: one-family-name*
+  # 
+  # which can have wildcard because converted to SQL like
+  #
+  #     family like 'one-family-name%'
+  #
+  # But a family clause ike this -
+  #
+  #     family: one-family-name, another-family-name, yet-another
+  #
+  # cannot have wildcards because they get converted to SQL like this
+  #
+  #     family in ('one-family-name', 'another-family-name', 'yet-another')
+  #
   def add_family_clause
     family_directive = @search_a.select { |i| i[/family:/] }.first
     @search_a.reject! { |i| i[/family:/]}
     family_string = family_directive.sub(/\Afamily: */i, "").strip
-    @search.family_string_search(family_string)
+    family_a = family_string.split(/ *, */)
+    if family_a.length < 2
+      @search.family_string_search(family_string)
+    else
+      search_family_in_list_of_families(family_a)
+    end
+  end
+
+  # Convert list of families to SQL:family in ('a','b','c')
+  def search_family_in_list_of_families(family_a)
+    s = "lower(family) in ("
+    family_a.size.times do
+      s += '?,'
+    end
+    s.chop!
+    s += ')'
+    @search.where([s] + family_a.map(&:downcase))
   end
 
   def add_acc_clause

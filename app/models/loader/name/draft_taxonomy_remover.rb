@@ -20,8 +20,8 @@
 class Loader::Name::DraftTaxonomyRemover
   attr_reader :result_h
 
-  def initialize(instance, draft, user, job)
-    @instance = instance
+  def initialize(tree_join_record, draft, user, job)
+    @tree_join_record = tree_join_record
     @draft = draft
     @user = user
     @job = job
@@ -29,15 +29,15 @@ class Loader::Name::DraftTaxonomyRemover
   end
 
   def remove
-    remover = Remover.new(@instance, @draft, @user, @job)
+    remover = Remover.new(@tree_join_record, @draft, @user, @job)
     remover.remove
     @result_h = remover.result_h
     remover.result
   end
 
   def log_to_table(payload)
-    payload = "#{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)" if @task_start_time
-    Loader::Batch::Bulk::JobLog.new(@job_number, payload, @authorising_user).write
+    content = "#{@tree_join_record.element_link} #{payload} (elapsed: #{(Time.now - @task_start_time).round(2)}s)"
+    Loader::Batch::Bulk::JobLog.new(@job_number, content, @authorising_user).write
   rescue StandardError => e
     Rails.logger.error("Couldn't save log to bulk processing log table: #{e}")
   end

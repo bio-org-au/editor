@@ -19,8 +19,8 @@
 class Loader::Name::DraftTaxonomyRemover::Remover
   attr_reader :result, :result_h
 
-  def initialize(element_link, draft, user, job)
-    @element_link = element_link
+  def initialize(tree_join_record, draft, user, job)
+    @tree_join_record = tree_join_record
     @draft = draft
     @user = user
     @job = job
@@ -31,9 +31,9 @@ class Loader::Name::DraftTaxonomyRemover::Remover
 
   def remove
     removement = Tree::Workspace::Removement.new(username: @user,
-                                                 target: @element_link)
+                                                 target: @tree_join_record)
     @response = removement.remove
-    log_to_table("Remove #{@element_link}")
+    log_to_table("Remove #{@tree_join_record.element_link}, #{@tree_join_record.simple_name}, instance: #{@tree_join_record.instance_id}")
     @result_h = {removes: 1}
     @result = true
   rescue RestClient::ExceptionWithResponse => e

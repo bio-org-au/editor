@@ -4,6 +4,7 @@ Directives available here: <code>family: [family name string]</code>,  <code>acc
 <br>
 Wildcards are allowed but are <b>not</b> added automatically.<br>
 (Adding them automatically would stop you specifying non-wildcarded sets of names to process.)<br>
+Special usage for Create Preferred Matches, Create Draft Instances, and Add to Taxonomy - the <code>family:</code> directive can take a comma-separated list of family names <em>without</em> wildcards<br>
 <%= form_tag({controller: "loader/batch/bulk", action: "operation"}, method: "post", remote: true) do %>
 
   <div class="width-64em">

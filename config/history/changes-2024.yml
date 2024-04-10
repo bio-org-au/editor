@@ -1,3 +1,33 @@
+- :date: 10-Apr-2024
+  :jira_id: '5017'
+  :description: |-
+    Loader: Throw a query error if <code>syn-match-in-tree-family</code> directive is used without an argument
+- :date: 09-Apr-2024
+  :jira_id: '4966'
+  :description: |-
+    Loader: Allow <code>family</code> search directive on the loader tab to accept a comma-separated list of family names but without wildcards
+- :date: 09-Apr-2024
+  :jira_id: '5017'
+  :description: |-
+    Loader: Require an argument for search directive <code>syn-match-in-tree</code>
+- :date: 08-Apr-2024
+  :jira_id: '5005'
+  :description: |-
+    Loader: Tick sibling synonyms check box by default 
+- :date: 08-Apr-2024
+  :jira_id: '5017'
+  :description: |-
+    Loader: Added search directive <code>syn-match-in-tree-family</code>
+- :date: 08-Apr-2024
+  :jira_id: '5016'
+  :description: |-
+    Loader: Delete-syn-conflicts button now accepts a <code>family</code> search directive with a single argument
+- :date: 04-Apr-2024
+  :jira_id: '5007'
+  :description: |-
+    Loader: Improvements for <code>syn-match-in-tree</code> and <code>delete-syn-conflicts</code> - better log messages, preflight check to avoid removing taxa with sub-taxa, clearer query
+- :date: 05-Apr-2024
+  :release: true
 - :date: 04-Apr-2024
   :jira_id: '4955'
   :description: |-

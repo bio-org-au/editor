@@ -38,7 +38,7 @@ module Instance::ForCopyToLoaderName
     loader_name.name_status = name.name_status.name.downcase.sub(/\Alegitimate\z/,'')
     loader_name.comment = name.accepted_or_excluded_comment
     loader_name.distribution = name.accepted_distribution
-    loader_name.add_sibling_synonyms = false
+    loader_name.add_sibling_synonyms = true
     loader_name
   end
 

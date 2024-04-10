@@ -33,16 +33,43 @@ class Loader::Name::BulkSynConflictsSearch
     bulk_processing_search
   end
 
+  # For the accepted, draft tree
+  # within a nominated batch
+  # there is an instance on that tree
+  # and that instance has a name identified in a loader_name_match
+  # and the loader_name_match is for a loader_name
+  # and the name's name status is legitimate or n/a
+  # in a nominated batch
   def bulk_processing_search
     @search = TreeJoinV
-    .joins(" inner join loader_name_match on loader_name_match.name_id = tree_join_v.name_id")
+    .joins(" inner join instance on instance.id = tree_join_v.instance_id")
+    .joins(" inner join name on instance.name_id = name.id")
+    .joins(" inner join loader_name_match on loader_name_match.name_id = name.id")
     .joins(" inner join loader_name on loader_name.id = loader_name_match.loader_name_id")
     .joins(" inner join loader_batch on loader_batch.id = loader_name.loader_batch_id")
+    .joins(" inner join name_status on name_status.id = name.name_status_id")
+    .where(" loader_name.loader_batch_id = ? ", @batch_id)
     .where(" loader_name.record_type = 'synonym' ")
+    .where(" loader_name.synonym_type not like '%partial%' ")
+    .where(" loader_name.partly is null ")
     .where(" tree_join_v.published = false ")
-    .where(" lower(loader_name.simple_name) like lower(?)",
+    .where(" tree_join_v.accepted_tree = true ")
+    .where(" name_status.name in  ('legitimate','[n/a]')")
+    .where(" tree_join_v.name_id = name.id ")
+    .select(" tree_join_v.* ")
+    loader_name_restriction
+  end
+
+  def loader_name_restriction
+    if @search_s.match(/\Afamily:.*\z/)
+      @search = @search.where(" lower(loader_name.family) like lower(?)",
+                              @search_s.downcase
+                                       .sub(/ *family: */,'')
+                                       .gsub(/\*/,'%'))
+    else
+      @search = @search.where(" lower(loader_name.simple_name) like lower(?)",
            @search_s.downcase.gsub(/\*/,'%'))
-    .select(" tree_join_v.element_link")
+    end
   end
 end
 
