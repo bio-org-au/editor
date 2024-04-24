@@ -371,6 +371,8 @@ Rails.application.routes.draw do
   match "/trees/run/valrep", as: "run_valrep", to: "trees#run_valrep", via: :get
 
   namespace :loader do
+    match "batches/new_row", as: "batch_new_row", to: "batches#new_row", via: :get
+    match "batches/new/:random_id", as: "batch_new_with_random_id", to: "batches#new", via: :get
     match "batches/default_reference_suggestions", as: "batches_default_reference_suggestions",
                                                    to: "batches#default_reference_suggestions", via: :get
     resources :batches
@@ -396,9 +398,6 @@ Rails.application.routes.draw do
                                                 to: "batches#hide_bulk_processing_notes", via: :get
     match "batches/bulk/processing/stats/hide", as: "batch_bulk_processing_stats_hide",
                                                 to: "batches#hide_bulk_processing_stats", via: :get
-    # namespace :batch do
-    # match "/unlock", as: "loader_batch_unlock", to: "unlock", via: :post
-    # end
   end
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
   match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
@@ -412,7 +411,7 @@ Rails.application.routes.draw do
 
   namespace :loader do
     resources :names, only: [:new]
-    match "names/new-row", as: "name_new_row", to: "names#new_row", via: :get
+    match "names/new_row", as: "name_new_row", to: "names#new_row", via: :get
     match "names/new-heading-row", as: "name_new_heading_row", to: "names#new_heading_row", via: :get
     match "names/new-in-batch-note-row", as: "name_new_in_batch_note_row", to: "names#new_in_batch_note_row", via: :get
     match "names/new/:random_id", as: "name_new_with_random_id", to: "names#new", via: :get
@@ -461,6 +460,15 @@ Rails.application.routes.draw do
 
   match "loader_names/:id/tab/:tab/:component", as: "loader_name_review_tab", to: "loader/names#tab", via: :get,
                                                 defaults: { component: "main" }
+  match "loader/name/match/suggestions/for_intended_tree_parent/index",
+        as: "loader_name_matches_suggestions_for_intended_tree_parent",
+        to: "loader/name/match/suggestions/for_intended_tree_parent#index",
+        via: :get
+  #match "names/typeaheads/for_unpub_cit/index",
+        #as: "names_typeahead_for_unpub_cit",
+        #to: "names/typeaheads/for_unpub_cit#index",
+        #via: :get
+
   match "loader_names/parent_suggestions",
         as: "loader_names_parent_suggestions",
         to: "loader/names#parent_suggestions",

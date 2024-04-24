@@ -1,0 +1,29 @@
+<li class="dropdown">
+  <a href="#"
+     id="batch-dropdown-menu-link" 
+     class="dropdown-toggle"
+     tabindex="5"
+     title="Batch menu"
+     data-toggle="dropdown"><%= default_batch||'Batch' %><span class="caret"></span></a>
+  <ul id="batch-dropdown-menu" class="dropdown-menu width-15em" role="menu"> 
+      <% Loader::Batch.all.order(:name).each do |batch| %>
+        <li role="presentation">
+          <% if batch.name == default_batch %>
+            <% check = editor_icon('check') %>
+            <span title="Current batch"><b>
+              <%= "#{batch.name.gsub(/ /,'&nbsp')}&nbsp;#{check}".html_safe %>
+              </b></span>
+          <% else %>
+            <%= link_to("#{batch.name}".html_safe,
+                make_default_batch_path(batch.id),
+                {class: 'blue',
+                 title: "Make #{batch.name} the default batch",
+                 method: :post,
+                 remote: true}) %>
+          <% end %>
+        </li>
+      <% end %>
+  </ul>
+</li>
+
+

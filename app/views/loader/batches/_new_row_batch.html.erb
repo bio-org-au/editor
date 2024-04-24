@@ -1,0 +1,27 @@
+<% link = "link-new-loader-batch-#{@random_id}" %>
+
+<tr id="new-loader-batch-<%= @random_id %>" 
+  class="new-record new-loader-batch"  
+  data-record-type="loader-batch"
+  data-edit-url="<%= loader_batch_new_with_random_id_path(@random_id) %>"
+  tabindex="<%= increment_tab_index(100) %>"
+    >
+  <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%= record_icon('loader_batch') %></td>
+  <td class="text takes-focus batch main-content min-width-40-percent max-width-100-percent width-90-percent give-me-focus" colspan="9">
+    <%= link_to('New loader batch', loader_batch_new_with_random_id_path(@random_id,tabIndex: increment_tab_index(0) + 5), 
+                id: "#{link}",
+                class: "show-details-link", 
+                tabindex: "#{ increment_tab_index }", 
+                title: "New loader batch record.  Select to see details.",
+                remote: true) %>
+  </td>
+  <td class="takes-focus width-5-percent filler">&nbsp;
+  </td>
+</tr>
+
+<script>
+  $(document).ready(function () {
+    document.getElementById("<%= link %>").click();
+  })
+</script>
+

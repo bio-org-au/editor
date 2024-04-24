@@ -1,7 +1,7 @@
 <%= form_with model: @loader_batch do |form| %>
 
   <div class="form-group">
-    <label for="name">Name</label>
+    <label for="name">Name<span class="red">*</span></label>
     <%= form.text_field :name, class: 'form-control', title: 'Edit the name of the batch', required: true %>
     <p class="help-block">
     Batch name must be unique and should be short &mdash; it will be listed in the search targets dropdown list &mdash;
@@ -13,7 +13,7 @@
     <label for="name">Description</label>
     <%= form.text_field :description, class: 'form-control', title: 'Edit the description of the batch' %>
     <p class="help-block">
-    Use the description to supplement the short title.
+    Use the description to supplement the name.
     </p>
    </div>
 
@@ -37,7 +37,14 @@
     <%= form.hidden_field :default_reference_id %>
 
 
+    <div class="form-group align-right">
+   <% if @loader_batch.new_record? %>
+     <%= link_to 'Cancel', '/cancel-new-form', id: 'loader-batch-cancel', class: "btn btn-primary cancel-new-record-link",
+                  data: {element_id: "new-loader-batch-#{params[:random_id]}"}, 
+                  title: "Cancel new loader_batch", tabindex: increment_tab_index  %>
+   <% end %>
   <%= form.submit "Save", id: 'loader-batch-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index %>
+    </div>
 
 <% end %>
 

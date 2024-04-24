@@ -1,0 +1,32 @@
+
+
+<h4><%= 'Preferred Match'.pluralize(@loader_name.loader_name_matches.size) %></h4>
+<% @loader_name.loader_name_matches.order('id').each do |loader_name_match| %>
+  <%= loader_name_match.name.full_name %> in<br>
+  <%= loader_name_match.instance.reference.citation %>
+  <% unless loader_name_match.instance.page.blank? %>
+    on <br> page <%= loader_name_match.instance.page %>
+  <% end %>
+  <% unless @loader_name.accepted? || @loader_name.excluded? %>
+    Instance type: <%= loader_name_match.instance.instance_type.name %><br>
+
+      <%= form_for(loader_name_match, as: 'loader_name_match', role: 'form', remote: true) do |f| %>
+        
+      Relationship instance type: 
+        <%= f.select(:relationship_instance_type_id,
+           InstanceType.synonym_options, {include_blank: true},
+           {value: loader_name_match.relationship_instance_type_id, data: {update_url: instance_path},
+            class: 'form-control width-50-percent', title: 'Enter instance type',
+            required: true, tabindex: increment_tab_index}) %>
+
+        <%= f.submit "Change", id: "change-instance-type-#{loader_name_match.id}",
+          tabindex: increment_tab_index,
+          title: 'Change relationship instance type',
+          class: 'bgdarkslateblue btn btn-primary width-6em' %>
+
+  <% end %>
+<% end %>
+
+    </ul>
+<% end %>
+</ol>

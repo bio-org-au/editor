@@ -33,6 +33,9 @@ class Loader::Name::DraftTaxonomyRemover
     remover.remove
     @result_h = remover.result_h
     remover.result
+  rescue StandardError => e
+    Rails.logger.error("Loader::Name::DraftTaxonomyRemover: #{e}")
+    raise
   end
 
   def log_to_table(payload)
@@ -47,7 +50,7 @@ class Loader::Name::DraftTaxonomyRemover
     msg.gsub!('"', "")
     msg.sub!(/^Failing/, "")
     Rails.logger.error("Loader::Name::AsInstanceCreator failure: #{msg}")
-    log_to_table("Loader::Name::AsInstanceCreator failure: #{msg}")
+    log_to_table("Remove #{@tree_join_record.element_link}, #{@tree_join_record.simple_name}, instance: #{@tree_join_record.instance_id} error: #{msg}")
   end
 
   def debug(msg)

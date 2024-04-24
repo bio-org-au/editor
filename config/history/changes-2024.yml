@@ -1,3 +1,57 @@
+- :date: 22-Apr-2024
+  :jira_id: '5029'
+  :description: |-
+    Loader: Add missing tool tips to Batch menu
+- :date: 22-Apr-2024
+  :jira_id: '5029'
+  :description: |-
+    Loader: Add a top line Batch menu to set and show the default batch
+- :date: 19-Apr-2024
+  :jira_id: '5022'
+  :description: |-
+    Loader: Delete syn conflicts job now respects no further processing
+- :date: 19-Apr-2024
+  :jira_id: '4965'
+  :description: |-
+    Loader: Sort typeahead suggestions by rank then full name; add name status to suggestion
+- :date: 18-Apr-2024
+  :jira_id: '4965'
+  :description: |-
+    Loader: Allow users to specify a tree parent for name to be loaded
+- :date: 16-Apr-2024
+  :jira_id: '4979'
+  :description: |-
+    Loader: Fix case so that matched name with no primary instance is correctly reported
+- :date: 16-Apr-2024
+  :jira_id: '5021'
+  :description: |-
+    Loader: Delete-syn-conflicts job - add 'declined - ' to decline message for 'has sub-taxa' - minor but important improvement
+- :date: 15-Apr-2024
+  :jira_id: '5021'
+  :description: |-
+    Loader: Delete-syn-conflicts job decline and error logging and reporting is improved
+- :date: 12-Apr-2024
+  :jira_id: '4983'
+  :description: |-
+    Loader: Show that a name is in a batch
+- :date: 12-Apr-2024
+  :jira_id: '4996'
+  :description: |-
+    Loader Name: On the Reference Instance tab show available reference instances even after choice made
+- :date: 12-Apr-2024
+  :jira_id: '4980'
+  :description: |-
+    Loader: Allow users to create new batch
+- :date: 11-Apr-2024
+  :jira_id: '4997'
+  :description: |-
+    Loader: Prevent edits to simple or full name when a preferred match has been set
+- :date: 11-Apr-2024
+  :jira_id: '4979'
+  :description: |-
+    Loader: Improve accuracy of decline reasons for job that creates preferred matches
+- :date: 10-Apr-2024
+  :release: true
 - :date: 10-Apr-2024
   :jira_id: '5017'
   :description: |-

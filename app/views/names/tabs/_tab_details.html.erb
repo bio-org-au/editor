@@ -12,6 +12,22 @@
 <%= render partial: "names/details/instances" %>
 <%= render 'names/details/children' %>
 <%= render 'names/details/family' %>
+<br>
+<% if Rails.configuration.try('batch_loader_aware') == true %> 
+  <% if @name.matched_to_loader_name? %>
+    <i class="fa fa-layer-group"></i>&nbsp;
+    <%= "Preferred matched to #{pluralize(@name.matches.size,'loader name record')}" %>
+    <% @name.matches.each do |match| %>
+      <br>
+      <%= link_to("#{match.loader_name.simple_name} in batch #{match.loader_name.loader_batch.name}",
+                   search_path(query_target: 'loader_names', query_string: "id: #{match.loader_name_id}"),
+                   class: 'loader_name',
+                   tabindex: increment_tab_index,
+                   title: "Query the loader name") %>
+    <% end %>
+  <% end %>
+<% end %>
+<br>
 <%= render partial: 'names/details/apni_tree' %>
 <%= render partial: 'names/details/apc_tree' %>
 <%= render partial: "names/details/comments" %>

@@ -21,6 +21,17 @@
                       link_title: 'Edit batch',
                       tab_index: @tab_index,
                       prev_tab: '.search-result.loader-batches-details-tab', 
+                      next_tab: '.search-result.loader-batch-delete-tab' } %> 
+
+  <%= render partial: 'loader/batches/tabs/tab',
+             locals: {first: false,
+                      last: false,
+                      this_tab: 'tab_delete', 
+                      link_text: 'Delete', 
+                      link_id: 'loader-batch-delete-tab', 
+                      link_title: 'Delete batch',
+                      tab_index: @tab_index,
+                      prev_tab: '.search-result.loader-batches-edit-tab', 
                       next_tab: '.search-result.loader-batch-settings-tab' } %> 
 
   <%= render partial: 'loader/batches/tabs/tab',

@@ -2,15 +2,7 @@
 
     <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
-    <div class="form-group">
-      <label for="simple_name">Simple Name*</label>
-      <%= f.text_field :simple_name, class: 'form-control', required: true, title: "Enter simple name", tabindex: increment_tab_index, autofocus: true %>
-    </div>
-
-    <div class="form-group">
-      <label for="full_name">Full Name*</label>
-      <%= f.text_field :full_name, class: 'form-control', required: true, title: "Enter full name", tabindex: increment_tab_index, autofocus: true %>
-    </div>
+    <%= render partial: "loader/names/tabs/forms/simple_name_full_name", locals: {loader_name: loader_name, f: f} %>
 
     <div class="form-group">
       <label for="rank">Rank</label>
@@ -63,7 +55,7 @@
 
     <%= divider %>
 
-    <% unless loader_name.id.blank? %>
+    <% unless loader_name.new_record? %>
         <% if loader_name&.loader_name_matches&.collect {|lnm| lnm.relationship_instance}.compact.blank? %>
           <% disabled = false %>
         <% else %>

@@ -1,0 +1,46 @@
+<%= divider %>
+<h4>Intended Taxonomy Parent</h4>
+
+    <% preferred_match = @loader_name.loader_name_matches.first %>
+    <% if preferred_match.drafted? %>
+         <span class='flag on-tree-indicator' title='Standalone instance has been placed on a draft tree'>Drafted</span>
+         Loader asserts the preferred match has been placed on a draft tree so it's too late to set an intended taxonomy parent.
+         <br> 
+    <% elsif preferred_match.manually_drafted? %>
+        This loader-name is already manually drafted so it's too late to set an intended taxonomy parent.
+    <% elsif preferred_match.intended_tree_parent_instance.present? %>
+      Intended taxonomy parent: <%= preferred_match.intended_tree_parent_instance&.name&.full_name %> in <br>
+                                <%= preferred_match.intended_tree_parent_instance&.reference&.citation %>
+        <%= render partial: 'loader/names/tabs/matched_name/clear_intended_parent', locals: {preferred_match: preferred_match} %>
+    <% else %>
+        Name parent: <%= preferred_match.name.parent.full_name %>
+        <br/>
+        <%= form_for(preferred_match, as: 'loader_name_match', role: 'form', remote: true) do |f| %>
+
+          <div class="typeahead-container">
+            <section class='block width-100-percent'>
+              <input id="loader-name-match-intended-tree-parent-instance-typeahead"
+                     class="typeahead form-control width-100-percent give-me-focus"
+                     title="Enter an instance.  Typeahead field on name and year.  Only names with instances are listed."
+                     tabindex="<%= increment_tab_index %>"
+                     type="text"
+                     required='true'
+                     placeholder="Enter name to narrow down instance"
+                     value=""/>
+            </section>
+          </div>
+          <script> setUpLoaderNameMatchIntendedTreeParentTypeahead(); </script>
+  
+          <%= f.hidden_field(:intended_tree_parent_instance_id, 
+                           value: preferred_match.intended_tree_parent_instance_id,
+                           title: 'Intended parent') %>
+  
+          <%= f.submit "Set Intended Parent",
+                       id: 'save-loader-name-intended-tree-instance-id',
+                       tabindex: increment_tab_index,
+                       title: 'Set Intended Parent',
+                       class: 'btn btn-primary width-15em',
+                       disabled: false %>
+        <% end %>
+    <% end %>
+

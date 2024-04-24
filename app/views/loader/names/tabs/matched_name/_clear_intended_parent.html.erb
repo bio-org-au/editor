@@ -1,0 +1,10 @@
+        <%= form_for(preferred_match, as: 'loader_name_match', role: 'form', remote: true) do |f| %>
+
+          <%= f.submit "Clear Intended Parent",
+                       id: 'clear-loader-name-intended-tree-instance-id',
+                       tabindex: increment_tab_index,
+                       title: 'Clear the intended taxonomy parent instance field',
+                       class: 'btn btn-primary width-15em',
+                       disabled: false %>
+        <% end %>
+

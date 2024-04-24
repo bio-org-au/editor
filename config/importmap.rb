@@ -30,7 +30,7 @@ pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js
 
 pin "typeaheads_for_loader_batch_default_reference", to: "typeaheads/for_loader_batch/default_reference.js"
 pin "typeaheads_for_loader_name_parent", to: "typeaheads/for_loader_name/parent.js"
-pin "typeaheads_for_orchids_parent", to: "typeaheads/for_orchids/parent.js"
+pin "typeaheads_for_loader_name_match_intended_tree_parent_instance", to: "typeaheads/for_loader_name_match/intended_tree_parent_instance.js"
 
 pin "typeaheads_for_reference_author", to: "typeaheads/for_reference/author.js"
 pin "typeaheads_for_reference_duplicate", to: "typeaheads/for_reference/duplicate.js"

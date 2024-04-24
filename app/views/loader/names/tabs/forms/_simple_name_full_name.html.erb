@@ -1,0 +1,38 @@
+
+    <% if loader_name.preferred_match? %>
+
+      Has preferred match - cannot edit simple name.
+      <br>
+      <label for="simple_name">Simple Name*</label>
+      <br>
+      <%= loader_name.simple_name %>
+      <br>
+      <br>
+      Has preferred match - cannot edit full name.
+      <br>
+      <label for="full_name">Full Name*</label>
+      <br>
+      <%= loader_name.full_name %>
+      <br>
+      <br>
+    <% else %>
+
+    <div class="form-group">
+      <label for="simple_name">Simple Name*</label>
+      <%= f.text_field :simple_name, class: 'form-control', required: true, title: "Enter simple name - the value of simple name, as loaded is retained in simple name as loaded", tabindex: increment_tab_index, autofocus: true %>
+      <% unless loader_name.simple_name == loader_name.simple_name_as_loaded %>
+        <p>As originally loaded: <%= loader_name.simple_name_as_loaded %></p>
+        <p>Simple Name is used for matching with name records, so editing it will likely change the matches.</p>
+      <% end %>
+    </div>
+
+
+    <div class="form-group">
+      <label for="full_name">Full Name*</label>
+      <%= f.text_field :full_name, class: 'form-control',
+        required: true, title: "Enter full name",
+        tabindex: increment_tab_index, autofocus: true %>
+    </div>
+
+    <% end %>
+

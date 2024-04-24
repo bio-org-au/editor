@@ -1,0 +1,7 @@
+$('.message-container').html('');
+$('#confirm-or-cancel-link-container a.btn-danger').addClass('disabled');
+$('#cancel-delete-link').addClass('disabled');
+$('#delete-info-message-container').html('Record deleted');
+$('.delete-widget').fadeOut("slow", function() { $(this).remove(); });
+$('#search-result-<%= @loader_batch.id %>').fadeOut("slow", function() { $(this).remove(); });
+$('#search-result-details').fadeOut("slow");

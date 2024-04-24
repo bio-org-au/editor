@@ -26,9 +26,23 @@ class Loader::Batch < ActiveRecord::Base
   has_many :batch_reviews, class_name: "Loader::Batch::Review", foreign_key: "loader_batch_id"
   belongs_to :default_reference, class_name: "Reference", foreign_key: "default_reference_id", optional: true
   alias_attribute :reviews, :batch_reviews
-  validates :name, uniqueness: true, presence: true
+  validates :name, uniqueness: { case_sensitive: false }, presence: true
 
   attr_accessor :give_me_focus, :message
+
+  def self.create(params, username)
+    params[:default_reference_id] = nil if params[:default_reference_typeahead].blank?
+    params.reject! { |name, _value| name == "default_reference_typeahead" }
+    loader_batch = Loader::Batch.new(params)
+    raise loader_batch.errors.full_messages.first.to_s unless loader_batch.save_with_username(username)
+
+    loader_batch
+  end
+  
+  def save_with_username(username)
+    self.created_by = self.updated_by = username
+    save
+  end
 
   def fresh?
     created_at > 1.hour.ago

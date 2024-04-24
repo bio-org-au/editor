@@ -15,6 +15,7 @@ class Name < ApplicationRecord
   include NameAuthorable
   include NameRankable
   include NameEnterable
+  include Name::Loadable
 
   strip_attributes
 

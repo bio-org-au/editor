@@ -3,7 +3,7 @@
 
       <% if match.source_for_copy_instance_id.present? %>
          <%= render partial: 
-                'loader/names/tabs/ref_instance/accepted_or_excluded_names/copy_and_append/source_instance_summary',
+                'loader/names/tabs/ref_instance/accepted_or_excluded_names/choice_made/source_instance_summary',
                 locals: {match: match} %>
       <% end %>
       <% if match.standalone_instance_id.present? %>
@@ -26,3 +26,6 @@
       <br> <br>
       <div id="search-result-details-info-message-container" class="message-container"></div>
       <div id="search-result-details-error-message-container" class="error-container"></div>
+      <div id="existing-instances-display">
+        <%= render partial: 'loader/names/tabs/ref_instance/existing_instances/main', locals: {match: match} %> 
+      </div>

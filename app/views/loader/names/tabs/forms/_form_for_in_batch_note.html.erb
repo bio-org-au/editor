@@ -1,7 +1,7 @@
 <%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
     <div class="form-group align-right">
       <div class="nsl-inline-block align-left pull-left"><h5><%= loader_name.new_record? ?  'Create' : 'Edit' %> <%= @loader_name.record_type.gsub(/-/,' ').titlecase %> </h5></div>
-      <% if loader_name.id.blank? -%>
+      <% if loader_name.new_record? -%>
         <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new loader_name", data: {element_id: "new-loader-name-#{params[:random_id]}"}, tabindex: increment_tab_index %>
       <% end %>
       <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
@@ -60,7 +60,7 @@
     <%= divider %>
 
     <div class="form-group align-right">
-      <% if loader_name.id.blank? %>
+      <% if loader_name.new_record? %>
         <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", data: {element_id: "new-loader-name-#{params[:random_id]}"}, 
                        title: "Cancel new loader_name", tabindex: increment_tab_index  %>
       <% end %>

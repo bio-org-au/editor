@@ -56,7 +56,7 @@ class Loader::Name::BulkSynConflictsSearch
     .where(" tree_join_v.accepted_tree = true ")
     .where(" name_status.name in  ('legitimate','[n/a]')")
     .where(" tree_join_v.name_id = name.id ")
-    .select(" tree_join_v.* ")
+    .select(" tree_join_v.*, loader_name.id loader_name_id ")
     loader_name_restriction
   end
 
@@ -72,4 +72,3 @@ class Loader::Name::BulkSynConflictsSearch
     end
   end
 end
-

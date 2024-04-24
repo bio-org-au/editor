@@ -1,4 +1,7 @@
 $('#loader-name-edit-match-tab').click();
 $('.message-container').html('');
 $('.error-container').html('');
-$('.message-container').html('Updated');
+$('.message-container').html('<%= @message %>');
+setTimeout(function () {
+        $('ul.nav-tabs li.active a.tab').click();
+    }, 1000);

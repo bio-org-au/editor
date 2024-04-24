@@ -1,0 +1,12 @@
+$('.message-container').html('');
+<% if params[:random_id].blank? %>
+  $('#search-result-details-info-message-container').html("<%= escape_javascript(@message||'Created') %>");
+  $('#loader-batch-save').addClass('hidden');
+  $('#loader-batch-cancel').addClass('hidden');
+  setTimeout(function(){$('#instance-batch-loader-tab').click()},1000);
+<% else %>
+  $('tr#new-loader-batch-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'application/search_results/loader_batch_record', locals: {search_result: @loader_batch, give_me_focus: true})) %>");
+  $('tr#search-result-<%= @loader_batch.id %> td.takes-focus a.show-details-link').focus();
+<% end %>
+
+

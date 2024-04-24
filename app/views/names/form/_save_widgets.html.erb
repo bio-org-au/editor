@@ -1,6 +1,6 @@
 
   <div class="form-group align-right">
-  <% if @name.id.blank? %>
+  <% if @name.new_record? %>
     <%= link_to 'Cancel','/cancel-new-form', tabindex: increment_tab_index, title: 'Cancel new Name', class: "btn btn-primary cancel-new-record-link", data: {element_id: "new-name-#{params[:random_id]}"}  %>
   <% end %>
   <%= f.submit "Save", id: 'save-name', tabindex: increment_tab_index, title: 'Save changes', class: 'btn btn-primary width-5em', disabled: false %>

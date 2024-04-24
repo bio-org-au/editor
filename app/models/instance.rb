@@ -45,6 +45,12 @@ class Instance < ActiveRecord::Base
            foreign_key: "parent_id",
            dependent: :restrict_with_exception
 
+  has_many :intended_tree_children,
+           class_name: "Loader::Name::Match",
+           foreign_key: "intended_tree_parent_instance_id"
+
+  has_many :tree_join_v
+
   def self.to_csv
     attributes = %w[id]
     headings = ["Instance ID", "Name ID", "Full Name", "Reference ID",

@@ -1,0 +1,51 @@
+<% if @loader_batch.loader_names.size > 0 %>
+  Cannot delete this batch because it has loader name records.
+<% elsif @loader_batch.batch_reviews.size > 0 %>
+  Cannot delete this batch because it has batch review records.
+<% else %>
+  This button deletes the <b>current</b> batch.  
+  <br>
+  <%= @loader_batch.name %> (#<%= @loader_batch.id %>)
+<br>
+<% increment_tab_index(0) %>
+
+<%= divider %>
+<% delete_link = link_to("Delete...",
+                         '#',
+                         id: "loader-batch-delete-link",
+                         class: "btn btn-warning unconfirmed-delete-link pull-right delete-widget",
+                         tabindex: increment_tab_index,
+                         title: "Delete the loader-batch.",
+                         data: {show_this_id: "confirm-or-cancel-link-container"})
+%>
+<% confirm_delete_link = link_to("Confirm delete",
+                                 loader_batch_path(@loader_batch.id),
+                                 class: "btn btn-danger delete-widget",
+                                 tabindex: increment_tab_index,
+                                 title: "Confirm you want to delete the loader batch.",
+                                 remote: true,
+                                 method: :delete)
+%>
+
+<% cancel_delete_link = link_to("Cancel delete",
+                                '#',
+                                id: "cancel-delete-link",
+                                class: "btn btn-default cancel-link delete-widget",
+                                tabindex: increment_tab_index,
+                                title: "Cancel the delete dialog for the loader batch.",
+                                data: {enable_this_id: 'loader-batch-delete-link',
+                                       hide_this_id: 'confirm-or-cancel-link-container'})
+%>
+
+<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-container"
+                                  class="instance-note confirm-or-cancel-delete-link pull-right hidden">
+                                  #{confirm_delete_link}
+#{cancel_delete_link}</div>)
+%>
+
+<div class="actions"> <%= delete_link.html_safe %> </div>
+<div class="width-100-percent"> <%= confirm_or_cancel_element.html_safe %> </div>
+<div id="delete-info-message-container" class="message-container"></div>
+<div id="delete-error-message-container" class="message-container"></div>
+
+<% end %>

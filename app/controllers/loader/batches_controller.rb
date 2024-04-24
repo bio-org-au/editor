@@ -43,7 +43,29 @@ class Loader::BatchesController < ApplicationController
     end
   end
 
+  def new
+    @anchor = Loader::Name.find(params[:loader_batch_id]) unless params[:loader_batch_id].blank?
+    @loader_batch = ::Loader::Batch.new
+    @tab_index = (params[:tabIndex] || "40").to_i
+    respond_to do |format|
+      format.html {}
+      format.js {}
+    end
+  end
+
+  def create
+    raise 'Not authorised' unless @current_user.batch_loader?
+    @loader_batch = Loader::Batch.create(loader_batch_params,
+                                      current_user.username)
+    render "create"
+  rescue StandardError => e
+    logger.error("Controller:Loader:Batches:create:rescuing exception #{e}")
+    @error = e.to_s
+    render "create_error", status: :unprocessable_entity
+  end
+
   def update
+    raise 'Not authorised' unless @current_user.batch_loader?
     @message = @loader_batch.update_if_changed(loader_batch_params,
                                                current_user.username)
     render "update"
@@ -51,6 +73,15 @@ class Loader::BatchesController < ApplicationController
     logger.error("Loader::Batches#update rescuing #{e}")
     @message = e.to_s
     render "update_error", status: :unprocessable_entity
+  end
+
+  def destroy
+    raise 'Not authorised' unless @current_user.batch_loader?
+    @loader_batch.delete
+  rescue StandardError => e
+    logger.error("Loader::BatchesController#destroy rescuing #{e}")
+    @message = e.to_s
+    render "destroy_error", status: :unprocessable_entity
   end
 
   def make_default

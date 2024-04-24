@@ -4,7 +4,7 @@
 <% else %>
   <% @loader_name.preferred_matches.each do |match| %>
     <% if match.taxonomy_choice_made? %>
-      <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/copy_and_append/choice_made', locals: {match: match} %> 
+      <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/choice_made/main', locals: {match: match} %> 
     <% else %>
       <%= render partial: 'loader/names/tabs/ref_instance/accepted_or_excluded_names/three_way_choice_form', locals: {match: match} %>
       <div id="search-result-details-info-message-container" class="message-container"></div>

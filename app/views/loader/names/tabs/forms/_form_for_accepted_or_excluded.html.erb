@@ -1,7 +1,7 @@
 <%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
     <div class="form-group align-right">
       <div class="nsl-inline-block align-left pull-left"><h5><%= loader_name.new_record? ?  'Create' : 'Edit' %> Main Record</h5></div>
-      <% if loader_name.id.blank? -%>
+      <% if loader_name.new_record? -%>
         <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new loader_name", data: {element_id: "new-loader-name-#{params[:random_id]}"}, tabindex: increment_tab_index %>
       <% end %>
       <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
@@ -25,23 +25,7 @@
 
     <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
-    <div class="form-group">
-      <label for="simple_name">Simple Name*</label>
-      <%= f.text_field :simple_name, class: 'form-control', required: true, title: "Enter simple name - the value of simple name, as loaded is retained in simple name as loaded", tabindex: increment_tab_index, autofocus: true %>
-      <% unless loader_name.simple_name == loader_name.simple_name_as_loaded %>
-        <p>As originally loaded: <%= loader_name.simple_name_as_loaded %></p>
-        <p>Simple Name is used for matching with name records, so editing it will likely change the matches.</p>
-      <% end %>
-    </div>
-
-
-    <div class="form-group">
-      <label for="full_name">Full Name*</label>
-      <%= f.text_field :full_name, class: 'form-control',
-        required: true, title: "Enter full name",
-        tabindex: increment_tab_index, autofocus: true %>
-    </div>
-
+    <%= render partial: "loader/names/tabs/forms/simple_name_full_name", locals: {loader_name: loader_name, f: f} %>
 
     <div class="form-group">
       <label for="family">Family Name*</label>
@@ -87,7 +71,7 @@
 
     <%= divider %>
 
-    <% unless loader_name.id.blank? %>
+    <% unless loader_name.new_record? %>
         <% if loader_name&.preferred_match&.standalone_instance? %>
           <% disabled = true %>
           Note: this record already has an associated instance - you cannot switch off bulk processing while that instance is attached.
@@ -106,7 +90,7 @@
     <% end %>
 
     <div class="form-group align-right">
-      <% if loader_name.id.blank? %>
+      <% if loader_name.new_record? %>
         <%= link_to 'Cancel', '/cancel-new-form', class: "btn btn-primary cancel-new-record-link", data: {element_id: "new-loader-name-#{params[:random_id]}"}, 
                        title: "Cancel new loader_name", tabindex: increment_tab_index  %>
       <% end %>

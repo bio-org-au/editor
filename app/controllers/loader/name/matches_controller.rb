@@ -72,6 +72,10 @@ class Loader::Name::MatchesController < ApplicationController
       flag_as_manually_drafted
     when /remove.{,500}manually.drafted.flag/i
       unflag_as_manually_drafted
+    when /Set Intended Parent/
+      set_intended_tree_parent
+    when /Clear Intended Parent/
+      clear_intended_tree_parent
     else
       update_relationship_instance_type
     end
@@ -264,7 +268,7 @@ class Loader::Name::MatchesController < ApplicationController
   end
 
   def find_loader_name_match
-    @loader_name_match = Loader::Name::Match.find(params[:id])
+    @match = @loader_name_match = Loader::Name::Match.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the loader name match record."
     redirect_to loader_name_matches_path
@@ -357,9 +361,28 @@ class Loader::Name::MatchesController < ApplicationController
     render "update_error", format: :js
   end
 
+  def set_intended_tree_parent
+    @match.intended_tree_parent_instance_id = loader_name_match_params[:intended_tree_parent_instance_id]
+    save_if_changed("Updated", "No change")
+  rescue StandardError => e
+    logger.error(e.to_s)
+    @message = e.to_s
+    render "update_error", format: :js
+  end
+
+  def clear_intended_tree_parent
+    @match.intended_tree_parent_instance_id = nil
+    save_if_changed("Cleared", "No change")
+  rescue StandardError => e
+    logger.error(e.to_s)
+    @message = e.to_s
+    render "update_error", format: :js
+  end
+
   def save_if_changed(success_message = "Saved",
                       no_change_message = "No change")
     if @match.changed?
+      @match.updated_by = current_user.username
       @match.save!
       @message = success_message
     else
@@ -388,6 +411,7 @@ class Loader::Name::MatchesController < ApplicationController
                                               :standalone_instance_found,
                                               :use_batch_default_reference,
                                               :copy_append_from_existing_use_batch_def_ref,
-                                              :source_for_copy_instance_id)
+                                              :source_for_copy_instance_id,
+                                              :intended_tree_parent_instance_id)
   end
 end

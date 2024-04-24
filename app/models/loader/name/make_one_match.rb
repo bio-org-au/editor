@@ -30,11 +30,15 @@ class Loader::Name::MakeOneMatch
   end
 
   def find_or_create_preferred_match
-    return already_exists if preferred_match?
-    return no_further_processing if @loader_name.no_further_processing?
-    return misapp if @loader_name.misapplied?
-    return heading if @loader_name.heading?
-    return parent_using_existing if @loader_name.parent&.preferred_match&.use_existing_instance
+    return decline("already_exists") if preferred_match?
+    return decline("no_further_processing") if @loader_name.no_further_processing?
+    return decline("misapp") if @loader_name.misapplied?
+    return decline("heading") if @loader_name.heading?
+    return decline("parent_using_existing") if @loader_name.parent&.preferred_match&.use_existing_instance
+
+    return decline("not_exactly_one_match")  unless exactly_one_matching_name? 
+    return decline("match_has_no_primary_instance") unless match_name_has_primary?
+    return decline("match_has_2_or_more_primary_instances") unless match_name_just_one_primary?
 
     make_preferred_match?
   rescue StandardError => e
@@ -51,42 +55,15 @@ class Loader::Name::MakeOneMatch
     !@loader_name.preferred_matches.empty?
   end
 
-  def already_exists
-    log_to_table("#{DECLINED} - already exists")
-    {declines: 1, decline_reasons: {already_exists: 1} }
-  end
-
-  def misapp
-    log_to_table("#{DECLINED} - misapplications are not eligible")
-    {declines: 1, decline_reasons: {misapplied_is_not_eligible: 1}}
-  end
-
-  def heading
-    log_to_table("#{DECLINED} - headings don't get processed")
-    {declines: 1, decline_reasons: {heading_so_not_processed: 1}}
-  end
-
-  def no_further_processing
-    log_to_table("#{DECLINED} - no further processing")
-    {declines: 1, decline_reasons: {no_further_processing: 1}}
-  end
-
-  def parent_using_existing
-    log_to_table("#{DECLINED} - parent is using an existing instance")
-    {declines: 1, decline_reasons: {parent_is_using_an_existing_instance: 1}}
+  def decline(reason)
+    log_to_table("#{DECLINED} - #{reason.gsub(/_/,' ')}")
+    {declines: 1, decline_reasons: {reason.gsub(/ /,'_').to_sym => 1}}
   end
 
   def make_preferred_match?
-    if exactly_one_matching_name? &&
-       matching_name_has_primary? &&
-       matching_name_has_exactly_one_primary?
-      create_match
-      log_to_table(CREATED)
-      {creates: 1}
-    else
-      log_to_table("#{DECLINED} - no single match found")
-      {declines: 1, decline_reasons: {no_single_match_found: 1}}
-    end
+    create_match
+    log_to_table(CREATED)
+    {creates: 1}
   end
 
   def create_match
@@ -102,11 +79,11 @@ class Loader::Name::MakeOneMatch
     @loader_name.matches.size == 1
   end
 
-  def matching_name_has_primary?
-    !@loader_name.name_match_no_primary?
+  def match_name_has_primary?
+    @loader_name.matches.first.primary_instances.size > 0
   end
 
-  def matching_name_has_exactly_one_primary?
+  def match_name_just_one_primary?
     @loader_name.matches.first.primary_instances.size == 1
   end
 

@@ -18,6 +18,7 @@
 #
 # Loader Name entity
 class Loader::Name::Match < ActiveRecord::Base
+  include IntendedTreeParent
   strip_attributes
   self.table_name = "loader_name_match"
   self.primary_key = "id"
@@ -32,6 +33,9 @@ class Loader::Name::Match < ActiveRecord::Base
                                      foreign_key: "relationship_instance_id", optional: true
   belongs_to :source_for_copy, class_name: "::Instance",
                                foreign_key: "source_for_copy_instance_id", optional: true
+  belongs_to :intended_tree_parent_instance, class_name: "::Instance",
+                                             foreign_key: "intended_tree_parent_instance_id", 
+                                             optional: true
   validates :loader_name_id, uniqueness: true,
                              unless: proc { |a| a.loader_name.record_type == "misapplied" }
   validate :misapp_pref_matches_from_only_one_name

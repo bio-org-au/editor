@@ -1,7 +1,7 @@
 
   <% if @name.needs_top_buttons? %>
     <span class="inline-block pull-right align-right">
-      <% if @name.id.blank? %>
+      <% if @name.new_record? %>
         <%= link_to 'Cancel','/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new name.",
           data: {element_id: "new-name-#{params[:random_id]}"}  %>
       <% end %>
