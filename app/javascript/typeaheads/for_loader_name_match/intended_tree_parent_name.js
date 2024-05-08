@@ -1,7 +1,7 @@
 
 
 function setUpLoaderNameMatchIntendedTreeParentTypeahead() {
-        $("#loader-name-match-intended-tree-parent-instance-typeahead").typeahead({highlight: true}, {
+        $("#loader-name-match-intended-tree-parent-name-typeahead").typeahead({highlight: true}, {
             name: "loader-name-match-intended-parent",
             displayKey: function(obj) {
                 return obj.value;
@@ -12,12 +12,12 @@ function setUpLoaderNameMatchIntendedTreeParentTypeahead() {
             })
             .on('typeahead:selected', function($e,datum) {
               debug('intended tree parentparent typeahead:selected');
-              $('#loader_name_match_intended_tree_parent_instance_id').val(datum.id);
+              $('#loader_name_match_intended_tree_parent_name_id').val(datum.id);
 
             })
             .on('typeahead:autocompleted', function($e,datum) {
               debug('intended tree parent typeahead:autocompeted');
-              $('#loader_name_match_intended_tree_parent_instance_id').val(datum.id);
+              $('#loader_name_match_intended_tree_parent_name_id').val(datum.id);
             }
             )
         ;

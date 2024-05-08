@@ -60,6 +60,10 @@ class NameStatus < ActiveRecord::Base
     legitimate? || na? ? "" : name
   end
 
+  def for_inline_display
+    legitimate? || na? ? "" : ", #{name}"
+  end
+
   def name_for_instance_display_within_reference
     legitimate? || na? || unknown? ? "" : name
   end

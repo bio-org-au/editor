@@ -106,7 +106,8 @@
 <br>
 <%= updated_by_whom_and_when(@author).html_safe %>
 
-<%= render partial: 'detail_line', locals: {label: 'System', info: "#{@author.namespace.try('name')}#{%Q(.#{@author.source_system.try('downcase')}.#{@author.source_id}) if @author.source_system}"} %>
-
+<% if @author.source_system %>
+  <br>Migrated from <%= "#{@author.source_system.downcase} ##{@author.source_id}" %>
+<% end %>
 
 

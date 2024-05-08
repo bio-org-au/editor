@@ -90,12 +90,12 @@
       <% if Rails.configuration.try('batch_loader_aware') && can?('loader/batches', 'process') %>
 
         <li role="presentation" class="">
-          <%= link_to "Loader",
+          <%= link_to "Batch",
                       loader_batches_path,
                       id: "batch-loader-console-tab-link",
                       class: "main-body-tab-link",
                       remote: true,
-                      title: "Batch Loader processing console" %>
+                      title: "Batch Loader work area" %>
         </li>
       <% end %> 
 

@@ -36,7 +36,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
   def replace
     replacement = Tree::Workspace::Replacement.new(username: @user,
                                                    target: @tree_version_element,
-                                                   parent: parent_tve(@preferred_match),
+                                                   parent: parent_name,
                                                    instance_id: @preferred_match.standalone_instance_id,
                                                    excluded: @preferred_match.excluded?,
                                                    profile: profile)
@@ -57,8 +57,24 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
 
   private
 
-  def parent_tve(preferred_match)
-    @draft.name_in_version(preferred_match.name.parent)
+  def parent_name
+    if @preferred_match.intended_tree_parent_name.blank?
+      name_parent
+    else
+      intended_parent
+    end
+  end
+
+  def name_parent
+    @draft.name_in_version(@preferred_match.name.parent)
+  rescue StandardError => e
+    raise "Error identifying replace name parent in draft: #{e.to_s}"
+  end
+
+  def intended_parent
+    @draft.name_in_version(@preferred_match.intended_tree_parent_name)
+  rescue StandardError => e
+    raise "Error identifying intended replace parent in draft: #{e.to_s}"
   end
 
   # I did try to use the Tree::ProfileData class,

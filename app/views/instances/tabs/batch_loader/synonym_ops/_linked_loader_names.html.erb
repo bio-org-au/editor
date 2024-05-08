@@ -1,0 +1,9 @@
+  <% @instance.loader_names.each do |loader_name| %>
+    <% if loader_name.accepted? || loader_name.excluded? %>
+      <%= render partial: "instances/tabs/batch_loader/synonym_ops/linked_loader_names/accepted_or_excluded",
+                 locals: {loader_name: loader_name} %>
+    <% else %>
+      <%= render partial: "instances/tabs/batch_loader/synonym_ops/linked_loader_names/other_record_types",
+                     locals: {loader_name: loader_name} %>
+    <% end %>
+  <% end %>

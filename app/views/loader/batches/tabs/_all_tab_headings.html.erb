@@ -21,6 +21,17 @@
                       link_title: 'Edit batch',
                       tab_index: @tab_index,
                       prev_tab: '.search-result.loader-batches-details-tab', 
+                      next_tab: '.search-result.loader-batch-order-tab' } %> 
+
+  <%= render partial: 'loader/batches/tabs/tab',
+             locals: {first: false,
+                      last: false,
+                      this_tab: 'tab_ordering', 
+                      link_text: 'Ordering', 
+                      link_id: 'loader-batch-order-tab', 
+                      link_title: 'Ordering of loader name records',
+                      tab_index: @tab_index,
+                      prev_tab: '.search-result.loader-batches-edit-tab', 
                       next_tab: '.search-result.loader-batch-delete-tab' } %> 
 
   <%= render partial: 'loader/batches/tabs/tab',
@@ -31,7 +42,7 @@
                       link_id: 'loader-batch-delete-tab', 
                       link_title: 'Delete batch',
                       tab_index: @tab_index,
-                      prev_tab: '.search-result.loader-batches-edit-tab', 
+                      prev_tab: '.search-result.loader-batches-order-tab', 
                       next_tab: '.search-result.loader-batch-settings-tab' } %> 
 
   <%= render partial: 'loader/batches/tabs/tab',
@@ -39,11 +50,11 @@
                       last: false,
                       this_tab: 'tab_batch_review', 
                       link_text: 'New Review', 
-                      link_id: 'loader-batch-review-tab', 
-                      link_title: 'Create or edit batch reviews',
+                      link_id: 'loader-batches-review-tab', 
+                      link_title: 'Create batch review',
                       tab_index: @tab_index,
-                      prev_tab: '.search-result.loader-batches-details-tab', 
-                      next_tab: '.search-result.loader-batch-settings-tab' } %> 
+                      prev_tab: '.search-result.loader-batches-review-tab', 
+                      next_tab: '.search-result.loader-batch-details-tab' } %> 
   <% end %>
 
 </ul>

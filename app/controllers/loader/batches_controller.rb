@@ -17,7 +17,9 @@
 #   limitations under the License.
 #
 class Loader::BatchesController < ApplicationController
-  before_action :find_loader_batch, only: %i[show destroy tab update]
+  include Loader::Batches::MultiplySeqs
+  before_action :find_loader_batch,
+                only: %i[show destroy tab update multiply_seqs_by_10]
 
   def index; end
 

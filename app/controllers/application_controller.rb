@@ -195,6 +195,7 @@ class Hash
         s += "<li>#{key}: #{value}</li>"
       end
     end
+    s += '</ul>'
     s
   end
 end

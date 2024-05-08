@@ -615,10 +615,7 @@ having count(*) > 2
        on ln.loader_batch_id = lb.id
        join name 
        on tjv.name_id = name.id
-       join name_status ns
-       on name.name_status_id= ns.id
- where ns.name in ('legitimate','[n/a]')
-   and ln.record_type = 'synonym'
+ where ln.record_type = 'synonym'
    and not tjv.published
    and tjv.accepted_tree
    and ln.synonym_type not like '%partial%'
@@ -638,10 +635,7 @@ having count(*) > 2
        on ln.loader_batch_id = lb.id
        join name 
        on tjv.name_id = name.id
-       join name_status ns
-       on name.name_status_id= ns.id
- where ns.name in ('legitimate','[n/a]')
-   and ln.record_type = 'synonym'
+ where ln.record_type = 'synonym'
    and not tjv.published
    and tjv.accepted_tree
    and ln.synonym_type not like '%partial%'

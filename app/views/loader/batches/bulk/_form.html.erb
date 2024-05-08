@@ -4,7 +4,7 @@ Directives available here: <code>family: [family name string]</code>,  <code>acc
 <br>
 Wildcards are allowed but are <b>not</b> added automatically.<br>
 (Adding them automatically would stop you specifying non-wildcarded sets of names to process.)<br>
-Special usage for Create Preferred Matches, Create Draft Instances, and Add to Taxonomy - the <code>family:</code> directive can take a comma-separated list of family names <em>without</em> wildcards<br>
+The <code>family:</code> directive can take a comma-separated list of family names <em>without</em> wildcards (but not for Delete Syn Conflicts)
 <%= form_tag({controller: "loader/batch/bulk", action: "operation"}, method: "post", remote: true) do %>
 
   <div class="width-64em">
@@ -27,47 +27,69 @@ Special usage for Create Preferred Matches, Create Draft Instances, and Add to T
          value="Refresh Stats" class="btn btn-primary width-8em hidden"
          title="Refresh bulk operation statistics" formaction="loader/batches/bulk/stats" />
   <input id="create-matches-batch-submit" name="submit" type="submit" 
-         value="Create Preferred Matches" class="btn btn-primary width-15em"
+         value="Create Preferred Matches" class="btn btn-primary width-16em"
          title="Create preferred matches" formaction="loader/batches/bulk/matches" />
 
+  <input id="create-instances-batch-submit" name="submit" type="submit" 
+         value="Create Draft Instances" class="btn btn-primary width-16em" 
+         title="Create draft instances" formaction="loader/batches/bulk/instances" />
+
+
   <% if Rails.configuration.try(:batch_loader_delete_syn_conflicts_aware) %>
-  <input id="delete-syn-conflicts-batch-submit" name="submit" type="submit" 
-         value="Delete Syn Conflicts" class="btn btn-primary width-15em" method="post"
-         title="Delete Syn Conflicts" formaction="loader/batches/bulk/syn-conflicts" />
+       <br>
+       <br>
+      <%= link_to "Enable Delete Syn Conflicts", 
+        {controller: 'loader/batch/bulk', action: 'enable_delete_syn_conflict'},
+        {id: 'enable-delete-syn-conflict', class: 'btn btn-primary width-16em',
+         remote: true, title: "Enable the Add to draft taxonomy button",
+         method: :post} %>
+
+       <%= link_to "Disable Delete Syn Conflicts",
+         {controller: 'loader/batch/bulk', action: 'disable_delete_syn_conflict'},
+         {id: 'disable-delete-syn-conflict', class: 'btn btn-primary width-16em', style: 'display: none;',
+          remote: true, title: "Disable the Add to draft taxonomy button",
+          method: :post} %>
+        <input id="delete-syn-conflicts-batch-submit"
+               name="submit"
+               type="submit" 
+               value="Delete Syn Conflicts"
+               class="btn btn-primary width-16em"
+               method="post"
+               title="Delete Syn Conflicts" 
+               formaction="loader/batches/bulk/syn-conflicts"
+               disabled="true" />
+
   <% end %>
 
-  <input id="create-instances-batch-submit" name="submit" type="submit" 
-         value="Create Draft Instances" class="btn btn-primary width-15em" 
-         title="Create draft instances" formaction="loader/batches/bulk/instances" />
   <% if Rails.configuration.try('allow_batch_loader_tree_operations') %>
     <% if @working_draft.nil? %>
       <span>(Please choose a draft for taxonomy work)<span>
     <% else %>
-      <input id="add-instances-to-draft-taxonomy-batch-submit"
-             name="submit"
-             type="submit"
-             value="Add to draft taxonomy"
-             class="btn btn-primary width-15em"
-             title="Add instance to the draft taxonomy"
-             formaction="loader/batches/bulk/taxonomy"
-             disabled="true"/>
-      <br>
-      <br>
       <br>
       <br>
       <%= link_to "Enable Add to draft taxonomy", 
         {controller: 'loader/batch/bulk', action: 'enable_add'},
-        {id: 'enable-add', class: 'btn btn-primary',
+        {id: 'enable-add', class: 'btn btn-primary width-16em',
          remote: true, title: "Enable the Add to draft taxonomy button",
          method: :post} %>
 
        <%= link_to "Disable Add to draft taxonomy",
          {controller: 'loader/batch/bulk', action: 'disable_add'},
-         {id: 'disable-add', class: 'btn btn-primary', style: 'display: none;',
+         {id: 'disable-add', class: 'btn btn-primary width-16em', style: 'display: none;',
           remote: true, title: "Disable the Add to draft taxonomy button",
           method: :post} %>
+      <input id="add-instances-to-draft-taxonomy-batch-submit"
+             name="submit"
+             type="submit"
+             value="Add to draft taxonomy"
+             class="btn btn-primary width-16em"
+             title="Add instance to the draft taxonomy"
+             formaction="loader/batches/bulk/taxonomy"
+             disabled="true"/>
     <% end %>
   <% else %>
+      <br>
+      <br>
     Taxonomy operations not allowed by configuration
   <% end %>
 

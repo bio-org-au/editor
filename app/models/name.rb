@@ -49,6 +49,9 @@ class Name < ApplicationRecord
   has_many :name_tags, through: :name_tag_names
   has_many :tree_nodes # not sure what this is, looks like a thought bubble
   has_many :tree_elements
+  has_many :intended_tree_children,
+           class_name: "Loader::Name::Match",
+           foreign_key: "intended_tree_parent_name_id"
 
   SEARCH_LIMIT = 50
   DECLARED_BT = "DeclaredBt"

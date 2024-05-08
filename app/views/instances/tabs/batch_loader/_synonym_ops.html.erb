@@ -1,8 +1,7 @@
 
 
 <% if  @instance.loader_names.size > 0 %>
-  <%= render partial: "instances/tabs/batch_loader/synonym_ops/list_linked_loader_names" %>
-  <%= divider %>
+  <%= render partial: "instances/tabs/batch_loader/synonym_ops/linked_loader_names" %>
 <% elsif @instance.unpublished_citation? %>
   Unsourced synonyms don't get offered an action here
 <% elsif @instance.instance_type.name == 'trade name' %>

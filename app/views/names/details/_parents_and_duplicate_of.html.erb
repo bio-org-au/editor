@@ -4,7 +4,7 @@
     <% else %>
         within
     <% end %>
-    <%= link_to(@name.parent.try('full_name_html').try('html_safe'),
+    <%= link_to("#{@name.parent.try('full_name_html')}#{@name.parent.name_status.for_inline_display}".html_safe,
                 search_path(query_target: 'names', query_string: "id: #{@name.parent_id}"),
                 class: 'name',
                 tabindex: increment_tab_index,
@@ -13,7 +13,7 @@
 
 <% if @name.has_second_parent? %>
     and
-    <%= link_to(@name.second_parent.try('full_name_html').try('html_safe'),
+    <%= link_to("#{@name.second_parent.try('full_name_html')}#{@name.second_parent.name_status.for_inline_display}".html_safe,
                 search_path(query_target: "names", query_string: "id:#{@name.second_parent_id}"),
                 class: 'rebeccapurple',
                 tabindex: increment_tab_index,

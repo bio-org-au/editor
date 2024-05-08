@@ -1,0 +1,9 @@
+
+      <%= link_to(loader_name.simple_name,
+                search_path(query_target: "loader_names",
+                            query_string: "id: #{loader_name.id} batch-id: #{loader_name.loader_batch.id}"),
+                            title: "Show the linked loader name record",
+                            class: "blue") %>
+
+        is in batch <i><%= loader_name.loader_batch.name %></i> 
+        as <%= loader_name.record_type.with_indefinite_article %> record

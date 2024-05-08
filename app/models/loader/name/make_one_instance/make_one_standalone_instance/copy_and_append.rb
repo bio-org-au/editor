@@ -27,9 +27,11 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
     @task_start_time = Time.now
   end
 
+  # ToDo: break into smaller parts
   def create
     debug("create")
-    created = declined = errors = 0
+    created = 0
+    error_h = {errors: 0, error_reasons: {}}
     return no_def_ref if @loader_name.loader_batch.default_reference.blank?
     return no_source_for_copy if @match.source_for_copy.blank?
 
@@ -49,7 +51,6 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
           .reject {|s| s.instance_type.unsourced}
           .reject {|s| s.instance_type.name == 'trade name'}
           .each do |source_synonym|
-      debug("copy syn #{source_synonym.id}")
       new_syn = Instance.new
       new_syn.cites_id = source_synonym.cites_id
       new_syn.cited_by_id = @new_standalone.id
@@ -63,11 +64,11 @@ class Loader::Name::MakeOneInstance::MakeOneStandaloneInstance::CopyAndAppend
         syns_copied += 1
         log_to_table("#{Constants::COPIED_SYN} #{new_syn.name.full_name}")
       rescue StandardError => e
-        errors += 1
+        error_h.deep_merge!({errors: 1, error_reasons: {e.to_s.to_sym => 1} }) { |key, old, new| old + new }
         log_to_table("#{Constants::FAILED_SYN} #{e} for #{new_syn.name.full_name}")
       end
     end
-    {creates: created + syns_copied}
+    error_h.deep_merge!({creates: created + syns_copied}) { |key, old, new| old + new }
   end
 
   def create_the_standalone

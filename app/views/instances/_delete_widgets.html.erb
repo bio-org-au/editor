@@ -77,8 +77,27 @@
                 title: "Query the instances.") %>
     <br> 
   <% end %>
-  <% if @instance.linked_to_loader_name_matches? %>
-    Instance is linked to a matched name in the batch loader.
+
+  <%# Code should be cleaned up once loader tables are in all databases %>
+  <% if Rails.configuration.try(:batch_loader_aware) %>
+    <% if @instance.linked_to_loader_name_matches? %>
+      Instance is linked to
+      <% Loader::Name::Match.where(instance_id: @instance.id).each do |loader_name_match|%>
+        <%= link_to("#{loader_name_match.loader_name.simple_name}",
+             search_path(query_string: "id: #{loader_name_match.loader_name.id}", query_target: 'loader_name'),
+             title: "Query the loader names.") %>
+      <% end %>
+      <% Loader::Name::Match.where(standalone_instance_id: @instance.id).each do |loader_name_match|%>
+         <%= link_to("#{loader_name_match.loader_name.simple_name}",
+             search_path(query_string: "id: #{loader_name_match.loader_name.id}", query_target: 'loader_name'),
+             title: "Query the loader names.") %>
+      <% end %>
+      <% Loader::Name::Match.where(relationship_instance_id: @instance.id).each do |loader_name_match|%>
+         <%= link_to("#{loader_name_match.loader_name.simple_name}",
+             search_path(query_string: "id: #{loader_name_match.loader_name.id}", query_target: 'loader_name'),
+             title: "Query the loader names.") %>
+      <% end %> in the batch loader.<br>
+    <% end %>
   <% end %>
   <br>
 <% end %>

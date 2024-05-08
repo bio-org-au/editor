@@ -132,7 +132,7 @@ class Name::AsTypeahead::ForParent
                .group(GROUP_BY)
                .collect do |n|
       { value: "#{n.full_name} | #{n.name_rank_name} | " \
-               "#{n.name_status_name} | " \
+        "#{n.name_status_name}#{n.pipe_for_name_status}" \
                "#{instance_phrase(n.instance_count)} ",
         id: n.id,
         family_id: n.family_id,

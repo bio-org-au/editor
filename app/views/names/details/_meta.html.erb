@@ -1,9 +1,9 @@
 Name #<%= @name.id %>
 <br>
 <%= created_by_whom_and_when(@name).html_safe %>
-<% if @name.source_system %>
-  <br>Loaded from <%= "#{@name.namespace.name} #{@name.source_system.downcase}.#{@name.source_id}" %>
-<% end %>
 <br>
 <%= updated_by_whom_and_when(@name).html_safe %>
+<% if @name.source_system %>
+  <br>Migrated from <%= "#{@name.source_system.downcase} ##{@name.source_id}" %>
+<% end %>
 

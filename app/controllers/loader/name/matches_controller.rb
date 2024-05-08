@@ -362,7 +362,7 @@ class Loader::Name::MatchesController < ApplicationController
   end
 
   def set_intended_tree_parent
-    @match.intended_tree_parent_instance_id = loader_name_match_params[:intended_tree_parent_instance_id]
+    @match.intended_tree_parent_name_id = loader_name_match_params[:intended_tree_parent_name_id]
     save_if_changed("Updated", "No change")
   rescue StandardError => e
     logger.error(e.to_s)
@@ -371,7 +371,7 @@ class Loader::Name::MatchesController < ApplicationController
   end
 
   def clear_intended_tree_parent
-    @match.intended_tree_parent_instance_id = nil
+    @match.intended_tree_parent_name_id = nil
     save_if_changed("Cleared", "No change")
   rescue StandardError => e
     logger.error(e.to_s)
@@ -412,6 +412,6 @@ class Loader::Name::MatchesController < ApplicationController
                                               :use_batch_default_reference,
                                               :copy_append_from_existing_use_batch_def_ref,
                                               :source_for_copy_instance_id,
-                                              :intended_tree_parent_instance_id)
+                                              :intended_tree_parent_name_id)
   end
 end

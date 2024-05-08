@@ -42,8 +42,19 @@ module NameScopable
     scope :select_fields_for_typeahead,
           (lambda do
              select(" name.id, name.full_name, name_rank.name name_rank_name,
-                    name_status.name name_status_name")
+                    name_status.name name_status_name,
+                    case name_status.name
+                      when 'legitimate' then null
+                      when '[n/a]' then null
+                      else name_status.name
+                    end name_status_name,
+                    case name_status.name
+                      when 'legitimate' then null
+                      when '[n/a]' then null
+                      else ' | '
+                    end pipe_for_name_status")
            end)
+          
     # sorry this repeated code forced on me by needing to set the name of name.full_name
     scope :order_by_rank_and_full_name_for_parent_typeahead,
           -> { order("name_rank.sort_order, lower(name.full_name)") }
@@ -58,9 +69,20 @@ module NameScopable
              select(" name.id, name.full_name, name.family_id,
                     families_name.full_name family_full_name,
                     name_rank.name name_rank_name,
-                    name_status.name name_status_name, count(instance.id)
-                    instance_count")
+                    name_status.name name_status_name,
+                    count(instance.id) instance_count,
+                    case name_status.name 
+                      when 'legitimate' then null
+                      when '[n/a]' then null
+                      else name_status.name
+                    end name_status_name,
+                    case name_status.name
+                      when 'legitimate' then null
+                      when '[n/a]' then null
+                      else ' | '
+                    end pipe_for_name_status")
            end)
+
     scope :select_fields_for_family_typeahead,
           (lambda do
             select(" name.id, name.full_name,

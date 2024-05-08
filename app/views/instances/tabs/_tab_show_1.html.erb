@@ -66,5 +66,8 @@
 <%= created_by_whom_and_when(@instance).html_safe %>
 <br>
 <%= updated_by_whom_and_when(@instance).html_safe %>
-<%= render partial: 'detail_line', locals: {label: 'System', info: "#{@instance.namespace.name}#{%Q(.#{@instance.source_system.downcase}.#{@instance.source_id}) if @instance.source_system}"} %>
 
+
+<% if @instance.source_system %>
+  <br>Migrated from <%= "#{@instance.source_system.downcase} ##{@instance.source_id}" %>
+<% end %>

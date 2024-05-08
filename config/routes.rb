@@ -371,6 +371,9 @@ Rails.application.routes.draw do
   match "/trees/run/valrep", as: "run_valrep", to: "trees#run_valrep", via: :get
 
   namespace :loader do
+    match "batches/:id/prep_multiply_seqs_by_10", as: "batch_prep_multiply_seqs_by_10", to: "batches#prep_multiply_seqs_by_10", via: :post
+    match "batches/:id/cancel_multiply_seqs_by_10", as: "batch_cancel_multiply_seqs_by_10", to: "batches#cancel_multiply_seqs_by_10", via: :post
+    match "batches/:id/multiply_seqs_by_10", as: "batch_multiply_seqs_by_10", to: "batches#multiply_seqs_by_10", via: :post
     match "batches/new_row", as: "batch_new_row", to: "batches#new_row", via: :get
     match "batches/new/:random_id", as: "batch_new_with_random_id", to: "batches#new", via: :get
     match "batches/default_reference_suggestions", as: "batches_default_reference_suggestions",
@@ -408,6 +411,14 @@ Rails.application.routes.draw do
                                         via: :post
   match "loader/batch/bulk/disable_add", as: "loader_batch_bulk_disable_add", to: "loader/batch/bulk#disable_add",
                                          via: :post
+  match "loader/batch/bulk/enable_delete_syn_conflict",
+        as: "loader_batch_bulk_enable_delete_syn_conflict",
+        to: "loader/batch/bulk#enable_delete_syn_conflict",
+        via: :post
+  match "loader/batch/bulk/disable_delete_syn_conflict",
+        as: "loader_batch_bulk_disable_delete_syn_conflict",
+        to: "loader/batch/bulk#disable_delete_syn_conflict",
+        via: :post
 
   namespace :loader do
     resources :names, only: [:new]

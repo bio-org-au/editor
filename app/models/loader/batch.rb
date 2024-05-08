@@ -90,4 +90,13 @@ class Loader::Batch < ActiveRecord::Base
       "No change"
     end
   end
+  
+  def first_n_seq(n = 1)
+    self.loader_names.order(:seq).limit(n).pluck(:seq)
+  end
+
+  def last_n_seq(n = 1)
+    self.loader_names.order(seq: :desc).limit(n).pluck(:seq)
+  end
+
 end

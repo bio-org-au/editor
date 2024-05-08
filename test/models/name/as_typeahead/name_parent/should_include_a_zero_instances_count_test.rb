@@ -34,7 +34,7 @@ class ShouldIncludeAZeroInstancesCount < ActiveSupport::TestCase
     assert(typeahead.suggestions.is_a?(Array), "suggestions should be an array")
     assert(typeahead.suggestions.size == 1,
            'suggestions for "a genus without an instance" should have a record')
-    assert_match "genus without an instance | Genus | legitimate | 0 instances",
+    assert_match "genus without an instance | Genus | 0 instances",
                  typeahead.suggestions.first[:value],
                  "Name par typeahead needs right val with a 0 instances count"
   end

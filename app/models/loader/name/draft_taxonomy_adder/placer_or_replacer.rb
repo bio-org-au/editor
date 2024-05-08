@@ -46,7 +46,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
         debug "No instance, therefore cannot place this on the Taxonomy."
       elsif preferred_match.drafted?
         debug "Stopping because already drafted."
-      elsif @draft.name_in_version(preferred_match.name.parent).blank?
+      elsif @draft.name_in_version(parent_name(preferred_match)).blank?
         raise "No parent on tree, cannot proceed"
       else
         @tree_version_element = @draft.name_in_version(preferred_match.name)
@@ -72,6 +72,14 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
 
   def debug(msg)
     Rails.logger.debug("Loader::Name::DraftTaxonomyAdder::PlaceOrReplace: #{msg}")
+  end
+
+  def parent_name(preferred_match)
+    if preferred_match.intended_tree_parent_name.blank?
+      preferred_match.name.parent
+    else
+      preferred_match.intended_tree_parent_name
+    end
   end
 
   def place_name(preferred_match)

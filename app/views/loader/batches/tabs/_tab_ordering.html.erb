@@ -1,0 +1,42 @@
+<h5>Ordering</h5>
+
+<% if @loader_batch.use_sort_key_for_ordering? %>
+  This batch uses the sort_key field for ordering.
+<% else %>
+  This batch uses integers in a sequence field for ordering the names.
+  You may want to open up gaps between sequence numbers to place new records or re-order existing records.
+  The button on this tab allows you to multiply all sequence values by 10 to open gaps.
+  <br>
+  <br>
+  First three sequence numbers: 
+  <%= @loader_batch.first_n_seq(3) %>
+  <br>
+  Last three sequence numbers: 
+  <%= @loader_batch.last_n_seq(3).reverse %>
+
+  <br>
+  <br>
+  <br>
+  <%= button_to "Multiply all seq by 10", loader_batch_prep_multiply_seqs_by_10_path, 
+    id: 'prep-multiply', remote: true, class: 'btn btn-warning width-15em pull-right',
+    title: 'Click here to multiply all sequence numbers by 10' %>
+  <br>
+  <br>
+  <%= button_to "Confirm multiply all seq by 10", loader_batch_multiply_seqs_by_10_path, 
+      id: 'confirm-multiply', remote: true, class: 'btn btn-danger width-15em hidden pull-right',
+      title: 'Click here to confirm you want to multiply all sequence numbers by 10' %>
+  <br>
+  <br>
+  <%= button_to "Cancel", loader_batch_cancel_multiply_seqs_by_10_path, 
+      id: 'cancel-multiply', remote: true, class: 'btn btn-default width-5em hidden cancel-link pull-right',
+      title: 'Click here to cancel the multiply action' %>
+  <br>
+
+<% end %>
+<br>
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+
+
+ 
+

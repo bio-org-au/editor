@@ -29,6 +29,7 @@ class Loader::Name < ActiveRecord::Base
   include HeadingRecord
   include Misapplieds
   include Doubt
+  include SeqGapMaker
   attr_accessor :add_sibling_synonyms
   attr_accessor :add_sourced_synonyms
 
@@ -54,6 +55,7 @@ class Loader::Name < ActiveRecord::Base
   validates :simple_name_as_loaded, presence: true
   validates :full_name, presence: true
   validate :validate_distribution
+  validate :parent_must_be_accepted_or_excluded
 
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
   alias_attribute :batch, :loader_batch
@@ -517,5 +519,13 @@ class Loader::Name < ActiveRecord::Base
 
 
     errors.add(:distribution, dv.error)
+  end
+
+  def parent_must_be_accepted_or_excluded
+    return if parent.blank?
+    return if parent.accepted?
+    return if parent.excluded?
+
+    errors.add(:parent_id, 'Must be accepted or excluded')
   end
 end

@@ -138,7 +138,7 @@
 <br>
 <%= updated_by_whom_and_when(@reference).html_safe %>
 <% if @reference.source_system %>
-  <br>Loaded from <%= "#{@reference.namespace.name} #{@reference.source_system.downcase}.#{@reference.source_id}" %>
+  <br>Migrated from <%= "#{@reference.source_system.downcase} ##{@reference.source_id}" %>
 <% end %>
 
 

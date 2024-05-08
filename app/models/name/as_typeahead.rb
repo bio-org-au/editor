@@ -56,11 +56,12 @@ class Name::AsTypeahead < Name
   def self.hybrid_parent_suggestions(term, avoid_id, rank_id = -1)
     logger.debug("hybrid_parent_suggestions term: #{term}
                  avoiding: #{avoid_id} for rank: #{rank_id}")
-    if term.blank?
+    term_for_query = term.strip
+    if term_for_query.blank?
       results = []
     else
       query = Name.not_a_duplicate
-                  .full_name_like(term)
+                  .full_name_like(term_for_query)
                   .avoids_id(avoid_id.try("to_i") || -1)
                   .joins(:name_rank)
                   .joins(:name_status)
@@ -78,7 +79,8 @@ class Name::AsTypeahead < Name
                 query.name_rank_not_unranked
               end
       query = query.collect do |n|
-        { value: "#{n.full_name} | #{n.name_rank_name}", id: n.id }
+        { value: "#{n.full_name} | #{n.name_rank_name}#{n.pipe_for_name_status}" \
+               "#{n.name_status_name} ", id: n.id }
       end
       results = query
     end

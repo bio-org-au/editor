@@ -37,6 +37,8 @@ class Loader::Batch::BulkController < ApplicationController
 
   def enable_add; end
   def disable_add; end
+  def enable_delete_syn_conflict; end
+  def disable_delete_syn_conflict; end
 
   def stats
     @stats = Loader::Batch::Stats::Reporter.new(

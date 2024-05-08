@@ -1,3 +1,69 @@
+- :date: 09-May-2024
+  :jira_id: '5014'
+  :description: |-
+    Loader: Put the link to the <code>loader_name</code> record on the same line as the boiler plate text
+- :date: 06-May-2024
+  :jira_id: '5014'
+  :description: |-
+    Loader: Make text indicating <code>instance</code> is linked to <code>loader_name</code> into clickable link
+- :date: 06-May-2024
+  :jira_id: '5053'
+  :description: |-
+    Loader: Re-arrange batch work area buttons to make it harder to press delete-syn-conflicts button accidentally
+- :date: 06-May-2024
+  :jira_id: '5035'
+  :description: |-
+    Loader: Revision of adjustments to use of nominated parent - now selecting just a name
+- :date: 01-May-2024
+  :jira_id: '4998'
+  :description: |-
+    Source system meta data: Standardised the display across Author, Instance, Name, and Reference.
+- :date: 01-May-2024
+  :jira_id: '5046'
+  :description: |-
+    Loader: Add Batch feature to increase seq gaps - a button to multiply all sequence values by ten on a new Order tab
+- :date: 30-Apr-2024
+  :jira_id: '5045'
+  :description: |-
+    Loader: Don't offer incorrect relationships when "flipping" accepted name
+- :date: 30-Apr-2024
+  :jira_id: '5043'
+  :description: |-
+    Loader: Add validation to prevent an invalid record-type being saved as a <code>loader_name</code> parent record
+- :date: 30-Apr-2024
+  :jira_id: '5035'
+  :description: |-
+    Loader: Use user-nominated parent in add to draft tree
+- :date: 29-Apr-2024
+  :jira_id: '5042'
+  :description: |-
+    Loader: Reinstate success message when saving via loader Edit tab
+- :date: 29-Apr-2024
+  :jira_id: '5024'
+  :description: |-
+    Loader: Relax requirement for name to have only legitimate or n/a status in synonymy conflict report and removal
+- :date: 29-Apr-2024
+  :jira_id: '5041'
+  :description: |-
+    Loader: Fix indenting of error and decline reasons in job summary
+- :date: 29-Apr-2024
+  :jira_id: '5018'
+  :description: |-
+    Loader: Include synonymy creation failure in log summary
+- :date: 29-Apr-2024
+  :jira_id: '5040'
+  :description: |-
+    Loader: Fix Loader tab explanation of <code>family</code> search directive with comma-separated values
+- :date: 23-Apr-2024
+  :jira_id: '5033'
+  :description: |-
+    Show the nomenclatural status of Names listed in the Name parent suggestions on the Edit tab
+- :date: 23-Apr-2024
+  :jira_id: '5032'
+  :description: |-
+    Show the nomenclatural status for Name parent or parents on the Details tab
+- :date: 24-Apr-2024
+  :release: true
 - :date: 22-Apr-2024
   :jira_id: '5029'
   :description: |-
