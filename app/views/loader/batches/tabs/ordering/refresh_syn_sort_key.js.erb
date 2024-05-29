@@ -1,0 +1,9 @@
+$('.message-container').html('');
+$('input#name').focus();
+$('#search-result-details-info-message-container').html('<%= @message %>');
+
+$('#confirm-refresh').addClass('hidden');
+$('#cancel-refresh').addClass('hidden');
+$('#prep-refresh').attr('disabled', false);
+
+setTimeout(function(){$('ul.nav-tabs li.active a.tab').click()},3000);

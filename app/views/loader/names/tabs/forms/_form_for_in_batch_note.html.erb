@@ -10,7 +10,6 @@
     <div id="search-result-details-error-message-container" class="message-container"></div>
 
     <% if loader_name.new_record? %>
-
       <b>Batch:</b><br>
       <% if session[:default_loader_batch_name].blank? %>
         <span class='red'>No default batch! Please set a default batch first.</span>
@@ -25,6 +24,7 @@
     <br>
 
     <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
+    <%= f.hidden_field :rank, value: 'none' %>
 
     <div class="form-group">
       <label for="record_type">Record type - note visible to all or a compiler note*</label>

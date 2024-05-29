@@ -18,7 +18,7 @@ module Instance::ForCopyToLoaderName
     loader_name.simple_name = name.simple_name
     loader_name.full_name = name.full_name
     loader_name.family = name.family.simple_name
-    loader_name.rank = name.name_rank.name.downcase
+    loader_name.rank = name.name_rank.display_name.downcase
     loader_name.name_status = name.name_status.name.downcase.sub(/\Alegitimate\z/,'')
     loader_name.record_type = name.excluded_concept? ? 'excluded' : 'accepted'
     loader_name.loaded_from_instance_id = self.id
@@ -32,7 +32,7 @@ module Instance::ForCopyToLoaderName
     loader_name.simple_name = name.simple_name
     loader_name.full_name = name.full_name
     loader_name.family = name.family.simple_name
-    loader_name.rank = name.name_rank.name.downcase
+    loader_name.rank = name.name_rank.display_name.downcase
     loader_name.record_type = 'accepted'
     loader_name.loaded_from_instance_id = self.id
     loader_name.name_status = name.name_status.name.downcase.sub(/\Alegitimate\z/,'')

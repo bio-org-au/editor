@@ -1,7 +1,9 @@
 $('.message-container').html('');
 <% if params[:random_id].blank? %>
   $('#search-result-details-info-message-container').html("<%= escape_javascript(@message||'Created') %>");
+  $('#search-result-details-info-message-container2').html("<%= escape_javascript(@message||'Created') %>");
   $('#loader-name-save').addClass('hidden');
+  $('#loader-name-save2').addClass('hidden');
   $('#loader-name-cancel').addClass('hidden');
   setTimeout(function(){$('#instance-batch-loader-tab').click()},1000);
 <% else %>

@@ -7,7 +7,7 @@
       <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
     </div>
     <div id="search-result-details-info-message-container" class="message-container"></div>
-    <div id="search-result-details-error-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container error-container"></div>
 
     <% if loader_name.new_record? %>
 
@@ -97,5 +97,5 @@
       <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
     </div>
     <div id="search-result-details-info-message-container2" class="message-container"></div>
-    <div id="search-result-details-error-message-container2" class="message-container"></div>
+    <div id="search-result-details-error-message-container2" class="message-container error-container"></div>
 <% end %>

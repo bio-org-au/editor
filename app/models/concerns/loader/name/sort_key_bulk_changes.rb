@@ -12,7 +12,36 @@ module Loader::Name::SortKeyBulkChanges
       batch.loader_names.where(record_type: record_type).each do |rec|
         puts "#{rec.simple_name} - #{rec.sort_key}"
         rec.sort_key = nil
-        rec.set_sort_key
+        rec.set_sort_key_if_blank
+        rec.save!
+        n += 1
+        puts "#{rec.simple_name} - #{rec.sort_key}"
+      end
+      puts n
+    end
+
+    def set_short_sort_key_for_synonyms(batch)
+      n = 0
+      batch.loader_names.where(record_type: 'synonym').each do |rec|
+        puts "#{rec.simple_name} - #{rec.sort_key}"
+        rec.sort_key = nil
+        rec.set_short_sort_key
+        rec.save!
+        n += 1
+        puts "#{rec.simple_name} - #{rec.sort_key}"
+      end
+      puts n
+    end
+
+    def set_sort_keys_if_blank(batch, record_type)
+      n = 0
+      batch.loader_names
+        .where(record_type: record_type)
+        .where(sort_key: nil)
+        .each do |rec|
+        puts "#{rec.simple_name} - #{rec.sort_key}"
+        rec.sort_key = nil
+        rec.set_sort_key_if_blank
         rec.save!
         n += 1
         puts "#{rec.simple_name} - #{rec.sort_key}"
@@ -48,6 +77,15 @@ module Loader::Name::SortKeyBulkChanges
       set_sort_key(batch, "excluded")
       set_sort_key(batch, "synonym")
       set_sort_key(batch, "misapplied")
+      set_sort_key_for_in_batch_note(batch)
+    end
+
+    def set_sort_key_if_null_for_all_record_types(batch)
+      set_sort_keys_if_blank(batch, "heading")
+      set_sort_keys_if_blank(batch, "accepted")
+      set_sort_keys_if_blank(batch, "excluded")
+      set_sort_keys_if_blank(batch, "synonym")
+      set_sort_keys_if_blank(batch, "misapplied")
       set_sort_key_for_in_batch_note(batch)
     end
   end # class_methods

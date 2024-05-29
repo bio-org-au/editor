@@ -18,9 +18,10 @@
 #
 class Loader::BatchesController < ApplicationController
   include Loader::Batches::MultiplySeqs
+  include Loader::Batches::RefreshSortKey
   before_action :find_loader_batch,
-                only: %i[show destroy tab update multiply_seqs_by_10]
-
+                only: %i[show destroy tab update multiply_seqs_by_10
+                         refresh_syn_sort_keys]
   def index; end
 
   # Sets up RHS details panel on the search results page.

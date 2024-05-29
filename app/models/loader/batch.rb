@@ -18,6 +18,7 @@
 #
 # Loader Batch entity
 class Loader::Batch < ActiveRecord::Base
+  include SortKey
   strip_attributes
   self.table_name = "loader_batch"
   self.primary_key = "id"
@@ -98,5 +99,4 @@ class Loader::Batch < ActiveRecord::Base
   def last_n_seq(n = 1)
     self.loader_names.order(seq: :desc).limit(n).pluck(:seq)
   end
-
 end

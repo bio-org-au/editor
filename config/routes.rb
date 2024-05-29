@@ -374,6 +374,9 @@ Rails.application.routes.draw do
     match "batches/:id/prep_multiply_seqs_by_10", as: "batch_prep_multiply_seqs_by_10", to: "batches#prep_multiply_seqs_by_10", via: :post
     match "batches/:id/cancel_multiply_seqs_by_10", as: "batch_cancel_multiply_seqs_by_10", to: "batches#cancel_multiply_seqs_by_10", via: :post
     match "batches/:id/multiply_seqs_by_10", as: "batch_multiply_seqs_by_10", to: "batches#multiply_seqs_by_10", via: :post
+    match "batches/:id/prep_refresh_syn_sort_key", as: "batch_prep_refresh_syn_sort_key", to: "batches#prep_refresh_syn_sort_key", via: :post
+    match "batches/:id/cancel_refresh_syn_sort_key", as: "batch_cancel_refresh_syn_sort_key", to: "batches#cancel_refresh_syn_sort_key", via: :post
+    match "batches/:id/refresh_syn_sort_key", as: "batch_refresh_syn_sort_key", to: "batches#refresh_syn_sort_keys", via: :post
     match "batches/new_row", as: "batch_new_row", to: "batches#new_row", via: :get
     match "batches/new/:random_id", as: "batch_new_with_random_id", to: "batches#new", via: :get
     match "batches/default_reference_suggestions", as: "batches_default_reference_suggestions",

@@ -1,3 +1,41 @@
+- :date: 16-May-2024
+  :jira_id: '5068'
+  :description: |-
+    Loader: Standardise number/position of error messages when saving without rank
+- :date: 16-May-2024
+  :jira_id: '5069'
+  :description: |-
+    Loader: Make 'none' the default rank for in-batch notes
+- :date: 15-May-2024
+  :jira_id: '5065'
+  :description: |-
+    Loader: Use <code>display_name</code> for rank-denoting terms when adding <code>names</code> to batch
+- :date: 15-May-2024
+  :jira_id: '5066'
+  :description: |-
+    Loader: Set rank value for <code>loader_name</code> records being copied as sibling <code>synonyms</code> from <code>name</code> data
+- :date: 15-May-2024
+  :jira_id: '5063'
+  :description: |-
+    Loader: Stop edit forms setting rank to fixed values for headers, synonyms, misapplieds.  Set rank to 'no-rank' for notes. Rank query with no argument looks for null values.
+- :date: 15-May-2024
+  :jira_id: '5062'
+  :description: |-
+    Loader: Editor will insist on a <code>loader_name.rank</code> value
+- :date: 15-May-2024
+  :jira_id: '4829'
+  :description: |-
+    Loader: Reverse the order of <code>simple_name</code> and <code>full_name</code> on data entry forms
+- :date: 14-May-2024
+  :jira_id: '5057'
+  :description: |-
+    Loader: Switch to use <code>taxon_name_usage_v</code> to set a batch's synonym <code>sort_key</code> values in bulk. Task runs slower but has better coverage.
+- :date: 10-May-2024
+  :jira_id: '5057'
+  :description: |-
+    Loader: Added feature to let user set a batch's synonym <code>sort_key</code> values in bulk using <code>taxon_mv_new</code> as a trial
+- :date: 09-May-2024
+  :release: true
 - :date: 09-May-2024
   :jira_id: '5014'
   :description: |-

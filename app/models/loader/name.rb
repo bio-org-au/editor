@@ -50,6 +50,7 @@ class Loader::Name < ActiveRecord::Base
 
   validates :record_type, presence: true
   validate :validate_family_record
+  validates :rank, presence: true
   validates :family, presence: true
   validates :simple_name, presence: true
   validates :simple_name_as_loaded, presence: true

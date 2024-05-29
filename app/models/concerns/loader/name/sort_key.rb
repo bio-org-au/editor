@@ -3,13 +3,17 @@ module Loader::Name::SortKey
 
   def consider_sort_key
     if loader_batch.use_sort_key_for_ordering
-      set_sort_key
+      set_sort_key_if_blank
     else
       self.sort_key = nil
     end
   end
 
-  def set_sort_key
+  # If a user sets a sort key we want to respect that
+  # so don't over-write it
+  # Conversely, if a user wants a sort_key reset they can simply
+  # blank it out and hit save.
+  def set_sort_key_if_blank
     normalise_sort_key unless sort_key.blank?
     if sort_key.blank?
       case record_type
@@ -41,12 +45,32 @@ module Loader::Name::SortKey
     raise
   end
 
+  # This is for when we are combining our sort_key algorithm with a synonym sort 
+  # value from taxon_mv(_new) - we want enough of a sort_key for the synonym
+  # to place it under its parent, but not enough to determine its sorting
+  # position within other synonyms for that parent.
+  def set_short_sort_key
+    normalise_sort_key unless sort_key.blank?
+    if sort_key.blank? && record_type == 'synonym'
+      self.sort_key = synonym_short_sort_key(parent.sort_key)
+    end
+  rescue StandardError => e
+    puts e
+    puts "set_short_sort_key: record_type: #{record_type}; rank: #{rank}; family: #{family}"
+    raise
+  end
+
   def normalise_sort_key
     self.sort_key = sort_key.downcase unless sort_key == sort_key.downcase
   end
 
   def synonym_sort_key(parent_sort_key, syn_type = synonym_type)
     "#{parent_sort_key}.a-syn.#{synonym_sort_key_tail(syn_type)}"
+  end
+
+  # This is designed to leave detailed syn ordering to a key from taxon_mv
+  def synonym_short_sort_key(parent_sort_key, syn_type = synonym_type)
+    "#{parent_sort_key}.a-syn."
   end
 
   def misapp_sort_key(parent_sort_key)

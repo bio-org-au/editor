@@ -1,4 +1,9 @@
 <%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
+    <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container error-container"></div>
+
+    <br>
 
     <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
@@ -6,7 +11,7 @@
 
     <div class="form-group">
       <label for="rank">Rank</label>
-      <%= f.text_field :rank, value: 'species', class: 'form-control', title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_field :rank, class: 'form-control', title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <div class="form-group">
@@ -75,7 +80,7 @@
         </div>
     <% end %>
 
-    <%= f.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
-    <div id="search-result-details-info-message-container" class="message-container"></div>
-    <div id="search-result-details-error-message-container" class="message-container"></div>
+    <%= f.submit "Save", id: 'loader-name-save2', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+    <div id="search-result-details-info-message-container2" class="message-container"></div>
+    <div id="search-result-details-error-message-container2" class="message-container error-container"></div>
 <% end %>

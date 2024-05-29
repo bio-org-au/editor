@@ -17,6 +17,8 @@ module Loader::Name::SiblingSynonyms
                                simple_name_as_loaded: instance.name.simple_name,
                                full_name: instance.name.full_name,
                                family: instance.name.family.simple_name,
+                               rank: instance.name.name_rank.display_name
+                                       .downcase,
                                doubtful: instance.instance_type.doubtful,
                                loaded_from_instance_id: instance.id,
                                created_manually: true,
