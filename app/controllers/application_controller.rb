@@ -5,7 +5,8 @@ class ApplicationController < ActionController::Base
                 :check_system_broadcast,
                 :authenticate,
                 :authorise,
-                :set_view_mode
+                :set_view_mode,
+                :set_session_default_loader_batch_name
   #  around_action :user_tagged_logging
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :show_login_page
@@ -178,18 +179,25 @@ class ApplicationController < ActionController::Base
 
     @view_mode = session[:view_mode] = ViewMode::REVIEW
   end
+
+  def set_session_default_loader_batch_name
+    return if session[:default_loader_batch_id].blank?
+
+    session[:default_loader_batch_name] =
+      Loader::Batch.find(session[:default_loader_batch_id]).name
+  end
 end
 
 class Hash
   def to_html_list
     s = '<ul>'
-    self.each do |key, value| 
+    self.sort.to_h.each do |key, value| 
 
       if value.nil?
-        s += "<li>#{key}</li>"
+      #  s += "<li>#{key}</li>"
       elsif value.is_a?(Hash)
         s += "<li>#{key}<ul>"
-        s += value.to_html_list
+        s += value.sort.to_h.to_html_list
         s += "</ul></li>"
       else
         s += "<li>#{key}: #{value}</li>"

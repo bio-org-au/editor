@@ -1,3 +1,55 @@
+- :date: 22-May-2024
+  :jira_id: '5081'
+  :description: |-
+    Loader: Offer the 'Clear the matches' button on Details if a preferred match is found but not amongst the candidate matches
+- :date: 22-May-2024
+  :jira_id: '5062'
+  :description: |-
+    Loader: Fix missing rank value error when copying instance with synonym to loader
+- :date: 21-May-2024
+  :jira_id: '5078'
+  :description: |-
+    Loader: Improve use of batch name in queries, especially if default batch name is changed
+- :date: 21-May-2024
+  :jira_id: '5079'
+  :description: |-
+    Loader: Some improvements to Loader Batch query and display
+- :date: 20-May-2024
+  :jira_id: '5055'
+  :description: |-
+    Loader: Improve how the Batch menu works and hide the De-duplicate tab
+- :date: 20-May-2024
+  :jira_id: '5048'
+  :description: |-
+    Loader: Improve job report summaries - sort the name-value pairs for output 
+- :date: 20-May-2024
+  :jira_id: '5054'
+  :description: |-
+    Loader: Log declines for Remove/Delete Syn Conflicts jobs in standard firebrick colour with standard initial wording
+- :date: 17-May-2024
+  :jira_id: '5057'
+  :description: |-
+    Loader: Added feature flag <code>batch_loader_usage_order_aware</code> to show or hide the <code>sort_key/useage_order</code> trial
+- :date: 17-May-2024
+  :jira_id: ''
+  :description: |-
+    Security: Merged two dependabot patches
+- :date: 17-May-2024
+  :jira_id: '5019'
+  :description: |-
+    Loader: Allow multiple comma-separated arguments for the <code>family</code> and <code>families</code> search directives
+- :date: 17-May-2024
+  :jira_id: '5013'
+  :description: |-
+    Loader: Stop flagging synonyms as clashing with names in taxonomy if the synonym <code>loader_name_match</code> record has a partial relationship type
+- :date: 16-May-2024
+  :jira_id: '5073'
+  :description: |-
+    Loader: Stop auto-refreshing the loader-name edit tab after form changes are saved or a save is attempted
+- :date: 16-May-2024
+  :jira_id: '5067'
+  :description: |-
+    Loader: Make rank field mandatory on entry and update
 - :date: 16-May-2024
   :jira_id: '5068'
   :description: |-

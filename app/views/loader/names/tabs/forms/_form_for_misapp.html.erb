@@ -10,8 +10,8 @@
     <%= render partial: "loader/names/tabs/forms/simple_name_full_name", locals: {loader_name: loader_name, f: f} %>
 
     <div class="form-group">
-      <label for="rank">Rank</label>
-      <%= f.text_field :rank, class: 'form-control', title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
+      <label for="rank">Rank*</label>
+      <%= f.text_field :rank, class: 'form-control', required: true, title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
     <div class="form-group">

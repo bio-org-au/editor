@@ -67,21 +67,21 @@
                     search_reports_path,
                     class: "main-body-tab-link",
                     remote: true,
-                    title: "Reports" %>
+                    title: "List of query reports" %>
       </li>
       <li id="taxonomy-report-tab" role="presentation" class="<%= 'hidden' unless @working_draft %>">
-          <%= link_to "Draft Taxonomy Reports",
+          <%= link_to "Taxonomy",
                       trees_reports_path,
                       class: "main-body-tab-link",
                       remote: true,
-                      title: "Reports on the current draft taxonomy" %>
+                      title: "Draft taxonomy reports" %>
       </li>
 
       <% if can?("batches", :index) %>
       <li role="presentation" class="">
         <%= link_to "De-duplicate",
                     batch_index_path,
-                    class: "main-body-tab-link",
+                    class: "main-body-tab-link hidden",
                     remote: true,
                     title: "De-duplicate names in bulk" %>
       </li>
@@ -89,7 +89,7 @@
 
       <% if Rails.configuration.try('batch_loader_aware') && can?('loader/batches', 'process') %>
 
-        <li role="presentation" class="">
+        <li id="loader-batch-tab" role="presentation" class="<%= 'hidden' if session[:default_loader_batch_id].blank? %> ">
           <%= link_to "Batch",
                       loader_batches_path,
                       id: "batch-loader-console-tab-link",

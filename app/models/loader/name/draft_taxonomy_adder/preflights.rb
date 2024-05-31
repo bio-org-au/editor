@@ -57,7 +57,7 @@ class Loader::Name::DraftTaxonomyAdder::Preflights
     if cleared
       @result_h = {}
     else
-      @result_h = {declines: 1, decline_reasons: {"#{preflight_error}": 1}}
+      @result_h = {declines: 1, declines_reasons: {"#{preflight_error}": 1}}
       log_to_table("#{Constants::DECLINED} preflight check failed: " +
                    "for #{@loader_name.simple_name}, id: " +
                    "#{@loader_name.id}: " + "#{preflight_error}")

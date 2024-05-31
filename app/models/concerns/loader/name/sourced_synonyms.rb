@@ -16,6 +16,7 @@ module Loader::Name::SourcedSynonyms
                                simple_name_as_loaded: sou_syn.name.simple_name,
                                full_name: sou_syn.name.full_name,
                                family: sou_syn.name.family.simple_name,
+                               rank: sou_syn.name.name_rank.name.downcase,
                                doubtful: sou_syn.instance_type.doubtful,
                                loaded_from_instance_id: sou_syn.cites_id,
                                created_manually: true,

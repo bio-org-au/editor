@@ -22,21 +22,28 @@ class Loader::Name::Match < ActiveRecord::Base
   self.table_name = "loader_name_match"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  belongs_to :loader_name, class_name: "Loader::Name", foreign_key: "loader_name_id"
+  belongs_to :loader_name, class_name: "Loader::Name",
+                foreign_key: "loader_name_id"
   belongs_to :name, class_name: "::Name", foreign_key: "name_id"
   belongs_to :instance
-  belongs_to :instance_type, foreign_key: :relationship_instance_type_id, optional: true
   belongs_to :standalone_instance, class_name: "::Instance",
-                                   foreign_key: "standalone_instance_id", optional: true
+                foreign_key: "standalone_instance_id", optional: true
   belongs_to :relationship_instance, class_name: "::Instance",
-                                     foreign_key: "relationship_instance_id", optional: true
+                foreign_key: "relationship_instance_id", optional: true
+
+  # would like to deprecate instance_type in favour of 
+  # relationship_instance_type
+  belongs_to :instance_type, 
+                foreign_key: :relationship_instance_type_id, optional: true
+  belongs_to :relationship_instance_type, class_name: "::InstanceType",
+                foreign_key: "relationship_instance_type_id", optional: true
+
   belongs_to :source_for_copy, class_name: "::Instance",
-                               foreign_key: "source_for_copy_instance_id", optional: true
+                foreign_key: "source_for_copy_instance_id", optional: true
   belongs_to :intended_tree_parent_name, class_name: "::Name",
-                                             foreign_key: "intended_tree_parent_name_id", 
-                                             optional: true
+                foreign_key: "intended_tree_parent_name_id", optional: true
   validates :loader_name_id, uniqueness: true,
-                             unless: proc { |a| a.loader_name.record_type == "misapplied" }
+                unless: proc { |a| a.loader_name.record_type == "misapplied" }
   validate :misapp_pref_matches_from_only_one_name
 
   before_destroy :can_destroy?

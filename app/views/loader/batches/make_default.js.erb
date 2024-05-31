@@ -3,3 +3,5 @@ $('.message-container').html('');
 $('.error-container').html('');
 $('#search-result-details-info-message-container').html('<%= escape_javascript(@message) %>');
 $('#first-navbar').html('<%= j (render(partial: "layouts/menus")) %>')
+$('#loader-batch-tab').removeClass('hidden');
+$('#batch-loader-control-panel').removeClass('hidden');

@@ -1,7 +1,11 @@
 <h5>Ordering</h5>
 
 <% if @loader_batch.use_sort_key_for_ordering? %>
-  <%= render partial: 'loader/batches/tabs/ordering/sort_key_ordering' %>
+  <% if Rails.configuration.try(:batch_loader_usage_order_aware) %>
+    <%= render partial: 'loader/batches/tabs/ordering/sort_key_ordering' %>
+  <% else %>
+    Ordering actions do not apply to this batch because it is ordered by sort_key.
+  <% end %>
 <% else %>
   This batch uses integers in a sequence field for ordering the names.
   You may want to open up gaps between sequence numbers to place new records or re-order existing records.

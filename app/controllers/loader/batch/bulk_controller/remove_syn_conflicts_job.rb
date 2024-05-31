@@ -18,6 +18,7 @@
 
 # Remove a conflicting synonym
 class Loader::Batch::BulkController::RemoveSynConflictsJob
+  DECLINED_REMOVE = "<span class='firebrick'>Declined to remove conflict</span>"
   def initialize(batch_id, search_string, authorising_user, job_number)
     @batch = Loader::Batch.find(batch_id)
     @search_string = search_string.downcase
@@ -50,9 +51,8 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
     preflight_check_for_nfp(tree_join_record)
     true
   rescue => e
-    Rails.logger.error("Loader::Batch::BulkController::RemoveSynConflictsJob.preflight_checks_pass?: #{e}")
     log_preflight_decline_to_table(tree_join_record, e.to_s)
-    result_h = {attempts: 1, declines: 1, decline_reasons: {"#{e.to_s}": 1}}
+    result_h = {attempts: 1, declines: 1, declines_reasons: {"#{e.to_s}": 1}}
     @job_h.deep_merge!(result_h) { |key, old, new| old + new}
     false
   end
@@ -67,7 +67,7 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
   end
 
   def log_preflight_decline_to_table(tree_join_record, decline_info)
-    content = "#{tree_join_record.element_link} #{tree_join_record.simple_name} #{decline_info}"
+    content = "#{DECLINED_REMOVE} - #{tree_join_record.element_link} #{tree_join_record.simple_name} #{decline_info}"
     log_to_table(content)
   end
 

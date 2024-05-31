@@ -50,7 +50,7 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
     entry += "##{loader_name.id} #{loader_name.simple_name} "
     entry += "- error in do_one_loader_name: #{e}"
     log(entry)
-    @job_h.deep_merge!({errors: 1, error_reasons: {"#{e.to_s}": 1}}) { |key, old, new| old + new}
+    @job_h.deep_merge!({errors: 1, errors_reasons: {"#{e.to_s}": 1}}) { |key, old, new| old + new}
   end
 
 

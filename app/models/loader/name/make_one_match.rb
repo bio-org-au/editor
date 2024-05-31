@@ -57,7 +57,7 @@ class Loader::Name::MakeOneMatch
 
   def decline(reason)
     log_to_table("#{DECLINED} - #{reason.gsub(/_/,' ')}")
-    {declines: 1, decline_reasons: {reason.gsub(/ /,'_').to_sym => 1}}
+    {declines: 1, declines_reasons: {reason.gsub(/ /,'_').to_sym => 1}}
   end
 
   def make_preferred_match?

@@ -2,3 +2,6 @@ $('#loader-batch-details-tab').click();
 $('.message-container').html('');
 $('.error-container').html('');
 $('#search-result-details-info-message-container').html('<%= escape_javascript(@message) %>');
+$('#first-navbar').html('<%= j (render(partial: "layouts/menus")) %>')
+$('#loader-batch-tab').addClass('hidden');
+$('#batch-loader-control-panel').addClass('hidden');

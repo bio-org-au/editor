@@ -33,7 +33,7 @@ class Loader::Name::MakeOneMatchTask
 
   def no_further_processing
     log("Declined - no further processing")
-    {declines: 1, decline_reasons: {no_further_processing: 1} }
+    {declines: 1, declines_reasons: {no_further_processing: 1} }
   end
 
   attr_reader :created, :errors

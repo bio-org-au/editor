@@ -75,17 +75,17 @@ class Loader::Name::MakeOneInstance
 
   def no_further_processing
     log_to_table("#{Constants::DECLINED_INSTANCE} - no further processing for #{@loader_name.id}")
-    {declines: 1, decline_reasons: {no_further_processing: 1}}
+    {declines: 1, declines_reasons: {no_further_processing: 1}}
   end
 
   def no_preferred_match
     log_to_table("#{Constants::DECLINED_INSTANCE} - no preferred match for ##{@loader_name.id} #{@loader_name.simple_name}")
-    {declines: 1, decline_reasons: {no_preferred_match: 1}}
+    {declines: 1, declines_reasons: {no_preferred_match: 1}}
   end
 
   def heading
     log_to_table("#{Constants::DECLINED_INSTANCE} - heading entries not processed ##{@loader_name.id} #{@loader_name.simple_name}")
-    {declines: 1, decline_reasons: {heading_so_not_processed: 1}}
+    {declines: 1, declines_reasons: {heading_so_not_processed: 1}}
   end
 
   def create_standalone

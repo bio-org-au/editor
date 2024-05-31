@@ -1,4 +1,6 @@
-<%= "#{search_result.name}" %>:&nbsp;
-<%= "#{search_result.description}" %>
+<%= "#{search_result.name}#{':' unless search_result.description.blank?}" %>
+<%= "#{search_result.description};".html_safe unless search_result.description.blank? %>
+<%= "(#{search_result.created_at.to_formatted_s(:ddmmyyyy)})" %>
+
 
 

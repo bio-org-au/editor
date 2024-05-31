@@ -24,7 +24,7 @@
     {field_name: 'no-distribution:',
      descr: "Search for loader names that have no distribution string."},
     {field_name: 'family:',
-     descr: "Search for loader names for a given family name."},
+     descr: "Search for loader names for a given family name. Takes one or more comma-separated arguments"},
     {field_name: 'family-id:',
      descr: "Search for loader names for a given family ID."},
     {field_name: 'simple-name:',
@@ -148,7 +148,7 @@
   <tr><th>Field</th><th>Description</th></tr>
   <% [
     {field_name: 'families:',
-     description: "retrieve record with rank 'family' - takes one argument or none"},
+     description: "retrieve record with rank 'family' - takes none, one, or many comma-separated arguments"},
     {field_name: 'no-family-heading:',
      description: "retrieve records that belong to a family for which there is no family heading - takes no arguments; shortcut is <code>nfh:</code>"},
     {field_name: 'rank:',

@@ -2,4 +2,4 @@ $('.message-container').html('');
 $('input#name').focus();
 $('#search-result-details-info-message-container').html('<%= escape_javascript(@message) %>');
 $('#search-result-details-info-message-container2').html('<%= escape_javascript(@message) %>');
-setTimeout(function(){$('ul.nav-tabs li.active a.tab').click()},1000);
+setTimeout(function(){$('ul.nav-tabs li.active #loader-name-matched-name-tab a.tab').click()},1000);

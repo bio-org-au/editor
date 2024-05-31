@@ -16,7 +16,8 @@
       tabindex="<%= increment_tab_index %>" 
       title="Loader Batch record. Select to show details."
       id="<%= %Q(loader-batch-#{search_result.id}) %>">
-      <%= render partial: 'application/search_results/stack/link_texts/loader_batch', locals: {search_result: search_result} %>
+      <i class="rebeccapurple fa fa-layer-group"></i>
+      <%= render partial: 'application/search_results/link_texts/loader_batch', locals: {search_result: search_result} %>
     </a>
   </td>
   <td class="takes-focus width-5-percent filler">&nbsp;</td>

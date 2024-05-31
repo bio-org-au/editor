@@ -27,7 +27,7 @@ class Loader::Name < ActiveRecord::Base
   include InBatchNote
   include InBatchCompilerNote
   include HeadingRecord
-  include Misapplieds
+  include Partials
   include Doubt
   include SeqGapMaker
   attr_accessor :add_sibling_synonyms

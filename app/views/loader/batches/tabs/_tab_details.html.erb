@@ -15,7 +15,7 @@
            label: 'order using sort-col'} %>
 
   <%= render partial: 'detail_line',
-    locals: {label: 'for this batch',
+    locals: {label: 'using batch ID',
              info: link_to("Loader Names",
                           search_path(
                             query_string: "* batch-id: #{@loader_batch.id}",

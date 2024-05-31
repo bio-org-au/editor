@@ -238,8 +238,12 @@ class Search::Loader::Name::FieldRule
       leading_wildcard: true,
       trailing_wildcard: true},
     "simple-name-not-like:" => { where_clause: "(lower(simple_name) not like '%'||?||'%')" },
-    "family:" => { where_clause: "(lower(family) like ?)" },
-    "families:" => { where_clause: "lower(family) like ? || '%'  and lower(rank) = 'family'"},
+    "family:" => { where_clause: "(lower(family) like ?)",
+                   multiple_values: true,
+                   multiple_values_where_clause: " (lower(family) in (?)) "},
+    "families:" => { multiple_values: true,
+                     where_clause: "lower(family) like ? || '%'  and lower(rank) = 'family'",
+                     multiple_values_where_clause: " lower(family) in (?) and lower(rank) = 'family'"},
     "family-id:" => { where_clause: "(lower(family) like (select lower(simple_name) from loader_name where id = ?))" },
     "record-type:" => { where_clause: " record_type = ?"},
 
@@ -608,6 +612,8 @@ having count(*) > 2
   from loader_name ln 
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
+       join instance_type rel_type
+       on lnm.relationship_instance_type_id = rel_type.id
        join instance i
        on lnm.name_id = i.name_id 
        join tree_join_v tjv 
@@ -620,6 +626,7 @@ having count(*) > 2
    and not tjv.published
    and tjv.accepted_tree
    and ln.synonym_type not like '%partial%'
+   and not rel_type.pro_parte
    and ln.partly is null
    and lower(ln.simple_name) like lower(?))",
    not_exists_clause: " needs an argument"
@@ -628,6 +635,8 @@ having count(*) > 2
   from loader_name ln 
        join loader_name_match lnm
        on ln.id = lnm.loader_name_id
+       join instance_type rel_type
+       on lnm.relationship_instance_type_id = rel_type.id
        join instance i
        on lnm.name_id = i.name_id 
        join tree_join_v tjv 
@@ -640,6 +649,7 @@ having count(*) > 2
    and not tjv.published
    and tjv.accepted_tree
    and ln.synonym_type not like '%partial%'
+   and not rel_type.pro_parte
    and ln.partly is null
    and lower(ln.family) like lower(?))",
    not_exists_clause: " needs an argument"

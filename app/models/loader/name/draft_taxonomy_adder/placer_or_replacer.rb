@@ -61,10 +61,10 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer
     end
   rescue RestClient::ExceptionWithResponse => e
     e_to_s = json_error(e)
-    @result_h = {errors: 1, error_reasons: {"#{e_to_s}": 1}}
+    @result_h = {errors: 1, errors_reasons: {"#{e_to_s}": 1}}
     log_to_table("<span class='red'>Error from Services placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{e_to_s}")
   rescue StandardError => e
-    @result_h = {errors: 1, error_reasons: {"#{e.to_s}": 1}}
+    @result_h = {errors: 1, errors_reasons: {"#{e.to_s}": 1}}
     log_to_table("<span class='red'>Error placing/replacing on taxonomy:</span> #{@loader_name.simple_name}, ##{@loader_name.id}: #{e.message}")
   end
 

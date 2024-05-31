@@ -47,7 +47,7 @@ class Loader::Name::DraftTaxonomyAdder::PlacerOrReplacer::Replacer
     @result_h = {adds: 1, replaced: 1}
     @result = true
   rescue RestClient::ExceptionWithResponse => e
-    @result_h = {errors: 1, error_reasons: {"#{e.to_s}": 1}}
+    @result_h = {errors: 1, errors_reasons: {"#{e.to_s}": 1}}
     raise
   end
 

@@ -40,16 +40,19 @@ class Loader::Name::BulkSynConflictsSearch
   # and the loader_name_match is for a loader_name
   # and the name's name status is legitimate or n/a
   # in a nominated batch
+  # and the preferred match is not a partial relationship instance type
   def bulk_processing_search
     @search = TreeJoinV
     .joins(" inner join instance on instance.id = tree_join_v.instance_id")
     .joins(" inner join name on instance.name_id = name.id")
     .joins(" inner join loader_name_match on loader_name_match.name_id = name.id")
+    .joins(" inner join instance_type on instance_type.id = loader_name_match.relationship_instance_type_id")
     .joins(" inner join loader_name on loader_name.id = loader_name_match.loader_name_id")
     .joins(" inner join loader_batch on loader_batch.id = loader_name.loader_batch_id")
     .where(" loader_name.loader_batch_id = ? ", @batch_id)
     .where(" loader_name.record_type = 'synonym' ")
     .where(" loader_name.synonym_type not like '%partial%' ")
+    .where(" not instance_type.pro_parte ")
     .where(" loader_name.partly is null ")
     .where(" tree_join_v.published = false ")
     .where(" tree_join_v.accepted_tree = true ")

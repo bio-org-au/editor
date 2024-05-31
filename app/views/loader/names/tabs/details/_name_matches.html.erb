@@ -1,6 +1,13 @@
 <h4>Name Matches: <%= name_match_count = @loader_name.matches.size %></h4>
 <% if @loader_name.matches.empty? %>
   <div class="bggray big-vertical-padding" ><h4 class="white">No Matching Names</h4></div>
+  <% if @loader_name.preferred_matches.size > 0 %>
+  But there is a least one preferred match.
+  <br>
+    <%= render partial: 'loader/names/tabs/details/matches/accepted_names/forms/clear_all_matches', locals: {match_type: :strict} %>
+  <br>
+  <% end %>
+
 <% end %>
 <% if name_match_count > 0 %>
   <% if name_match_count > 1 %>
