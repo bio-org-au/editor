@@ -33,7 +33,7 @@ module Loader::Name::SeqCalculator
       first_wild_s = "#{first_word}%"
       batch = which_batch(params)
       batch.loader_names
-           .where("simple_name like '#{first_wild_s}'")
+           .where(["simple_name like ?","#{first_wild_s}"])
            .where("record_type in ('accepted','excluded')")
            .order("id")
            .first

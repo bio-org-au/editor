@@ -543,7 +543,8 @@ having count(*) > 2
     "updated-by:" => { where_clause: "updated_by = ?"},
     "not-created-by:" => { where_clause: "created_by != ?"},
     "not-created-by-batch:" => { where_clause: "created_by != 'batch'"},
-    "original-text:" => { where_clause: "lower(original_text) like ?"},
+    "original-text:" => { where_clause: "lower(original_text) like ?",
+                          not_exists_clause: " original_text is null"},
     "original-text-has-×:" => { where_clause: "lower(original_text) like '%×%'"},
     "original-text-has-x:" => { where_clause: "lower(original_text) like '%×%'"},
     "hybrid-flag:" => { where_clause: "hybrid_flag like ?"},
@@ -629,7 +630,29 @@ having count(*) > 2
    and not rel_type.pro_parte
    and ln.partly is null
    and lower(ln.simple_name) like lower(?))",
-   not_exists_clause: " needs an argument"
+   not_exists_clause: " needs an argument",
+   multiple_values: true,
+   multiple_values_where_clause: " id in (select ln.id
+  from loader_name ln 
+       join loader_name_match lnm
+       on ln.id = lnm.loader_name_id
+       join instance_type rel_type
+       on lnm.relationship_instance_type_id = rel_type.id
+       join instance i
+       on lnm.name_id = i.name_id 
+       join tree_join_v tjv 
+       on i.id = tjv.instance_id 
+       join loader_batch lb
+       on ln.loader_batch_id = lb.id
+       join name 
+       on tjv.name_id = name.id
+ where ln.record_type = 'synonym'
+   and not tjv.published
+   and tjv.accepted_tree
+   and ln.synonym_type not like '%partial%'
+   and not rel_type.pro_parte
+   and ln.partly is null
+   and lower(ln.simple_name) in (?))",
      },
 "syn-match-in-tree-family:" => { where_clause: " id in (select ln.id
   from loader_name ln 
@@ -652,7 +675,29 @@ having count(*) > 2
    and not rel_type.pro_parte
    and ln.partly is null
    and lower(ln.family) like lower(?))",
-   not_exists_clause: " needs an argument"
+   not_exists_clause: " needs an argument",
+   multiple_values: true,
+   multiple_values_where_clause: " id in (select ln.id
+  from loader_name ln 
+       join loader_name_match lnm
+       on ln.id = lnm.loader_name_id
+       join instance_type rel_type
+       on lnm.relationship_instance_type_id = rel_type.id
+       join instance i
+       on lnm.name_id = i.name_id 
+       join tree_join_v tjv 
+       on i.id = tjv.instance_id 
+       join loader_batch lb
+       on ln.loader_batch_id = lb.id
+       join name 
+       on tjv.name_id = name.id
+ where ln.record_type = 'synonym'
+   and not tjv.published
+   and tjv.accepted_tree
+   and ln.synonym_type not like '%partial%'
+   and not rel_type.pro_parte
+   and ln.partly is null
+   and lower(ln.family) in (?))",
      },
   "name-match-in-syn:" => { where_clause: " record_type in ('accepted', 'excluded')
        and exists (
@@ -760,6 +805,6 @@ group by loader_name.family, family.simple_name) subq
 where simple_name is null
  )
 )",
-  },
+  }
   }.freeze
 end

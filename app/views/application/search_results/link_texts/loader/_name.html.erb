@@ -14,7 +14,7 @@
 <% else %>
   <%= '?' if search_result.synonym_type&.match(/doubtful/) %>
    <span class='loader-name <%= search_result.record_type %>'>
-   <%= search_result.simple_name %>
+     <%= search_result.simple_name %><%= ", #{search_result.name_status}" unless search_result.name_status.blank? %>
    </span>
   <%= 'p.p.' if search_result.synonym_type&.match(/pro parte/) %>
    <%= render partial: "#{path}/decorate", locals: {search_result: search_result} %>

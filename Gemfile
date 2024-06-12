@@ -104,5 +104,6 @@ gem "unf_ext", "< 0.0.9"
 gem "indefinite_article"
 
 group :development do
-  gem 'brakeman'
+  gem 'brakeman', require: false
+  gem 'bundler-audit', require: false
 end

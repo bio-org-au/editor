@@ -58,6 +58,12 @@
       <%= f.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index %>
     </div>
 
+    <div class="form-group">
+      <label for="original_text">Original text</label>
+      <%= f.text_area :original_text, class: 'form-control', title: "Enter original html", tabindex: increment_tab_index %> 
+      <p>Normally not entered in a form, this text typically comes from parsed data.  May be needed for handmade misapplieds</p>
+    </div>
+
     <%= divider %>
 
     <% unless loader_name.new_record? %>

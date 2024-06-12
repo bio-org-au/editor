@@ -19,6 +19,7 @@
 # Record a preferred matching name for a raw loader name record.
 class Loader::Batch::BulkController::CreateDraftInstanceJob
   def initialize(batch_id, search_string, authorising_user, job_number)
+    @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     @batch = Loader::Batch.find(batch_id)
     @search_string = search_string
     @authorising_user = authorising_user
@@ -28,15 +29,27 @@ class Loader::Batch::BulkController::CreateDraftInstanceJob
 
   def run
     log_start
-    @job_h = {attempts: 0, creates: 0, declines: 0, errors: 0}
+    @job_h = {Job: 'Create Draft Instances',
+              Job_batch: @batch.name,
+              Job_search: @search_string,
+              attempts: 0, creates: 0, declines: 0, errors: 0}
     @search.order(:seq).each do |loader_name|
       do_one_loader_name(loader_name)
     end
+    record_elapsed
     log_finish
     @job_h
   end
 
   private
+  
+  def record_elapsed
+    finish_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    @job_h[:time_seconds] = (finish_time - @start_time).round(1)
+    if @job_h[:time_seconds] > 60
+      @job_h[:time] = "#{((finish_time - @start_time)/60).round} min #{((finish_time - @start_time)%60).round} sec"
+    end
+  end
 
   def do_one_loader_name(loader_name)
     @job_h[:attempts] += 1

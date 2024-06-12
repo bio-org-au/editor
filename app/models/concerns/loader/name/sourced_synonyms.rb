@@ -17,17 +17,16 @@ module Loader::Name::SourcedSynonyms
                                full_name: sou_syn.name.full_name,
                                family: sou_syn.name.family.simple_name,
                                rank: sou_syn.name.name_rank.name.downcase,
+                               name_status: sou_syn.name.name_status.name.downcase,
                                doubtful: sou_syn.instance_type.doubtful,
-                               loaded_from_instance_id: sou_syn.cites_id,
+                               loaded_from_instance_id: sou_syn.id,
                                created_manually: true,
                                created_by: current_user.username,
                                updated_by: current_user.username,
                                seq: seq_value
                               )
         s.consider_sort_key
-        s.attribute_names.each do |a| 
-          logger.debug("#{a} : #{s[a]}") unless s[a].blank?
-        end
+        s.name_status = nil if ['legitimate','[n/a]'].include?(s.name_status)
         s.save!
         s.create_match_to_loaded_from_instance_name(current_user.username)
       end

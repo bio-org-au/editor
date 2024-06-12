@@ -20,6 +20,7 @@
 class Loader::Batch::BulkController::RemoveSynConflictsJob
   DECLINED_REMOVE = "<span class='firebrick'>Declined to remove conflict</span>"
   def initialize(batch_id, search_string, authorising_user, job_number)
+    @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     @batch = Loader::Batch.find(batch_id)
     @search_string = search_string.downcase
     @authorising_user = authorising_user
@@ -29,7 +30,10 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
 
   def run
     log_start
-    @job_h = {attempts: 0, creates: 0, declines: 0, errors: 0}
+    @job_h = {Job: 'Remove Syn Conflicts',
+              Job_batch: @batch.name,
+              Job_search: @search_string,
+              attempts: 0, creates: 0, declines: 0, errors: 0}
     @search.order(:seq).each do |tree_join_record|
       if preflight_checks_pass?(tree_join_record) 
         do_one_instance(tree_join_record)
@@ -37,6 +41,7 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
         sleep(Rails.configuration.try('bulk_job_delay_seconds') || 5)
       end
     end
+    record_elapsed
     log_finish
     @job_h
   rescue StandardError => e
@@ -45,6 +50,14 @@ class Loader::Batch::BulkController::RemoveSynConflictsJob
   end
 
   private
+    
+  def record_elapsed
+    finish_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    @job_h[:time_seconds] = (finish_time - @start_time).round(1)
+    if @job_h[:time_seconds] > 60
+      @job_h[:time] = "#{((finish_time - @start_time)/60).round} min #{((finish_time - @start_time)%60).round} sec"
+    end
+  end
  
   def preflight_checks_pass?(tree_join_record)
     preflight_check_for_sub_taxa(tree_join_record)

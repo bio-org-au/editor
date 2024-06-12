@@ -62,22 +62,9 @@
     $('tr.search-result').keydown(function(event) {
       return searchResultKeyNavigation(event, $(this));
     });
-    $('body').on('focus', 'tr.search-result td.takes-focus', function(event) {
-      return searchResultFocus(event, $(this).parent('tr'));
-    });
-    $('body').on('click', 'tr.search-result td.takes-focus', function(event) {
-      return searchResultFocus(event, $(this).parent('tr'));
-    });
-    $('tr.search-result td.takes-focus').focus(function(event) {
-      return searchResultFocus(event, $(this).parent('tr'));
-    });
-    // iPad
+
     $('tr.search-result td.takes-focus').click(function(event) {
       return searchResultFocus(event, $(this).parent('tr'));
-    });
-    // iPad
-    $('body').on('click', 'div#search-results tr.search-result .stylish-checkbox', function(event) {
-      return clickSearchResultCB(event, $(this));
     });
 
     $('tr.review-result').keydown(function(event) {
@@ -684,9 +671,6 @@
 
   window.loadDetails = function(event, inFocus, tabWasClicked = false) {
     debug('window.loadDetails starting');
-    debug('inFocus.attr(_data-record-type_): ' + inFocus.attr('data-record-type'));
-    debug($('tr.showing-details').length);
-    debug($('tr.showing-details').attr('data-record-type'));
     return loadStandardDetails(event, inFocus, tabWasClicked);
   };
 
@@ -708,6 +692,7 @@
       err = error1;
       debug(err);
     }
+    debug(`starting url: ${url}`);
     url = url + '?format=js&tabIndex=' + tabIndex;
     if (row_type != null) {
       url = url + '&row-type=' + row_type;
@@ -739,11 +724,15 @@
     } else {
       url = url + '&take_focus=false';
     }
-    debug(`loadDetails url: ${url}`);
+    debug(`loadStandardDetails url: ${url}`);
     $('#search-result-details').load(url, function() {
       recordCurrentActiveTab(record_type);
       if (tabWasClicked) {
-        debug('tab clicked loadDetails');
+        debug('tab was clicked loadStandardDetails');
+        debug('tab was clicked loadStandardDetails');
+        debug('tab was clicked loadStandardDetails');
+        debug('tab was clicked loadStandardDetails');
+        debug('tab was clicked loadStandardDetails');
         if ($('.give-me-focus')) {
           return debug('give-me-focus ing - changed so not .give-me-focus ing because clicked a tab resulted in focus switching to the first record');
         } else {
@@ -756,34 +745,7 @@
       }
     });
     // $('li.active a.tab').focus()   ## new
-    debug('loadDetails after load url');
-    return event.preventDefault();
-  };
-
-  window.nedloadDetails = function(event, inFocus, tabWasClicked = false) {
-    var instance_type, record_type, row_type, tabIndex, url;
-    debug('window.loadDetails');
-    $('#search-result-details').show();
-    $('#search-result-details').removeClass('hidden');
-    record_type = $('tr.showing-details').attr('data-record-type');
-    instance_type = $('tr.showing-details').attr('data-instance-type');
-    row_type = $('tr.showing-details').attr('data-row-type');
-    tabIndex = $('.search-result.showing-details a[tabindex]').attr('tabindex');
-    url = inFocus.attr('data-tab-url').replace(/active_tab_goes_here/, currentActiveTab(record_type));
-    url = url + '?tabIndex=' + tabIndex + '&row-type=' + row_type + '&instance-type=' + instance_type + '&rowType=' + inFocus.attr('data-row-type');
-    $('#search-result-details').load(url, function() {
-      recordCurrentActiveTab(record_type);
-      if (tabWasClicked) {
-        debug('tab clicked');
-        if ($('.give-me-focus')) {
-          debug('give-me-focus ing');
-          return $('.give-me-focus').focus();
-        } else {
-          debug('just focus the tab');
-          return $('li.active a.tab').focus();
-        }
-      }
-    });
+    debug('loadStandardDetails after load url');
     return event.preventDefault();
   };
 
@@ -810,7 +772,7 @@
   };
 
   searchResultFocus = function(event, $this) {
-    debug('searchResultFocus starting');
+    debug('searchResultFocus starting from event: ' + event.type);
     $('#focus_id').val($this.find('a').attr('id'));
     if (!($this.hasClass('showing-details') || $this.hasClass('show-no-details'))) {
       debug('Changing focus: should show details');
@@ -821,6 +783,7 @@
     return event.preventDefault();
   };
 
+  window.searchResultFocus = searchResultFocus;
 
   hideDetails = function(event, $this) {
     debug('Hiding details');
@@ -851,7 +814,7 @@
 
   searchResultKeyNavigation = function(event, $this) {
     var arrowDown, arrowLeft, arrowRight, arrowUp, keep_going;
-    debug('searchResultKeyNavigation ');
+    debug('searchResultKeyNavigation start');
     arrowLeft = 37;
     arrowRight = 39;
     arrowUp = 38;
@@ -877,6 +840,7 @@
       return event.preventDefault();
     }
   };
+  window.searchResultKeyNavigation = searchResultKeyNavigation;
 
   reviewResultKeyNavigation = function(event, $this) {
     var arrowDown, arrowLeft, arrowRight, arrowUp, keep_going;
@@ -1026,4 +990,41 @@
     $('#bulk-ops-stats-container').html("<br><span class='green'>Querying stats...</span><br><br><br>");
     $('#bulk-ops-stats-container').removeClass('hidden');
   };
+
+  window.addNewRow = function(at_index, for_id, randomId, dataTabUrl) {
+  // Get a reference to the table
+  let tableRef = document.getElementById('search-results-table');
+  let newRow = tableRef.insertRow(at_index + 1);
+  $(newRow).attr('id', 'new-loader-name-'+randomId);
+  $(newRow).addClass('new-record').addClass('new-loader-name').addClass('search-result').addClass('show-details');
+
+  $(newRow).attr('data-record-type', 'loader-name');
+  $(newRow).attr('data-record-id', for_id.toString());
+
+  let tabUrl = dataTabUrl
+  tabUrl = tabUrl.replace(/7007007007007007/,for_id);
+  $(newRow).attr('data-tab-url', tabUrl);
+  $(newRow).attr('data-edit-url', tabUrl);
+
+  $(newRow).attr('tabindex', '3000');
+
+  // Insert a cell in the row at index 0
+  let firstCell = newRow.insertCell(0);
+  $(firstCell).addClass('nsl-tiny-icon-container').addClass('takes-focus width-1-percent');
+
+  let secondCell = newRow.insertCell(1);
+  $(secondCell).addClass('text').addClass('takes-focus').addClass('name');
+  $(secondCell).addClass('main-content').addClass('give-me-focus');
+  $(secondCell).addClass('min-width-40-percent').addClass('max-width-100-percent').addClass('width-90-percent');
+  // Append a text node to the cell
+  let label = document.createTextNode('New Accepted or Excluded Loader Name');
+  let link = document.createElement('a');
+  $(link).addClass('show-details-link');
+  $(link).attr('title','New loader name record. Select to see details');
+  $(link).attr('tabindex','1000');
+  link.appendChild(label)
+  secondCell.appendChild(link);
+  };
+
+
 }).call(this);

@@ -52,7 +52,7 @@
         <span class="review loader-name family"><%= "#{search_result.family}" %> </span>
 
         <% unless search_result.higher_rank_comment.blank? %>
-          <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment.html_safe %></span>
+          <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment %></span>
         <% end %>
       </a>
     </td>
@@ -97,10 +97,10 @@
         <span class="compiler-comment-tag"><%= pluralize(search_result.compiler_comments.size, 'compiler comment') %></span>
       <% end %>
       <% unless search_result.remark_to_reviewers.blank? %>
-        <span class="review loader-name remark-to-reviewers"><%= search_result.remark_to_reviewers.html_safe %></span>
+        <span class="review loader-name remark-to-reviewers"><%= search_result.remark_to_reviewers %></span>
       <% end %>
       <% unless search_result.higher_rank_comment.blank? %>
-        <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment.html_safe %></span>
+        <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment %></span>
       <% end %>
     </a>
   </td>

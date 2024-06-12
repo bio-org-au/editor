@@ -63,13 +63,45 @@ class Loader::Name::BulkSynConflictsSearch
 
   def loader_name_restriction
     if @search_s.match(/\Afamily:.*\z/)
-      @search = @search.where(" lower(loader_name.family) like lower(?)",
-                              @search_s.downcase
-                                       .sub(/ *family: */,'')
-                                       .gsub(/\*/,'%'))
+      family_search
     else
       @search = @search.where(" lower(loader_name.simple_name) like lower(?)",
            @search_s.downcase.gsub(/\*/,'%'))
     end
+  end
+
+  # Family clause can be like this
+  #
+  #     family: one-family-name*
+  #
+  # which can have wildcard because converted to SQL like
+  #
+  #     family like 'one-family-name%'
+  #
+  # But a family clause ike this -
+  #
+  #     family: one-family-name, another-family-name, yet-another
+  #
+  # cannot have wildcards because they get converted to SQL like this
+  #
+  #     family in ('one-family-name', 'another-family-name', 'yet-another')
+  #
+  def family_search
+    @family_s = @search_s.downcase.sub(/ *family: */,'')
+    if @family_s.split(/ *, */).size < 2
+      one_family_search
+    else
+      families_search
+    end
+  end
+
+  def one_family_search
+    @search = @search.where(" lower(loader_name.family) like lower(?)",
+                            @family_s.gsub(/\*/,'%'))
+  end
+
+  def families_search
+    @search = @search.where(" lower(loader_name.family) in (?)",
+                      @family_s.split(",").collect(&:strip))
   end
 end

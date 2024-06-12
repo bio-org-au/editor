@@ -45,7 +45,8 @@ class Search::OnModel::ListQuery
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
     Rails.logger.debug(prepared_query.to_sql)
     prepared_query = prepared_query.offset(@parsed_request.offset) if @parsed_request.offsetted
-    prepared_query = prepared_query.order(Arel.sql("#{@parsed_request.default_order_column}"))
+    #prepared_query = prepared_query.order(Arel.sql("#{@parsed_request.default_order_column}"))
+    prepared_query = prepared_query.order((Name.sanitize_sql_for_order("#{@parsed_request.default_order_column}")))
     @sql = prepared_query
   end
 

@@ -18,7 +18,7 @@
 #
 class Loader::Name::MatchesController < ApplicationController
   before_action :find_loader_name, only: %i[set taxonomy_instance]
-  before_action :find_loader_name_match, only: [:update]
+  before_action :find_loader_name_match, only: [:update, :force_remove]
   # before_action :find_loader_name_match, only: [:delete]
 
   # For a given loader_name record, a set action may involve
@@ -256,6 +256,20 @@ class Loader::Name::MatchesController < ApplicationController
     result = @match.verify_drafted_flag
     @message = result.to_s
     render :verify_drafted
+  end
+
+  def cancel_force_remove
+    @match_id = params[:id]
+  end
+
+  def prepare_force_remove
+    @match_id = params[:id]
+  end
+
+  def force_remove
+    @match.delete
+    @match_id = params[:id]
+    @message = 'Removed'
   end
 
   private

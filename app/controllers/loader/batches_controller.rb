@@ -92,11 +92,13 @@ class Loader::BatchesController < ApplicationController
     session[:default_loader_batch_id] = params[:id]
     session[:default_loader_batch_name] = @loader_batch.name
     @message = "Done"
+    @from_menu = params[:from] == 'from-menu' ? true : false
   end
 
   def clear_default
     session[:default_loader_batch_id] = nil
     session[:default_loader_batch_name] = nil
+    @from_menu = params[:from] == 'from-menu' ? true : false
     @message = "Done"
   end
 
@@ -110,7 +112,6 @@ class Loader::BatchesController < ApplicationController
   end
 
   def hide_processing_overview; end
-
   def bulk_operation
     render "bulk/operation"
   end
@@ -136,7 +137,8 @@ class Loader::BatchesController < ApplicationController
 
   def loader_batch_params
     params.require(:loader_batch).permit(:name, :description,
-                                         :default_reference_id, :default_reference_typeahead)
+                                         :default_reference_id,
+                                         :default_reference_typeahead)
   end
 
   def set_tab

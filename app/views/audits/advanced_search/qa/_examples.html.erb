@@ -2,25 +2,25 @@
 <h5>QA</h5>
 <table class="example-searches table table-striped">
   <% [
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "5 by:amonro",
        explanation: %Q(Records created or updated in the last 5 days and either
        created or updated by amonro.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "5 names-only: created-by:kcowley",
        explanation: %Q(Names created or updated in the last 5 days and
        created-by kcowley.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "date-created: 2015-09-07 created-by:bcollins",
        explanation: %Q(Records created on 7 Sept 2015 by bcollins.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "date-last-updated: 2015-09-07 updated-by:amonro",
        explanation: %Q(Records last updated on 7 Sept 2015 by amonro.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "date-created-or-last-updated: 2015-09-07 by:amonro",
        explanation: %Q(Records created or last updated on 7 Sept 2015 and
                        either created or updated by amonro.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "date-last-updated: 2015-09-07 updated-by:bcollins",
        explanation: %Q(Records last updated on 7 Sept 2015 and last
                        updated by bcollins.)},

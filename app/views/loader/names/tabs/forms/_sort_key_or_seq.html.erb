@@ -3,13 +3,17 @@
    <div class="form-group">
         <label for="sort_key">Sort key</label>
         <%= f.text_field :sort_key, class: 'form-control', title: "Enter sorting value", tabindex: increment_tab_index %>
-        <p>This value is generated automatically when you clear it or leave it blank.  Edit it for special cases only.</p>
+        <p>This value is generated automatically when you clear it or leave it blank.  Edit it for special cases only.
+        It will be refreshed on all updates unless the record is a header or a note</p>
    </div>
    <% end %>
 <% else %>
    <div class="form-group">
-        <label for="seq">Seq*</label>
-        <%= f.text_field(:seq, {class: 'form-control give-me-focus', title: 'For listing the taxon in the correct order', tabindex: increment_tab_index}) %>
+     <label for="seq">Seq<span class='red'>*</span></label>
+        <%= f.text_field(:seq, {class: 'form-control give-me-focus',
+                                title: 'For listing the taxon in the correct order',
+                                required: true,
+                                tabindex: increment_tab_index}) %>
    </div>
 <% end %>
 

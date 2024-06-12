@@ -1,5 +1,5 @@
 $('.message-container').html('');
-$('input#reference-parent-typeahead').val("<%= @reference.parent.try('citation').try('html_safe') %>");
+$('input#reference-parent-typeahead').val("<%= @reference.parent.try('citation') %>");
 $('a#tab-heading').html('<%= @reference.citation %>');
 $('#search-result-details-info-message-container').html('<%= @message %>');
 $('select#reference_ref_type_id').focus();

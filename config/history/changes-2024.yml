@@ -1,3 +1,65 @@
+- :date: 07-Jun-2024
+  :jira_id: '5099'
+  :description: |-
+    Loader: Added elapsed time to the job summary reports; also added job title, batch, and search specification.
+- :date: 06-Jun-2024
+  :jira_id: '5086'
+  :description: |-
+    Loader: Refresh sort key values when loader records are edited
+- :date: 06-Jun-2024
+  :jira_id: '5098'
+  :description: |-
+    Loader: Use <code>misapp_html</code> for misapplications in 2022 Updates list
+- :date: 06-Jun-2024
+  :jira_id: ''
+  :description: |-
+    Editor: Security - update gems including Rails from 7.0.8.3 to 7.0.8.4
+- :date: 05-Jun-2024
+  :jira_id: '5097'
+  :description: |-
+    Loader: Allow users to query and fix synonymy clashes using multiple taxon arguments in family context
+- :date: 05-Jun-2024
+  :jira_id: '5095'
+  :description: |-
+    Editor: Security - fix 16 Brakeman warnings
+- :date: 04-Jun-2024
+  :jira_id: ''
+  :description: |-
+    Editor: Security - update gems including Rails from 7.0.8.1 to 7.0.8.3
+- :date: 03-Jun-2024
+  :jira_id: '5094'
+  :description: |-
+    Loader: Show nomenclatural status in loader view
+- :date: 03-Jun-2024
+  :jira_id: '5082'
+  :description: |-
+    Loader: Copy across non-legitimate nomenclatural status of synonyms into the Loader
+- :date: 03-Jun-2024
+  :jira_id: '5011'
+  :description: |-
+    Loader: Add Force Remove Match option on Matched Name tab - using this will allow delete of instances created via the loader
+- :date: 30-May-2024
+  :jira_id: '5087'
+  :description: |-
+    Loader: Clean up stray success message that appeared after toggling Batch menu default batch options
+- :date: 29-May-2024
+  :jira_id: '5038'
+  :description: |-
+    Loader: Fix regression so new records can be inserted into empty search results
+- :date: 29-May-2024
+  :jira_id: '5038'
+  :description: |-
+    Loader: Revise LHS titles and RHS tab headings for new records to make them consistent with each other
+- :date: 28-May-2024
+  :jira_id: '5038'
+  :description: |-
+    Loader: Loader Name new records created from the New menu are now accessible again
+- :date: 23-May-2024
+  :jira_id: '5038'
+  :description: |-
+    Loader: Clicking plus sign to add new entry no longer breaks arrow navigation
+- :date: 31-May-2024
+  :release: true
 - :date: 22-May-2024
   :jira_id: '5081'
   :description: |-
@@ -50,6 +112,8 @@
   :jira_id: '5067'
   :description: |-
     Loader: Make rank field mandatory on entry and update
+- :date: 29-May-2024
+  :release: true
 - :date: 16-May-2024
   :jira_id: '5068'
   :description: |-

@@ -1,20 +1,20 @@
-<h4>Review search examples</h4>
+<h4>Activity search examples</h4>
 <h5>List records</h5>
 <table class="example-searches table table-striped">
   <% [
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "5",
        explanation: %Q(Records created or updated in the last 5 days.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "5 names-only:",
        explanation: %Q(Names created or updated in the last 5 days.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "date-created: 2015-09-07",
        explanation: %Q(Records created on 7 Sept 2015.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "date-last-updated: 2015-09-07",
        explanation: %Q(Records last updated on 7 Sept 2015.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "date-created-or-last-updated: 2015-09-07",
        explanation: %Q(Records created or last updated on 7 Sept 2015.)},
       ].each do |val| %>
@@ -34,19 +34,19 @@
 <h5>Count records</h5>
 <table class="example-searches table table-striped">
   <% [
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "count 5",
        explanation: %Q(Count records created or updated in the last 5 days.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "count 5 names-only:",
        explanation: %Q(Count names created or updated in the last 5 days.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "count date-created: 2015-09-07",
        explanation: %Q(Count records created on 7 Sept 2015.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "count date-last-updated: 2015-09-07",
        explanation: %Q(Count records last updated on 7 Sept 2015.)},
-      {search_target: "Review",
+      {search_target: "Activity",
        search_string: "count date-created-or-last-updated: 2015-09-07",
        explanation: %Q(Count records created or last updated on 7 Sept 2015.)},
       ].each do |val| %>

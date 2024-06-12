@@ -21,6 +21,7 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
   attr_reader :result
 
   def initialize(batch_id, search_string, working_draft, authorising_user, job_number)
+    @start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     @batch = Loader::Batch.find(batch_id)
     @search_string = search_string
     @authorising_user = authorising_user
@@ -32,14 +33,26 @@ class Loader::Batch::BulkController::AddToDraftTaxonomyJob
 
   def run
     log_start
-    @result = {attempts: 0, adds: 0, declines: 0, errors: 0}
+    @result = {Job: 'Add to Draft Taxonomy',
+               Job_batch: @batch.name,
+               Job_search: @search_string,
+               attempts: 0, adds: 0, declines: 0, errors: 0}
     @search.order(:seq).each do |loader_name|
       do_one_loader_name(loader_name)
     end
+    record_elapsed
     log_finish
   end
 
   private
+
+   def record_elapsed
+    finish_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    @result[:time_seconds] = (finish_time - @start_time).round(1)
+    if @result[:time_seconds] > 60
+      @result[:time] = "#{((finish_time - @start_time)/60).round} min #{((finish_time - @start_time)%60).round} sec"
+    end
+  end
 
   def do_one_loader_name(loader_name)
     @result[:attempts] += 1

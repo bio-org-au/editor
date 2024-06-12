@@ -11,14 +11,14 @@
           <% if batch.name == default_batch %>
             <% check = editor_icon('check') %>
             <%= link_to("#{batch.name}&nbsp;#{check}".html_safe,
-                clear_default_batch_path(batch.id),
+                clear_default_batch_path('from-menu'),
                 {class: 'blue',
                  title: "Clear the default batch",
                  method: :post,
                  remote: true}) %>
           <% else %>
             <%= link_to("#{batch.name}".html_safe,
-                make_default_batch_path(batch.id),
+                make_default_batch_path(batch.id, 'from-menu'),
                 {class: 'blue',
                  title: "Make #{batch.name} the default batch",
                  method: :post,

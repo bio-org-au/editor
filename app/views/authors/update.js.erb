@@ -1,7 +1,7 @@
 $('.message-container').html('');
 $('input#author_name').focus();
 $('#search-result-details-info-message-container').html('<%= @message %>');
-$('input#author-duplicate-of-typeahead').val('<%= @author.duplicate_of.try('name_and_or_abbrev').try('html_safe') %>');
+$('input#author-duplicate-of-typeahead').val('<%= @author.duplicate_of.try('name_and_or_abbrev') %>');
 $('a#Author-<%= @author.id %>').html('<%= escape_javascript(render partial: 'author_name_link_text', locals: {search_result: @author}) %>');
 $('td#Author-<%= @author.id %>-abbrev').html('<%= escape_javascript(render partial: 'author_abbrev_link_text', locals: {search_result: @author}) %>');
 

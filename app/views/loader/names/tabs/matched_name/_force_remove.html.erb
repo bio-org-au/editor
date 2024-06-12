@@ -1,0 +1,32 @@
+<%= divider %>
+<h4>Force Remove Match</h4>
+<% if @loader_name.preferred_matches.blank? %>
+    No matches
+<% elsif @loader_name.can_clear_matches? %>
+    Use Details tab to clear matches
+<% else %>
+  <% @loader_name.preferred_matches.each do |match| %>
+    This option lets you force remove a match.
+    <br>
+    The match is to <%= match.name.full_name %> in <%= match.instance.reference.citation %>
+    <br>
+    Removing it will destroy the history of processing.
+    <%= button_to "Remove match", loader_name_matches_prepare_force_remove_path(match.id),
+      remote: true,
+      id: "prepare_force_remove_btn_#{match.id}",
+      class: 'btn btn-warning width-10em pull-right',
+      title: 'Click here to remove the match' %>
+    <%= button_to "Cancel Remove", loader_name_matches_cancel_force_remove_path(match.id),
+      remote: true,
+      id: "cancel_force_remove_btn_#{match.id}",
+      class: 'hidden btn btn-default width-10em pull-right',
+      title: 'Click here to remove the match' %>
+    <%= button_to "Confirm Remove", loader_name_matches_force_remove_path(match.id),
+      remote: true,
+      id: "force_remove_btn_#{match.id}",
+      method: :delete,
+      class: 'hidden btn btn-danger width-12em pull-right',
+      title: 'Click here to remove the match' %>
+    <br>
+  <% end %>
+<% end %>

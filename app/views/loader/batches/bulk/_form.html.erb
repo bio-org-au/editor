@@ -4,7 +4,7 @@ Directives available here: <code>family: [family name string]</code>,  <code>acc
 <br>
 Wildcards are allowed but are <b>not</b> added automatically.<br>
 (Adding them automatically would stop you specifying non-wildcarded sets of names to process.)<br>
-The <code>family:</code> directive can take a comma-separated list of family names <em>without</em> wildcards (but not for Delete Syn Conflicts)
+The <code>family:</code> directive can take a comma-separated list of family names <em>without</em> wildcards
 <%= form_tag({controller: "loader/batch/bulk", action: "operation"}, method: "post", remote: true) do %>
 
   <div class="width-64em">
@@ -38,24 +38,24 @@ The <code>family:</code> directive can take a comma-separated list of family nam
   <% if Rails.configuration.try(:batch_loader_delete_syn_conflicts_aware) %>
        <br>
        <br>
-      <%= link_to "Enable Delete Syn Conflicts", 
+      <%= link_to "Enable Remove Syn Conflicts", 
         {controller: 'loader/batch/bulk', action: 'enable_delete_syn_conflict'},
         {id: 'enable-delete-syn-conflict', class: 'btn btn-primary width-16em',
-         remote: true, title: "Enable the Add to draft taxonomy button",
+         remote: true, title: "Enable the Remove Syn Conflicts button",
          method: :post} %>
 
-       <%= link_to "Disable Delete Syn Conflicts",
+       <%= link_to "Disable Remove Syn Conflicts",
          {controller: 'loader/batch/bulk', action: 'disable_delete_syn_conflict'},
          {id: 'disable-delete-syn-conflict', class: 'btn btn-primary width-16em', style: 'display: none;',
-          remote: true, title: "Disable the Add to draft taxonomy button",
+          remote: true, title: "Disable the Remove Syn Conficts button",
           method: :post} %>
         <input id="delete-syn-conflicts-batch-submit"
                name="submit"
                type="submit" 
-               value="Delete Syn Conflicts"
+               value="Remove Syn Conflicts"
                class="btn btn-primary width-16em"
                method="post"
-               title="Delete Syn Conflicts" 
+               title="Remove Syn Conflicts" 
                formaction="loader/batches/bulk/syn-conflicts"
                disabled="true" />
 

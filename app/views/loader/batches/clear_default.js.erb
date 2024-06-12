@@ -1,7 +1,13 @@
-$('#loader-batch-details-tab').click();
-$('.message-container').html('');
-$('.error-container').html('');
-$('#search-result-details-info-message-container').html('<%= escape_javascript(@message) %>');
+<% unless @from_menu %>
+  $('#loader-batch-details-tab').click();
+  $('.message-container').html('');
+  $('.error-container').html('');
+  $('#search-result-details-info-message-container').html('<%= escape_javascript(@message) %>');
+<% end %>
 $('#first-navbar').html('<%= j (render(partial: "layouts/menus")) %>')
 $('#loader-batch-tab').addClass('hidden');
 $('#batch-loader-control-panel').addClass('hidden');
+
+if ($('#loader-batch-details-tab').is(':visible')) {
+  $('#loader-batch-details-tab').click();
+}

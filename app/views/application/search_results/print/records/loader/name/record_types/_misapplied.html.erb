@@ -1,0 +1,43 @@
+<tr id="search-result-<%= search_result.id %>" 
+    class="search-result <%= search_result.record_type %> <%= 'fresh' if search_result.fresh? %>"  
+    >
+    <td width="40" class="first-indent"></td>
+    <td class="text name main-content width-100-percent" colspan="5" >
+
+
+<% path = 'application/search_results/link_texts/loader/name' %>
+
+<% if search_result.misapp_html.blank? %>
+  <%= render partial: 'application/search_results/print/records/loader/name/record_types/misapplied/construct_entry',
+             locals: {search_result: search_result} %>
+<% else %>
+  <%= search_result.misapp_html %>
+<% end %>
+
+
+
+
+<% unless search_result.remark_to_reviewers.blank? %>
+  <span class="review loader-name remark-to-reviewers">
+    <%= search_result.remark_to_reviewers.html_safe %>
+  </span>
+<% end %>
+
+<% unless search_result.notes.blank? %>
+  <% if can?("batches", :index) %>
+    <span class="review loader-name compiler-note">
+       <%= search_result.notes.html_safe %>
+    </span>
+  <% end %>
+<% end %>
+
+<% unless search_result.higher_rank_comment.blank? %>
+  <span class="review loader-name remark-to-reviewers">
+    <%= search_result.higher_rank_comment.html_safe %>
+  </span>
+<% end %>
+
+  </td>
+</tr>
+
+

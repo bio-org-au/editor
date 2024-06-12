@@ -19,5 +19,12 @@
 class HistoryController < ApplicationController
   before_action :hide_details, :empty_search
 
-  def history; end
+  def for_year
+    @history_path = history_params[:year]
+  end
+
+  def history_params
+    params.permit(:year)
+  end
+
 end

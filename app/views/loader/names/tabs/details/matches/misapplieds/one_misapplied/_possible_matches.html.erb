@@ -1,0 +1,39 @@
+  <% matching_name.instances.sort{|x,y| x.reference.iso_pub_date_for_sorting <=> y.reference.iso_pub_date_for_sorting}.each do |instance| %>
+      <% unless instance.instance_type.relationship? %>
+
+        <% loader_name_match = Loader::Name::Match.new %>
+        <% loader_name_match.loader_name_id = @loader_name.id %>
+        <% loader_name_match.name_id = matching_name.id %>
+        <% loader_name_match.instance_id = instance.id %>
+        <%= form_with(model: loader_name_match, url: loader_name_match_add_or_remove_path, role: 'form', remote: true) do |f| %>
+          <%= instance.reference.citation %>:<span class="blue"><%= instance.page %></span> <span class="brown"><%= instance.instance_type.name %></span>
+          <%= f.hidden_field(:name_id) %>
+          <%= f.hidden_field(:loader_name_id) %>
+          <%= f.hidden_field(:instance_id) %>
+
+          <% if current_chosen_instances.include?(instance.id) %> <%# Delete not Add %>
+            <% curr_chosen_match = current_preferred_matches.select {|orcn| orcn.instance_id == instance.id}.first %>
+            <% if !loader_name_match.blank? && curr_chosen_match.relationship_instance_id.present? %>
+              <br><span class="relationship-statement">Relationship instance has been created: <%= curr_chosen_match.instance_type.name %></span>
+            <% else %>
+              <%= f.submit "Add", id: "add-link-#{instance.id}", tabindex: increment_tab_index, title: 'Add instance link', class: 'hidden btn btn-primary width-3em' %>
+              <%= f.submit "Remove", id: "remove-link-#{instance.id}", tabindex: increment_tab_index, title: 'Remove instance link', class: 'bgorange btn width-5em' %>
+              <% unless curr_chosen_match.instance_type.name == 'misapplied' %>
+                <span id="<%= instance.id %>-altered-instance-type"><%= "(#{curr_chosen_match.instance_type.name})" %>instance id: <%= instance.id %></span>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= f.submit "Add", id: "add-link-#{instance.id}", tabindex: increment_tab_index, title: 'Add instance link', class: 'btn btn-primary width-3em' %>
+            <%= f.submit "Remove", id: "remove-link-#{instance.id}", tabindex: increment_tab_index, title: 'Remove instance link', class: 'hidden bgorange btn width-5em' %>
+          <% end %>
+          <br><span id='<%= dom_id(instance) %>' class="message-container error-container hidden"></span>
+        <% end %>
+        <br>
+
+
+      <% end %>
+
+   <% end %>
+
+
+

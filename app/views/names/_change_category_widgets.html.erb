@@ -1,6 +1,8 @@
 
 <div id="change-category-widgets">
-<%= "Current category is: <em>#{@name.name_category.name.capitalize}</em>".html_safe unless @name.name_category.name == @name.category_for_edit.name %>
+<% unless @name.name_category.name == @name.category_for_edit.name %>
+   Current category is: <em><%= @name.name_category.name.capitalize %></em>
+<% end %>
 
 
 <% if @name.id.present? && @name.name_category.name == @name.category_for_edit.name %>

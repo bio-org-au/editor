@@ -14,7 +14,7 @@
     </h3>
 
     <%= render partial: "#{'instances/tabs/all_tab_headings'}" %>
-    <%= render partial: "instances/tabs/#{tab_for_instance_type(@tab,params['row-type'])}" %>
+    <%= render partial: "instances/tabs/#{tab_for_instance_type(@tab,@row_type)}" %>
 
 
     <br>

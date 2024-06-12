@@ -1,0 +1,36 @@
+    <% current_preferred_matches = Loader::Name::Match.where(name_id: matching_name.id).where(loader_name_id: @loader_name.id) %>
+    <% current_chosen_instances = current_preferred_matches.collect {|orcn| orcn.instance_id} %>
+    <%  if index > 0 %><br><% end %>
+    <b>
+      <%= "#{matching_name.full_name} #{matching_name.name_status.name_for_instance_display} (id:#{matching_name.id})" %>
+    </b>
+    <% unless Loader::Name::Match.where(name_id: matching_name.id).where.not(loader_name_id: @loader_name.id).empty? %>
+    <br>
+     Already the preferred match for:
+     <ul>
+       <% Loader::Name::Match.where(name_id: matching_name.id).where.not(loader_name_id: @loader_name.id).each do |loader_name_match| %>
+         <% loader_name = loader_name_match.loader_name %>
+         <li><b><%= link_to(loader_name.simple_name,search_path(query_target: "loader_names", query_string: "id:#{loader_name.id}"),
+                         title: "See #{loader_name.simple_name}",
+                         class: 'underline') %></b> (<%= loader_name.record_type %>)
+                         #<%= loader_name_match.loader_name.id %>
+                         <%= loader_name_match.instance.reference.citation %>
+
+       <% end %>
+     </ul>
+     <br>
+    <% end %>
+     | <%= link_to('query name', search_path(query_string: "id: #{matching_name.id} show-instances:",query_target: 'names'),
+                      tabindex: increment_tab_index,
+                      title: "Search for #{matching_name.full_name}",
+                      class: '') %>
+  <br>
+  Current preferred matches: <%= @loader_name.preferred_matches.size %>
+  <br>
+  <%= render partial: 'loader/names/tabs/details/matches/misapplieds/one_misapplied/possible_matches',
+    locals: {matching_name: matching_name, index: index,
+             current_chosen_instances: current_chosen_instances,
+             current_preferred_matches: current_preferred_matches} %>
+
+
+

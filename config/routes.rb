@@ -406,8 +406,8 @@ Rails.application.routes.draw do
                                                 to: "batches#hide_bulk_processing_stats", via: :get
   end
   match "loader_batches/:id/tab/:tab", as: "loader_batch_tab", to: "loader/batches#tab", via: :get
-  match "loader_batch/make-default/:id", as: "make_default_batch", to: "loader/batches#make_default", via: :post
-  match "loader_batch/clear-default", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post
+  match "loader_batch/make-default/:id/:from", as: "make_default_batch", to: "loader/batches#make_default", via: :post, defaults: { from: 'from-tab' }
+  match "loader_batch/clear-default/:from", as: "clear_default_batch", to: "loader/batches#clear_default", via: :post, defaults: { from: 'from-tab' }
   match "loader/batch/clear", as: "loader_batch_clear", to: "loader/batches#clear", via: :get
   match "loader/batch/unlock", as: "loader_batch_unlock", to: "loader/batch/job_lock#unlock", via: :post
   match "loader/batch/bulk/enable_add", as: "loader_batch_bulk_enable_add", to: "loader/batch/bulk#enable_add",
@@ -467,6 +467,9 @@ Rails.application.routes.draw do
       match "matches/clear-and-delete-relationship-instance/:id", as: "match-clear-and-delete-relationship-instance",
                                                                   to: "matches#clear_and_delete_relationship_instance", via: :patch
       match "matches/verify_drafted/:id", as: "matches_verify_drafted", to: "matches#verify_drafted", via: :patch
+      match "matches/prepare_force_remove/:id", as: "matches_prepare_force_remove", to: "matches#prepare_force_remove", via: :post
+      match "matches/cancel_force_remove/:id", as: "matches_cancel_force_remove", to: "matches#cancel_force_remove", via: :post
+      match "matches/force_remove/:id", as: "matches_force_remove", to: "matches#force_remove", via: :delete
       resources :matches, only: [:update]
     end
   end
