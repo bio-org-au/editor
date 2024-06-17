@@ -1,7 +1,7 @@
 - :date: 17-Jun-2024
   :jira_id: '2494'
   :description: |-
-    Name update: Ensure Name children/descendents' constructed fields are refreshed whenever a Name's simple or full name is changed
+    Name update: Ensure Name children/descendents' constructed fields are refreshed whenever a Name's simple or full name is changed (#2).
 - :date: 13-Jun-2024
   :jira_id: '5104'
   :description: |-

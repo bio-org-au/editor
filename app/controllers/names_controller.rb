@@ -33,7 +33,6 @@ class NamesController < ApplicationController
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
   def show
-    logger.debug("NamesController#show")
     pick_a_tab("tab_details")
     pick_a_tab_index
     @name.change_category_name_to = "scientific" if params[:change_category_name_to].present?
@@ -240,9 +239,9 @@ class NamesController < ApplicationController
   end
 
   def check_children(name_before_change)
-    if @name.simple_name != name_before_change.simple_name #||
-         #@name.full_name != name_before_change.full_name ||
-         #@name.name_path != name_before_change.name_path
+    if @name.simple_name != name_before_change.simple_name ||
+         @name.full_name != name_before_change.full_name ||
+         @name.name_path != name_before_change.name_path
       refresh_names
     end
   end
