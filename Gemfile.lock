@@ -160,7 +160,6 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    mocha (1.16.1)
     msgpack (1.7.2)
     msgpack (1.7.2-java)
     net-imap (0.4.12)
@@ -371,7 +370,6 @@ DEPENDENCIES
   minitest
   minitest-rails
   minitest-reporters
-  mocha (~> 1.11, >= 1.11.2)
   net-ldap
   nokogiri (>= 1.13.4)
   pg (~> 1.1)

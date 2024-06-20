@@ -28,13 +28,14 @@ class NamesNewScientificFamilyOrAboveSimpleTest < ActionController::TestCase
     @request.session["user_full_name"] = "Fred Jones"
     @request.session["groups"] = ["edit"]
     get(:new,
-        params: { category: "scientific_family",
+        params: { category: "scientific-family-or-above",
                   random_id: "123445",
                   tabIndex: "107" },
         session: {},
         xhr: true)
     assert_response :success, "Cannot enter new scientific name family or above"
     assert_select("h4", /New Scientific Name/)
+    assert_select("h5", /Family or Above/)
     assert_select "input" do |inputs|
       inputs.each do |input|
         if input.to_s.match(/name-parent-typeahead/)

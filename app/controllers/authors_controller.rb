@@ -35,10 +35,15 @@ class AuthorsController < ApplicationController
   # GET /authors/new_row
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    respond_to do |format|
-      format.html { redirect_to new_search_path }
-      format.js {}
-    end
+    render :new_row, 
+       locals: {partial: 'new_row', 
+                locals_for_partial:
+           {tab_path: "#{new_author_with_random_id_path(@random_id)}",
+            link_id: "link-new-author-#{@random_id}",
+            link_title: "New Author",
+            link_text: "New Author"
+           }
+               }
   end
 
   # GET /authors/new
@@ -46,10 +51,7 @@ class AuthorsController < ApplicationController
     @author = Author.new
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
-    respond_to do |format|
-      format.html {}
-      format.js {}
-    end
+    render :new
   end
 
   # POST /authors

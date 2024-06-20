@@ -1,30 +1,22 @@
-<% link = "link-new-thing-#{@random_id}" %>
-<tr id="new-name-<%= @random_id %>" 
-  class="new-record new-name"  
+<tr id="new-name-<%= @category %>-<%= @random_id %>" 
+  class="new-record new-name search-result show-details"  
   data-record-type="name"
   data-name-type="<%= @category %>"
-  data-edit-url="<%= new_name_path(@random_id) %>"
+  data-edit-url="<%= new_name_with_category_and_random_id_path(@category, @random_id) %>"
+  data-tab-url="<%= new_name_with_category_and_random_id_path(@category, @random_id) %>"
   tabindex="<%= increment_tab_index(100) %>"
     >
   <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%= record_icon('name') %></td>
   <td class="text takes-focus name main-content min-width-40-percent max-width-100-percent width-90-percent give-me-focus" colspan="9">
-    <%= link_to("New #{@category} name", 
-                              new_name_path(category: @category, 
-                                            random_id: @random_id, 
-                                            tabIndex: increment_tab_index(0) + 5), 
-                              class: "show-details-link", 
-                              id: "#{link}",
-                              tabindex: "#{ increment_tab_index }", 
-                              title: "New name record.  Click to show details.",
-                              remote: true) %>
+    <a id="<%= link_id %>" class="show-details-link" title="<%= link_title %> Select to show details" tabindex="1000">
+      <%= link_text %> 
+    </a>
   </td>
   <td class="takes-focus width-5-percent filler">&nbsp;</td>
+  <script>
+    $(document).ready(function () {
+      document.getElementById("<%= link_id %>").click();
+    })
+  </script>
 </tr>
-
-<script>
-  $(document).ready(function () {
-    document.getElementById("<%= link %>").click();
-  })
-</script>
-
 

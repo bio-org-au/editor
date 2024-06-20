@@ -21,6 +21,7 @@ require "open-uri"
 #   Names are central to the NSL.
 class NamesController < ApplicationController
   include OpenURI
+  include Name::Typeaheads
   # All text/html requests should go to the search page, except for rules.
   before_action :javascript_only, except: %i[rules refresh_children]
   before_action :find_name,
@@ -46,46 +47,6 @@ class NamesController < ApplicationController
 
   alias tab show
 
-  # Used on references - new instance tab
-  def typeahead_on_full_name
-    typeahead = Name::AsTypeahead::OnFullName.new(params)
-    render json: typeahead.suggestions
-  end
-
-  # For the typeahead search.
-  def name_parent_suggestions
-    typeahead = Name::AsTypeahead::ForParent.new(params)
-    render json: typeahead.suggestions
-  end
-
-  def name_family_suggestions
-    typeahead = Name::AsTypeahead::ForFamily.new(params)
-    render json: typeahead.suggestions
-  end
-
-  # Columns such as parent and duplicate_of_id use a typeahead search.
-  def cultivar_parent_suggestions
-    render json: [] if params[:term].blank?
-    render json: Name::AsTypeahead \
-      .cultivar_parent_suggestions(params[:term],
-                                   params[:name_id],
-                                   params[:rank_id])
-  end
-
-  # Columns such as parent and duplicate_of_id use a typeahead search.
-  def hybrid_parent_suggestions
-    render json: [] if params[:term].blank?
-    render json: Name::AsTypeahead \
-      .hybrid_parent_suggestions(params[:term],
-                                 params[:name_id],
-                                 params[:rank_id])
-  end
-
-  # Columns such as parent and duplicate_of_id use a typeahead search.
-  def duplicate_suggestions
-    render json: duplicate_suggestions_typeahead
-  end
-
   def edit_as_category
     @tab = "tab_edit"
     @tab_index = 1
@@ -100,21 +61,28 @@ class NamesController < ApplicationController
   # GET /names/new_row
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    @category = params[:type].tr("-", " ")
-    logger.debug("@category: #{@category}")
-    respond_to do |format|
-      format.html { redirect_to new_search_path }
-      format.js {}
-    end
+    @category = params[:type].tr(" ", "-")
+    @category_display = params[:type].tr("-", " ")
+    render :new_row, 
+      locals: {partial: 'new_row', 
+               locals_for_partial:
+          {tab_path: "#{new_name_with_category_and_random_id_path(@category, @random_id)}",
+           link_id: "link-new-name-#{@category}-#{@random_id}",
+           link_title: new_row_link_title,
+           link_text: new_row_link_text,
+           name_category: @category
+          }
+              }
   end
 
   # GET /names/new
   def new
-    logger.debug("new name")
     @tab_index = (params[:tabIndex] || "40").to_i
+    @category = params[:category]
+    @category_display = @category.gsub(/[_-]/,' ')
     @name = new_name_for_category
     @no_search_result_details = true
-    render "new"
+    render :new
   end
 
   # POST /names
@@ -133,11 +101,11 @@ class NamesController < ApplicationController
   # Ajax only.
   def update
     @name = Name::AsEdited.find(params[:id])
-    refresh_after_update = refresh_names_after_update?
+    name_before_change = @name.dup
     @message = @name.update_if_changed(name_params,
                                        typeahead_params,
                                        current_user.username)
-    refresh_names if refresh_after_update
+    check_children(name_before_change) unless @message.downcase == 'no change'
     render "update"
   rescue StandardError => e
     @message = e.to_s
@@ -252,31 +220,41 @@ class NamesController < ApplicationController
 
   def new_name_for_category
     case params[:category]
-    when "scientific"
+    when /scientific\z/
       Name::AsNew.scientific
-    when "scientific_family"
-      Name::AsNew.scientific_family
+    when /scientific.family.or.above/
+      Name::AsNew.scientific_family_or_above
     when "phrase"
       Name::AsNew.phrase
-    when "hybrid formula"
+    when /hybrid.formula\z/
       Name::AsNew.scientific_hybrid
-    when "hybrid formula unknown 2nd parent"
+    when /hybrid.formula.unknown.2nd.parent/
       Name::AsNew.scientific_hybrid_unknown_2nd_parent
-    when "cultivar hybrid"
+    when /cultivar.hybrid/
       Name::AsNew.cultivar_hybrid
-    when "cultivar"
+    when /cultivar\z/
       Name::AsNew.cultivar
     else
       Name::AsNew.other
     end
   end
 
-  def refresh_names_after_update?
-    @name.name_element != name_params[:name_element]
+  def check_children(name_before_change)
+    if @name.simple_name != name_before_change.simple_name ||
+         @name.full_name != name_before_change.full_name ||
+         @name.name_path != name_before_change.name_path
+      refresh_names
+    end
   end
 
   def refresh_names
-    NameChildrenRefresherJob.new.perform(@name.id)
+    refreshed_names_tally = 0
+    refreshed_names_tally = NameChildrenRefresherJob.new.perform(@name.id)
+    if refreshed_names_tally > 0
+      @message += "; also updated \
+      #{ActionController::Base.helpers.pluralize(refreshed_names_tally,\
+      'child')}."
+    end
   end
 
   def name_params
@@ -289,28 +267,19 @@ class NamesController < ApplicationController
                                  :changed_combination)
   end
 
-  def typeahead_params
-    params.require(:name).permit(:author_id,
-                                 :ex_author_id,
-                                 :base_author_id,
-                                 :ex_base_author_id,
-                                 :sanctioning_author_id,
-                                 :author_typeahead,
-                                 :ex_author_typeahead,
-                                 :base_author_typeahead,
-                                 :ex_base_author_typeahead,
-                                 :sanctioning_author_typeahead,
-                                 :family_id,
-                                 :family_typeahead,
-                                 :parent_id,
-                                 :second_parent_id,
-                                 :parent_typeahead,
-                                 :second_parent_typeahead,
-                                 :duplicate_of_id,
-                                 :duplicate_of_typeahead)
-  end
-
   def dependent_params
     params.permit(:id, :dependent_type)
+  end
+
+  def new_row_link_title
+    return "New #{@category_display} Name" unless @category.match(/family-or/)
+
+    "New Scientific Name - Family or Above"
+  end
+
+  def new_row_link_text
+    return "New #{@category_display} Name".titleize unless @category.match(/family-or/)
+
+    "New Scientific Name - Family or Above"
   end
 end

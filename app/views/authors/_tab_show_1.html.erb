@@ -98,9 +98,6 @@
 <% end %>
 
 <h5>Author #<%= @author.id %></h5>
-<% if @author.duplicate_of_id.present? %>
-<h5>Duplicate of author #<%= @author.duplicate_of_id %></h5>
-<% end %>
 
 <%= created_by_whom_and_when(@author).html_safe %>
 <br>

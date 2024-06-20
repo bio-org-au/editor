@@ -43,10 +43,15 @@ class ReferencesController < ApplicationController
   # GET /references/new_row
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    respond_to do |format|
-      format.html { redirect_to new_search_path }
-      format.js {}
-    end
+    render :new_row, 
+      locals: {partial: 'new_row', 
+                locals_for_partial:
+                  {tab_path: "#{new_reference_with_random_id_path(@random_id)}",
+                   link_id: "link-new-reference-#{@random_id}",
+                   link_title: "New reference",
+                   link_text: "New Reference"
+                  }
+              }
   end
 
   # POST /references

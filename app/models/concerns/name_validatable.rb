@@ -53,6 +53,7 @@ module NameValidatable
               allow_blank: true
     validates :uri, uniqueness: true, allow_blank: true
     validate :genus_parent_must_match_family_if_both_ranked_family
+    validates :name_path, presence: true
   end
 
   def name_element_is_stripped

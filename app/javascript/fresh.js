@@ -729,10 +729,6 @@
       recordCurrentActiveTab(record_type);
       if (tabWasClicked) {
         debug('tab was clicked loadStandardDetails');
-        debug('tab was clicked loadStandardDetails');
-        debug('tab was clicked loadStandardDetails');
-        debug('tab was clicked loadStandardDetails');
-        debug('tab was clicked loadStandardDetails');
         if ($('.give-me-focus')) {
           return debug('give-me-focus ing - changed so not .give-me-focus ing because clicked a tab resulted in focus switching to the first record');
         } else {

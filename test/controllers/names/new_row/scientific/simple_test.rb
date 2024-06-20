@@ -35,7 +35,7 @@ class NamesNewRowScientificSimpleTest < ActionController::TestCase
     assert_match(/search-results-table/,
                  response.body.to_s,
                  "Missing expected element")
-    assert_match(/names.new.category=scientific/,
+    assert_match(/New Scientific Name/,
                  response.body.to_s,
                  "Missing expected element")
   end

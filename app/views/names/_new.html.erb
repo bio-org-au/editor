@@ -2,6 +2,9 @@
   <div id="new-name-form-container" class="new-record-form-container">
             
     <h4><%= "New #{@name.name_category.name.titleize} Name".sub(/Name Name/,'Name') %></h4>
+    <% if @category == 'scientific-family-or-above' %>
+      <h5>Family or Above</h5>
+    <% end %>
     <hr>
     <%= render partial: 'names/form/base' %>
 

@@ -37,9 +37,6 @@ module NameNamable
   end
 
   def get_names_json
-    logger.debug("get_names_json start for id: #{id}")
-    logger.debug("Name::AsServices.name_strings_url(id) for
-                 id: #{id}: #{Name::AsServices.name_strings_url(id)}")
     JSON.load(RestClient.get(Name::AsServices.name_strings_url(id), "Accept" => "text/json"))
   end
 

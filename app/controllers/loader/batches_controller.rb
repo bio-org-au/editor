@@ -40,20 +40,22 @@ class Loader::BatchesController < ApplicationController
 
   def new_row
     @random_id = (Random.new.rand * 10_000_000_000).to_i
-    respond_to do |format|
-      format.html { redirect_to new_search_path }
-      format.js {}
-    end
+    render :new_row, 
+           locals: {partial: 'new_row', 
+                    locals_for_partial:
+               {tab_path: "#{loader_batch_new_with_random_id_path(@random_id)}",
+                link_id: "link-new-loader-batch-#{@random_id}",
+                link_title: "New Loader Batch",
+                link_text: "New Loader Batch"
+               }
+                   }
   end
 
   def new
     @anchor = Loader::Name.find(params[:loader_batch_id]) unless params[:loader_batch_id].blank?
     @loader_batch = ::Loader::Batch.new
     @tab_index = (params[:tabIndex] || "40").to_i
-    respond_to do |format|
-      format.html {}
-      format.js {}
-    end
+    render :new
   end
 
   def create

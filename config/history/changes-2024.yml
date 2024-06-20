@@ -1,3 +1,33 @@
+- :date: 17-Jun-2024
+  :jira_id: '2494'
+  :description: |-
+    Name update: Ensure Name children/descendents' constructed fields are refreshed whenever a Name's simple or full name is changed (#2)
+- :date: 13-Jun-2024
+  :jira_id: '5104'
+  :description: |-
+    Loader: Fix bug from NSL-5104 yesterday - when creating names they are now correctly shown as created
+- :date: 12-Jun-2024
+  :jira_id: '5113'
+  :description: |-
+    Loader: Match relationship type will take account of doubt
+- :date: 12-Jun-2024
+  :jira_id: '5112'
+  :description: |-
+    Editor: Remove repeated duplicate-of info from Author details tab metadata
+- :date: 12-Jun-2024
+  :jira_id: '5104'
+  :description: |-
+    Editor: Make it possible to arrow in and out of new records created from the New menu (8 types of new Name records)
+- :date: 11-Jun-2024
+  :jira_id: '5109'
+  :description: |-
+    Loader: Remove syn conflicts job checks for NFP before checking for sub-taxa
+- :date: 07-Jun-2024
+  :jira_id: '5104'
+  :description: |-
+    Editor: Make it possible to arrow in and out of new records created from the New menu (Reference, Author, Loader Batch)
+- :date: 13-Jun-2024
+  :release: true
 - :date: 07-Jun-2024
   :jira_id: '5099'
   :description: |-

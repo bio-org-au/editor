@@ -318,18 +318,18 @@ class Loader::Name < ActiveRecord::Base
     return InstanceType.find_by_name(synonym_type || "misapplied").id if misapplied?
 
     if taxonomic?
-      return InstanceType.find_by_name("doubtful pro parte taxonomic synonym").id if doubtful? && pp?
+      return InstanceType.find_by_name("doubtful pro parte taxonomic synonym").id if riti_doubtful? && pp?
       
-      return InstanceType.find_by_name("doubtful taxonomic synonym").id if doubtful?
+      return InstanceType.find_by_name("doubtful taxonomic synonym").id if riti_doubtful?
 
       return InstanceType.find_by_name("pro parte taxonomic synonym").id if pp?
 
       return InstanceType.find_by_name("taxonomic synonym").id
 
     elsif nomenclatural?
-      return InstanceType.find_by_name("doubtful pro parte nomenclatural synonym").id if doubtful? && pp?
+      return InstanceType.find_by_name("doubtful pro parte nomenclatural synonym").id if riti_doubtful? && pp?
 
-      return InstanceType.find_by_name("doubtful nomenclatural synonym").id if doubtful?
+      return InstanceType.find_by_name("doubtful nomenclatural synonym").id if riti_doubtful?
 
       return InstanceType.find_by_name("pro parte nomenclatural synonym").id if pp?
 

@@ -459,7 +459,7 @@ acacia:
   namespace: apni
   parent: a_family
   family: a_family
-  name_path: 'Plantae/Magnoliophyta/a_family/ Acacia'
+  name_path: 'Plantae/Magnoliophyta/Magnoliopsida/a_subclassis/a_superordo/an_ordo/a_subordo/a_family/Acacia'
   uri: abf
   author: bentham
 

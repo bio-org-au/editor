@@ -28,6 +28,7 @@ class AuthorExAuthorMustDifferOnCreateTest < ActiveSupport::TestCase
     @name.name_rank = name_ranks(:species)
     @name.name_status = name_statuses(:legitimate)
     @name.parent = names(:a_genus)
+    @name.name_path = 'must_not_by_empty'
     @name.created_by = "fred"
     @name.updated_by = "fred"
   end

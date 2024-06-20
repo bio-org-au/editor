@@ -1,2 +1,33 @@
-$('#search-results-table').prepend("<%= escape_javascript(h(render partial: 'new_row')) %>");
+
+if ($('#search-results-table tbody').length == 0) {
+  // No search results
+  $('#search-results-table').append("<%= escape_javascript(h(render partial: partial, locals: locals_for_partial )) %>");
+} else {
+  // Some search results
+  $('#search-results-table tr:first').before("<%= escape_javascript(h(render partial: partial, locals: locals_for_partial )) %>");
+};
+
 $('li.dropdown.open').removeClass('open');
+
+
+// set up events on the new row
+$(document).on("keydown", "#new-author-<%= @random_id %>", function(event){
+  return searchResultKeyNavigation(event, $(this));
+});
+
+
+$('body').on('focus', 'tr.search-result td.takes-focus', function(event) {
+  return searchResultFocus(event, $(this).parent('tr'));
+});
+$('body').on('click', 'tr.search-result td.takes-focus', function(event) {
+  return searchResultFocus(event, $(this).parent('tr'));
+});
+$('tr.search-result td.takes-focus').focus(function(event) {
+  return searchResultFocus(event, $(this).parent('tr'));
+});
+
+$('tr.search-result td.takes-focus').click(function(event) {
+  debug('takes-focus event');
+  return searchResultFocus(event, $(this).parent('tr'));
+});
+

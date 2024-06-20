@@ -24,8 +24,12 @@ module NameNamePathable
     @tally ||= 0
     build_name_path
     if changed?
-      save!(touch: false)
-      @tally += 1
+      if name_path.blank?
+        logger.error("Error refreshing name_path for #{id}: empty name_path")
+      else
+        save!(touch: false)
+        @tally += 1
+      end
     end
     children.each do |child|
       @tally += child.refresh_name_paths

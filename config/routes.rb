@@ -143,12 +143,14 @@ Rails.application.routes.draw do
         as: "name_new_row",
         to: "names#new_row",
         via: :get,
-        type: /scientific|scientific_family|phrase|hybrid.*formula|hybrid-formula-unknown-2nd-parent|cultivar-hybrid|cultivar|other/
+        type: /scientific|scientific-family-or-above|phrase|hybrid.*formula|hybrid-formula-unknown-2nd-parent|cultivar-hybrid|cultivar|other/
   match "names/:id/tab/:tab", as: "name_tab", to: "names#tab", via: :get
   match "names/:id/tab/:tab/as/:new_category",
         as: "name_edit_as_category", to: "names#edit_as_category", via: :get
   match "names/:id/copy", as: "name_copy", to: "names#copy", via: :post
-  resources :names, only: %i[new create update destroy]
+  match "names/new/:category/:random_id",
+        as: "new_name_with_category_and_random_id", to: "names#new", via: :get
+  resources :names, only: %i[create update destroy]
   match "names/:id",
         as: "name_show",
         to: "names#show",
@@ -222,7 +224,9 @@ Rails.application.routes.draw do
         to: "references#typeahead_on_citation_for_parent", via: :get
   match "references/new_row",
         as: "reference_new_row", to: "references#new_row", via: :get
-  resources :references, only: %i[new create update destroy]
+  match "references/new/:random_id",
+        as: "new_reference_with_random_id", to: "references#new", via: :get
+  resources :references, only: %i[create update destroy]
   match "references/:id",
         as: "reference_show",
         to: "references#show",

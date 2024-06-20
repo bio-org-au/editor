@@ -60,8 +60,6 @@ group :test do
   gem "minitest"
   gem "minitest-rails"
   gem "minitest-reporters"
-  gem "mocha", "~> 1.11", ">= 1.11.2"
-  # gem "webdrivers"
   # NoMethodError: assert_template has been extracted to a gem. To continue using it, add:
   gem "rails-controller-testing"
 end

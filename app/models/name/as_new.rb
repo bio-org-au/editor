@@ -27,7 +27,7 @@ class Name::AsNew < Name
     name
   end
 
-  def self.scientific_family
+  def self.scientific_family_or_above
     name = Name.new
     name.name_type_id = NameType.find_by(name: "scientific").id
     name.name_rank_id = NameRank.find_by(name: "Familia").id
