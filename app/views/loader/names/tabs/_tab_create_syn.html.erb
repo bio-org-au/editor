@@ -5,7 +5,7 @@
   <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: {loader_name: loader_name} %>
   <% if @take_focus %>
     <script>
-      $(document).ready(function () { $('#loader_name_simple_name').focus(); })
+      $(document).ready(function () { $('#loader_name_full_name').focus(); })
     </script>
   <% end %>
 <% else %>

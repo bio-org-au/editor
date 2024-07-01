@@ -8,6 +8,8 @@
 
     <%= render partial: "loader/names/tabs/forms/simple_name_full_name", locals: {loader_name: loader_name, f: f} %>
 
+    <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
+
     <div class="form-group">
       <label for="rank">Rank*</label>
       <%= f.text_field :rank, class: 'form-control', required: true, title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
@@ -39,11 +41,8 @@
 
     <div class="form-group">
       <label for="family">Family*</label>
-      <%= f.text_field :family, class: 'form-control give-me-focus', required: true, title: "Enter family name", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_field :family, class: 'form-control', required: true, title: "Enter family name", tabindex: increment_tab_index, autofocus: true %>
     </div>
-
-    <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
-    <%#= render partial: "authors", locals: {f: f} %>
 
     <div class="form-group">
       <label for="notes">Notes</label>

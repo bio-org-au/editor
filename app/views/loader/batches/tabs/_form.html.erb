@@ -1,5 +1,6 @@
 <%= form_with model: @loader_batch do |form| %>
 
+  <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
   <div class="form-group">
     <label for="name">Name<span class="red">*</span></label>
     <%= form.text_field :name, class: 'form-control', title: 'Edit the name of the batch', required: true %>

@@ -1,3 +1,11 @@
 $('tr#new-name-<%= params[:category] %>-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'name_record', locals: {search_result: @name, give_me_focus: true})) %>");
 $('tr#search-result-<%= @name.id %> td.takes-focus a.show-details-link').focus();
 $('#show-instances-for-name-btn').removeClass('hidden');
+
+
+// set up keydown event on the new row
+
+$(document).on('keydown', "tr.search-result td.takes-focus a", function(event){
+  return searchResultKeyNavigation(event, $(this).parent('td').parent('tr'));
+});
+

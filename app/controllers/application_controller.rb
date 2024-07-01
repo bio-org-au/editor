@@ -182,6 +182,7 @@ class ApplicationController < ActionController::Base
 
   def set_session_default_loader_batch_name
     return if session[:default_loader_batch_id].blank?
+    return if Loader::Batch.where(id: session[:default_loader_batch_id])
 
     session[:default_loader_batch_name] =
       Loader::Batch.find(session[:default_loader_batch_id]).name

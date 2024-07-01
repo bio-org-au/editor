@@ -230,8 +230,8 @@
   };
 
   window.cancelNewRecord = function(event, $element) {
-    $("#search-result-details").addClass('hidden');
-    $(`#${$element.attr('data-element-id')}`).addClass('hidden');
+    $('#search-result-details').html('');
+    $(`#${$element.attr('data-element-id')}`).remove();
     return false;
   };
 
@@ -730,14 +730,16 @@
       if (tabWasClicked) {
         debug('tab was clicked loadStandardDetails');
         if ($('.give-me-focus')) {
-          return debug('give-me-focus ing - changed so not .give-me-focus ing because clicked a tab resulted in focus switching to the first record');
+          $('.give-me-focus').focus();
+          return;
         } else {
-          $('.give-me-focus').focus()
-          debug('just focus the tab');
           return $('li.active a.tab').focus();
         }
       } else {
-        return debug('tab was not clicked');
+        debug('tab was NOT clicked loadStandardDetails');
+        // do not switch focus - user may be just passing this record
+        // not working on it
+        return;
       }
     });
     // $('li.active a.tab').focus()   ## new

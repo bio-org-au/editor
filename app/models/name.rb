@@ -57,6 +57,7 @@ class Name < ApplicationRecord
   DECLARED_BT = "DeclaredBt"
 
   before_create :set_defaults
+  before_update :set_name_element_if_blank
   before_save :validate
 
   def primary_instances
@@ -209,5 +210,10 @@ class Name < ApplicationRecord
 
   def set_defaults
     self.namespace_id = Namespace.default.id if namespace_id.blank?
+    self.name_element = '[unknown]' if name_element.blank?
+  end
+
+  def set_name_element_if_blank
+    self.name_element = '[unknown]' if name_element.blank?
   end
 end

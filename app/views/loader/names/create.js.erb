@@ -11,4 +11,18 @@ $('.message-container').html('');
   $('tr#search-result-<%= @loader_name.id %> td.takes-focus a.show-details-link').focus();
 <% end %>
 
+// set up keydown event on the new row
+
+$(document).on('keydown', "tr.search-result td.takes-focus a", function(event){
+  return searchResultKeyNavigation(event, $(this).parent('td').parent('tr'));
+});
+
+$(document).on('keydown', "tr.search-result td.takes-focus", function(event){
+  return searchResultKeyNavigation(event, $(this).parent('tr'));
+});
+
+$(document).on('keydown', "tr.search-result", function(event){
+  return searchResultKeyNavigation(event, $(this));
+});
+
 

@@ -11,10 +11,16 @@
   Unknown type of record to edit
 <% end %>
 
-<% if @take_focus %>
+<% unless @loader_name.preferred_match? %>
   <script>
     $(document).ready(function () {
-      $('#loader_name_simple_name').focus();
+      $('#loader_name_full_name').focus();
+    })
+  </script>
+<% else %>
+  <script>
+    $(document).ready(function () {
+      $('#loader_name_name_status').focus();
     })
   </script>
 <% end %>

@@ -17,7 +17,7 @@
       <% else %>
       <%= session[:default_loader_batch_name] %>
       <br>
-      <%= f.hidden_field :loader_batch_id, class: 'form-control', required: true, value: "#{session[:default_loader_batch_id]}", title: "loader batch id", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.hidden_field :loader_batch_id, class: 'form-control', required: true, value: "#{session[:default_loader_batch_id]}", title: "loader batch id", tabindex: increment_tab_index %>
       <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
       <% end %>
     <% end %>
@@ -25,21 +25,8 @@
 
     <%= render partial: "loader/names/tabs/forms/sort_key_or_seq", locals: {loader_name: loader_name, f: f} %>
 
-    <%= render partial: "loader/names/tabs/forms/simple_name_full_name", locals: {loader_name: loader_name, f: f} %>
-
     <div class="form-group">
-      <label for="family">Family Name*</label>
-      <%= f.text_field :family, class: 'form-control',
-        required: true, title: "Enter family name", tabindex: increment_tab_index %>
-    </div>
-
-    <div class="form-group">
-      <label for="rank">Rank*</label>
-      <%= f.text_field :rank, class: 'form-control', required: true, title: "Enter rank", tabindex: increment_tab_index, autofocus: true %>
-    </div>
-
-    <div class="form-group">
-      <label for="record_type">Record type - accepted or excluded *</label>
+      <label for="record_type">Record type - accepted or excluded<span class='red'>*</span></label>
       <%= f.select :record_type, ["accepted", "excluded"], {include_blank: true},
         class: 'form-control',
         required: true,
@@ -47,11 +34,24 @@
         tabindex: increment_tab_index %>
     </div>
 
+    <%= render partial: "loader/names/tabs/forms/simple_name_full_name", locals: {loader_name: loader_name, f: f} %>
+
     <%= render partial: "loader/names/tabs/forms/name_status", locals: {f: f} %>
 
     <div class="form-group">
+      <label for="rank">Rank<span class='red'>*</span></label>
+      <%= f.text_field :rank, class: 'form-control', required: true, title: "Enter rank", tabindex: increment_tab_index %>
+    </div>
+
+    <div class="form-group">
+      <label for="family">Family<span class='red'>*</span></label>
+      <%= f.text_field :family, class: 'form-control',
+        required: true, title: "Enter family name", tabindex: increment_tab_index %>
+    </div>
+
+    <div class="form-group">
       <label for="comment">Comment</label>
-      <%= f.text_area :comment, class: 'form-control', title: "Enter comment", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_area :comment, class: 'form-control', title: "Enter comment", tabindex: increment_tab_index %>
     </div>
 
     <div class="form-group">
@@ -61,12 +61,12 @@
 
     <div class="form-group">
       <label for="notes">Notes</label>
-      <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index %>
     </div>
 
     <div class="form-group">
       <label for="remark_to_reviewers">Remark to reviewers</label>
-      <%= f.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index, autofocus: true %>
+      <%= f.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index %>
     </div>
 
     <%= divider %>

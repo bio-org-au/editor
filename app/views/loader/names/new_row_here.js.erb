@@ -23,7 +23,6 @@ $('tr.search-result td.takes-focus').focus(function(event) {
 });
 
 $('tr.search-result td.takes-focus').click(function(event) {
-  debug('takes-focus event');
   return searchResultFocus(event, $(this).parent('tr'));
 });
 

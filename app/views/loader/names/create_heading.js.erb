@@ -1,1 +1,31 @@
+
+$('.message-container').html('');
 $('div#create-heading-info-message-container').html('<%= escape_javascript(@message).html_safe %>');
+<% if params[:random_id].blank? %>
+  $('#search-result-details-info-message-container').html("<%= escape_javascript(@message||'Created') %>");
+  $('#search-result-details-info-message-container2').html("<%= escape_javascript(@message||'Created') %>");
+  $('#loader-name-save').addClass('hidden');
+  $('#loader-name-save2').addClass('hidden');
+  $('#loader-name-cancel').addClass('hidden');
+  setTimeout(function(){$('#instance-batch-loader-tab').click()},1000);
+<% else %>
+  $('tr#new-loader-name-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'application/search_results/loader_name_record', locals: {search_result: @loader_name, give_me_focus: true})) %>");
+  $('tr#search-result-<%= @loader_name.id %> td.takes-focus a.show-details-link').focus();
+<% end %>
+
+
+// set up keydown event on the new row
+
+$(document).on('keydown', "tr.search-result td.takes-focus a", function(event){
+  return searchResultKeyNavigation(event, $(this).parent('td').parent('tr'));
+});
+
+$(document).on('keydown', "tr.search-result td.takes-focus", function(event){
+  return searchResultKeyNavigation(event, $(this).parent('tr'));
+});
+
+$(document).on('keydown', "tr.search-result", function(event){
+  return searchResultKeyNavigation(event, $(this));
+});
+
+

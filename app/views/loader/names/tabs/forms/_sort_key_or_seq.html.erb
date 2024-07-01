@@ -10,7 +10,7 @@
 <% else %>
    <div class="form-group">
      <label for="seq">Seq<span class='red'>*</span></label>
-        <%= f.text_field(:seq, {class: 'form-control give-me-focus',
+        <%= f.text_field(:seq, {class: 'form-control',
                                 title: 'For listing the taxon in the correct order',
                                 required: true,
                                 tabindex: increment_tab_index}) %>

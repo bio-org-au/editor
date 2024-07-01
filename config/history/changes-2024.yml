@@ -1,3 +1,45 @@
+- :date: 01-Jul-2024
+  :jira_id: '5127'
+  :description: |-
+    New Records: Cancelling a new record form removes it completely from the page
+- :date: 28-Jun-2024
+  :jira_id: '5114'
+  :description: |-
+    Loader: Set focus on <code>full_name</code> for accepted/excluded/syn/misapp edit - unless preferred match, in which case focus goes to <code>status</code> field
+- :date: 27-Jun-2024
+  :jira_id: '5126'
+  :description: |-
+    Loader: When a batch is created the GUI elements now adjust correctly to indicate success
+- :date: 27-Jun-2024
+  :jira_id: '5114'
+  :description: |-
+    Loader: Move record type near top of accepted/excluded record form; set focus on full name for synonym/misapp record forms
+- :date: 26-Jun-2024
+  :jira_id: '5121'
+  :description: |-
+    New Record navigation: Extend fix to new Loader Name records i.e. when cursor is placed in the new Loader Name record to start with
+- :date: 24-Jun-2024
+  :jira_id: '5122'
+  :description: |-
+    Name Element: Ensure <code>Name.name_element</code> is never null - set a default if field is blank
+- :date: 24-Jun-2024
+  :jira_id: '5121'
+  :description: |-
+    New Record navigation: Fix keyboard arrow navigation into and out of new records after save
+- :date: 21-Jun-2024
+  :jira_id: '5120'
+  :description: |-
+    Loader: Typeahead for Taxonomy Parent on the Matched Name tab now offers scientific names only - common names are no longer offered
+- :date: 19-Jun-2024
+  :jira_id: '5114'
+  :description: |-
+    Loader: Move Name Status field under Simple Name field and make other minor adjustments on Loader Name forms
+- :date: 17-Jun-2024
+  :jira_id: '5118'
+  :description: |-
+    Name Path Refresh: Prevent blank <code>name_path</code> being generated during refresh, also prevent unrelated validation errors interrupting a refresh
+- :date: 20-Jun-2024
+  :release: true
 - :date: 17-Jun-2024
   :jira_id: '2494'
   :description: |-

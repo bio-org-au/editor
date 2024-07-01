@@ -3,7 +3,7 @@
     <span class="inline-block pull-right align-right">
       <% if @name.new_record? %>
         <%= link_to 'Cancel','/cancel-new-form', class: "btn btn-primary cancel-new-record-link", title: "Cancel new name.",
-          data: {element_id: "new-name-#{params[:random_id]}"}  %>
+          data: {element_id: "new-name-#{params[:category]}-#{params[:random_id]}"}  %>
       <% end %>
       <%= f.submit "Save", id: 'save-name-at-top', class: 'btn btn-primary width-5em pull-right', title: "Save changes.", disabled: false %>
     </span>
