@@ -35,7 +35,8 @@ class SessionsController < ApplicationController
       set_up_session
       deep_link || (redirect_to :root)
     else
-      render "new"
+      render "new", status: :unprocessable_entity
+
     end
   rescue StandardError => e
     logger.error("Exception signing in: #{e.to_s.gsub(/password:[^,]*/, 'password: [filtered]')}")

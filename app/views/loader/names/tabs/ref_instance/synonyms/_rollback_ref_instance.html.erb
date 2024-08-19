@@ -6,7 +6,9 @@
 
     <h5>Undo</h5>
     <%= form_with(url: loader_name_match_clear_relationship_instance_path(match.id),
-                  role: 'form', remote: true, method: :patch) do |f| -%>
+                  role: 'form',
+                  data: { turbo: false },
+                  local: false, method: :patch) do |f| -%>
       <%= f.submit "Clear out the found instance.",
                     id: 'clear-out-relationship-instance-button',
                     tabindex: increment_tab_index,
@@ -18,7 +20,8 @@
 
     <h5>Undo</h5>
     <%= form_with(url: loader_name_match_clear_and_delete_relationship_instance_path(match.id),
-                  role: 'form', remote: true, method: :patch) do |f| -%>
+                  role: 'form', data: { turbo: false }, 
+                  local: false, method: :patch) do |f| -%>
       <%= f.submit "Clear out and delete the instance",
                     id: 'clear-and-delete-found-relationship-instance-button',
                     tabindex: increment_tab_index,

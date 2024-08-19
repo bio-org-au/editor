@@ -1,5 +1,8 @@
 
-  <%= form_with(model: match, url: loader_name_matches_use_batch_default_ref_path)  do |form| %>
+<%= form_with(model: match,
+              url: loader_name_matches_use_batch_default_ref_path,
+              data: { turbo: false },
+              local: false)  do |form| %>
     <%= form.hidden_field :id %>
       <br>
       Confirm your choice to <b>use the batch default reference</b> for this record:

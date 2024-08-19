@@ -1,4 +1,4 @@
-<%= form_with model: @loader_batch do |form| %>
+<%= form_with model: @loader_batch, data: {turbo: false }, local: false do |form| %>
 
   <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
   <div class="form-group">

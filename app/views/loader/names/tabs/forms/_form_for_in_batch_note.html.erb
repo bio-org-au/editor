@@ -1,4 +1,4 @@
-<%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
+<%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |f| %>
     <div class="form-group align-right">
       <div class="nsl-inline-block align-left pull-left"><h5><%= loader_name.new_record? ?  'Create' : 'Edit' %> <%= @loader_name.record_type.gsub(/-/,' ').titlecase %> </h5></div>
       <% if loader_name.new_record? -%>

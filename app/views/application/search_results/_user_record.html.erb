@@ -15,7 +15,7 @@
       tabindex="<%= increment_tab_index %>" 
       title="User record. Select to show details."
       id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
-      <%= render partial: 'application/search_results/link_texts/user', locals: {search_result: search_result} %>
+      <%= render partial: 'user', locals: {search_result: search_result} %>
     </a>
   </td>
   <td class="takes-focus width-5-percent filler">&nbsp;</td>

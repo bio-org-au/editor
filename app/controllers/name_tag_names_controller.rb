@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class NameTagNamesController < ApplicationController
-  before_action :set_name_tag_name, only: %i[show edit update destroy]
+  before_action :set_name_tag_name, only: %i[show edit destroy]
 
   # GET /name_tag_names/1
   # GET /name_tag_names/1.json

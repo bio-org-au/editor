@@ -27,7 +27,11 @@
       <br>
       <% if @loader_name.loader_name_matches.first.manually_drafted? %>
         This loader-name is already manually drafted.
-        <%= form_with(model: @loader_name.loader_name_matches.first, as: 'loader-name-match', role: 'form', remote: true) do |f| %>
+        <%= form_with(model: @loader_name.loader_name_matches.first,
+                      as: 'loader-name-match',
+                      role: 'form',
+                      data: { turbo: false },
+                      local: false) do |f| %>
           <%= f.hidden_field(:loader_name_id, value: @loader_name.loader_name_matches.first.id) %>
           <%= f.submit "Remove the manually-drafted flag", id: 'save-loader-name-manually-drafted', tabindex: increment_tab_index, title: 'Whoops! Remove the flag.', class: 'btn btn-primary width-20em', disabled: false %>
         <% end %>

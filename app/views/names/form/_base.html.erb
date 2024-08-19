@@ -23,11 +23,11 @@
   <span id="search-result-details-error-message-container2" class="error-container"></span>
 <% end %>
 
-
 <% if @take_focus %>
   <script>
+
     $(document).ready(function () {
-      document.getElementById('name_name_type_id').focus();
+      focusOnField('name_name_type_id');
     })
   </script>
 <% end %>

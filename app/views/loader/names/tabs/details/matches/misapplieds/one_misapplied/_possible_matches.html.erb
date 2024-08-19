@@ -5,7 +5,11 @@
         <% loader_name_match.loader_name_id = @loader_name.id %>
         <% loader_name_match.name_id = matching_name.id %>
         <% loader_name_match.instance_id = instance.id %>
-        <%= form_with(model: loader_name_match, url: loader_name_match_add_or_remove_path, role: 'form', remote: true) do |f| %>
+        <%= form_with(model: loader_name_match,
+                      url: loader_name_match_add_or_remove_path,
+                      role: 'form',
+                      data: { turbo: false },
+                      local: false) do |f| %>
           <%= instance.reference.citation %>:<span class="blue"><%= instance.page %></span> <span class="brown"><%= instance.instance_type.name %></span>
           <%= f.hidden_field(:name_id) %>
           <%= f.hidden_field(:loader_name_id) %>

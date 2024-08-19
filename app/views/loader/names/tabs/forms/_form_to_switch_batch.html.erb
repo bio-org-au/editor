@@ -1,4 +1,4 @@
-<%= form_with(model: loader_name, role: 'form', remote: true) do |f| %>
+<%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |f| %>
     Current batch: <%= loader_name.batch.name %>
     <div class="form-group">
       <label for="loader_batch_id">Batch <span class='red'>*</span></label>

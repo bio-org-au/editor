@@ -1,6 +1,6 @@
 
 <br>
-    <%= form_with model: name_review_comment, url: 'name_review_comments', method: :post do |form| %>
+<%= form_with model: name_review_comment, url: 'name_review_comments', data: { turbo: false }, local: false, method: :post do |form| %>
       <%= form.hidden_field :batch_reviewer_id %>
       <%= form.hidden_field :loader_name_id %>
       <%= form.hidden_field :review_period_id %>

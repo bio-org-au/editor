@@ -13,7 +13,7 @@ module Tree::Element::Profile::Comment
   end
 
   def comment_key
-    tves.first.tree_version.tree.comment_key
+    tree_version_elements.first.tree_version.tree.comment_key
   end
 
   def comment_value

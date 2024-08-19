@@ -1,7 +1,11 @@
 
 <br>
 <div class="inline-edit-form-container">
-    <%= form_with model: name_review_comment, url: 'name_review_comments', method: :patch do |form| %>
+  <%= form_with model: name_review_comment,
+                url: 'name_review_comments',
+                data: { turbo: false },
+                local: false,
+                method: :patch do |form| %>
 
       <%= form.hidden_field :id %>
       <%= form.hidden_field :batch_reviewer_id %>

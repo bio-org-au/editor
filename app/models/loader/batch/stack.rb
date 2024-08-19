@@ -25,15 +25,7 @@ class Loader::Batch::Stack < ActiveRecord::Base
     created_at > 2.hour.ago
   end
 
-  def display_asx
-    "Loader Batch Stack"
-  end
-
   def allow_delete?
     false
-  end
-
-  def xdescription
-    "some description"
   end
 end

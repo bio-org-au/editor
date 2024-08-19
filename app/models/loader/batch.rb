@@ -26,7 +26,7 @@ class Loader::Batch < ActiveRecord::Base
   has_many :loader_names, class_name: "Loader::Name", foreign_key: "loader_batch_id"
   has_many :batch_reviews, class_name: "Loader::Batch::Review", foreign_key: "loader_batch_id"
   belongs_to :default_reference, class_name: "Reference", foreign_key: "default_reference_id", optional: true
-  alias_attribute :reviews, :batch_reviews
+  alias_method :reviews, :batch_reviews
   validates :name, uniqueness: { case_sensitive: false }, presence: true
 
   attr_accessor :give_me_focus, :message

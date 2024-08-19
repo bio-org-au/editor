@@ -8,7 +8,7 @@
 
 <% current_te = @instance.accepted_tree_version_element.tree_element %>
 
-<%= form_with model: current_te do |form| %>
+<%= form_with model: current_te, data: { turbo: false }, local: false do |form| %>
 
   <% if current_te.excluded? %>
     Distribution: <%= form.text_field :distribution_value, title: 'Distribution', class: 'form-control', disabled: true, placeholder: "Excluded taxa do not have distributions" %>

@@ -1,3 +1,97 @@
+- :date: 02-Aug-2024
+  :jira_id: ''
+  :description: |-
+    Security Patch: Merge dependabot branch for rexml-3.3.3
+- :date: 25-Jul-2024
+  :jira_id: ''
+  :description: |-
+    Loader Batch: Remove deprecated and unused model methods
+- :date: 25-Jul-2024
+  :jira_id: '5151'
+  :description: |-
+    Loader Batch: Fix deprecation warning in log about alias_attribute with non-attribute target
+- :date: 25-Jul-2024
+  :jira_id: '5149'
+  :description: |-
+    Javascript: Fix minor intermittent JS error showing up in the JS console when trying to show page load time - second attempt
+- :date: 24-Jul-2024
+  :jira_id: '5152'
+  :description: |-
+    Stylesheets: Re-org files - move stylesheets into some sensible subdirectories and remove bootstrap-editable.css because it appears unused.
+- :date: 24-Jul-2024
+  :jira_id: '5150'
+  :description: |-
+    Javascript: Fix console error noticed occasionally when clicking on detail (RHS) tabs
+- :date: 24-Jul-2024
+  :jira_id: '5149'
+  :description: |-
+    Javascript: Fix intermittent Javascript error about a perf constant showing up in the JS console
+- :date: 24-Jul-2024
+  :jira_id: '5148'
+  :description: |-
+    Rails Upgrade: Fix tag insert for names due to Rails 7.1 detecting a minor code discrepancy
+- :date: 24-Jul-2024
+  :jira_id: '5143'
+  :description: |-
+    Refactoring: Fix detail tabs not working in re-factored code
+- :date: 23-Jul-2024
+  :jira_id: '5147'
+  :description: |-
+    Deprecated methods: Remove some aliases set up for tree-related associations that were triggering deprecation warnings
+- :date: 23-Jul-2024
+  :jira_id: ''
+  :description: |-
+    Security: Update gems, including rexml, which had a security alert
+- :date: 23-Jul-2024
+  :jira_id: '5143'
+  :description: |-
+    Refactoring: Break up JavaScript code into functional files using import map under Rails 7.1 - fixed import map details
+- :date: 22-Jul-2024
+  :jira_id: '5143'
+  :description: |-
+    Refactoring: Break up JavaScript code into functional files using import map under Rails 7.1; adjust import map
+- :date: 18-Jul-2024
+  :jira_id: '5141'
+  :description: |-
+    Code Improvement: move search result partials into more appropriate directories
+- :date: 16-Jul-2024
+  :jira_id: '5134'
+  :description: |-
+    Rails Upgrade: Rails 7.1.3.4 further minor fix to Orgs controller problem preventing details display
+- :date: 11-Jul-2024
+  :jira_id: '5139'
+  :description: |-
+    Reviewer tab click: Stop rogue navigation to another record
+- :date: 11-Jul-2024
+  :jira_id: '5134'
+  :description: |-
+    Rails Upgrade: Fixes for Rails 7.1.3.4 upgrade
+- :date: 05-Jul-2024
+  :jira_id: 
+  :description: |-
+    Favicon: Tweak favicon per environment - set up for print pages and add one for staging.
+- :date: 04-Jul-2024
+  :jira_id: 
+  :description: |-
+    Rails Upgrade: Upgrade to 7.1.3.4
+- :date: 03-Jul-2024
+  :jira_id: 
+  :description: |-
+    Favicon: Favicon per environment
+- :date: 03-Jul-2024
+  :jira_id: 
+  :description: |-
+    Rails: Update gems
+- :date: 02-Jul-2024
+  :jira_id: 
+  :description: |-
+    Rails: Switch on <code>Turbo.session.drive</code> and add <code>data-turbo-track: reload</code> setting for JavaScript
+- :date: 02-Jul-2024
+  :jira_id:
+  :description: |-
+    Ruby: Upgrade to Ruby 3.3.3
+- :date: 01-Jul-2024
+  :release: true
 - :date: 01-Jul-2024
   :jira_id: '5127'
   :description: |-

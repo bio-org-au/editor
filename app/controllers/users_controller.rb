@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class UsersController < ApplicationController
-  before_action :find_user, only: %i[show destroy tab update]
+  before_action :find_user, only: %i[show tab]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.

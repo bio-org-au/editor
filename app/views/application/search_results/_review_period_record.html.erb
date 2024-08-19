@@ -15,7 +15,7 @@
       tabindex="<%= increment_tab_index %>" 
       title="Review period record. Select to show details."
       id="<%= %Q(review-period-#{search_result.id}) %>">
-      <%= render partial: 'application/search_results/link_texts/review_period', locals: {search_result: search_result} %>
+      <%= render partial: 'review_period', locals: {search_result: search_result} %>
     </a>
   </td>
   <td class="takes-focus width-5-percent filler">&nbsp;</td>

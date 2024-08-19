@@ -1,3 +1,4 @@
+<% partials = 'application/search_results' %>
       <caption class="hidden">Results of the latest search</caption>
       <% @focus_anchor_id = params[:focus] unless params[:focus].blank? %>            
     <% for record in @search.executed_query.results %><%# Allow for hashes or ActiveRecords, so use hash key syntax. %>
@@ -12,99 +13,99 @@
       <%# TODO: standardize on strings or symbols, at least for the instance record variants. %>
       <% case display_as %>
       <% when 'Reference' %>  
-        <%= render partial: 'reference_record', 
+        <%= render partial: "#{partials}/reference_record", 
           locals: {reference: record, give_me_focus: give_me_focus} %>
       <% when :reference_as_part_of_concept %>
-        <%= render partial: 'reference_as_part_of_concept_record', 
+        <%= render partial: "#{partials}/reference_as_part_of_concept_record", 
           locals: {reference: record, give_me_focus: give_me_focus} %>
       <% when 'Author' %>
-        <%= render partial: 'author_record', 
+        <%= render partial: "#{partials}/author_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Name' %>
-        <%= render partial: 'name_record', locals: {search_result: record, give_me_focus: give_me_focus} %>
+        <%= render partial: "#{partials}/name_record", locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when :name_as_part_of_concept %>
-        <%= render partial: 'name_as_part_of_instance_record', 
+        <%= render partial: "#{partials}/name_as_part_of_instance_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when :instance_as_part_of_concept %>
-        <%= render partial: 'instance_as_part_of_concept_record',
+        <%= render partial: "#{partials}/instance/instance_as_part_of_concept_record",
           locals: {search_result: record, give_me_focus: give_me_focus}%>
       <% when :citing_instance_within_name_search %>
-        <%= render partial: 'citing_instance_within_name_search_record',
+        <%= render partial: "#{partials}/instance/citing_instance_within_name_search_record",
           locals: {search_result: record, give_me_focus: give_me_focus}%>
       <% when :instance_within_reference %>
-        <%= render partial: 'instance_within_reference_record',
+        <%= render partial: "#{partials}/instance/instance_within_reference_record",
           locals: {search_result: record, give_me_focus: give_me_focus}%>
       <% when 'Instance' %>
-        <%= render partial: 'instance_record', 
+        <%= render partial: "#{partials}/instance/instance_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'cites-this-instance' %>
-        <%= render partial: 'instance_cites_this_record', 
+        <%= render partial: "#{partials}/instance/instance_cites_this_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'name-cited-by-instance' %>
-        <%= render partial: 'instance_cited_by_record', 
+        <%= render partial: "#{partials}/instance/instance_cited_by_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'instance-is-cited-by' %>
-        <%= render partial: 'instance_is_cited_by',
+        <%= render partial: "#{partials}/instance/instance_is_cited_by",
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'cited-by-instance' %>  
-        <%= render partial: 'cited_by_instance', 
+        <%= render partial: "#{partials}/instance/cited_by_instance", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'cited-by-instance-within-full-synonymy' %>  
-        <%= render partial: 'instance_cited_by_record_within_full_synonymy', 
+        <%= render partial: "#{partials}/instance/instance_cited_by_record_within_full_synonymy", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
      <% when 'cited-by-relationship-instance' %>  
-        <%= render partial: 'instance_cited_by_relationship_instance_record', 
+       <%= render partial: "#{partials}/instance/instance_cited_by_relationship_instance_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'cited-by-relationship-instance-name-only' %>  
-         <%= render partial: 'instance_cited_by_relationship_instance_name_only', 
+        <%= render partial: "#{partials}/instance/instance_cited_by_relationship_instance_name_only", 
            locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'instance-for-expansion' %>  
-        <%= render partial: 'instance_for_expansion_record', 
+        <%= render partial: "#{partials}/instance/instance_for_expansion_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Loader Batch' %>  
-        <%= render partial: 'application/search_results/loader_batch_record', 
+        <%= render partial: "#{partials}/loader_batch_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Loader Batch in stack' %>  
-        <%= render partial: 'application/search_results/stack/loader_batch_record', 
+        <%= render partial: "#{partials}/stack/loader_batch_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Loader Name' %>  
-        <%= render partial: 'application/search_results/loader_name_record', 
+        <%= render partial: "#{partials}/loader_name_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Batch Review' %>  
-        <%= render partial: 'application/search_results/batch_review_record', 
+        <%= render partial: "#{partials}/batch_review_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Batch Review in stack' %>  
-        <%= render partial: 'application/search_results/stack/batch_review_record', 
+        <%= render partial: "#{partials}/stack/batch_review_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Batch Reviewer' %>  
-        <%= render partial: 'application/search_results/batch_reviewer_record', 
+        <%= render partial: "#{partials}/batch_reviewer_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Batch Reviewer in stack' %>  
-        <%= render partial: 'application/search_results/stack/batch_reviewer_record', 
+        <%= render partial: "#{partials}/stack/batch_reviewer_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Review Period' %>  
-        <%= render partial: 'application/search_results/review_period_record', 
+        <%= render partial: "#{partials}/review_period_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Review Period in stack' %>  
-        <%= render partial: 'application/search_results/stack/review_period_record', 
+        <%= render partial: "#{partials}/stack/review_period_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'BulkProcessingLog' %>  
-        <%= render partial: 'application/search_results/bulk_processing_log_record', 
+        <%= render partial: "#{partials}/bulk_processing_log_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'User' %>  
-        <%= render partial: 'application/search_results/user_record', 
+        <%= render partial: "#{partials}/user_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Organisation' %>  
-        <%= render partial: 'application/search_results/org_record', 
+        <%= render partial: "#{partials}/org_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'HelpTopic' %>  
-        <%= render partial: 'help_topic_record', 
+        <%= render partial: "#{partials}/help_topic_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'UserQuery' %>  
-        <%= render partial: 'user_query_record', 
+        <%= render partial: "#{partials}/user_query_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Name Review Comment' %>  
-        <%= render partial: 'application/search_results/main/loader/name/review/comment_record', 
+        <%= render partial: "#{partials}/main/loader/name/review/comment_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% else %>
         <tr>

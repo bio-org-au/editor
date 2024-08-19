@@ -1,4 +1,4 @@
-<%= form_with model: @batch_review, url: 'batch_reviews', method: :put do |form| %>
+<%= form_with model: @batch_review, url: 'batch_reviews', data: { turbo: false }, local: false, method: :put do |form| %>
   <%= form.hidden_field :id %>
   <%= form.hidden_field :loader_batch_id %>
   Name: <%= form.text_field :name, class: 'form-control give-me-focus', required: true, title: "Enter name", tabindex: increment_tab_index %>

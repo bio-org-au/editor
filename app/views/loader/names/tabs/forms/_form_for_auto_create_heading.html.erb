@@ -1,6 +1,6 @@
     <%= divider %>
     Create a heading record for this record's family <%= @loader_name.family %>?
-    <%= form_with url: loader_names_create_heading_path, remote: true do |form| %>
+    <%= form_with url: loader_names_create_heading_path, data: { turbo: false }, local: false do |form| %>
       <%= form.hidden_field :family, value: @loader_name.family %>
       <%= form.hidden_field :rank, value: 'family' %>
       <%= form.hidden_field :loader_batch_id, value: @loader_name.loader_batch_id %>

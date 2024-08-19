@@ -1,5 +1,8 @@
   <% wd = 'loader/names/tabs/ref_instance/accepted_or_excluded_names/record' %>
-  <%= form_with(model: match, url: loader_name_matches_create_and_copy_path, remote: true)  do |form| %>
+  <%= form_with(model: match,
+                url: loader_name_matches_create_and_copy_path,
+                data: { turbo: false },
+                local: false)  do |form| %>
     <div> Choose an instance
     <%= form.submit "Save", remote: true, class: 'width-5em btn btn-primary pull-right', title: 'Save your choice.' %>
     </div>

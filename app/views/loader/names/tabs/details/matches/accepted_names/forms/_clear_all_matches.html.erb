@@ -1,5 +1,5 @@
 <% if @loader_name.can_clear_matches? %>
-    <%= form_with(url: loader_name_matches_delete_all_path, role: 'form', remote: true, method: :delete) do |f| -%>
+  <%= form_with(url: loader_name_matches_delete_all_path, role: 'form', data: { turbo: false }, local: false, method: :delete) do |f| -%>
       <%= f.hidden_field(:id, value: @loader_name.id) -%>
       <%= f.submit "Clear the matches", id: 'clear-matches', tabindex: increment_tab_index,
         title: 'Clear all matches', class: 'btn btn-primary width-15em "#{$q(hidden) unless @loader_name.matches.empty?}"' -%>

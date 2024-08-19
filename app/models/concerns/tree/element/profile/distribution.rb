@@ -25,7 +25,7 @@ module Tree::Element::Profile::Distribution
   end
 
   def distribution_key_for_insert
-    tves.first.tree_version.tree.distribution_key
+    tree_version_elements.first.tree_version.tree.distribution_key
   end
 
   def dist_options_disabled

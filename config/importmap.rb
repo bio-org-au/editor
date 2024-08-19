@@ -8,12 +8,46 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 pin "jQuery", to: "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.js", preload: true
 pin "select2", to: "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"
+pin "debug", preload: true
+pin "keyboard_nav", preload: true
 pin "dropdown", preload: true
-pin "fresh", preload: true
+pin "run_tree_reports", preload: true
+pin "instance_note_edit", preload: true
+pin "add_new_row", preload: true
+pin "menu_ops", preload: true
+pin "unconfirmed_action_link_click", preload: true
+pin "name_rank_id_changed", preload: true
+pin "loader_bulk_show_stats_ops", preload: true
+pin "name_delete_form_submit", preload: true
+pin "click_search_result_checkbox", preload: true
+pin "copy_instance_for_name", preload: true
+pin "cancel_link_click", preload: true
+pin "copy_name_form_enter", preload: true
+pin "create_copy_of_name_click", preload: true
+pin "batch_submit", preload: true
+pin "confirm_name_refresh_children_button_click", preload: true
+pin "refresh_page_link_click", preload: true
+pin "copy_instance_link_clicked", preload: true
+pin "show_record_was_deleted", preload: true
+pin "cancel_new_record", preload: true
+pin "position_on_the_right", preload: true
+pin "set_dependents", preload: true
+pin "change_name_category_on_edit_tab", preload: true
+
+pin "details_focus_on_field", to: "details/focus_on_field.js", preload: true
+pin "utilities_page_load_performance", to: "utilities/page_load_performance.js", preload: true
+pin "tree_refresh_tree_tab_refresh_page", to: "tree/refresh_tree_tab_refresh_page.js", preload: true
+pin "tree_load_report", to: "tree/load_report.js", preload: true
+pin "tree_init_dist_select", to: "tree/init_dist_select.js", preload: true
+pin "tree_markdown", to: "tree/markdown.js", preload: true
+
+pin "load_check_synonymy_report", preload: true
+pin "search_result_focus", preload: true
+pin "query_options", preload: true
 pin "jquery-dateformat.min", preload: true
-pin "main", preload: true
 pin "new_search", preload: true
 pin "tabs", preload: true
+pin "typeaheads_send", to: "typeaheads/send.js", preload: true
 pin "typeahead_bundle"
 pin "bloodhound", to: "https://cdn.jsdelivr.net/npm/typeahead.js@0.11.1/dist/bloodhound.min.js"
 pin "typeahead", to: "https://cdn.jsdelivr.net/npm/typeahead.js@0.11.1/dist/typeahead.bundle.min.js"

@@ -11,27 +11,27 @@
  * It is generally better to create a new file per style scope.
  *
  * require font-awesome
- *= require dashboard
- *= require layout-using-dashboard
- *= require search-result-details
- *= require stylish
- *= require media
- *= require width-primitives
- *= require controls
- *= require typeahead
- *= require colors
- *= require layout_2015
- *= require search-form
- *= require tree
- *= require tree-placement
- *= require environment
- *= require old-application
- *= require new-for-rails-6
- *= require calendar
- *= require layout-2021
- *= require batch-loader
- *= require admin
- *= require jira
+ *= require components/dashboard
+ *= require layouts/layout-using-dashboard
+ *= require components/search-result-details
+ *= require components/stylish
+ *= require utilities/media
+ *= require utilities/width-primitives
+ *= require components/controls
+ *= require utilities/typeahead
+ *= require utilities/colors
+ *= require layouts/layout_2015
+ *= require components/search-form
+ *= require components/tree
+ *= require components/tree-placement
+ *= require utilities/environment
+ *= require components/old-application
+ *= require components/new-for-rails-6
+ *= require utilities/calendar
+ *= require layouts/layout-2021
+ *= require components/batch-loader
+ *= require components/admin
+ *= require components/jira
  *= require_self
  */
 

@@ -1,5 +1,9 @@
 
-<%= form_with model: @review_period, url: 'batch_review_periods', method: :post do |form| %>
+<%= form_with model: @review_period,
+              url: 'batch_review_periods',
+              data: { turbo: false },
+              local: false,
+              method: :post do |form| %>
   <%= form.hidden_field :batch_review_id, value: @batch_review.id %>
   Name: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", required: true, tabindex: increment_tab_index %>
 

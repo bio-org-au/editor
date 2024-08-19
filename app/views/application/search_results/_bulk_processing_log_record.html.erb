@@ -15,7 +15,7 @@
       title="Bulk processing log record. Select to show details."
       id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
       <%= search_result.log_entry.html_safe %>
-      <%= render partial: 'application/search_results/link_texts/bulk_processing_log', locals: {search_result: search_result} %>
+      <%= render partial: 'bulk_processing_log', locals: {search_result: search_result} %>
     </a>
   </td>
 </tr>

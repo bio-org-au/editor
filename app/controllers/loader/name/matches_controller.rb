@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class Loader::Name::MatchesController < ApplicationController
-  before_action :find_loader_name, only: %i[set taxonomy_instance]
+  before_action :find_loader_name, only: %i[set]
   before_action :find_loader_name_match, only: [:update, :force_remove]
   # before_action :find_loader_name_match, only: [:delete]
 

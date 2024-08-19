@@ -22,7 +22,7 @@
     <li/>as synonym of <%= parent_loader_name.simple_name %></h5>
 </ul>
 
-<%= form_with(model: loader_name, role: 'form', remote: true) do |form| %>
+<%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |form| %>
 
     <%= form.hidden_field :simple_name %>
     <%= form.hidden_field :full_name %>

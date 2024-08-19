@@ -36,22 +36,6 @@
     view_mode: <%= @view_mode %>
     <% elapsed_time = @start_time ? (Time.now - @start_time).round(3) : '?' %>
     <span class='page-response-time'><%= "(server: #{elapsed_time}s" if @start_time %></span>
-    <span class='js-perf' ></span>
+    <span class='js-perf' ></span>)
     <% logger.info {"Page footer - elapsed time: #{elapsed_time}"} %> 
-<script>
-// wwww.silvestar.codes
-const perf = () => {
-  const $perf = document.querySelector('.js-perf');
-  if ($perf) {
-    // Wait for the page to finish loading
-    window.addEventListener('load', () => {
-      const pageEnd = performance.mark('pageEnd');
-      const loadTime = Math.round(pageEnd.startTime) / 1000;
-
-      $perf.innerHTML += `total: ${loadTime}s)`;
-    })
-  }
-}
-perf()
-</script>
     </p>

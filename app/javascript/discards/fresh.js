@@ -728,9 +728,8 @@
     $('#search-result-details').load(url, function() {
       recordCurrentActiveTab(record_type);
       if (tabWasClicked) {
-        debug('tab was clicked loadStandardDetails');
-        if ($('.give-me-focus')) {
-          $('.give-me-focus').focus();
+        if ($('.focus-details .give-me-focus')) {
+          $('.focus-details .give-me-focus').focus();
           return;
         } else {
           return $('li.active a.tab').focus();

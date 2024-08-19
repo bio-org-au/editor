@@ -1,4 +1,8 @@
-<%= form_with model: @review_period, url: update_review_period_path(@review_period), method: :patch do |form| %>
+<%= form_with model: @review_period,
+              url: update_review_period_path(@review_period),
+              data: { turbo: false },
+              local: false,
+              method: :patch do |form| %>
   <%= form.hidden_field :id %>
   <%= form.hidden_field :batch_review_id %>
   Name: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", tabindex: increment_tab_index %>

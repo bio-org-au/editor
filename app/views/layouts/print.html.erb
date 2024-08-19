@@ -6,9 +6,11 @@
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag 'print', media: 'all' %>
-    <%= favicon_link_tag 'favicon.png?v=1', :rel => 'shortcut icon' %>
-    
-
+    <% if ['development','test','production','staging'].include?(Rails.configuration.try('environment'))  %>
+      <%= favicon_link_tag "favicon-#{Rails.configuration.try('environment')}.png?v=1", :rel => 'shortcut icon' %>
+    <% else %>
+      <%= favicon_link_tag 'favicon-fallback.png?v=1', :rel => 'shortcut icon' %>
+    <% end %>
   </head>
 
   <body>

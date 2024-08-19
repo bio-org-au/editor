@@ -71,7 +71,7 @@ class SearchController < ApplicationController
     # https://stackoverflow.com/questions/29636334/a-copy-of-xxx-has-been-removed-from-the-module-tree-but-is-still-active
     @search = ::Search::Base.new(params)
     if @search.parsed_request&.print
-      render :printable, layout: "print"
+      render :printable, layout: "layouts/print"
     else
       render :search
     end

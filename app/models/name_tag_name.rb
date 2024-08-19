@@ -18,7 +18,7 @@
 #
 class NameTagName < ActiveRecord::Base
   self.table_name = "name_tag_name"
-  self.primary_keys = :name_id, :tag_id
+  self.primary_key = [:name_id, :tag_id]
 
   belongs_to :name
   belongs_to :name_tag, foreign_key: :tag_id

@@ -1,15 +1,50 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 // import "@hotwired/turbo-rails";
 // https://github.com/hotwired/turbo-rails - notes on disabling by default
-import { Turbo } from "@hotwired/turbo-rails"
-Turbo.session.drive = false
-import "controllers"
+// import { Turbo } from "@hotwired/turbo-rails"
+import "@hotwired/turbo-rails"
+// Turbo.session.drive = false
+import "controllers";
 import "jQuery"; // select2 needs this case-sensitive version of jQuery - "jquery" gives error
 import "select2"; // this import first
 import "dropdown";
-import "fresh";
+//import "fresh";
+//// start of fresh replacements
+import "debug";
+import "search_result_focus";
+import "keyboard_nav";
+import "query_options";
+//import "run_tree_reports";
+import "instance_note_edit";
+import "add_new_row";
+import "menu_ops";
+import "unconfirmed_action_link_click";
+import "loader_bulk_show_stats_ops";
+import "name_rank_id_changed";
+import "name_delete_form_submit";
+import "click_search_result_checkbox";
+import "copy_instance_for_name";
+import "cancel_link_click";
+import "copy_name_form_enter";
+import "create_copy_of_name_click";
+import "batch_submit";
+import "confirm_name_refresh_children_button_click";
+import "refresh_page_link_click";
+import "copy_instance_link_clicked";
+import "show_record_was_deleted";
+import "cancel_new_record";
+import "position_on_the_right";
+import "set_dependents";
+import "change_name_category_on_edit_tab";
+import "tree_refresh_tree_tab_refresh_page";
+import "tree_init_dist_select";
+import "tree_load_report";
+import "tree_markdown";
+import "load_check_synonymy_report";
+// end of fresh replacements
+import "details_focus_on_field";
+import "utilities_page_load_performance";
 import "jquery-dateformat.min";
-import "main";
 import "new_search";
 import "tabs";
 import "typeahead_bundle";

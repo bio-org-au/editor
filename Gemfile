@@ -1,10 +1,17 @@
+def next?
+  File.basename(__FILE__) == "Gemfile.next"
+end
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.3.0"
+ruby "3.3.3"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails"
-gem "rails", "~> 7.0.8"
+if next?
+  gem 'rails', '~> 7.1.3.4'
+else
+  gem "rails", "~> 7.1.3.4"
+end
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -74,7 +81,6 @@ end
 # Added
 gem "active_type"
 gem "cancancan"
-gem "composite_primary_keys"
 gem "net-ldap"
 gem "pg_search"
 gem "strip_attributes"
@@ -105,3 +111,6 @@ group :development do
   gem 'brakeman', require: false
   gem 'bundler-audit', require: false
 end
+
+gem 'next_rails'
+

@@ -37,7 +37,6 @@ class Tree::Element < ActiveRecord::Base
 
   has_many :tree_version_elements,
            foreign_key: "tree_element_id"
-  alias_attribute :tves, :tree_version_elements
 
   has_and_belongs_to_many :tede_dist_entries,
                           class_name: "DistEntry",

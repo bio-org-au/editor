@@ -13,7 +13,7 @@
   </li>
 </ul>
     
-<%= form_with(model: loader_name, role: 'form', remote: true) do |form| %>
+<%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |form| %>
     <div class="form-group">
       <label for="loader_batch_id">Batch*</label>
       <%= form.select :loader_batch_id,
