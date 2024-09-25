@@ -39,11 +39,15 @@ class PasswordsController < ApplicationController
     end
   end
 
+  def show_password_form
+    @password = Password.new
+  end
+
   private
 
   def edit_inner
     @password = Password.new
-    render :edit
+    redirect_to action: :show_password_form
   end
 
   def update_inner
@@ -54,12 +58,12 @@ class PasswordsController < ApplicationController
     @password.username = @current_user.username
     @password.user_cn = session[:user_cn]
     if @password.save!
-      render :updated
+      redirect_to :password_changed
     else
-      render :edit
+      render :show_password_form, status: :unprocessable_entity
     end
   rescue StandardError => e
     Rails.logger.error(e.to_s)
-    render :edit
+    render :show_password_form, status: :unprocessable_entity
   end
 end

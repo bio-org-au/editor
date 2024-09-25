@@ -362,6 +362,16 @@ Rails.application.routes.draw do
         to: "passwords#edit",
         via: :get
 
+  match "show_password_form",
+        as: "show_password_form",
+        to: "passwords#show_password_form",
+        via: :get
+
+  match "password_changed",
+        as: "password_changed",
+        to: "passwords#password_changed",
+        via: :get
+
   match "password",
         as: "update_password",
         to: "passwords#update",

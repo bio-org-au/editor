@@ -1,8 +1,7 @@
 
-
 <% if @previous_record_type.blank? then %>
-  <% @previous_record_type = search_result.record_type %>
-   <% if search_result.record_type == 'accepted' then %>
+   <% @previous_record_type = search_result.record_type %>
+   <% if search_result.record_type == 'accepted' or search_result.record_type == 'excluded' then %>
      <%  @stored_distribution = search_result.distribution %>
      <%  @stored_comment = search_result.comment %>
      <%  @stored_id = search_result.id %>
@@ -10,7 +9,7 @@
    <% end %>
 <% else %>
    <% @previous_record_type = search_result.record_type %>
-   <% if search_result.record_type == 'accepted' then %>
+   <% if search_result.record_type == 'accepted' or search_result.record_type == 'excluded' then %>
      <%= render partial: 'application/search_results/review/loader_name_stored_comment', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
      <%= render partial: 'application/search_results/review/loader_name_stored_distribution', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
      <% @stored_distribution = search_result.distribution %>
@@ -20,7 +19,13 @@
      <tr class="review-result review white-space-row"><td colspan="4">
        <a class="xnavigation-link takes-focus white-space" title='title' tabindex="<%= increment_tab_index(100) %>"></a>
      &nbsp;</td></tr>
-
+   <% elsif search_result.record_type == 'heading' %>
+     <%= render partial: 'application/search_results/review/loader_name_stored_comment', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
+     <%= render partial: 'application/search_results/review/loader_name_stored_distribution', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
+     <% @stored_distribution = nil %>
+     <% @stored_comment = nil %>
+     <%  @stored_id = nil %>
+     <%  @stored_result = nil %>
    <% end %>
 <% end %>
 
@@ -38,6 +43,10 @@
 %>
 
 <% if @show_family %>
+  <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
+  <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
+  <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
+  <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
   <tr id="family-of-review-result-<%= search_result.id %>"
       class="review-result review family takes-focus show-details" tabindex="<%= increment_tab_index(100) %>"
       data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"

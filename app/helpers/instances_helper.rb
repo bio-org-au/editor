@@ -89,9 +89,10 @@ module InstancesHelper
     end
   end
 
+  # standalone
   def tab_for_iapo_concept_record(tab)
     if %w[tab_synonymy tab_unpublished_citation tab_classification
-          tab_copy_to_new_reference].include?(tab)
+          tab_copy_to_new_reference tab_batch_loader_2].include?(tab) && @tabs_to_offer.include?(tab)
       tab
     else
       "tab_empty"

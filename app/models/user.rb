@@ -57,4 +57,8 @@ class User < ActiveType::Object
   def batch_loader?
     groups.include?("batch-loader")
   end
+
+  def loader_2_tab_loader?
+    groups.include?("loader-2-tab")
+  end
 end

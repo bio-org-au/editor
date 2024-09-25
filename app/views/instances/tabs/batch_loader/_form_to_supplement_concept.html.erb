@@ -1,0 +1,63 @@
+
+<% loader_name = @instance.loader_name_for_accepted_excluded %>
+<% loader_name.loader_batch_id = session[:default_loader_batch_id] %>
+<% syn_for_copy = @instance.synonyms_for_copy_to_loader_name %>
+
+
+<h5>Add <%= loader_name.simple_name %> and its synonymy to an existing concept in <%= session[:default_loader_batch_name] %></h5>
+
+
+<%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |form| %>
+
+    <%= form.hidden_field :simple_name %>
+    <%= form.hidden_field :full_name %>
+    <%= form.hidden_field :family %>
+    <%= form.hidden_field :rank %>
+    <%= form.hidden_field :name_status %>
+    <%= form.hidden_field :loaded_from_instance_id %>
+
+    <% if syn_for_copy.size > 0 %>
+      <% loader_name.add_sourced_synonyms = true %>
+      <div class="form-check">
+        <label class="form-check-label">
+          <%= form.check_box(:add_sourced_synonyms,
+                             {title: "Take only sourced synonyms to the loader (but not trade names)"},
+                             checked_value = 'true',
+                             unchecked_value = 'false') %>
+          Take <%= "#{pluralize(syn_for_copy.size, 'sourced synonym')}" %>
+        </label>
+      </div>
+      <br/>
+    <% end %>
+
+
+    <div class="form-group">
+      <label for="loader-name-parent-typeahead">Concept/Parent from <%= session[:default_loader_batch_name] %><span class="red">*</span></label>
+      <input id="loader-name-parent-typeahead"
+             name="loader_name[parent_typeahead]"
+             class="typeahead form-control"
+             data-loader-name-id="<%= loader_name.id %>"
+             data-loader-batch-id="<%= loader_name.loader_batch_id %>"
+             type="text" 
+             tabindex="<%= increment_tab_index %>"
+             title="Loader Name concept"
+             required
+             placeholder="Begin typing name then select from list"
+             />
+    </div>
+    <script>setUpLoaderNameParentTypeahead();</script>
+
+    <%= divider %>
+
+    <input type="hidden" name="form-task" value="supplement-existing-concept">
+    <div class="form-group align-right">
+      <%= form.submit "Save", id: 'loader-name-save', class: 'btn btn-primary width-5em', 
+        title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+    </div>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container"></div>
+<% end %>
+
+
+
+

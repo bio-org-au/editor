@@ -1,3 +1,49 @@
+- :date: 25-Sep-2024
+  :jira_id: '5180'
+  :description: |-
+    Loader: Remove the batch drop down from Loader 2 tab because it's not honoured by the typeahead dropdown and therefore misleading
+- :date: 24-Sep-2024
+  :jira_id: '5056'
+  :description: |-
+    Loader Name: Restrict new workflow tab to a specific security group
+- :date: 23-Sep-2024
+  :jira_id: ''
+  :description: |-
+    Security: Upgrade puma
+- :date: 20-Sep-2024
+  :jira_id: '5191'
+  :description: |-
+    Change Password: working again
+- :date: 16-Sep-2024
+  :jira_id: '5176'
+  :description: |-
+    Loader Name Details tab for Reviewer: Switch off nonsense links and target current batch for other links
+- :date: 16-Sep-2024
+  :jira_id: '5175'
+  :description: |-
+    Loader: Display taxonomy comment for reviewer where it wasn't showing up - in first name of a result set if it was excluded
+- :date: 16-Sep-2024
+  :jira_id: '5179'
+  :description: |-
+    Loader: Fix problem creating loader-name synonym which was a side-effect of NSL-5056
+- :date: 11-Sep-2024
+  :jira_id: '5173'
+  :description: |-
+    Name update: Restore error messages by restoring commented error handling code
+- :date: 23-Aug-2024
+  :jira_id: '5167'
+  :description: |-
+    Batch Review: Fix bugs in reviewer output that were misplacing or hiding distribution/comments at family borders and similar
+- :date: 23-Aug-2024
+  :jira_id: '5056'
+  :description: |-
+    Loader Name: New workflow to aggregate multiple concepts into one concept - first cut
+- :date: 23-Aug-2024
+  :jira_id: '5165'
+  :description: |-
+    Loader Name: Clicking on a saved preferred match radio button no longer switches the form button from clear to save
+- :date: 20-Aug-2024
+  :release: true
 - :date: 02-Aug-2024
   :jira_id: ''
   :description: |-

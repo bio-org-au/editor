@@ -1,35 +1,11 @@
-<% increment_tab_index(0) %>
-
-<%= render partial: 'detail_line',
-      locals: {label: 'Batch',
-               info: link_to(@loader_name.batch.name,
-                        search_path(
-                          query_target: 'loader batch',
-                          query_string: "id: #{@loader_name.batch.id}"),
-               title:"Query the loader batch",class:'blue')} %>
-<%= render partial: 'detail_line',
-      locals: {label: 'Family',
-               info: link_to("#{@loader_name.family}",
-                        search_path(
-                          query_target: 'loader names',
-                          query_string: "family: #{@loader_name.family}"),
-               title:"Query the family",class:'blue')} %>
-<%= render partial: 'detail_line', locals: {label: 'Rank', info: "#{@loader_name.rank}"} %>
-<%= divider %>
-
-
 
 
 <% @loader_name.batch.reviews.each do |review| %>
-  Review: <%= link_to(review.name,
-                      search_path(query_target: "batch reviews",
-                                  query_string: "id: #{review.id}"),
-                      title:"Query the period",class:'blue') %><br>
+  Review: <%= review.name %>
+  <br>
   <% review.periods.each do |period| %>
-    Period: <%= link_to(period.name,
-                        search_path(query_target: "batch review periods",
-                                    query_string: "id: #{period.id}"),
-                        title:"Query the period",class:'blue') %><br>
+    Period: <%= period.name %> <%= period.start_date %> - <%= period.end_date %>
+    <br>
                         <% period.loader_name_comments(@loader_name.id, scope).sort {|x,y| x.created_at <=> y.created_at}.each do |comment| %>
 
 
@@ -47,14 +23,3 @@
               <%= divider %>
   <% end %>
 
-<%= render partial: 'detail_line', locals: {label: 'Loader Name ID', info: @loader_name.id} %>
-<%= created_by_whom_and_when(@loader_name).html_safe %>
-<br>
-<%= updated_by_whom_and_when(@loader_name).html_safe %>
-
-<%= divider %>
-<%= link_to('Show record in context',
-            search_path(
-              query_target: 'loader names',
-              query_string: "id: #{@loader_name.parent_id || @loader_name.id}"),
-               title:"Query the loader name in context",class:'blue') %>

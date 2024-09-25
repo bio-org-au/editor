@@ -24,7 +24,7 @@ class HistoryController < ApplicationController
   end
 
   def history_params
-    params.permit(:year)
+    params.permit(:year, :show_status, :target)
   end
 
 end

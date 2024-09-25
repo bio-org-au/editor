@@ -107,9 +107,9 @@ class NamesController < ApplicationController
                                        current_user.username)
     check_children(name_before_change) unless @message.downcase == 'no change'
     render "update"
-  #rescue StandardError => e
-    #@message = e.to_s
-    #render "update_error", status: :unprocessable_entity
+  rescue StandardError => e
+    @message = e.to_s
+    render "update_error", status: :unprocessable_entity
   end
 
   def rules

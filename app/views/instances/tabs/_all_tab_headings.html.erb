@@ -111,7 +111,7 @@
                                         link_id: 'instance-copy-to-new-reference-tab', 
                                         link_title: 'Copy the instance',
                                         tab_index: increment_tab_index,
-                                        prev_tab: '',
+                                        prev_tab: 'instance-comments-tab',
                                         next_tab: '.search-result.show-details' } %>
     <% end %>
   <% end %>
@@ -126,7 +126,7 @@
                                         link_title: 'Profile details',
                                         tab_index: increment_tab_index,
                                         prev_tab: 'instance-copy-to-new-reference-tab', 
-                                        next_tab: 'instance-profile-edit-tab' } %>
+                                        next_tab: 'instance-edit-profile-tab' } %>
     <% end %>
   <% end %>
 
@@ -140,8 +140,8 @@
                                         link_id: 'instance-edit-profile-tab', 
                                         link_title: 'Edit Profile',
                                         tab_index: increment_tab_index,
-                                        prev_tab: 'instance-profile-edit-tab',
-                                        next_tab: 'instance-loader-tab' } %>
+                                        prev_tab: 'instance-profile-tab',
+                                        next_tab: 'instance-batch-loader-tab' } %>
       <% end %>
     <% end %>
   <% end %>
@@ -151,12 +151,24 @@
         <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: true,
                                         this_tab: 'tab_batch_loader', 
-                                        link_text: "Loader".html_safe,
+                                        link_text: "Loader 1".html_safe,
                                         link_id: 'instance-batch-loader-tab', 
                                         link_title: 'Batch Loader operations',
                                         tab_index: increment_tab_index,
                                         prev_tab: 'instance-edit-profile-tab',
-                                        next_tab: '.search-result.show-details' } %>
+                                        next_tab: 'instance-batch-loader-tab-2' } %>
+
+     <% if can?('loader/instances-loader-2', 'use') %>
+        <%= render partial: 'instances/tabs/tab', locals: {first: false,
+                                        last: true,
+                                        this_tab: 'tab_batch_loader_2', 
+                                        link_text: "Loader 2".html_safe,
+                                        link_id: 'instance-batch-loader-tab-2', 
+                                        link_title: 'More batch Loader operations',
+                                        tab_index: increment_tab_index,
+                                        prev_tab: 'instance-batch-tab-loader',
+                                        next_tab: 'instance-show-tab' } %>
+        <% end %>
       <% end %>
   <% end %>
 

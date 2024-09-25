@@ -12,7 +12,7 @@
     <%= form.radio_button(:name_id, matching_name.id,
                        checked: preferred_name_ids.include?(matching_name.id),
                        disabled: disable_radio_button,
-                       onclick: "$('#save-match').removeClass('hidden'); $('#clear-matches').addClass('hidden')") %>
+                       onchange: "$('#save-match').removeClass('hidden'); $('#clear-matches').addClass('hidden')") %>
 
     <%= label_tag(:"loader_name_name_id_#{matching_name.id}",
                   "#{matching_name.full_name} #{matching_name.name_status.name_for_instance_display}",

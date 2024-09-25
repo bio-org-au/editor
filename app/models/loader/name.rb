@@ -24,6 +24,7 @@ class Loader::Name < ActiveRecord::Base
   include SeqCalculator
   include SiblingSynonyms
   include SourcedSynonyms
+  include FlippedSynonym
   include InBatchNote
   include InBatchCompilerNote
   include HeadingRecord

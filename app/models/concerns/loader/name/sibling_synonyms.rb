@@ -7,7 +7,6 @@ module Loader::Name::SiblingSynonyms
       seq_value = loader_batch.use_sort_key_for_ordering ? 0 : seq
       logger.debug("batch id: #{loader_batch_id}")
       siblings.each do |instance| 
-        logger.debug("==============================")
         seq_value += 1 unless loader_batch.use_sort_key_for_ordering
         s = ::Loader::Name.new(loader_batch_id: loader_batch_id,
                                record_type: syn_or_misapp(instance),
