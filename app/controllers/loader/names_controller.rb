@@ -17,6 +17,7 @@
 #   limitations under the License.
 #
 class Loader::NamesController < ApplicationController
+  include Loader::Names::ParentTypeahead
   before_action :find_loader_name,
                 only: %i[show destroy tab update set_preferred_match]
 
@@ -112,8 +113,9 @@ class Loader::NamesController < ApplicationController
   end
 
   def update
-    @message = @loader_name.update_if_changed(loader_name_params,
-                                              current_user.username)
+    work_out_parent_from_typeahead
+    @message = @loader_name.update_if_changed(loader_name_params
+      .reject {|p| p.match(/parent_typeahead/)}, current_user.username)
     render "update"
   rescue StandardError => e
     logger.error("Loader::Names#update rescuing #{e}")
