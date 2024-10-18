@@ -52,7 +52,7 @@ class ProfileItemReferencesController < ApplicationController
   end
 
   def really_update
-    if @profile_item_reference.update(profile_text_params.merge(updated_by: current_user.username))
+    if @profile_item_reference.update(permitted_params.merge(updated_by: current_user.username))
       @message = "Updated"
       render :update
     else

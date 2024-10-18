@@ -44,33 +44,28 @@ class Ability
   # authorization checks prevent non-editors changing data.
   def initialize(user)
     user ||= User.new(groups: [])
-    can :manage, Profile::ProfileText
-    can :manage, Profile::ProfileItemAnnotation
-    can :manage, Profile::ProfileItemReference
     basic_auth_1
     basic_auth_2
-    edit_auth if user.edit?
-    qa_auth if user.qa?
+    edit_auth         if user.edit?
+    qa_auth           if user.qa?
+
     # TODO: remove this - NSL-2007
-    apc_auth if user.apc?
-    admin_auth if user.admin?
-    treebuilder_auth if user.treebuilder?
-    reviewer_auth if user.reviewer?
+    apc_auth          if user.apc?
+
+    admin_auth        if user.admin?
+    treebuilder_auth  if user.treebuilder?
+    reviewer_auth     if user.reviewer?
     batch_loader_auth if user.batch_loader?
     loader_2_tab_auth if user.loader_2_tab_loader?
-    foa_auth if user.foa?
-
-    Rails.logger.debug "======================================Setting abilities for user: #{user.inspect}"
-
-    # need to create a group for foa groups
-    # foa_auth if user.foa?
+    foa_auth          if user.foa?
   end
 
   def foa_auth
-    can :read, Profile::ProfileText
-    can :read, Profile::ProfileItemAnnotation
-    can :read, Profile::ProfileItemReference
-    can :view, :foa_profile
+    can :manage, :profile_item
+    can :manage, Profile::ProfileText
+    can :manage, Profile::ProfileItemAnnotation
+    can :manage, Profile::ProfileItemReference
+    can :manage, :foa_profile
   end
 
   def basic_auth_1
@@ -103,9 +98,6 @@ class Ability
   end
 
   def edit_auth
-    can :manage, Profile::ProfileText 
-    can :manage, Profile::ProfileItemAnnotation
-    can :manage, Profile::ProfileItemReference
     can "profile_item_annotations", :all
     can "profile_item_references", :all
     can "profile_texts",           :all
@@ -124,9 +116,6 @@ class Ability
   end
 
   def qa_auth
-    can :manage, Profile::ProfileText
-    can :manage, Profile::ProfileItemAnnotation
-    can :manage, Profile::ProfileItemReference
     can "batches",                   :all
     can "tree_versions",             :all
     can "tree_version_elements",     :all
@@ -154,9 +143,6 @@ class Ability
   end
 
   def admin_auth
-    can :manage, Profile::ProfileText
-    can :manage, Profile::ProfileItemAnnotation
-    can :manage, Profile::ProfileItemReference
     can "admin",              :all
     can "menu",               "admin"
   end

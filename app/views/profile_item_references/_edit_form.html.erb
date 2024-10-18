@@ -7,7 +7,8 @@
   </p>
   <div id="edit_reference_<%= profile_item_reference.profile_item_id_reference_id %>">
     <% field_id = "#{profile_item.id}-#{profile_item_reference.profile_item_id_reference_id}" %>
-    <%= form_with model: profile_item_reference, url: save_profile_item_references_path(profile_item_id: profile_item_reference.profile_item_id, reference_id: profile_item_reference.reference_id), method: :patch, remote: true, html: { data: { type: :json, form_type: 'reference_item_form' } } do |f| %>
+    <%= form_with model: profile_item_reference, url: save_profile_item_references_path(profile_item_reference.profile_item_id, profile_item_reference.reference_id), method: :put, remote: true, html: { data: { type: :json, form_type: 'reference_item_form' } } do |f| %>
+      <div id="edit_reference_annotation_message_<%= profile_item_reference.profile_item_id_reference_id %>" class="message-container"></div>
       <label style="display: flex;">Annotation:</label>
       <%= text_field_tag "profile_item_reference[annotation]",
           profile_item_reference.annotation,
