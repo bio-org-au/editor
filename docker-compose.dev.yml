@@ -39,20 +39,6 @@ services:
     env_file:
       - .env
 
-  pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    ports:
-      - "8080:80"
-    depends_on:
-      - db_dev
-    networks:
-      - vpn_network
-
   app_dev: &app_dev
     build:
       context: .
@@ -82,32 +68,8 @@ services:
       - vpn_network
     command: bash -c "rm -f ./tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
 
-  app_dean_dev:
-    <<: *app_dev
-    build:
-      context: ../dean-editor
-      dockerfile: Dockerfile.dev
-    ports:
-      - "3001:3001"
-    volumes:
-      - ../dean-editor:/app_dean
-      - gem_dean_cache:/usr/local/bundle/gems
-    environment:
-      DB_USERNAME: ${POSTGRES_USER_DEV}
-      DB_PASSWORD: ${POSTGRES_PASSWORD_DEV}
-      DB_NAME: ${POSTGRES_DB_DEAN}
-      EDITOR_CONFIG_FILE: ${EDITOR_CONFIG_FILE}
-      EDITOR_CONFIGDB_FILE: ${EDITOR_CONFIGDB_FILE}
-      DB_HOST: db_dev
-      RAILS_ENV: development
-    env_file:
-      - .env
-    command: bash -c "rm -f ./tmp/pids/server.pid && rails server -b 0.0.0.0 -p 3001"
-
 volumes:
-  pgadmin_data:
   gem_cache:
-  gem_dean_cache:
   db_data_dev:
 
 

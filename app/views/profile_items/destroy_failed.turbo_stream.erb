@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "error-for-profile-item-#{@profile_item.id}" do %>  
+  <div id="error-for-profile-item-<%= @profile_item.id %>" class="error-container">
+    <%= @message %>
+  </div>
+<% end %>

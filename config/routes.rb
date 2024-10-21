@@ -21,8 +21,8 @@ Rails.application.routes.draw do
   resources :profile_texts, only: %i[new create update destroy]
   resources :profile_item_annotations, only: %i[create update]
   resources :profile_item_references, only: %i[create]
-  match "profile_item_references/:profile_item_id/:reference_id", to: "profile_item_references#update", via: :put, as: "save_profile_item_references"
-  match "profile_item_references/:profile_item_id/:reference_id", to: "profile_item_references#destroy", via: :delete
+  match "profile_item_references/:profile_item_id/:reference_id", as: "save_profile_item_references", to: "profile_item_references#update", via: :put
+  match "profile_item_references/:profile_item_id/:reference_id", as: "delete_profile_item_references", to: "profile_item_references#destroy", via: :delete
 
   resources :batches
   match "/feedback", as: "feedback", to: "feedback#index", via: :get

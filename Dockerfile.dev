@@ -12,8 +12,8 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
   wget \
   nodejs \
   iproute2 \
+  postgresql-client \
   curl
-
 
 RUN apt-get update -qq && apt-get install -y \
   libpq-dev

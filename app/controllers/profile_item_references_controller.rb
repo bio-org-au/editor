@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 class ProfileItemReferencesController < ApplicationController
-  before_action :set_profile_item_reference, only: %i[update]
+  before_action :set_profile_item_reference, only: %i[update destroy]
 
   def create
     @profile_item_reference = Profile::ProfileItemReference.new(
@@ -26,7 +26,6 @@ class ProfileItemReferencesController < ApplicationController
         updated_by: current_user.username
       )
     )
-
     if @profile_item_reference.save!
       @message = "Saved"
       render :create
@@ -41,6 +40,18 @@ class ProfileItemReferencesController < ApplicationController
     really_update if changed?
   end
 
+  def destroy
+    @profile_item = @profile_item_reference.profile_item
+    if @profile_item_reference.destroy!
+      @message = "Deleted profile item reference."
+    else
+      raise("Not deleted")
+    end
+  rescue StandardError => e
+    @message = "Error deleting profile item reference: #{e.message}"
+    render "destroy_failed", status: :unprocessable_entity
+  end
+
   private
 
   def set_profile_item_reference
@@ -52,7 +63,7 @@ class ProfileItemReferencesController < ApplicationController
   end
 
   def really_update
-    if @profile_item_reference.update(profile_text_params.merge(updated_by: current_user.username))
+    if @profile_item_reference.update(permitted_params.merge(updated_by: current_user.username))
       @message = "Updated"
       render :update
     else

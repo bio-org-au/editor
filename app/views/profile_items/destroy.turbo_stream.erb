@@ -1,0 +1,45 @@
+<% profile_text = Profile::ProfileText.new %>
+<% profile_item = Profile::ProfileItem.new(product_item_config: @product_item_config, instance_id: @instance_id)%>
+
+<%= turbo_stream.replace "message_#{@product_item_config.display_html.parameterize}" do %>
+  <div id="message_<%= @product_item_config.display_html.parameterize %>" class="message-container">
+    <%= @message %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "profile_text_form_#{@product_item_config.display_html.parameterize}" do %>
+  <div id="profile_text_form_<%= @product_item_config.display_html.parameterize %>" style="overflow: hidden; margin-bottom: 10px;">
+    <%= render partial: "profile_texts/form",
+      locals: {
+        profile_text: profile_text,
+        url: profile_texts_path,
+        method: :post,
+        product_item_config: @product_item_config,
+        instance_id: profile_item.instance_id,
+        profile_item: profile_item
+      }
+    %>
+  </div>
+
+  <script>
+    renderEditor(document.getElementById("editor_<%= @product_item_config.display_html.parameterize %><%= profile_item.id%>"));
+  </script>
+<% end %>
+
+<%= turbo_stream.replace "profile_item_references_#{@product_item_config.display_html.parameterize}" do %>
+  <div id="profile_item_references_<%= @product_item_config.display_html.parameterize %>">
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "add_reference_#{@product_item_config.display_html.parameterize}" do %>
+  <div id="add_reference_<%= @product_item_config.display_html.parameterize %>">
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "add_annotation_form#{@product_item_config.display_html.parameterize}" do %>
+  <div id="add_annotation_form<%= @product_item_config.display_html.parameterize %>"></div>
+<% end %>
+
+<%= turbo_stream.replace "profile_item_actions_#{@product_item_config.display_html.parameterize}" do %>
+  <div id="profile_item_actions_<%= @product_item_config.display_html.parameterize %>"></div>
+<% end %>

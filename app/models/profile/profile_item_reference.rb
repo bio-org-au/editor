@@ -27,7 +27,7 @@ module Profile
       belongs_to :profile_item, class_name: 'Profile::ProfileItem', foreign_key: 'profile_item_id'
       belongs_to :reference, class_name: 'Reference', foreign_key: 'reference_id'
 
-      validate :reference_and_profile_item_uniqueness
+      validate :reference_and_profile_item_uniqueness, on: :create
 
       def profile_item_id_reference_id
         [profile_item_id, reference_id].join('_')
