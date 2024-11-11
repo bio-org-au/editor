@@ -1,0 +1,9 @@
+  
+batch_one:
+  name: "Batch One"
+  description: A first batch
+  use_sort_key_for_ordering: true
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

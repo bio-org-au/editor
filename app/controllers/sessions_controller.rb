@@ -29,14 +29,16 @@ class SessionsController < ApplicationController
     render "new"
   end
 
+  # Known problem: if login is rejected due to no login authority
+  # entering a legit username/password into the re-rendered sign in form
+  # fails the first time.  
   def create
     build_sign_in
-    if @sign_in.save
+    if @sign_in.save && authorised_to_login?
       set_up_session
       deep_link || (redirect_to :root)
     else
       render "new", status: :unprocessable_entity
-
     end
   rescue StandardError => e
     logger.error("Exception signing in: #{e.to_s.gsub(/password:[^,]*/, 'password: [filtered]')}")
@@ -90,5 +92,15 @@ class SessionsController < ApplicationController
   def sign_in_params
     sign_in_params = params[:sign_in]
     sign_in_params&.permit(:username, :password)
+  end
+  
+  def authorised_to_login?
+    if @sign_in.groups.include?('login')
+      true
+    else
+      @sign_in.make_invalid # simulate failed credentials
+      reset_session
+      false
+    end
   end
 end

@@ -25,6 +25,10 @@ class User < ActiveType::Object
   validates :full_name, presence: true
   validates :groups, presence: true
 
+  def foa?
+    groups.include?('foa')
+  end
+  
   def edit?
     groups.include?("edit")
   end

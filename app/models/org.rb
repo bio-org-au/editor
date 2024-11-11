@@ -22,6 +22,7 @@ class Org < ActiveRecord::Base
   self.table_name = "org"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
+  has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: "org_id"
 
   attr_accessor :give_me_focus, :message
 
@@ -46,5 +47,11 @@ class Org < ActiveRecord::Base
     else
       "No change"
     end
+  end
+
+  def self.orgs_reviewer_can_vote_on_behalf_of(username)
+    self.joins(batch_reviewers: :user_table)
+        .where(["users.name = ?",username])
+        .distinct
   end
 end

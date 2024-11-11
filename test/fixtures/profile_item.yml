@@ -1,0 +1,35 @@
+_fixture:
+  model_class: Profile::ProfileItem
+
+ecology_pi:
+  instance: gaertner_created_metrosideros_costata
+  profile_object_rdf_id: "text"
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  product_item_config: ecology_pic
+  profile_text: one_pt
+  statement_type: "fact"
+
+notes_pi:
+  instance: gaertner_created_metrosideros_costata
+  profile_object_rdf_id: "text"
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  product_item_config: ecology_pic
+  profile_text: two_pt
+  statement_type: "fact"
+
+ecology_pi_ref:
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  instance: britten_created_angophora_costata
+  product_item_config: ecology_pic
+  profile_object_rdf_id: "text"
+  profile_text: three_pt
+  statement_type: "fact"

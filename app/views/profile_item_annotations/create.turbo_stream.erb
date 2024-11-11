@@ -1,0 +1,14 @@
+<% profile_item = @profile_item_annotation.profile_item %>
+<%= turbo_stream.replace "add_annotation_form#{@profile_item_annotation.product_item_config.display_html.parameterize}" do %>
+  <div id="add_annotation_form<%= @profile_item_annotation.product_item_config.display_html.parameterize %>" >
+    <div id="annotation_message_<%= profile_item.id %>" class="message-container"><%= @message %></div>
+    <label>Annotate this profile item:</label>
+    <%= render partial: "profile_item_annotations/form",
+      locals: {
+        url: profile_item_annotation_path(id: @profile_item_annotation.id),
+        method: :put,
+        profile_item_annotation: @profile_item_annotation
+      }
+    %>
+  </div>
+<% end %>

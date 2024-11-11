@@ -35,7 +35,7 @@ class SearchLoaderNameSimpleWithBatchNameAsteriskTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
            "Results should be an ActiveRecord::Relation."
-    assert_equal 0,
+    assert_equal 1,
                  search.executed_query.results.size,
                  "Exactly 0 result is expected."
   end

@@ -1,0 +1,47 @@
+name: Ruby Linting
+on:
+  merge_group:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'Gemfile*'
+      - '.rubocop*.yml'
+      - '.ruby-version'
+      - 'config/brakeman.ignore'
+      - '**/*.rb'
+      - '**/*.rake'
+      - '.github/workflows/lint-ruby.yml'
+
+  pull_request:
+    paths:
+      - 'Gemfile*'
+      - '.rubocop*.yml'
+      - '.ruby-version'
+      - 'config/brakeman.ignore'
+      - '**/*.rb'
+      - '**/*.rake'
+      - '.github/workflows/lint-ruby.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    env:
+      BUNDLE_ONLY: development
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v1
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.5'
+
+      - name: Install dependencies
+        run: |
+          bundle install
+
+      - name: Run brakeman
+        run: brakeman

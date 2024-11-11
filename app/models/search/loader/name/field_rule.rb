@@ -112,7 +112,8 @@ class Search::Loader::Name::FieldRule
                    multiple_values_where_clause: " raw_id in (?) or parent_raw_id in (?)"},
 
     "has-review-comment:" =>
-    { where_clause: "exists (
+    { takes_no_arg: true,
+      where_clause: "exists (
         select null
           from name_review_comment nrc
      where nrc.loader_name_id = loader_name.id)
@@ -242,6 +243,9 @@ class Search::Loader::Name::FieldRule
                    multiple_values: true,
                    multiple_values_where_clause: " (lower(family) in (?)) "},
     "families:" => { multiple_values: true,
+                     where_clause: "lower(family) like ? || '%' ",
+                     multiple_values_where_clause: " lower(family) in (?)"},
+    "family-list:" => { multiple_values: true,
                      where_clause: "lower(family) like ? || '%'  and lower(rank) = 'family'",
                      multiple_values_where_clause: " lower(family) in (?) and lower(rank) = 'family'"},
     "family-id:" => { where_clause: "(lower(family) like (select lower(simple_name) from loader_name where id = ?))" },
@@ -306,6 +310,7 @@ class Search::Loader::Name::FieldRule
              trailing_wildcard: true},
 
     "no-distribution:" => {
+      takes_no_arg: true,
       where_clause: " record_type = 'accepted' and (distribution is null or distribution = '')
         or exists (
         select null

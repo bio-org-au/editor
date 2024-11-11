@@ -24,12 +24,12 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :batch_review_period, class_name: "Loader::Batch::Review::Period", foreign_key: "batch_review_period_id"
-  alias_attribute :period, :batch_review_period
+  alias_method :period, :batch_review_period
   belongs_to :user_table, class_name: "UserTable", foreign_key: "user_id"
-  alias_attribute :user, :user_table
+  alias_method :user, :user_table
   belongs_to :org
   belongs_to :batch_review_role, class_name: "Loader::Batch::Review::Role"
-  alias_attribute :role, :batch_review_role
+  alias_method :role, :batch_review_role
   has_many :name_review_comments, class_name: "Loader::Name::Review::Comment", foreign_key: "batch_reviewer_id"
 
   validates :user_id, presence: true
@@ -82,5 +82,14 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
     else
       "No change"
     end
+  end
+
+  def self.batch_reviewers_for_org_username_batch_review(org, username, batch_review)
+    self.where(org_id: org.id)
+        .joins(:user_table)
+        .where(["users.name = ?", username])
+        .joins(batch_review_period: :batch_review)
+        .where(["batch_review.loader_batch_id = ?", batch_review.loader_batch_id])
+        .distinct
   end
 end

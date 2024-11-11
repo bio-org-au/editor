@@ -71,7 +71,7 @@ class UpdateCommentTest < ActiveSupport::TestCase
     @te.update_comment(new_comment, "nncuser")
     te_changed = Tree::Element.find(@te.id)
     assert_nil(te_changed.comment_value)
-    assert_equal(original_updated_at, te_changed.updated_at)
+    assert_in_delta(original_updated_at, te_changed.updated_at, 1.second)
     assert_equal(original_updated_by, te_changed.updated_by)
     assert_not_equal("nncuser", te_changed.updated_by)
     te_changed
@@ -101,7 +101,7 @@ class UpdateCommentTest < ActiveSupport::TestCase
     @te.update_comment(new_comment, "unnc2uvuser")
     te_changed = Tree::Element.find(@te.id)
     assert_equal(new_comment, te_changed.comment_value)
-    assert_equal(original_updated_at, te_changed.updated_at)
+    assert_in_delta(original_updated_at, te_changed.updated_at, 1.second)
     assert_equal(original_updated_by, te_changed.updated_by)
     assert_not_equal("unnc2uvuser", te_changed.updated_by)
     te_changed

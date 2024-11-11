@@ -1,0 +1,18 @@
+_fixture:
+  model_class: Profile::ProfileObjectType
+
+DEFAULTS: &DEFAULTS
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+
+profile_text_pot:
+  <<: *DEFAULTS
+  rdf_id: "text"
+  name: "profile_text"
+
+profile_reference_list_pot:
+  <<: *DEFAULTS
+  rdf_id: "reference"
+  name: "profile_reference_list"

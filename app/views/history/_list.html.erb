@@ -46,7 +46,7 @@
         <%= (val[:description]).html_safe %>
         <% jira_status = 'Unknown' %>
           <% if val[:jira_id].present? %>
-            <% jira_status = Jira.new('NSL-'+val[:jira_id]).status if params[:show_status] == 'true' %>
+            <% jira_status = Jira.new((val[:jira_project]||'NSL')+'-'+val[:jira_id]).status if params[:show_status] == 'true' %>
             <span class="badge jira <%= jira_status&.downcase&.gsub(/ /,'-') %>">
              <%= link_to "(#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}) 
                #{editor_icon('external-link fa-lg')}".html_safe, 

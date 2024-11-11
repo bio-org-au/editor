@@ -1,0 +1,78 @@
+services:
+  vpn_client:
+    image: dperson/openvpn-client
+    container_name: vpn_client
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    environment:
+      - OPENVPN_USERNAME=${OPENVPN_USERNAME}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+    stdin_open: true # docker run -i
+    tty: true
+    volumes:
+      - ../.vpn:/vpn # Assuming your VPN config file is in a folder called 'vpn'
+    command: '-f ./vpn/${OPENVPN_CONFIG_FILE}'
+    networks:
+      - vpn_network
+    env_file:
+      - .env
+
+  db_dev: &db_dev
+    image: postgres:15.7-bullseye
+    shm_size: '512MB'
+    volumes:
+      - db_data_dev:/var/lib/postgresql/data
+      - .pgpass:/root/.pgpass
+      - ./backups:/backups
+    ports:
+      - "5432:5432"
+    depends_on:
+      - vpn_client
+    networks:
+      - vpn_network
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB_DEV}
+      POSTGRES_USER: ${POSTGRES_USER_DEV}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_DEV}
+    env_file:
+      - .env
+
+  app_dev: &app_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle/gems
+    stdin_open: true # docker run -i
+    tty: true
+    environment:
+      DB_USERNAME: ${POSTGRES_USER_DEV}
+      DB_PASSWORD: ${POSTGRES_PASSWORD_DEV}
+      DB_NAME: ${POSTGRES_DB_DEV}
+      EDITOR_CONFIG_FILE: ${EDITOR_CONFIG_FILE}
+      EDITOR_CONFIGDB_FILE: ${EDITOR_CONFIGDB_FILE}
+      DB_HOST: db_dev
+      RAILS_ENV: development
+    env_file:
+      - .env
+    depends_on:
+      - db_dev
+    links:
+      - db_dev
+    networks:
+      - vpn_network
+    command: bash -c "rm -f ./tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"
+
+volumes:
+  gem_cache:
+  db_data_dev:
+
+
+networks:
+  vpn_network:
+    driver: bridge

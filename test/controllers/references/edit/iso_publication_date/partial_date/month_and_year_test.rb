@@ -55,8 +55,7 @@ class ReferencesesUpdateIsoPartialMonthAndYearTest < ActionController::TestCase
     stub_request(:get, %r{http://#{host}/#{path}/\d+/api/citation-strings})
       .with(
         headers: { "Accept" => "text/json",
-                   "Accept-Encoding" => encoding,
-                   "User-Agent" => /rest-client.*ruby.*/ }
+                   "Accept-Encoding" => encoding }
       )
       .to_return(status: 200, body: body, headers: {})
   end

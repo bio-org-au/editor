@@ -58,22 +58,24 @@ module InstancesHelper
                 class: "field-label inline pull-right")
   end
 
+
+  ALLOWED_TABS = %w[tab_show_1 tab_edit tab_edit_notes tab_comments].freeze
+  ALLOWED_TABS_TO_OFFER = %w[tab_profile_details tab_edit_profile tab_foa_profile tab_batch_loader] .freeze
   def tab_for_instance_type(tab, row_type)
-    if %w[tab_show_1 tab_edit tab_edit_notes tab_comments].include?(tab)
-      tab
-    elsif %w[tab_profile_details tab_edit_profile tab_batch_loader].include?(tab) && @tabs_to_offer.include?(tab)
-      tab
-    else
-      tab_for_instance_using_row_type(tab, row_type)
-    end
+    sanitized_allowed_tabs_to_offer_tab = tab.presence_in(ALLOWED_TABS_TO_OFFER) if @tabs_to_offer.include?(tab)
+    tab.presence_in(ALLOWED_TABS) || sanitized_allowed_tabs_to_offer_tab || tab_for_instance_using_row_type(tab, row_type)
   end
 
+  ALLOWED_ROW_TYPES = %w[instance_record instance_as_part_of_concept_record citing_instance_within_name_search].freeze
   def tab_for_instance_using_row_type(tab, row_type)
-    if row_type == "instance_record"
+    sanitized_row_type = row_type.presence_in(ALLOWED_ROW_TYPES)
+
+    case sanitized_row_type
+    when "instance_record"
       tab_for_instance_record(tab)
-    elsif row_type == "instance_as_part_of_concept_record"
+    when "instance_as_part_of_concept_record"
       tab_for_iapo_concept_record(tab)
-    elsif row_type == "citing_instance_within_name_search"
+    when "citing_instance_within_name_search"
       tab_for_citing_instance_in_name_search(tab)
     else
       "tab_empty"

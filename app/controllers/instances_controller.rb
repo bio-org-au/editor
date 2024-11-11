@@ -110,7 +110,6 @@ class InstancesController < ApplicationController
 
   # Copy an instance with its citations
   def copy_standalone
-    logger.debug("copy_standalone")
     current_instance = Instance::AsCopier.find(params[:id])
     current_instance.multiple_primary_override =
       instance_params[:multiple_primary_override] == "1"
@@ -206,6 +205,9 @@ class InstancesController < ApplicationController
 
   def find_instance
     @instance = Instance.find(params[:id])
+    if params[:tab] == "tab_foa_profile"
+      @product_configs_and_profile_items, @product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@instance).run_query
+    end
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the instance."
     redirect_to instances_path
@@ -225,7 +227,8 @@ class InstancesController < ApplicationController
                                      :multiple_primary_override,
                                      :duplicate_instance_override,
                                      :draft,
-                                     :parent_id)
+                                     :parent_id,
+                                     :instance_id)
   end
 
   def instance_name_params
@@ -249,14 +252,15 @@ class InstancesController < ApplicationController
       offer << "tab_classification"
       offer << "tab_profile_details" if @instance.profile?
       offer << "tab_edit_profile" if @instance.profile? && @instance.show_apc?
+      offer << "tab_foa_profile"
     end
     offer << "tab_comments"
     offer << "tab_copy_to_new_reference" if offer_tab_copy_to_new_ref?
     if Rails.configuration.try('batch_loader_aware') &&
           can?('loader/names', 'update') &&
           offer_loader_tab?
-        offer << "tab_batch_loader" 
-        offer << "tab_batch_loader_2" 
+        offer << "tab_batch_loader"
+        offer << "tab_batch_loader_2"
     end
     offer
   end

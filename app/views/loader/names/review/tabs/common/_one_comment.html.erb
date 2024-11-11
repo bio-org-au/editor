@@ -1,29 +1,28 @@
 
 <div id="comment-<%= comment.id %>-display-container" class='name-comment-display-container'> 
 
-        <div>
-<%= render partial: 'detail_line',
-  locals: {label: 'Comment', info: comment.comment }  %>
+  <div>
 
-<%= render partial: 'detail_line',
-  locals: {label: 'Comment by',
-           info: "<span class='indent width-4em'>&nbsp</span>#{comment.reviewer.user_table.full_name} (#{comment.reviewer.org.abbrev} #{comment.reviewer.role.name}) #{link_to('(edit)', edit_name_review_comment_path(comment.id), remote: true, class: 'blue', title: 'Edit your comment') if @current_user.username == comment.reviewer.user_table.name}
-"} %>
+  <%= render partial: 'detail_line',
+             locals: {label: 'Comment', info: comment.comment }  %>
 
-</div>
+  <%= render partial: 'detail_line',
+             locals: {label: 'Comment by',
+                      info: 
+                      "#{comment.reviewer.user_table.full_name} (#{comment.reviewer.org.abbrev} #{comment.reviewer.role.name}) #{link_to('(edit)',
+                      edit_name_review_comment_path(comment.id), remote: true, class: 'blue', title: 'Edit your comment') if @current_user.username == comment.reviewer.user_table.name} "} %>
+
+  </div>
 
 <%= render partial: 'detail_line',
     locals: {label: 'Created',
-             info: "<span class='indent width-4em'>&nbsp</span>#{time_ago_in_words(comment.created_at)} ago"}  %>
+             info: "#{time_ago_in_words(comment.created_at)} ago"}  %>
 <% unless comment.created_at == comment.updated_at %>
   <%= render partial: 'detail_line',
     locals: {label: 'Updated',
-             info: "<span class='indent width-4em'>&nbsp</span>#{time_ago_in_words(comment.updated_at)} ago"}  %>
+             info: "#{time_ago_in_words(comment.updated_at)} ago"}  %>
 <% end %>
 
-<%#= render partial: 'detail_line',
-  locals: {label: 'Context and Topic',
-           info: "<span class='indent width-4em'>&nbsp</span>#{comment.context.titleize} &mdash; #{comment.type.name.titleize}"} %>
 
 </div>
 

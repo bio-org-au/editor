@@ -32,7 +32,7 @@ class Loader::BatchesController < ApplicationController
     @take_focus = params[:take_focus] == "true"
     if params[:tab] == "tab_batch_review"
       @batch_review = Loader::Batch::Review.new
-      @batch_review.batch = @loader_batch
+      @batch_review.loader_batch_id = @loader_batch.id
     end
     render "show", layout: false
   end

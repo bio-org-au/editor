@@ -41,6 +41,7 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
     asserts1
     asserts2
     asserts3
+    asserts4
   end
 
   def asserts1
@@ -75,5 +76,11 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
     assert_select "a#instance-copy-to-new-reference-tab",
                   false,
                   "Should not show 'Copy' tab link."
+  end
+
+  def asserts4
+    assert_select "a#instance-foa-profile-tab",
+                  false
+                  "Should not show 'FOA Profile' tab link"
   end
 end

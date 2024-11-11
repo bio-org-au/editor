@@ -1,0 +1,42 @@
+<% delete_link = link_to("Delete Profile Item",
+  '#',
+  id: "profile-item-delete-link-#{profile_item.id}",
+  class: "btn btn-warning unconfirmed-delete-link pull-right xhidden",
+  title: "Select to delete the profile item.  A confirmation dialog follows.",
+  data: { show_this_id: "confirm-or-cancel-link-profile-item-container-#{profile_item.id}" })
+%>
+
+<% 
+# NOTES: Apparently, we need to add the turbo-related data attributes to ajax-driven links.
+# In this example, the delete button that makes an ajax request to the server should have the turbo attributes 
+# if we want it to render the results via turbo stream. Just something we have to note of.
+confirm_delete_link = link_to("Confirm delete",
+                                profile_item_path(profile_item.id),
+                                class: "btn btn-danger",
+                                title: "Select to confirm the delete.",
+                                data: {
+                                  turbo_method: :delete, # Makes sure the delete method is used
+                                  turbo_stream: true # Explicitly indicates that the request expects a Turbo Stream response
+                                })
+%>
+
+<% cancel_delete_link = link_to("Cancel delete",
+                                '#',
+                                id: "cancel-delete-link-#{profile_item.id}",
+                                class: "btn btn-default cancel-link",
+                                title: "Select to cancel the delete.",
+                                data: {enable_this_id: "profile-item-delete-link-#{profile_item.id}",
+                                       hide_this_id: "confirm-or-cancel-link-profile-item-container-#{profile_item.id}"})
+%>
+
+<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-profile-item-container-#{profile_item.id}"
+                                  class="profile-item confirm-or-cancel-delete-link pull-right hidden"">
+                                  #{confirm_delete_link}
+                                  #{cancel_delete_link}</div>)
+%>
+<div style="padding-top: 30px;padding-bottom: 20px; overflow: hidden;">
+  <%= delete_link.html_safe %>
+  <%= confirm_or_cancel_element.html_safe %>
+  <div id="message-for-profile-item-<%= profile_item.id %>" class="message-container"></div>
+  <div id="error-for-profile-item-<%= profile_item.id %>" class="error-container"></div>
+</div>

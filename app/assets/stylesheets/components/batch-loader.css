@@ -72,6 +72,10 @@ table tr.review-result.taxonomy-comment.showing-details td a span.review.loader-
 }
 
 .review.loader-name.remark-to-reviewers,
+.review.loader-name.remark-to-reviewers a,
+a.remark-to-reviewers,
+a.remark-to-reviewers:hover,
+span.remark-to-reviewers,
 table#search-results-table tr.showing-details td span.review.loader-name.remark-to-reviewers a {
   background-color: yellow;
   font-size: 9pt;
@@ -88,6 +92,13 @@ tr.review-result span.has-loader-name-review-comments {
 
 span.reviewer-comment-tag {
   background-color: #5252ff;
+  font-size: 9pt;
+  color: white;
+  padding: 0 0.2em 0 0.2em;
+}
+
+span.total-reviewer-comment-tag {
+  background-color: darkgreen;
   font-size: 9pt;
   color: white;
   padding: 0 0.2em 0 0.2em;

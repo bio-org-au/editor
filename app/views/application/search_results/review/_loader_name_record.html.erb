@@ -1,3 +1,14 @@
+<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
+<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
+<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
+<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
+<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
+<%# There is complex logic here.
+    The taxonomic note and distribution data from top-level records
+    has to appear on separate lines _after_ any synonymy.
+    Family headings also have to appear whenever a taxon from an unannounced family
+    is about to be displayed. %>
+<% @previous_previous_record_type = @previous_record_type %>
 
 <% if @previous_record_type.blank? then %>
    <% @previous_record_type = search_result.record_type %>
@@ -30,25 +41,34 @@
 <% end %>
 
 
-
 <% if @previous_family.blank? then
      @previous_family = search_result.family 
      @show_family = true
+     @add_white_space_around_family = false
    elsif @previous_family != search_result.family
      @previous_family = search_result.family 
      @show_family = true
+     @add_white_space_before_family = @previous_previous_record_type != 'heading'
    else
      @show_family = false
    end
 %>
 
-<% if @show_family %>
+<%# final search_result is a flushing record %>
+<% if @show_family && !search_result[:flushing] %>
+  <% if @add_white_space_before_family %>
   <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
   <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
   <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
   <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
+<% end %>
+  <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+    <% show_details_class = 'review-result' %>
+  <% else %>
+    <% show_details_class = '' %>
+  <% end %>
   <tr id="family-of-review-result-<%= search_result.id %>"
-      class="review-result review family takes-focus show-details" tabindex="<%= increment_tab_index(100) %>"
+      class="<%= show_details_class %> review family takes-focus show-details" tabindex="<%= increment_tab_index(100) %>"
       data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
       data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
       data-record-id="<%= search_result.id %>"
@@ -58,12 +78,21 @@
       tabindex="<%= increment_tab_index %>" 
     >
       <a class="review-show-details-link navigation-link takes-focus show-details" title='title' tabindex="<%= increment_tab_index(100) %>">
+      <% if search_result.rank == 'family' %><%# is it a real record or not? %>
         <span class="review loader-name family"><%= "#{search_result.family}" %> </span>
+      <% else %>
+        <span class="review loader-name family"><%= "[#{search_result.family}]" %> </span>
+      <% end %>
 
         <% unless search_result.higher_rank_comment.blank? %>
           <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment %></span>
         <% end %>
       </a>
+      <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+        <% if search_result.reviewer_comments? %>
+          <span class="reviewer-comment-tag"><%= pluralize(search_result.reviewer_comments.size, 'reviewer comment') %></span>
+        <% end %>
+      <% end %>
     </td>
   </tr>
 <% end %>
@@ -99,17 +128,34 @@
       <% if search_result.isonym? %>
         <span class="review loader-name isonym">isonym</span>
       <% end %>
-      <% if search_result.reviewer_comments? %>
-        <span class="reviewer-comment-tag"><%= pluralize(search_result.reviewer_comments.size, 'reviewer comment') %></span>
+
+
+
+      <% unless search_result[:flushing] %>
+        <% if search_result.narrow_direct_reviewer_comments? %>
+          <span class="reviewer-comment-tag"><%= pluralize(search_result.narrow_direct_reviewer_comments.size, 'reviewer comment') %></span>
+        <% end %>
+        <% if search_result.narrow_direct_compiler_comments? %>
+          <span class="compiler-comment-tag"><%= pluralize(search_result.narrow_direct_compiler_comments.size, 'compiler comment') %></span>
+        <% end %>
       <% end %>
-      <% if search_result.compiler_comments? %>
-        <span class="compiler-comment-tag"><%= pluralize(search_result.compiler_comments.size, 'compiler comment') %></span>
+
+      <% if search_result.accepted? || search_result.excluded? %>
+        <% if search_result.compiler_or_reviewer_comments? %>
+          <span class="total-reviewer-comment-tag"><%= pluralize(search_result.total_compiler_and_reviewer_comments.size, 'total comment') %></span>
+        <% end %>
       <% end %>
       <% unless search_result.remark_to_reviewers.blank? %>
-        <span class="review loader-name remark-to-reviewers"><%= search_result.remark_to_reviewers %></span>
+        <%# style text and link as well as we can %>
+        <span class="review loader-name remark-to-reviewers">
+          <%= search_result.remark_to_reviewers
+            .gsub(/<a/, "<a class='remark-to-reviewers'")
+            .sub(/(>)([^><]*$)/,'\1<span class="remark-to-reviewers">\2</span>')
+            .html_safe %>
+        </span>
       <% end %>
       <% unless search_result.higher_rank_comment.blank? %>
-        <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment %></span>
+        <span class="review loader-name remark-to-reviewers"><%= h(search_result.higher_rank_comment.html_safe) %></span>
       <% end %>
     </a>
   </td>

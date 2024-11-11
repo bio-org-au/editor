@@ -31,6 +31,8 @@ class Loader::Name < ActiveRecord::Base
   include Partials
   include Doubt
   include SeqGapMaker
+  include ReviewComments
+  include Voting
   attr_accessor :add_sibling_synonyms
   attr_accessor :add_sourced_synonyms
 
@@ -60,10 +62,11 @@ class Loader::Name < ActiveRecord::Base
   validate :parent_must_be_accepted_or_excluded
 
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
-  alias_attribute :batch, :loader_batch
+  alias_method :batch, :loader_batch
 
   has_many :name_review_comments, class_name: "Loader::Name::Review::Comment", foreign_key: "loader_name_id"
-  alias_attribute :review_comments, :name_review_comments
+  alias_method :review_comments, :name_review_comments
+
   has_many :children,
            class_name: "Loader::Name",
            foreign_key: "parent_id",
@@ -75,7 +78,7 @@ class Loader::Name < ActiveRecord::Base
              optional: true
 
   has_many :loader_name_matches, class_name: "Loader::Name::Match", foreign_key: "loader_name_id"
-  alias_attribute :preferred_matches, :loader_name_matches
+  alias_method :preferred_matches, :loader_name_matches
 
   attr_accessor :give_me_focus, :message
 
@@ -152,32 +155,6 @@ class Loader::Name < ActiveRecord::Base
 
   def child?
     !parent_id.blank?
-  end
-
-  def has_name_review_comments?
-    name_review_comments.size > 0
-  end
-
-  def reviewer_comments(scope = "any")
-    name_review_comments
-      .includes(batch_reviewer: [:batch_review_role])
-      .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::NAME_REVIEWER }
-      .select { |comment| comment.context == scope || scope == "any" }
-  end
-
-  def reviewer_comments?(scope = "any")
-    reviewer_comments(scope).size > 0
-  end
-
-  def compiler_comments(scope = "any")
-    name_review_comments
-      .includes(batch_reviewer: [:batch_review_role])
-      .select { |comment| comment.reviewer.role.name == Loader::Batch::Review::Role::COMPILER }
-      .select { |comment| comment.context == scope || scope == "any" }
-  end
-
-  def compiler_comments?(scope = "any")
-    compiler_comments(scope).size > 0
   end
 
   def self.record_to_flush_results
@@ -260,7 +237,7 @@ class Loader::Name < ActiveRecord::Base
   def accepted?
     record_type == "accepted"
   end
-  alias_attribute :standalone?, :accepted?
+  alias_method :standalone?, :accepted?
 
   def synonym?
     record_type == "synonym"
@@ -269,7 +246,7 @@ class Loader::Name < ActiveRecord::Base
   def misapplied?
     record_type == "misapplied"
   end
-  alias_attribute :misapp?, :misapplied?
+  alias_method :misapp?, :misapplied?
 
   def heading?
     record_type == "heading"

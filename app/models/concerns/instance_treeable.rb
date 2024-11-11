@@ -27,6 +27,10 @@ module InstanceTreeable
     show_apc?
   end
 
+  def in_any_tree?
+    ::Tree::Element.where(instance_id: id).count > 0
+  end
+
   def show_apc?
     id == name.accepted_instance_id
   end

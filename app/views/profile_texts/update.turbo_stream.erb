@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "message_#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <div id="message_<%= @profile_item.product_item_config.display_html.parameterize %>" class="message-container">
+    <%= @message %>
+  </div>
+<% end %>

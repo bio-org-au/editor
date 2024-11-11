@@ -40,8 +40,7 @@ class TreePlacementRemoveTest < ActionController::TestCase
                        "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
                        "Content-Length" => "27",
                        "Content-Type" => "application/json",
-                       "Host" => "localhost:9090",
-                       "User-Agent" => /ruby/ })
+                       "Host" => "localhost:9090" })
       .to_return(status: 200, body: '{"payload": {"message":"Removed"}}', headers: {})
   end
 

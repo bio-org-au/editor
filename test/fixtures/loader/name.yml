@@ -1,0 +1,17 @@
+  
+accepted_one:
+  seq: 0
+  record_type: accepted
+  loader_batch: batch_one
+  simple_name: Hardenbergia violacea
+  simple_name_as_loaded: Hardenbergia violacea
+  full_name: Hardenbergia violacea (Gand.) A.W.Hill
+  family: Apiaceae
+  rank: species
+  distribution: Tas
+  comment: a comment
+  remark_to_reviewers: a remark to reviewers
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

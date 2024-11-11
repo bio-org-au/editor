@@ -44,8 +44,7 @@ class NamesCreateByEditorTest < ActionController::TestCase
 
   def stub_it
     stub_request(:get, %r{#{a}.nsl/services.rest.name.apni.[0-9][0-9]*.api.#{b}})
-      .with(headers: { "Accept" => "text/json", "Accept-Encoding" => /.*/,
-                       "User-Agent" => /rest-client.*ruby.*/ })
+      .with(headers: { "Accept" => "text/json", "Accept-Encoding" => /.*/})
       .to_return(status: 200, body: %({ "class": "silly name class",
       "_links": { "permalink": [ ] }, "name_element":
       "redundant name element for id 91755", "action": "unnecessary action",

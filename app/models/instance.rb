@@ -40,6 +40,9 @@ class Instance < ActiveRecord::Base
   MULTIPLE_PRIMARY_WARNING = "Saving this instance would result in multiple primary instances for the same name."
   DUPLICATE_INSTANCE_WARNING = "already has an instance with the same reference, type and page."
   belongs_to :parent, class_name: "Instance", foreign_key: "parent_id", optional: true
+
+  has_many :profile_items, class_name: "Profile::ProfileItem", foreign_key: "instance_id"
+  has_many :product_item_configs, class_name: "Profile::ProductItemConfig", through: :profile_items
   has_many :children,
            class_name: "Instance",
            foreign_key: "parent_id",
@@ -610,6 +613,7 @@ class Instance < ActiveRecord::Base
       reverse_of_this_is_cited_by.blank? &&
       comments.blank? &&
       !in_apc? &&
+      !in_any_tree? &&
       children.empty? &&
       not_linked_to_loader_name_matches?
   end

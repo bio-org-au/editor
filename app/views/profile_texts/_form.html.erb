@@ -1,0 +1,36 @@
+<% text_area_class = Rails.configuration.try('foa_profile_dropdown_ui') ? "editor-textarea-version2" : "editor-textarea" %>
+
+<%= form_with(model: profile_text, url: url, method: method, remote: true, html: { data: {type: 'json', form_type: 'profile_text_form' } }) do |f| %>
+  <%= hidden_field_tag "profile_item[id]", profile_item.id %>
+  <%= hidden_field_tag "profile_item[instance_id]", instance_id %>
+  <%= hidden_field_tag "profile_item[product_item_config_id]", product_item_config.id %>
+  <%= hidden_field_tag "profile_item[profile_object_rdf_id]", product_item_config.profile_item_type.rdf_id %>
+  <%= hidden_field_tag "id", profile_text.id %>
+
+  <div id="simplemde-container">
+    <%= text_area_tag "profile_text[value]", profile_item.profile_text.try(:value).to_s, 
+      class: "form-control editor-textarea-version2 custom-height",
+      title: "Enter verbatim name",
+      rows: 4,
+      tabindex: 1112,
+      id: "editor_#{product_item_config.display_html.parameterize}#{profile_text.id}",
+      required: true
+    %>
+
+    <% if Rails.configuration.try('foa_profile_dropdown_ui') %>
+      <%= javascript_tag do %>
+        textarea = document.getElementById("editor_<%=product_item_config.display_html.parameterize %><%= profile_text.id %>");
+        renderEditor(textarea)
+      <% end %>
+    <% else %>
+      <%= javascript_tag do %>
+        document.addEventListener('simpleMDELoaded', function() {
+          textarea = document.getElementById("editor_<%=product_item_config.display_html.parameterize %><%= profile_text.id %>");
+          renderEditor(textarea)
+        })
+      <% end %>
+    <% end %>
+  </div>
+  
+  <%= submit_tag 'Save', style: 'background-color: #5a5a5a; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; float: right;' %>
+<% end %>

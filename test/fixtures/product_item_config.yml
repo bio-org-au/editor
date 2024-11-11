@@ -1,0 +1,20 @@
+_fixture:
+  model_class: Profile::ProductItemConfig
+
+ecology_pic:
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  display_html: "Ecology"
+  product: foa
+  profile_item_type: ecology_pit
+
+habitat_pic:
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  display_html: "Habitat"
+  product: foa
+  profile_item_type: habitat_pit

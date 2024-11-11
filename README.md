@@ -1,6 +1,6 @@
 # Editor README
 ---
-This is the names and taxonomy Editor for the NSL project, sometimes called the "NSL Editor". 
+This is the names and taxonomy Editor for the NSL project, sometimes called the "NSL Editor".
 
 ## Brief History of Versions
 
@@ -15,9 +15,9 @@ The original Rails 4.x app repository is now archived.  One unfortunate side-eff
 
 
 ## NSL
-NSL is the National Species List project of the IBIS team based at the Australian National Botanic Gardens (ANBG) site.  
+NSL is the National Species List project of the IBIS team based at the Australian National Botanic Gardens (ANBG) site.
 
-The Editor works with and relies on services provides by the NSL Services and the NSL Mapper apps.  
+The Editor works with and relies on services provides by the NSL Services and the NSL Mapper apps.
 
 It uses the NSL data structures.
 
@@ -37,7 +37,7 @@ Developed against a Postgresql database, designed to by run as a low-privilege C
 
 ## Authentication
 
-User authentication/authorisation is via LDAP/Active Directory - originall LDAP, more recently AD.
+User authentication/authorisation is via LDAP/Active Directory - originally LDAP, more recently AD.
 
 ## Database creation
 
@@ -49,14 +49,28 @@ As above, this app doesn't carry the information necessary to create the databas
 
 ## How to run the test suite
 
-Presumes: you have a copy of an NSL database
-Preparation - run:  rails db:schema:dump to produce db/structure.sql
-Preparation - edit: db/structure.sql to remove min/max constraints on nsl_global_seq
+We use simple Rails testing with fixtures.  We mock calls out to the Services app for testing.
 
-Create a test database, load the sql structure, run tests: 
-    createdb -O nsldev ned_test
-    RAILS_ENV=test rake db:structure:load 
-    bundle exec rails:test
+### Grab the schema
+
+We use a `structure.sql` file extracted from a copy of an active NSL database.  When the database structure changes we need to refresh `structure.sql`.
+
+   1. Set up access to an active NSL database or a local copy of such a database with the latest schema changes.
+   2. Run `SCHEMA_FORMAT='sql' rake db:schema:dump` on command line
+   3. Edit the resulting `structure.sql` file - modify the `create sequence public.nsl_global_seq ...` statement by
+      a) setting the `start with` value to 1, and
+      b) removing the `minvalue` and `maxvalue` constraints.  
+
+      This sequence is set in very particular ways in the various active NSL databases, but we need it simple, predictable, and unconstrained for our test fixtures.
+
+### Run tests
+
+Create a test database, load the sql structure, run tests - e.g.:
+
+      createdb -O nsldev ned_test
+      RAILS_ENV=test rake db:schema:load
+      bundle exec rails:test
+
 
 ## Services and Mapper
 
@@ -82,6 +96,66 @@ The editor-database.yml user can be the table-owner in development, but should b
 You'll need a user registered in that LDAP, ideally with appropriate group memberships
 cd [app home]
 rails s
+
+## Development
+
+Current stack:
+- Ruby version 3.3.5
+- Rails version 7.1.4.1
+- Postgresql version 15.7
+
+Pre-requisites:
+- Acquire the following:
+    - vpn config
+    - database.yml and editor-config.rb files
+
+### 🐳 Setup with Docker
+
+There are a couple of files/folders you need to acquire from the team before you can start running the docker containers:
+
+All of these live in the root directory of the `editor`
+
+- `.env` (see the template.env and acquire the necessary information from the team)
+- `vpn` folder containing the vpn configuration
+- `.nsl` folder containing the database.yml and editor-config.rb
+- `.pgpass` file with the postgress password
+
+Run
+```bash
+# build the containers
+docker-compose -f docker-compose.dev.yml build
+
+# run the postgres db container
+# create the necessary database
+# and restore the db dump from this container
+# e.g psql -U user -d database
+docker-compose -f docker-compose.dev.yml run db_dev bash
+
+# run the containers
+docker-compose -f docker-compose.dev.yml up -d
+```
+### 💪🏻 Non-Docker
+Pre-requisite
+- Postgres database installed on your machine
+- Config files in the right directory. [External Configuration Files](https://github.com/bio-org-au/editor?tab=readme-ov-file#external-configuration-files)
+
+#### Intall Ruby with the following:
+- [Using RVM](https://rvm.io/rvm/install) or with
+- [the asdf version manager](https://github.com/asdf-vm/asdf-ruby)
+
+
+Run
+```bash
+# Create database and restore data
+psql -U user -d databasename
+pgrestore -U user -d databasename path/to/the/source.dmp
+
+# install the gems
+bundle install
+
+# run the server
+rails s
+```
 
 ## Release notes
 

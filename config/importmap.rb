@@ -59,6 +59,7 @@ pin "typeaheads_for_instance_for_name_showing_reference_update",
 pin "typeaheads_for_instance_name", to: "typeaheads/for_instance/name.js"
 pin "typeaheads_for_instance_name_for_unpub_citation", to: "typeaheads/for_instance/name_for_unpub_citation.js"
 pin "typeaheads_for_instance_reference", to: "typeaheads/for_instance/reference.js"
+pin "typeaheads_for_instance_reference_foa", to: "typeaheads/for_instance/reference_foa.js"
 pin "typeaheads_for_instance_reference_excluding_current", to: "typeaheads/for_instance/reference_excluding_current.js"
 pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js"
 

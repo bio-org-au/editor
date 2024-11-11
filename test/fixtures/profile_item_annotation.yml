@@ -1,0 +1,18 @@
+_fixture:
+  model_class: Profile::ProfileItemAnnotation
+
+one_pia:
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  profile_item: ecology_pi
+  value: "annotation 1"
+
+two_pia:
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  profile_item: ecology_pi_ref
+  value: "annotation 1"

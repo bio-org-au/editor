@@ -38,8 +38,7 @@ class TreePlacementCreateTest < ActionController::TestCase
       .with(headers: { "Accept" => "application/json",
                        "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
                        "Content-Type" => "application/json",
-                       "Host" => "localhost:9090",
-                       "User-Agent" => /ruby/ })
+                       "Host" => "localhost:9090"})
       .to_return(status: 200, body: '{"payload": {"message":"Placed"}}', headers: {})
   end
 
@@ -51,8 +50,7 @@ class TreePlacementCreateTest < ActionController::TestCase
                        "Content-Type" => "application/json",
                        "Host" => Rails.configuration.nsl_linker
                                           .sub(%r{^http://}, "")
-                                          .split(%r{/})[0],
-                       "User-Agent" => /ruby/ })
+                                          .split(%r{/})[0]})
       .to_return(status: 200, body: %({"link":"#{Rails.configuration.nsl_linker}instance/apni/481811"}), headers: {})
   end
 

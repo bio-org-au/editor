@@ -46,15 +46,29 @@ class Ability
     user ||= User.new(groups: [])
     basic_auth_1
     basic_auth_2
-    edit_auth if user.edit?
-    qa_auth if user.qa?
+    edit_auth         if user.edit?
+    qa_auth           if user.qa?
+
     # TODO: remove this - NSL-2007
-    apc_auth if user.apc?
-    admin_auth if user.admin?
-    treebuilder_auth if user.treebuilder?
-    reviewer_auth if user.reviewer?
+    apc_auth          if user.apc?
+
+    admin_auth        if user.admin?
+    treebuilder_auth  if user.treebuilder?
+    reviewer_auth     if user.reviewer?
     batch_loader_auth if user.batch_loader?
     loader_2_tab_auth if user.loader_2_tab_loader?
+    foa_auth          if user.foa?
+  end
+
+  def foa_auth
+    # can :manage, :all   # NOTES: This is not working. It breaks everything.
+    can "profile_items",            :all
+    can "profile_item_annotations", :all
+    can "profile_item_references",  :all
+    can "profile_texts",            :all
+    can :manage,                    :foa_profile
+    can "instances",                "tab_foa_profile"
+    can "references",               "typeahead_on_citation"
   end
 
   def basic_auth_1
@@ -152,9 +166,11 @@ class Ability
 
   def reviewer_auth
     can "loader/name/review/comments", :all
+    can "loader/name/review/votes",    :all
     can "loader/batch/review/mode",    "switch_on"
     can "loader/names",                "show"
     can "loader/names",                "tab_details"
     can "loader/names",                "tab_comment"
+    can "loader/names",                "tab_vote"
   end
 end

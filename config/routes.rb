@@ -17,6 +17,13 @@
 #   limitations under the License.
 #
 Rails.application.routes.draw do
+  resources :profile_items, only: %i[destroy index]
+  resources :profile_texts, only: %i[create update]
+  resources :profile_item_annotations, only: %i[create update]
+  resources :profile_item_references, only: %i[create]
+  match "profile_item_references/:profile_item_id/:reference_id", as: "save_profile_item_references", to: "profile_item_references#update", via: :put
+  match "profile_item_references/:profile_item_id/:reference_id", as: "delete_profile_item_references", to: "profile_item_references#destroy", via: :delete
+
   resources :batches
   match "/feedback", as: "feedback", to: "feedback#index", via: :get
   match "/ping", as: "ping_service", to: "services#ping", via: :get
@@ -66,6 +73,11 @@ Rails.application.routes.draw do
         as: "typeahead_for_name_showing_references_to_update_instance",
         to: "instances#typeahead_for_name_showing_references_to_update_instance",
         via: :get
+
+#   match "instances/create_foa",
+#         as: "create_foa",
+#         to: "instances#create_foa",
+#         via: :post
 
   match "instances/create_cited_by",
         as: "create_cited_by", to: "instances#create_cited_by", via: :post
@@ -539,6 +551,10 @@ Rails.application.routes.draw do
                                                          to: "loader/name/review/comments#cancel_dialog_to_delete", via: :get
   match "name_review_comments/:id", as: "delete_name_review_comment", to: "loader/name/review/comments#destroy",
                                     via: :delete
+
+  match "name_review_vote", as: "create_name_review_vote", to: "loader/name/review/votes#create", via: :post
+  match "name_review_vote/:id", as: "delete_name_review_vote", to: "loader/name/review/votes#destroy", via: :delete
+
 
   match "switch_on_review_mode", as: "switch_on_review_mode", to: "loader/batch/review/mode#switch_on", via: :post
   match "switch_off_review_mode", as: "switch_off_review_mode", to: "loader/batch/review/mode#switch_off", via: :post

@@ -38,14 +38,14 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   belongs_to :batch_review,
              class_name: "Loader::Batch::Review",
              foreign_key: "batch_review_id"
-  alias_attribute :review, :batch_review
+  alias_method :review, :batch_review
 
   has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: "batch_review_period_id"
-  alias_attribute :reviewers, :batch_reviewers
+  alias_method :reviewers, :batch_reviewers
 
   has_many :name_review_comments, class_name: "Loader::Name::Review::Comment", foreign_key: "review_period_id"
-  alias_attribute :comments, :name_review_comments # deprecate - confusing with batch comments
-  alias_attribute :name_comments, :name_review_comments
+  alias_method :comments, :name_review_comments # deprecate - confusing with batch comments
+  alias_method :name_comments, :name_review_comments
 
   has_many :names_with_comments, through: :name_review_comments, class_name: "Loader::Name", source: :loader_name
 

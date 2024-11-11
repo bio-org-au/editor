@@ -45,7 +45,11 @@
   You cannot delete this instance.
   <br>
   <% if @instance.in_apc? %>
-    Instance is in <%= ShardConfig.classification_tree_key %>.
+    Instance is in the accepted classification: <%= ShardConfig.classification_tree_key %>.
+    <br>
+  <% end %>
+  <% if @instance.in_any_tree? %>
+    Instance is in: <%= @instance.tree_elements.collect {|te| te.tree_version_elements.collect {|tve| tve.tree_version.tree.name} }.flatten.uniq.join(',') %>.
     <br>
   <% end %>
   <% if @instance.instance_notes.size > 0 %>

@@ -29,11 +29,13 @@ class Loader::Batch::Review < ActiveRecord::Base
   before_destroy :abort_if_review_periods
 
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
-  alias_attribute :batch, :loader_batch
+  alias_method :batch, :loader_batch
   has_many :review_periods, class_name: "Loader::Batch::Review::Period", foreign_key: "batch_review_id"
-  alias_attribute :periods, :review_periods
+  alias_method :periods, :review_periods
 
   attr_accessor :give_me_focus, :message
+
+  #scope :in_progress, -> { where(in_progress: true) }
 
   def fresh?
     created_at > 1.hour.ago
@@ -60,6 +62,10 @@ class Loader::Batch::Review < ActiveRecord::Base
     else
       "No change"
     end
+  end
+
+  def name_in_context
+    "#{batch.name} #{name}"
   end
 
   private

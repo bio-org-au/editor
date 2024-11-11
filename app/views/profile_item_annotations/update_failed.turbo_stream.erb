@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "annotation_message_#{@profile_item_annotation.profile_item_id}" do %>
+  <div id="annotation_message_<%= @profile_item_annotation.profile_item_id %>" class="error-container">
+    <%= @message %>
+  </div>
+<% end %>

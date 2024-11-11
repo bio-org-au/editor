@@ -1,3 +1,106 @@
+- :date: 11-Nov-2024
+  :jira_id: '5230'
+  :description: |-
+    Loader: Remove rogue IDs appearing with compiler comments
+- :date: 08-Nov-2024
+  :jira_id: '5230'
+  :description: |-
+    Loader: Re-work and correct comment counts for reviewers
+- :date: 07-Nov-2024
+  :jira_id: '30'
+  :jira_project: FLOR
+  :description: |-
+    APC Workflow: Add a dropdown to the FOA profile editor
+- :date: 05-Nov-2024
+  :jira_id: '5234'
+  :description: |-
+    APC Workflow: Voting - reset the Vote tab after creating/removing a vote; add valdation on uniqueness; better delete widgets; Agree/Disagree wording
+- :date: 05-Nov-2024
+  :jira_id: '5234'
+  :description: |-
+    APC Workflow: Voting - first cut, which is basic voting at name level and some refinements
+- :date: 01-Nov-2024
+  :jira_id: '5242'
+  :description: |-
+    Instance delete: Check FK in all classifcation trees, not just in the accepted tree, before offering a delete button
+- :date: 31-Oct-2024
+  :jira_id: '5235'
+  :description: |-
+    Loader: Text and links in <code>remark_to_reviewers</code> are now (imperfectly) highlighted with a yellow background
+- :date: 30-Oct-2024
+  :jira_id: '5235'
+  :description: |-
+    Loader: Links in <code>remark_to_reviewers</code> are no longer highlighted with a red background
+- :date: 30-Oct-2024
+  :jira_id: '5236'
+  :description: |-
+    Login: Restrict login to users in the specific login group for each environment (test/prod) and dataset (apni/moss/etc)
+- :date: 29-Oct-2024
+  :jira_id: '29'
+  :jira_project: FLOR
+  :description: |-
+    Flora of Australia Profile: Improved foa query in the instances tabs
+- :date: 28-Oct-2024
+  :jira_id: '28'
+  :jira_project: FLOR
+  :description: |-
+    Flora of Australia Profile: Updated permissions for the foa editor
+- :date: 28-Oct-2024
+  :jira_id: '5238'
+  :description: |-
+    Loader: Stop focus jump in Edit tab
+- :date: 25-Oct-2024
+  :jira_id: '25'
+  :jira_project: FLOR
+  :description: |-
+    Flora of Australia Profile: Basic editing features
+- :date: 24-Oct-2024
+  :jira_id: '5232'
+  :description: |-
+    Upgrade to Ruby 3.3.5, Rails 7.1.4.1 and update other gems with later versions available.
+- :date: 23-Oct-2024
+  :jira_id: ''
+  :description: |-
+    Loader Review: Walk-through fixes
+- :date: 23-Oct-2024
+  :jira_id: '5212'
+  :description: |-
+    Loader Review: Remove mention of <code>family-id:</code> query from <code>loader_name</code> query examples in review mode
+- :date: 22-Oct-2024
+  :jira_id: '5230'
+  :description: |-
+    Loader Review: Further improvements to comment counts and a further adjustment
+- :date: 22-Oct-2024
+  :jira_id: '5211'
+  :description: |-
+    Loader Review: Flag <code>has-review-comment:</code> and <code>no-distribution:</code> search directives as taking no argument (i.e. no text after the colon).
+- :date: 22-Oct-2024
+  :jira_id: '5214'
+  :description: |-
+    Loader Review: Render html tags as html styling in <code>remark_to_reviewers</code> and <code>higher_rank_comment</code> fields - don't just ignore them
+- :date: 22-Oct-2024
+  :jira_id: '5216'
+  :description: |-
+    Loader Review: Allow for comments on family records and show when a family entry is merely a heading in query results
+- :date: 22-Oct-2024
+  :jira_id: '5213'
+  :description: |-
+    Loader Review: Improve family search including new <code>family-list:</code> directive
+- :date: 17-Oct-2024
+  :jira_id: '5212'
+  :description: |-
+    Loader Review: Remove loader name query help entry for family-id query in review mode
+- :date: 17-Oct-2024
+  :jira_id: '5210'
+  :description: |-
+    Loader Review: Fix cumulative comment counts
+- :date: 15-Oct-2024
+  :jira_project: FLOR
+  :jira_id: '25'
+  :description: |-
+    Flora Profile: First major merge of initial work by Dean and Gerda
+- :date: 03-Oct-2024
+  :release: true
 - :date: 03-Oct-2024
   :jira_id: '5215'
   :description: |-

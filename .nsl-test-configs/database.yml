@@ -1,0 +1,8 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  database: ENV['DB']
+  username: ENV['DB_USER']
+  password: ENV['DB_PASS']
+  schema_search_path: public,loader

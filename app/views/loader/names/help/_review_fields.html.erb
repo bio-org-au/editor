@@ -4,7 +4,7 @@
   <tr><th>Field</th><th>Description</th></tr>
   <% [
     {field_name: 'has-review-comment:',
-     descr: "Search for loader names that have been commented on. (Full context returned.)"},
+     descr: "Search for loader names that have been commented on. Takes no argument. Records returned in context of synonymy.  "},
     {field_name: 'review-comment:',
      descr: "Search for loader names that have a comment matching a given string. (Full context returned.)"},
     {field_name: 'has-review-comment-by:',
@@ -16,13 +16,13 @@
     {field_name: 'distribution-not:',
      descr: "Search for loader names that have a distribution without a given string. (Full context returned.)"},
     {field_name: 'no-distribution:',
-     descr: "Search for loader names that have no distribution string. (Full context returned.)"},
+     descr: "Search for loader names that have no distribution string. Takes no argument. (Full context returned.)"},
     {field_name: 'family:',
-     descr: "Search for loader names for a given family name. (Full context returned.)"},
-    {field_name: 'family-id:',
-     descr: "Search for loader names for a given family ID. (Full context returned.)"},
+     descr: "Return all the names in matching families. You can give one argument with or without wildcards, or several comma-separated arguments that do not have wildcards. e.g. <code>family: myrtaceae</code>, or <code>family: b*</code>, or <code>family: myrtaceae, acacia</code>"},
+    {field_name: 'family-list:',
+     descr: "Return a list of matching families. Arguments same as for <code>family:</code>"},
     {field_name: 'remark:',
-     descr: "Search for loader names containing a remark to reviewers - wildcards are added automatically."},
+     descr: "Search for loader names containing a remark to reviewers - wildcards are added automatically, so no argument becomes a wildcard and retrieves all remarks."},
     {field_name: 'higher-rank-comment:',
      descr: "Search for loader names containing a higher-rank-comment - wildcards are added automatically."},
       ].each do |val| %>

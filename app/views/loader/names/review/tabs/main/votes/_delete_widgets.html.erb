@@ -1,0 +1,36 @@
+ <%= link_to("Delete the vote...",
+                           '#',
+                           id: "vote-delete-link",
+                           title: "Delete the vote.",
+                           class: "btn btn-warning unconfirmed-delete-link pull-right",
+                           data: {show_this_id: "confirm-or-cancel-link-container",
+                                  hide_this_id: "vote-delete-link"})
+  %>
+
+<div id="confirm-or-cancel-link-container" class="confirm-or-cancel-delete-link pull-right hidden">
+
+  <%= link_to("Confirm delete",
+                                   delete_name_review_vote_path(vote.id),
+                                   class: "btn btn-danger",
+                                   title: "Confirm you want to delete the vote.",
+                                   remote: true,
+                                   method: :delete)
+  %>
+
+  <%= link_to("Cancel delete",
+                                  '#',
+                                  id: "cancel-delete-link",
+                                  class: "btn btn-default cancel-link",
+                                  title: "Cancel delete dialog for the vote.",
+                                  data: {enable_this_id: 'vote-delete-link',
+                                         hide_this_id: 'confirm-or-cancel-link-container'})
+  %>
+
+</div>
+
+<br>
+<%= divider %>
+<br>
+
+<div id="delete-info-message-container" class="message-container"></div>
+<div id="delete-error-message-container" class="message-container"></div>

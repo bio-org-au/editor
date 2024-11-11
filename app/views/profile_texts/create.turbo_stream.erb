@@ -1,0 +1,83 @@
+<% if Rails.configuration.try('foa_profile_dropdown_ui') %>
+  <%= turbo_stream.replace "product-item-config-dropdown-container" do %>
+    <% product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@profile_item.instance).run_query %>
+    <%= render partial: "profile_items/product_item_config_dropdown", 
+      locals: {
+        product_configs_and_profile_items: product_configs_and_profile_items, 
+        selected_product_item_config_id: @profile_item.product_item_config_id,
+        instance: @profile_item.instance
+      } 
+    %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "message_#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <div id="message_<%= @profile_item.product_item_config.display_html.parameterize %>" class="message-container">
+    <%= @message %>
+  </div>
+<% end %>
+
+<%= turbo_stream.replace "profile_text_form_#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <div id="profile_text_form_<%= @profile_item.product_item_config.display_html.parameterize %>" >
+    <%= render partial: "profile_texts/form",
+      locals: {
+        profile_text: @profile_text,
+        url: profile_text_path(id: @profile_text.id),
+        method: :put,
+        product_item_config: @profile_text.product_item_config,
+        instance_id: @profile_item.instance_id,
+        profile_item: @profile_item
+      }
+    %>
+  </div>
+  <script>
+    element_id = "editor_<%= @profile_text.product_item_config.display_html.parameterize %><%= @profile_text.id %>"
+    elem = document.getElementById(element_id);
+    if (elem) {
+      renderEditor(elem);
+    }
+  </script>
+<% end %>
+
+<%= turbo_stream.replace "profile_item_references_#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <div id="profile_item_references_<%= @profile_item.product_item_config.display_html.parameterize %>"
+    style="display: block"
+  >
+    <%= render partial: 'profile_item_references/edit_form',
+      collection: @profile_item.profile_item_references,
+      locals: {profile_item: @profile_item},
+      as: :profile_item_reference
+    %>
+  </div>
+<% end %>
+
+<%= turbo_stream.append "add_reference_#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <div style="padding: 30px 10px 40px 10px;border: 1px solid #ddd;">
+    <label>Reference</label>
+    <div id="add_reference_form_<%= @profile_item.product_item_config.display_html.parameterize %>" style="margin-bottom: 10px;">
+      <%= render partial: 'profile_item_references/form',
+        locals: {
+          url: profile_item_references_path,
+          method: :post,
+          profile_item: @profile_item,
+          profile_item_reference: Profile::ProfileItemReference.new
+      } %>
+    </div>
+  </div>
+<% end %>
+
+<%= turbo_stream.append "add_annotation_form#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <div id="annotation_message_<%= @profile_item.id %>" class="message-container"></div>
+  <label>Annotate this profile item:</label>
+  <%= render partial: 'profile_item_annotations/form',
+    locals: {
+      url: profile_item_annotations_path,
+      method: :post,
+      profile_item_annotation: @profile_item.build_profile_item_annotation
+    }
+  %>
+<% end %>
+
+<%= turbo_stream.append "profile_item_actions_#{@profile_item.product_item_config.display_html.parameterize}" do %>
+  <%= render partial: "profile_items/delete_widgets", locals: {profile_item: @profile_item} %>
+<% end %>

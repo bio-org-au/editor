@@ -1,0 +1,58 @@
+name: Run Minitests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:15.7-bullseye
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: nsl
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd="pg_isready -U nsl"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+          
+    env:
+      DATABASE_URL: postgres://nsl:testpassword@localhost:5432/test_db
+      RAILS_ENV: test
+      EDITOR_CONFIGDB_FILE: ".nsl-test-configs/database.yml"
+      EDITOR_CONFIG_FILE: ".nsl-test-configs/editor-config.rb"
+      DB: test_db
+      DB_USER: nsl
+      DB_PASS: testpassword
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v1
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3.5'
+
+    - name: Install dependencies
+      run: |
+        bundle install
+
+    - name: Set up the database
+      run: |
+        bin/rails db:schema:load
+
+    - name: Run Tests
+      run: |
+        bundle exec rails test

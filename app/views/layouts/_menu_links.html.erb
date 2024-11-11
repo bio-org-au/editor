@@ -13,11 +13,13 @@
     <%= render partial: 'layouts/taxonomy_menu' %>
   </li>
 <% end %>
-<% if can? 'menu', 'batch' %>
-  <li id="batch-menu-main" class="dropdown">
-    <%= render partial: 'layouts/batch_menu',
-      locals: {default_batch: session[:default_loader_batch_name]} %>
-  </li>
+<% if Rails.configuration.try(:batch_loader_aware) %>
+  <% if can? 'menu', 'batch' %>
+    <li id="batch-menu-main" class="dropdown">
+      <%= render partial: 'layouts/batch_menu',
+        locals: {default_batch: session[:default_loader_batch_name]} %>
+    </li>
+  <% end %>
 <% end %>
 <% if can? 'menu', 'admin' %>
   <li> <%= render partial: 'layouts/admin_menu' %> </li>

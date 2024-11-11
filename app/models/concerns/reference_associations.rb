@@ -30,6 +30,7 @@ module ReferenceAssociations
     belongs_to :namespace, class_name: "Namespace", foreign_key: "namespace_id", optional: false
     belongs_to :language, optional: false
 
+    has_many :profile_item_references, class_name: "Profile::ProfileItemReference", foreign_key: "reference_id", dependent: :destroy
     has_many :instances, foreign_key: "reference_id"
     has_many :name_instances,
              -> { where "cited_by_id is not null" },

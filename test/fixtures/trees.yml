@@ -9,3 +9,4 @@ APC:
   host_name: http://localhost:7070/nsl-mapper
   link_to_home_page:
   name: APC
+  rdf_id: apc

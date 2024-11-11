@@ -1,0 +1,12 @@
+_fixture:
+  model_class: Profile::Product
+  
+foa:
+  description_html: "foa description"
+  name: "FOA"
+  reference_id: simple (Reference)
+  namespace_id: apni (Namespace)
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

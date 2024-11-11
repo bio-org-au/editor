@@ -1,0 +1,18 @@
+_fixture:
+  model_class: Profile::ProfileItemReference
+
+one_pir:
+  profile_item: ecology_pi
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  reference: simple
+
+two_pir:
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  profile_item: ecology_pi_ref
+  reference: simple

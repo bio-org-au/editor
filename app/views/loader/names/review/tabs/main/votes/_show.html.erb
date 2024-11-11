@@ -1,0 +1,10 @@
+
+<b><%= vote.vote_as_agree_disagree %></b>
+<br>
+<br>
+<%= render partial: 'loader/names/review/tabs/main/votes/delete_widgets',
+           locals: {vote: vote}  %>
+<br>
+<%= divider %>
+<%= render partial: 'detail_line', locals: {label: 'ID', info: vote.id} %>
+<%= created_by_whom_and_when(vote).html_safe %>

@@ -41,6 +41,10 @@ class SignIn < ActiveType::Object
     @ldap.generic_active_directory_user
   end
 
+  def make_invalid
+    errors.add(:credentials, "not authorised.")
+  end
+
   private
 
   def validate_credentials
