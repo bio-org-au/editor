@@ -109,6 +109,7 @@ GEM
     csv (3.3.0)
     date (3.3.4)
     date (3.3.4-java)
+    diff-lcs (1.5.1)
     docile (1.4.1)
     domain_name (0.6.20240107)
     drb (2.2.1)
@@ -116,6 +117,11 @@ GEM
     exception_notification (4.5.0)
       actionmailer (>= 5.2, < 8)
       activesupport (>= 5.2, < 8)
+    factory_bot (6.5.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
     ffi (1.17.0-aarch64-linux-gnu)
     ffi (1.17.0-arm64-darwin)
     ffi (1.17.0-java)
@@ -297,6 +303,23 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.3.9)
+    rspec-core (3.13.2)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.3)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-rails (7.1.0)
+      actionpack (>= 7.0)
+      activesupport (>= 7.0)
+      railties (>= 7.0)
+      rspec-core (~> 3.13)
+      rspec-expectations (~> 3.13)
+      rspec-mocks (~> 3.13)
+      rspec-support (~> 3.13)
+    rspec-support (3.13.2)
     rubocop (1.66.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -402,6 +425,7 @@ DEPENDENCIES
   cancancan
   csv
   exception_notification
+  factory_bot_rails
   font-awesome-sass (~> 6.4.0)
   importmap-rails
   indefinite_article
@@ -427,6 +451,7 @@ DEPENDENCIES
   rails-controller-testing
   rails-ujs
   rest-client
+  rspec-rails
   simple_calendar (~> 2.0)
   simplecov
   sprockets-rails

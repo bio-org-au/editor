@@ -79,6 +79,9 @@ group :development, :test do
   # gem "pry-rescue" # breaks test env. on Mac M1
   gem "webmock"
   # gem "schema_plus"
+
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 # Added
