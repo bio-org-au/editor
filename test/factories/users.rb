@@ -43,4 +43,8 @@ FactoryBot.define do
   trait :loader_2_tab_loader do
     groups { ['loader-2-tab"'] }
   end
+
+  trait :profile_v2_context do
+    groups { ['foa-context-group'] }
+  end
 end

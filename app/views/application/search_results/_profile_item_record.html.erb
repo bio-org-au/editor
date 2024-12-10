@@ -1,9 +1,9 @@
-<% if can?("profile_items", :index) %>
+<% if can?("profile_items", :read) %>
   <tr id="search-result-<%= search_result.id %>" 
     class="search-result show-details <%= 'fresh' if search_result.fresh? %>"
+    data-record-type="profile_items"
     data-edit-url="<%= profile_item_path(search_result.id) %>"
     data-tab-url="<%= profile_item_tab_path(id: search_result.id, tab: 'active_tab_goes_here') %>"
-    data-record-type="profile_item"
     data-product-item-config-id="<%= search_result.product_item_config.id%>"
     tabindex="<%= increment_tab_index(100) %>" 
       >

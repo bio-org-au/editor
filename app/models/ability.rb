@@ -58,6 +58,13 @@ class Ability
     batch_loader_auth if user.batch_loader?
     loader_2_tab_auth if user.loader_2_tab_loader?
     profile_v2_auth   if user.profile_v2?
+    profile_v2_viewer if user.profile_v2_context?
+  end
+
+  def profile_v2_viewer
+    can "profile_items", :read, :index
+    can "profile_items", "undefined"
+    can "profile_items", "tab_show_1"
   end
 
   def profile_v2_auth

@@ -63,6 +63,14 @@ RSpec.describe User, type: :model do
     include_context "#group_check?", :profile_v2?, "foa"
   end
 
+  describe "#profile_v2_context?" do
+    include_context "#group_check?", :profile_v2_context?, "foa-context-group"
+  end
+
+  describe "#edit_profile_v2_instance?" do
+    include_context "#group_check?", :edit_profile_v2_instance?, "v2-profile-instance-edit"
+  end
+
   describe "#edit?" do
    include_context "#group_check?", :edit?, "edit"
   end

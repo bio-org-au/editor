@@ -60,7 +60,7 @@
   <% end %>
 <% end %>
 
-<% if @instance.profile_items.present? && can?("profile_items", :index) %>
+<% if @instance.profile_items.present? && can?("profile_items", :read) %>
   <h5><%= user_profile_tab_name %> Profile</h5>
   <dl class="dl-horizontal">
     <% @instance.profile_items.each do |profile_item| %>
