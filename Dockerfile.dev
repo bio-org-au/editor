@@ -2,22 +2,19 @@
 FROM ruby:3.3.5-slim-bullseye
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
-  build-essential \
-  gnupg2 \
-  less \
-  libssl-dev \
   bash \
-  git \
-  telnet \
-  wget \
-  nodejs \
+  build-essential \
+  curl \
+  gnupg2 \
   iproute2 \
-  curl
+  less \
+  libpq-dev \
+  libssl-dev \
+  nodejs \
+  telnet \
+  wget
 
-RUN apt-get update -qq && apt-get install -y \
-  libpq-dev
-
-RUN apt-get update && apt-get install -y wget gnupg2 lsb-release \
+RUN apt-get update && apt-get install -y wget lsb-release \
   && echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
   && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
   && apt-get update \
@@ -36,7 +33,7 @@ RUN wget https://www.openssl.org/source/openssl-3.0.10.tar.gz \
 WORKDIR /app
 
 # Copy the Gemfile and Gemfile.lock
-COPY ./Gemfile ./Gemfile.lock ./
+COPY Gemfile Gemfile.lock ./
 
 RUN mkdir vpn
 COPY vpn/ibis-openvpn.ovpn ./vpn/ibis-openvpn.ovpn
@@ -56,7 +53,7 @@ RUN chmod 600 .pgpass
 # RUN bundle exec rake assets:precompile
 
 # Expose port 3000 to the outside world
-EXPOSE 3000 3001
+EXPOSE 3000
 
 # Start the Rails server
 #CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3000"]

@@ -1,0 +1,74 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
+{
+	"name": "NSL Editor DevContainer",
+
+	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
+	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+	"dockerComposeFile": "../docker-compose.dev.yml",
+
+	// The 'service' property is the name of the service for the container that VS Code should
+	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+	"service": "app_dev",
+
+	// The optional 'workspaceFolder' property is the path VS Code should open by default when
+	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
+	"workspaceFolder": "/app",
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"installDirectlyFromGitHubRelease": true,
+			"version": "latest"
+		},
+		"ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {
+			"setLocale": true,
+			"theme": "robbyrussell",
+			"plugins": "git docker",
+			"desiredLocale": "en_US.UTF-8 UTF-8"
+		},
+		"ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
+			"plugins": "ssh-agent npm",
+			"omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions",
+			"username": "root"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"Shopify.ruby-lsp",
+				"testdouble.vscode-standard-ruby",
+				"eamodio.gitlens",
+				"johnpapa.vscode-peacock",
+				"esbenp.prettier-vscode",
+				"ms-azuretools.vscode-docker",
+				"cweijan.vscode-postgresql-client2",
+				"SonarSource.sonarlint-vscode"
+			],
+			"settings": {
+				"terminal.integrated.shell.linux": "zsh",
+				"terminal.integrated.defaultProfile.linux": "zsh"
+			}
+		}
+	}
+
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	//"forwardPorts": [3000]
+
+	// Uncomment the next line if you want start specific services in your Docker Compose config.
+	// "runServices": [],
+
+	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+	// "shutdownAction": "none",
+
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "cat /etc/os-release",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "devcontainer"
+}

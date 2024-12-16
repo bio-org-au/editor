@@ -59,7 +59,7 @@ We use a `structure.sql` file extracted from a copy of an active NSL database.  
    2. Run `SCHEMA_FORMAT='sql' rake db:schema:dump` on command line
    3. Edit the resulting `structure.sql` file - modify the `create sequence public.nsl_global_seq ...` statement by
       a) setting the `start with` value to 1, and
-      b) removing the `minvalue` and `maxvalue` constraints.  
+      b) removing the `minvalue` and `maxvalue` constraints.
 
       This sequence is set in very particular ways in the various active NSL databases, but we need it simple, predictable, and unconstrained for our test fixtures.
 
@@ -119,6 +119,14 @@ All of these live in the root directory of the `editor`
 - `vpn` folder containing the vpn configuration
 - `.nsl` folder containing the database.yml and editor-config.rb
 - `.pgpass` file with the postgress password
+
+#### Using Vscode editor
+There is a `.devcontainer` in this repo with all the configuration needed to spin up the development environment in vscode, you can follow [this](https://code.visualstudio.com/docs/devcontainers/tutorial) tutorial on how to get started with Vscode DevContainers.
+
+Note:
+The container will only spin up a dev environment (e.g installing the packages & tools needed like the postgres, rails, git, zsh, etc). You still have to setup the application as normal like [acquiring and setting up the db schema](https://github.com/gerdadecio/nsl-editor?tab=readme-ov-file#database-creation), etc.
+
+#### Using the traditional docker scripts
 
 Run
 ```bash

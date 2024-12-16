@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "shopify.ruby-lsp",
+      "ms-vscode-remote.remote-containers",
+      "testdouble.vscode-standard-ruby",
+      "eamodio.gitlens"
+    ]
+  }

@@ -40,7 +40,6 @@ yarn-debug.log*
 tags
 coverage
 hs_err*.log
-.vscode
 .pgpass
 .nsl
 
