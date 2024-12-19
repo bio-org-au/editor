@@ -111,6 +111,10 @@ GEM
       rexml
     crass (1.0.6)
     csv (3.3.1)
+    database_cleaner-active_record (2.2.0)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     date (3.4.1)
     date (3.4.1-java)
     diff-lcs (1.5.1)
@@ -431,6 +435,7 @@ DEPENDENCIES
   byebug
   cancancan
   csv
+  database_cleaner-active_record
   exception_notification
   factory_bot_rails
   font-awesome-sass (~> 6.4)

@@ -1,4 +1,4 @@
-<% if @current_user.profile_v2_context.viewer? %>
+<% if @current_user.profile_v2_context.profile_view_allowed? %>
   <tr id="search-result-<%= search_result.id %>" 
     class="search-result show-details <%= 'fresh' if search_result.fresh? %>"
     data-record-type="profile_items"

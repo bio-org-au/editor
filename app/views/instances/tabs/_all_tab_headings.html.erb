@@ -116,6 +116,20 @@
     <% end %>
   <% end %>
 
+  <% if @tabs_to_offer.include?('tab_copy_to_new_profile_v2') %>
+    <% if @current_user.profile_v2_context.copy_instance_allowed? %>
+      <%= render partial: 'instances/tabs/tab', locals: {first: false,
+                                        last: false,
+                                        this_tab: 'tab_copy_to_new_profile_v2', 
+                                        link_text: "Copy".html_safe,
+                                        link_id: 'instance-copy-to-new-profile-v2-tab', 
+                                        link_title: 'Copy the instance',
+                                        tab_index: increment_tab_index,
+                                        prev_tab: 'instance-comments-tab',
+                                        next_tab: '.search-result.show-details' } %>
+    <% end %>
+  <% end %>
+
   <% if @tabs_to_offer.include?('tab_profile_details') %>
     <% if can? 'classification', 'place' %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
@@ -175,7 +189,7 @@
   
 
   <% if @tabs_to_offer.include?('tab_profile_v2') %>
-    <% if @current_user.profile_v2_context.editor? %>
+    <% if @current_user.profile_v2_context.profile_edit_allowed? %>
       <% if Rails.configuration.try('profile_v2_aware') %>
         <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: true,
