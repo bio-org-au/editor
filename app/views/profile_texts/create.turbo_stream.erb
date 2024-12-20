@@ -1,6 +1,6 @@
 <% if Rails.configuration.try('profile_v2_dropdown_ui') %>
   <%= turbo_stream.replace "product-item-config-dropdown-container" do %>
-    <% product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(current_user, @profile_item.instance).run_query %>
+    <% product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@current_user, @profile_item.instance).run_query %>
     <%= render partial: "profile_items/product_item_config_dropdown", 
       locals: {
         product_configs_and_profile_items: product_configs_and_profile_items, 
