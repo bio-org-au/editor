@@ -13,7 +13,7 @@
   %> 
 
 
-  <% if @current_user.profile_v2_context.editor? %>
+  <% if @current_user.profile_v2_context.profile_edit_allowed? %>
     <%= render partial: 'profile_items/tabs/tab', locals: {first: false,
       last: false,
       this_tab: 'tab_edit', 

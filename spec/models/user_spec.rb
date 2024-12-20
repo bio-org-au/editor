@@ -67,21 +67,21 @@ RSpec.describe User, type: :model do
     context "for foa group" do
       it "return the foa profile context" do
         allow_any_instance_of(User).to receive(:groups).and_return('foa')
-        expect(subject.class).to eq User::PROFILE_CONTEXTS[:foa]
+        expect(subject.class).to eq Users::ProfileContexts::Foa
       end
     end
 
     context "for apni group" do
       it "return the foa profile context" do
         allow_any_instance_of(User).to receive(:groups).and_return('apni')
-        expect(subject.class).to eq User::PROFILE_CONTEXTS[:apni]
+        expect(subject.class).to eq Users::ProfileContexts::Apni
       end
     end
 
     context "for non-profile group" do
       it "return the foa profile context" do
         allow_any_instance_of(User).to receive(:groups).and_return('other-product')
-        expect(subject.class).to eq User::PROFILE_CONTEXTS[:default]
+        expect(subject.class).to eq Users::ProfileContexts::Apni
       end
     end
   end
