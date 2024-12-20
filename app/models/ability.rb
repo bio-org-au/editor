@@ -67,6 +67,15 @@ class Ability
     can :manage,                    :profile_v2
     can "instances",                "tab_profile_v2"
     can "references",               "typeahead_on_citation"
+    can "instances",                "tab_copy_to_new_profile_v2"
+    can "instances",                "tab_unpublished_citation_for_profile_v2"
+    can "instances",                "copy_for_profile_v2"
+    can "instances",                "tab_details"
+    can "instances",                "create_cited_by"
+    can "instances",                "create_cites_and_cited_by"
+    can "instances",                "create"
+    can "instances",                "tab_synonymy_for_profile_v2"
+    can "instances",                "typeahead_for_synonymy"
   end
 
   def basic_auth_1
