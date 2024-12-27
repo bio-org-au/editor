@@ -96,6 +96,8 @@ Rails.application.routes.draw do
         via: :patch
   match "instances/:id/standalone/copy",
         as: "copy_standalone", to: "instances#copy_standalone", via: :post
+  match "instances/:id/standalone/copy_for_profile_v2",
+        as: "copy_for_profile_v2", to: "instances#copy_for_profile_v2", via: :post
   resources :instances, only: %i[new create update destroy]
   match "instances/:id",
         as: "instance_show",

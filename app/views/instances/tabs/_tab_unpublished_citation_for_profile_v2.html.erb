@@ -1,0 +1,75 @@
+<h5>Create an unpublished citation.</h5>
+
+<%= form_for(Instance.new,  url: { action: "create_cited_by" }, remote: true) do |f| %>
+    <% if @instance.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@instance.errors.count, "error") %> prohibited this instance from being saved:</h2>
+
+            <ul>
+                <% @instance.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    In
+    <%= show_field_as_linked_lookup('',@instance.reference,'citation', search_path(query_string: %Q(id:#{@instance.reference_id}),query_target: 'reference'),'reference') %>
+    the name*
+    <div class="typeahead-container">
+      <section class='block width-100-percent'>
+        <input id="instance-name-typeahead"
+               name="instance[name_typeahead]"
+               class="typeahead form-control width-100-percent give-me-focus" 
+               title="Enter an instance.  Typeahead field on name."
+               required="true"
+               tabindex="<%= increment_tab_index %>"
+               type="text" 
+               placeholder="Instance for unpublished citation - typeahead using name"
+               value=""/>
+      </section>
+    </div>
+    <script> setUpInstanceNameForUnpubCitation(); </script>
+    is used as a type*
+    <%= render partial: 'detail_line', locals: {
+            info: f.select(:instance_type_id, InstanceType.unpublished_citation_options,{include_blank: true},
+                           {value: @instance.instance_type_id,data:{update_url: instance_path},
+                            class: 'form-control width-50-percent', title: 'Enter instance type',
+                            required: true, tabindex: increment_tab_index}),
+            label:''
+    }
+    %>
+    <%= "of #{@instance.name.full_name}" %>
+
+    <%= f.hidden_field :name_id %>
+    <%= f.hidden_field :reference_id, value: @instance.reference_id %>
+    <%= f.hidden_field :cited_by_id, value: @instance.id %>
+    <%= f.hidden_field :cites_id %>
+    <br>
+    <br>
+    <%= f.submit class: 'btn-primary', title: 'Save changes', tabindex: increment_tab_index %>
+    <br>
+    <br>
+    <br>
+    <br>
+    <% refresh_page_link = link_to("Refresh page",
+                                   '#', 
+                                   id: "refresh-page-from-details-link",
+                                   class: "btn btn-default hidden",
+                                   title: "Refresh page",
+                                   data: {instance_note_id: @instance.id},
+                                   tabindex: increment_tab_index) 
+   %>
+   <%= refresh_page_link %>
+<% end %>
+
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      focusOnField('instance-name-typeahead');
+    })
+  </script>
+<% end %>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>

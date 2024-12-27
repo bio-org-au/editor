@@ -60,13 +60,13 @@ module InstancesHelper
 
 
   ALLOWED_TABS = %w[tab_show_1 tab_edit tab_edit_notes tab_comments].freeze
-  ALLOWED_TABS_TO_OFFER = %w[tab_profile_details tab_edit_profile tab_profile_v2 tab_batch_loader] .freeze
+  ALLOWED_TABS_TO_OFFER = %w[tab_profile_details tab_edit_profile tab_profile_v2 tab_copy_to_new_profile_v2 tab_batch_loader] .freeze
   def tab_for_instance_type(tab, row_type)
     sanitized_allowed_tabs_to_offer_tab = tab.presence_in(ALLOWED_TABS_TO_OFFER) if @tabs_to_offer.include?(tab)
     tab.presence_in(ALLOWED_TABS) || sanitized_allowed_tabs_to_offer_tab || tab_for_instance_using_row_type(tab, row_type)
   end
 
-  ALLOWED_ROW_TYPES = %w[instance_record instance_as_part_of_concept_record citing_instance_within_name_search].freeze
+  ALLOWED_ROW_TYPES = %w[instance_record instance_as_part_of_concept_record tab_copy_to_new_profile_v2 citing_instance_within_name_search].freeze
   def tab_for_instance_using_row_type(tab, row_type)
     sanitized_row_type = row_type.presence_in(ALLOWED_ROW_TYPES)
 
