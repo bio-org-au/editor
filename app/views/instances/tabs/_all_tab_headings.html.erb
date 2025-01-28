@@ -8,12 +8,12 @@
     <% if can? 'instances', 'tab_show_1' %>
       <%= render partial: 'instances/tabs/tab', locals: {first: true,
                                         last: false,
-                                        this_tab: 'tab_show_1', 
+                                        this_tab: 'tab_show_1',
                                         link_text: "Details".html_safe,
-                                        link_id: 'instance-show-tab', 
+                                        link_id: 'instance-show-tab',
                                         link_title: 'Details',
                                         tab_index: @tab_index,
-                                        prev_tab: '.search-result.show-details', 
+                                        prev_tab: '.search-result.show-details',
                                         next_tab: '' } %>
     <% end %>
   <% end %>
@@ -22,9 +22,9 @@
     <% if can? 'instances', 'edit' %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: false,
-                                        this_tab: 'tab_edit', 
+                                        this_tab: 'tab_edit',
                                         link_text: "Edit".html_safe,
-                                        link_id: 'instance-edit-tab', 
+                                        link_id: 'instance-edit-tab',
                                         link_title: 'Edit',
                                         tab_index: increment_tab_index,
                                         prev_tab: '',
@@ -36,16 +36,16 @@
     <% if can? 'instance_notes', 'edit' %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: false,
-                                        this_tab: 'tab_edit_notes', 
+                                        this_tab: 'tab_edit_notes',
                                         link_text: "Notes".html_safe,
-                                        link_id: 'instance-edit-notes-tab', 
+                                        link_id: 'instance-edit-notes-tab',
                                         link_title: 'Notes',
                                         tab_index: increment_tab_index,
                                         prev_tab: '',
                                         next_tab: '' } %>
     <% end %>
   <% end %>
-  
+
   <% if @tabs_to_offer.include?('tab_synonymy') %>
     <% if can? 'instances', 'create' %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
@@ -120,9 +120,9 @@
     <% if can? 'comments', 'create' %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: true,
-                                        this_tab: 'tab_comments', 
+                                        this_tab: 'tab_comments',
                                         link_text: "Adnot".html_safe,
-                                        link_id: 'instance-comments-tab', 
+                                        link_id: 'instance-comments-tab',
                                         link_title: 'Adnot',
                                         tab_index: increment_tab_index,
                                         prev_tab: '',
@@ -134,9 +134,9 @@
     <% if can? 'instances', 'copy_standalone' %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: false,
-                                        this_tab: 'tab_copy_to_new_reference', 
+                                        this_tab: 'tab_copy_to_new_reference',
                                         link_text: "Copy".html_safe,
-                                        link_id: 'instance-copy-to-new-reference-tab', 
+                                        link_id: 'instance-copy-to-new-reference-tab',
                                         link_title: 'Copy the instance',
                                         tab_index: increment_tab_index,
                                         prev_tab: 'instance-comments-tab',
@@ -145,29 +145,27 @@
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_copy_to_new_profile_v2') %>
-    <% if @current_user.profile_v2_context.copy_instance_allowed? %>
-      <%= render partial: 'instances/tabs/tab', locals: {first: false,
-                                        last: false,
-                                        this_tab: 'tab_copy_to_new_profile_v2', 
-                                        link_text: "Copy".html_safe,
-                                        link_id: 'instance-copy-to-new-profile-v2-tab', 
-                                        link_title: 'Copy the instance',
-                                        tab_index: increment_tab_index,
-                                        prev_tab: 'instance-comments-tab',
-                                        next_tab: '.search-result.show-details' } %>
-    <% end %>
+    <%= render partial: 'instances/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_copy_to_new_profile_v2',
+                                      link_text: "Copy".html_safe,
+                                      link_id: 'instance-copy-to-new-profile-v2-tab',
+                                      link_title: 'Copy the instance',
+                                      tab_index: increment_tab_index,
+                                      prev_tab: 'instance-comments-tab',
+                                      next_tab: '.search-result.show-details' } %>
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_profile_details') %>
     <% if can? 'classification', 'place' %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: false,
-                                        this_tab: 'tab_profile_details', 
+                                        this_tab: 'tab_profile_details',
                                         link_text: "Profile".html_safe,
-                                        link_id: 'instance-profile-tab', 
+                                        link_id: 'instance-profile-tab',
                                         link_title: 'Profile details',
                                         tab_index: increment_tab_index,
-                                        prev_tab: 'instance-copy-to-new-reference-tab', 
+                                        prev_tab: 'instance-copy-to-new-reference-tab',
                                         next_tab: 'instance-edit-profile-tab' } %>
     <% end %>
   <% end %>
@@ -177,9 +175,9 @@
       <% if can? 'classification', 'place' %>
         <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: true,
-                                        this_tab: 'tab_edit_profile', 
+                                        this_tab: 'tab_edit_profile',
                                         link_text: "Edit Profile".html_safe,
-                                        link_id: 'instance-edit-profile-tab', 
+                                        link_id: 'instance-edit-profile-tab',
                                         link_title: 'Edit Profile',
                                         tab_index: increment_tab_index,
                                         prev_tab: 'instance-profile-tab',
@@ -192,9 +190,9 @@
      <% if can?('loader/batches', 'process') %>
         <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: true,
-                                        this_tab: 'tab_batch_loader', 
+                                        this_tab: 'tab_batch_loader',
                                         link_text: "Loader 1".html_safe,
-                                        link_id: 'instance-batch-loader-tab', 
+                                        link_id: 'instance-batch-loader-tab',
                                         link_title: 'Batch Loader operations',
                                         tab_index: increment_tab_index,
                                         prev_tab: 'instance-edit-profile-tab',
@@ -203,9 +201,9 @@
      <% if can?('loader/instances-loader-2', 'use') %>
         <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: true,
-                                        this_tab: 'tab_batch_loader_2', 
+                                        this_tab: 'tab_batch_loader_2',
                                         link_text: "Loader 2".html_safe,
-                                        link_id: 'instance-batch-loader-tab-2', 
+                                        link_id: 'instance-batch-loader-tab-2',
                                         link_title: 'More batch Loader operations',
                                         tab_index: increment_tab_index,
                                         prev_tab: 'instance-batch-tab-loader',
@@ -214,15 +212,15 @@
       <% end %>
   <% end %>
 
-  
+
 
   <% if @tabs_to_offer.include?('tab_profile_v2') %>
     <% if @current_user.profile_v2_context.profile_edit_allowed? %>
       <% if Rails.configuration.try('profile_v2_aware') %>
         <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: true,
-                                        this_tab: 'tab_profile_v2', 
-                                        link_id: 'instance-profile-v2-tab', 
+                                        this_tab: 'tab_profile_v2',
+                                        link_id: 'instance-profile-v2-tab',
                                         link_text: "#{user_profile_tab_name} Profile".html_safe,
                                         link_title: "#{user_profile_tab_name} Profile",
                                         tab_index: increment_tab_index,

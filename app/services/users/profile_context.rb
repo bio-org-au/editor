@@ -22,7 +22,7 @@ class Users::ProfileContext
   def get_user_context
     return PROFILE_CONTEXTS[:default].new(user) unless Rails.configuration.try('profile_v2_aware')
 
-    if user.groups.include?('foa') || user.groups.include?('foa-context-group')
+    if user.groups.include?('foa')
       PROFILE_CONTEXTS[:foa].new(user)
     else
       PROFILE_CONTEXTS[:apni].new(user)
