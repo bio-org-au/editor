@@ -1,3 +1,8 @@
+- :date: 30-Jan-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Fixup the existing tabs not showing up for users with foa or foa-context-group
 - :date: 24-Jan-2025
   :jira_id: '5310'
   :description: |-
