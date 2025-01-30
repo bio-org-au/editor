@@ -88,7 +88,6 @@ RSpec.describe SessionUser, type: :model do
 
   describe "#profile_v2?" do
     include_context "#group_check?", :profile_v2?, "foa"
-    include_context "#group_check?", :profile_v2?, "apni"
   end
 
   describe "#edit?" do
@@ -117,5 +116,13 @@ RSpec.describe SessionUser, type: :model do
 
   describe "#loader_2_tab_loader?" do
     include_context "#group_check?", :loader_2_tab_loader?, "loader-2-tab"
+  end
+
+  describe "#foa_context_group?" do
+    include_context "#group_check?", :foa_context_group?, "foa-context-group"
+  end
+
+  describe "#v2_profile_instance_edit?" do
+    include_context "#group_check?", :v2_profile_instance_edit?, "v2-profile-instance-edit"
   end
 end
