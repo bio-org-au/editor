@@ -26,10 +26,11 @@ class SessionUser < ActiveType::Object
   validates :groups, presence: true
 
   #
-  # Profile V2 
+  # Profile V2
   #
   def profile_v2?
-    groups.include?('foa') || groups.include?('apni')
+    # NOTE: we may have to change this to a different group
+    groups.include?('foa')
   end
 
   def profile_v2_context
@@ -69,5 +70,13 @@ class SessionUser < ActiveType::Object
 
   def loader_2_tab_loader?
     groups.include?("loader-2-tab")
+  end
+
+  def foa_context_group?
+    groups.include?('foa-context-group')
+  end
+
+  def v2_profile_instance_edit?
+    groups.include?('v2-profile-instance-edit')
   end
 end

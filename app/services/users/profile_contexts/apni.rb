@@ -1,5 +1,5 @@
 class Users::ProfileContexts::Apni < Users::ProfileContexts::Base
-  
+
   def initialize(user)
     super
     @product = "APNI"
@@ -10,7 +10,7 @@ class Users::ProfileContexts::Apni < Users::ProfileContexts::Base
   end
 
   def instance_edit_allowed?
-    user.groups.include?('v2-profile-instance-edit')
+    user.v2_profile_instance_edit?
   end
 
   def copy_instance_allowed?
