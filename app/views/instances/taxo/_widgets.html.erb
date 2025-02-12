@@ -1,0 +1,14 @@
+      <span class="taxo-icon-container no-decoration">
+      <% if instance.name.excluded_concept? %>
+        <%= editor_icon('ban','',class: '') %>
+        <span class='small strong' title="Excluded from the accepted taxonomy">
+          <%= ShardConfig.classification_tree_key %>
+        </span>
+      <% else %>
+        <%= editor_icon('check','',class: '') %>
+        <span class='small strong' title="In taxonomy">
+          <%= ShardConfig.classification_tree_key %>
+        </span>
+      <% end %>
+      </span>
+

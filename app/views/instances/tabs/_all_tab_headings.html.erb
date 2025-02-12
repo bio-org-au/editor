@@ -174,17 +174,17 @@
 
   
 
-  <% if @tabs_to_offer.include?('tab_foa_profile') %>
-    <% if can? :manage, :foa_profile %>
-      <% if Rails.configuration.try('foa_profile_aware') %>
+  <% if @tabs_to_offer.include?('tab_profile_v2') %>
+    <% if @current_user.profile_v2_context.editor? %>
+      <% if Rails.configuration.try('profile_v2_aware') %>
         <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: true,
-                                        this_tab: 'tab_foa_profile', 
-                                        link_id: 'instance-foa-profile-tab', 
-                                        link_text: "FOA Profile".html_safe,
-                                        link_title: 'Foa',
+                                        this_tab: 'tab_profile_v2', 
+                                        link_id: 'instance-profile-v2-tab', 
+                                        link_text: "#{user_profile_tab_name} Profile".html_safe,
+                                        link_title: "#{user_profile_tab_name} Profile",
                                         tab_index: increment_tab_index,
-                                        prev_tab: 'instance-edit-profile-tab',
+                                        prev_tab: 'instance-edit-profile-v2-tab',
                                         next_tab: '.search-result.show-details' } %>
       <% end %>
     <% end %>

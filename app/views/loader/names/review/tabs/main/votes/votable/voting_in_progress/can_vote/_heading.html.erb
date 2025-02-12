@@ -1,0 +1,51 @@
+
+
+<% if @loader_name.rank != 'family' %>
+  We only handle heading records of rank family here.  At present, voting isn't available for this <%= @loader_name.rank %> record.
+<% else %>
+  This family heading covers 
+  <% loader_name_count =  @loader_name.loader_batch.loader_names
+                                      .where("record_type in ('accepted', 'excluded')").where(family: @loader_name.simple_name).count %>
+  <%= loader_name_count %>
+  accepted or excluded records.<br>
+  <br>
+  <% loader_name_vote_count =  @loader_name.loader_batch
+                                           .loader_names
+                                           .where("record_type in ('accepted', 'excluded')")
+                                           .where(family: @loader_name.simple_name)
+                                           .joins(:name_review_votes)
+                                           .where(name_review_votes: {org_id: org.id})
+                                           .count %>
+  <%= loader_name_vote_count %>
+  <br>
+  <br>
+  Any vote you cast here will apply to all those records unless they have an existing vote by the organisation you represent.
+  <br>
+  <br>
+  <br>
+  <%= render partial: 'loader/names/review/tabs/main/votes/votable/voting_in_progress/can_vote/heading/vote/form',
+             locals: {batch: batch,
+                      review: review,
+                      org: org,
+                      reviewer: reviewer} %>
+  <br>
+  <h5>Included records showing current vote if any:</h5>
+  <% rec = 0 %>
+  <% @loader_name.loader_batch.loader_names
+    .where("record_type in ('accepted', 'excluded')")
+    .where(family: @loader_name.simple_name)
+    .order("sort_key, seq")
+    .each do |member| %>
+      <% agree_or_not = member.votes.where(["org_id = ?", org.id]).try('first').try('vote_as_agree_disagree') %> 
+      <% member_vote = member.votes.where(["org_id = ?", org.id]).try('first') %> 
+      <% if agree_or_not.blank? %>
+        <%= sanitize("<i class='fa-regular fa-square'></i>") %>
+      <% elsif member_vote.vote == true %>
+        <%= sanitize("<i class='fa fa-check vote-#{agree_or_not}'></i>") %>
+      <% else %>
+        <%= sanitize("<i class='fa fa-xmark vote-#{agree_or_not}'></i>") %>
+      <% end %>
+      <span class='<%= "vote-#{agree_or_not||'no-vote'}" %>' title="<%= member.id %>:<%= member.simple_name %>" ><%= member.simple_name %></span>
+     <br>
+  <% end %>
+<% end %>

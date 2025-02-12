@@ -23,20 +23,16 @@ module InstanceTreeable
     accepted_tree_version_element.tree_element.excluded
   end
 
-  def in_apc?
-    show_apc?
+  def in_taxo?
+    show_taxo?
   end
 
   def in_any_tree?
     ::Tree::Element.where(instance_id: id).count > 0
   end
 
-  def show_apc?
+  def show_taxo?
     id == name.accepted_instance_id
-  end
-
-  def apc_excluded?
-    excluded_concept?
   end
 
   def in_workspace?(workspace)

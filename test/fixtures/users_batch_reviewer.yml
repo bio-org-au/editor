@@ -1,0 +1,9 @@
+_fixture:
+  model_class: Loader::Batch::Reviewer
+
+DEFAULTS: &DEFAULTS
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  created_by: tester
+  updated_by: tester
+

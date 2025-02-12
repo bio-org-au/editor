@@ -44,7 +44,6 @@ class Loader::Name::Review::VotesController < ApplicationController
     params.require(:loader_name_review_vote).permit(:id,
                                                     :loader_name_id,
                                                     :batch_review_id,
-                                                    :batch_reviewer_id,
                                                     :org_id,
                                                     :vote
                                                     )
@@ -63,6 +62,6 @@ class Loader::Name::Review::VotesController < ApplicationController
   end
 
   def find_vote
-    @vote = Loader::Name::Review::Vote.find(params[:id])
+    @vote = Loader::Name::Review::Vote.find([params[:org_id], params[:batch_review_id], params[:loader_name_id]])
   end
 end

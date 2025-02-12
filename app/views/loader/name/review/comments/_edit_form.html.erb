@@ -10,7 +10,7 @@
       <%= form.hidden_field :id %>
       <%= form.hidden_field :batch_reviewer_id %>
       <%= form.hidden_field :loader_name_id %>
-      <%= form.hidden_field :review_period_id %>
+      <%= form.hidden_field :batch_review_period_id %>
       Type*:<br>
       <%= form.collection_select :name_review_comment_type_id, 
         Loader::Name::Review::Comment::Type.for(name_review_comment.type.name, @current_user.compiler?).order(:name),

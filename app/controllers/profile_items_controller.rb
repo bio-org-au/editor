@@ -17,7 +17,19 @@
 #   limitations under the License.
 #
 class ProfileItemsController < ApplicationController
-  before_action :set_profile_item, only: %i[destroy]
+  before_action :set_profile_item, only: %i[show tab destroy]
+
+  # GET /profile_items/1/tab/:tab
+  # Sets up RHS details panel on the search results page.
+  # Displays a specified or default tab.
+  def show
+    pick_a_tab
+    pick_a_tab_index
+    @take_focus = params[:take_focus] == "true"
+    render "show", layout: false
+  end
+
+  alias tab show
 
   def destroy
     @product_item_config = @profile_item.product_item_config
@@ -34,7 +46,8 @@ class ProfileItemsController < ApplicationController
 
   def index
     @instance = Instance.find_by!(id: permitted_profile_item_params[:instance_id])
-    @product_configs_and_profile_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@instance, permitted_profile_item_params).run_query
+    @product_configs_and_profile_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
+      .new(current_user, @instance, permitted_profile_item_params).run_query
   end
 
   private

@@ -17,7 +17,18 @@
       id="<%= %Q(loader-name-#{search_result.id}) %>">
       <%= render partial: 'application/search_results/link_texts/loader/name', locals: {search_result: search_result} %>
     </a>
-
+<% if search_result.votable? %>
+  <% search_result.name_review_votes.each do |vote| %>
+    <span class="vote-<%= vote.vote_as_agree_disagree %>">
+      <% if vote.vote == true %>
+        <%= sanitize("<i class='fa fa-check vote-#{vote.vote_as_agree_disagree}'></i>") %>
+      <% else %>
+        <%= sanitize("<i class='fa fa-xmark vote-#{vote.vote_as_agree_disagree}'></i>") %>
+      <% end %>
+      <%= vote.org.abbrev %>
+    </span>
+  <% end %>
+<% end %>
     <% if ['accepted', 'excluded', 'heading', 'synonym', 'misapplied'].include?(search_result.record_type)  %>
       <%= link_to('<i class="fa-solid fa-plus"></i>'.html_safe, loader_name_new_row_here_path(search_result.id),
                   title: 'Start a new loader-name record',
@@ -26,22 +37,25 @@
     <% end %>
 
     <% unless search_result.remark_to_reviewers.blank? %>
+        <%# style text and link as well as we can %>
       <span class="review loader-name remark-to-reviewers">
-    <%= search_result.remark_to_reviewers %>
+          <%= sanitize(search_result.remark_to_reviewers
+            .gsub(/<a/, "<a class='remark-to-reviewers'")
+            .sub(/(>)([^><]*$)/,'\1<span class="remark-to-reviewers">\2</span>')) %>
       </span>
     <% end %>
 
     <% unless search_result.notes.blank? %>
       <% case search_result.record_type %>
       <% when 'in-batch-note' %>
-        <span class="fat in-batch-note" title="In-Batch Note"><%= search_result.notes %></span>
+        <span class="fat in-batch-note" title="In-Batch Note"><%= sanitize(search_result.notes) %></span>
       <% when 'in-batch-compiler-note' %>
-        <span class="fat in-batch-compiler-note" title="In-Batch Compiler Note"><%= search_result.notes %></span>
+        <span class="fat in-batch-compiler-note" title="In-Batch Compiler Note"><%= sanitize(search_result.notes) %></span>
       <% else %>
-        <span class="fat compiler-note" title="Compiler Note"><%= search_result.notes %></span>
+        <span class="fat compiler-note" title="Compiler Note"><%= sanitize(search_result.notes) %></span>
+        <script>blah</script>xx
       <% end %>
     <% end %>
   </td>
   <td class="takes-focus width-5-percent filler">&nbsp;</td>
 </tr>
-

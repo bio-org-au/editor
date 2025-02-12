@@ -1,0 +1,13 @@
+DEFAULTS: &DEFAULTS
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  created_by: tester
+  updated_by: tester
+
+
+state_herb_1:
+ <<: *DEFAULTS
+ name: $LABEL 
+ abbrev: sh1
+ deprecated: false
+ not_a_real_org: false

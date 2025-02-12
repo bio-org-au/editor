@@ -23,21 +23,27 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  belongs_to :batch_review_period, class_name: "Loader::Batch::Review::Period", foreign_key: "batch_review_period_id"
-  alias_method :period, :batch_review_period
+  belongs_to :batch_review, class_name: "Loader::Batch::Review", foreign_key: "batch_review_id"
   belongs_to :user_table, class_name: "UserTable", foreign_key: "user_id"
   alias_method :user, :user_table
   belongs_to :org
   belongs_to :batch_review_role, class_name: "Loader::Batch::Review::Role"
   alias_method :role, :batch_review_role
-  has_many :name_review_comments, class_name: "Loader::Name::Review::Comment", foreign_key: "batch_reviewer_id"
+  has_many :name_review_comments, class_name: "Loader::Name::Review::Comment", foreign_key: "batch_reviewer_id" do
+    def by_review_period(batch_review_period_id)
+      where(batch_review_period_id: batch_review_period_id)
+    end
+    def by_review(batch_review_id)
+      where(['batch_review_period_id in (select id from batch_review_period brp where brp.batch_review_id = ?)', batch_review_id])
+    end
+  end
 
   validates :user_id, presence: true
   validates :org_id, presence: true
   validates :batch_review_role_id, presence: true
-  validates :batch_review_period_id, presence: true
-  validates :user_id, uniqueness: { scope: :batch_review_period_id,
-                                    message: "should only be added once per review period" }
+  validates :batch_review_id, presence: true
+  validates :user_id, uniqueness: { scope: :batch_review_id,
+                                    message: "should only be added once per review" }
   attr_accessor :give_me_focus, :message
 
   def fresh?
@@ -92,4 +98,11 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
         .where(["batch_review.loader_batch_id = ?", batch_review.loader_batch_id])
         .distinct
   end
+
+  def self.username_to_reviewers_for_review(username, review)
+    Loader::Batch::Reviewer.joins([:user_table, :batch_review])
+                           .where('users.name': username)
+                           .where('batch_review.id': review.id)
+  end
+
 end

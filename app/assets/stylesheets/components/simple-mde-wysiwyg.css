@@ -1,0 +1,134 @@
+#simplemde-container .editor-preview h1,
+#simplemde-container .editor-preview-side h1 {
+  display: block;
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
+#simplemde-container .editor-preview h2,
+#simplemde-container .editor-preview-side h2 {
+  display: block;
+  font-size: 1.5em;
+  margin-block-start: 0.83em;
+  margin-block-end: 0.83em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
+#simplemde-container .editor-preview h3,
+#simplemde-container .editor-preview-side h3 {
+  display: block;
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
+#simplemde-container .editor-preview h4,
+#simplemde-container .editor-preview-side h4 {
+  display: block;
+  font-size: 1em;
+  margin-block-start: 1.33em;
+  margin-block-end: 1.33em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
+#simplemde-container .editor-preview h5,
+#simplemde-container .editor-preview-side h5 {
+  display: block;
+  font-size: 0.83em;
+  margin-block-start: 1.67em;
+  margin-block-end: 1.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
+#simplemde-container .editor-preview h6,
+#simplemde-container .editor-preview-side h6 {
+  display: block;
+  font-size: 0.67em;
+  margin-block-start: 2.33em;
+  margin-block-end: 2.33em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+  unicode-bidi: isolate;
+}
+
+#simplemde-container .editor-preview p,
+#simplemde-container .editor-preview-side p {
+  font-size: 1em;
+  line-height: 1.5;
+  margin-bottom: 1em;
+}
+
+#simplemde-container .editor-preview blockquote,
+#simplemde-container .editor-preview-side blockquote {
+  font-size: 1.2em;
+  margin-left: 1.5em;
+  color: #666;
+  border-left: 4px solid #ccc;
+  padding-left: 1em;
+}
+
+#simplemde-container .editor-preview ul,
+#simplemde-container .editor-preview ol,
+#simplemde-container .editor-preview-side ul,
+#simplemde-container .editor-preview-side ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+#simplemde-container .editor-preview li,
+#simplemde-container .editor-preview-side li {
+  margin-bottom: 0.5em;
+}
+
+#simplemde-container .editor-preview code,
+#simplemde-container .editor-preview-side code {
+  font-family: "Courier New", Courier, monospace;
+  background-color: #f8f8f8;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* Base styles for container */
+#simplemde-container {
+  font-family: Arial, sans-serif;
+  color: #333;
+  line-height: 1.5;
+}
+
+.editor-textarea {
+  display: none; /* Hide the textarea initially */
+}
+.custom-height {
+  height: 100px; /* Default height corresponding to 4 rows */
+}
+.CodeMirror {
+  min-height: 100px; /* Minimum height corresponding to 4 rows */
+}
+.message-container {
+  margin-top: 5px;
+}
+.notice {
+  color: green;
+}
+.debug {
+  color: red;
+}

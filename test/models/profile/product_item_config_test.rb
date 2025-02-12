@@ -55,5 +55,11 @@ module Profile
       assert_not @product_item_config.valid?
       assert_includes @product_item_config.errors[:profile_item_type_id], "can't be blank"
     end
+
+    test "order by sort_order asc" do    
+      product_item_config = Profile::ProductItemConfig.all
+      product_item_config_sort_orders = product_item_config.collect{|p| p.sort_order.to_i}
+      assert_equal product_item_config_sort_orders, product_item_config_sort_orders.sort{|x,y| x <=> y}
+    end
   end
 end

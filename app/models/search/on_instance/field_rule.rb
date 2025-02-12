@@ -57,6 +57,15 @@ from comment where comment.instance_id = instance.id)",
     "page:" => { where_clause: " lower(page) like lower(?)" },
     "page-qualifier:" => { where_clause:
                                  " lower(page_qualifier) like lower(?)" },
+    
+    "show-profiles:" => { where_clause: " exists (select null 
+                                 from profile_item
+                                 join profile_text as pt on pt.id = profile_item.profile_text_id
+                                 where profile_item.instance_id = instance.id
+                                 and profile_item.profile_object_rdf_id = 'text'
+                                 and lower(pt.value) ilike ?) ",
+                          leading_wildcard: true,
+                          trailing_wildcard: true },
 
     "note-key:" => { where_clause: " exists (select null
                                  from instance_note

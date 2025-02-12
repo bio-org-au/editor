@@ -44,5 +44,7 @@ module Profile
     
     validates :product_id, presence: true
     validates :profile_item_type_id, presence: true
+
+    default_scope { order(sort_order: :asc) }
   end
 end

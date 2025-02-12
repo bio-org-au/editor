@@ -32,6 +32,7 @@
  *= require components/batch-loader
  *= require components/admin
  *= require components/jira
+ *= require components/simple-mde-wysiwyg
  *= require_self
  */
 

@@ -93,11 +93,6 @@ class SearchController < ApplicationController
     @search = Search::Empty.new(params)
   end
 
-  def set_tree_defaults
-    params[:query_field] = "apc" if params[:query_field].blank?
-    params[:query] = plantae_haeckel if params[:query].blank?
-  end
-
   # TODO: where is this needed and why?
   def plantae_haeckel
     Name.find_by(full_name: "Plantae Haeckel").id

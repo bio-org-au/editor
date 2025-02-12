@@ -9,20 +9,26 @@
                           query_string: "id: #{@batch_review.batch.id}"),
                title:"Query the loader batch",class:'blue')} %>
 
+<%= render partial: 'detail_line',
+      locals: {label: 'voting status',
+               info: @batch_review.allow_voting_to_words.capitalize } %>
 
 <% if  @batch_review.periods.empty? %>
   <%= render partial: 'detail_line', locals: {info: 'Create one on the "New Review Period" tab',
                                               label:'No review periods'} %>
 <% else %>
-<%= render partial: 'detail_line',
-      locals: {label: 'periods',
-               info: link_to( @batch_review.periods.size,
-                        search_path(
-                          query_target: 'batch review periods',
-                          query_string: "batch-review-id: #{@batch_review.id}"),
-               title:"Query the batch review periods",class:'blue')} %>
+  <% @batch_review.periods.each do |period|%>
+    <%= render partial: 'detail_line',
+          locals: {label: 'period',
+                   info: link_to( period.name,
+                            search_path(
+                              query_target: 'batch review periods',
+                              query_string: "id: #{period.id}"),
+                   title:"Query the batch review period",class:'blue')} %>
+    <% end %>
 <% end %>
-  <%= render partial: 'detail_line',
+
+<%= render partial: 'detail_line',
     locals: {label: 'query the stack',
              info: link_to("#{@batch_review.batch.name} Stack",
                           search_path(

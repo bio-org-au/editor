@@ -1,0 +1,18 @@
+_fixture:
+  model_class: Loader::Batch::Review::Role
+
+DEFAULTS: &DEFAULTS
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  created_by: tester
+  updated_by: tester
+
+
+name_reviewer:
+  <<: *DEFAULTS
+  name: name reviewer
+
+compiler:
+  <<: *DEFAULTS
+  name: compiler
+

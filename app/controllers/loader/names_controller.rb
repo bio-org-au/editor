@@ -288,7 +288,7 @@ class Loader::NamesController < ApplicationController
     @name_review_comment = @loader_name.name_review_comments.new(
       batch_reviewer_id: reviewer.id,
       loader_name_id: @loader_name.id,
-      review_period_id: period.id
+      batch_review_period_id: period.id
     )
   end
 

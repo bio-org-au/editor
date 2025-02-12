@@ -3,13 +3,17 @@ module ApplicationHelper
     !(params[:query_on].nil? || params[:query_on].match(/\Aname\z/i))
   end
 
-  def parse_markdown(markdown)
+  def markdown_to_html(markdown)
     Kramdown::Document.new(markdown).to_html.html_safe
   end
 
   def nav_link(text, icon_name)
     "<div class='icon-for-menu'>#{menu_icon(icon_name)}</div>
     <div class='text-for-link'>#{text}</div>".html_safe
+  end
+
+  def user_profile_tab_name
+    @current_user.profile_v2_context.product
   end
 
   def increment_tab_index(increment = 1)

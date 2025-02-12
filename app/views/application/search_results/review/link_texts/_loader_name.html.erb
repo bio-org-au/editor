@@ -1,14 +1,20 @@
-<% if search_result.has_parent? %>
-  <% @child = 'child' %>
-<% else %>
-  <% @child = '' %>
-<% end %>
-<span class='review loader-name <%= @child %> <%= "#{search_result.record_type}-full-name" %>'>
-<%= "#{search_result.full_name}" %>
+<span class='review loader-name <%= search_result.has_parent? ? 'child' : '' %>
+<%= "#{search_result.record_type}-full-name" %>'>
+  <%= "#{search_result.full_name}" %>
 </span>
 <% if search_result.record_type == 'misapplied' then %>
   <span class="review loader-name misapplied-flag">misapplied</span>
 <% end %>
+<% if search_result.votable? %>
+  <% search_result.name_review_votes.each do |vote| %>
+    <span class="vote-<%= vote.vote_as_agree_disagree %>">
+      <% if vote.vote == true %>
+        <%= sanitize("<i class='fa fa-check vote-#{vote.vote_as_agree_disagree}'></i>") %>
+      <% else %>
+        <%= sanitize("<i class='fa fa-xmark vote-#{vote.vote_as_agree_disagree}'></i>") %>
+      <% end %>
+      <%= vote.org.abbrev %>
+    </span>
+  <% end %>
+<% end %>
 
-
- 

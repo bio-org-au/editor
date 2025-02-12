@@ -74,4 +74,10 @@ class Profile::ProfileItemTest < ActiveSupport::TestCase
     annotation.update(profile_item: @profile_item)
     assert_equal annotation.id, @profile_item.profile_item_annotation.id
   end
+
+  test "order by product item config's sort_order asc" do    
+    profile_items = Profile::ProfileItem.all
+    profile_items_sort_orders = profile_items.collect{|p| p.product_item_config.sort_order.to_i}
+    assert_equal profile_items_sort_orders, profile_items_sort_orders.sort{|x,y| x <=> y}
+  end
 end

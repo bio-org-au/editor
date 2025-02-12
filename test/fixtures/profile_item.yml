@@ -29,7 +29,7 @@ ecology_pi_ref:
   updated_by: tester
   updated_at: <%= Time.now %>
   instance: britten_created_angophora_costata
-  product_item_config: ecology_pic
-  profile_object_rdf_id: "text"
-  profile_text: three_pt
+  product_item_config: ecology_pic_ref
+  profile_object_rdf_id: "reference"
+  is_object_type_reference: TRUE
   statement_type: "fact"

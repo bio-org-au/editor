@@ -16,6 +16,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+# == Schema Information
+#
+# Table name: db_version
+#
+#  id      :bigint           not null, primary key
+#  version :integer          not null
+#
 class DbVersion < ActiveRecord::Base
   # Really "Schema Version"
 

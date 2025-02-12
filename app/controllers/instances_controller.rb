@@ -32,6 +32,7 @@ class InstancesController < ApplicationController
     @tab_index = (params[:tabIndex] || "1").to_i
     @tabs_to_offer = tabs_to_offer
     @row_type = params["row-type"]
+    @selected_product_item_config_id = params[:product_item_config_id]
     # Really only need to do this if the "classification" tab is chosen.
     unless @working_draft.blank?
       @tree_version_element = @working_draft.name_in_version(@instance.name)
@@ -205,8 +206,8 @@ class InstancesController < ApplicationController
 
   def find_instance
     @instance = Instance.find(params[:id])
-    if params[:tab] == "tab_foa_profile"
-      @product_configs_and_profile_items, @product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@instance).run_query
+    if params[:tab] == "tab_profile_v2"
+      @product_configs_and_profile_items, @product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(current_user, @instance).run_query
     end
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the instance."
@@ -251,8 +252,8 @@ class InstancesController < ApplicationController
       offer << "tab_unpublished_citation"
       offer << "tab_classification"
       offer << "tab_profile_details" if @instance.profile?
-      offer << "tab_edit_profile" if @instance.profile? && @instance.show_apc?
-      offer << "tab_foa_profile"
+      offer << "tab_edit_profile" if @instance.profile? && @instance.show_taxo?
+      offer << "tab_profile_v2"
     end
     offer << "tab_comments"
     offer << "tab_copy_to_new_reference" if offer_tab_copy_to_new_ref?

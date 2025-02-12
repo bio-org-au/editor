@@ -16,6 +16,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+# == Schema Information
+#
+# Table name: name_tag
+#
+#  id           :bigint           not null, primary key
+#  lock_version :bigint           default(0), not null
+#  name         :string(255)      not null
+#
+# Indexes
+#
+#  uk_o4su6hi7vh0yqs4c1dw0fsf1e  (name) UNIQUE
+#
 class NameTag < ActiveRecord::Base
   self.table_name = "name_tag"
   self.primary_key = "id"

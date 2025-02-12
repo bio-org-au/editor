@@ -1,0 +1,13 @@
+_fixture:
+  model_class: Loader::Batch::Review::Period
+
+
+# Hard-coding of FK is unfortunate but the only way I've fond to make these work so far.
+review_period_one:
+  name: "Review Period One"
+  batch_review_id: 1
+  start_date: <%= Date.today %>
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

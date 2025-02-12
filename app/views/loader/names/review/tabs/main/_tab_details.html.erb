@@ -13,9 +13,7 @@
 <%= render partial: 'detail_line', locals: {label: 'Rank', info: "#{@loader_name.rank}"} %>
 <%= divider %>
 
-
-<%= render partial: 'loader/names/review/tabs/common/tab_rev_comments', locals: {scope: 'unrestricted'} %>
-
+<%= render partial: 'loader/names/review/tabs/common/vote_and_comments', locals: {scope: 'unrestricted'} %>
 
 <%= render partial: 'detail_line', locals: {label: 'Loader Name ID', info: @loader_name.id} %>
 <%= created_by_whom_and_when(@loader_name).html_safe %>

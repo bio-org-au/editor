@@ -1,5 +1,5 @@
-<%= turbo_stream.replace "add_reference_message_#{@profile_item_reference.profile_item.product_item_config.display_html.parameterize}" do %>
-  <div id="add_reference_message_<%= @profile_item_reference.profile_item.product_item_config.display_html.parameterize %>" class="error-container">
+<%= turbo_stream.replace "add_reference_message_#{@profile_item_reference.profile_item.product_item_config.id}" do %>
+  <div id="add_reference_message_<%= @profile_item_reference.profile_item.product_item_config.id %>" class="error-container">
     <%= @message %>
   </div>
 <% end %>

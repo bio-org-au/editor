@@ -1,9 +1,15 @@
 <% increment_tab_index(0) %>
 <%= render partial: 'detail_line',
-           locals: {info: @org.name, label: 'Name'} %>
+           locals: {info: @org.name, label: 'name'} %>
 
 <%= render partial: 'detail_line',
-           locals: {info: @org.abbrev, label: 'Abbreviation'} %>
+           locals: {info: @org.abbrev, label: 'abbreviation'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @org.not_a_real_org.to_s, label: 'not real'} %>
+
+<%= render partial: 'detail_line',
+           locals: {info: @org.can_vote.to_s, label: 'can vote'} %>
 
 
 <%= divider %>

@@ -63,7 +63,7 @@ class Loader::Batch::ReviewersController < ApplicationController
   end
 
   def batch_reviewer_params
-    params.require(:loader_batch_reviewer).permit(:id, :name, :batch_review_period_id, :user_id, :org_id,
+    params.require(:loader_batch_reviewer).permit(:id, :name, :batch_review_id, :user_id, :org_id,
                                                   :batch_review_role_id)
   end
 

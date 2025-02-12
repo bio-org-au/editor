@@ -1,4 +1,4 @@
-<% component = params[:component] || 'main' %>
+<% component = params[:component] || @loader_name.record_type %>
 <% display_component = component %>
 <% display_component = 'concept note' if component == 'taxonomy_comment' %>
 <div class="focus-details">

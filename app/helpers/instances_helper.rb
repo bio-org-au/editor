@@ -60,7 +60,7 @@ module InstancesHelper
 
 
   ALLOWED_TABS = %w[tab_show_1 tab_edit tab_edit_notes tab_comments].freeze
-  ALLOWED_TABS_TO_OFFER = %w[tab_profile_details tab_edit_profile tab_foa_profile tab_batch_loader] .freeze
+  ALLOWED_TABS_TO_OFFER = %w[tab_profile_details tab_edit_profile tab_profile_v2 tab_batch_loader] .freeze
   def tab_for_instance_type(tab, row_type)
     sanitized_allowed_tabs_to_offer_tab = tab.presence_in(ALLOWED_TABS_TO_OFFER) if @tabs_to_offer.include?(tab)
     tab.presence_in(ALLOWED_TABS) || sanitized_allowed_tabs_to_offer_tab || tab_for_instance_using_row_type(tab, row_type)

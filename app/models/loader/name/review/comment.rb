@@ -26,7 +26,7 @@ class Loader::Name::Review::Comment < ActiveRecord::Base
   belongs_to :loader_name, class_name: "Loader::Name",
                            foreign_key: "loader_name_id"
   belongs_to :batch_review_period, class_name: "Loader::Batch::Review::Period",
-                                   foreign_key: "review_period_id"
+                                   foreign_key: "batch_review_period_id"
   belongs_to :batch_reviewer, class_name: "Loader::Batch::Reviewer",
                               foreign_key: "batch_reviewer_id"
   alias_method :reviewer, :batch_reviewer

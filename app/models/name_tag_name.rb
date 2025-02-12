@@ -16,6 +16,27 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+# == Schema Information
+#
+# Table name: name_tag_name
+#
+#  created_by :string(255)      not null
+#  updated_by :string(255)      not null
+#  created_at :timestamptz      not null
+#  updated_at :timestamptz      not null
+#  name_id    :bigint           not null, primary key
+#  tag_id     :bigint           not null, primary key
+#
+# Indexes
+#
+#  name_tag_name_index  (name_id)
+#  name_tag_tag_index   (tag_id)
+#
+# Foreign Keys
+#
+#  fk_22wdc2pxaskytkgpdgpyok07n  (name_id => name.id)
+#  fk_2uiijd73snf6lh5s6a82yjfin  (tag_id => name_tag.id)
+#
 class NameTagName < ActiveRecord::Base
   self.table_name = "name_tag_name"
   self.primary_key = [:name_id, :tag_id]

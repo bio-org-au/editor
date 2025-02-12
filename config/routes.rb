@@ -18,6 +18,16 @@
 #
 Rails.application.routes.draw do
   resources :profile_items, only: %i[destroy index]
+  match "profile_items/:id",
+        as: "profile_items_show",
+        to: "profile_items#show",
+        via: :get, defaults: { tab: "tab_show_1" }
+  match "profile_items/:id/tab/:tab",
+        as: "profile_item_tab",
+        to: "profile_items#tab",
+        via: :get,
+        defaults: { tab: "tab_show_1" }
+
   resources :profile_texts, only: %i[create update]
   resources :profile_item_annotations, only: %i[create update]
   resources :profile_item_references, only: %i[create]
@@ -73,11 +83,6 @@ Rails.application.routes.draw do
         as: "typeahead_for_name_showing_references_to_update_instance",
         to: "instances#typeahead_for_name_showing_references_to_update_instance",
         via: :get
-
-#   match "instances/create_foa",
-#         as: "create_foa",
-#         to: "instances#create_foa",
-#         via: :post
 
   match "instances/create_cited_by",
         as: "create_cited_by", to: "instances#create_cited_by", via: :post
@@ -529,6 +534,9 @@ Rails.application.routes.draw do
   match "batch_review_periods/:id", as: "update_review_period", to: "loader/batch/review/periods#update", via: :patch
   match "/batch_review_periods/:id", as: "delete_review_period", to: "loader/batch/review/periods#destroy", via: :delete
 
+  match "org_batch_review_voters", as: "create_org_batch_review_voter", to: "org/batch/review_voters#create", via: :post
+  match "org_batch_review_voters/:batch_review_id/:org_id", as: "delete_org_batch_review_voter", to: "org/batch/review_voters#destroy", via: :delete
+
   match "users", as: "user", to: "users#show", via: :get
   match "users/:id/tab/:tab", as: "user_tab", to: "users#tab", via: :get
 
@@ -553,8 +561,9 @@ Rails.application.routes.draw do
                                     via: :delete
 
   match "name_review_vote", as: "create_name_review_vote", to: "loader/name/review/votes#create", via: :post
-  match "name_review_vote/:id", as: "delete_name_review_vote", to: "loader/name/review/votes#destroy", via: :delete
+  match "name_review_vote/:loader_name_id/:batch_review_id/:org_id", as: "delete_name_review_vote", to: "loader/name/review/votes#destroy", via: :delete
 
+  match "name_review_vote_in_bulk", as: "create_name_review_vote_in_bulk", to: "loader/name/review/vote/in_bulk#create", via: :post
 
   match "switch_on_review_mode", as: "switch_on_review_mode", to: "loader/batch/review/mode#switch_on", via: :post
   match "switch_off_review_mode", as: "switch_off_review_mode", to: "loader/batch/review/mode#switch_off", via: :post

@@ -1,0 +1,78 @@
+
+<% increment_tab_index(0) %>
+
+<% @batch_review.reviewers.sort {|a,b| a.user.full_name <=> b.user.full_name}.each do |reviewer| %>
+  <div id="reviewer-<%= reviewer.id %>">
+  <%= link_to(reviewer.user_table.full_name, 
+                  search_path(query_target: 'users', 
+                              query_string: "id:#{reviewer.user_table.id}"),
+                  class: 'blue',
+                  title: "Query this user") %>,&nbsp; 
+  <ul>
+    <li/>
+         <%= link_to(reviewer.org.name, 
+                         search_path(query_target: 'orgs', 
+                                     query_string: "#{reviewer.org.abbrev}"),
+                         class: 'blue',
+                         title: "Query this organisation") %>,&nbsp; 
+    <li/><%= reviewer.role.name %>
+
+
+    <% if reviewer.name_review_comments.by_review(@batch_review.id).size == 0 %>
+
+            <%= link_to("Delete...",
+                        '#',
+                        id: "batch-reviewer-delete-link-#{reviewer.id}",
+                        class: "btn btn-warning unconfirmed-delete-link pull-right",
+                        tabindex: increment_tab_index,
+                        title: "Delete the batch reviewer.",
+                        data: {show_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
+            %>
+
+            <div id="confirm-or-cancel-link-container-<%= reviewer.id %>"
+                 class="instance-note confirm-or-cancel-delete-link pull-right hidden">
+
+
+              <%= link_to("Cancel delete",
+                                              '#',
+                                              id: "cancel-delete-link-#{reviewer.id}",
+                                              class: "btn btn-default cancel-link pull-right",
+                                              tabindex: increment_tab_index,
+                                              title: "Cancel the delete dialog for the batch review period.",
+                                              data: {enable_this_id: "batch-reviewer-delete-link-#{reviewer.id}",
+                                                     hide_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
+              %>
+              <%= link_to("Remove",
+                                   delete_batch_reviewer_path(reviewer.id),
+                                   id: "confirm-delete-reviewer-#{reviewer.id}-link",
+                                   class: "btn btn-danger pull-right",
+                                   tabindex: increment_tab_index,
+                                   title: "Confirm the delete.",
+                                   remote: true,
+                                   method: :delete)
+              %>
+
+            </div>
+
+
+    <% else %>
+      <li/>
+         <%= link_to(pluralize(reviewer.name_review_comments.by_review(@batch_review.id).size, 'comment'),
+                         search_path(query_target: 'loader names', 
+                                     query_string: "batch-id: #{@batch_review.batch.id} has-review-comment-by:#{reviewer.user_table.name}"),
+                         class: 'blue',
+                         title: "Query loader names in this batch with comments by this user") %> (need a way to actually see the comments)
+    <% end %>
+  </ul>
+  </div>
+<% end %>
+
+
+<%= divider %>
+
+<h5>Add a Reviewer to the Review</h5>
+<%= render partial: 'loader/batch/reviews/tabs/reviewer/form_create', locals: {batch_review: @batch_review} %>
+
+<%= divider %>
+
+

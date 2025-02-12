@@ -6,7 +6,8 @@
   <div class="inner">
     <h3>
       <i class="blueviolet fa fa-clipboard-list"></i>&nbsp;
-      Batch review: <%= link_to(@batch_review.name,
+      <%= @batch_review.batch.name %> &mdash;
+      <%= link_to(@batch_review.name,
                   search_path(query_target: 'batch_review', 
                               query_string: "id:#{@batch_review.id}"),
                   id: 'tab-heading',

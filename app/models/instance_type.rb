@@ -16,6 +16,40 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+# == Schema Information
+#
+# Table name: instance_type
+#
+#  id                 :bigint           not null, primary key
+#  alignment          :boolean          default(FALSE), not null
+#  bidirectional      :boolean          default(FALSE), not null
+#  citing             :boolean          default(FALSE), not null
+#  deprecated         :boolean          default(FALSE), not null
+#  description_html   :text
+#  doubtful           :boolean          default(FALSE), not null
+#  has_label          :string(255)      default("not set"), not null
+#  lock_version       :bigint           default(0), not null
+#  misapplied         :boolean          default(FALSE), not null
+#  name               :string(255)      not null
+#  nomenclatural      :boolean          default(FALSE), not null
+#  of_label           :string(255)      default("not set"), not null
+#  primary_instance   :boolean          default(FALSE), not null
+#  pro_parte          :boolean          default(FALSE), not null
+#  protologue         :boolean          default(FALSE), not null
+#  relationship       :boolean          default(FALSE), not null
+#  secondary_instance :boolean          default(FALSE), not null
+#  sort_order         :integer          default(0), not null
+#  standalone         :boolean          default(FALSE), not null
+#  synonym            :boolean          default(FALSE), not null
+#  taxonomic          :boolean          default(FALSE), not null
+#  unsourced          :boolean          default(FALSE), not null
+#  rdf_id             :string(50)
+#
+# Indexes
+#
+#  instance_type_rdfid           (rdf_id)
+#  uk_j5337m9qdlirvd49v4h11t1lk  (name) UNIQUE
+#
 class InstanceType < ActiveRecord::Base
   self.table_name = "instance_type"
   self.primary_key = "id"

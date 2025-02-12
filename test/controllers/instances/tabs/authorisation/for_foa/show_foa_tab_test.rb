@@ -22,7 +22,7 @@ require "test_helper"
 class InstanceForFoaShowMostTabsTest < ActionController::TestCase
   tests InstancesController
   setup do
-    Rails.configuration.foa_profile_aware = true
+    Rails.configuration.profile_v2_aware = true
     @instance = instances(:gaertner_created_metrosideros_costata)
     @product_item_config = product_item_config(:ecology_pic)
     @profile_item = profile_item(:ecology_pi)
@@ -30,7 +30,7 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
 
     get(:show,
         params: { id: @instance.id,
-                  tab: "tab_foa_profile" },
+                  tab: "tab_profile_v2" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: ["foa"] })
@@ -49,7 +49,7 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
 
   def asserts1
     assert_response :success
-    assert_select "a#instance-foa-profile-tab",
+    assert_select "a#instance-profile-v2-tab",
                    /FOA/
                    "Should not show 'FOA Profile' tab link"
     assert_select "h4",
@@ -97,7 +97,7 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
     @product = @profile_item.product
     @product.update(name: "not foa")
     assert_response :success
-    assert_select "a#instance-foa-profile-tab",
+    assert_select "a#instance-profile-v2-tab",
                    /FOA/
                    "Should not show 'FOA Profile' tab link"
     assert_select "#message_no_product_configs",
@@ -108,7 +108,7 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
   def asserts7
     Instance.delete_all
     assert_response :success
-    assert_select "a#instance-foa-profile-tab",
+    assert_select "a#instance-profile-v2-tab",
                    /FOA/
                    "Should not show 'FOA Profile' tab link"
     assert_select "#message_no_product_configs",
@@ -117,7 +117,7 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
   end
 
   def asserts8
-    Rails.configuration.foa_profile_dropdown_ui = true
+    Rails.configuration.profile_v2_dropdown_ui = true
     assert_select "select#item_type",
                    true
                    "Should show a dropdown of the available product item configs when flag is on"
@@ -126,7 +126,7 @@ class InstanceForFoaShowMostTabsTest < ActionController::TestCase
       false,
       "Should not display profile items immediately"
 
-    Rails.configuration.foa_profile_dropdown_ui = false
+    Rails.configuration.profile_v2_dropdown_ui = false
     assert_select "select#item_type",
                   false
                   "Should not show a dropdown of the available product item configs when flag is off"

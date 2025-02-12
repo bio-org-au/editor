@@ -1,5 +1,8 @@
+_fixture:
+  model_class: Loader::Batch
   
 batch_one:
+  id: 1
   name: "Batch One"
   description: A first batch
   use_sort_key_for_ordering: true

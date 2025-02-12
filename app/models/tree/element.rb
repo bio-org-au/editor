@@ -16,6 +16,42 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+# == Schema Information
+#
+# Table name: tree_element
+#
+#  id                  :bigint           not null, primary key
+#  display_html        :text             not null
+#  excluded            :boolean          default(FALSE), not null
+#  instance_link       :text             not null
+#  lock_version        :bigint           default(0), not null
+#  name_element        :string(255)      not null
+#  name_link           :text             not null
+#  profile             :jsonb
+#  rank                :string(50)       not null
+#  simple_name         :text             not null
+#  source_element_link :text
+#  source_shard        :text             not null
+#  synonyms            :jsonb
+#  synonyms_html       :text             not null
+#  updated_by          :string(255)      not null
+#  updated_at          :timestamptz      not null
+#  instance_id         :bigint           not null
+#  name_id             :bigint           not null
+#  previous_element_id :bigint
+#
+# Indexes
+#
+#  tree_element_instance_index  (instance_id)
+#  tree_element_name_index      (name_id)
+#  tree_element_previous_index  (previous_element_id)
+#  tree_simple_name_index       (simple_name)
+#  tree_synonyms_index          (synonyms) USING gin
+#
+# Foreign Keys
+#
+#  fk_5sv181ivf7oybb6hud16ptmo5  (previous_element_id => tree_element.id)
+#
 require "open-uri"
 
 #  A tree element - holds the taxon information

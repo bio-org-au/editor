@@ -25,10 +25,13 @@ class ProductAndProductItemConfigsTest < ActiveSupport::TestCase
     @product = @profile_item.product
     @product_item_config = @profile_item.product_item_config
     @product_item_config2 = product_item_config(:habitat_pic)
+    @user = User.new
 
-    Rails.configuration.foa_profile_aware = true
+    Rails.configuration.profile_v2_aware = true
 
-    @query = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@instance)
+    User.stub_any_instance(:groups, ["foa"]) do
+      @query = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@user, @instance)
+    end
   end
 
   test ".initialize" do
@@ -51,37 +54,52 @@ class ProductAndProductItemConfigsTest < ActiveSupport::TestCase
 
   test "#run_query with feature flag on and with product_item_config_id param" do
     param = {product_item_config_id: @product_item_config.id}
-    product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@instance, param).run_query
+    User.stub_any_instance(:groups, ["foa"]) do
+      product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@user, @instance, param).run_query
+      assert_equal 1, product_configs_and_profile_items.size
+      assert_equal @product, product
 
-    assert_equal 1, product_configs_and_profile_items.size
-    assert_equal @product, product
-
-    product_configs_and_profile_items.each do |item|
-      assert_kind_of Profile::ProductItemConfig, item[:product_item_config]
-      assert_kind_of Profile::ProfileItem, item[:profile_item]
-      assert_equal @instance.id, item[:profile_item].instance_id
+      product_configs_and_profile_items.each do |item|
+        assert_kind_of Profile::ProductItemConfig, item[:product_item_config]
+        assert_kind_of Profile::ProfileItem, item[:profile_item]
+        assert_equal @instance.id, item[:profile_item].instance_id
+      end
     end
   end
 
   test "#run_query to return an empty profile itme when instance is nil" do
-    result = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(nil).run_query
-    assert_equal result.first, []
-    assert_equal result.last, @product
+    User.stub_any_instance(:groups, ["foa"]) do
+      result = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@user, nil).run_query
+      assert_equal result.first, []
+      assert_equal result.last, @product
+    end
   end
 
   test "#run_query to return an empty profile itme when product is nil" do
     @product.update(name: "not foa")
-    result = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@instance).run_query
-    assert_equal result.first, []
-    assert_nil result.last
+    User.stub_any_instance(:groups, ["foa"]) do
+      result = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@user, @instance).run_query
+      assert_equal result.first, []
+      assert_nil result.last
+    end
   end
 
   test "#run_query with feature flag off" do
-    Rails.configuration.foa_profile_aware = false
+    Rails.configuration.profile_v2_aware = false
 
     result = @query.run_query
 
     assert_empty result.first
     assert_equal @product, result.last
+  end
+
+  test "#run_query with rdf_id=reference params" do
+    profile_item = profile_item(:ecology_pi_ref)
+    User.stub_any_instance(:groups, ["foa"]) do
+      product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@user, @instance, {rdf_id: "reference"}).run_query
+      assert_equal 1, product_configs_and_profile_items.size
+      profile_item_type = product_configs_and_profile_items.first[:product_item_config].profile_item_type
+      assert_equal profile_item_type.rdf_id, "ecology.reference"
+    end
   end
 end

@@ -34,6 +34,6 @@ class SearchLoaderNameSimpleWithAnyBatchTest < ActiveSupport::TestCase
            "Results should be an ActiveRecord::Relation."
     assert_equal 1,
                  search.executed_query.results.size,
-                 "Exactly 0 result is expected."
+                 "Exactly 1 result is expected."
   end
 end

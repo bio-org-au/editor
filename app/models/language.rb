@@ -16,6 +16,22 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+# == Schema Information
+#
+# Table name: language
+#
+#  id           :bigint           not null, primary key
+#  iso6391code  :string(2)
+#  iso6393code  :string(3)        not null
+#  lock_version :bigint           default(0), not null
+#  name         :string(50)       not null
+#
+# Indexes
+#
+#  uk_g8hr207ijpxlwu10pewyo65gv  (name) UNIQUE
+#  uk_hghw87nl0ho38f166atlpw2hy  (iso6391code) UNIQUE
+#  uk_rpsahneqboogcki6p1bpygsua  (iso6393code) UNIQUE
+#
 class Language < ActiveRecord::Base
   self.table_name = "language"
   self.primary_key = "id"

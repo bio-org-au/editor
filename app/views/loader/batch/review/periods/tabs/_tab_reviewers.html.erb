@@ -15,24 +15,52 @@
                          class: 'blue',
                          title: "Query this organisation") %>,&nbsp; 
     <li/><%= reviewer.role.name %>
-  <% confirm_delete_link = link_to("Remove",
+
+
+    <% if reviewer.name_review_comments.by_review_period(@review_period.id).size == 0 %>
+
+            <%= link_to("Delete...",
+                        '#',
+                        id: "batch-reviewer-delete-link-#{reviewer.id}",
+                        class: "btn btn-warning unconfirmed-delete-link pull-right",
+                        tabindex: increment_tab_index,
+                        title: "Delete the batch reviewer.",
+                        data: {show_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
+            %>
+
+            <div id="confirm-or-cancel-link-container-<%= reviewer.id %>"
+                 class="instance-note confirm-or-cancel-delete-link pull-right hidden">
+
+
+              <%= link_to("Cancel delete",
+                                              '#',
+                                              id: "cancel-delete-link-#{reviewer.id}",
+                                              class: "btn btn-default cancel-link pull-right",
+                                              tabindex: increment_tab_index,
+                                              title: "Cancel the delete dialog for the batch review period.",
+                                              data: {enable_this_id: "batch-reviewer-delete-link-#{reviewer.id}",
+                                                     hide_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
+              %>
+              <%= link_to("Remove",
                                    delete_batch_reviewer_path(reviewer.id),
-                                   id: "confirm-delete-review-#{reviewer.id}-link",
-                                   class: "btn btn-danger",
+                                   id: "confirm-delete-reviewer-#{reviewer.id}-link",
+                                   class: "btn btn-danger pull-right",
                                    tabindex: increment_tab_index,
                                    title: "Confirm the delete.",
                                    remote: true,
                                    method: :delete)
-  -%>
-    <% if reviewer.name_review_comments.size == 0 %>
-      <li/><%= confirm_delete_link %>
+              %>
+
+            </div>
+
+
     <% else %>
       <li/>
-         <%= link_to(pluralize(reviewer.name_review_comments.size, 'comment'),
+         <%= link_to(pluralize(reviewer.name_review_comments.by_review_period(@review_period.id).size, 'comment'),
                          search_path(query_target: 'loader names', 
-                                     query_string: "has-review-comment-by:#{reviewer.user_table.name}"),
+                                     query_string: "batch-id: #{@review_period.batch_review.batch.id} has-review-comment-by:#{reviewer.user_table.name}"),
                          class: 'blue',
-                         title: "Query loader names with comments by this user") %>
+                         title: "Query loader names in this batch with comments by this user") %>
     <% end %>
   </ul>
   </div>

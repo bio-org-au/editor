@@ -1,10 +1,10 @@
-<span class="apc-container no-decoration">
+<span class="taxo-icon-container no-decoration">
     <% if tree_version_element.tree_element.excluded %>
       <%= editor_icon('ban', '', class: 'workspace icon excluded') %>
     <% else %>
       <%= editor_icon('check', '', class: 'workspace icon accepted') %>
     <% end %>
-  <span class='apc name accepted strong' title="in workspace">
+  <span class='name accepted strong' title="in workspace">
         <%= tree_version_element.tree_version.tree.name %>
     <%= !tree_version_element.tree_version.published ?
             tree_version_element.tree_version.draft_name : '' %>

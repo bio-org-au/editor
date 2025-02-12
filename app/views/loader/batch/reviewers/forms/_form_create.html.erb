@@ -1,11 +1,10 @@
-
 <%= form_with model: Loader::Batch::Reviewer.new, data: { turbo: false }, local: false do |form| %>
   <%= form.hidden_field :batch_review_period_id, value: @review_period.id %>
     User:
     <%= form.collection_select :user_id, UserTable.order(:name), :id, :full_name, {}, {class: 'form-control', title: 'Choose a user'} %>
     <br>
     Organisation:
-    <%= form.collection_select :org_id, Org.order(:no_org, :name), :id, :name, {}, {class: 'form-control', title: 'Choose an organisation or indicate the reviewer is unaffiliated'} %>
+    <%= form.collection_select :org_id, Org.order(:not_a_real_org, :name), :id, :name, {}, {class: 'form-control', title: 'Choose an organisation or indicate the reviewer is unaffiliated'} %>
     <br>
     Role:
     <%= form.collection_select :batch_review_role_id,

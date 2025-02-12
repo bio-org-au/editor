@@ -1,0 +1,32 @@
+
+
+Voting is in progress for review <%= review.name %> <br>
+<% reviewers = Loader::Batch::Reviewer.username_to_reviewers_for_review(@current_user.username, review) %>
+<% if reviewers.blank?  %>
+   You are not registered for this review.
+ <% elsif reviewers.size > 1 %>
+   You could be more than one reviewer for this review.  That's not expected.
+<% else %>
+  <% this_reviewer = reviewers.first %>
+  <% org_represented = this_reviewer.org %>
+  <% if org_represented.blank? %>
+    You don't represent any organisation in this review
+  <% else %>
+    <% this_reviewers_org = org_represented %>
+    You represent <b><%= this_reviewers_org.name %></b><br>
+    <% if this_reviewers_org.can_vote? %>
+      <%= this_reviewers_org.name %> is a voting organisation
+      <%= divider %>
+      <%= render partial: 'loader/names/review/tabs/main/votes/votable/voting_in_progress/can_vote',
+                 locals: {batch: @loader_name.batch,
+                          review: review,
+                          org: this_reviewers_org,
+                          reviewer: reviewers.first} %>
+    <% else %>
+      <%= this_reviewers_org.abbrev %> isn't a voting organisation.
+    <% end %>
+
+  <% end %>
+
+<% end %>
+

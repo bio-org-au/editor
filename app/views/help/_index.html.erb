@@ -12,27 +12,27 @@
         <%= render partial: 'search/standard/results' unless @search.executed_query.blank? || @search.executed_query.results.blank? %>
       <% end %>
       <tr><td class="width-100-percent">
-          <%= parse_markdown("
+          <%= markdown_to_html("
   
 
 #### The NSL Editor
 
-The **NSL Editor** is a web application that allows you to search and edit taxonomic information.
+The **NSL Editor** is a web application that allows you to search and edit nomenclatural information.
 
-The taxonomic information is organised within:
+The nomenclatural information is organised within:
 
 - names
 - references
 - authors, and
 - instances
 
-**Instances** connect **names** to **references** and are sometimes referred to as **usages**.
+**Instances** connect **names** to **references** and can be understood as **usages** of names in published works.
 
 
                    ") %>
         <%= image_tag 'synonymy-model-lego-style.svg' %>
 
-        <%= parse_markdown("
+        <%= markdown_to_html("
 Names have an **author** or **authors**, as do references.
         ") %>
 
@@ -41,7 +41,7 @@ Names have an **author** or **authors**, as do references.
           <p>There are four record-level starting points for searches, along with tree searches, which operate a little differently.</p>
           <p/>The record-level search types are:
           <ul>
-              <li/>Taxon Name
+              <li/>Name
               <li/>Reference
               <li/>Author
               <li/>Instance
@@ -50,7 +50,7 @@ Names have an **author** or **authors**, as do references.
           <p>Record-level searches can be simple or advanced.  A simple search is one in which you don't specify a field, so they look only at the default field.</p>
           <h5>Default fields for record-level searches</h5>
           <ul>
-              <li/>Taxon Name: taxon full name
+              <li/>Name: full name
               <li/>Reference: citation
               <li/>Author: name or abbreviation (a match on either returns a result)
               <li/>Instance: taxon full name of the instance

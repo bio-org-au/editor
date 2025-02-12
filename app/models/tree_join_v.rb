@@ -17,6 +17,55 @@
 #   limitations under the License.
 
 #  A tree - usually a classification
+# == Schema Information
+#
+# Table name: tree_join_v
+#
+#  accepted_tree                 :boolean
+#  config                        :jsonb
+#  depth                         :integer
+#  description_html              :text
+#  display_html                  :text
+#  draft_name                    :text
+#  element_link                  :text
+#  excluded                      :boolean
+#  group_name                    :text
+#  host_name                     :text
+#  instance_link                 :text
+#  link_to_home_page             :text
+#  log_entry                     :text
+#  merge_conflict                :boolean
+#  name                          :text
+#  name_element                  :string(255)
+#  name_link                     :text
+#  name_path                     :text
+#  profile                       :jsonb
+#  published                     :boolean
+#  published_at                  :timestamptz
+#  published_by                  :string(100)
+#  rank                          :string(50)
+#  simple_name                   :text
+#  source_element_link           :text
+#  source_shard                  :text
+#  synonyms                      :jsonb
+#  synonyms_html                 :text
+#  taxon_link                    :text
+#  tree_element_id_fk            :bigint
+#  tree_path                     :text
+#  tree_version_id_fk            :bigint
+#  current_tree_version_id       :bigint
+#  default_draft_tree_version_id :bigint
+#  instance_id                   :bigint
+#  name_id                       :bigint
+#  parent_id                     :text
+#  previous_element_id           :bigint
+#  previous_version_id           :bigint
+#  reference_id                  :bigint
+#  taxon_id                      :bigint
+#  tree_element_id               :bigint
+#  tree_id                       :bigint
+#  tree_version_id               :bigint
+#
 class TreeJoinV < ActiveRecord::Base
   self.table_name = "tree_join_v"
   scope :draft, -> { where("not published") }

@@ -1,6 +1,5 @@
 <h4>Loader Name search help</h4>
 <table class="table table-striped">
-  <p>Note: setting a default batch will apply that batch to Loader Name searches.
   <tr><th>Field</th><th>Description</th></tr>
   <% [
     {field_name: 'has-review-comment:',
@@ -25,6 +24,37 @@
      descr: "Search for loader names containing a remark to reviewers - wildcards are added automatically, so no argument becomes a wildcard and retrieves all remarks."},
     {field_name: 'higher-rank-comment:',
      descr: "Search for loader names containing a higher-rank-comment - wildcards are added automatically."},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:descr].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+<h4>Vote search help</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'org-voted:',
+     descr: "Search for loader names with a vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
+    {field_name: 'org-not-voted:',
+     descr: "Search for loader names with no vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means no org."},
+    {field_name: 'org-voted-yes:',
+     descr: "Search for loader names with a 'yes' vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
+    {field_name: 'org-voted-no:',
+     descr: "Search for loader names with a 'no' vote recorded by the organisation (abbreviation) you provide - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

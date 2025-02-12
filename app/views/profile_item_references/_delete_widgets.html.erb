@@ -38,7 +38,7 @@ confirm_delete_link = link_to("Confirm delete",
 %>
 <div style="overflow: hidden;margin-left:auto;text-align:left">
   <%= delete_link.html_safe %>
-  <%= confirm_or_cancel_element.html_safe %>
+  <%= h confirm_or_cancel_element.html_safe %>
   <div id="message-for-profile-item-reference-<%= profile_item_reference.profile_item_id_reference_id %>" class="message-container"></div>
   <div id="error-for-profile-item-reference-<%= profile_item_reference.profile_item_id_reference_id %>" class="error-container"></div>
 </div>

@@ -86,8 +86,6 @@
         <h5>LDAP</h5>
     <table class="table table-condensed search-results width-100-percent">
 
-    <tr><td class="width-40-percent min-width-10em" >ldap_host</td><td> <%= Rails.configuration.try(:ldap_host) %> </td></tr>
-    <tr><td class="width-40-percent min-width-10em" >ldap_port</td><td> <%= Rails.configuration.try(:ldap_port) %> </td></tr>
     <tr><td>ldap_admin_username</td> <td> <%= Rails.configuration.try(:ldap_admin_username) %> </td></tr>
     <tr><td>ldap_userid_field</td> <td> <%= Rails.configuration.try(:ldap_userid_field) %> </td></tr>
     <tr><td>ldap_verify_certificate</td> <td> <%= Rails.configuration.try(:ldap_verify_certificate) %> </td></tr>
@@ -129,24 +127,22 @@
 
     <tr><td class="width-40-percent min-width-10em" colspan="2"><strong>Services used in the editor</strong></td></tr>
 
-    <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}docs/main.html" %>
+    <% service_url = "https://ibis-cloud.atlassian.net/wiki/x/D4BIUg" %>
     <tr><td class="width-40-percent min-width-10em" >API Doc </td><td> <%= link_to(service_url, service_url, title: 'API Documentation') %> </td></tr>
 
     <tr><td colspan="2"><strong>Services that do not change data</strong></td></tr>
-    <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}api/tree/name/APC/91759" %>
-    <tr><td class="width-40-percent min-width-10em" >A client side service </td><td> <%= link_to(service_url, service_url, title: 'Link to the APC tree client side service.') %> </td></tr>
 		
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/apc.json" %>
-    <tr><td class="width-40-percent min-width-10em" >In APC?</td><td> <%= link_to(service_url, service_url, title: 'Link to the "in APC?" client side service.') %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em" >In the accepted taxonomy?</td><td> <%= link_to(service_url, service_url, title: 'Link to the "in APC?" client-side service.') %> </td></tr>
 		
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/apni.json" %>
-    <tr><td class="width-40-percent min-width-10em" >In APNI? </td><td> <%= link_to(service_url, service_url, title: 'Link to the "in APNI?" client side service.') %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em" >In the nomenclatural set? </td><td> <%= link_to(service_url, service_url, title: 'Link to the "in APNI?" client-side service.') %> </td></tr>
 		
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/family.json" %>
     <tr><td>APNI Name Information</td><td> <%= link_to(service_url, service_url, title: 'Link to an APNI name information service.') %> </td></tr>
 
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/name-strings.json" %>
-    <tr><td>Name strings</td><td> <%= link_to(service_url, service_url, title: 'Link to the name strings client side service.') %> </td></tr>
+    <tr><td>Name strings</td><td> <%= link_to(service_url, service_url, title: 'Link to the name strings client-side service.') %> </td></tr>
 		
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/reference/apni/17525/api/citation-strings.json" %>
     <tr><td>Reference strings</td><td> <%= link_to(service_url, service_url, title: 'Link to the reference strings client side service.') %> </td></tr>
@@ -197,7 +193,8 @@
     <tr><td class="width-40-percent min-width-10em">profile_edit_aware </td><td> <%= Rails.configuration.try(:profile_edit_aware) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">batch_loader_delete_syn_conflicts_aware</td><td> <%= Rails.configuration.try(:batch_loader_delete_syn_conflicts_aware) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">batch_loader_usage_order_aware</td><td> <%= Rails.configuration.try(:batch_loader_usage_order_aware) || false %> </td></tr>
-    <tr><td class="width-40-percent min-width-10em">foa_profile_aware</td><td> <%= Rails.configuration.try(:foa_profile_aware) || false %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em">profile_v2_aware</td><td> <%= Rails.configuration.try(:profile_v2_aware) || false %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em">profile_v2_profile_v2_dropdown_ui</td><td> <%= Rails.configuration.try(:profile_v2_dropdown_ui) || false %> </td></tr>
     </table>
     <br> <br>
     <h5>Instance delete delay</h5>

@@ -3,8 +3,10 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
               :instance,
               :product_configs_and_profile_items
 
-  def initialize(instance, params = {})
-    @product = find_product_by_name("FOA")
+  def initialize(user, instance, params = {})
+    @user = user
+    @profile_context = user.profile_v2_context
+    @product = find_product_by_name(@profile_context.product)
     @product_configs_and_profile_items = []
     @instance = instance
     @params = params
@@ -17,8 +19,7 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
 
   def run_query
     debug("run_query")
-    
-    if foa_profile_aware?
+    if profile_v2_aware?
       @product_configs_and_profile_items = find_or_initialize_profile_items
     end
 
@@ -31,8 +32,8 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
     Profile::Product.find_by(name: name)
   end
 
-  def foa_profile_aware?
-    Rails.configuration.try('foa_profile_aware')
+  def profile_v2_aware?
+    Rails.configuration.try('profile_v2_aware')
   end
 
   def find_or_initialize_profile_items
@@ -49,9 +50,10 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
     product_item_configs =
       Profile::ProductItemConfig
         .where(product_id: @product.id)
-        .includes(:profile_items)
+        .joins("left join profile_item_type AS pit ON pit.id = product_item_config.profile_item_type_id")
+        .joins("inner join profile_object_type As pot ON pot.id = pit.profile_object_type_id")
+        .where("pot.rdf_id = ?", @params[:rdf_id] || "text")
         .where.not(display_html: nil)
-        .order(sort_order: "ASC")
 
     product_item_configs = product_item_configs.where(id: @params[:product_item_config_id]) if @params[:product_item_config_id]
     product_item_configs

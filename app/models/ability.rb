@@ -49,25 +49,23 @@ class Ability
     edit_auth         if user.edit?
     qa_auth           if user.qa?
 
-    # TODO: remove this - NSL-2007
-    apc_auth          if user.apc?
-
     admin_auth        if user.admin?
     treebuilder_auth  if user.treebuilder?
     reviewer_auth     if user.reviewer?
     batch_loader_auth if user.batch_loader?
     loader_2_tab_auth if user.loader_2_tab_loader?
-    foa_auth          if user.foa?
+    profile_v2_auth   if user.profile_v2?
   end
 
-  def foa_auth
+
+  def profile_v2_auth
     # can :manage, :all   # NOTES: This is not working. It breaks everything.
     can "profile_items",            :all
     can "profile_item_annotations", :all
     can "profile_item_references",  :all
     can "profile_texts",            :all
-    can :manage,                    :foa_profile
-    can "instances",                "tab_foa_profile"
+    can :manage,                    :profile_v2
+    can "instances",                "tab_profile_v2"
     can "references",               "typeahead_on_citation"
   end
 
@@ -126,11 +124,6 @@ class Ability
     can "orgs",                        :all
   end
 
-  # TODO: remove this - NSL-2007
-  def apc_auth
-    can "apc",                "place"
-  end
-
   def treebuilder_auth
     can "classification",     "place"
     can "trees",               :all
@@ -157,6 +150,7 @@ class Ability
     can "loader/batch/review/periods", :all
     can "loader/batch/bulk",           :all
     can "loader/batch/job_lock",       :all
+    can "org/batch/review_voters",      :all
     can "menu",                        "batch"
   end
 
@@ -165,12 +159,13 @@ class Ability
   end
 
   def reviewer_auth
-    can "loader/name/review/comments", :all
-    can "loader/name/review/votes",    :all
-    can "loader/batch/review/mode",    "switch_on"
-    can "loader/names",                "show"
-    can "loader/names",                "tab_details"
-    can "loader/names",                "tab_comment"
-    can "loader/names",                "tab_vote"
+    can "loader/name/review/comments",              :all
+    can "loader/name/review/votes",                 :all
+    can "loader/name/review/vote/in_bulk",          :all
+    can "loader/batch/review/mode",                 "switch_on"
+    can "loader/names",                             "show"
+    can "loader/names",                             "tab_details"
+    can "loader/names",                             "tab_comment"
+    can "loader/names",                             "tab_vote"
   end
 end

@@ -17,6 +17,16 @@
 #   limitations under the License.
 
 #   Shard Config model
+# == Schema Information
+#
+# Table name: shard_config
+#
+#  id         :bigint           not null, primary key
+#  deprecated :boolean          default(FALSE), not null
+#  name       :string(255)      not null
+#  use_notes  :string(255)
+#  value      :string(5000)     not null
+#
 class ShardConfig < ActiveRecord::Base
   self.table_name = "shard_config"
   NAME_SPACE = "name space"

@@ -8,7 +8,7 @@
     <% if allow_all_even_if_in_current_tree %>
       <%= form.radio_button payload_field_name, record.id, class: "inline pull-right", required: true %>
     <% else %>
-      <% if record.show_apc? %>
+      <% if record.show_taxo? %>
         <%= form.radio_button payload_field_name, record.id, class: "inline pull-right", required: true, disabled: true %>
       <% else %>
         <%= form.radio_button payload_field_name, record.id, class: "inline pull-right", required: true %>

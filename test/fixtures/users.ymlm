@@ -1,0 +1,21 @@
+_fixture:
+  model_class: UserTable
+
+DEFAULTS: &DEFAULTS
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  created_by: tester
+  updated_by: tester
+
+
+user_one:
+ <<: *DEFAULTS
+ name: uone
+ given_name: user
+ family_name: One
+
+reviewer_one:
+ <<: *DEFAULTS
+ name: rev1
+ given_name: Reviewer
+ family_name: One

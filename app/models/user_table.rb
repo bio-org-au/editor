@@ -21,13 +21,31 @@
 # Called UserTable to distinguish from the pre-existing user model which is
 # used for authenticatio/authorisation.  This model is for the users table
 # created during work on the batch loader and batch review subsystem.
+# == Schema Information
+#
+# Table name: users
+#
+#  id           :bigint           not null, primary key
+#  created_by   :string(50)       not null
+#  family_name  :string(60)       not null
+#  given_name   :string(60)
+#  lock_version :bigint           default(0), not null
+#  name         :string(30)       not null
+#  updated_by   :string(50)       not null
+#  created_at   :timestamptz      not null
+#  updated_at   :timestamptz      not null
+#
+# Indexes
+#
+#  users_name_key  (name) UNIQUE
+#
 class UserTable < ActiveRecord::Base
   strip_attributes
   self.table_name = "users"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
 
-  attr_accessor :give_me_focus, :message
+  has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: :user_id
 
   # Note, the PK for the users table is the id column.
   # That appears as user_id as a foreign key.

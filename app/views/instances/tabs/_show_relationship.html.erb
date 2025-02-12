@@ -4,7 +4,7 @@
             title: 'Search for the name with its instances',
             class: 'name') %>
 <% if @instance.name.accepted_concept? || @instance.name.excluded_concept? %>
-    <%= render(partial: 'instances/apc/widgets', locals: { instance: @instance }) %>
+    <%= render(partial: 'instances/taxo/widgets', locals: { instance: @instance }) %>
 <% end %>
 &nbsp;
 <span class="apni-format-link-on-details">
@@ -33,7 +33,7 @@ is cited under
             search_path(query_string: "id: #{@instance.this_is_cited_by.name_id} show-instances:", query_target: 'name'),
             title: 'Search for the instance this is cited under.') %>
 <% if @instance.this_is_cited_by.name.accepted_concept? || @instance.this_is_cited_by.name.excluded_concept? %>
-    <%= render(partial: 'instances/apc/widgets', locals: { instance: @instance.this_is_cited_by }) %>
+    <%= render(partial: 'instances/taxo/widgets', locals: { instance: @instance.this_is_cited_by }) %>
 <% end %>
 <br>
 by

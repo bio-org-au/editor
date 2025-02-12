@@ -16,6 +16,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+# == Schema Information
+#
+# Table name: instance_note_key
+#
+#  id               :bigint           not null, primary key
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  lock_version     :bigint           default(0), not null
+#  name             :string(255)      not null
+#  sort_order       :integer          default(0), not null
+#  rdf_id           :string(50)
+#
+# Indexes
+#
+#  instance_note_key_rdfid       (rdf_id)
+#  uk_a0justk7c77bb64o6u1riyrlh  (name) UNIQUE
+#
 class InstanceNoteKey < ActiveRecord::Base
   self.table_name = "instance_note_key"
   self.primary_key = "id"

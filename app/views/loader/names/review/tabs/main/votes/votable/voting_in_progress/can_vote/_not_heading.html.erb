@@ -1,0 +1,20 @@
+
+
+<% votes = Loader::Name::Review::Vote.where(loader_name_id: @loader_name.id) 
+                                     .where(org_id: org.id)
+                                     .where(batch_review_id: review.id)
+%>
+
+<% if votes.blank? %>
+  <%= render partial: 'loader/names/review/tabs/main/votes/votable/voting_in_progress/can_vote/not_heading/vote/form',
+             locals: {batch: batch,
+                      review: review,
+                      org: org} %>
+<% else %>
+  <%= render partial: 'loader/names/review/tabs/main/votes/votable/voting_in_progress/can_vote/not_heading/vote/edit',
+             locals: {batch: batch,
+                      review: review,
+                      org: org,
+                      vote: votes.first} %>
+<% end %>
+

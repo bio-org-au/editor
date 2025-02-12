@@ -1,0 +1,48 @@
+
+
+<%# show comments for this logical record only %>
+<% context = params[:component] %>
+<% context = 'concept-note' if context == 'taxonomy_comment' %>
+
+<% @loader_name.batch.reviews.each do |review| %>
+  <%= render partial: 'detail_line', locals: {label: 'Review', info: review.name} %>
+  <% if ['accepted','excluded'].include? params[:component] %>
+
+    <%= render partial: 'detail_line', 
+               locals: { label: 'Votes', 
+                         info:  @loader_name.frequencies_of_votes_for_review(review) } %>
+
+    <% @loader_name.summary_of_votes_for_review(review).each do |entry| %>
+       <%= render partial: 'detail_line', 
+                  locals: { label: entry[:org_abbrev],
+                            info:  "<span class=vote-#{entry[:vote]}>#{entry[:vote]}</span>"} %>
+    <% end %>
+  <% end %>
+
+  <%= divider %>
+
+  <% review.periods.each do |period| %>
+    <%= render partial: 'detail_line', 
+      locals: {label: 'Review Period',
+               info: "#{period.name}: #{period.start_date.strftime("%d-%b-%Y")} &mdash; #{period.end_date.strftime("%d-%b-%Y")}" } %>
+    <% first_comment = true %>
+    <% period.loader_name_comments(@loader_name.id, context).sort {|x,y| x.created_at <=> y.created_at}.each do |comment| %>
+      <% if first_comment %>
+        <%= divider %>
+        Comments
+        <% first_comment = false %>
+      <% end %>
+      <br>
+      <div id="one-comment-<%= comment.id %>">
+
+         <%= render partial: 'loader/names/review/tabs/common/one_comment',
+                    locals: {comment: comment,
+                             context: context} %>
+
+      </div>
+
+    <% end %>
+  <% end %>
+  <%= divider %>
+<% end %>
+

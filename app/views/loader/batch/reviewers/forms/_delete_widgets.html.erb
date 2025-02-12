@@ -1,0 +1,37 @@
+
+
+
+<div id="confirm-or-cancel-delete-container-<%= reviewer.id%>"
+     class="instance-note confirm-or-cancel-delete-link pull-right xhidden">
+
+
+  <% cancel_delete_link = link_to("Cancel delete",
+                                  '#',
+                                  id: "cancel-delete-link-#{reviewer.id}",
+                                  class: "btn btn-default cancel-link",
+                                  tabindex: increment_tab_index,
+                                  title: "Cancel the delete dialog for the batch review period.",
+                                  data: {enable_this_id: "batch-reviewer-delete-link-#{reviewer.id}",
+                                         hide_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
+  %>
+  <% confirm_delete_link = link_to("Remove",
+                                   delete_batch_reviewer_path(reviewer.id),
+                                   id: "confirm-delete-reviewer-#{reviewer.id}-link",
+                                   class: "btn btn-danger hidden",
+                                   tabindex: increment_tab_index,
+                                   title: "Confirm the delete.",
+                                   remote: true,
+                                   method: :delete)
+  %>
+
+</div>
+
+
+<%= link_to("Delete...",
+            '#',
+            id: "batch-reviewer-delete-link-#{reviewer.id}",
+            class: "btn btn-warning unconfirmed-delete-link pull-right",
+            tabindex: increment_tab_index,
+            title: "Delete the batch reviewer.",
+            data: {show_this_id: "confirm-or-cancel-link-container-#{reviewer.id}"})
+%>

@@ -16,6 +16,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+# == Schema Information
+#
+# Table name: name_group
+#
+#  id               :bigint           not null, primary key
+#  description_html :text
+#  lock_version     :bigint           default(0), not null
+#  name             :string(50)
+#  rdf_id           :string(50)
+#
+# Indexes
+#
+#  name_group_rdfid              (rdf_id)
+#  uk_5185nbyw5hkxqyyqgylfn2o6d  (name) UNIQUE
+#
 class NameGroup < ActiveRecord::Base
   self.table_name = "name_group"
   self.primary_key = "id"

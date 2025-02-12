@@ -3,7 +3,7 @@
 <%= form_with model: name_review_comment, url: 'name_review_comments', data: { turbo: false }, local: false, method: :post do |form| %>
       <%= form.hidden_field :batch_reviewer_id %>
       <%= form.hidden_field :loader_name_id %>
-      <%= form.hidden_field :review_period_id %>
+      <%= form.hidden_field :batch_review_period_id %>
       Context: <%= name_review_comment.context %>
       <%= form.hidden_field :context, value:  name_review_comment.context %>
       <br>

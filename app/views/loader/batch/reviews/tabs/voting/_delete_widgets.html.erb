@@ -1,0 +1,32 @@
+
+
+<%= link_to("Delete...",
+            '#',
+            id: "batch-voter-delete-link-#{obrv.batch_review_id}-#{obrv.org_id}",
+            class: "btn btn-warning unconfirmed-delete-link pull-right",
+            tabindex: increment_tab_index,
+            title: "Delete the batch reviewer.",
+            data: {show_this_id: "confirm-or-cancel-link-container-#{obrv.batch_review_id}-#{obrv.org_id}"})
+%>
+<div id="confirm-or-cancel-link-container-<%=obrv.batch_review_id %>-<%=obrv.org_id %>"
+     class="hidden">
+  <%= link_to("Cancel delete",
+             '#',
+             id: "cancel-delete-link-#{obrv.batch_review_id}-#{obrv.org_id}",
+             class: "btn btn-default cancel-link",
+             tabindex: increment_tab_index,
+             title: "Cancel the delete dialog for the batch review period.",
+             data: {enable_this_id: "batch-voter-delete-link-#{obrv.batch_review_id}-#{obrv.org_id}",
+                    hide_this_id: "confirm-or-cancel-link-container-#{obrv.batch_review_id}-#{obrv.org_id}"})
+  %>
+  <%= link_to("Remove",
+             delete_org_batch_review_voter_path(obrv.batch_review_id,obrv.org_id),
+             id: "confirm-delete-org-batch-review-voter-#{obrv.id}-link",
+             class: "btn btn-danger",
+             tabindex: increment_tab_index,
+             title: "Confirm the delete.",
+             remote: true,
+             method: :delete)
+  -%>
+
+</div>

@@ -79,7 +79,7 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
   end
 
   def asserts4
-    assert_select "a#instance-foa-profile-tab",
+    assert_select "a#instance-profile-v2-tab",
                   false
                   "Should not show 'FOA Profile' tab link"
   end

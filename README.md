@@ -162,6 +162,95 @@ rails s
 There is a longish trail of release notes in annuallly rolled-over yaml files held in
 `config/history/` and visible from the help menu in the Editor.
 
+
 Contact ibissupport at anbg for more information.
 
+
+## Search Mechanism
+
+The Search mechanism is very important - editing NSL data involves a lot of searching.
+
+The Editor Search mechanism is built to allow:
+
+  * one page for all searches and results
+  * one field for all search entry
+  * use of defined custom search directives
+
+The Search engine behind all this is a little bit complicated, but it has the following benefits:
+
+   * multiple records of different types can be returned and displayed in a search result
+   * it is trivial to add a new search - simply figure out the required SQL and map it to a new search directive
+       * no GUI work is required
+       * no extra search entry fields are required
+
+   * registering and enabling search on an extra table is possible with a few hours or a solid day's work
+
+The diagram below is a start to documenting where to look in the code for parts of these mechanisms.
+
+
+
+
+                               Query in the Editor
+
+
+
+
+
+                     ┌─────────────────┐
+                     │                 │                     app/controllers/search_controller.rb #search
+                     │ Search Request  │
+                     │                 │                     app/controllers/search_controller.rb #run_local_search
+                     └────────┬────────┘
+                              │
+                     ┌────────▼────────┐
+                     │                 │
+                     │  Search Model   │───┐                 @search = ::Search::Base.new(params)
+                     │                 │   │
+                     └────────┬────────┘   │
+                   ┌──────────┘            │                 Search::Base#run_query
+                   ▼                       ▼
+          ┌─────────────────┐     ┌─────────────────┐
+          │      Old        │     │      New        │
+          │  Search Engine  │     │  Search Engine  │        Search::OnModel::Base
+          │                 │     │                 │
+          └─────────────────┘     └─────────────────┘
+                                           │
+                                           │
+                                           ▼
+                                  ┌─────────────────┐
+                                  │                 │
+                                  │  Parse Request  │        app/models/search/parsed_request.rb
+                                  │                 │
+                                  └─────────────────┘
+                                           │
+                                           │
+                                           ▼
+                                  ┌─────────────────┐
+                                  │    Convert      │        e.g.
+                                  │   Directives    │        app/models/search/loader/name/field_rule.rb
+                                  │     to SQL      │
+                                  └─────────────────┘
+                                           │
+                                           │
+                                           ▼
+                                  ┌─────────────────┐
+                                  │                 │
+                                  │   Execute SQL   │       app/models/search/base.rb # run_query
+                                  │                 │
+                                  └─────────────────┘
+                                           │
+                                           ▼
+                            ┌────────────────────────────┐
+                            │       Display Results      │
+                            │ ┌────────────────────────┐ │
+                            │ │                        │ │
+                            │ │   Summarise Results    │ │ app/views/search/search_result_summary
+                            │ │                        │ │
+                            │ └────────────────────────┘ │
+                            │ ┌────────────────────────┐ │
+                            │ │                        │ │
+                            │ │  Apply record-type to  │ │ app/views/application/search_results/standard/_results.html.erb
+                            │ │       display          │ │
+                            │ └────────────────────────┘ │
+                            └────────────────────────────┘
 

@@ -23,7 +23,7 @@ module Loader::Name::PreferredMatch
 
   def instance_id_for_match(instance)
     if misapplied?
-      instance.id
+      instance.cites_id
     else
       instance_id_for_non_misapplied_match(instance)
     end

@@ -60,6 +60,21 @@
   <% end %>
 <% end %>
 
+<% if @current_user.profile_v2_context.viewer? && @instance.profile_items.present? %>
+  <h5><%= user_profile_tab_name %> Profile</h5>
+  <dl class="dl-horizontal">
+    <% @instance.profile_items.each do |profile_item| %>
+      <dt><%= profile_item.product_item_config.try(:display_html) %></dt>
+      <dd>
+        <%= link_to(
+          truncate(profile_item.profile_text&.value_md, length: 100), 
+          search_path(query_string: "id: #{@instance.id} show-profiles: ",focus_id: profile_item.id, query_target: 'instance'),
+          title: profile_item.product_item_config.try(:display_html)) || '' %>
+      </dd>
+    <% end %>
+  </dl>
+<% end %>
+
 <h5>Instance #<%= @instance.id %></h5>
 <br>
 <br>

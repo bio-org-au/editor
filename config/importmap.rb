@@ -59,7 +59,7 @@ pin "typeaheads_for_instance_for_name_showing_reference_update",
 pin "typeaheads_for_instance_name", to: "typeaheads/for_instance/name.js"
 pin "typeaheads_for_instance_name_for_unpub_citation", to: "typeaheads/for_instance/name_for_unpub_citation.js"
 pin "typeaheads_for_instance_reference", to: "typeaheads/for_instance/reference.js"
-pin "typeaheads_for_instance_reference_foa", to: "typeaheads/for_instance/reference_foa.js"
+pin "typeaheads_for_instance_reference_profile_v2", to: "typeaheads/for_instance/reference_profile_v2.js"
 pin "typeaheads_for_instance_reference_excluding_current", to: "typeaheads/for_instance/reference_excluding_current.js"
 pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js"
 
@@ -85,4 +85,11 @@ pin "typeaheads_for_name_parent", to: "typeaheads/for_name/parent.js"
 pin "typeaheads_for_name_sanctioning_author", to: "typeaheads/for_name/sanctioning_author.js"
 pin "typeaheads_for_name_second_parent", to: "typeaheads/for_name/second_parent.js"
 pin "typeaheads_for_name_workspace_parent_name", to: "typeaheads/for_name/workspace_parent_name.js"
+
+pin "markdown_it_sub_min", to: "https://cdn.jsdelivr.net/npm/markdown-it-sub/dist/markdown-it-sub.min.js"
+pin "markdown_it_sup_min", to: "https://cdn.jsdelivr.net/npm/markdown-it-sup/dist/markdown-it-sup.min.js"
+pin "markdown_it_min", to: "https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"
+pin "simplemde_min", to: "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
+pin "simple_mde_wysiwyg", preload: true
+
 pin "@rails/ujs", to: "https://ga.jspm.io/npm:@rails/ujs@7.0.4-3/lib/assets/compiled/rails-ujs.js"

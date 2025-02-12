@@ -20,9 +20,9 @@
       <%= "#{search_result.reference.citation_html}".html_safe if search_result.reference %>
       <%= ": #{search_result.page}" if search_result.page.present? %>
       <%= "[#{search_result.instance_type.name}]" if search_result.show_primary_instance_type && search_result.instance_type.try('primary_instance') %>
-      <% if search_result.consider_apc %>
-        <% if search_result.show_apc? %>
-          <%= render(partial: 'instances/apc/widgets', locals: { instance: search_result }) %>
+      <% if search_result.consider_taxo %>
+        <% if search_result.show_taxo? %>
+          <%= render(partial: 'instances/taxo/widgets', locals: { instance: search_result }) %>
         <% end %>
       <% end %>
 

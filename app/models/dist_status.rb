@@ -17,6 +17,18 @@
 #   limitations under the License.
 
 #  Distribution Region
+# == Schema Information
+#
+# Table name: dist_status
+#
+#  id               :bigint           not null, primary key
+#  def_link         :string(255)
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  lock_version     :bigint           default(0), not null
+#  name             :string(255)      not null
+#  sort_order       :integer          default(0), not null
+#
 class DistStatus < ActiveRecord::Base
   self.table_name = "dist_status"
   self.primary_key = "id"

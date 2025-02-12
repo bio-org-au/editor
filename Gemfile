@@ -1,17 +1,9 @@
-def next?
-  File.basename(__FILE__) == "Gemfile.next"
-end
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.3.5"
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails"
-if next?
-  gem 'rails', '~> 7.1.4.1'
-else
-  gem "rails", "~> 7.1.4.1"
-end
+gem 'rails', '~> 7.1.4'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -52,7 +44,7 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem "listen", ">= 3.0.5", "< 3.2"
+gem "listen", "~> 3.0"
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem "awesome_print"
@@ -79,6 +71,9 @@ group :development, :test do
   # gem "pry-rescue" # breaks test env. on Mac M1
   gem "webmock"
   # gem "schema_plus"
+
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 # Added
@@ -94,7 +89,7 @@ gem "kramdown", ">= 2.3.0"
 gem "nokogiri", ">= 1.13.4"
 gem "rack", ">= 2.2.3"
 gem "rest-client"
-gem "simple_calendar", "~> 2.0"
+gem "simple_calendar"
 gem "websocket-extensions", ">= 0.1.5"
 
 gem "addressable", ">= 2.8.0"
@@ -105,9 +100,9 @@ gem "standard", group: %i[development test]
 gem "standardrb", group: %i[development test]
 
 gem "csv"
-gem "font-awesome-sass", "~> 6.4.0"
+gem "font-awesome-sass", "~> 6.4"
 gem "rails-ujs"
-gem "unf_ext", "< 0.0.9"
+gem "unf_ext"
 gem "indefinite_article"
 
 group :development do

@@ -1,5 +1,5 @@
-<%= turbo_stream.replace "profile_item_references_#{@profile_item.product_item_config.display_html.parameterize}" do %>
-  <div id="profile_item_references_<%= @profile_item.product_item_config.display_html.parameterize %>"
+<%= turbo_stream.replace "profile_item_references_#{@profile_item.product_item_config.id}" do %>
+  <div id="profile_item_references_<%= @profile_item.product_item_config.id %>"
     style="display: block"
   >
     <%= render partial: 'profile_item_references/edit_form',

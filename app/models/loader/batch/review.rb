@@ -30,12 +30,15 @@ class Loader::Batch::Review < ActiveRecord::Base
 
   belongs_to :loader_batch, class_name: "Loader::Batch", foreign_key: "loader_batch_id"
   alias_method :batch, :loader_batch
-  has_many :review_periods, class_name: "Loader::Batch::Review::Period", foreign_key: "batch_review_id"
-  alias_method :periods, :review_periods
+
+  has_many :batch_review_periods, class_name: "Loader::Batch::Review::Period", foreign_key: "batch_review_id"
+  alias_method :periods, :batch_review_periods
+  alias_method :review_periods, :batch_review_periods
+
+  has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: "batch_review_id"
+  alias_method :reviewers, :batch_reviewers
 
   attr_accessor :give_me_focus, :message
-
-  #scope :in_progress, -> { where(in_progress: true) }
 
   def fresh?
     created_at > 1.hour.ago
@@ -55,6 +58,7 @@ class Loader::Batch::Review < ActiveRecord::Base
 
   def update_if_changed(params, username)
     self.name = params[:name]
+    self.allow_voting = params[:allow_voting]
     if changed?
       self.updated_by = username
       save!
@@ -66,6 +70,18 @@ class Loader::Batch::Review < ActiveRecord::Base
 
   def name_in_context
     "#{batch.name} #{name}"
+  end
+
+  def allow_voting_to_words
+    allow_voting ? 'allowed' : 'not allowed'
+  end
+
+  def reviewer?(username)
+    reviewers.select { |r| r.user.name.downcase == username.downcase }.size > 0
+  end
+
+  def reviewer_id(username)
+    reviewers.select { |r| r.user.name.downcase == username.downcase }.first.id
   end
 
   private

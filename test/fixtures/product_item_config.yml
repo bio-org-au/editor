@@ -9,6 +9,17 @@ ecology_pic:
   display_html: "Ecology"
   product: foa
   profile_item_type: ecology_pit
+  sort_order: 3
+
+ecology_pic_ref:
+  created_by: tester
+  created_at: <%= Time.now %>
+  updated_by: tester
+  updated_at: <%= Time.now %>
+  display_html: "Ecology"
+  product: foa
+  profile_item_type: ecology_pit_ref
+  sort_order: 2
 
 habitat_pic:
   created_by: tester
@@ -18,3 +29,4 @@ habitat_pic:
   display_html: "Habitat"
   product: foa
   profile_item_type: habitat_pit
+  sort_order: 1

@@ -107,6 +107,9 @@
       <% when 'Name Review Comment' %>  
         <%= render partial: "#{partials}/main/loader/name/review/comment_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
+      <% when 'Profile::ProfileItem' %>  
+        <%= render partial: "#{partials}/profile_item_record", 
+          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% else %>
         <tr>
           <td class="width-1-percent"></td>

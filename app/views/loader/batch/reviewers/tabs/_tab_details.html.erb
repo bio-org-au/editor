@@ -10,20 +10,20 @@
 
 
 <%= render partial: 'detail_line',
-      locals: {label: 'review period',
-               info: link_to(@batch_reviewer.period.name,
+      locals: {label: 'review',
+               info: link_to(@batch_reviewer.batch_review.name,
                         search_path(
-                          query_target: 'batch review periods',
-                          query_string: "id: #{@batch_reviewer.period.id}"),
-               title:"Query the period",class:'blue')} %>
+                          query_target: 'batch reviews',
+                          query_string: "id: #{@batch_reviewer.batch_review.id}"),
+               title:"Query the batch",class:'blue')} %>
 
 <%= render partial: 'detail_line',
            locals: {info: @batch_reviewer.org.name, label: 'representing'} %>
 <%= render partial: 'detail_line',
     locals: {label: 'query the stack',
-             info: link_to("#{@batch_reviewer.period.review.batch.name} Stack",
+             info: link_to("#{@batch_reviewer.batch_review.batch.name} Stack",
                           search_path(
-                            query_string: "batch-id: #{@batch_reviewer.period.review.batch.id}",
+                            query_string: "batch-id: #{@batch_reviewer.batch_review.batch.id}",
                             query_target: 'batch stacks',
                             focus_id: "batch-reviewer-#{@batch_reviewer.id}"),
                  title:"Query batch in stack format",class:'blue')} %>

@@ -25,7 +25,7 @@ class NameAsCopWAllInstancesErrorShouldRollbackAllTest < ActiveSupport::TestCase
   end
 
   def stub_it
-    stub_request(:get, %r{#{path}/[0-9]{8,}/api/name-strings})
+    stub_request(:get, %r{#{path}/[0-9]{1,}/api/name-strings})
       .with(headers: headers)
       .to_return(status: 200,
                  body: returned_body.to_json, headers: {})

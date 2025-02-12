@@ -32,7 +32,7 @@ class Search::Loader::Batch::Review::Period::FieldRule
                 order: "name" },
     "batch-review-id:" => { where_clause: "batch_review_id = ? ",
                             order: "name" },
-    "review_period-id:" => { where_clause: "review_period_id = ? ",
+    "review-period-id:" => { where_clause: "batch_review_period_id = ? ",
                              order: "id" },
   }.freeze
 end

@@ -54,7 +54,7 @@ import "typeaheads_for_instance_for_name_showing_reference_update";
 import "typeaheads_for_instance_name";
 import "typeaheads_for_instance_name_for_unpub_citation";
 import "typeaheads_for_instance_reference";
-import "typeaheads_for_instance_reference_foa";
+import "typeaheads_for_instance_reference_profile_v2";
 import "typeaheads_for_instance_reference_excluding_current";
 import "typeaheads_for_instance_synonymy";
 
@@ -80,6 +80,13 @@ import "typeaheads_for_name_parent";
 import "typeaheads_for_name_sanctioning_author";
 import "typeaheads_for_name_second_parent";
 import "typeaheads_for_name_workspace_parent_name";
+
+import "markdown_it_sub_min";
+import "markdown_it_sup_min";
+import "markdown_it_min";
+import "simplemde_min";
+import "simple_mde_wysiwyg";
+
 import Rails from '@rails/ujs';
 
 Rails.start();

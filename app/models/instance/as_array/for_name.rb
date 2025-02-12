@@ -69,7 +69,7 @@ class Instance::AsArray::ForName < Array
     debug("show_standalone_instance #{instance.id}")
     standalone_instance_records(instance).each do |one_instance|
       one_instance.show_primary_instance_type = true
-      one_instance.consider_apc = true
+      one_instance.consider_taxo = true
       @results.push(one_instance)
     end
   end
@@ -109,7 +109,7 @@ class Instance::AsArray::ForName < Array
     return if @already_shown.include?(citing_instance.id)
 
     relationship_instance_records(name, citing_instance).each do |element|
-      element.consider_apc = false
+      element.consider_taxo = false
       @results.push(element)
     end
     @already_shown.push(citing_instance.id)

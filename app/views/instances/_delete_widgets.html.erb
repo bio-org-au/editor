@@ -44,7 +44,7 @@
 <% else %>
   You cannot delete this instance.
   <br>
-  <% if @instance.in_apc? %>
+  <% if @instance.in_taxo? %>
     Instance is in the accepted classification: <%= ShardConfig.classification_tree_key %>.
     <br>
   <% end %>

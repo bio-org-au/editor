@@ -1,0 +1,21 @@
+<% org_batch_review_voter = Org::Batch::ReviewVoter.new %>
+<% org_batch_review_voter.batch_review_id = batch_review.id %>
+
+<%= form_with model: org_batch_review_voter,
+              url: 'org_batch_review_voters',
+              data: { turbo: false },
+              local: false, method: :post do |form| %>
+  <%= form.hidden_field :batch_review_id %>
+  <br>
+  Organisation:
+  <%= form.collection_select :org_id,
+                             Org.all - batch_review.org_batch_review_voters.map{|obrv| obrv.org}, 
+                             :id, :name, {},
+                             {class: 'form-control',
+                              title: 'Choose an organisation or indicate the reviewer is unaffiliated'} %>
+  <br>
+  <%= form.submit id: "save-new-org-batch-review-voter-btn", class: 'btn-primary', title: "Register Org as Voter", tabindex: increment_tab_index %>
+<% end %>
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+ 

@@ -48,7 +48,7 @@ class Loader::Name::MakeOneMatch
   end
 
   def stop(msg)
-    puts "Stopping because: #{msg}"
+    Rails.logger.debug("Stopping because: #{msg}")
   end
 
   def preferred_match?

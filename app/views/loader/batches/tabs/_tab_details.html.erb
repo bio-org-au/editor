@@ -29,13 +29,17 @@
     <%= render partial: 'detail_line', locals: {info: '',
                                                 label:'No batch reviews'} %>
   <% else %>
-    <%= render partial: 'detail_line',
-      locals: {label: 'batch reviews',
-               info: link_to(@loader_batch.batch_reviews.size,
-                            search_path(
-                              query_string: "batch-id: #{@loader_batch.id}",
-                              query_target: 'batch reviews'),
-                   title:"Query batch reviews",class:'blue')} %>
+
+    <% @loader_batch.batch_reviews.order('created_at').each do | review| %>
+      <%= render partial: 'detail_line',
+        locals: {label: 'batch review',
+                 info: link_to(review.name,
+                              search_path(
+                                query_string: "id: #{review.id}",
+                                query_target: 'batch reviews'),
+                     title:"Query batch review",class:'blue')} %>
+    <% end %>
+
   <% end %>
 
   <%= render partial: 'detail_line',

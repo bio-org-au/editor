@@ -1,0 +1,1 @@
+alter table batch_review rename in_progress to allow_voting;

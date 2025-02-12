@@ -1,0 +1,16 @@
+<h5>Profile</h5>
+<table class="table table-striped">
+  <% [
+      {field_name: 'show-profiles:', description: "show profile item of an instance, leading and trailing wildcards added automatically **"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span></a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>

@@ -1,13 +1,13 @@
 <% profile_item = @profile_item_reference.profile_item %>
 
-<%= turbo_stream.replace "add_reference_message_#{profile_item.product_item_config.display_html.parameterize}" do %>
-  <div id="add_reference_message_<%= @profile_item_reference.profile_item.product_item_config.display_html.parameterize %>" class="message-container">
+<%= turbo_stream.replace "add_reference_message_#{profile_item.product_item_config.id}" do %>
+  <div id="add_reference_message_<%= @profile_item_reference.profile_item.product_item_config.id %>" class="message-container">
     <%= @message %>
   </div>
 <% end %>
 
-<%= turbo_stream.replace "profile_item_references_#{profile_item.product_item_config.display_html.parameterize}" do %>
-  <div id="profile_item_references_<%= profile_item.product_item_config.display_html.parameterize %>"
+<%= turbo_stream.replace "profile_item_references_#{profile_item.product_item_config.id}" do %>
+  <div id="profile_item_references_<%= profile_item.product_item_config.id %>"
     style="display: block"
   >
     <%= render partial: 'profile_item_references/edit_form',
@@ -18,11 +18,11 @@
   </div>
 <% end %>
 
-<%= turbo_stream.replace "add_reference_#{profile_item.product_item_config.display_html.parameterize}" do %>
-  <div id="add_reference_<%= profile_item.product_item_config.display_html.parameterize %>">
+<%= turbo_stream.replace "add_reference_#{profile_item.product_item_config.id}" do %>
+  <div id="add_reference_<%= profile_item.product_item_config.id %>">
     <div style="padding: 30px 10px 40px 10px;border: 1px solid #ddd;">
       <label>Reference</label>
-      <div id="add_reference_form_<%= profile_item.product_item_config.display_html.parameterize %>" style="margin-bottom: 10px;">
+      <div id="add_reference_form_<%= profile_item.product_item_config.id %>" style="margin-bottom: 10px;">
         <%= render partial: 'profile_item_references/form',
           locals: {
             url: profile_item_references_path,

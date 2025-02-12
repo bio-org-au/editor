@@ -29,12 +29,6 @@ class Loader::Batch < ActiveRecord::Base
   belongs_to :default_reference, class_name: "Reference", foreign_key: "default_reference_id", optional: true
   alias_method :reviews, :batch_reviews
 
-  has_many :current_batch_reviews, 
-    -> { where( " in_progress = true " )},
-    class_name: "Loader::Batch::Review", foreign_key: "loader_batch_id" 
-
-  alias_method :current_reviews, :current_batch_reviews
-
   validates :name, uniqueness: { case_sensitive: false }, presence: true
 
   attr_accessor :give_me_focus, :message
@@ -80,7 +74,7 @@ class Loader::Batch < ActiveRecord::Base
   end
 
   def self.user_reviewable(user_name)
-    Loader::Batch.joins(batch_reviews: [{ review_periods: { batch_reviewers: [:user_table] } }]).where(user_table: { name: user_name }).order("name")
+    Loader::Batch.joins(batch_reviews: [{ batch_reviewers: [:user_table] }]).where(user_table: { name: user_name }).order("name")
   end
 
   def self.id_of(canonical_query_target)

@@ -95,7 +95,7 @@ class Loader::Name::Review::CommentsController < ApplicationController
   def review_comment_params
     params.require(:loader_name_review_comment).permit(:id,
                                                        :loader_name_id,
-                                                       :review_period_id,
+                                                       :batch_review_period_id,
                                                        :batch_reviewer_id,
                                                        :name_review_comment_type_id,
                                                        :comment,

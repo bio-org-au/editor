@@ -280,7 +280,7 @@ tr.search-result.batch-stack td span.review-period {
 }
 tr.search-result.batch-stack td span.batch-reviewer {
   color: black;
-  margin: 0.3em 0.3em 0.3em 6em;
+  margin: 0.3em 0.3em 0.3em 4em;
 }
 
 .calendar-text { margin-top: .3em; }

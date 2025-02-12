@@ -117,6 +117,9 @@
     if (!!inFocus.attr('data-tree-element-previous-tve')) {
       url = url + '&tree-element-previous-tve=' + inFocus.attr('data-tree-element-previous-tve');
     }
+    if (inFocus.attr('data-product-item-config-id')) {
+      url = url + '&product_item_config_id=' + inFocus.attr('data-product-item-config-id');
+    }
     debug(`url: ${url}`);
     if (tabWasClicked) {
       url = url + '&take_focus=true';

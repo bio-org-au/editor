@@ -5,7 +5,7 @@ table#search-results-table tr td a .workspace-container {
   text-decoration: none;
 }
 
-table#search-results-table tr td a .apc-container {
+table#search-results-table tr td a .taxo-icon-container {
   color: red;
   padding: 0.2em;
   text-decoration: none;
@@ -30,24 +30,20 @@ table#search-results-table tr.showing-details a span.workspace-container {
 }
 
 
-table#search-results-table tr.showing-details a .apc-container,
-table#search-results-table tr.showing-details a i.apc-container {
+table#search-results-table tr.showing-details a .taxo-icon-container,
+table#search-results-table tr.showing-details a i.taxo-icon-container {
   color: red;
   padding: 0.2em 0.6em 0.2em 0.6em;
   text-decoration: none;
 }
 
-table#search-results-table tr.showing-details a span.apc-container {
+table#search-results-table tr.showing-details a span.taxo-icon-container {
   background-position-y: 20%;
 }
 
-div.focus-details span.apc-container,
-.focus-details span.apc-container {
+div.focus-details span.taxo-icon-container,
+.focus-details span.taxo-icon-container {
   color: red;
   padding: 0.2em 0.6em 0.2em 0.6em;
-}
-
-div.apc-apni-indicator-container {
-  margin: 0.3em 0 0.3em 0;
 }
 

@@ -27,16 +27,21 @@ class ProfileTextsControllerTest < ActionController::TestCase
 
   test "should create profile text" do
     product_item_config = product_item_config(:ecology_pic)
+
+    profile_items = Profile::ProfileItem.where(profile_object_rdf_id: "text", product_item_config_id: product_item_config.id)
+    profile_items.destroy_all if profile_items
+
     assert_difference "Profile::ProfileItem.count", 1 do
       assert_difference "Profile::ProfileText.count", 1 do
         post :create, params: {
           profile_item: {
             instance_id: @instance.id,
             product_item_config_id: product_item_config.id,
-            profile_object_rdf_id: nil
+            profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id
           },
           profile_text: {
-            value: "New profile text"
+            value: "New profile text",
+            value_md: "New profile text"
           }
         }, session: @session, xhr: true
       end
@@ -54,10 +59,11 @@ class ProfileTextsControllerTest < ActionController::TestCase
       profile_item: {
         instance_id: @instance.id,
         product_item_config_id: product_item_config.id,
-        profile_object_rdf_id: product_item_config.profile_item_type.rdf_id
+        profile_object_rdf_id: product_item_config.profile_item_type.profile_object_type.rdf_id
       },
       profile_text: {
-        value: "Existing profile text"
+        value: "Existing profile text",
+        value_md: "Existing profile text"
       }
     }, session: @session, xhr: true
 
@@ -72,13 +78,13 @@ class ProfileTextsControllerTest < ActionController::TestCase
     put :update, 
           params: {
             id: profile_text.id,
-            profile_text: {value: "Updated profile text value"},
+            profile_text: {value_md: "Updated profile text value"},
             profile_item: {id: profile_item.id}
           }, session: @session, xhr: true
 
     assert_response :success
     assert_equal "Updated", assigns(:message)
-    assert_equal profile_text.reload.value, assigns(:profile_text).value
+    assert_equal profile_text.reload.value_md, assigns(:profile_text).value_md
     assert_equal profile_item, assigns(:profile_item)
     assert_template :update
   end
@@ -91,7 +97,7 @@ class ProfileTextsControllerTest < ActionController::TestCase
       put :update, 
           params: {
             id: profile_text.id,
-            profile_text: {value: "Updated profile text value"},
+            profile_text: {value_md: "Updated profile text value"},
             profile_item: {id: profile_item.id}
           }, session: @session, xhr: true
     end

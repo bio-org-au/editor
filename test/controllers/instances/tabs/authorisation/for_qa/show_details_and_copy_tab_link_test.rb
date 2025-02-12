@@ -38,6 +38,21 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
     asserts
   end
 
+  test "should show instance details tab even if profile item tables don't exist" do
+    Rails.configuration.profile_v2_aware = false
+    Instance.stub_any_instance(:profile_items, -> { raise PG::UndefinedTable, "relation \"profile_item\" does not exist" }) do
+      @request.headers["Accept"] = "application/javascript"
+      get(:show,
+        params: { id: @instance.id,
+                  tab: "tab_show_1",
+                  "row-type" => "instance_as_part_of_concept_record" },
+        session: { username: "fred",
+                   user_full_name: "Fred Jones",
+                   groups: ["QA"] })
+      assert_response :success
+    end
+  end
+
   def asserts
     asserts1
     asserts2
@@ -79,7 +94,7 @@ class InstancesShowQAUserDetailsAndCopyTabLinksTest < ActionController::TestCase
   end
 
   def asserts4
-    assert_select "a#instance-foa-profile-tab",
+    assert_select "a#instance-profile-v2-tab",
                   false
                   "Should not show 'FOA Profile' tab link"
   end

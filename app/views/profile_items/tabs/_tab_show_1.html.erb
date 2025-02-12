@@ -1,0 +1,44 @@
+<br>
+<span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
+<%= link_to("#{@profile_item.instance.name.try('full_name')} #{search_icon_on_tab}".html_safe,
+        search_path(query_target: 'name',
+                    query_string: "id: #{@profile_item.instance.name_id} show-instances:"),
+        title: 'Search for the name with its instances',
+        class: 'name') %>
+<br><br>
+<div class="from-markdown">
+  <%= markdown_to_html(@profile_item.profile_text.value_md.to_s) %>
+</div>
+
+<% if @profile_item.profile_item_references.present? %>
+  <p>
+    <br>
+    <strong>References</strong>
+    <br>
+    <% @profile_item.profile_item_references.each do |pir| %>
+      <%= link_to("#{pir.reference.citation}#{display_pages(pir.reference.pages)}" || '[No citation found.]', 
+                  search_path(query_string: %Q(id:#{pir.reference.id}), query_target: 'reference'), 
+                  id: 'tab-heading', 
+                  title: "Query this reference.",
+                  tabindex: increment_tab_index )%>
+                <span class="pull-right"><%= mapper_link('reference', pir.reference.id)%></span>
+      <p><%= pir.annotation %></p>
+
+    <% end %>
+  </p>
+<% end %>
+
+<% if @profile_item.profile_item_annotation.present? %>
+  <p>
+    <br>
+    <strong>Annotations</strong>
+    <br>
+    <%= @profile_item.profile_item_annotation.value %>
+  </p>
+<% end %>
+
+<br>
+<%= divider %>
+<h5>Profile item: #<%= @profile_item.id %></h5>
+<%= created_by_whom_and_when(@profile_item).html_safe %>
+<br>

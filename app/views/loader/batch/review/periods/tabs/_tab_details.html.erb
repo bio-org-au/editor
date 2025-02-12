@@ -19,14 +19,6 @@
                      info: @review_period&.end_date&.strftime("%d-%b-%Y")} %>
 
 <%= render partial: 'detail_line',
-      locals: {label: 'reviewers',
-               info: link_to(@review_period.reviewers.size,
-                        search_path(
-                          query_target: 'batch_reviewers',
-                          query_string: "period: #{@review_period.id}"),
-               title:"Query the reviewers",class:'blue')} %>
-
-<%= render partial: 'detail_line',
       locals: {label: 'names with comments',
                info: link_to(@review_period.names_with_comments.size,
                         search_path(

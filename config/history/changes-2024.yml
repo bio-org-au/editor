@@ -1,3 +1,75 @@
+- :date: 20-Dec-2024
+  :jira_id: '5272'
+  :description: |-
+    Minor code cleanup and one bug fix - no changed behaviour except the accepted taxonomy abbreviation will now appear correctly for excluded names
+- :date: 19-Dec-2024
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Fixup instance's "details" tab not showing up for moss due to missing profile_item table
+- :date: 18-Dec-2024
+  :jira_id: '5246'
+  :description: |-
+    Batch Review voting: search directives for reviewers and compilers to find loader name records with or without votes of any or a specific value by organisation
+- :date: 18-Dec-2024
+  :jira_id: '5271'
+  :description: |-
+    Upgrade Rails to 7.1.5.1 and upgrade assorted other libraries - for security, no changes in behaviour expected
+- :date: 16-Dec-2024
+  :jira_id: '5268'
+  :description: |-
+    Batch Review Voting: Add bulk voting for families via family rank heading records, phase 1; also early version of displaying votes on LHS records
+- :date: 11-Dec-2024
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Use context-group to display/hide profile tabs based on the user context group
+- :date: 10-Dec-2024
+  :jira_id: '5260'
+  :description: |-
+    Voting: Adjust database structures for comments/voting after design re-think - biggest change is attaching reviewers directly to batch reviews rather than to review periods.
+- :date: 04-Dec-2024
+  :jira_id: '32'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Sort the profile items by their product item config's sort order and other ui cleanups.
+- :date: 03-Dec-2024
+  :jira_id: '5260'
+  :description: |-
+    Batch Review Voting: Set up structure for allowing organisations to vote in a Batch Review
+- :date: 03-Dec-2024
+  :jira_id: '32'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Display the dropdown ui feature flag in the admin configuration page
+- :date: 29-Nov-2024
+  :jira_id: '32'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): This is a large set of changes covering profile item query, search, display items, etc.
+- :date: 22-Nov-2024
+  :jira_id: '5254'
+  :description: |-
+    Loader: Build out features of batch review voting
+- :date: 15-Nov-2024
+  :jira_id: '5241'
+  :description: |-
+    Loader: Render HTML used in Comments, Notes, and Remarks to Reviewers correctly for compilers
+- :date: 13-Nov-2024
+  :jira_id: '5245'
+  :description: |-
+    Loader: Correctly identify preferred match for misapplieds copied from name data
+- :date: 13-Nov-2024
+  :jira_id: '30'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Only Product Item Config of object type text should be displayed for now
+- :date: 12-Nov-2024
+  :jira_id: '5248'
+  :description: |-
+    Loader: Validate the <code>print:</code> directive
+- :date: 11-Nov-2024
+  :release: true
 - :date: 11-Nov-2024
   :jira_id: '5230'
   :description: |-
@@ -10,7 +82,7 @@
   :jira_id: '30'
   :jira_project: FLOR
   :description: |-
-    APC Workflow: Add a dropdown to the FOA profile editor
+    FOA Profile (APNI Test only): Add a dropdown to the FOA profile editor
 - :date: 05-Nov-2024
   :jira_id: '5234'
   :description: |-
@@ -39,12 +111,12 @@
   :jira_id: '29'
   :jira_project: FLOR
   :description: |-
-    Flora of Australia Profile: Improved foa query in the instances tabs
+    FOA Profile (APNI Test only): Improved foa query in the instances tabs
 - :date: 28-Oct-2024
   :jira_id: '28'
   :jira_project: FLOR
   :description: |-
-    Flora of Australia Profile: Updated permissions for the foa editor
+    FOA Profile (APNI Test only): Updated permissions for the foa editor
 - :date: 28-Oct-2024
   :jira_id: '5238'
   :description: |-
@@ -53,7 +125,7 @@
   :jira_id: '25'
   :jira_project: FLOR
   :description: |-
-    Flora of Australia Profile: Basic editing features
+    FOA Profile (APNI Test only): Basic editing features
 - :date: 24-Oct-2024
   :jira_id: '5232'
   :description: |-
@@ -98,7 +170,7 @@
   :jira_project: FLOR
   :jira_id: '25'
   :description: |-
-    Flora Profile: First major merge of initial work by Dean and Gerda
+    FOA Profile (APNI Test only): First major merge of initial work by Dean and Gerda
 - :date: 03-Oct-2024
   :release: true
 - :date: 03-Oct-2024
