@@ -2,9 +2,9 @@
 
       <%= render partial: 'names/tabs/tab', locals: {first: false,
                                           last: false,
-                                          this_tab: 'tab_details', 
+                                          this_tab: 'tab_details',
                                           link_text: 'Details',
-                                          link_id: 'name-details-tab', 
+                                          link_id: 'name-details-tab',
                                           link_title: 'See details of the name',
                                           tab_index: increment_tab_index,
                                           prev_tab: '',
@@ -14,35 +14,46 @@
 
         <%= render partial: 'names/tabs/tab', locals: {first: false,
                                             last: false,
-                                            this_tab: 'tab_edit', 
+                                            this_tab: 'tab_edit',
                                             link_text: "Edit".html_safe,
-                                            link_id: 'name-edit-tab', 
+                                            link_id: 'name-edit-tab',
                                             link_title: 'Edit details of the name.',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
+                                            prev_tab: '',
                                             next_tab: ''} %>
       <% end %>
 
       <% if can? 'instances', 'create' %>
-  
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_instances',
-                                            link_text: "New instance".html_safe,
-                                            link_id: 'name-instances-tab',
-                                            link_title: 'Create an instance for the name.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
+        <% if @current_user.profile_v2_context.new_instance_allowed? %>
+          <%= render partial: 'names/tabs/tab', locals: {first: false,
+                                              last: false,
+                                              this_tab: 'tab_instances_profile_v2',
+                                              link_text: "New instance".html_safe,
+                                              link_id: 'name-instances-profile-v2-tab',
+                                              link_title: 'Create an instance for the name.',
+                                              tab_index: increment_tab_index,
+                                              prev_tab: '',
+                                              next_tab: ''} %>
+        <% else %>
+          <%= render partial: 'names/tabs/tab', locals: {first: false,
+                                              last: false,
+                                              this_tab: 'tab_instances',
+                                              link_text: "New instance".html_safe,
+                                              link_id: 'name-instances-tab',
+                                              link_title: 'Create an instance for the name.',
+                                              tab_index: increment_tab_index,
+                                              prev_tab: '',
+                                              next_tab: ''} %>
+        <% end %>
 
         <%= render partial: 'names/tabs/tab', locals: {first: false,
                                             last: false,
-                                            this_tab: 'tab_copy', 
+                                            this_tab: 'tab_copy',
                                             link_text: "Copy".html_safe,
-                                            link_id: 'name-copy-tab', 
+                                            link_id: 'name-copy-tab',
                                             link_title: 'Copy the name.',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
+                                            prev_tab: '',
                                             next_tab: ''} %>
       <% end %>
 
@@ -50,28 +61,28 @@
 
         <%= render partial: 'names/tabs/tab', locals: {first: false,
                                             last: false,
-                                            this_tab: 'tab_delete', 
+                                            this_tab: 'tab_delete',
                                             link_text: "Delete".html_safe,
-                                            link_id: 'name-delete-tab', 
+                                            link_id: 'name-delete-tab',
                                             link_title: 'Delete name.',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
+                                            prev_tab: '',
                                             next_tab: ''} %>
-  
+
       <% end %>
 
       <% if can? 'names', 'update' %>
 
         <%= render partial: 'names/tabs/tab', locals: {first: false,
                                             last: false,
-                                            this_tab: 'tab_more', 
+                                            this_tab: 'tab_more',
                                             link_text: "More".html_safe,
-                                            link_id: 'name-more-tab', 
+                                            link_id: 'name-more-tab',
                                             link_title: 'Show more tabs',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
+                                            prev_tab: '',
                                             next_tab: ''} %>
-  
+
       <% end %>
 
     </ul>

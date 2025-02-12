@@ -21,6 +21,10 @@ class Users::ProfileContexts::Foa < Users::ProfileContexts::Base
     true
   end
 
+  def new_instance_allowed?
+    user.groups.include?('v2-profile-instance-edit')
+  end
+
   #
   # Tabs
   #
