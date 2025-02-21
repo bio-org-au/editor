@@ -13,14 +13,17 @@
       <li class="dropdown-submenu">
         <a tabindex="-1"
            href="#"
-           title="Your security groups">
-          <%= pluralize(@current_user.groups.size,'Group') %></a>
-          <ul class="dropdown-menu">
+           title="Your security groups and role types">
+          <%= "#{pluralize(@current_user.groups.size,'Security group')}"%>
+          <%= "& #{pluralize(@current_registered_user.product_roles.size, 'Role type')}" if @current_registered_user.product_roles.present? %>
+        </a>
+        <ul class="dropdown-menu">
           <% @current_user.groups.each do |group| %>
             <% case group
                when 'edit'  then icon_name = 'edit'
                when 'admin' then icon_name = 'sliders'
-               else icon_name = 'circle-o'
+               when 'login' then icon_name = 'fingerprint'
+               else icon_name = 'user-lock'
                end
              %>
              <li role="presentation">
@@ -29,21 +32,16 @@
                </a>
              </li>
           <% end %>
-          </ul>
-      </li>
-    <% end %>
-    <% if @current_registered_user.present? %>
-      <li role="presentation" class="divider"></li>
-      <li class="dropdown-submenu">
-        <a tabindex="-1" href="#" title="<%= @current_registered_user.user_name %>">
-          <%= @current_registered_user.user_name %>
-        </a>
-        <ul class="dropdown-menu">
-          <% @current_registered_user.product_roles.includes(:product, :role_type).each do |product_role| %>
-            <li role="presentation">
-              <a title="A product role you have">
-                <%= "#{editor_icon('circle-o')} #{product_role.product.name} #{product_role.role_type.name}".html_safe %>
-              </a>
+          <% if @current_registered_user.present? %>
+            <% @current_registered_user.product_roles.includes(:product, :role_type).each_with_index do |product_role, index| %>
+              <% if index == 0 %>
+                <li role="presentation" class="divider"></li>
+              <% end %>
+              <li role="presentation">
+                <a title="A product role you have">
+                  <%= "#{editor_icon('user-group')} #{product_role.product.name} #{product_role.role_type.name}".html_safe %>
+                </a>
+            <% end %>
           <% end %>
         </ul>
       </li>
