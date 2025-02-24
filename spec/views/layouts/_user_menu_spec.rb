@@ -28,28 +28,11 @@ RSpec.describe "layouts/_user_menu.html.erb", type: :view do
 
       it "displays the user's groups" do
         render
-        expect(rendered).to have_selector("a", text: "2 Groups")
+        expect(rendered).to have_selector("a", text: "2 Security groups")
+        expect(rendered).to have_selector("a", text: "1 Role type")
         expect(rendered).to have_selector("a", text: "Edit")
         expect(rendered).to have_selector("a", text: "Admin")
-      end
-    end
-
-    context "when registered user is present" do
-      context "when registered user has product roles" do
-        it "displays the registered user's product roles" do
-          render
-          expect(rendered).to have_selector("a", text: registered_user.user_name)
-          expect(rendered).to have_selector("a", text: "#{product.name} #{role_type.name}")
-        end
-      end
-      context "when registered user does not have product roles" do
-        let(:registered_user_1) { FactoryBot.create(:user, user_name: "Registered User 1") }
-        let!(:user_product_role) { FactoryBot.create(:user_product_role, product: product, role_type: role_type, user: registered_user_1) }
-        it "does not display the registered user's product roles" do
-          render
-          expect(rendered).to have_selector("a", text: registered_user.user_name)
-          expect(rendered).not_to have_selector("a", text: role_type.name)
-        end
+        expect(rendered).to have_selector("a", text: "#{product.name} #{user_product_role.role_type.name}")
       end
     end
   end

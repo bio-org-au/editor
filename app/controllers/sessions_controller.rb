@@ -31,7 +31,7 @@ class SessionsController < ApplicationController
 
   # Known problem: if login is rejected due to no login authority
   # entering a legit username/password into the re-rendered sign in form
-  # fails the first time.  
+  # fails the first time.
   def create
     build_sign_in
     if @sign_in.save && authorised_to_login?
@@ -53,6 +53,21 @@ class SessionsController < ApplicationController
   # For testing.
   def throw_invalid_authenticity_token
     raise ActionController::InvalidAuthenticityToken
+  end
+
+  def switch_product_context
+    product = Product.find_by(name: params[:product_name])
+    if product
+      session[:product_context] = product.name
+      redirect_to :root
+    else
+      redirect_to :root, notice: "Product not found."
+    end
+  end
+
+  def clear_product_context
+    session[:product_context] = nil
+    redirect_to :root
   end
 
   private
@@ -93,7 +108,7 @@ class SessionsController < ApplicationController
     sign_in_params = params[:sign_in]
     sign_in_params&.permit(:username, :password)
   end
-  
+
   def authorised_to_login?
     if @sign_in.groups.include?('login')
       true

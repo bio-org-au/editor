@@ -44,6 +44,7 @@ class User < ActiveRecord::Base
 
   has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: :user_id
   has_many :product_roles, class_name: "User::ProductRole"
+  has_many :products, through: :product_roles
 
   before_create :set_audit_fields
   before_update :set_updated_by

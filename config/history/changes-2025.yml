@@ -6,7 +6,7 @@
   :jira_id: '42'
   :jira_project: FLOR
   :description: |-
-    Permissions: List down the roles that a user has in the menu.
+    Permissions: List down the roles that a user has in the menu and updated the icon.
 - :date: 20-Feb-2025
   :jira_id: '5341'
   :description: |-

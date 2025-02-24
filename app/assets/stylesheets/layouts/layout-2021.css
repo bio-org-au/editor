@@ -7,3 +7,19 @@ div.workflow-guide h4 {
   padding: 1em;
 }
 
+.dropdown-menu > li > a.rebeccapurple{
+  color: rebeccapurple
+}
+
+.navbar-nav > li > .highlighted {
+  padding-top: 6px;
+  padding-bottom: 4px;
+}
+
+.navbar-nav > li > .highlighted span {
+  color: yellow;
+}
+
+.navbar-nav > li > .highlighted a{
+  color: white;
+}

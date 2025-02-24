@@ -25,3 +25,12 @@
   <li> <%= render partial: 'layouts/admin_menu' %> </li>
 <% end %>
 
+<% if session[:product_context] %>
+  <li class="">
+    <div class="highlighted">
+      <span> | In <%= session[:product_context].upcase %> context</span>
+      <%= link_to "( clear )", clear_product_context_path, method: :post, class: "highlighted", title: "Reset context" %>
+    </div>
+  </li>
+<% end %>
+

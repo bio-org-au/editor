@@ -71,6 +71,9 @@ Rails.application.routes.draw do
   match "/search/help/:help_id",
         as: "search_help", to: "search#help", via: :get
 
+  post "switch_product_context", to: "sessions#switch_product_context", as: "switch_product_context"
+  post "clear_product_context", to: "sessions#clear_product_context", as: "clear_product_context"
+
   resources :instance_notes,
             only: %i[show new edit create update destroy]
 
