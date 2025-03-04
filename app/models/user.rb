@@ -28,8 +28,8 @@
 #  family_name  :string(60)       not null
 #  given_name   :string(60)
 #  lock_version :bigint           default(0), not null
-#  user_name    :citext           not null
 #  updated_by   :string(50)       not null
+#  user_name    :string(30)       not null
 #  created_at   :timestamptz      not null
 #  updated_at   :timestamptz      not null
 #
@@ -43,11 +43,16 @@ class User < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
 
   has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: :user_id
-  has_many :product_roles, class_name: "User::ProductRole"
+  has_many :product_roles, class_name: "User::ProductRole", foreign_key: :user_id
   has_many :products, through: :product_roles
+  has_many :product_contexts, class_name: "User::ProductContext", foreign_key: :user_id
 
   before_create :set_audit_fields
   before_update :set_updated_by
+
+  def is?(requested_role_type_name)
+    product_roles.joins(:role_type).select("product_role_type.name").pluck(:name).include?(requested_role_type_name)
+  end
 
   def set_audit_fields
     self.created_by = self.updated_by = @current_user&.username||'unknown'
@@ -56,7 +61,6 @@ class User < ActiveRecord::Base
   def set_updated_by
     self.updated_by = @current_user&.username||'unknown'
   end
-
 
   # Note, the PK for the users table is the id column.
   # That appears as user_id as a foreign key.
@@ -71,6 +75,10 @@ class User < ActiveRecord::Base
     raise user.errors.full_messages.first.to_s unless user.save_with_username(username)
 
     user
+  end
+
+  def default_product_context
+    product_contexts.default.first
   end
 
   def save_with_username(username)

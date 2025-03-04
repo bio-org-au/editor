@@ -25,3 +25,14 @@
   <li> <%= render partial: 'layouts/admin_menu' %> </li>
 <% end %>
 
+<% if session[:product_context_display_text].present? %>
+  <li class="">
+    <div class="highlighted">
+      <span> | In <%= session[:product_context_display_text] %></span>
+      <% if !session[:product_context_is_default] %>
+        <%= link_to "( clear )", clear_product_contexts_path, method: :post, class: "highlighted", title: "Reset context" %>
+      <% end %>
+    </div>
+  </li>
+<% end %>
+

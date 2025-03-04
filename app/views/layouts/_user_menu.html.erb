@@ -32,7 +32,18 @@
                </a>
              </li>
           <% end %>
+
           <% if @current_registered_user.present? %>
+            <% @current_registered_user.product_contexts.each_with_index do |product_context, index| %>
+              <% if index == 0 %>
+                  <li role="presentation" class="divider"></li>
+                <% end %>
+              <li role="presentation">
+                <%- product_context_display_name = product_context.products.map(&:name).join('/') %>
+                <%= link_to "#{editor_icon('shuffle')} Switch to #{product_context_display_name} context".html_safe, switch_product_contexts_path(context_id: product_context.context_id), method: :post, class: "rebeccapurple", title: "#{product_context_display_name} context switch" %>
+              </li>
+            <% end %>
+
             <% @current_registered_user.product_roles.includes(:product, :role_type).each_with_index do |product_role, index| %>
               <% if index == 0 %>
                 <li role="presentation" class="divider"></li>

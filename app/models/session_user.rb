@@ -25,8 +25,14 @@ class SessionUser < ActiveType::Object
   validates :full_name, presence: true
   validates :groups, presence: true
 
+  def with_role?(requested_role_type_name)
+    return unless user
+
+    user.is?(requested_role_type_name)
+  end
+
   #
-  # Profile V2 
+  # Profile V2
   #
   def profile_v2?
     groups.include?('foa') || groups.include?('apni')
@@ -71,16 +77,19 @@ class SessionUser < ActiveType::Object
     groups.include?("loader-2-tab")
   end
 
-  # find_or_create_by would be preferred method but 
+  # find_or_create_by would be preferred method but
   # I couldn't get that to work
   def registered_user
-    registered_user = User.find_by(user_name: username)
-    return registered_user unless registered_user.blank?
+    registered_user = User.find_or_initialize_by(user_name: username) do |user|
+      user.family_name = full_name.split(' ').last||'unknown'
+      user.given_name = full_name.split(' ').first||'unknown'
+    end
 
-    User.new(user_name: username,
-             family_name: full_name.split(' ').last||'unknown',
-             given_name: full_name.split(' ').first||'unknown').save!
-    
-    User.find_by(user_name: username)
+    registered_user.save if registered_user.new_record?
+    registered_user
+  end
+
+  def user
+    @user ||= User.find_by(user_name: username)
   end
 end

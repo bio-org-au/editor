@@ -91,6 +91,7 @@ class Ability
     can "menu",               "user"
     can "menu",               "admin" # config is the only option
     can "admin",              "index" # allows viewing of the config
+    can "product_contexts/sessions", :all
   end
 
   def basic_auth_2

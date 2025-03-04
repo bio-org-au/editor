@@ -1139,7 +1139,7 @@ begin
     end if;
 
 end;
-    
+
 $$;
 
 
@@ -11023,11 +11023,85 @@ ALTER TABLE ONLY public.user_product_role
     ADD CONSTRAINT upr_users_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
---
--- PostgreSQL database dump complete
---
-
 SET search_path TO public,loader;
 
 
 
+drop table if exists public.product_context;
+create table if not exists public.product_context
+(
+    id           bigint primary key default nextval  ('public.nsl_global_seq'::regclass),
+    context_id   bigint not null,
+    product_id   bigint
+        constraint pc_product_fk references public.product not null,
+    description          text not null default 'Please describe this product context',
+    lock_version         bigint                   default 0     not null,
+    created_at           timestamp with time zone default now() not null,
+    created_by           varchar(50)              default USER  not null,
+    updated_at           timestamp with time zone default now() not null,
+    updated_by           varchar(50)              default USER  not null,
+    api_name             varchar(50),
+    api_date             timestamp with time zone
+)
+;
+create unique index if not exists pc_u_product_context
+    on public.product_context (context_id, product_id);
+
+comment on table product_context is 'The sets of products that a user can validly set a context for in the editor';
+
+comment on column product_context.id is 'The identifier for a product context record.';
+comment on column product_context.context_id is 'A number that represents an available context. Only the name index and default accepted tree can share a context in each dataset ie. in vascular plants - APNI and APC can be in the same context';
+comment on column product_context.product_id is 'The product for a context';
+comment on column product_context.description is 'A description for this context';
+comment on column product_context.lock_version is 'A system field to manage row level locking.';
+comment on column product_context.created_at is 'The date and time this data was created.';
+comment on column product_context.created_by is 'The user id of the person who created this data';
+comment on column product_context.updated_at is 'The date and time this data was updated.';
+comment on column product_context.updated_by is 'The user id of the person who last updated this data';
+comment on column product_context.api_name is 'The name of a system user, script, jira or services task which last changed this record.';
+comment on column product_context.api_date is 'The date when a system user, script, jira or services task last changed this record.';
+
+-----------------------------------------------------------------------------------------------------
+-- User Product Context : The product context(s) available to a user
+--
+--  25-Feb-24 [af] new table FLOR-45
+--  26-Feb-25 [af] create in prod FLOR-46
+-----------------------------------------------------------------------------------------------------
+drop table if exists public.user_product_context;
+create table public.user_product_context
+(
+    user_id              bigint                  not null
+        constraint ucr_users_fk
+            references public.users,
+    context_id           bigint                  not null,
+    is_default           boolean                  not null default false,
+    lock_version         bigint                   default 0     not null,
+    created_at           timestamp with time zone default now() not null,
+    created_by           varchar(50)              default USER  not null,
+    updated_at           timestamp with time zone default now() not null,
+    updated_by           varchar(50)              default USER  not null,
+    api_name             varchar(50),
+    api_date             timestamp with time zone,
+    primary key (user_id, context_id)
+);
+
+create unique index upc_user_context on user_product_context (user_id, context_id);
+alter table public.user_product_context
+    owner to nsl;
+
+comment on table user_product_context is 'A context that a user can validly set in the editor';
+
+comment on column user_product_context.context_id is 'Context given to a user';
+comment on column user_product_context.user_id is 'User given the context';
+comment on column user_product_context.is_default is 'The default context for a user when they logon';
+comment on column user_product_context.lock_version is 'A system field to manage row level locking.';
+comment on column user_product_context.created_at is 'The date and time this data was created.';
+comment on column user_product_context.created_by is 'The user id of the person who created this data';
+comment on column user_product_context.updated_at is 'The date and time this data was updated.';
+comment on column user_product_context.updated_by is 'The user id of the person who last updated this data';
+comment on column user_product_context.api_name is 'The name of a system user, script, jira or services task which last changed this record.';
+comment on column user_product_context.api_date is 'The date when a system user, script, jira or services task last changed this record.';
+
+--
+-- PostgreSQL database dump complete
+--
