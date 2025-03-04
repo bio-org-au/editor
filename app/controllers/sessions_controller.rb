@@ -17,7 +17,6 @@
 #   limitations under the License.
 #
 class SessionsController < ApplicationController
-  skip_before_action :authenticate
 
   def new
     build_sign_in
@@ -31,7 +30,7 @@ class SessionsController < ApplicationController
 
   # Known problem: if login is rejected due to no login authority
   # entering a legit username/password into the re-rendered sign in form
-  # fails the first time.  
+  # fails the first time.
   def create
     build_sign_in
     if @sign_in.save && authorised_to_login?
@@ -93,7 +92,7 @@ class SessionsController < ApplicationController
     sign_in_params = params[:sign_in]
     sign_in_params&.permit(:username, :password)
   end
-  
+
   def authorised_to_login?
     if @sign_in.groups.include?('login')
       true

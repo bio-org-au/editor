@@ -52,6 +52,35 @@ RSpec.describe "layouts/_user_menu.html.erb", type: :view do
         end
       end
     end
+
+    context "when user has product contexts" do
+      let!(:product_context) { FactoryBot.create(:product_context) }
+      let!(:user_product_context) { FactoryBot.create(:user_product_context, user: registered_user, is_default: true, context_id: product_context.context_id) }
+
+      let!(:product_context2) { FactoryBot.create(:product_context) }
+      let!(:user_product_context2) { FactoryBot.create(:user_product_context, user: registered_user, is_default: false, context_id: product_context2.context_id) }
+
+      before do
+        allow(session_user).to receive(:groups).and_return(["login"])
+      end
+
+      it "displays the user's product contexts" do
+        render
+        expect(rendered).to have_selector("a", text: "Switch to #{user_product_context.products.map(&:name).join('/')} context")
+        expect(rendered).to have_selector("a", text: "Switch to #{user_product_context2.products.map(&:name).join('/')} context")
+      end
+    end
+
+    context "when user has no product context" do
+      before do
+        allow(session_user).to receive(:groups).and_return(["login"])
+      end
+
+      it "does not display a product context" do
+        render
+        expect(rendered).not_to have_selector("a", text: "Switch to")
+      end
+    end
   end
 
   context "when generic active directory user" do

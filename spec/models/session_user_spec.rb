@@ -118,4 +118,98 @@ RSpec.describe SessionUser, type: :model do
   describe "#loader_2_tab_loader?" do
     include_context "#group_check?", :loader_2_tab_loader?, "loader-2-tab"
   end
+
+  describe "#registered_user" do
+    let(:username) { 'testuser' }
+    let(:full_name) { 'Test User' }
+    let(:groups) { ['group1', 'group2'] }
+
+    subject { described_class.new(username:, full_name:, groups:).registered_user }
+
+    context 'when the user is already registered' do
+      let!(:registered_user) { FactoryBot.create(:user, user_name: username) }
+
+      it 'returns the registered user' do
+        expect(subject).to eq(registered_user)
+      end
+    end
+
+    context 'when the user is not registered' do
+      it 'creates and returns a new user' do
+        expect {
+          subject
+        }.to change(User, :count).by(1)
+
+        new_user = User.find_by(user_name: username)
+        expect(new_user).not_to be_nil
+        expect(new_user.family_name).to eq('User')
+        expect(new_user.given_name).to eq('Test')
+      end
+
+      it 'returns the newly created user' do
+        new_user = subject
+        expect(new_user).to be_a(User)
+        expect(new_user.user_name).to eq(username)
+        expect(new_user.family_name).to eq('User')
+        expect(new_user.given_name).to eq('Test')
+      end
+    end
+  end
+
+  describe '#with_role?' do
+    let(:username) { 'testuser' }
+    let(:full_name) { 'Test User' }
+    let(:groups) { ['group1', 'group2'] }
+
+    let!(:user) { FactoryBot.create(:user, user_name: username) }
+    let!(:role_type) { FactoryBot.create(:role_type, name: 'admin') }
+    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role_type: role_type) }
+
+    let(:session_user) { FactoryBot.create(:session_user, username: username, groups: groups) }
+
+    context 'when the user is present' do
+      context 'when the user has the requested role' do
+        it 'returns true' do
+          expect(session_user.with_role?("admin")).to be true
+        end
+      end
+
+      context 'when the user does not have the requested role' do
+        it 'returns false' do
+          expect(session_user.with_role?('editor')).to be false
+        end
+      end
+    end
+
+    context 'when the user is not present' do
+      before do
+        allow(session_user).to receive(:user).and_return(nil)
+      end
+
+      it 'returns nil' do
+        expect(session_user.with_role?('admin')).to be_nil
+      end
+    end
+  end
+
+  describe "#user" do
+    let(:username) { "test" }
+    let!(:user) { FactoryBot.create(:user, user_name: username) }
+    let!(:session_user) { FactoryBot.create(:session_user, username: "test", groups: ["login"]) }
+
+    subject { session_user.user }
+
+    context "when username matches a user's user name" do
+      it "returns the user object" do
+        expect(subject).to eq(user)
+      end
+    end
+
+    context "when username does not match a user's user name" do
+      let(:username) { "bob" }
+      it "returns nil" do
+        expect(subject).to eq(nil)
+      end
+    end
+  end
 end

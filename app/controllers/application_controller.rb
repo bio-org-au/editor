@@ -15,7 +15,11 @@ class ApplicationController < ActionController::Base
     head :forbidden
   end
 
+  helper_method :product_context_product_id
+
   protected
+
+  attr_reader :current_user, :current_registered_user
 
   def show_login_page
     logger.error("Invalid Authenticity Token.")
@@ -44,6 +48,19 @@ class ApplicationController < ActionController::Base
     else
       continue_user_session
     end
+  end
+
+  def set_product_context_session
+    product_context = current_registered_user.default_product_context
+    if product_context && session[:product_context_display_text].blank?
+      session[:product_context_is_default] = product_context.is_default?
+      session[:product_context_display_text] = product_context.products.map(&:name).join("/")
+      session[:product_context_product_id] = product_context.products.pluck(:id).first
+    end
+  end
+
+  def product_context_product_id
+    session[:product_context_product_id]
   end
 
   private
@@ -86,6 +103,7 @@ class ApplicationController < ActionController::Base
     @current_registered_user = @current_user.registered_user
     logger.info("User is known: #{@current_user.username}")
     set_working_draft_session
+    set_product_context_session
   end
 
   def set_working_draft_session
