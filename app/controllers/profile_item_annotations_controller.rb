@@ -17,7 +17,11 @@
 #   limitations under the License.
 #
 class ProfileItemAnnotationsController < ApplicationController
+  skip_before_action :authorise
+
   before_action :set_profile_item_annotation, only: %i[update]
+
+  before_action :authorise_user!, except: [:create]
 
   def create
     # Check for existing ProfileAnnotation based on profile_item_id
@@ -27,6 +31,9 @@ class ProfileItemAnnotationsController < ApplicationController
         updated_by: current_user.username
       )
     )
+
+    authorise_user!
+
     if @profile_item_annotation.save!
       @message = "Saved"
       render :create
@@ -42,6 +49,10 @@ class ProfileItemAnnotationsController < ApplicationController
   end
 
   private
+
+  def authorise_user!
+    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item_annotation) unless can? :manage, @profile_item_annotation
+  end
 
   def set_profile_item_annotation
     @profile_item_annotation = Profile::ProfileItemAnnotation.find(params[:id])

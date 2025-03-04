@@ -10,9 +10,16 @@ class ApplicationController < ActionController::Base
   #  around_action :user_tagged_logging
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :show_login_page
-  rescue_from CanCan::AccessDenied do |_exception|
+  rescue_from CanCan::AccessDenied do |ex|
     logger.error("Access Denied")
-    head :forbidden
+    details = "#{ex.message} #{ex.action.to_sym} #{ex.subject.class.name}"
+    logger.error("User #{@current_user.username} #{details}")
+    #head :forbidden
+    flash[:alert] = "Access Denied"
+    respond_to do |format|
+      format.turbo_stream { render "search/flash_message", locals: {flash: flash} }
+      format.html { redirect_to request.referrer || root_path, status: :forbidden, alert: "Access Denied" }
+    end
   end
 
   protected
@@ -201,7 +208,7 @@ end
 class Hash
   def to_html_list
     s = '<ul>'
-    self.sort.to_h.each do |key, value| 
+    self.sort.to_h.each do |key, value|
 
       if value.nil?
       #  s += "<li>#{key}</li>"

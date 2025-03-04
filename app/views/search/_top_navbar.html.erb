@@ -20,9 +20,7 @@
       </div>
     <% elsif flash.present? %>
       <div id="broadcast" style="padding-top: 3px; height: 1.5em;" class="">
-        <% flash.each do |key, value| %>
-          <%= value %>
-        <% end %>
+        <%= render partial: "search/flash_message", locals: { flash: flash } %>
       </div>
     <% end %>
     <div id="search-summary-row" class="row">
@@ -97,7 +95,7 @@
                       remote: true,
                       title: "Batch Loader work area" %>
         </li>
-      <% end %> 
+      <% end %>
 
 
     </ul>

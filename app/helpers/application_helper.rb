@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def user_profile_tab_name
-    @current_user.profile_v2_context.product
+    session[:product_context_display_text]
   end
 
   def increment_tab_index(increment = 1)
