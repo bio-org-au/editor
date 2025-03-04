@@ -17,6 +17,7 @@
 #   limitations under the License.
 #
 class SessionsController < ApplicationController
+  skip_before_action :authenticate
 
   def new
     build_sign_in
