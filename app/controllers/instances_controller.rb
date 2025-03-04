@@ -209,7 +209,7 @@ class InstancesController < ApplicationController
   def find_instance
     @instance = Instance.find(params[:id])
     if params[:tab] == "tab_profile_v2"
-      @product_configs_and_profile_items, @product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@current_user, @instance).run_query
+      @product_configs_and_profile_items, @product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@current_user, @instance, {product_id: product_context_product_id}).run_query
     end
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the instance."

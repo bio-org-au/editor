@@ -1,0 +1,5 @@
+<%= turbo_stream.replace "broadcast" do %>
+  <div id="broadcast" style="padding-top: 3px; height: 1.5em;" class="">
+    <%= render partial: "search/flash_message", locals: {flash: flash} %>
+  </div>
+<% end %>

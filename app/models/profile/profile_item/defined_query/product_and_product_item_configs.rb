@@ -1,15 +1,19 @@
 class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
-  attr_reader :product,
-              :instance,
-              :product_configs_and_profile_items
+  attr_reader :instance,
+              :product_configs_and_profile_items,
+              :params
 
   def initialize(user, instance, params = {})
     @user = user
     @profile_context = user.profile_v2_context
-    @product = find_product_by_name(@profile_context.product)
     @product_configs_and_profile_items = []
     @instance = instance
     @params = params
+  end
+
+  def product
+    @product ||= Product.find(params[:product_id]) if params[:product_id]
+    @product ||= find_product_by_name(@profile_context.product)
   end
 
   def debug(s)
@@ -37,7 +41,7 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
   end
 
   def find_or_initialize_profile_items
-    return [] unless @product && @instance
+    return [] unless product && @instance
 
     product_item_configs = fetch_product_item_configs
 
