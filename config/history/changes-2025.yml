@@ -1,4 +1,8 @@
 - :date: 07-Mar-2025
+  :jira_id:
+  :description: |-
+    CI: Trigger github workflow tests for .erb file changes
+- :date: 07-Mar-2025
   :jira_id: '5330'
   :description: |-
     Loader Batch Review Voting: Tidy up the Reviewers Vote tab
@@ -7,7 +11,7 @@
   :description: |-
     Loader: Batch Review search results now include the Batch name; revert recent nokogiri patch upgrade
 - :date: 06-Mar-2025
-  :jira_id: 
+  :jira_id:
   :description: |-
     Security: Upgrade rack
 - :date: 05-Mar-2025
