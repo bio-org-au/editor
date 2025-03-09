@@ -28,5 +28,7 @@ FactoryBot.define do
     lock_version { 1 }
     api_name { "Sample Api name" }
     api_date { Time.current }
+
+    association :reference
   end
 end

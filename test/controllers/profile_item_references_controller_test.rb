@@ -151,13 +151,24 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
   end
 
   test "should handle error when destroy fails" do
-    delete :destroy,
+    Profile::ProfileItemReference.create(
+      reference_id: @reference.id,
+      annotation: '1st Annotation',
+      created_by: "tester",
+      created_at: Time.current,
+      updated_by: "tester",
+      updated_at: Time.current,
+      profile_item_id: @profile_item.id
+    )
+
+    Profile::ProfileItemReference.stub_any_instance(:destroy, false) do
+      delete :destroy,
           params: {
             reference_id: @reference.id,
             profile_item_id: @profile_item.id,
           }, session: @session, xhr: true
-    assert_response :unprocessable_entity
-    assert_equal "Error deleting profile item reference: undefined method `profile_item' for nil", assigns(:message)
-    assert_template :destroy_failed
+      assert_response :unprocessable_entity
+      assert_template :destroy_failed
+    end
   end
 end

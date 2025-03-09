@@ -17,7 +17,12 @@
 #   limitations under the License.
 #
 class ProfileItemsController < ApplicationController
+
+  skip_before_action :authorise
+
   before_action :set_profile_item, only: %i[show tab destroy]
+
+  before_action :authorise_user!, except: [:index]
 
   # GET /profile_items/1/tab/:tab
   # Sets up RHS details panel on the search results page.
@@ -47,10 +52,18 @@ class ProfileItemsController < ApplicationController
   def index
     @instance = Instance.find_by!(id: permitted_profile_item_params[:instance_id])
     @product_configs_and_profile_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
-      .new(@current_user, @instance, permitted_profile_item_params).run_query
+      .new(
+        @current_user,
+        @instance,
+        permitted_profile_item_params
+      ).run_query
   end
 
   private
+
+  def authorise_user!
+    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item) unless can? :manage, @profile_item
+  end
 
   def set_profile_item
     @profile_item = Profile::ProfileItem.find(params[:id])
