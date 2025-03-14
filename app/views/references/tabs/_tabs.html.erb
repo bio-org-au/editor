@@ -11,7 +11,7 @@
                                           prev_tab: '',
                                           next_tab: '' } %>
 
-      <% if (can? 'references', 'edit') || (can? :update, @reference) %>
+      <% if can? :update, @reference %>
 
         <%= render partial: 'references/tabs/tab', locals: {first: false,
                                             last: false,

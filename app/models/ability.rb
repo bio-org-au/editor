@@ -68,7 +68,7 @@ class Ability
     end
     can [:create, :read], Author
     can :update, Author do |author|
-      author.references.blank? && author.names.blank?
+      !author.referenced_in_any_instance? && author.no_other_authored_names?
     end
     can :create, Profile::ProfileItem
     can :manage, Profile::ProfileItem do |profile_item|
@@ -85,7 +85,7 @@ class Ability
     end
     can :create, Reference
     can :update, Reference do |reference|
-      !reference.instances?
+      reference.instances.blank?
     end
     can "authors", :all
     can "instances", ["tab_details", "tab_profile_v2"]
@@ -101,7 +101,8 @@ class Ability
       "create",
       "tab_edit_1",
       "tab_edit_2",
-      "tab_edit_3"
+      "tab_edit_3",
+      "update"
     ]
   end
 
