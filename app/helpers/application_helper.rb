@@ -13,13 +13,7 @@ module ApplicationHelper
   end
 
   def user_profile_tab_name
-    if current_registered_user.is?('draft-profile-editor')
-      current_registered_user.product_roles
-        .joins(:role_type)
-        .find_by(product_role_type: {name: "draft-profile-editor"})
-        .product
-        .name
-    end
+    current_registered_user.available_product_from_roles&.name
   end
 
   def increment_tab_index(increment = 1)

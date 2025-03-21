@@ -53,6 +53,18 @@ class User < ActiveRecord::Base
     product_roles.joins(:role_type).select("product_role_type.name").pluck(:name).include?(requested_role_type_name)
   end
 
+  def available_product_from_roles
+    role = "draft-profile-editor" if self.is?("draft-profile-editor")
+    role ||= "draft-editor" if self.is?("draft-editor")
+
+    if role
+      self.product_roles
+        .joins(:role_type)
+        .find_by(product_role_type: {name: role})
+        .product
+    end
+  end
+
   def set_audit_fields
     self.created_by = self.updated_by = @current_user&.username||'unknown'
   end

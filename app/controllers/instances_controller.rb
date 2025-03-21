@@ -259,7 +259,7 @@ class InstancesController < ApplicationController
       offer << "tab_profile_v2"
     end
     offer << "tab_comments"
-    offer << @current_user.profile_v2_context.copy_instance_tab(@instance, params["row-type"])
+    offer << "tab_copy_to_new_profile_v2"
     if Rails.configuration.try('batch_loader_aware') &&
           can?('loader/names', 'update') &&
           offer_loader_tab?

@@ -54,11 +54,16 @@ class Ability
     reviewer_auth     if user.reviewer?
     batch_loader_auth if user.batch_loader?
     loader_2_tab_auth if user.loader_2_tab_loader?
-    #profile_v2_auth   if user.profile_v2?
 
+    #profile_v2_auth   if user.profile_v2?
     # NOTES: Broader permissions come first
-    profile_editor if user.with_role?('profile-editor')
-    draft_profile_editor if user.with_role?('draft-profile-editor')
+    if user.with_role?('draft-editor')
+      draft_editor
+    elsif user.with_role?('profile-editor')
+      profile_editor
+    elsif user.with_role?('draft-profile-editor')
+      draft_profile_editor
+    end
   end
 
   def draft_profile_editor
@@ -104,6 +109,13 @@ class Ability
       "tab_edit_3",
       "update"
     ]
+  end
+
+  def draft_editor
+    can :copy, Instance do |instance|
+      instance.draft?
+    end
+    can "instances", "tab_copy_to_new_profile_v2"
   end
 
   def profile_editor

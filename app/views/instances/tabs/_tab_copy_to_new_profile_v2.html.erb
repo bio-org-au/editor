@@ -1,4 +1,4 @@
-<% product_reference = Profile::Product.find_by(name: @current_user.profile_v2_context.product).reference %>
+<% product_reference = Profile::Product.find_by(name: @current_registered_user.available_product_from_roles&.name).reference %>
 <div id="search-result-details-info-message-container" class="message-container"></div>
 <div id="search-result-details-error-message-container" class="message-container"></div>
 <% increment_tab_index(0) %>
@@ -19,19 +19,19 @@ The copied instance will remain attached to:
 <h6>&mdash; <%= @instance.name.full_name %></h6>
 
 <% @instance.instance_type_id = InstanceType.secondary_reference.id %>
-<%= form_for(@instance,  
+<%= form_for(@instance,
              url: { action: "copy_for_profile_v2",
-             format: 'js'}, 
+             format: 'js'},
              id: "copy-instance-for-name-form",
-             remote: true, 
+             remote: true,
              method: :post) do |f| %>
 
   <br>
   The copied instance will be attached to the <%= @current_user.profile_v2_context.product %> product reference:<br>
   <h6>&mdash; <%= product_reference.citation %></h6>
-  <br> 
+  <br>
   <label for="instance_type_id">Instance type:</label>
-  <br> 
+  <br>
   <h6>&mdash; <%= @instance.instance_type.name %></h6>
   <%= f.hidden_field :instance_type_id, value: @instance.instance_type_id %>
 
@@ -44,7 +44,7 @@ The copied instance will remain attached to:
   <% end %>
 
   <br>
-<div class="width-100-percent"> 
+<div class="width-100-percent">
 
   <%= link_to("Copy",
              "javascript:void(0);",
@@ -99,7 +99,7 @@ The copied instance will remain attached to:
 <br>
 <br>
 <%= link_to("Refresh page",
-            '#', 
+            '#',
             id: "refresh-page-after-copy-link",
             class: "btn btn-default hidden refresh-page-link",
             title: "Refresh page")

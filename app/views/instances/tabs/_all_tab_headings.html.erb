@@ -145,7 +145,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_copy_to_new_profile_v2') %>
-    <% if @current_user.profile_v2_context.copy_instance_allowed? %>
+    <% if can? :copy, @instance %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                         last: false,
                                         this_tab: 'tab_copy_to_new_profile_v2',
