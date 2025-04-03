@@ -22,7 +22,7 @@ class ProfileItemsController < ApplicationController
 
   before_action :set_profile_item, only: %i[show tab destroy]
 
-  before_action :authorise_user!, except: [:index]
+  before_action :authorise_user!, except: [:tab, :index]
 
   # GET /profile_items/1/tab/:tab
   # Sets up RHS details panel on the search results page.

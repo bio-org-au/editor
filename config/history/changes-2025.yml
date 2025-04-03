@@ -1,3 +1,8 @@
+- :date: 04-Apr-2025
+  :jira_id: '68'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project profile context v2 service: Code Cleanup - Remove unused codes
 - :date: 03-Apr-2025
   :jira_id: '48'
   :jira_project: FLOR

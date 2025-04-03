@@ -5,10 +5,8 @@ RSpec.describe InstancesController, type: :controller do
   describe '#tabs_to_offer' do
     let(:user) { FactoryBot.create(:session_user) }
     let(:instance) { FactoryBot.create(:instance) }
-    let(:profile_v2_context) { double('ProfileV2Context') }
 
     before do
-      allow_any_instance_of(SessionUser).to receive(:profile_v2_context).and_return(profile_v2_context)
       allow(controller).to receive(:params).and_return({})
       allow(controller).to receive(:can?).and_return(true)
       controller.instance_variable_set(:@current_user, user)
@@ -20,7 +18,6 @@ RSpec.describe InstancesController, type: :controller do
         allow(instance).to receive(:standalone?).and_return(true)
         allow(instance).to receive(:profile?).and_return(true)
         allow(instance).to receive(:show_taxo?).and_return(true)
-        allow(profile_v2_context).to receive(:unpublished_citation_tab).and_return('tab_unpublished_citation')
         controller.instance_variable_set(:@instance, instance)
       end
 
@@ -81,9 +78,6 @@ RSpec.describe InstancesController, type: :controller do
     context 'when batch loader is aware and user has permissions' do
       before do
         allow(instance).to receive(:standalone?).and_return(true)
-        allow(profile_v2_context).to receive(:copy_instance_tab).and_return(nil)
-        allow(profile_v2_context).to receive(:unpublished_citation_tab).and_return(nil)
-        allow(profile_v2_context).to receive(:synonymy_tab).and_return(nil)
         allow(controller).to receive(:can?).with('loader/names', 'update').and_return(true)
         allow(controller).to receive(:offer_loader_tab?).and_return(true)
         allow(Rails.configuration).to receive(:try).with('batch_loader_aware').and_return(true)

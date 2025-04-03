@@ -1,7 +1,11 @@
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>
-<div class="error-message-container"></div>
+<% if can? :manage, @profile_item %>
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
+  <div class="error-message-container"></div>
 
-<%= render partial: "instances/tabs/tab_product_config_profile_item_form", 
-  locals: {product_item_config:  @profile_item.product_item_config, profile_item: @profile_item, instance: @profile_item.instance}
-%>
+  <%= render partial: "instances/tabs/tab_product_config_profile_item_form",
+    locals: {product_item_config:  @profile_item.product_item_config, profile_item: @profile_item, instance: @profile_item.instance}
+  %>
+<% else %>
+  <%= render partial: "profile_items/tabs/tab_empty" %>
+<% end %>

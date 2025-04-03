@@ -70,10 +70,10 @@ class Ability
     can :update, Author do |author|
       !author.referenced_in_any_instance? && author.no_other_authored_names?
     end
-    can :create, Profile::ProfileItem
     can :manage, Profile::ProfileItem do |profile_item|
       profile_item.is_draft?
     end
+    can [:read, :create], Profile::ProfileItem
     can :manage, Profile::ProfileItemReference do |profile_item_reference|
       profile_item_reference.profile_item.is_draft?
     end

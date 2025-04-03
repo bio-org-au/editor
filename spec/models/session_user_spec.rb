@@ -59,38 +59,6 @@ RSpec.describe SessionUser, type: :model do
     end
   end
 
-  describe "#profile_v2_context" do
-    let(:session_user) { FactoryBot.create(:session_user) }
-
-    subject { session_user.profile_v2_context }
-
-    context "for foa group" do
-      it "return the foa profile context" do
-        allow_any_instance_of(SessionUser).to receive(:groups).and_return('foa')
-        expect(subject.class).to eq Users::ProfileContexts::Foa
-      end
-    end
-
-    context "for apni group" do
-      it "return the foa profile context" do
-        allow_any_instance_of(SessionUser).to receive(:groups).and_return('apni')
-        expect(subject.class).to eq Users::ProfileContexts::Apni
-      end
-    end
-
-    context "for non-profile group" do
-      it "return the foa profile context" do
-        allow_any_instance_of(SessionUser).to receive(:groups).and_return('other-product')
-        expect(subject.class).to eq Users::ProfileContexts::Apni
-      end
-    end
-  end
-
-  describe "#profile_v2?" do
-    include_context "#group_check?", :profile_v2?, "foa"
-    include_context "#group_check?", :profile_v2?, "apni"
-  end
-
   describe "#edit?" do
    include_context "#group_check?", :edit?, "edit"
   end
