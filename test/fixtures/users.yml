@@ -1,0 +1,45 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id           :bigint           not null, primary key
+#  created_by   :string(50)       not null
+#  family_name  :string(60)       not null
+#  given_name   :string(60)
+#  lock_version :bigint           default(0), not null
+#  updated_by   :string(50)       not null
+#  user_name    :string(30)       not null
+#  created_at   :timestamptz      not null
+#  updated_at   :timestamptz      not null
+#
+# Indexes
+#
+#  users_name_key  (user_name) UNIQUE
+#
+_fixture:
+  model_class: UserTable
+
+DEFAULTS: &DEFAULTS
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  created_by: tester
+  updated_by: tester
+
+
+user_one:
+ <<: *DEFAULTS
+ user_name: uone
+ given_name: userx
+ family_name: One
+
+reviewer_one:
+ <<: *DEFAULTS
+ user_name: rev1
+ given_name: Reviewer
+ family_name: One
+
+user_two:
+ <<: *DEFAULTS
+ user_name: utwo
+ given_name: userx
+ family_name: Two

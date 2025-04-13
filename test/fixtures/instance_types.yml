@@ -1,725 +1,399 @@
+#  √  Fri 20 14:19 ruby 3.3.5  ~/anbg/rails/nedruby/test/fixtures
+#  % grep 'instance_type' instances.yml | sort | uniq -c | sort -nr
+#  37   instance_type: comb_nov
+#  11   instance_type: secondary_reference
+#  10   instance_type: unknown
+#   9   instance_type: tax_nov
+#   7   instance_type: nomenclatural_synonym
+#   2   instance_type: primary_reference
+#   2   instance_type: invalid_publication
+#   2   instance_type: common_name
+#   2   instance_type: basionym
+#   1   instance_type: vernacular_name
+#   1   instance_type: unsourced_pro_parte_misapplied
+#   1   instance_type: unsourced_misapplied
+#   1   instance_type: unsourced_doubtful_pro_parte_misapplied
+#   1   instance_type: taxonomic_synonym
+#   1   instance_type: synonym
+#   1   instance_type: pro_parte_nomenclatural_synonym
+#   1   instance_type: doubtful_taxonomic_synonym
+#   1   instance_type: doubtful_pro_parte_taxonomic_synonym
+#   1   instance_type: doubtful_pro_parte_synonym
+#   1   instance_type: doubtful_nomenclatural_synonym
+
+# == Schema Information
+#
+# Table name: instance_type
+#
+#  id                 :bigint           not null, primary key
+#  alignment          :boolean          default(FALSE), not null
+#  bidirectional      :boolean          default(FALSE), not null
+#  citing             :boolean          default(FALSE), not null
+#  deprecated         :boolean          default(FALSE), not null
+#  description_html   :text
+#  doubtful           :boolean          default(FALSE), not null
+#  has_label          :string(255)      default("not set"), not null
+#  lock_version       :bigint           default(0), not null
+#  misapplied         :boolean          default(FALSE), not null
+#  name               :string(255)      not null
+#  nomenclatural      :boolean          default(FALSE), not null
+#  of_label           :string(255)      default("not set"), not null
+#  primary_instance   :boolean          default(FALSE), not null
+#  pro_parte          :boolean          default(FALSE), not null
+#  protologue         :boolean          default(FALSE), not null
+#  relationship       :boolean          default(FALSE), not null
+#  secondary_instance :boolean          default(FALSE), not null
+#  sort_order         :integer          default(0), not null
+#  standalone         :boolean          default(FALSE), not null
+#  synonym            :boolean          default(FALSE), not null
+#  taxonomic          :boolean          default(FALSE), not null
+#  unsourced          :boolean          default(FALSE), not null
+#  rdf_id             :string(50)
+#
+# Indexes
+#
+#  instance_type_rdfid           (rdf_id)
+#  uk_j5337m9qdlirvd49v4h11t1lk  (name) UNIQUE
+#
+DEFAULTS: &DEFAULTS
+  alignment: false
+  bidirectional: false
+  citing: false
+  protologue: false
+  deprecated: false
+  misapplied: false
+  nomenclatural: false
+  primary_instance: false
+  pro_parte: false
+  standalone: false
+  relationship: false
+  secondary_instance: false
+  synonym: false
+  taxonomic: false
+  unsourced: false
+  sort_order: 100
+
+alternative_name:
+  <<: *DEFAULTS
+  name: "alternative name"
+  bidirectional: true
+  citing: true
+  nomenclatural: true
+  relationship: true
+  synonym: true
 
 primary_reference:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "primary reference"
-  nomenclatural: false
   primary_instance: true
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 default:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "[default]"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 na:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "[n/a]"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 unknown:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "[unknown]"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 autonym:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "autonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 explicit_autonym:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "explicit autonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 implicit_autonym:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "implicit autonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 synonym:
+  <<: *DEFAULTS
+  name: "synonym"
   citing: true
   deprecated: true
-  misapplied: false
-  name: "synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 14
-  standalone: false
-  synonym: false
-  taxonomic: false
+  relationship: true
   unsourced: true
+  sort_order: 14
 
 basionym:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "basionym"
+  citing: true
   nomenclatural: true
-  primary_instance: false
-  pro_parte: false
   relationship: true
-  secondary_instance: false
-  sort_order: 1
-  standalone: false
   synonym: true
-  taxonomic: false
-  unsourced: false
+  sort_order: 1
 
 comb_et_stat_nov:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "comb. et stat. nov."
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 comb_nov:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "comb. nov."
-  nomenclatural: false
   primary_instance: true
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
+  protologue: true
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 common_name:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "common name"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
+  citing: true
+  relationship: true
   unsourced: true
 
 doubtful_invalid_publication:
-  citing: false
-  deprecated: true
-  misapplied: false
+  <<: *DEFAULTS
   name: "doubtful invalid publication"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
+  deprecated: true
 
 misapplied:
-  citing: true
-  deprecated: false
-  misapplied: true
+  <<: *DEFAULTS
   name: "misapplied"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
+  citing: true
+  relationship: true
+  misapplied: true
 
 doubtful_misapplied:
-  citing: true
-  deprecated: false
-  misapplied: true
+  <<: *DEFAULTS
   name: "doubtful misapplied"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
+  relationship: true
+  citing: true
+  misapplied: true
   sort_order: 8
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 doubtful_synonym:
+  <<: *DEFAULTS
+  name: "doubtful synonym"
   citing: true
   deprecated: true
-  misapplied: false
-  name: "doubtful synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
   relationship: true
-  secondary_instance: false
-  sort_order: 16
-  standalone: false
   synonym: true
-  taxonomic: false
-  unsourced: false
+  sort_order: 16
 
 doubtful_nomenclatural_synonym:
-  citing: true
-  deprecated: true
-  misapplied: false
+  <<: *DEFAULTS
   name: "doubtful nomenclatural synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: true
-  secondary_instance: false
-  sort_order: 4
-  standalone: false
+  doubtful: true
+  nomenclatural: true
   synonym: true
-  taxonomic: false
-  unsourced: false
+  sort_order: 4
 
 doubtful_pro_parte_misapplied:
-  citing: true
-  deprecated: false
-  misapplied: true
+  <<: *DEFAULTS
   name: "doubtful pro parte misapplied"
-  nomenclatural: false
-  primary_instance: false
+  citing: true
+  misapplied: true
   pro_parte: true
   relationship: true
-  secondary_instance: false
   sort_order: 9
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 doubtful_pro_parte_synonym:
+  <<: *DEFAULTS
+  name: "doubtful pro parte synonym"
   citing: true
   deprecated: true
-  misapplied: false
-  name: "doubtful pro parte synonym"
-  nomenclatural: false
-  primary_instance: false
+  doubtful: true
   pro_parte: true
   relationship: true
-  secondary_instance: false
+  synonym: true
   sort_order: 17
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 doubtful_pro_parte_taxonomic_synonym:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "doubtful pro parte taxonomic synonym"
-  nomenclatural: false
-  primary_instance: false
+  citing: true
+  doubtful: true
   pro_parte: true
   relationship: true
-  secondary_instance: false
-  sort_order: 13
-  standalone: false
-  synonym: false
+  synonym: true
   taxonomic: true
-  unsourced: false
+  sort_order: 13
 
 doubtful_taxonomic_synonym:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "doubtful taxonomic synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
+  citing: true
+  doubtful: true
   relationship: true
-  secondary_instance: false
-  sort_order: 12
-  standalone: false
-  synonym: false
+  synonym: true
   taxonomic: true
-  unsourced: false
+  sort_order: 12
 
 excluded_name:
-  citing: false
-  deprecated: true
-  misapplied: false
+  <<: *DEFAULTS
   name: "excluded name"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
+  deprecated: true
 
 homonym:
-  citing: false
-  deprecated: true
-  misapplied: false
+  <<: *DEFAULTS
   name: "homonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
+  deprecated: true
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 invalid_publication:
-  citing: false
-  deprecated: true
-  misapplied: false
+  <<: *DEFAULTS
   name: "invalid publication"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
+  deprecated: true
 
 isonym:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "isonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
+  relationship: true
+  citing: true
 
 nom_et_stat_nov:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "nom. et stat. nov."
-  nomenclatural: false
   primary_instance: true
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 nom_nov:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "nom. nov."
-  nomenclatural: false
   primary_instance: true
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 nomenclatural_synonym:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "nomenclatural synonym"
+  citing: true
   nomenclatural: true
-  primary_instance: false
-  pro_parte: false
   relationship: true
-  secondary_instance: false
-  sort_order: 3
-  standalone: false
   synonym: true
-  taxonomic: false
-  unsourced: false
+  sort_order: 3
 
 orthographic_variant:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: orthographic variant
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
+  relationship: true
+  citing: true
   unsourced: true
 
 pro_parte_misapplied:
-  citing: true
-  deprecated: false
-  misapplied: true
+  <<: *DEFAULTS
   name: "pro parte misapplied"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
+  citing: true
+  misapplied: true
+  relationship: true
   sort_order: 7
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 pro_parte_nomenclatural_synonym:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "pro parte nomenclatural synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
+  nomenclatural: true
   relationship: true
-  secondary_instance: false
+  synonym: true
   sort_order: 5
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 pro_parte_replaced_synonym:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "pro parte replaced synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
   sort_order: 2
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 pro_parte_synonym:
+  <<: *DEFAULTS
+  name: "pro parte synonym"
   citing: true
   deprecated: true
-  misapplied: false
-  name: "pro parte synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
   sort_order: 15
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 pro_parte_taxonomic_synonym:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "pro parte taxonomic synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 3
-  standalone: false
-  synonym: false
+  citing: true
   taxonomic: true
-  unsourced: false
+  relationship: true
+  sort_order: 3
 
 replaced_synonym:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: replaced synonym
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
+  citing: true
+  relationship: true
   sort_order: 1
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 secondary_reference:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: secondary reference
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
   secondary_instance: true
-  sort_order: 100
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 sens_lat:
-  citing: false
-  deprecated: true
-  misapplied: false
+  <<: *DEFAULTS
   name: "sens. lat."
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
+  deprecated: true
 
 tax_nov:
-  citing: false
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "tax. nov."
-  nomenclatural: false
   primary_instance: true
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
+  protologue: true
   standalone: true
-  synonym: false
-  taxonomic: false
-  unsourced: false
 
 taxonomic_synonym:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "taxonomic synonym"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
+  citing: true
   relationship: true
-  secondary_instance: false
-  sort_order: 10
-  standalone: false
-  synonym: false
   taxonomic: true
-  unsourced: false
+  synonym: true
+  sort_order: 10
 
 trade_name:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: "trade name"
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
-  unsourced: false
+  relationship: true
+  citing: true
 
 vernacular_name:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: vernacular name
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
-  relationship: false
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
+  citing: true
+  relationship: true
   unsourced: true
-
 
 unsourced_doubtful_misapplied:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: unsourced doubtful misapplied
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
+  citing: true
   relationship: true
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
   unsourced: true
-
 
 unsourced_doubtful_pro_parte_misapplied:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: unsourced doubtful pro parte misapplied
-  nomenclatural: false
-  primary_instance: false
+  citing: true
+  doubtful: true
+  misapplied: true
   pro_parte: true
   relationship: true
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
   unsourced: true
-
 
 unsourced_misapplied:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: unsourced misapplied
-  nomenclatural: false
-  primary_instance: false
-  pro_parte: false
+  citing: true
+  misapplied: true
   relationship: true
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
   unsourced: true
 
-
 unsourced_pro_parte_misapplied:
-  citing: true
-  deprecated: false
-  misapplied: false
+  <<: *DEFAULTS
   name: unsourced pro parte misapplied
-  nomenclatural: false
-  primary_instance: false
+  citing: true
+  misapplied: true
   pro_parte: true
   relationship: true
-  secondary_instance: false
-  sort_order: 100
-  standalone: false
-  synonym: false
-  taxonomic: false
   unsourced: true
 

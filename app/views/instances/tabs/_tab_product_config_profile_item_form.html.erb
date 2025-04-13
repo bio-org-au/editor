@@ -1,5 +1,6 @@
 <div>
-  
+
+  <div id="common-error-message-container" class="error-container"></div>
   <div id="message_<%= product_item_config.id %>" class="message-container"></div> <!-- Message container -->
 </div>
 
@@ -8,7 +9,7 @@
   <% profile_text = profile_item.profile_text || Profile::ProfileText.new %>
   <% url = profile_text.persisted? ? profile_text_path(id: profile_text.id) : profile_texts_path %>
   <% method = profile_text.persisted? ? :put : :post %>
-  <div id="profile_text_form_<%= product_item_config.id %>" style="overflow: hidden; margin-bottom: 10px;">
+  <div id="profile_text_form_<%= product_item_config.id %>" style="overflow: hidden; margin-bottom: 10px;overflow:hidden;">
     <%= render partial: "profile_texts/form",
         locals: {
         profile_text: profile_text,

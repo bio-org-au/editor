@@ -2,17 +2,19 @@
   '#',
   id: "profile-item-delete-link-#{profile_item.id}",
   class: "btn btn-warning unconfirmed-delete-link pull-right xhidden",
+  style: "margin-top: 3px;margin-bottom:3px",
   title: "Select to delete the profile item.  A confirmation dialog follows.",
   data: { show_this_id: "confirm-or-cancel-link-profile-item-container-#{profile_item.id}" })
 %>
 
-<% 
+<%
 # NOTES: Apparently, we need to add the turbo-related data attributes to ajax-driven links.
-# In this example, the delete button that makes an ajax request to the server should have the turbo attributes 
+# In this example, the delete button that makes an ajax request to the server should have the turbo attributes
 # if we want it to render the results via turbo stream. Just something we have to note of.
 confirm_delete_link = link_to("Confirm delete",
                                 profile_item_path(profile_item.id),
                                 class: "btn btn-danger",
+                                style: "margin-top: 3px;margin-bottom: 3px;",
                                 title: "Select to confirm the delete.",
                                 data: {
                                   turbo_method: :delete, # Makes sure the delete method is used
@@ -24,13 +26,14 @@ confirm_delete_link = link_to("Confirm delete",
                                 '#',
                                 id: "cancel-delete-link-#{profile_item.id}",
                                 class: "btn btn-default cancel-link",
+                                style: "margin-top: 3px;margin-bottom: 3px;",
                                 title: "Select to cancel the delete.",
                                 data: {enable_this_id: "profile-item-delete-link-#{profile_item.id}",
                                        hide_this_id: "confirm-or-cancel-link-profile-item-container-#{profile_item.id}"})
 %>
 
 <% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-profile-item-container-#{profile_item.id}"
-                                  class="profile-item confirm-or-cancel-delete-link pull-right hidden"">
+                                  class="profile-item confirm-or-cancel-delete-link pull-right hidden">
                                   #{confirm_delete_link}
                                   #{cancel_delete_link}</div>)
 %>

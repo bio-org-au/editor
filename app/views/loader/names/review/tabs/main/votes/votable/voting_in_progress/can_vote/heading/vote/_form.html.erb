@@ -9,13 +9,10 @@
       <%= form.hidden_field :loader_name_id %>
       <%= form.hidden_field :batch_review_id %>
       <%= form.hidden_field :org_id %>
-      <br>
 
       <%= form.radio_button(:vote, true) %> <%= form.label :vote_true, "Agree" %> <br>
       <%= form.radio_button(:vote, false) %> <%= form.label :vote_false, "Disagree" %> 
-      <br>
-      <br>
-      <%= form.submit id: "save-new-batch-review-vote-btn", class: 'btn btn-primary width-6em', value: "Vote", title: "Save vote", tabindex: increment_tab_index %>
+      <%= form.submit id: "save-new-batch-review-vote-btn", class: 'btn btn-primary width-6em pull-right', value: "Vote", title: "Save vote", tabindex: increment_tab_index %>
       <br>
 <% end %>
 

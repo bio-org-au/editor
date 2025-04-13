@@ -1,0 +1,4 @@
+$('.message-container').addClass('hidden').html("");
+$('#edit-draft-error-message-container')
+    .removeClass('hidden')
+    .html(markdown("<%= escape_javascript(@message) %>"));

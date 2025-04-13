@@ -50,7 +50,8 @@ class Tree < ActiveRecord::Base
 
   belongs_to :default_draft_version,
              class_name: "TreeVersion",
-             foreign_key: "default_draft_tree_version_id"
+             foreign_key: "default_draft_tree_version_id",
+             optional: true
 
   belongs_to :current_tree_version,
              class_name: "TreeVersion",
@@ -58,6 +59,8 @@ class Tree < ActiveRecord::Base
 
   has_many :tree_versions,
            foreign_key: "tree_id"
+
+  has_many :products
 
   scope :accepted,
         (lambda do
@@ -67,8 +70,13 @@ class Tree < ActiveRecord::Base
   def self.menu_drafts
     Tree.joins("LEFT OUTER JOIN tree_version draft_version on draft_version.tree_id = tree.id")
         .where("draft_version.published = false")
+        .where(is_read_only: false)
         .select("tree.id, name, draft_version.id as draft_id, draft_version.draft_name, draft_version.log_entry")
         .order("tree.name")
+  end
+
+  def read_only?
+    is_read_only
   end
 
   def config?

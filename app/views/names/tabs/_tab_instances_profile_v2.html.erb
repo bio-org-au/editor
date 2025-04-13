@@ -1,0 +1,76 @@
+<% product_reference = Profile::Product.find_by(name: @current_user.profile_v2_context.product).reference %>
+<% increment_tab_index(0) %>
+
+<% if @name.duplicate? %>
+  <span class="message">Cannot create instances for a duplicate name.</span>
+<% else %>
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="error-container"></div>
+  <div id="search-result-details-error-message-container-0" class="error-container"></div>
+  <div id="search-result-details-error-message-container-1" class="error-container"></div>
+  <div id="search-result-details-error-message-container-2" class="error-container"></div>
+  <div id="search-result-details-error-message-container-3" class="error-container"></div>
+  <h5>Add an instance for FOA</h5>
+
+  <%= form_for(@instance, remote: true) do |f| %>
+    The new instance will remain attached to:<br>
+
+    <h6>&mdash; <%= @instance.name.full_name %></h6>
+
+    <br>
+    The new instance will be attached to the <%= @current_user.profile_v2_context.product %> product reference:
+    <br>
+
+    <h6>&mdash; <%= product_reference.citation %></h6>
+    <%= f.hidden_field :reference_id, value: product_reference.id %>
+
+    <% @instance.instance_type_id = InstanceType.secondary_reference.id %>
+    <label for="instance_type_id">Instance type:</label>
+    <br>
+
+    <h6>&mdash; <%= @instance.instance_type.name %></h6>
+    <%= f.hidden_field :instance_type_id, value: @instance.instance_type_id %>
+    <%= f.hidden_field :name_id %>
+    <%= f.hidden_field :draft, value: true %>
+
+    <br>
+    <%= f.submit id: "save-new-instance-btn", class: 'btn-primary', title: "Save changes", tabindex: increment_tab_index %>
+    <br>
+
+    <div id="multiple-primary-override" class="hidden form-check override-container">
+      <br>
+      <label class="green form-check-label">
+      <%= f.check_box(:multiple_primary_override,{title: "Override the warning about multiple primary instances"}) %>
+        Ignore the warning and create the extra primary instance.
+      </label>
+    </div>
+
+    <br>
+
+    <div id="duplicate-instance-override" class="hidden form-check override-container">
+      <br>
+      <label class="green form-check-label">
+      <%= f.check_box(:duplicate_instance_override,{title: "Override the duplicate instance error message"}) %>
+        Ignore the error and create a duplicate instance.
+      </label>
+    </div>
+
+    <br>
+    <%= link_to("Show instances for name",
+                search_path(query_target: 'Names', query_string: "id: #{@instance.name.id} show-instances:"),
+                id: "show-instances-for-name-btn",
+                class: "btn btn-default hidden",
+                title: "Show instances for name",
+                tabindex: increment_tab_index)
+    %>
+  <% end %>
+
+  <% if @take_focus %>
+    <script>
+      $(document).ready(function () {
+        focusOnField('instance-reference-typeahead');
+      })
+    </script>
+  <% end %>
+<% end %>
+

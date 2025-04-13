@@ -16,12 +16,12 @@
               >Names plus instances</a>
           </li>
           <% if Rails.configuration.try(:batch_loader_aware) %>
-            <li><a id="search-target-item-loader-batch-stack" 
+            <li><a id="search-target-item-loader-name" 
                    href="#" 
-                   title="Search loader batches and retrieve batches, reviews, review periods, reviewers in a stack" 
-                   data-help="loader-batch-stack-search-help" 
-                   data-examples="loader-batch-stack-search-examples"
-                >Batch stacks</a>
+                   title="Search loader names" 
+                   data-help="loader-name-search-help" 
+                   data-examples="loader-name-search-examples"
+                >Loader names</a>
             </li>
           <% end %>
 
@@ -84,19 +84,12 @@
           <li role="separator" class="divider"></li>
 
           <% if Rails.configuration.try(:batch_loader_aware) %>
-            <li><a id="search-target-item-loader-batch" 
+            <li><a id="search-target-item-loader-batch-stack" 
                    href="#" 
-                   title="Search loader batches" 
-                   data-help="loader-batch-search-help" 
-                   data-examples="loader-batch-search-examples"
-                >Loader batches</a>
-            </li>
-            <li><a id="search-target-item-loader-name" 
-                   href="#" 
-                   title="Search loader names" 
-                   data-help="loader-name-search-help" 
-                   data-examples="loader-name-search-examples"
-                >Loader names</a>
+                   title="Search loader batches and retrieve batches, reviews, review periods, reviewers in a stack" 
+                   data-help="loader-batch-stack-search-help" 
+                   data-examples="loader-batch-stack-search-examples"
+                >Batch stacks</a>
             </li>
 
             <li><a id="search-target-item-batch-review" 
@@ -123,8 +116,19 @@
                    data-advanced="bulk-processing-logs-search-advanced" 
                 >Bulk processing logs</a>
             </li>
-            <li role="separator" class="divider"></li>
 
+            <li><a id="search-target-item-loader-batch" 
+                   href="#" 
+                   title="Search loader batches" 
+                   data-help="loader-batch-search-help" 
+                   data-examples="loader-batch-search-examples"
+                >Loader batches</a>
+            </li>
+
+            <li role="separator" class="divider"></li>
+          <% end %>
+
+           <% if can? 'users', 'select' %>
             <li><a id="search-target-item-user" 
                    href="#" 
                    title="Search Users" 
@@ -132,7 +136,9 @@
                    data-examples="user-search-examples"
                 >Users</a>
             </li>
+          <% end %>
 
+          <% if Rails.configuration.try(:batch_loader_aware) %>
             <li><a id="search-target-item-org" 
                    href="#" 
                    title="Search Organisations" 

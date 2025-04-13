@@ -598,6 +598,10 @@ class Instance < ActiveRecord::Base
     cited_by_id.nil? && cites_id.nil?
   end
 
+  def secondary_reference?
+    instance_type.secondary_instance?
+  end
+
   def synonymy?
     relationship? && cites_id.present?
   end
@@ -667,7 +671,6 @@ class Instance < ActiveRecord::Base
       reverse_of_this_cites.blank? &&
       reverse_of_this_is_cited_by.blank? &&
       comments.blank? &&
-      !in_taxo? &&
       !in_any_tree? &&
       children.empty? &&
       not_linked_to_loader_name_matches?

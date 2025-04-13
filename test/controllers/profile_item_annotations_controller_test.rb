@@ -20,17 +20,18 @@ require "test_helper"
 
 class ProfileItemAnnotationsControllerTest < ActionController::TestCase
   def setup
-    @session = { 
-      username: "fred",
+    @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
+    @session = {
+      username: "uone",
       user_full_name: "Fred Jones",
-      groups: ["edit", "foa"] 
+      groups: ["edit", "foa"]
     }
   end
 
   test "should create a profile item annotation" do
     assert_difference('Profile::ProfileItemAnnotation.count', 1) do
       profile_item = profile_item(:notes_pi)
-      post :create, 
+      post :create,
           params: {
             profile_item_annotation: {
               profile_item_id: profile_item.id,
@@ -56,7 +57,7 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
 
     assert_response :success
     assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
-    assert_equal "Updated", assigns(:message)  
+    assert_equal "Updated", assigns(:message)
     assert_equal "Updated Annotation", profile_item_annotation.reload.value
     assert_template :update
   end

@@ -1,0 +1,93 @@
+<h5>Create a synonym</h5>
+
+<%= form_for(Instance.new, url: { action: "create_cites_and_cited_by" }, remote: true) do |f| %>
+  <% if @instance.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@instance.errors.count, "error") %> prohibited this instance from being saved:</h2>
+
+      <ul>
+        <% @instance.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  The name (and optional year)*, as referenced below:
+  <div class="typeahead-container">
+    <section class='block width-100-percent'>
+      <input id="instance-instance-for-name-showing-reference-typeahead"
+            class="typeahead form-control width-100-percent give-me-focus"
+            title="Enter an instance.  Typeahead field on name and year.  Only names with instances are listed."
+            tabindex="<%= increment_tab_index %>"
+            type="text"
+            required='true'
+            placeholder="Name typeahead to list instances, 4 consecutive digits treated as a year"
+            value=""/>
+    </section>
+  </div>
+  <script> setUpSynonymyInstance(); </script>
+  is a type*
+  <br>
+  <%= f.select(:instance_type_id,
+    InstanceType.synonym_options,
+    {include_blank: true},
+    {value: @instance.instance_type_id,
+    data:{update_url: instance_path},
+    class: 'form-control width-50-percent',
+    required: true,
+    title: 'Select instance type',
+    tabindex: increment_tab_index})
+  %>
+  <br>
+  <%= "for #{@instance.name.full_name}" %>
+  <br>
+  <br>
+  <%= @instance.reference.citation %>
+  <br>
+  <%= f.hidden_field :reference_id, value: @instance.reference_id %>
+  <%= f.hidden_field :name_id, id: "instance-name-id", value: @instance.name_id %>
+  <%= f.hidden_field :cited_by_id, value: @instance.id %>
+  <%= f.hidden_field :cites_id %>
+  <br>
+  <div id="multiple-primary-override" class="form-check hidden">
+    <br>
+    <label class="green form-check-label">
+      <%= f.check_box(:multiple_primary_override,{title: "Over-ride the warning message"}) %>
+      Ignore the warning and create an extra primary.
+    </label>
+  </div>
+  <div id="concept-warning" class="form-check hidden">
+    <br>
+    <label class="green form-check-label">
+      <%= f.check_box(:concept_warning_bypassed,{title: "Over-ride the warning message"}) %>
+      Ignore the warning and create the synonym.
+    </label>
+  </div>
+  <br>
+  <%= f.submit class: 'btn-primary', tabindex: increment_tab_index, title: "Create the synonym" %>
+<% end %>
+
+<% if @take_focus %>
+  <script>
+    $(document).ready(function () {
+      focusOnField('instance-instance-for-name-showing-reference-typeahead');
+    })
+  </script>
+<% end %>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container-0" class="error-container"></div>
+<div id="search-result-details-error-message-container-1" class="error-container"></div>
+<div id="search-result-details-error-message-container-2" class="error-container"></div>
+<div id="search-result-details-error-message-container-3" class="error-container"></div>
+<br>
+<br>
+<div class="hidden instance-form-success-message">
+  <%= link_to("Query instances for #{@instance.name.full_name}",
+    search_path(query_target: 'Name', query_string: "id: #{@instance.name_id} show-instances:"),
+    class: 'btn btn-primary',
+    title: "Query instances for #{@instance.name.full_name}")
+  %>
+</div>

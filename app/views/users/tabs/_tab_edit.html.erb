@@ -1,0 +1,5 @@
+<% increment_tab_index(0) %>
+
+<%= render partial: 'form' %>
+<br>
+<%= render 'users/tabs/delete_widgets' if @user.can_be_deleted? %>

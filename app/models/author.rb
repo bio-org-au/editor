@@ -166,6 +166,10 @@ class Author < ActiveRecord::Base
     end
   end
 
+  def referenced_in_any_instance?
+    references.joins(:instances).present?
+  end
+
   def can_be_deleted?
     references.size.zero? &&
       duplicates.size.zero? &&

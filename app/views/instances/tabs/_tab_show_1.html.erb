@@ -60,7 +60,7 @@
   <% end %>
 <% end %>
 
-<% if @current_user.profile_v2_context.viewer? && @instance.profile_items.present? %>
+<% if @current_user.profile_v2_context.profile_view_allowed? && @instance.profile_items.present? %>
   <h5><%= user_profile_tab_name %> Profile</h5>
   <dl class="dl-horizontal">
     <% @instance.profile_items.each do |profile_item| %>

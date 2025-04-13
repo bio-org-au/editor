@@ -19,10 +19,11 @@
 require "test_helper"
 
 class ProfileItemsControllerTest < ActionController::TestCase
-  
+
   def setup
     @profile_item = profile_item(:ecology_pi)
-    @session = { username: "fred", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
+    @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
+    @session = { username: "uone", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
   end
 
   test "should destroy profile item and set message" do
@@ -46,10 +47,10 @@ class ProfileItemsControllerTest < ActionController::TestCase
   end
 
   test "should handle error when destroy fails" do
-    Profile::ProfileItem.stub_any_instance(:destroy!, false) do
+    Profile::ProfileItem.stub_any_instance(:destroy, false) do
       delete :destroy, params: { id: @profile_item.id }, session: @session, xhr: true
-      assert_equal @profile_item.destroy!, false
-      assert_equal "Error deleting profile item: Not saved", assigns(:message)
+      assert_equal @profile_item.destroy, false
+      assert_equal "Error deleting profile item: Not saved: #{@profile_item.errors.full_messages.to_sentence}", assigns(:message)
       assert_response :unprocessable_entity
       assert_template :destroy_failed
     end

@@ -1,7 +1,7 @@
 <tr id="search-result-<%= search_result.id %>" 
   class="search-result show-details <%= 'fresh' if search_result.fresh? %>"  
   data-get-url=""
-  data-edit-url="<%= user_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+  data-edit-url="<%= user_show_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
   data-base-url=""
   data-tab-url="<%= user_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
   data-record-id="<%= search_result.id %>"

@@ -8,6 +8,9 @@
 <%= render partial: 'detail_line',
            locals: {info: @user.family_name, label: 'Family Name'} %>
 
+<%= render partial: 'detail_line',
+           locals: {info: @user.batch_reviewers.size, label: 'Batch Reviews Count'} %>
+
 
 <%= divider %>
 User #<%= @user.id %>

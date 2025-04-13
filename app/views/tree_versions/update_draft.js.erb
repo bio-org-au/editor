@@ -1,0 +1,4 @@
+$('div#search-result-details').html("<%= escape_javascript(h(render partial: 'edit_draft')) %>");
+$('#edit-draft-message-container').html("<%= escape_javascript(@message) %>");
+<%= render("tree_form_cancel") %>
+replaceDates();

@@ -1,3 +1,10 @@
+# == Schema Information
+#
+# Table name: db_version
+#
+#  id      :bigint           not null, primary key
+#  version :integer          not null
+#
 just_this_one:
   id: 1
   version: 99

@@ -1,0 +1,41 @@
+<% increment_tab_index(0) %>
+
+<%= divider %>
+<% delete_link = link_to("Delete...",
+                         '#',
+                         id: "user-delete-link",
+                         class: "btn btn-warning unconfirmed-delete-link pull-right",
+                         tabindex: increment_tab_index,
+                         title: "Delete the user.",
+                         data: {show_this_id: "confirm-or-cancel-link-container"})
+%>
+<% confirm_delete_link = link_to("Confirm delete",
+                                 user_path(@user.id),
+                                 class: "btn btn-danger",
+                                 tabindex: increment_tab_index,
+                                 title: "Confirm you want to delete the user.",
+                                 remote: true,
+                                 method: :delete)
+%>
+
+<% cancel_delete_link = link_to("Cancel delete",
+                                '#',
+                                id: "cancel-delete-link",
+                                class: "btn btn-default cancel-link",
+                                tabindex: increment_tab_index,
+                                title: "Cancel the delete dialog for the user.",
+                                data: {enable_this_id: 'user-delete-link',
+                                       hide_this_id: 'confirm-or-cancel-link-container'})
+%>
+
+<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-container"
+                                  class="instance-note confirm-or-cancel-delete-link pull-right hidden">
+                                  #{confirm_delete_link}
+#{cancel_delete_link}</div>)
+%>
+
+<div class="actions"> <%= delete_link.html_safe %> </div>
+<div class="width-100-percent"> <%= confirm_or_cancel_element.html_safe %> </div>
+<div id="delete-info-message-container" class="message-container"></div>
+<div id="delete-error-message-container" class="message-container"></div>
+

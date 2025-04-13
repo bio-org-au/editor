@@ -16,8 +16,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-# Loader BatchReview entity
+# Loader Batch Review Period entity
 class Loader::Batch::Review::Period < ActiveRecord::Base
+  include DigestEndDate
   strip_attributes
   self.table_name = "batch_review_period"
   self.primary_key = "id"
@@ -31,9 +32,10 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
             uniqueness: { scope: :batch_review_id,
                           message: "has been used for another period in the same batch review" }
   # validate :start_date_cannot_be_changed_once_past, on: :update
+
   validate :end_date_cannot_be_in_the_past
   validate :end_date_must_be_after_start_date
-  before_destroy :abort_if_review_periods
+  before_destroy :abort_if_comments
 
   belongs_to :batch_review,
              class_name: "Loader::Batch::Review",
@@ -72,17 +74,6 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
     !name_comments.exists?
   end
 
-  def update_if_changed(params, username)
-    self.name = params[:name]
-    if changed?
-      self.updated_by = username
-      save!
-      "Updated"
-    else
-      "No change"
-    end
-  end
-
   # The table isn't in all schemas, so check it's there
   def self.exists?
     BatchReviewPeriod.all.count
@@ -96,13 +87,13 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
     return unless will_save_change_to_start_date?
     return unless start_date.present? && start_date < Date.today
 
-    errors.add(:start_date, "can't be in the past")
+    errors.add(:start_date, "cannot be in the past")
   end
 
   def end_date_cannot_be_in_the_past
     return unless end_date.present? && end_date < Date.today
 
-    errors.add(:end_date, "can't be changed to a past date")
+    errors.add(:end_date, "cannot be changed to a past date")
   end
 
   def end_date_must_be_after_start_date
@@ -117,7 +108,7 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
     db_record = BatchReviewPeriod.find(id)
     return unless db_record.start_date < Date.yesterday
 
-    errors.add(:start_date, "can't be changed once the period has started")
+    errors.add(:start_date, "cannot be changed once the period has started")
   end
 
   def record_type
@@ -146,10 +137,9 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   #
   def update_if_changed(params, username)
     assign_attributes(params_without_dates(params))
-    apply_start_date_if_changed(params)
-    apply_end_date_if_changed(params) unless params["end_date(1i)"].blank?
+    assign_start_date_if_changed(params)
+    assign_end_date_if_changed(params)
     if has_changes_to_save?
-      logger.debug("changes_to_save: #{changes_to_save.inspect}")
       self.updated_by = username
       save!
       "Updated"
@@ -161,41 +151,24 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
   def params_without_dates(params)
     h = {}
     params.each do |key, val|
-      logger.debug("key: #{key}; val: #{val}")
-      unless key =~ /start.date/ || key =~ /end.date/
-        logger.debug("Adding key #{key} to hash")
-        h[key] = val
-      end
+      h[key] = val unless key =~ /start.date/ || key =~ /end.date/
     end
-    h
   end
 
-  def apply_start_date_if_changed(params)
+  # The start_date is required so nil values are prevented before here.
+  #
+  # We do have to handle the case of dates like 30-Feb-2025 being entered.
+  #
+  def assign_start_date_if_changed(params)
     year = params["start_date(1i)"]
-    month = "%02d" % params["start_date(2i)"]
-    day = "%02d" % params["start_date(3i)"]
-    start_date_string = "#{year}-#{month}-#{day}"
-    logger.debug("proposed start_date: #{start_date_string}")
-    if start_date.to_s == start_date_string
-      logger.debug("no start date change")
-    else
-      logger.debug("start date has changed")
-      self.start_date = Date.parse(start_date_string)
-    end
-  end
-
-  def apply_end_date_if_changed(params)
-    year = params["end_date(1i)"]
-    month = "%02d" % params["end_date(2i)"]
-    day = "%02d" % params["end_date(3i)"]
-    end_date_string = "#{year}-#{month}-#{day}"
-    logger.debug("proposed end_date: #{end_date_string}")
-    if end_date.to_s == end_date_string
-      logger.debug("no end_date date change")
-    else
-      logger.debug("end_date date has changed")
-      self.end_date = Date.parse(end_date_string)
-    end
+    month = format("%02d", params["start_date(2i)"])
+    day = format("%02d", params["start_date(3i)"])
+    date_s = "#{year}-#{month}-#{day}"
+    self.start_date = Date.parse(date_s) unless start_date.to_s == date_s
+  rescue Date::Error => e
+    message = "Invalid start date: #{date_s}"
+    logger.error(e.to_s)
+    raise message
   end
 
   def can_be_deleted?
@@ -236,7 +209,7 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
 
   private
 
-  def abort_if_review_periods
+  def abort_if_comments
     return unless name_comments.exists?
 
     throw "Cannot delete period because it has comments"

@@ -1,108 +1,115 @@
-<% if @product_configs_and_profile_items.blank? %>
-  <div>
-    <div id="message_no_product_configs" class="message">There are no product or product configs setup yet.</div>
-  </div>
-<% end %>
-
-<% if Rails.configuration.try('profile_v2_dropdown_ui') %>
-  <%= render partial: "profile_items/product_item_config_dropdown", locals: {
-      product_configs_and_profile_items: @product_configs_and_profile_items,
-      selected_product_item_config_id: @selected_product_item_config_id,
-      instance: @instance
-    }
-  %>
-  <% if @selected_product_item_config_id.blank? %>
-    <div id="product-config-and-profile-items-container"></div>
-  <% else %>
-    <div id="product-config-and-profile-items-container">
-      <% all_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(current_user, @instance, {product_item_config_id: @selected_product_item_config_id}).run_query %>
-      <% all_items.each do |config_items| %>
-          <% product_item_config, profile_item = config_items.values_at(:product_item_config, :profile_item) %>
-          <div class="product-item-config-container product-item-config-container-id-<%= product_item_config.id %>">
-          <%= render partial: "instances/tabs/tab_product_config_profile_item_form", 
-            locals: {product_item_config:  product_item_config, profile_item: profile_item, instance: @instance}
-          %>
-      <% end %>
+<% if can?(:manage_profile, @instance) %>
+  <% if @product_configs_and_profile_items.blank? %>
+    <div>
+      <div id="message_no_product_configs" class="message">There are no product or product configs setup yet.</div>
     </div>
   <% end %>
-<% else %>
-  <% @product_configs_and_profile_items.each do |config_items| %>
-    <% product_item_config, profile_item = config_items.values_at(:product_item_config, :profile_item) %>
-    <div>
-      <h4><%= product_item_config.display_html %></h4>
-      <div id="message_<%= product_item_config.id %>" class="message-container"></div> <!-- Message container -->
-    </div>
 
-    <div style="padding: 10px;margin: 5px 0 30px 0px;background-color: white;border: 1px solid #afafaf;">
-      <!-- Profile Text Form -->
-      <% profile_text = profile_item.profile_text || Profile::ProfileText.new %>
-      <% url = profile_text.persisted? ? profile_text_path(id: profile_text.id) : profile_texts_path %>
-      <% method = profile_text.persisted? ? :put : :post %>
-      <div id="profile_text_form_<%= product_item_config.id %>" style="overflow: hidden; margin-bottom: 10px;">
-        <%= render partial: "profile_texts/form",
-          locals: {
-            profile_text: profile_text,
-            url: url,
-            method: method,
-            product_item_config: product_item_config,
-            instance_id: @instance.id,
-            profile_item: profile_item,
-          }
-        %>
-      </div>
-      <div
-        id="profile_item_references_<%= product_item_config.id %>"
-        style="display: block" >
-        <%= render partial: "profile_item_references/edit_form",
-          collection: profile_item.profile_item_references,
-          locals: {profile_item: profile_item},
-          as: :profile_item_reference
-        %>
-      </div>
-
-      <div id="add_reference_message_<%= product_item_config.id %>" class="message-container"></div> <!-- Message container -->
-      <div id="add_reference_<%= product_item_config.id %>">
-        <% if profile_item.persisted? %>
-          <div style="padding: 30px 10px 40px 10px;border: 1px solid #ddd;margin-top:30px;">
-            <label>Reference</label>
-            <div id="add_reference_form_<%= product_item_config.id %>" style="margin-bottom: 10px;">
-              <%= render partial: 'profile_item_references/form',
-                locals: {
-                  url: profile_item_references_path,
-                  method: :post,
-                  profile_item: profile_item,
-                  profile_item_reference: Profile::ProfileItemReference.new
-              } %>
-            </div>
-          </div>
+  <% if Rails.configuration.try('profile_v2_dropdown_ui') %>
+    <%= render partial: "profile_items/product_item_config_dropdown", locals: {
+        product_configs_and_profile_items: @product_configs_and_profile_items,
+        selected_product_item_config_id: @selected_product_item_config_id,
+        instance: @instance
+      }
+    %>
+    <% if @selected_product_item_config_id.blank? %>
+      <div id="product-config-and-profile-items-container"></div>
+    <% else %>
+      <div id="product-config-and-profile-items-container">
+        <% all_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@current_user, @instance, {product_item_config_id: @selected_product_item_config_id}).run_query %>
+        <% all_items.each do |config_items| %>
+            <% product_item_config, profile_item = config_items.values_at(:product_item_config, :profile_item) %>
+            <div class="product-item-config-container product-item-config-container-id-<%= product_item_config.id %>">
+            <%= render partial: "instances/tabs/tab_product_config_profile_item_form",
+              locals: {product_item_config:  product_item_config, profile_item: profile_item, instance: @instance}
+            %>
         <% end %>
       </div>
+    <% end %>
+  <% else %>
+    <% @product_configs_and_profile_items.each do |config_items| %>
+      <% product_item_config, profile_item = config_items.values_at(:product_item_config, :profile_item) %>
+      <div>
+        <h4><%= product_item_config.display_html %></h4>
+        <div id="common-error-message-container" class="error-container"></div>
+        <div id="message_<%= product_item_config.id %>" class="message-container"></div> <!-- Message container -->
+      </div>
 
-      <div style="padding: 30px 10px 10px 10px;">
-        <div id="add_annotation_form<%= product_item_config.id %>">
+      <div style="padding: 10px;margin: 5px 0 30px 0px;background-color: white;border: 1px solid #afafaf;">
+        <!-- Profile Text Form -->
+        <% profile_text = profile_item.profile_text || Profile::ProfileText.new %>
+        <% url = profile_text.persisted? ? profile_text_path(id: profile_text.id) : profile_texts_path %>
+        <% method = profile_text.persisted? ? :put : :post %>
+        <div id="profile_text_form_<%= product_item_config.id %>" style="overflow: hidden; margin-bottom: 10px;overlow:hidden;">
+          <%= render partial: "profile_texts/form",
+            locals: {
+              profile_text: profile_text,
+              url: url,
+              method: method,
+              product_item_config: product_item_config,
+              instance_id: @instance.id,
+              profile_item: profile_item,
+            }
+          %>
+        </div>
+        <div
+          id="profile_item_references_<%= product_item_config.id %>"
+          style="display: block" >
+          <%= render partial: "profile_item_references/edit_form",
+            collection: profile_item.profile_item_references,
+            locals: {profile_item: profile_item},
+            as: :profile_item_reference
+          %>
+        </div>
+
+        <div id="add_reference_message_<%= product_item_config.id %>" class="message-container"></div> <!-- Message container -->
+        <div id="add_reference_<%= product_item_config.id %>">
           <% if profile_item.persisted? %>
-            <!-- Profile Item Reference Form -->
-            <div id="annotation_message_<%= profile_item.id %>" class="message-container"></div>
-            <label>Annotate this profile item:</label>
-            <% profile_item_annotation = profile_item.profile_item_annotation || profile_item.build_profile_item_annotation %>
-            <% url = profile_item_annotation.persisted? ? profile_item_annotation_path(profile_item_annotation) : profile_item_annotations_path %>
-            <% method = profile_item_annotation.persisted? ? :put : :post %>
-            <%= render partial: 'profile_item_annotations/form',
-              locals: {
-                url: url,
-                method: method,
-                profile_item_annotation: profile_item_annotation
-              } %>
+            <div style="padding: 30px 10px 40px 10px;border: 1px solid #ddd;margin-top:30px;">
+              <label>Reference</label>
+              <div id="add_reference_form_<%= product_item_config.id %>" style="margin-bottom: 10px;">
+                <%= render partial: 'profile_item_references/form',
+                  locals: {
+                    url: profile_item_references_path,
+                    method: :post,
+                    profile_item: profile_item,
+                    profile_item_reference: Profile::ProfileItemReference.new
+                } %>
+              </div>
+            </div>
           <% end %>
         </div>
-      </div>
 
-      <div id="profile_item_actions_<%= product_item_config.id %>">
-        <% if profile_item.persisted? %>
-          <%= render partial: "profile_items/delete_widgets", locals: {profile_item: profile_item} %>
-        <% end %>
-      </div>
+        <div style="padding: 30px 10px 10px 10px;">
+          <div id="add_annotation_form<%= product_item_config.id %>">
+            <% if profile_item.persisted? %>
+              <!-- Profile Item Reference Form -->
+              <div id="annotation_message_<%= profile_item.id %>" class="message-container"></div>
+              <label>Annotate this profile item:</label>
+              <% profile_item_annotation = profile_item.profile_item_annotation || profile_item.build_profile_item_annotation %>
+              <% url = profile_item_annotation.persisted? ? profile_item_annotation_path(profile_item_annotation) : profile_item_annotations_path %>
+              <% method = profile_item_annotation.persisted? ? :put : :post %>
+              <%= render partial: 'profile_item_annotations/form',
+                locals: {
+                  url: url,
+                  method: method,
+                  profile_item_annotation: profile_item_annotation
+                } %>
+            <% end %>
+          </div>
+        </div>
 
-    </div>
+        <div id="profile_item_actions_<%= product_item_config.id %>">
+          <% if profile_item.persisted? %>
+            <% if profile_item.allow_delete? %>
+              <%= render partial: "profile_items/delete_widgets", locals: {profile_item: profile_item} %>
+            <% else %>
+              <%= render partial: 'profile_items/no_delete_reasons', locals: {profile_item: profile_item} %>
+            <% end %>
+          <% end %>
+        </div>
+
+      </div>
+    <% end %>
   <% end %>
 <% end %>

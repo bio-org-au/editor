@@ -11,6 +11,7 @@
 #  internal_notes(Team notes about the management or maintenance of this product.)                   :text
 #  is_available(Indicates this product is publicly available.)                                       :boolean          default(FALSE), not null
 #  is_current(Indicates this product is currently being maintained and published.)                   :boolean          default(FALSE), not null
+#  is_name_index                                                                                     :boolean          default(FALSE), not null
 #  lock_version(A system field to manage row level locking.)                                         :integer          default(0), not null
 #  name(The standard acronym for this profile product. i.e. FOA, APC.)                               :text             not null
 #  source_id_string(The identifier from the source system that this profile text was imported from.) :string(100)

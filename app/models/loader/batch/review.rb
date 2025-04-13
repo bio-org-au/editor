@@ -77,11 +77,11 @@ class Loader::Batch::Review < ActiveRecord::Base
   end
 
   def reviewer?(username)
-    reviewers.select { |r| r.user.name.downcase == username.downcase }.size > 0
+    reviewers.select { |r| r.user.user_name.downcase == username.downcase }.size > 0
   end
 
   def reviewer_id(username)
-    reviewers.select { |r| r.user.name.downcase == username.downcase }.first.id
+    reviewers.select { |r| r.user.user_name.downcase == username.downcase }.first.id
   end
 
   private

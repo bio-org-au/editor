@@ -72,6 +72,10 @@ class InstanceType < ActiveRecord::Base
     unsourced
   end
 
+  def secondary_instance?
+    secondary_instance
+  end
+
   def self.info_or_help_links
     head = %(<li><a tabindex="-1" href="#" class="append-to-query-field" )
     tail = %(</a></li>)
@@ -89,7 +93,7 @@ class InstanceType < ActiveRecord::Base
 
   # For new records: just the standard set.
   def self.synonym_options
-    where("citing").where.not("deprecated")
+    where("relationship").where.not("deprecated")
                    .where.not("unsourced")
                    .sort_by(&:name)
                    .collect { |i| [i.name, i.id] }
@@ -97,9 +101,10 @@ class InstanceType < ActiveRecord::Base
 
   # For new records: just the standard set.
   def self.unpublished_citation_options
-    where("unsourced").where.not("deprecated")
-                      .sort_by(&:name)
-                      .collect { |i| [i.name, i.id] }
+    where("relationship").where("unsourced")
+      .where.not("deprecated")
+      .sort_by(&:name)
+      .collect { |i| [i.name, i.id] }
   end
 
   # For existing records.

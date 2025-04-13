@@ -27,7 +27,11 @@
 
 <%= divider %>
 
-<%= render 'delete_widgets' %>
+<% if @instance.allow_delete? %>
+  <%= render 'delete_widgets' %>
+<% else %>
+  <%= render 'instances/widgets/no_delete_reasons' %>
+<% end %>
 
 <br>
 <br>

@@ -1,5 +1,9 @@
-<% increment_tab_index(0) %>
+<% if can? :update, @author %>
+  <% increment_tab_index(0) %>
 
-<%= render 'form' %>
+  <%= render 'form' %>
+<% end %>
 
-<%= render 'delete_widgets' if @author.can_be_deleted? %>
+<% if can? :destroy, @author %>
+  <%= render 'delete_widgets' if @author.can_be_deleted? %>
+<% end %>

@@ -1,7 +1,11 @@
 <% increment_tab_index(0) -%>
 <%= render partial: 'loader/batch/review/periods/forms/edit_form' %>
 <%= divider %>
-<%= render 'loader/batch/review/periods/widgets/delete_widgets' if @review_period.allow_delete? %>
+<% if @review_period.allow_delete? %>
+  <%= render 'loader/batch/review/periods/widgets/delete_widgets' if @review_period.allow_delete? %>
+<% else %>
+  You cannot delete this review period - most likely because it has comments
+<% end %>
 
 <div id="search-result-details-info-message-container" class="message-container"></div>
 <div id="search-result-details-error-message-container" class="message-container"></div>

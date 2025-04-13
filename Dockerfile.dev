@@ -1,8 +1,6 @@
 # Use the official Ruby image as a base image
 FROM ruby:3.3.5-slim-bullseye
 
-ENV BUNDLE_PATH=/usr/local/bundle
-
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
   build-essential \
   gnupg2 \

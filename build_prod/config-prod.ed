@@ -1,4 +1,0 @@
-/config.active_record.default_timezone = :local
-s/:local/:utc/
-p
-wq

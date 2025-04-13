@@ -25,35 +25,10 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
     set_tab
     set_tab_index
     @take_focus = params[:take_focus] == "true"
-    calendar_events
     render "show", layout: false
   end
 
   alias tab show
-
-  def calendar
-    calendar_events
-  end
-
-  def calendar_events
-    @review_days = []
-    start_date = @review_period.start_date
-    end_date = @review_period.end_date || (start_date + 30)
-    (start_date..end_date).each do |day|
-      css_class = if day === Date.today
-                    "today"
-                  elsif day < Date.today
-                    "past-day"
-                  else
-                    "review-day"
-                  end
-      @review_days.push(
-        OpenStruct.new(name: "#{css_class}", start_time: Date.parse(day.to_s))
-      )
-    end
-    # @review_days.push(OpenStruct.new(name: 'today',start_time: Date.today))
-  end
-  private :calendar_events
 
   # POST /review_periods
   def create
@@ -72,7 +47,7 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
                                                 current_user.username)
     render "update"
   rescue StandardError => e
-    logger.error("Loader::Batch::Review.update:rescuing exception #{e}")
+    logger.error("Loader::Batch::Review::Periods.update:rescuing exception #{e}")
     @error = e.to_s
     render "update_error", status: :unprocessable_entity
   end
@@ -110,3 +85,4 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
     @tab_index = (params[:tabIndex] || "1").to_i
   end
 end
+

@@ -37,7 +37,7 @@ class NamesController < ApplicationController
     pick_a_tab("tab_details")
     pick_a_tab_index
     @name.change_category_name_to = "scientific" if params[:change_category_name_to].present?
-    if params[:tab] == "tab_instances"
+    if params[:tab] == "tab_instances" || params[:tab] == "tab_instances_profile_v2"
       @instance = Instance.new
       @instance.name = @name
     end
@@ -63,8 +63,8 @@ class NamesController < ApplicationController
     @random_id = (Random.new.rand * 10_000_000_000).to_i
     @category = params[:type].tr(" ", "-")
     @category_display = params[:type].tr("-", " ")
-    render :new_row, 
-      locals: {partial: 'new_row', 
+    render :new_row,
+      locals: {partial: 'new_row',
                locals_for_partial:
           {tab_path: "#{new_name_with_category_and_random_id_path(@category, @random_id)}",
            link_id: "link-new-name-#{@category}-#{@random_id}",

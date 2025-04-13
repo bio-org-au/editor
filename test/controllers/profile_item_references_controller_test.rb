@@ -20,8 +20,9 @@ require "test_helper"
 
 class ProfileItemReferencesControllerTest < ActionController::TestCase
   def setup
-    @profile_item = profile_item(:ecology_pi) 
+    @profile_item = profile_item(:ecology_pi)
     @reference = references(:section_with_heyland_author_different_from_parent)
+    @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
     @valid_params = {
       profile_item_reference: {
         reference_id: @reference.id,
@@ -29,7 +30,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
         profile_item_id: @profile_item.id
       }
     }
-    @session = { username: "fred", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
+    @session = { username: "uone", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
   end
 
   test "should create profile item reference successfully" do
@@ -50,7 +51,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       profile_item_id: @profile_item.id
     )
 
-    post :create, 
+    post :create,
         params: {
           profile_item_reference: {
             reference_id: @reference.id,
@@ -64,6 +65,23 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
     assert_template :create_failed
   end
 
+  test "should fail to create profile item reference when there is no enough permission granted to db" do
+    Profile::ProfileItemReference.stub_any_instance(:save!, -> { raise PG::InsufficientPrivilege, "ERROR: permission denied for table \"profile_item_references\"" }) do
+      post :create,
+          params: {
+            profile_item_reference: {
+              reference_id: @reference.id,
+              annotation: '2nd Annotation',
+              profile_item_id: @profile_item.id
+            }
+          }, session: @session, xhr: true
+
+      assert_response :unprocessable_entity
+      assert_match "Error creating profile item reference: ERROR: permission denied for table \"profile_item_references\"", assigns(:message)
+      assert_template :create_failed
+    end
+  end
+
   test "should update profile item reference" do
     Profile::ProfileItemReference.create(
       reference_id: @reference.id,
@@ -75,12 +93,12 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       profile_item_id: @profile_item.id
     )
 
-    put :update, 
+    put :update,
         params: {
           reference_id: @reference.id,
           profile_item_id: @profile_item.id,
           profile_item_reference: {
-            annotation: "Updated Annotation" 
+            annotation: "Updated Annotation"
           }
         }, session: @session, xhr: true
     assert_response :success
@@ -99,12 +117,12 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       profile_item_id: @profile_item.id
     )
 
-    put :update, 
+    put :update,
         params: {
           reference_id: @reference.id,
           profile_item_id: @profile_item.id,
           profile_item_reference: {
-            annotation: "1st Annotation" 
+            annotation: "1st Annotation"
           }
         }, session: @session, xhr: true
 
@@ -123,7 +141,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
       updated_at: Time.current,
       profile_item_id: @profile_item.id
     )
-    delete :destroy, 
+    delete :destroy,
           params: {
             reference_id: @reference.id,
             profile_item_id: @profile_item.id,
@@ -134,13 +152,24 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
   end
 
   test "should handle error when destroy fails" do
-    delete :destroy, 
+    Profile::ProfileItemReference.create(
+      reference_id: @reference.id,
+      annotation: '1st Annotation',
+      created_by: "tester",
+      created_at: Time.current,
+      updated_by: "tester",
+      updated_at: Time.current,
+      profile_item_id: @profile_item.id
+    )
+
+    Profile::ProfileItemReference.stub_any_instance(:destroy, false) do
+      delete :destroy,
           params: {
             reference_id: @reference.id,
             profile_item_id: @profile_item.id,
           }, session: @session, xhr: true
-    assert_response :unprocessable_entity
-    assert_equal "Error deleting profile item reference: undefined method `profile_item' for nil", assigns(:message)
-    assert_template :destroy_failed
+      assert_response :unprocessable_entity
+      assert_template :destroy_failed
+    end
   end
 end

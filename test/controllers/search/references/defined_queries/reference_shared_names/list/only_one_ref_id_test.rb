@@ -21,14 +21,17 @@ require "test_helper"
 # Single search controller test.
 class SearchRefsDQRefSharedNamesListOnly1RefIDTest < ActionController::TestCase
   tests SearchController
+  def setup
+    @known_user = users(:user_one)
+  end
 
   test "reference shared names with only 1 ref id" do
     ref_1 = -1
     get(:search,
         params: { query_target: "references shared names",
                   query_string: ref_1.to_s },
-        session: { username: "fred",
-                   user_full_name: "Fred Jones",
+        session: { username: @known_user.user_name,
+                   user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
                    groups: [] })
     assert_response :success
     assert_select "#search-results-summary",

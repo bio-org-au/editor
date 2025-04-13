@@ -84,6 +84,43 @@ class Instance::AsCopier < Instance
     new
   end
 
+  def copy_with_product_reference(params, as_username)
+    new = nil
+    raise "Need a reference" if params[:reference_id].blank?
+    raise "Unrecognized reference id" if params[:reference_id].to_i <= 0
+    raise "No such ref" if Reference.find_by(id: params[:reference_id].to_i).blank?
+
+    new_reference_id_string = params[:reference_id]
+    new_instance_type_id = params[:instance_type_id]
+    new_is_draft = params[:draft]
+    ActiveRecord::Base.transaction do
+      new = dup
+      new_reference_id = new_reference_id_string.to_i
+      new.reference_id = new_reference_id
+      new.instance_type_id = new_instance_type_id
+      new.page_qualifier = new.page = nil
+      new.draft = new_is_draft
+      new.created_by = new.updated_by = as_username
+      new.source_system = new.source_id = new.source_id_string = nil
+      new.lock_version = 0
+      new.uri = nil
+      new.save!
+      reverse_of_this_is_cited_by.each do |citer|
+        new_citer = Instance.new
+        new_citer.name_id = citer.name.id
+        new_citer.reference_id = new_reference_id
+        new_citer.cited_by_id = new.id
+        new_citer.cites_id = citer.cites_id
+        new_citer.instance_type_id = citer.instance_type_id
+        new_citer.verbatim_name_string = citer.verbatim_name_string
+        new_citer.bhl_url = citer.bhl_url
+        new_citer.created_by = new_citer.updated_by = as_username
+        new_citer.save!
+      end
+    end
+    new
+  end
+
   def copy_with_citations_to_new_reference(params, as_username)
     new = nil
     raise "Need a reference" if params[:reference_id].blank?

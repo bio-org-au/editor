@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def user_profile_tab_name
-    @current_user.profile_v2_context.product
+    current_registered_user.available_product_from_roles&.name
   end
 
   def increment_tab_index(increment = 1)

@@ -26,3 +26,6 @@ span.jira.open a {
 }
 
 
+li.release { background: rebeccapurple; color: white; }
+li.one-change { background: gainsboro; }
+li.one-change:nth-child(odd) { background: white; }

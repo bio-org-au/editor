@@ -59,7 +59,7 @@ We use a `structure.sql` file extracted from a copy of an active NSL database.  
    2. Run `SCHEMA_FORMAT='sql' rake db:schema:dump` on command line
    3. Edit the resulting `structure.sql` file - modify the `create sequence public.nsl_global_seq ...` statement by
       a) setting the `start with` value to 1, and
-      b) removing the `minvalue` and `maxvalue` constraints.  
+      b) removing the `minvalue` and `maxvalue` constraints.
 
       This sequence is set in very particular ways in the various active NSL databases, but we need it simple, predictable, and unconstrained for our test fixtures.
 
@@ -155,6 +155,13 @@ bundle install
 
 # run the server
 rails s
+```
+### Annotaterb
+Since we don't conventionally use db migrations, the annotaterb gem won't be triggered once a db schema is changed.
+
+Manually update the annotations in the models, factories, and fixtures excluding test files:
+```bash
+bundle exec annotaterb models --exclude tests,spec
 ```
 
 ## Release notes

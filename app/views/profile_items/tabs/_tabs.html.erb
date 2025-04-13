@@ -3,27 +3,27 @@
 
   <%= render partial: 'profile_items/tabs/tab', locals: {first: true,
     last: false,
-    this_tab: 'tab_show_1', 
-    link_text: 'Details', 
-    link_id: 'profile-item-edit-show-1-tab', 
+    this_tab: 'tab_show_1',
+    link_text: 'Details',
+    link_id: 'profile-item-edit-show-1-tab',
     link_title: 'View a summary',
     tab_index: increment_tab_index,
-    prev_tab: '', 
-    next_tab: '' } 
-  %> 
+    prev_tab: '',
+    next_tab: '' }
+  %>
 
 
-  <% if @current_user.profile_v2_context.editor? %>
+  <% if can? :manage, Profile::ProfileItem %>
     <%= render partial: 'profile_items/tabs/tab', locals: {first: false,
       last: false,
-      this_tab: 'tab_edit', 
+      this_tab: 'tab_edit',
       link_text: 'Edit'.html_safe,
       link_id: 'profile-item-edit-tab',
       link_title: 'Main edit form for the profile item].',
       tab_index: increment_tab_index,
-      prev_tab: '', 
-      next_tab: ''} 
-    %> 
+      prev_tab: '',
+      next_tab: ''}
+    %>
   <% end %>
-    
+
 </ul>

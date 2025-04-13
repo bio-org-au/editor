@@ -32,6 +32,97 @@ class TreeVersionsController < ApplicationController
 
   alias tab show
 
+  # New draft tree version
+  # This just collects the details and posts to the services
+  def new
+    @no_search_result_details = true
+    @tab_index = (params[:tabIndex] || "40").to_i
+    render "new_draft"
+  end
+
+  def create_draft
+    logger.info "Create a draft tree"
+    response = Tree::DraftVersion.create_via_service(params[:tree_id],
+                                                     nil,
+                                                     params[:draft_name],
+                                                     params[:draft_log],
+                                                     params[:default_draft],
+                                                     current_user.username)
+    payload = json_payload(response)
+    if payload
+      @message = "#{payload.draftName} created."
+      @created_version = TreeVersion.find(payload.versionNumber)
+      render "create_draft"
+    else
+      @message = "Something went wrong, no payload."
+      render "create_draft_error"
+    end
+  rescue RestClient::Unauthorized, RestClient::Forbidden => e
+    @message = json_error(e)
+    render "create_draft_error"
+  rescue RestClient::ExceptionWithResponse => e
+    @message = json_error(e)
+    render "create_draft_error"
+  rescue => e
+    @message = e.to_s
+    render "create_draft_error"
+  end
+
+  def edit_draft
+    @no_search_result_details = true
+    @tab_index = (params[:tabIndex] || "40").to_i
+    @diff_link = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id)
+    render "edit_draft"
+  end
+
+  def update_draft
+    draft_version = Tree::DraftVersion.find(params[:version_id])
+    draft_version.draft_name = params[:draft_name]
+    draft_version.log_entry = params[:draft_log]
+    if draft_version.changed?
+      draft_version.save!
+      @working_draft = draft_version # why?
+      @message = 'Updated'
+    else
+      @message = 'No change'
+    end
+    render "update_draft"
+  rescue => e
+    @message = "#{e} - #{draft_version.errors[:base].join(',')}"
+    render "update_draft_error"
+  end
+
+  def form_to_publish
+    @no_search_result_details = true
+    @tab_index = (params[:tabIndex] || "40").to_i
+    render "form_to_publish_draft"
+  end
+
+  def publish
+    draft_version = Tree::DraftVersion.find(params[:version_id])
+    draft_version.log_entry = params[:draft_log]
+    response = draft_version.publish(current_user.username, params[:next_draft_name])
+    json = json(response)
+    if json&.ok
+      @message = "#### #{draft_version.draft_name} published as #{draft_version.tree.name} version #{draft_version.id} ####"
+      @message += "\nNew draft being created (it may take a couple of minutes to show up)." if json&.autocreate
+      @working_draft = nil
+      render "publish"
+    else
+      @message = json_result(response)
+      render "publish_error"
+    end
+  rescue RestClient::Unauthorized, RestClient::Forbidden => e
+    @message = json_error(e)
+    render "publish_error"
+  rescue RestClient::ExceptionWithResponse => e
+    @message = json_error(e)
+    render "publish_error"
+  rescue => e
+    @message = e.to_s
+    render "publish_error"
+  end
+
   private
 
   def find_tree_version
@@ -56,5 +147,14 @@ class TreeVersionsController < ApplicationController
 
   def set_tab_index
     @tab_index = (params[:tabIndex] || "1").to_i
+  end
+
+  def json(result)
+    JSON.parse(result.body, object_class: OpenStruct)
+  end
+
+  def json_payload(result)
+    json = json(result)
+    json&.payload
   end
 end

@@ -23,10 +23,6 @@ module InstanceTreeable
     accepted_tree_version_element.tree_element.excluded
   end
 
-  def in_taxo?
-    show_taxo?
-  end
-
   def in_any_tree?
     ::Tree::Element.where(instance_id: id).count > 0
   end

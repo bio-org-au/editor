@@ -105,7 +105,7 @@ class Search::ParsedRequest
     "batch review" => "Loader::Batch::Review",
     "batch reviewer" => "Loader::Batch::Reviewer",
     "batch review period" => "Loader::Batch::Review::Period",
-    "users" => "UserTable",
+    "users" => "User",
     "org" => "Org",
     "bulk processing log" => "BulkProcessingLog",
   }.freeze
@@ -123,7 +123,7 @@ class Search::ParsedRequest
     "batch review" => "name:",
     "batch reviewer" => "name:",
     "batch review period" => "name:",
-    "users" => "name:",
+    "users" => "user-name:",
     "org" => "name_or_abbrev:",
     "bulk processing log" => "log-entry:",
     "profile item" => "show-profiles:"
@@ -140,7 +140,7 @@ class Search::ParsedRequest
     "batch review" => "name",
     "batch reviewer" => "id",
     "batch review period" => "name",
-    "users" => "name",
+    "users" => "user_name",
     "org" => "name",
     "bulk processing log" => " logged_at desc ",
   }.freeze

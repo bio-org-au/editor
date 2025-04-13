@@ -87,7 +87,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.active_record.default_timezone = :local
+  config.active_record.default_timezone = :utc
   
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [

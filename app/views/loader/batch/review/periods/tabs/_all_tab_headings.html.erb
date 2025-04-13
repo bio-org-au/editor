@@ -13,18 +13,6 @@
 
   <%= render partial: 'loader/batch/review/periods/tabs/tab',
              locals: {first: false,
-                      last: false,
-                      this_tab: 'tab_calendar', 
-                      link_text: 'Calendar', 
-                      link_id: 'loader-batch-review-periods-calendar-tab', 
-                      link_title: 'View the calendar',
-                      tab_index: @tab_index,
-                      prev_tab: '.search-result.review-periods-details-tab', 
-                      next_tab: '.search-result.review-periods-edit-tab' }
-  %> 
-
-  <%= render partial: 'loader/batch/review/periods/tabs/tab',
-             locals: {first: false,
                       last: true,
                       this_tab: 'tab_edit', 
                       link_text: 'Edit', 

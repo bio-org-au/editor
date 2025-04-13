@@ -2,10 +2,18 @@ _fixture:
   model_class: Loader::Batch
   
 batch_one:
-  id: 1
   name: "Batch One"
   description: A first batch
   use_sort_key_for_ordering: true
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now.last_week %>
+  updated_at: <%= Time.now.last_week %>
+  
+batch_two:
+  name: "Batch Two"
+  description: A second batch
+  use_sort_key_for_ordering: false
   created_by: tester
   updated_by: tester
   created_at: <%= Time.now %>

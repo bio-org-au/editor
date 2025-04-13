@@ -6,9 +6,6 @@
            locals: {info: @org.abbrev, label: 'abbreviation'} %>
 
 <%= render partial: 'detail_line',
-           locals: {info: @org.not_a_real_org.to_s, label: 'not real'} %>
-
-<%= render partial: 'detail_line',
            locals: {info: @org.can_vote.to_s, label: 'can vote'} %>
 
 

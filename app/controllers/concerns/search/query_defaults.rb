@@ -50,16 +50,13 @@ module Search::QueryDefaults
 
   def remove_old_default_embedded
     # Define regex to capture "default-batch: <value>" embedded within the query string
-    regex = /default-batch:\s[^:]{1,500}\s{1,500}\w{1,500}:/
-  
-    # Substitute the pattern with an empty string if found, optimizing execution
+    regex = /default-batch:.*(?= [A-Za-z-]*:)/
     params[:query_string].sub!(regex, '') if params[:query_string].match?(regex)
   end
   
 
   def remove_old_default_at_end_of_string
     regex = /default-batch:\s[^:]{1,500}\s*$/
-    # Only perform replacement if there's a match
     params[:query_string].sub!(regex, '') if params[:query_string].match?(regex)
   end
 end

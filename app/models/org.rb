@@ -71,14 +71,14 @@ class Org < ActiveRecord::Base
   end
 
   def self.xorgs_reviewer_can_vote_on_behalf_of_in_a_review(username, review)
-    Org.joins(batch_reviewers: [:user_table, :batch_review_period])
-       .where('users.name': username)
+    Org.joins(batch_reviewers: [:user, :batch_review_period])
+       .where('users.user_name': username)
       .where('batch_review_period.batch_review_id': review.id)
   end
 
   def self.yorgs_reviewer_can_vote_on_behalf_of_in_a_review(reviewer)
-    Org.joins(batch_reviewers: [:user_table, :batch_review_period])
-       .where('users.name': username)
+    Org.joins(batch_reviewers: [:user, :batch_review_period])
+       .where('users.user_name': username)
       .where('batch_review_period.batch_review_id': review.id)
   end
 
@@ -87,6 +87,6 @@ class Org < ActiveRecord::Base
   end
 
   def user_as_reviewer_for_review(username, review)
-    can_vote_in_review(review).where(user_id: UserTable.where(name: 'gbentham')).first
+    can_vote_in_review(review).where(user_id: User.where(user_name: 'gbentham')).first
   end
 end

@@ -1,0 +1,6 @@
+<% content_for :search_result_summary do %>
+   <%= render partial: 'search/header' %>
+<% end %>
+<%= render partial: 'list', 
+           locals: {the_year: '2025 - 10 years of the Editor!', 
+                    the_list: History.changes(2025)} %>

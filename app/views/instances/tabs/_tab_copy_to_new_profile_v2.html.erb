@@ -1,0 +1,119 @@
+<% if @current_registered_user.available_product_from_roles.reference.blank? %>
+  <div id="search-result-details-error-message-container" class="message-container">
+    You do not have a product reference. Please contact your administrator.
+  </div>
+<% else %>
+  <% product_reference = Profile::Product.find_by(name: @current_registered_user.available_product_from_roles&.name).reference %>
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
+  <% increment_tab_index(0) %>
+
+  <h5>
+  <% if @instance.citations.size == 0 %>
+    Copy the instance
+  <% elsif @instance.citations.size == 1 %>
+    Copy the instance and its <%= @instance.citations.first.instance_type.name %>
+  <% else %>
+    Copy the instance and its <%= citation_summary(@instance) %>.
+  <% end %>
+  </h5>
+
+  <br>
+  The copied instance will remain attached to:
+  <br>
+  <h6>&mdash; <%= @instance.name.full_name %></h6>
+
+  <% @instance.instance_type_id = InstanceType.secondary_reference.id %>
+  <%= form_for(@instance,
+              url: { action: "copy_for_profile_v2",
+              format: 'js'},
+              id: "copy-instance-for-name-form",
+              remote: true,
+              method: :post) do |f| %>
+
+    <br>
+    The copied instance will be attached to the <%= @current_registered_user.available_product_from_roles&.name %> product reference:<br>
+    <h6>&mdash; <%= product_reference.citation %></h6>
+    <br>
+    <label for="instance_type_id">Instance type:</label>
+    <br>
+    <h6>&mdash; <%= @instance.instance_type.name %></h6>
+    <%= f.hidden_field :instance_type_id, value: @instance.instance_type_id %>
+    <script> setUpInstanceReferenceExcludingCurrent(); </script>
+    <%= f.hidden_field :reference_id, value: product_reference.id %>
+    <br>
+    <%= render partial: "instances/widgets/as_a_draft", locals: {f: f} %>
+    <% if Rails.configuration.try("draft_instances")  %>
+      <%= f.hidden_field :draft, value: true %>
+    <% end %>
+
+    <br>
+  <div class="width-100-percent">
+
+    <%= link_to("Copy",
+              "javascript:void(0);",
+              id: "copy-instance-link",
+              class: "btn btn-warning pull-right",
+              title: "Copy the instance - you will be asked to confirm.",
+              tabindex: increment_tab_index,
+              data: {show_this_id: "confirm-or-cancel-copy-instance-link-container",
+                      must_have_value: "instance_reference_id"})
+    %>
+    <div id="pre-submit-error-message" class="error-message red hidden">Please fill out all the fields</div>
+    <div id="confirm-or-cancel-copy-instance-link-container"
+        class="confirm-or-cancel-container pull-right hidden">
+
+      <%= f.submit "Confirm", id: 'create-copy-of-instance', class: 'btn btn-primary width-7em', title: 'Really copy the instance', tabindex: increment_tab_index %>
+      <%= link_to("Cancel",
+                  '#',
+                  id: "cancel-copy-instance-link",
+                  class: "btn btn-default cancel-link",
+                  title: "Do not copy the instance.",
+                  tabindex: increment_tab_index,
+                  data: {enable_this_id: 'copy-instance-link',
+                  hide_this_id: "confirm-or-cancel-copy-instance-link-container"})
+      %>
+    </div>
+    <div class="layout-artifact">&nbsp;</div>
+    <div id="copy-instance-info-message-container" class="message-container hidden"></div>
+    <div id="copy-instance-error-message-container" class="error-container hidden"></div>
+    <div id="search-result-details-error-message-container-0" class="error-container"></div>
+    <div id="search-result-details-error-message-container-1" class="error-container"></div>
+    <div id="search-result-details-error-message-container-2" class="error-container"></div>
+    <div id="search-result-details-error-message-container-3" class="error-container"></div>
+
+
+      <br>
+      <div id="multiple-primary-override" class="hidden form-check override-container">
+        <br>
+        <label class="green form-check-label">
+        <%= f.check_box(:multiple_primary_override,{title: "Override the warning message"}) %>
+          Ignore the warning and create the extra primary instance.
+        </label>
+      </div>
+      <div id="duplicate-instance-override" class="hidden form-check override-container">
+        <br>
+        <label class="green form-check-label">
+        <%= f.check_box(:duplicate_instance_override,{title: "Override the duplicate instance error message"}) %>
+          Ignore the error and create a duplicate instance.
+        </label>
+      </div>
+  <% end %>
+
+  <br>
+  <br>
+  <%= link_to("Refresh page",
+              '#',
+              id: "refresh-page-after-copy-link",
+              class: "btn btn-default hidden refresh-page-link",
+              title: "Refresh page")
+  %>
+
+  <% if @take_focus %>
+    <script>
+      $(document).ready(function () {
+        focusOnField('instance-reference-typeahead');
+      })
+    </script>
+  <% end %>
+<% end %>

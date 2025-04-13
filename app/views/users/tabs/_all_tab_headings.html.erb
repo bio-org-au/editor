@@ -4,21 +4,23 @@
                       last: false,
                       this_tab: 'tab_details', 
                       link_text: 'Details', 
-                      link_id: 'loader-batch-details-tab', 
+                      link_id: 'user-details-tab', 
                       link_title: 'View a summary',
                       tab_index: @tab_index,
-                      prev_tab: '.search-result.loader-batch-review-tab', 
-                      next_tab: '.search-result.loader-batch-review-tab' } %> 
+                      prev_tab: '.search-result.user-edit-tab', 
+                      next_tab: '.search-result.user-edit-tab' } %> 
 
-  <%#= render partial: 'loader/batches/tabs/tab',
-             locals: {first: false,
-                      last: true,
-                      this_tab: 'tab_batch_review', 
-                      link_text: 'Review', 
-                      link_id: 'loader-batch-review-tab', 
-                      link_title: 'Create or edit batch reviews',
-                      tab_index: @tab_index,
-                      prev_tab: '.search-result.loader-batches-details-tab', 
-                      next_tab: '.search-result.loader-batches-details-tab' } %> 
+  <% if can? 'users', 'update' %>
+    <%= render partial: 'users/tabs/tab',
+               locals: {first: false,
+                        last: true,
+                        this_tab: 'tab_edit', 
+                        link_text: 'Edit', 
+                        link_id: 'user-edit-tab', 
+                        link_title: 'Edit user',
+                        tab_index: @tab_index,
+                        prev_tab: '.search-result.user-details-tab', 
+                        next_tab: '.search-result.user-details-tab' } %> 
+  <% end %>
 </ul>
 

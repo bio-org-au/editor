@@ -24,7 +24,7 @@
   <% review.periods.each do |period| %>
     <%= render partial: 'detail_line', 
       locals: {label: 'Review Period',
-               info: "#{period.name}: #{period.start_date.strftime("%d-%b-%Y")} &mdash; #{period.end_date.strftime("%d-%b-%Y")}" } %>
+               info: "#{period.name}: #{period.start_date.strftime("%d-%b-%Y")} &mdash; #{period.end_date&.strftime("%d-%b-%Y")}" } %>
     <% first_comment = true %>
     <% period.loader_name_comments(@loader_name.id, context).sort {|x,y| x.created_at <=> y.created_at}.each do |comment| %>
       <% if first_comment %>

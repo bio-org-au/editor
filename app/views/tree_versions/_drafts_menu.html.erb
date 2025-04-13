@@ -1,0 +1,26 @@
+<% Tree.menu_drafts.each do |menu_item| %>
+
+    <%
+      check_is_hidden =
+          if session["draft"].present? &&
+              menu_item.draft_id == session["draft"]["id"]
+            ""
+          else
+            "hidden"
+          end
+    %>
+
+    <li role="presentation">
+      <% if menu_item.draft_id %>
+          <%= link_to("#{menu_item.name} #{menu_item.draft_name}
+                      #{editor_icon('check', '',{class: check_is_hidden})}".html_safe,
+                      toggle_current_workspace_path(id: menu_item.draft_id),
+                      { remote: true,
+                        method: "post",
+                        title: menu_item.log_entry || menu_item.draft_name }) %>
+      <% else %>
+          <%= "#{menu_item.name} (No draft)".html_safe %>
+      <% end %>
+    </li>
+
+<% end %>

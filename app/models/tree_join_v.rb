@@ -71,6 +71,8 @@ class TreeJoinV < ActiveRecord::Base
   scope :draft, -> { where("not published") }
   scope :accepted, -> { where("accepted_tree = true") }
   scope :current, -> { where("tree_version_id = current_tree_version_id") }
+  scope :current_accepted, -> { where("tree_version_id = current_tree_version_id and accepted_tree") }
+  scope :old, -> { where("tree_version_id != current_tree_version_id") }
 
   belongs_to :instance
   belongs_to :name

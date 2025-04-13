@@ -17,7 +17,11 @@
 #   limitations under the License.
 #
 class ProfileItemReferencesController < ApplicationController
+  skip_before_action :authorise
+
   before_action :set_profile_item_reference, only: %i[update destroy]
+
+  before_action :authorise_user!, except: [:create]
 
   def create
     @profile_item_reference = Profile::ProfileItemReference.new(
@@ -26,12 +30,16 @@ class ProfileItemReferencesController < ApplicationController
         updated_by: current_user.username
       )
     )
+
+    authorise_user!
+
     if @profile_item_reference.save!
       @message = "Saved"
       render :create
     end
+
   rescue StandardError => e
-    @message = e.record.errors.full_messages.to_sentence
+    @message = "Error creating profile item reference: #{e.message}"
     render "create_failed", status: :unprocessable_entity
   end
 
@@ -53,6 +61,10 @@ class ProfileItemReferencesController < ApplicationController
   end
 
   private
+
+  def authorise_user!
+    raise CanCan::AccessDenied.new("Access Denied!", :manage, @profile_item_reference) unless can? :manage, @profile_item_reference
+  end
 
   def set_profile_item_reference
     @profile_item_reference = Profile::ProfileItemReference.find_by(profile_item_id: params[:profile_item_id], reference_id: params[:reference_id])

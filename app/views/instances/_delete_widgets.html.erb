@@ -6,7 +6,6 @@
                          tabindex: increment_tab_index,
                          data: {show_this_id: "confirm-or-cancel-link-container"})
 -%>
-<% if @instance.allow_delete? %>
 
   <% if @instance.this_is_cited_by&.accepted_concept? %>
     <div class="text-warning">Note: if you delete this instance you are changing the synonymy of an accepted
@@ -41,71 +40,6 @@
   -%>
   <div class="actions"> <%= delete_link.html_safe %> </div>
   <div class="width-100-percent"> <%= confirm_or_cancel_element.html_safe %> </div>
-<% else %>
-  You cannot delete this instance.
-  <br>
-  <% if @instance.in_taxo? %>
-    Instance is in the accepted classification: <%= ShardConfig.classification_tree_key %>.
-    <br>
-  <% end %>
-  <% if @instance.in_any_tree? %>
-    Instance is in: <%= @instance.tree_elements.collect {|te| te.tree_version_elements.collect {|tve| tve.tree_version.tree.name} }.flatten.uniq.join(',') %>.
-    <br>
-  <% end %>
-  <% if @instance.instance_notes.size > 0 %>
-    <span title="See the Notes tab."><%= "Instance notes: #{@instance.instance_notes.size} (see the 'Notes' tab)" %></span>
-    <br>
-  <% end %>
-  <% if @instance.reverse_of_this_cites.size > 0 %>
-    <%= link_to("Instance is cited: #{@instance.reverse_of_this_cites.size} &nbsp; #{gray_search_icon}".html_safe,
-                search_path(query_string: @instance.id.to_s,
-                            query_target: 'instance is cited'),
-                title: "Query the instances") %>
-    <br>
-  <% end %>
-  <% if @instance.reverse_of_this_is_cited_by.size > 0 %>
-    <%= link_to("Instance cited by #{citation_summary(@instance)} &nbsp; #{gray_search_icon}".html_safe,
-                search_path(query_string: @instance.id.to_s, query_target: 'instance is cited by'),
-                title: "Query the instances this is cited by.") %>
-    <br>
-  <% end %>
-  <% if @instance.comments.size > 0 %>
-    <span title="See the Adnot tab."><%= "Instance Adnot: #{@instance.comments.size} (see the 'Adnot' tab)" %></span>
-    <br>
-  <% end %>
-  <% unless @instance.children.empty? %>
-    Instance <%= @instance.id %> has children: <%= @instance.children.collect {|i| i.id}.join(',') %>
-    <br>
-    <%= link_to("See instance and children".html_safe,
-                search_path(query_string: "id: #{@instance.id},#{@instance.children.collect {|i| i.id}.join(',')}", query_target: 'instances'),
-                title: "Query the instances.") %>
-    <br> 
-  <% end %>
-
-  <%# Code should be cleaned up once loader tables are in all databases %>
-  <% if Rails.configuration.try(:batch_loader_aware) %>
-    <% if @instance.linked_to_loader_name_matches? %>
-      Instance is linked to
-      <% Loader::Name::Match.where(instance_id: @instance.id).each do |loader_name_match|%>
-        <%= link_to("#{loader_name_match.loader_name.simple_name}",
-             search_path(query_string: "id: #{loader_name_match.loader_name.id}", query_target: 'loader_name'),
-             title: "Query the loader names.") %>
-      <% end %>
-      <% Loader::Name::Match.where(standalone_instance_id: @instance.id).each do |loader_name_match|%>
-         <%= link_to("#{loader_name_match.loader_name.simple_name}",
-             search_path(query_string: "id: #{loader_name_match.loader_name.id}", query_target: 'loader_name'),
-             title: "Query the loader names.") %>
-      <% end %>
-      <% Loader::Name::Match.where(relationship_instance_id: @instance.id).each do |loader_name_match|%>
-         <%= link_to("#{loader_name_match.loader_name.simple_name}",
-             search_path(query_string: "id: #{loader_name_match.loader_name.id}", query_target: 'loader_name'),
-             title: "Query the loader names.") %>
-      <% end %> in the batch loader.<br>
-    <% end %>
-  <% end %>
-  <br>
-<% end %>
-<br>
  
 <div id="instance-delete-info-message-container" class="message-container"></div>
 <div id="instance-delete-error-message-container" class="error-container message-container"></div>

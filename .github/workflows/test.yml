@@ -6,7 +6,16 @@ on:
       - main
   pull_request:
     branches:
-      - main
+      - 'main'
+    paths:
+      - 'Gemfile*'
+      - '.rubocop*.yml'
+      - '.ruby-version'
+      - 'config/brakeman.ignore'
+      - '**/*.rb'
+      - '**/*.erb'
+      - '**/*.rake'
+      - '.github/workflows/lint-ruby.yml'
 
 jobs:
   test:
@@ -26,7 +35,7 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-          
+
     env:
       DATABASE_URL: postgres://nsl:testpassword@localhost:5432/test_db
       RAILS_ENV: test
@@ -48,26 +57,26 @@ jobs:
         ci_node_index: [0, 1]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v1
+      - name: Checkout code
+        uses: actions/checkout@v1
 
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.3.5'
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.5'
 
-    - name: Install dependencies
-      run: |
-        bundle install
+      - name: Install dependencies
+        run: |
+          bundle install
 
-    - name: Set up the database
-      run: |
-        bin/rails db:schema:load
+      - name: Set up the database
+        run: |
+          bin/rails db:schema:load
 
-    - name: Run Minit Tests
-      run: |
-        bundle exec rails test
+      - name: Run Minit Tests
+        run: |
+          bundle exec rails test
 
-    - name: Run RSpec tests
-      run: |
-        bundle exec rspec --profile 10 --format progress --no-color --backtrace
+      - name: Run RSpec tests
+        run: |
+          bundle exec rspec --profile 10 --format progress --no-color --backtrace

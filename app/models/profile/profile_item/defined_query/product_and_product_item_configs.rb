@@ -3,9 +3,12 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
               :instance,
               :product_configs_and_profile_items
 
-  def initialize(user, instance, params = {})
-    @user = user
-    @profile_context = user.profile_v2_context
+  SUPPORTED_PRODUCTS = ["FOA"].freeze
+
+  def initialize(session_user, instance, params = {})
+    @session_user = session_user
+    @user = session_user.user
+    @profile_context = session_user.profile_v2_context
     @product = find_product_by_name(@profile_context.product)
     @product_configs_and_profile_items = []
     @instance = instance
@@ -28,8 +31,12 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
 
   private
 
+  attr_reader :user
+
   def find_product_by_name(name)
-    Profile::Product.find_by(name: name)
+    product_name = user.products.where(name: SUPPORTED_PRODUCTS).first&.name
+
+    Profile::Product.find_by(name: product_name || name)
   end
 
   def profile_v2_aware?

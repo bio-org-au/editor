@@ -1,11 +1,10 @@
 <!-- Profile Reference List -->
 <div style="padding-top:10px;border-top:1px dashed #ddd;display:flex;column-gap:5px;align-items:center">
-  <label>Reference:</label>
-  <%= profile_item_reference.reference.try(:title).to_s %>
+  <%= sanitize(profile_item_reference.reference.try(:citation_html).to_s) %>
   <%= render partial: "profile_item_references/delete_widgets",
     locals: {
       profile_item_reference: profile_item_reference
-    } 
+    }
   %>
 </div>
 

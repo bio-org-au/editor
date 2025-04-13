@@ -21,8 +21,9 @@ require "test_helper"
 class ProfileTextsControllerTest < ActionController::TestCase
   def setup
     @instance = instances(:gaertner_created_metrosideros_costata)
-    
-    @session = { username: "fred", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
+    @user_product_role = user_product_roles(:user_one_foa_draft_profile_editor)
+
+    @session = { username: "uone", user_full_name: "Fred Jones", groups: ["edit", "foa"] }
   end
 
   test "should create profile text" do
@@ -75,7 +76,7 @@ class ProfileTextsControllerTest < ActionController::TestCase
   test "should update profile text" do
     profile_item = profile_item(:ecology_pi)
     profile_text = profile_item.profile_text
-    put :update, 
+    put :update,
           params: {
             id: profile_text.id,
             profile_text: {value_md: "Updated profile text value"},
@@ -94,7 +95,7 @@ class ProfileTextsControllerTest < ActionController::TestCase
     profile_text = profile_item.profile_text
 
     Profile::ProfileText.stub_any_instance(:update, false) do
-      put :update, 
+      put :update,
           params: {
             id: profile_text.id,
             profile_text: {value_md: "Updated profile text value"},

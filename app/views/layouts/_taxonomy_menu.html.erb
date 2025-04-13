@@ -19,19 +19,19 @@
       <span class="caret"></span>
     </a>
     <ul id="tree-dropdown-menu" class="dropdown-menu" role="menu">
-      <%= render partial: "trees/drafts_menu" %>
+      <%= render partial: "tree_versions/drafts_menu" %>
       <% if @working_draft %>
         <li role="presentation" class="divider"></li>
         <li>
           <%= link_to "<i class='fa fa-edit'></i> Edit #{selected_draft_title}".html_safe,
-                      trees_edit_draft_path,
+                      tree_versions_edit_draft_path,
                       title: 'Edit draft taxonomy',
                       remote: true,
                       tabindex: '-1' %>
         </li>
         <li>
           <%= link_to "<i class='fa fa-file-text green'></i> Publish #{selected_draft_title}".html_safe,
-                      trees_publish_draft_path,
+                      tree_versions_form_to_publish_path,
                       title: 'Publish draft taxonomy',
                       remote: true,
                       tabindex: '-1' %>
@@ -40,7 +40,7 @@
       <li role="presentation" class="divider"></li>
       <li>
         <%= link_to "<i class='fa fa-plus'></i> Create draft taxonomy".html_safe,
-                    trees_new_draft_path,
+                    tree_versions_new_draft_path,
                     title: 'Add a new draft taxonomy',
                     remote: true,
                     tabindex: '-1' %>

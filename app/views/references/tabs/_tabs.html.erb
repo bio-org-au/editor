@@ -1,28 +1,28 @@
     <ul class="nav nav-tabs">
       <% this_tab = 'tab_show_1' %>
-  
+
       <%= render partial: 'references/tabs/tab', locals: {first: true,
                                           last: false,
-                                          this_tab: 'tab_show_1', 
-                                          link_text: 'Details', 
-                                          link_id: 'reference-edit-show-1-tab', 
+                                          this_tab: 'tab_show_1',
+                                          link_text: 'Details',
+                                          link_id: 'reference-edit-show-1-tab',
                                           link_title: 'View a summary',
                                           tab_index: increment_tab_index,
-                                          prev_tab: '', 
-                                          next_tab: '' } %> 
-  
-      <% if can? 'references', 'edit' %>
-  
+                                          prev_tab: '',
+                                          next_tab: '' } %>
+
+      <% if can? :update, @reference %>
+
         <%= render partial: 'references/tabs/tab', locals: {first: false,
                                             last: false,
-                                            this_tab: 'tab_edit_1', 
+                                            this_tab: 'tab_edit_1',
                                             link_text: 'Edit.'.html_safe,
                                             link_id: 'reference-edit-1-tab',
                                             link_title: 'Main edit form for the reference.',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
-                                            next_tab: ''} %> 
-  
+                                            prev_tab: '',
+                                            next_tab: ''} %>
+
         <%= render partial: 'references/tabs/tab', locals: {first: false,
                                             last: false,
                                             this_tab: 'tab_edit_2',
@@ -30,9 +30,9 @@
                                             link_id: 'reference-edit-2-tab',
                                             link_title: 'Second edit form for the reference.',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
-                                            next_tab: ''} %> 
-  
+                                            prev_tab: '',
+                                            next_tab: ''} %>
+
         <%= render partial: 'references/tabs/tab', locals: {first: false,
                                             last: false,
                                             this_tab: 'tab_edit_3',
@@ -40,9 +40,9 @@
                                             link_id: 'reference-edit-3-tab',
                                             link_title: 'Links edit form for the reference.',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
+                                            prev_tab: '',
                                             next_tab: ''} %>
-  
+
       <% end %>
 
       <% if can? 'comments', 'create' %>
@@ -54,13 +54,13 @@
                                             link_id: 'reference-comments-tab',
                                             link_title: 'Edit comments.',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
+                                            prev_tab: '',
                                             next_tab: ''} %>
 
       <% end %>
 
       <% if can? 'instances', 'create' %>
-  
+
         <%= render partial: 'references/tabs/tab', locals: {first: false,
                                             last: false,
                                             this_tab: 'tab_new_instance',
@@ -68,12 +68,12 @@
                                             link_id: 'reference-new-instance-tab',
                                             link_title: 'New instance form for the reference.',
                                             tab_index: increment_tab_index,
-                                            prev_tab: '', 
+                                            prev_tab: '',
                                             next_tab: ''} %>
       <% end %>
 
       <% if can? 'references', 'copy' %>
-  
+
         <%= render partial: 'references/tabs/tab',
                    locals: {first: false,
                             last: true,
@@ -82,9 +82,9 @@
                             link_id: 'reference-copy-tab',
                             link_title: 'Copy the reference to a new reference ready to modify and save.',
                             tab_index: increment_tab_index,
-                            prev_tab: '', 
+                            prev_tab: '',
                             next_tab: '.search-result.showing-details'} %>
       <% end %>
-  
+
     </ul>
-  
+

@@ -49,6 +49,8 @@ class TreeVersion < ActiveRecord::Base
            foreign_key: "tree_version_id",
            class_name: "TreeVersionElement"
 
+  before_save :stop_if_read_only
+
   # Returns a TreeVersionElement for this TreeVersion which contains the name
   def name_in_version(name)
     tree_version_elements.joins(:tree_element)
@@ -106,5 +108,12 @@ class TreeVersion < ActiveRecord::Base
 
   def draft_instance_default?
     self != tree.default_draft_version
+  end
+
+  def stop_if_read_only
+    if tree.read_only?
+      errors.add(:base, ' parent tree is read only')
+      throw :abort
+    end
   end
 end

@@ -24,9 +24,8 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
 
   belongs_to :batch_review, class_name: "Loader::Batch::Review", foreign_key: "batch_review_id"
-  belongs_to :user_table, class_name: "UserTable", foreign_key: "user_id"
-  alias_method :user, :user_table
-  belongs_to :org
+  belongs_to :user, foreign_key: "user_id"
+  belongs_to :org, optional: true
   belongs_to :batch_review_role, class_name: "Loader::Batch::Review::Role"
   alias_method :role, :batch_review_role
   has_many :name_review_comments, class_name: "Loader::Name::Review::Comment", foreign_key: "batch_reviewer_id" do
@@ -39,7 +38,6 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   end
 
   validates :user_id, presence: true
-  validates :org_id, presence: true
   validates :batch_review_role_id, presence: true
   validates :batch_review_id, presence: true
   validates :user_id, uniqueness: { scope: :batch_review_id,
@@ -59,7 +57,7 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
   end
 
   def name
-    user.name
+    user.user_name
   end
 
   def full_name
@@ -75,7 +73,6 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
 
   def save_with_username(username)
     self.created_by = self.updated_by = username
-    # set_defaults
     save
   end
 
@@ -92,16 +89,16 @@ class Loader::Batch::Reviewer < ActiveRecord::Base
 
   def self.batch_reviewers_for_org_username_batch_review(org, username, batch_review)
     self.where(org_id: org.id)
-        .joins(:user_table)
-        .where(["users.name = ?", username])
+        .joins(:user)
+        .where(["users.user_name = ?", username])
         .joins(batch_review_period: :batch_review)
         .where(["batch_review.loader_batch_id = ?", batch_review.loader_batch_id])
         .distinct
   end
 
   def self.username_to_reviewers_for_review(username, review)
-    Loader::Batch::Reviewer.joins([:user_table, :batch_review])
-                           .where('users.name': username)
+    Loader::Batch::Reviewer.joins([:user, :batch_review])
+                           .where('users.user_name': username)
                            .where('batch_review.id': review.id)
   end
 

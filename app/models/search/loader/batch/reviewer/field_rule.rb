@@ -18,7 +18,7 @@
 #
 class Search::Loader::Batch::Reviewer::FieldRule
   RULES = {
-    "name:" => { where_clause: " exists (select null from users where batch_reviewer.user_id = users.id and lower(users.name) like ?)",
+    "user-name:" => { where_clause: " exists (select null from users where batch_reviewer.user_id = users.id and lower(users.user_name) like ?)",
                  trailing_wildcard: true,
                  order: "id" },
     "id:" => { multiple_values: true,

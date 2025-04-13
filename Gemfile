@@ -68,12 +68,15 @@ end
 group :development, :test do
   gem "byebug"
   gem "pry-rails"
+  gem 'capybara'
   # gem "pry-rescue" # breaks test env. on Mac M1
   gem "webmock"
   # gem "schema_plus"
 
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'factory_bot_rails'
+  gem 'database_cleaner-active_record'
 end
 
 # Added

@@ -4,7 +4,7 @@
     <%= hidden_field_tag "profile_item_annotation[profile_item_id]", profile_item_annotation.profile_item_id %>
 
     <!-- Text area for annotation input -->
-    <%= text_area_tag "profile_item_annotation[value]", profile_item_annotation.value, placeholder: "Enter text here...", rows: 2, required: true, style: 'flex-grow: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px; background-color: white; min-height: 50px; resize: vertical;' %>
+    <%= text_area_tag "profile_item_annotation[value]", profile_item_annotation.value, placeholder: "Enter text here...", rows: 2, style: 'flex-grow: 1; padding: 5px; border: 1px solid #ccc; border-radius: 4px; background-color: white; min-height: 50px; resize: vertical;' %>
 
     <!-- Submit button -->
     <%= f.submit 'Save', style: 'background-color: #5a5a5a; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; margin-left: 10px;' %>

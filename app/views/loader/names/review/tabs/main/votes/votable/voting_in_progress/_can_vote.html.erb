@@ -1,10 +1,7 @@
 
 
 <!-- _can_vote.html.erb -->
-<%= render partial: 'detail_line', locals: {info: reviewer.user.name, label: 'user'} %>
-<%= render partial: 'detail_line', locals: {info: batch.name, label: 'batch'} %>
-<%= render partial: 'detail_line', locals: {info: review.name, label: 'review'} %>
-<%= render partial: 'detail_line', locals: {info: org.name, label: 'organisation'} %>
+<%= render partial: 'detail_line', locals: {info: "#{review.name} for #{batch.name}", label: 'review for batch'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.full_name, label: 'name'} %>
 
 <%= divider %>

@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: dist_status
+#
+#  id               :bigint           not null, primary key
+#  def_link         :string(255)
+#  deprecated       :boolean          default(FALSE), not null
+#  description_html :text
+#  lock_version     :bigint           default(0), not null
+#  name             :string(255)      not null
+#  sort_order       :integer          default(0), not null
+#
 presumed_extinct:
   lock_version: 0
   deprecated: false

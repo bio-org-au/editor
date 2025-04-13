@@ -1,0 +1,3 @@
+$('#publish-draft-error-message-container')
+    .html(markdown("<%= escape_javascript(@message.html_safe) %>"));
+$('#edit-draft-submit').find('i.fa').removeClass('fa-spin');

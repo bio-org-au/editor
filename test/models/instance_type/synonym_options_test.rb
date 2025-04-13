@@ -25,8 +25,23 @@ class InstanceTypeSynonymOptionsTest < ActiveSupport::TestCase
     assert options.instance_of?(Array), "Should be an array."
     #assert_equal 13, options.size, "Should be 13 of them."
     @names = options.collect(&:first)
-    @expected = ["basionym", "doubtful misapplied", "doubtful pro parte misapplied",
-                 "doubtful pro parte taxonomic synonym", "doubtful taxonomic synonym", "isonym", "misapplied", "nomenclatural synonym", "pro parte misapplied", "pro parte taxonomic synonym", "replaced synonym", "taxonomic synonym", "trade name"]
+    @expected = [
+      "alternative name",
+      "basionym",
+      "doubtful misapplied",
+      "doubtful pro parte misapplied",
+      "doubtful pro parte taxonomic synonym",
+      "doubtful taxonomic synonym",
+      "isonym",
+      "misapplied",
+      "nomenclatural synonym",
+      "pro parte misapplied",
+      "pro parte taxonomic synonym",
+      "pro parte nomenclatural synonym",
+      "replaced synonym",
+      "taxonomic synonym",
+      "trade name"
+    ]
   end
 
   test "instance type synonym options" do

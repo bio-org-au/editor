@@ -8,6 +8,8 @@ module AuthorValidations
               presence: { if: -> { abbrev.blank? },
                           unless: -> { duplicate_of_id.present? },
                           message: "can't be blank if abbrev is blank." }
+    validates :name, length: { maximum: 1000,
+                                 too_long: "%{count} characters is the maximum allowed" }
     validates :abbrev,
               presence: { if: -> { name.blank? },
                           unless: -> { duplicate_of_id.present? },
@@ -35,11 +37,17 @@ module AuthorValidations
               uniqueness: { unless: -> { abbrev.blank? },
                             case_sensitive: false,
                             message: "has already been used" }
+    validates :abbrev, length: { maximum: 100,
+                                 too_long: "%{count} characters is the maximum allowed" }
     validates_exclusion_of :duplicate_of_id,
                            in: ->(author) { [author.id] },
                            allow_blank: true,
                            message: "and master cannot be the same record"
     validate :master_has_abbrev_if_needed, on: :update
+    validates :full_name, length: { maximum: 255,
+                                 too_long: "%{count} characters is the maximum allowed" }
+    validates :notes, length: { maximum: 1000,
+                                too_long: "%{count} characters is the maximum allowed" }
   end
 
   def master_has_abbrev_if_needed

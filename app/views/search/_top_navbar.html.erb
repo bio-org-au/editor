@@ -77,11 +77,11 @@
                       title: "Draft taxonomy reports" %>
       </li>
 
-      <% if can?("batches", :index) %>
+      <% if can?("de_duplicates", :index) %>
       <li role="presentation" class="">
         <%= link_to "De-duplicate",
-                    batch_index_path,
-                    class: "main-body-tab-link hidden",
+                    de_duplicates_index_path,
+                    class: "main-body-tab-link xhidden",
                     remote: true,
                     title: "De-duplicate names in bulk" %>
       </li>

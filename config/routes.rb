@@ -34,7 +34,12 @@ Rails.application.routes.draw do
   match "profile_item_references/:profile_item_id/:reference_id", as: "save_profile_item_references", to: "profile_item_references#update", via: :put
   match "profile_item_references/:profile_item_id/:reference_id", as: "delete_profile_item_references", to: "profile_item_references#destroy", via: :delete
 
-  resources :batches
+  resources :de_duplicates
+  match "de-duplicate",
+        as: "de_duplicates_index",
+        to: "de_duplicates#index",
+        via: :get
+
   match "/feedback", as: "feedback", to: "feedback#index", via: :get
   match "/ping", as: "ping_service", to: "services#ping", via: :get
   match "/version", as: "version_service", to: "services#version", via: :get
@@ -96,6 +101,8 @@ Rails.application.routes.draw do
         via: :patch
   match "instances/:id/standalone/copy",
         as: "copy_standalone", to: "instances#copy_standalone", via: :post
+  match "instances/:id/standalone/copy_for_profile_v2",
+        as: "copy_for_profile_v2", to: "instances#copy_for_profile_v2", via: :post
   resources :instances, only: %i[new create update destroy]
   match "instances/:id",
         as: "instance_show",
@@ -270,7 +277,7 @@ Rails.application.routes.draw do
         to: "help#instance_types", as: "instance_types", via: :get
   match "help/typeaheads", to: "help#typeaheads", as: "typeaheads", via: :get
   match "history/:year(/show_status/:show_status)", to: "history#for_year", as: "history_for_year", via: :get,
-                                                    year: /202[01234]|201[5-9]/, defaults: { show_status: "false" }
+                                                    year: /202[012345]|201[5-9]/, defaults: { show_status: "false" }
 
   match "/set_include_common_and_cultivar",
         to: "search#set_include_common_and_cultivar",
@@ -319,34 +326,34 @@ Rails.application.routes.draw do
         to: "trees#update_excluded",
         via: :post
 
-  match "trees/new_draft",
-        as: "trees_new_draft",
-        to: "trees#new_draft",
+  match "tree_versions/new_draft",
+        as: "tree_versions_new_draft",
+        to: "tree_versions#new_draft",
         via: :get
 
-  match "trees/create_draft",
-        as: "trees_create_draft",
-        to: "trees#create_draft",
+  match "tree_versions/create_draft",
+        as: "tree_versions_create_draft",
+        to: "tree_versions#create_draft",
         via: :post
 
-  match "trees/edit_draft",
-        as: "trees_edit_draft",
-        to: "trees#edit_draft",
+  match "tree_verions/edit_draft",
+        as: "tree_versions_edit_draft",
+        to: "tree_versions#edit_draft",
         via: :get
 
-  match "trees/update_draft",
-        as: "trees_update_draft",
-        to: "trees#update_draft",
+  match "tree_versions/update_draft",
+        as: "tree_versions_update_draft",
+        to: "tree_versions#update_draft",
         via: :post
 
-  match "trees/publish_draft",
-        as: "trees_publish_draft",
-        to: "trees#publish_draft",
+  match "tree_versions/form_to_publish",
+        as: "tree_versions_form_to_publish",
+        to: "tree_versions#form_to_publish",
         via: :get
 
-  match "trees/publish",
-        as: "trees_publish",
-        to: "trees#publish_version",
+  match "tree_versions/publish",
+        as: "tree_versions_publish",
+        to: "tree_versions#publish",
         via: :post
 
   match "trees/reports",
@@ -367,11 +374,6 @@ Rails.application.routes.draw do
   match "search/reports",
         as: "search_reports",
         to: "search#reports",
-        via: :get
-
-  match "batch",
-        as: "batch_index",
-        to: "batches#index",
         via: :get
 
   match "password",
@@ -534,10 +536,15 @@ Rails.application.routes.draw do
   match "batch_review_periods/:id", as: "update_review_period", to: "loader/batch/review/periods#update", via: :patch
   match "/batch_review_periods/:id", as: "delete_review_period", to: "loader/batch/review/periods#destroy", via: :delete
 
-  match "org_batch_review_voters", as: "create_org_batch_review_voter", to: "org/batch/review_voters#create", via: :post
-  match "org_batch_review_voters/:batch_review_id/:org_id", as: "delete_org_batch_review_voter", to: "org/batch/review_voters#destroy", via: :delete
+  match "users/new_row", as: "user_new_row", to: "users#new_row", via: :get
+  match "users/new/:random_id", as: "new_user_with_random_id", to: "users#new", via: :get
 
-  match "users", as: "user", to: "users#show", via: :get
+  #match "/users(.:format)", as: "user_create", to: "users#create", via: :post
+  resources :users, only: %i[new create update destroy]
+  # user_tables POST        /user_tables(.:format)      user_tables#create
+  # new_user_table GET      /user_tables/new(.:format)  user_tables#new
+
+  match "users", as: "user_show", to: "users#show", via: :get
   match "users/:id/tab/:tab", as: "user_tab", to: "users#tab", via: :get
 
   match "orgs", as: "org", to: "orgs#show", via: :get

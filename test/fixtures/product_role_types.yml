@@ -1,0 +1,8 @@
+_fixture:
+  model_class: Product::RoleType
+
+foa_draft_profile_editor:
+  name: "draft-profile-editor"
+  description: "Can manage draft profile"
+  updated_by: tester
+  created_by: tester

@@ -66,6 +66,7 @@
 #  name_sanctioningauthor_index             (sanctioning_author_id)
 #  name_second_parent_id_ndx                (second_parent_id)
 #  name_simple_name_index                   (simple_name)
+#  name_sort_name_idx                       (sort_name)
 #  name_source_index                        (namespace_id,source_id,source_system)
 #  name_source_string_index                 (source_id_string)
 #  name_status_index                        (name_status_id)

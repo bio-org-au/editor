@@ -7,13 +7,14 @@
   data: { show_this_id: "confirm-or-cancel-link-profile-item-reference-container-#{profile_item_reference.profile_item_id_reference_id}" })
 %>
 
-<% 
+<%
 # NOTES: Apparently, we need to add the turbo-related data attributes to ajax-driven links.
-# In this example, the delete button that makes an ajax request to the server should have the turbo attributes 
+# In this example, the delete button that makes an ajax request to the server should have the turbo attributes
 # if we want it to render the results via turbo stream. Just something we have to note of.
 confirm_delete_link = link_to("Confirm delete",
                                 delete_profile_item_references_path(profile_item_id: profile_item_reference.profile_item_id, reference_id: profile_item_reference.reference_id),
                                 class: "btn btn-danger",
+                                style: "margin-top: 3px;margin-bottom: 3px;",
                                 title: "Select to confirm the delete.",
                                 data: {
                                   turbo_method: :delete, # Makes sure the delete method is used
@@ -25,6 +26,7 @@ confirm_delete_link = link_to("Confirm delete",
                                 '#',
                                 id: "cancel-delete-link-#{profile_item_reference.profile_item_id_reference_id}",
                                 class: "btn btn-default cancel-link",
+                                style: "margin-top: 3px;margin-bottom: 3px;",
                                 title: "Select to cancel the delete.",
                                 data: {enable_this_id: "profile-item-reference-delete-link-#{profile_item_reference.profile_item_id_reference_id}",
                                        hide_this_id: "confirm-or-cancel-link-profile-item-reference-container-#{profile_item_reference.profile_item_id_reference_id}"})
@@ -32,11 +34,11 @@ confirm_delete_link = link_to("Confirm delete",
 
 <% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-profile-item-reference-container-#{profile_item_reference.profile_item_id_reference_id}"
                                   class="profile-item-reference confirm-or-cancel-delete-link pull-right hidden"
-                                  style="text-align:right">
+                                  style="text-align:right;margin-top: 3px;margin-bottom: 3px;">
                                   #{confirm_delete_link}
                                   #{cancel_delete_link}</div>)
 %>
-<div style="overflow: hidden;margin-left:auto;text-align:left">
+<div style="margin-left:auto;text-align:left">
   <%= delete_link.html_safe %>
   <%= h confirm_or_cancel_element.html_safe %>
   <div id="message-for-profile-item-reference-<%= profile_item_reference.profile_item_id_reference_id %>" class="message-container"></div>

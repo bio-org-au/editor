@@ -1,0 +1,239 @@
+- :date: 28-Mar-2025
+  :jira_id: '5368'
+  :description: |-
+    Author: Check field lengths before saving to database
+- :date: 27-Mar-2025
+  :jira_id: '33'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Show syn tab for draft and secondary reference instance
+- :date: 27-Mar-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Only offer copy tab when row-type params is instance_as_part_of_concept_record
+- :date: 26-Mar-2025
+  :jira_id: '5088'
+  :description: |-
+    Loader Search Targets: change order of target options to relect use
+- :date: 25-Mar-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Only display instance copy tab for standalone and non-draft instances and display error message.
+- :date: 25-Mar-2025
+  :jira_id:
+  :description: |-
+    Build: Remove scripted changing of active_record timezome from :localhost to :utc - just leave production AR TZ as :utc
+- :date: 24-Mar-2025
+  :jira_id: '5146'
+  :description: |-
+    Taxonomy: Honour <code>tree.is_read_only</code> by preventing tree operations when boolean is set true
+- :date: 24-Mar-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: draft-editor permissions for copying an instance as draft secondary ref instance for a product (FOA)
+- :date: 21-Mar-2025
+  :jira_id: '52'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Allow user to remove a profile item annotation
+- :date: 18-Mar-2025
+  :jira_id: '51'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Don't offer the delete button when the profile item is not deletable
+- :date: 17-Mar-2025
+  :jira_id: '47'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: draft-profile-editor permissions for updating authors and references
+- :date: 14-Mar-2025
+  :jira_id: '5340'
+  :description: |-
+    Loader Name: Fix loss of <code>limit:</code> directive when placed after default batch name
+- :date: 12-Mar-2025
+  :jira_id: '47'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Permissions for draft profile editor
+- :date: 07-Mar-2025
+  :jira_id:
+  :description: |-
+    CI: Trigger github workflow tests for .erb file changes
+- :date: 07-Mar-2025
+  :jira_id: '5330'
+  :description: |-
+    Loader Batch Review Voting: Tidy up the Reviewers Vote tab
+- :date: 07-Mar-2025
+  :jira_id: '5329'
+  :description: |-
+    Loader: Batch Review search results now include the Batch name; revert recent nokogiri patch upgrade
+- :date: 06-Mar-2025
+  :jira_id:
+  :description: |-
+    Security: Upgrade rack
+- :date: 05-Mar-2025
+  :jira_id: '42'
+  :jira_project: FLOR
+  :description: |-
+    Refactored the registered user method and added a way to identify a user role
+- :date: 04-Mar-2025
+  :jira_id: '42'
+  :jira_project: FLOR
+  :description: |-
+    Product Role and icons in the navbar menu
+- :date: 21-Feb-2025
+  :jira_id: '5331'
+  :description: |-
+    Loader: Recent column change in Users table from name to user_name caused problems in voting tab - fixed.
+- :date: 21-Feb-2025
+  :jira_id: '42'
+  :jira_project: FLOR
+  :description: |-
+    Permissions: List down the roles that a user has in the menu.
+- :date: 20-Feb-2025
+  :jira_id: '5341'
+  :description: |-
+    Loader: Trap and decline processing when synonym has no parent record
+- :date: 20-Feb-2025
+  :jira_id: '43'
+  :jira_project: FLOR
+  :description: |-
+    FOA Project: Make the Users table search target available outside the batch aware context to users authorised to see user data
+- :date: 20-Feb-2025
+  :jira_id: '40'
+  :jira_project: FLOR
+  :description: |-
+    FOA Project: Adding back the user's product roles in the menu
+- :date: 19-Feb-2025
+  :jira_id: '40'
+  :jira_project: FLOR
+  :description: |-
+    FOA Project: Early work on setting up users and their roles
+- :date: 19-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Ruby gem patch: Revert the nokogiri upgrade because it fails to build on Jenkins
+- :date: 19-Feb-2025
+  :jira_id: '5341'
+  :description: |-
+    Loader: Fix typo from yesterday
+- :date: 19-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Ruby gem patch: Dependabot upgrade Nokogiri
+- :date: 19-Feb-2025
+  :jira_id: ''
+  :description: |-
+    CI/CD: Updated the github workflow to make sure it runs the tests on every PR
+- :date: 18-Feb-2025
+  :jira_id: '5339'
+  :description: |-
+    Loader: Remove stray characters in view output
+- :date: 18-Feb-2025
+  :jira_id: '5341'
+  :description: |-
+    Loader: Fix error handler to avoid <code>uninitialized constant</code> message for parenting error
+- :date: 18-Feb-2025
+  :jira_id: '5331'
+  :description: |-
+    Rename User name to user_name and same on screen label
+- :date: 17-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Code cleanup: adding annotations to the models, factories, and fixtures
+- :date: 14-Feb-2025
+  :jira_id: '41'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Add a New Instance tab in the Name panel for Foa context users
+- :date: 13-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Patch update for the rack gem to 3.1.10
+- :date: 12-Feb-2025
+  :jira_id: ''
+  :description: |-
+    Security upgrade for the net-imap gem to 0.5.6 to address CVE-2022-22963
+- :date: 10-Feb-2025
+  :jira_id: '5323'
+  :jira_project: NSL
+  :description: |-
+    Update the instance_type query for the Synonymy and Unpub to use relationship=true
+- :date: 05-Feb-2025
+  :jira_id: '39'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Fix some UI spacing issues in the foa editor
+- :date: 03-Feb-2025
+  :jira_id: '23'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Display the reference using the reference.citation_html in the foa editor
+- :date: 24-Jan-2025
+  :jira_id: '5310'
+  :description: |-
+    Improve the screen explanation when you cannot delete an instance due to tree entanglement
+- :date: 24-Jan-2025
+  :jira_id: '23'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Fixup the 500 error issue for when the app has no access to the database when adding a profile item reference.
+- :date: 20-Jan-2025
+  :jira_id: '5304'
+  :description: |-
+    Users for Batch Review: Allow users to be added, edited, and deleted.
+- :date: 17-Jan-2025
+  :jira_id: '5305'
+  :description: |-
+    Code infrastructure: Rename the User model to SessionUser - technical change that should have no affect on functions
+- :date: 17-Jan-2025
+  :jira_id: '34'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Allow profile v2 context user to create an unpublish instance of a draft AND secondary reference instance (standalone)
+- :date: 15-Jan-2025
+  :jira_id: '33'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Allow profile v2 context user to create a synonymy of a draft AND secondary reference instance (standalone)
+- :date: 15-Jan-2025
+  :jira_id: '5298'
+  :description: |-
+    Batch Review: The Batch Reviewer create form should offer only users not already added as Reviewers
+- :date: 15-Jan-2025
+  :jira_id: '5291'
+  :description: |-
+    Batch Review: Further corrections and improvements to start_date/end_date entry for batch review periods
+- :date: 13-Jan-2025
+  :jira_id: '31'
+  :jira_project: FLOR
+  :description: |-
+    FOA Profile (APNI Test only): Allow profile v2 context user to copy an instance
+- :date: 13-Jan-2025
+  :jira_id: '5292'
+  :description: |-
+    Batch Reviewers: Make it optional for a batch reviewer to belong to a registered organisation
+- :date: 10-Jan-2025
+  :jira_id: '5291'
+  :description: |-
+    Batch Review: Review and improve the start_date/end_date entry interface for batch review periods
+- :date: 09-Jan-2025
+  :jira_id: '5290'
+  :description: |-
+    Batch Review Voting: Remove square box beside Loader Name records with no vote recorded - it is not a checkbox
+- :date: 09-Jan-2025
+  :jira_id: '5289'
+  :description: |-
+    Batch Review: Remove Batch Review Voting Orgs tab
+- :date: 09-Jan-2025
+  :jira_id: '5281'
+  :description: |-
+    Rename "batches" feature to "de-duplicate" to avoid confusion with loader batches
+- :date: 06-Jan-2025
+  :jira_id: '5275'
+  :description: |-
+    History: Set up Changes 2025 page &#127881;
+

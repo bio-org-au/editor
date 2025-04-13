@@ -5,12 +5,16 @@
               local: false,
               method: :post do |form| %>
   <%= form.hidden_field :batch_review_id, value: @batch_review.id %>
-  Name: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", required: true, tabindex: increment_tab_index %>
+  Name<span class="red">*</span>: <%= form.text_field :name, class: 'form-control give-me-focus', title: "Enter name", required: true, tabindex: increment_tab_index %>
 
-    Start date
+    <br>
+    Start date<span class="red">*</span>:
     <br>
     <%= form.date_select :start_date,
-                      {order: [:day, :month, :year]},
+                      {order: [:day, :month, :year],
+                       use_short_month: true,
+                       start_year: Date.today.year,
+                       end_year: Date.today.year + 2},
                       {title: 'Start date for the period of review',
                        tabindex: increment_tab_index}  %>
     <br>
@@ -19,6 +23,7 @@
   <br>
   <br>
 
+  <p>Reviewers are able to comment on loader name records during a review period.
   <p>We don't allow the same period name or period start date within a review.  
   <p>We also suggest you avoid overlapping review periods i.e. a second one starting while the first one is still running.
 <% end %>

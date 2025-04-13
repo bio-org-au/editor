@@ -1,12 +1,12 @@
 <% if Rails.configuration.try('profile_v2_dropdown_ui') %>
   <%= turbo_stream.replace "product-item-config-dropdown-container" do %>
-    <% product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(current_user, @profile_item.instance).run_query %>
-    <%= render partial: "profile_items/product_item_config_dropdown", 
+    <% product_configs_and_profile_items, product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@current_user, @profile_item.instance).run_query %>
+    <%= render partial: "profile_items/product_item_config_dropdown",
       locals: {
-        product_configs_and_profile_items: product_configs_and_profile_items, 
+        product_configs_and_profile_items: product_configs_and_profile_items,
         selected_product_item_config_id: @profile_item.product_item_config_id,
         instance: @profile_item.instance
-      } 
+      }
     %>
   <% end %>
 <% end %>
@@ -18,7 +18,7 @@
 <% end %>
 
 <%= turbo_stream.replace "profile_text_form_#{@profile_item.product_item_config.id}" do %>
-  <div id="profile_text_form_<%= @profile_item.product_item_config.id %>" >
+  <div id="profile_text_form_<%= @profile_item.product_item_config.id %>" style="overflow: hidden; margin-bottom: 10px;overflow:hidden;" >
     <%= render partial: "profile_texts/form",
       locals: {
         profile_text: @profile_text,

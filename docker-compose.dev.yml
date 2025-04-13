@@ -20,6 +20,7 @@ services:
       - .env
 
   db_dev: &db_dev
+    container_name: nsl_db_dev
     image: postgres:15.7-bullseye
     shm_size: '512MB'
     volumes:
@@ -40,6 +41,7 @@ services:
       - .env
 
   app_dev: &app_dev
+    container_name: nsl_app_dev
     build:
       context: .
       dockerfile: Dockerfile.dev

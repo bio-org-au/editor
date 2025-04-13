@@ -147,6 +147,17 @@
                          remote: true,
                          tabindex: '-1'} %>
             </li>
+
+        <% if can?("users", :edit) %>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">
+            <%= link_to "User",
+                        user_new_row_path,
+                        title: 'Add User',
+                        remote: true,
+                        tabindex: '-1' %>
+          </li>
+        <% end %>
       <% end %>
 
 

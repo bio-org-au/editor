@@ -1,3 +1,4 @@
 
 $('.message-container').html('');
 $('#search-result-details-info-message-container').html("<%= escape_javascript(@message) %> ");
+setTimeout(function(){$('li.active a.tab').click();},500);

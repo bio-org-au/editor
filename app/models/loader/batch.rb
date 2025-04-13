@@ -74,7 +74,7 @@ class Loader::Batch < ActiveRecord::Base
   end
 
   def self.user_reviewable(user_name)
-    Loader::Batch.joins(batch_reviews: [{ batch_reviewers: [:user_table] }]).where(user_table: { name: user_name }).order("name")
+    Loader::Batch.joins(batch_reviews: [{ batch_reviewers: [:user] }]).where(user: { user_name: user_name }).order("user_name")
   end
 
   def self.id_of(canonical_query_target)

@@ -20,6 +20,7 @@
 class InstancesController < ApplicationController
   include ActionView::Helpers::TextHelper
   before_action :find_instance, only: %i[show tab destroy]
+  before_action :find_instance_for_copy, only: %i[copy_standalone copy_for_profile_v2]
   # TODO: refactor validation error checks to not rely on a copied string comparison as this is very fragile
   CONCEPT_WARNING = "Validation failed: You are trying to change an accepted concept's synonymy."
 
@@ -111,14 +112,15 @@ class InstancesController < ApplicationController
 
   # Copy an instance with its citations
   def copy_standalone
-    current_instance = Instance::AsCopier.find(params[:id])
-    current_instance.multiple_primary_override =
-      instance_params[:multiple_primary_override] == "1"
-    current_instance.duplicate_instance_override =
-      instance_params[:duplicate_instance_override] == "1"
-    @instance = current_instance.copy_with_citations_to_new_reference(
-      instance_params, current_user.username
-    )
+    @instance = @current_instance_for_copy.copy_with_citations_to_new_reference(instance_params, current_user.username)
+    @message = "Instance was copied"
+    render "instances/copy_standalone/success"
+  rescue StandardError => e
+    handle_other_errors(e, "instances/copy_standalone/error")
+  end
+
+  def copy_for_profile_v2
+    @instance = @current_instance_for_copy.copy_with_product_reference(instance_params, current_user.username)
     @message = "Instance was copied"
     render "instances/copy_standalone/success"
   rescue StandardError => e
@@ -207,7 +209,7 @@ class InstancesController < ApplicationController
   def find_instance
     @instance = Instance.find(params[:id])
     if params[:tab] == "tab_profile_v2"
-      @product_configs_and_profile_items, @product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(current_user, @instance).run_query
+      @product_configs_and_profile_items, @product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@current_user, @instance).run_query
     end
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the instance."
@@ -247,16 +249,19 @@ class InstancesController < ApplicationController
   # Different types of instances require different sets of tabs.
   def tabs_to_offer
     offer = %w[tab_show_1 tab_edit tab_edit_notes]
+
     if @instance.standalone?
+      offer << @current_user.profile_v2_context.unpublished_citation_tab(@instance)
       offer << "tab_synonymy"
-      offer << "tab_unpublished_citation"
+      offer << "tab_synonymy_for_profile_v2" if @instance.draft? && @instance.secondary_reference?
       offer << "tab_classification"
       offer << "tab_profile_details" if @instance.profile?
       offer << "tab_edit_profile" if @instance.profile? && @instance.show_taxo?
       offer << "tab_profile_v2"
     end
     offer << "tab_comments"
-    offer << "tab_copy_to_new_reference" if offer_tab_copy_to_new_ref?
+    offer << "tab_copy_to_new_reference" if @instance.standalone? && params["row-type"] == "instance_as_part_of_concept_record"
+    offer << "tab_copy_to_new_profile_v2" if @instance.standalone? && !@instance.draft?  && params["row-type"] == "instance_as_part_of_concept_record"
     if Rails.configuration.try('batch_loader_aware') &&
           can?('loader/names', 'update') &&
           offer_loader_tab?
@@ -344,5 +349,11 @@ class InstancesController < ApplicationController
       parent = parent.parent
     end
     @working_draft.tree_version_elements.order(tree_element_id: "asc").first
+  end
+
+  def find_instance_for_copy
+    @current_instance_for_copy = Instance::AsCopier.find(params[:id])
+    @current_instance_for_copy.multiple_primary_override = instance_params[:multiple_primary_override] == "1"
+    @current_instance_for_copy.duplicate_instance_override = instance_params[:duplicate_instance_override] == "1"
   end
 end

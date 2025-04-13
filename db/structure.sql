@@ -33,7 +33,7 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 CREATE EXTENSION if not exists btree_gist WITH SCHEMA public;
 CREATE EXTENSION if not exists unaccent WITH SCHEMA public;
-
+CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
 
 --
 -- Name: accepted_status(bigint); Type: FUNCTION; Schema: public; Owner: -
@@ -1545,7 +1545,8 @@ CREATE TABLE public.tree_element (
     synonyms jsonb,
     synonyms_html text NOT NULL,
     updated_at timestamp with time zone NOT NULL,
-    updated_by character varying(255) NOT NULL
+    updated_by character varying(255) NOT NULL,
+    first_tree_version_id bigint
 );
 
 
@@ -1574,6 +1575,10 @@ CREATE TABLE public.tree_version_element (
 --
 
 CREATE MATERIALIZED VIEW public.name_mv AS
+ WITH shard AS MATERIALIZED (
+         SELECT jsonb_object_agg(shard_config.name, shard_config.value) AS cfg
+           FROM public.shard_config
+        )
  SELECT nv.name_id,
     nv.basionym_id,
     nv.scientific_name,
@@ -1624,6 +1629,7 @@ CREATE MATERIALIZED VIEW public.name_mv AS
     nv.nomenclatural_code,
     nv.dataset_name,
     nv.taxonomic_status,
+    nv.nsl_accepted,
     nv.status_according_to,
     nv.license,
     nv.cc_attribution_iri
@@ -1634,7 +1640,7 @@ CREATE MATERIALIZED VIEW public.name_mv AS
             n.simple_name AS canonical_name,
             n.simple_name_html AS canonical_name_html,
             n.name_element,
-            ((mapper_host.value)::text || n.uri) AS scientific_name_id,
+            ((shard.cfg ->> 'mapper host'::text) || n.uri) AS scientific_name_id,
             nt.rdf_id AS name_type,
                 CASE
                     WHEN ((ns.rdf_id)::text !~ 'default'::text) THEN ns.name
@@ -1666,7 +1672,7 @@ CREATE MATERIALIZED VIEW public.name_mv AS
                     ELSE NULL::text
                 END AS name_published_in,
                 CASE
-                    WHEN ((COALESCE(primary_ref.abbrev_title, 'null'::character varying))::text <> 'AFD'::text) THEN (((((mapper_host.value)::text || 'reference/'::text) || (path.value)::text) || '/'::text) || primary_ref.id)
+                    WHEN ((COALESCE(primary_ref.abbrev_title, 'null'::character varying))::text <> 'AFD'::text) THEN (((((shard.cfg ->> 'mapper host'::text) || 'reference/'::text) || (shard.cfg ->> 'services path name element'::text)) || '/'::text) || primary_ref.id)
                     ELSE NULL::text
                 END AS name_published_in_id,
                 CASE
@@ -1674,7 +1680,7 @@ CREATE MATERIALIZED VIEW public.name_mv AS
                     ELSE NULL::integer
                 END AS name_published_in_year,
             primary_it.name AS name_instance_type,
-            ((mapper_host.value)::text || primary_inst.uri) AS name_according_to_id,
+            ((shard.cfg ->> 'mapper host'::text) || primary_inst.uri) AS name_according_to_id,
             ((primary_auth.name)::text ||
                 CASE
                     WHEN (COALESCE(primary_ref.iso_publication_date, ((primary_ref.year)::text)::character varying) IS NOT NULL) THEN ((' ('::text || (COALESCE(primary_ref.iso_publication_date, ((primary_ref.year)::text)::character varying))::text) || ')'::text)
@@ -1682,7 +1688,7 @@ CREATE MATERIALIZED VIEW public.name_mv AS
                 END) AS name_according_to,
             basionym.full_name AS original_name_usage,
                 CASE
-                    WHEN (basionym_inst.id IS NOT NULL) THEN ((mapper_host.value)::text || basionym_inst.uri)
+                    WHEN (basionym_inst.id IS NOT NULL) THEN ((shard.cfg ->> 'mapper host'::text) || basionym_inst.uri)
                     ELSE NULL::text
                 END AS original_name_usage_id,
             COALESCE(substr((basionym_ref.iso_publication_date)::text, 1, 4), (basionym_ref.year)::text) AS original_name_usage_year,
@@ -1696,8 +1702,8 @@ CREATE MATERIALIZED VIEW public.name_mv AS
             COALESCE(( SELECT find_tree_rank.name_element
                    FROM public.find_tree_rank(COALESCE(tve.element_link, tve2.element_link), kingdom.sort_order) find_tree_rank(name_element, rank, sort_order)),
                 CASE
-                    WHEN ((code.value)::text = 'ICN'::text) THEN 'Plantae'::text
-                    WHEN ((code.value)::text = 'ICZN'::text) THEN 'Animalia'::text
+                    WHEN ((shard.cfg ->> 'nomenclatural code'::text) = 'ICN'::text) THEN 'Plantae'::text
+                    WHEN ((shard.cfg ->> 'nomenclatural code'::text) = 'ICZN'::text) THEN 'Animalia'::text
                     ELSE NULL::text
                 END) AS kingdom,
                 CASE
@@ -1745,13 +1751,13 @@ CREATE MATERIALIZED VIEW public.name_mv AS
             rank.sort_order AS taxon_rank_sort_order,
             rank.abbrev AS taxon_rank_abbreviation,
             first_hybrid_parent.full_name AS first_hybrid_parent_name,
-            ((mapper_host.value)::text || first_hybrid_parent.uri) AS first_hybrid_parent_name_id,
+            ((shard.cfg ->> 'mapper host'::text) || first_hybrid_parent.uri) AS first_hybrid_parent_name_id,
             second_hybrid_parent.full_name AS second_hybrid_parent_name,
-            ((mapper_host.value)::text || second_hybrid_parent.uri) AS second_hybrid_parent_name_id,
+            ((shard.cfg ->> 'mapper host'::text) || second_hybrid_parent.uri) AS second_hybrid_parent_name_id,
             n.created_at AS created,
             n.updated_at AS modified,
-            (COALESCE(code.value, 'ICN'::character varying))::text AS nomenclatural_code,
-            dataset.value AS dataset_name,
+            (shard.cfg ->> 'nomenclatural code'::text) AS nomenclatural_code,
+            (shard.cfg ->> 'name label'::text) AS dataset_name,
                 CASE
                     WHEN t.accepted_tree THEN
                     CASE
@@ -1765,10 +1771,18 @@ CREATE MATERIALIZED VIEW public.name_mv AS
                     END
                     ELSE 'unplaced'::text
                 END AS taxonomic_status,
+                CASE
+                    WHEN t.accepted_tree THEN
+                    CASE
+                        WHEN te.excluded THEN false
+                        ELSE true
+                    END
+                    ELSE NULL::boolean
+                END AS nsl_accepted,
             accepted_tree.name AS status_according_to,
             'https://creativecommons.org/licenses/by/3.0/'::text AS license,
-            ((mapper_host.value)::text || n.uri) AS cc_attribution_iri
-           FROM (((((((((((((((((((((((((public.name n
+            ((shard.cfg ->> 'mapper host'::text) || n.uri) AS cc_attribution_iri
+           FROM ((((((((((((((((((((((public.name n
              JOIN public.name_type nt ON ((n.name_type_id = nt.id)))
              JOIN public.name_group ng ON ((ng.id = nt.name_group_id)))
              JOIN public.name_status ns ON ((n.name_status_id = ns.id)))
@@ -1789,10 +1803,7 @@ CREATE MATERIALIZED VIEW public.name_mv AS
              JOIN public.instance basionym_inst ON ((basionym_rel.cites_id = basionym_inst.id)))
              JOIN public.name basionym ON ((basionym.id = basionym_inst.name_id)))
              JOIN public.reference basionym_ref ON ((basionym_inst.reference_id = basionym_ref.id))) ON ((basionym_rel.cited_by_id = primary_inst.id)))
-             LEFT JOIN public.shard_config mapper_host ON (((mapper_host.name)::text = 'mapper host'::text)))
-             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
-             LEFT JOIN public.shard_config code ON (((code.name)::text = 'nomenclatural code'::text)))
-             LEFT JOIN public.shard_config path ON (((path.name)::text = 'services path name element'::text)))
+             LEFT JOIN shard ON (true))
              JOIN public.name_rank kingdom ON (((kingdom.rdf_id)::text ~ '(regnum|kingdom)'::text)))
              JOIN public.name_rank family ON (((family.rdf_id)::text ~ '(^family|^familia)'::text)))
              JOIN public.name_rank genus ON (((genus.rdf_id)::text = 'genus'::text)))
@@ -1962,7 +1973,7 @@ CREATE VIEW public.primary_instance_v AS
              JOIN public.instance oi ON ((oi.id = ou.cited_by_id)))
              LEFT JOIN public.instance oo ON ((oo.name_id = oi.name_id)))
              JOIN pt ON ((oo.instance_type_id = pt.id))) ON ((ou.cites_id = i.id)))
-             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
              LEFT JOIN public.shard_config code ON (((code.name)::text = 'nomenclatural code'::text)))
           ORDER BY i.name_id, it.standalone DESC, it.primary_instance DESC, n_1.verbatim_rank, it.sort_order, it.secondary_instance DESC
         )
@@ -2005,7 +2016,8 @@ CREATE VIEW public.primary_instance_v AS
            FROM parent_part
           WHERE parent_part.major
          LIMIT 1) pp ON (pi.has_parent))
-     LEFT JOIN pi ai ON (((pp.id = ai.name_id) AND ((pi.publication_usage_type)::text ~ 'autonym'::text))));
+     LEFT JOIN pi ai ON (((pp.id = ai.name_id) AND ((pi.publication_usage_type)::text ~ 'autonym'::text))))
+  WHERE ((n.name_path !~ '^C[MLAF]/'::text) OR (n.name_path IS NULL));
 
 
 --
@@ -2102,10 +2114,10 @@ CREATE MATERIALIZED VIEW public.taxon_mv AS
         END AS parent_name_usage_id,
     k.name AS taxon_rank,
     k.sort_order AS taxon_rank_sort_order,
-    (rk.rk OPERATOR(public.->) 'kingdom'::text) AS kingdom,
-    (rk.rk OPERATOR(public.->) 'class'::text) AS class,
-    (rk.rk OPERATOR(public.->) 'subclass'::text) AS subclass,
-    (rk.rk OPERATOR(public.->) 'family'::text) AS family,
+    'x' as kingdom,
+    'x' as class,
+    'x' as subclass,
+    'x' as family,
     concat(mapper_host.value, 'instance/', p.value, '/', e.instance_id) AS taxon_concept_id,
     r.citation AS name_according_to,
     concat(mapper_host.value, 'reference/', p.value, '/', r.id) AS name_according_to_id,
@@ -2155,21 +2167,18 @@ CREATE MATERIALIZED VIEW public.taxon_mv AS
     it.misapplied,
     it.relationship,
     it.synonym,
+    e.excluded AS excluded_name,
         CASE
-            WHEN (i.cited_by_id IS NOT NULL) THEN false
-            ELSE e.excluded
-        END AS excluded_name,
-        CASE
-            WHEN (i.cited_by_id IS NOT NULL) THEN false
-            ELSE true
+            WHEN e.excluded THEN false
+            ELSE (COALESCE((NULLIF(e.instance_id, i.cited_by_id))::integer, 0))::boolean
         END AS accepted,
     tve.taxon_id AS accepted_id,
     k.rdf_id AS rank_rdf_id,
     name_space.value AS name_space,
     d.value AS tree_description,
     l.value AS tree_label,
-    (rk.rk OPERATOR(public.->) 'order'::text) AS "order",
-    (rk.rk OPERATOR(public.->) 'genus'::text) AS generic_name,
+    'x' as "order",
+    'x' as generic_name,
     tve.name_path,
     tve.taxon_id AS node_id,
     pve.taxon_id AS parent_node_id,
@@ -2208,7 +2217,7 @@ CREATE MATERIALIZED VIEW public.taxon_mv AS
      LEFT JOIN public.shard_config p ON (((p.name)::text = 'services path name element'::text)))
      CROSS JOIN LATERAL public.get_hstore_tree(tve.element_link) rk(rk))
      LEFT JOIN public.primary_instance_v pi ON ((pi.name_id = i.name_id)))
-  ORDER BY (rk.rk OPERATOR(public.->) 'family'::text), COALESCE(x.full_name, n.full_name), ((((it.itorder ||
+  ORDER BY COALESCE(x.full_name, n.full_name), ((((it.itorder ||
         CASE
             WHEN it.nomenclatural THEN '0000'::text
             ELSE COALESCE(substr((pi.primary_date)::text, 1, 4), '9999'::text)
@@ -2219,6 +2228,13 @@ CREATE MATERIALIZED VIEW public.taxon_mv AS
         END) || COALESCE(lpad((pi.primary_id)::text, 8, '0'::text), lpad((i.id)::text, 8, '0'::text))) || (COALESCE(pi.publication_date, '9999'::character varying))::text)
   WITH NO DATA;
 
+    --(rk.rk OPERATOR(public.->) 'kingdom'::text) AS kingdom,
+    --(rk.rk OPERATOR(public.->) 'class'::text) AS class,
+    --(rk.rk OPERATOR(public.->) 'subclass'::text) AS subclass,
+    --(rk.rk OPERATOR(public.->) 'family'::text) AS family,
+    --(rk.rk OPERATOR(public.->) 'order'::text) AS "order",
+    --(rk.rk OPERATOR(public.->) 'genus'::text) AS generic_name,
+  --ORDER BY (rk.rk OPERATOR(public.->) 'family'::text), COALESCE(x.full_name, n.full_name), ((((it.itorder ||
 
 --
 -- Name: MATERIALIZED VIEW taxon_mv; Type: COMMENT; Schema: public; Owner: -
@@ -2808,6 +2824,253 @@ $$;
 
 
 --
+-- Name: name_constructor(bigint, boolean, boolean, jsonb); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.name_constructor(name_id bigint, rdfa boolean DEFAULT false, simple boolean DEFAULT false, state jsonb DEFAULT '{"in_hybrid": false, "in_autonym": false, "in_formula": false, "in_cultivar": false}'::jsonb) RETURNS text
+    LANGUAGE plpgsql
+    AS $_$
+DECLARE
+	current_id bigint := name_id;
+	element_id bigint;
+	rank_abbrev TEXT;
+	name_rank TEXT;
+	rank_id bigint;
+	rank_rdfid TEXT;
+	has_parent boolean;
+	genus_rank_id bigint;
+	target_rank bigint;
+	parent_rank bigint;
+	element TEXT := '';
+	scientific_name TEXT := '';
+	name_rdfid TEXT;
+	name_type TEXT;
+	is_format boolean;
+	is_hybrid boolean;
+	second_parent bigint;
+	is_autonym boolean;
+	is_formula boolean;
+	ws_connector TEXT;
+	authorship TEXT ;
+	name_status TEXT;
+	status_text TEXT;
+	code TEXT;
+	simple_name TEXT;
+	name_path TEXT;
+	x_state jsonb;
+BEGIN
+
+	IF name_id is null THEN return null; END IF;
+
+	-- capture this names metadate
+	SELECT
+		t.rdf_id, t.autonym, t.formula, nullif(k.rdf_id,'n-a'), s.rdf_id, s.name, g.rdf_id, path.value, gk.id
+	INTO
+		name_type, is_autonym, is_formula, name_rank, name_status, status_text, code, name_path, genus_rank_id
+	FROM name n
+		     JOIN name_rank k ON n.name_rank_id = k.id
+		     JOIN name_type t ON n.name_type_id = t.id
+		     JOIN name_group g ON t.name_group_id = g.id
+		     LEFT JOIN name_status s on n.name_status_id = s.id and (s.nom_inval or s.rdf_id = 'manuscript')
+		     LEFT JOIN shard_config path on path.name = 'services path name element'
+		     LEFT JOIN name_rank gk on gk.rdf_id = 'genus'
+	WHERE n.id = name_id;
+
+	state := jsonb_set( state, '{in_autonym}', to_jsonb(is_autonym), true);
+
+	IF name_type ~ 'cultivar-hybrid' THEN
+		state := jsonb_set( state, '{in_hybrid}', to_jsonb(true), true);
+	END IF;
+
+	LOOP
+		-- Fetch the necessary information for the current name element
+		SELECT n.id,
+		       rtrim(n.name_element), rtrim(n.simple_name),
+		       n.parent_id,
+		       k.id,
+		       k.parent_rank_id,
+		       CASE
+			       WHEN k.visible_in_name THEN
+			           COALESCE(CASE WHEN k.use_verbatim_rank THEN n.verbatim_rank END, k.abbrev)
+			       END,
+		       k.italicize, k.has_parent,
+		       k.rdf_id,
+		       n.second_parent_id,
+		       t.rdf_id,
+		       t.hybrid,
+		       t.autonym,
+		       t.formula,
+		       t.connector
+		INTO element_id, element, simple_name, current_id, rank_id, parent_rank, rank_abbrev,
+			is_format, has_parent, rank_rdfid, second_parent, name_rdfid,
+			is_hybrid, is_autonym, is_formula, ws_connector
+		FROM name n
+			     JOIN name_rank k ON n.name_rank_id = k.id
+			     JOIN name_type t ON n.name_type_id = t.id
+		         --LEFT JOIN name p ON p.id = n.parent_id
+		           -- JOIN name_rank pk on pk.id = p.name_rank_id
+		WHERE n.id = current_id;
+
+        IF code ~ 'zoological' and has_parent and current_id is null THEN
+            element := simple_name;
+        END IF;
+
+		if (state ->> 'in_cultivar')::boolean and (state ->> 'in_hybrid')::boolean THEN
+			parent_rank := genus_rank_id;
+		end if;
+
+		-- Handle common or vernacular names
+		IF name_rdfid ~ '(common|vernacular)' THEN
+			scientific_name := element;
+			EXIT;
+		END IF;
+
+
+		-- Handle cultivar names
+		IF name_rdfid ~ 'cultivar' THEN
+		IF (state ->> 'in_cultivar')::boolean THEN
+				scientific_name :=   CONCAT_WS(' ', name_constructor(current_id, rdfa, true, state));
+			ELSE
+		    x_state := state;
+			x_state := jsonb_set( state, '{in_cultivar}', to_jsonb(true), true);
+			scientific_name := CONCAT_WS(' ', name_constructor(current_id, rdfa, true, x_state), '''' || element || '''');
+		END IF;
+		EXIT;
+		END IF;
+
+		-- Handle formula names
+		IF is_formula THEN
+			IF (state ->> 'in_cultivar')::boolean THEN
+			 	scientific_name := CONCAT_WS( ' ', name_constructor(current_id, rdfa, false, state));
+			ELSE
+			  x_state := state;
+			  x_state := jsonb_set( x_state, '{in_formula}', to_jsonb(true), true);
+			  scientific_name := CONCAT_WS(
+					' ',
+					name_constructor(current_id, rdfa, false,x_state),
+					ws_connector,
+					COALESCE(name_constructor(second_parent, rdfa, false , x_state ), '?')
+			                   );
+			  IF (state ->> 'in_formula')::boolean THEN
+				scientific_name := CONCAT('(', scientific_name, ')');
+				state := jsonb_set( state, '{in_formula}', to_jsonb(false), true);
+			  END IF;
+			END IF;
+			-- current_id := null;
+			EXIT;
+		END IF;
+
+
+		IF rdfa and is_format and name_rdfid !~ 'phrase' THEN
+			 --  to include named_parts ... rank_rdfid is only an example.
+			 --  The rank table needs a column 'name_of_name' for the name of a name at rank.
+			 --  element := CONCAT( '<em property="', rank_rdfid, '">', element, '</em>');
+			  element := CONCAT( '<em>', element, '</em>');
+		END IF;
+
+		-- Handle named hybrid
+		IF name_rdfid ~ 'named-hybrid' and rank_rdfid !~ 'notho' THEN
+			element := 'x ' || element;
+		END IF;
+
+
+		IF (state ->> 'in_cultivar')::boolean THEN
+			authorship := null;
+		ELSE
+		    authorship := nc_authorship(element_id);
+		END IF;
+
+		IF rank_abbrev ~ '^\[.*\]$' THEN
+			rank_abbrev := null;
+		END IF;
+
+		-- Handle unranked names
+
+
+
+		-- Construct the scientific name
+
+		IF scientific_name = ''   THEN
+
+		--	IF  (state ->> 'in_cultivar')::boolean THEN
+		--		scientific_name := 'XXX';
+		--	END IF;
+
+			IF rank_rdfid ~ 'unranked'  and not (state ->> 'in_cultivar')::boolean THEN
+				scientific_name := CONCAT_WS(' ', name_constructor(current_id, rdfa, true, state), rank_abbrev, element, authorship);
+				EXIT;
+			END IF;
+
+			IF (state ->> 'in_hybrid')::boolean and parent_rank != rank_id THEN
+				NULL;
+			 	-- scientific_name := CONCAT_WS(' ', scientific_name);
+			ELSEIF simple  or ((state ->> 'in_autonym')::boolean and code ~ 'botanical')  THEN
+				scientific_name := CONCAT_WS(' ', rank_abbrev, element);
+			ELSE
+				scientific_name := CONCAT_WS(' ', rank_abbrev, element, authorship);
+			END IF;
+			target_rank := parent_rank;
+		ELSE
+
+			IF rank_id = target_rank THEN
+			  -- IF parent_rank is not null and (in_cultivar or in_formula) THEN
+			  -- IF in_cultivar /*and parent_rank is not null*/ THEN
+			  --   NULL;
+			  -- ELSE
+
+				-- IF (state ->> 'in_hybrid')::boolean THEN
+				--	 scientific_name := CONCAT_WS(' ', 'X', scientific_name);
+				--	 EXIT;
+				--ELSE
+			  IF (state ->> 'in_autonym')::boolean THEN
+					scientific_name := CONCAT_WS(' ', element, authorship, scientific_name);
+					state := jsonb_set( state, '{in_autonym}', to_jsonb(false), true);
+				ELSE
+				    scientific_name := CONCAT_WS(' ', element, scientific_name);
+				END IF;
+				--  target_rank := parent_rank;
+			  -- END IF;
+			  target_rank := parent_rank;
+			 END IF;
+		END IF;
+
+		-- If we've reached the root (uninomial), exit the loop
+		IF current_id IS NULL THEN
+			EXIT;
+		END IF;
+	END LOOP;
+
+    scientific_name := regexp_replace(scientific_name, '</em> <em>', ' ', 'g');
+	-- RETURN rtrim(scientific_name);
+
+	if not simple and (rdfa and not (state ->> 'in_formula')::boolean) then
+		scientific_name :=
+			CONCAT(
+					'<a href="https://id.biodiversity.org.au/name/'||name_path||'/', name_id,
+					'" prefix="nsl: https://id.biodiversity.org.au/voc/"',
+					' typeof="nsl:TaxonName"' , '>',
+					'<span property="nsl:nameCode" content="nsl:'||code||'"></span>',
+					'<span property="nsl:nameType" content="nsl:'||name_type||'"></span>',
+				    '<span property="nsl:nameRank" content="nsl:'||name_rank||'"></span>',
+					'<span property="nsl:nameStatus" content="nsl:'||name_status||'"></span>',
+					'<span property="nsl:fullName" content="',
+					 -- regexp_replace(scientific_name, '</*em[^>]*>', '', 'g'), '">',
+					 regexp_replace(scientific_name, '</*em>', '', 'g'), '">',
+					 scientific_name,
+				     ', '||status_text,
+					 '</span></a>'
+			);
+	-- else
+		-- scientific_name := CONCAT_WS(', ', scientific_name, name_status);
+	end if;
+
+
+	RETURN rtrim(scientific_name);
+END;
+$_$;
+
+
+--
 -- Name: name_name_path(bigint); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -2890,6 +3153,51 @@ BEGIN
   END IF;
   RETURN NULL;
 END;
+$$;
+
+
+--
+-- Name: nc_authorship(bigint); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.nc_authorship(name_id bigint) RETURNS text
+    LANGUAGE sql
+    AS $$
+SELECT CASE
+	       WHEN code.value = 'ICN' THEN
+		       CASE
+			       WHEN nt.autonym THEN NULL::text
+			       ELSE
+				       COALESCE(
+						       '(' || COALESCE(xb.abbrev || ' ex ', '') || b.abbrev || ') ',
+						       ''
+				       ) || COALESCE(
+						       COALESCE(xa.abbrev || ' ex ', '') || a.abbrev,
+						       ''
+				            )
+			       END
+	       WHEN code.value = 'ICZN' THEN
+		       CASE
+			       WHEN n.changed_combination THEN
+				       COALESCE(
+						       '(' || a.abbrev || COALESCE(', ' || n.published_year, '') || ')',
+						       ''
+				       )
+			       ELSE
+				       COALESCE(
+						       a.abbrev || COALESCE(', ' || n.published_year, ''),
+						       ''
+				       )
+			       END
+	       END AS value
+FROM public.name n
+	     JOIN public.name_type nt ON n.name_type_id = nt.id
+	     LEFT JOIN public.shard_config code ON code.name::text = 'nomenclatural code'::text
+	     LEFT JOIN public.author b ON n.base_author_id = b.id
+	     LEFT JOIN public.author xb ON n.ex_base_author_id = xb.id
+	     LEFT JOIN public.author a ON n.author_id = a.id
+	     LEFT JOIN public.author xa ON n.ex_author_id = xa.id
+WHERE n.id = name_id;
 $$;
 
 
@@ -3437,8 +3745,6 @@ CREATE TABLE public.tree_version (
 );
 
 
-
-
 --
 -- Name: trees_mv; Type: MATERIALIZED VIEW; Schema: public; Owner: -
 --
@@ -3457,8 +3763,8 @@ CREATE MATERIALIZED VIEW public.trees_mv AS
     tve.tree_element_id,
     pve.tree_element_id AS parent_element_id,
     t.current_tree_version_id AS tree_version_id,
-    'x' as ltree_path,
-    1 as depth,
+    public.text2ltree(regexp_replace(ltrim(tve.tree_path, '/'::text), '/'::text, '.'::text, 'g'::text)) AS ltree_path,
+    public.nlevel(public.text2ltree(regexp_replace(ltrim(tve.tree_path, '/'::text), '/'::text, '.'::text, 'g'::text))) AS depth,
     tve.name_path,
     te.instance_id,
     n.id AS name_id,
@@ -3471,7 +3777,7 @@ CREATE MATERIALIZED VIEW public.trees_mv AS
     t.rdf_id AS tree_rdf_id,
     t.accepted_tree
    FROM (((((public.tree_version_element tve
-     LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+     LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
      LEFT JOIN public.shard_config mapper_host ON (((mapper_host.name)::text = 'mapper host'::text)))
      JOIN (public.tree_element te
      JOIN (public.instance i
@@ -3543,7 +3849,7 @@ CREATE VIEW public.taxon_v AS
      LEFT JOIN (public.reference r
      JOIN public.author a ON ((a.id = r.author_id))) ON ((t.reference_id = r.id))) ON ((ntv.tree_id = t.id)))
      JOIN public.tree_version tv ON ((tv.id = ntv.tree_version_id)))
-     LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+     LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
      LEFT JOIN public.shard_config mapper_host ON (((mapper_host.name)::text = 'mapper host'::text)))
      LEFT JOIN public.name pn ON (((ntv.parent_name_id = pn.id) AND ((dataset.value)::text = 'AFD'::text) AND ((ntv.parent_rank_id)::text ~ '(species|subgenus|species-aggregate)'::text))))
      LEFT JOIN public.name gn ON (((ntv.parent_parent_name_id = gn.id) AND ((dataset.value)::text = 'AFD'::text) AND ((ntv.parent_parent_rank_id)::text ~ '(subgenus|species-aggregate)'::text))));
@@ -3570,7 +3876,7 @@ CREATE VIEW public.author_v AS
             dataset.value AS dataset_name
            FROM (((public.author a
              JOIN public.namespace p ON ((a.namespace_id = p.id)))
-             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
              LEFT JOIN public.shard_config host ON (((host.name)::text = 'mapper host'::text)))
           WHERE (a.duplicate_of_id IS NULL)) auth_v;
 
@@ -3734,7 +4040,7 @@ CREATE VIEW public.cited_usage_v AS
              JOIN public.instance_type ct ON ((ci.instance_type_id = ct.id)))
              JOIN (public.reference r
              JOIN public.author a ON ((r.author_id = a.id))) ON ((ci.reference_id = r.id))) ON ((ci.id = i.cites_id)))
-             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
              LEFT JOIN public.shard_config host ON (((host.name)::text = 'mapper host'::text)))) ru;
 
 
@@ -3873,7 +4179,7 @@ CREATE VIEW public.reference_v AS
              JOIN public.namespace ns ON ((r.namespace_id = ns.id)))
              JOIN public.language l ON ((r.language_id = l.id)))
              JOIN public.shard_config host ON (((host.name)::text = 'mapper host'::text)))
-             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
           WHERE (r.duplicate_of_id IS NULL)) ref_v;
 
 
@@ -3924,6 +4230,7 @@ CREATE VIEW public.taxon_name_v AS
     tnv.rank_rdf_id,
     tnv.rank_abbreviation,
     tnv.verbatim_rank,
+    tnv.is_accepted,
     tnv.nsl_status,
     tnv.is_changed_combination,
     tnv.is_autonym,
@@ -3996,25 +4303,8 @@ CREATE VIEW public.taxon_name_v AS
             rank.rdf_id AS rank_rdf_id,
             rank.abbrev AS rank_abbreviation,
             n.verbatim_rank,
-                CASE
-                    WHEN (EXISTS ( SELECT 1
-                       FROM public.nsl_tree_mv ntv
-                      WHERE ((ntv.name_id = n.id) AND ntv.is_accepted))) THEN 'accepted'::text
-                    WHEN (EXISTS ( SELECT 1
-                       FROM public.nsl_tree_mv ntv
-                      WHERE ((ntv.name_id = n.id) AND ntv.is_excluded))) THEN 'excluded'::text
-                    WHEN (EXISTS ( SELECT 1
-                       FROM ((public.instance s
-                         JOIN public.nsl_tree_mv ntv ON ((s.cited_by_id = ntv.instance_id)))
-                         JOIN public.instance_type st ON ((st.id = s.instance_type_id)))
-                      WHERE ((s.name_id = n.id) AND ntv.is_accepted AND st.synonym))) THEN 'included'::text
-                    WHEN (EXISTS ( SELECT 1
-                       FROM ((public.instance s
-                         JOIN public.nsl_tree_mv ntv ON ((s.cited_by_id = ntv.instance_id)))
-                         JOIN public.instance_type st ON ((st.id = s.instance_type_id)))
-                      WHERE ((s.name_id = n.id) AND ntv.is_excluded AND st.synonym))) THEN 'excluded'::text
-                    ELSE 'unplaced'::text
-                END AS nsl_status,
+            nv.nsl_accepted AS is_accepted,
+            nv.taxonomic_status AS nsl_status,
             COALESCE(((n.base_author_id)::integer)::boolean, n.changed_combination) AS is_changed_combination,
             nt.autonym AS is_autonym,
             nt.cultivar AS is_cultivar,
@@ -4029,41 +4319,14 @@ CREATE VIEW public.taxon_name_v AS
                          JOIN public.instance_note_key key1 ON (((key1.id = note.instance_note_key_id) AND ((key1.rdf_id)::text ~* 'type$'::text))))
                       WHERE (note.instance_id = p.primary_id))
                 END AS type_citation,
-            COALESCE(nv.kingdom,
-                CASE
-                    WHEN ((code.value)::text = 'ICN'::text) THEN 'Plantae'::text
-                    WHEN ((code.value)::text = 'ICZN'::text) THEN 'Animalia'::text
-                    ELSE NULL::text
-                END) AS kingdom,
-                CASE
-                    WHEN (rank.sort_order > family.sort_order) THEN COALESCE(nv.family, (family_name.name_element)::text)
-                    ELSE NULL::text
-                END AS family,
-                CASE
-                    WHEN (((COALESCE(n.simple_name, ' '::character varying))::text !~ '\s'::text) AND ((n.simple_name)::text = (n.name_element)::text) AND nt.scientific AND (rank.sort_order <= genus.sort_order)) THEN n.simple_name
-                    ELSE NULL::character varying
-                END AS uninomial,
-                CASE
-                    WHEN (((pk.rdf_id)::text = 'genus'::text) AND nt.scientific AND ((rank.rdf_id)::text <> 'species'::text)) THEN n.name_element
-                    ELSE NULL::character varying
-                END AS infrageneric_epithet,
-                CASE
-                    WHEN ((rank.sort_order >= genus.sort_order) AND nt.scientific) THEN COALESCE(((array_remove(string_to_array(regexp_replace(rtrim(substr((n.simple_name)::text, 1, (length((n.simple_name)::text) - length((n.name_element)::text)))), '(^cf\. |^aff[,.] )'::text, ''::text, 'i'::text), ' '::text), 'x'::text) || (n.name_element)::text))[1], nv.generic_name)
-                    ELSE NULL::text
-                END AS generic_name,
-                CASE
-                    WHEN ((rank.sort_order > species.sort_order) AND nt.scientific) THEN COALESCE(((array_remove(string_to_array(regexp_replace(rtrim(substr((n.simple_name)::text, 1, (length((n.simple_name)::text) - length((n.name_element)::text)))), '(^cf\. |^aff[,.] )'::text, ''::text, 'i'::text), ' '::text), 'x'::text) || (n.name_element)::text))[2], nv.specific_epithet)
-                    WHEN ((rank.sort_order = species.sort_order) AND nt.scientific) THEN (n.name_element)::text
-                    ELSE NULL::text
-                END AS specific_epithet,
-                CASE
-                    WHEN ((rank.sort_order > species.sort_order) AND nt.scientific) THEN n.name_element
-                    ELSE NULL::character varying
-                END AS infraspecific_epithet,
-                CASE
-                    WHEN (nt.cultivar = true) THEN n.name_element
-                    ELSE NULL::character varying
-                END AS cultivar_epithet,
+            nv.kingdom,
+            nv.family,
+            nv.uninomial,
+            nv.infrageneric_epithet,
+            nv.generic_name,
+            nv.specific_epithet,
+            nv.infraspecific_epithet,
+            nv.cultivar_epithet,
             nt.hybrid AS is_hybrid,
             first_hybrid_parent.full_name AS first_hybrid_parent_name,
             ((mapper_host.value)::text || first_hybrid_parent.uri) AS first_hybrid_parent_name_id,
@@ -4096,7 +4359,7 @@ CREATE VIEW public.taxon_name_v AS
              LEFT JOIN public.name second_hybrid_parent ON (((n.second_parent_id = second_hybrid_parent.id) AND nt.hybrid)))
              LEFT JOIN public.primary_instance_mv p ON ((p.name_id = n.id)))
              LEFT JOIN public.shard_config mapper_host ON (((mapper_host.name)::text = 'mapper host'::text)))
-             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
              LEFT JOIN public.shard_config code ON (((code.name)::text = 'nomenclatural code'::text)))
              LEFT JOIN public.shard_config path ON (((path.name)::text = 'services path name element'::text)))
              JOIN public.name_rank kingdom ON (((kingdom.rdf_id)::text ~ '(regnum|kingdom)'::text)))
@@ -4162,17 +4425,17 @@ CREATE VIEW public.taxon_name_usage_v AS
    FROM ( SELECT ui.id AS instance_id,
             ((host.value)::text || ui.uri) AS identifier,
                 CASE
-                    WHEN it.misapplied THEN concat_ws(' '::text, un.simple_name, ' auct. non. ', (('('::text || (ba.abbrev)::text) || ')'::text), na.abbrev, ' sensu ', ca.name, "left"((cr.iso_publication_date)::text, 4), ' sec.', ua.name, (', '::text || "left"((ur.iso_publication_date)::text, 4)))
+                    WHEN it.misapplied THEN concat_ws(' '::text, un.simple_name, 'auct. non.', (('('::text || (ba.abbrev)::text) || ')'::text), na.abbrev, 'sensu', ((ca.name)::text || ','::text), "left"((cr.iso_publication_date)::text, 4), 'sec.', ((ua.name)::text || ','::text), "left"((ur.iso_publication_date)::text, 4))
                     ELSE concat_ws(' '::text, un.full_name,
                     CASE
-                        WHEN it.alignment THEN concat_ws(' '::text, 'sensu', ca.name, (', '::text || "left"((cr.iso_publication_date)::text, 4)), 'sec.', ua.name, (', '::text || "left"((ur.iso_publication_date)::text, 4)))
+                        WHEN it.alignment THEN concat_ws((('sensu '::text || (ca.name)::text) || ','::text), "left"((cr.iso_publication_date)::text, 4))
                         WHEN nt.scientific THEN
                         CASE
-                            WHEN (ns.nom_inval AND ((code.value)::text = 'ICN'::text)) THEN concat_ws(' '::text, (','::text || (ns.name)::text), ' sec.', ua.name, (', '::text || "left"((ur.iso_publication_date)::text, 4)))
+                            WHEN (ns.nom_inval AND ((code.value)::text = 'ICN'::text)) THEN (','::text || (ns.name)::text)
                             ELSE NULL::text
                         END
                         ELSE NULL::text
-                    END)
+                    END, 'sec.', ((ua.name)::text || ','::text), "left"((ur.iso_publication_date)::text, 4))
                 END AS title,
             ui.name_id,
             ui.instance_type_id,
@@ -4299,7 +4562,7 @@ CREATE VIEW public.taxon_name_usage_v AS
              LEFT JOIN (public.instance ci
              JOIN (public.reference cr
              JOIN public.author ca ON ((cr.author_id = ca.id))) ON ((ci.reference_id = cr.id))) ON ((ui.cites_id = ci.id)))
-             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+             LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
              LEFT JOIN public.shard_config host ON (((host.name)::text = 'mapper host'::text)))
              LEFT JOIN public.shard_config code ON (((code.name)::text = 'nomenclatural code'::text)))) nu;
 
@@ -4341,6 +4604,20 @@ UNION ALL
      JOIN public.name n ON ((inst.name_id = n.id)));
 
 
+--
+-- Name: tree_closure_v; Type: VIEW; Schema: public; Owner: -
+--
+/*
+CREATE VIEW public.tree_closure_v AS
+ SELECT a.taxon_id AS ancestor_id,
+    c.taxon_id AS node_id,
+    (c.depth - a.depth) AS depth,
+    c.tree_name AS dataset_name,
+    t.accepted_tree
+   FROM ((public.trees_mv c
+     JOIN public.trees_mv a ON ((a.ltree_path OPERATOR(public.@>) c.ltree_path)))
+     JOIN public.tree t ON ((c.tree_id = t.id)));
+*/
 
 --
 -- Name: tree_v; Type: VIEW; Schema: public; Owner: -
@@ -4359,7 +4636,7 @@ CREATE VIEW public.tree_v AS
     code.value AS code
    FROM (((public.tree t
      LEFT JOIN public.shard_config mapper_host ON (((mapper_host.name)::text = 'mapper host'::text)))
-     LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name space'::text)))
+     LEFT JOIN public.shard_config dataset ON (((dataset.name)::text = 'name label'::text)))
      LEFT JOIN public.shard_config code ON (((code.name)::text = 'nomenclatural code'::text)));
 
 
@@ -4482,28 +4759,10 @@ CREATE TABLE loader.batch_review_role (
 
 
 --
--- Name: loader_batch; Type: TABLE; Schema: loader; Owner: -
+-- Name: batch_reviewer; Type: TABLE; Schema: loader; Owner: -
 --
 
-CREATE TABLE loader.loader_batch (
-    id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
-    name character varying(50) NOT NULL,
-    description text,
-    lock_version bigint DEFAULT 0 NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by character varying(50) DEFAULT USER NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_by character varying(50) DEFAULT USER NOT NULL,
-    default_reference_id bigint,
-    use_sort_key_for_ordering boolean DEFAULT true NOT NULL
-);
-
-
---
--- Name: batch_reviewer; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.batch_reviewer (
+CREATE TABLE loader.batch_reviewer (
     id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
     user_id bigint NOT NULL,
     org_id bigint NOT NULL,
@@ -4516,114 +4775,6 @@ CREATE TABLE public.batch_reviewer (
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) DEFAULT USER NOT NULL
 );
-
-
---
--- Name: org; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.org (
-    id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
-    name character varying(100) NOT NULL,
-    abbrev character varying(30) NOT NULL,
-    deprecated boolean DEFAULT false NOT NULL,
-    not_a_real_org boolean DEFAULT false NOT NULL,
-    lock_version bigint DEFAULT 0 NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by character varying(50) DEFAULT USER NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_by character varying(50) DEFAULT USER NOT NULL,
-    can_vote boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.users (
-    id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
-    name character varying(30) NOT NULL,
-    given_name character varying(60),
-    family_name character varying(60) NOT NULL,
-    lock_version bigint DEFAULT 0 NOT NULL,
-    created_at timestamp with time zone DEFAULT now() NOT NULL,
-    created_by character varying(50) DEFAULT USER NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_by character varying(50) DEFAULT USER NOT NULL
-);
-
-
---
--- Name: batch_stack_v; Type: VIEW; Schema: loader; Owner: -
---
-
-CREATE VIEW loader.batch_stack_v AS
- SELECT subq.display_as,
-    subq.id,
-    subq.name,
-    subq.batch_name,
-    subq.batch_id,
-    subq.description,
-    subq.created_at,
-    subq.start,
-    subq.order_by
-   FROM ( SELECT 'Loader Batch in stack'::text AS display_as,
-            loader_batch.id,
-            loader_batch.name,
-            loader_batch.name AS batch_name,
-            loader_batch.id AS batch_id,
-            loader_batch.description,
-            loader_batch.created_at,
-            loader_batch.created_at AS start,
-            ((to_char(loader_batch.created_at, 'yyyymmdd'::text) || 'A batch '::text) || (loader_batch.name)::text) AS order_by
-           FROM loader.loader_batch
-        UNION
-         SELECT 'Batch Review in stack'::text AS display_as,
-            br.id,
-            br.name,
-            lb.name AS batch_name,
-            lb.id AS batch_id,
-            ''::text AS description,
-            br.created_at,
-            br.created_at,
-            ((to_char(lb.created_at, 'yyyymmdd'::text) || (('A batch '::text || (lb.name)::text) || ' B review '::text)) || (br.name)::text) AS order_by
-           FROM (loader.batch_review br
-             JOIN loader.loader_batch lb ON ((br.loader_batch_id = lb.id)))
-        UNION
-         SELECT 'Review Period in stack'::text AS display_as,
-            brp.id,
-            ((((((brp.name)::text || ' ('::text) || to_char((brp.start_date)::timestamp with time zone, 'DD-Mon-YYYY'::text)) ||
-                CASE (brp.end_date IS NULL)
-                    WHEN true THEN ' - '::text
-                    ELSE ' end: '::text
-                END) || COALESCE(to_char((brp.end_date)::timestamp with time zone, 'DD-Mon-YYYY'::text), ''::text)) || ')'::text) AS name,
-            lb.name AS batch_name,
-            lb.id AS batch_id,
-            ''::text AS description,
-            brp.created_at,
-            brp.start_date,
-            ((to_char(lb.created_at, 'yyyymmdd'::text) || (((('A batch '::text || (lb.name)::text) || ' B review '::text) || (br.name)::text) || ' C period '::text)) || brp.start_date) AS order_by
-           FROM ((loader.batch_review_period brp
-             JOIN loader.batch_review br ON ((brp.batch_review_id = br.id)))
-             JOIN loader.loader_batch lb ON ((br.loader_batch_id = lb.id)))
-        UNION
-         SELECT 'Batch Reviewer in stack'::text AS display_as,
-            brer.id,
-            (((((((users.given_name)::text || ' '::text) || (users.family_name)::text) || ' for '::text) || (org.abbrev)::text) || ' as '::text) || (brrole.name)::text) AS name,
-            lb.name AS batch_name,
-            lb.id AS batch_id,
-            ''::text AS description,
-            brer.created_at,
-            brer.created_at,
-            ((to_char(lb.created_at, 'yyyymmdd'::text) || (((('A batch '::text || (lb.name)::text) || ' B review '::text) || (br.name)::text) || ' '::text)) || (users.name)::text) AS order_by
-           FROM (((((public.batch_reviewer brer
-             JOIN loader.batch_review br ON ((br.id = brer.batch_review_id)))
-             JOIN public.users ON ((brer.user_id = users.id)))
-             JOIN loader.loader_batch lb ON ((br.loader_batch_id = lb.id)))
-             JOIN public.org ON ((brer.org_id = org.id)))
-             JOIN loader.batch_review_role brrole ON ((brer.batch_review_role_id = brrole.id)))) subq
-  ORDER BY subq.order_by;
 
 
 --
@@ -4656,6 +4807,24 @@ CREATE SEQUENCE loader.bulk_processing_log_id_seq
 --
 
 ALTER SEQUENCE loader.bulk_processing_log_id_seq OWNED BY loader.bulk_processing_log.id;
+
+
+--
+-- Name: loader_batch; Type: TABLE; Schema: loader; Owner: -
+--
+
+CREATE TABLE loader.loader_batch (
+    id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
+    name character varying(50) NOT NULL,
+    description text,
+    lock_version bigint DEFAULT 0 NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by character varying(50) DEFAULT USER NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_by character varying(50) DEFAULT USER NOT NULL,
+    default_reference_id bigint,
+    use_sort_key_for_ordering boolean DEFAULT true NOT NULL
+);
 
 
 --
@@ -4819,75 +4988,19 @@ CREATE TABLE loader.name_review_comment_type (
 
 
 --
--- Name: ala_attribute_types; Type: TABLE; Schema: public; Owner: -
+-- Name: name_review_vote; Type: TABLE; Schema: loader; Owner: -
 --
 
-CREATE TABLE public.ala_attribute_types (
-    ala_name text,
-    instance_note_key_name text
-);
-
-
---
--- Name: ala_draft_attributes_term_map; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ala_draft_attributes_term_map (
-    _id text,
-    name text,
-    uuid text
-);
-
-
---
--- Name: ala_profile_attributes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ala_profile_attributes (
-    profile_id text,
-    attribute_type text,
-    attribute_value_raw text,
-    attribute_value_md text,
-    attribute_source text,
-    profile_text_id text,
-    profile_item_id text,
-    profile_item_annotation_id text
-);
-
-
---
--- Name: ala_profile_attributes_drafts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ala_profile_attributes_drafts (
-    profile_id text,
-    attribute_type text,
-    attribute_value_raw text,
-    attribute_value_md text,
-    attribute_source text,
-    profile_text_id text,
-    profile_item_id text,
-    profile_item_annotation_id text
-);
-
-
---
--- Name: ala_profile_metadata; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ala_profile_metadata (
-    profile_id text,
-    author text,
-    author_parsed text,
-    editor text,
-    contributor text,
-    nsl_nomenclature_id text,
-    nsl_name_id text,
-    simple_name text,
-    full_name text,
-    rank text,
-    apni_instance_id text,
-    congruent_taxon_concept text
+CREATE TABLE loader.name_review_vote (
+    loader_name_id bigint NOT NULL,
+    batch_review_id bigint NOT NULL,
+    org_id bigint NOT NULL,
+    vote boolean DEFAULT true NOT NULL,
+    lock_version bigint DEFAULT 0 NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by character varying(50) DEFAULT USER NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_by character varying(50) DEFAULT USER NOT NULL
 );
 
 
@@ -4904,6 +5017,114 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: org; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.org (
+    id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
+    name character varying(100) NOT NULL,
+    abbrev character varying(30) NOT NULL,
+    deprecated boolean DEFAULT false NOT NULL,
+    not_a_real_org boolean DEFAULT false NOT NULL,
+    lock_version bigint DEFAULT 0 NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by character varying(50) DEFAULT USER NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_by character varying(50) DEFAULT USER NOT NULL,
+    can_vote boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.users (
+    id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
+    user_name character varying(30) NOT NULL,
+    given_name character varying(60),
+    family_name character varying(60) NOT NULL,
+    lock_version bigint DEFAULT 0 NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by character varying(50) DEFAULT USER NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_by character varying(50) DEFAULT USER NOT NULL
+);
+
+
+--
+-- Name: batch_stack_v; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.batch_stack_v AS
+ SELECT subq.display_as,
+    subq.id,
+    subq.name,
+    subq.batch_name,
+    subq.batch_id,
+    subq.description,
+    subq.created_at,
+    subq.start,
+    subq.order_by
+   FROM ( SELECT 'Loader Batch in stack'::text AS display_as,
+            loader_batch.id,
+            loader_batch.name,
+            loader_batch.name AS batch_name,
+            loader_batch.id AS batch_id,
+            loader_batch.description,
+            loader_batch.created_at,
+            loader_batch.created_at AS start,
+            (((loader_batch.name)::text || ' A batch '::text) || (loader_batch.name)::text) AS order_by
+           FROM loader.loader_batch
+        UNION
+         SELECT 'Batch Review in stack'::text AS display_as,
+            br.id,
+            br.name,
+            lb.name AS batch_name,
+            lb.id AS batch_id,
+            ''::text AS description,
+            br.created_at,
+            br.created_at,
+            (((lb.name)::text || (('A batch '::text || (lb.name)::text) || ' B review '::text)) || (br.name)::text) AS order_by
+           FROM (loader.batch_review br
+             JOIN loader.loader_batch lb ON ((br.loader_batch_id = lb.id)))
+        UNION
+         SELECT 'Review Period in stack'::text AS display_as,
+            brp.id,
+            ((((((brp.name)::text || ' ('::text) || to_char((brp.start_date)::timestamp with time zone, 'DD-Mon-YYYY'::text)) ||
+                CASE (brp.end_date IS NULL)
+                    WHEN true THEN ' - '::text
+                    ELSE ' end: '::text
+                END) || COALESCE(to_char((brp.end_date)::timestamp with time zone, 'DD-Mon-YYYY'::text), ''::text)) || ')'::text) AS name,
+            lb.name AS batch_name,
+            lb.id AS batch_id,
+            ''::text AS description,
+            brp.created_at,
+            brp.start_date,
+            (((lb.name)::text || (((('A batch '::text || (lb.name)::text) || ' B review '::text) || (br.name)::text) || ' C period '::text)) || brp.start_date) AS order_by
+           FROM ((loader.batch_review_period brp
+             JOIN loader.batch_review br ON ((brp.batch_review_id = br.id)))
+             JOIN loader.loader_batch lb ON ((br.loader_batch_id = lb.id)))
+        UNION
+         SELECT 'Batch Reviewer in stack'::text AS display_as,
+            brer.id,
+            (((((((users.given_name)::text || ' '::text) || (users.family_name)::text) || ' for '::text) || (org.abbrev)::text) || ' as '::text) || (brrole.name)::text) AS name,
+            lb.name AS batch_name,
+            lb.id AS batch_id,
+            ''::text AS description,
+            brer.created_at,
+            brer.created_at,
+            (((lb.name)::text || (((('A batch '::text || (lb.name)::text) || ' B review '::text) || (br.name)::text) || ' D reviewer '::text)) || (users.user_name)::text) AS order_by
+           FROM (((((loader.batch_reviewer brer
+             JOIN loader.batch_review br ON ((br.id = brer.batch_review_id)))
+             JOIN public.users ON ((brer.user_id = users.id)))
+             JOIN loader.loader_batch lb ON ((br.loader_batch_id = lb.id)))
+             JOIN public.org ON ((brer.org_id = org.id)))
+             JOIN loader.batch_review_role brrole ON ((brer.batch_review_role_id = brrole.id)))) subq
+  ORDER BY subq.order_by;
+
+
+--
 -- Name: bdr_prefix_v; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4913,7 +5134,7 @@ CREATE VIEW public.bdr_prefix_v AS
     t.value AS tree_context,
     n.value AS name_context
    FROM ((((public.shard_config c
-     JOIN jsonb_each_text('{"AFD": "afd", "APNI": "apc", "Algae": "aal", "Fungi": "afl", "Lichen": "alc", "AusMoss": "abl"}'::jsonb) t(key, value) ON ((t.key = (c.value)::text)))
+     JOIN jsonb_each_text('{"AFD": "afd", "APNI": "apc", "Algae": "aal", "Fungi": "afl", "Lichen": "alc", "AusMoss": "cab"}'::jsonb) t(key, value) ON ((t.key = (c.value)::text)))
      JOIN jsonb_each_text('{"AFD": "afdni", "APNI": "apni", "Algae": "aani", "Fungi": "afni", "Lichen": "alni", "AusMoss": "abni"}'::jsonb) n(key, value) ON ((n.key = (c.value)::text)))
      LEFT JOIN (public.shard_config x
      LEFT JOIN public.shard_config d ON (((d.name)::text = ((x.value)::text || ' description'::text)))) ON (((x.name)::text = 'classification tree key'::text)))
@@ -5036,7 +5257,7 @@ CREATE VIEW public.bdr_context_v AS
     'https://id.biodiversity.org.au/tree/'::text AS aunsl,
     'https://id.biodiversity.org.au/tree/apc/'::text AS apc,
     'https://id.biodiversity.org.au/tree/afd/'::text AS afd,
-    'https://id.biodiversity.org.au/tree/abl/'::text AS abl,
+    'https://id.biodiversity.org.au/tree/cab/'::text AS cab,
     'https://id.biodiversity.org.au/tree/aal/'::text AS aal,
     'https://id.biodiversity.org.au/tree/afl/'::text AS afl,
     'https://id.biodiversity.org.au/tree/all/'::text AS "all",
@@ -6110,6 +6331,17 @@ CREATE TABLE public.event_record (
 
 
 --
+-- Name: glossary; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.glossary (
+    id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
+    term_name text,
+    description text
+);
+
+
+--
 -- Name: id_mapper; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -6556,18 +6788,48 @@ CREATE TABLE public.nsl_simple_name_export (
 );
 
 
+--
+-- Name: nsl_taxon_cv; Type: VIEW; Schema: public; Owner: -
+--
+/*
+CREATE VIEW public.nsl_taxon_cv AS
+ SELECT taxon_cv."treeName",
+    taxon_cv."treeVersionId",
+    taxon_cv.identifier,
+    taxon_cv.title,
+    taxon_cv."treeElementId",
+    taxon_cv."taxonNameUsageLabel",
+    taxon_cv."taxonId",
+    taxon_cv."parentTaxonId",
+    taxon_cv."nameId",
+    taxon_cv."referenceId",
+    taxon_cv."publicationYear",
+    taxon_cv."publicationCitation",
+    taxon_cv."publicationDate",
+    taxon_cv."fullName",
+    taxon_cv."taxonConceptId",
+    taxon_cv."isExcluded",
+    taxon_cv."taxonomicStatus",
+    taxon_cv.modified,
+    taxon_cv.depth,
+    taxon_cv."namePath",
+    taxon_cv."lTreePath",
+    taxon_cv."datasetName",
+    taxon_cv."treeRDFId",
+    taxon_cv."isTrue"
+   FROM apc.taxon_cv;
+*/
 
 --
--- Name: orchids_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: nsl_tree_closure_cv; Type: VIEW; Schema: public; Owner: -
 --
-
-CREATE SEQUENCE public.orchids_seq
-    START WITH 8000
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
+/*
+CREATE VIEW public.nsl_tree_closure_cv AS
+ SELECT tree_closure_cv."ancestorId",
+    tree_closure_cv."nodeId",
+    tree_closure_cv.depth
+   FROM apc.tree_closure_cv;
+*/
 
 --
 -- Name: product; Type: TABLE; Schema: public; Owner: -
@@ -6581,6 +6843,8 @@ CREATE TABLE public.product (
     description_html text,
     is_current boolean DEFAULT false NOT NULL,
     is_available boolean DEFAULT false NOT NULL,
+    is_name_index boolean DEFAULT false NOT NULL,
+    has_default_reference boolean DEFAULT false NOT NULL,
     source_id bigint,
     source_system character varying(50),
     source_id_string character varying(100),
@@ -6650,6 +6914,13 @@ COMMENT ON COLUMN public.product.is_current IS 'Indicates this product is curren
 --
 
 COMMENT ON COLUMN public.product.is_available IS 'Indicates this product is publicly available.';
+
+
+--
+-- Name: COLUMN product.is_name_index; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.product.is_name_index IS 'Indicates this product is THE name index for this dataset/shard.';
 
 
 --
@@ -6879,6 +7150,23 @@ COMMENT ON COLUMN public.product_item_config.api_name IS 'The name of a system u
 --
 
 COMMENT ON COLUMN public.product_item_config.api_date IS 'The date when a system user, script, jira or services task last changed this record.';
+
+
+--
+-- Name: product_role_type; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.product_role_type (
+    id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
+    name character varying(50) NOT NULL check(name = lower(name)),
+    description text DEFAULT 'Please describe this product role type'::text NOT NULL,
+    deprecated boolean DEFAULT false NOT NULL,
+    lock_version bigint DEFAULT 0 NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by character varying(50) DEFAULT USER NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_by character varying(50) DEFAULT USER NOT NULL
+);
 
 
 --
@@ -7792,6 +8080,7 @@ CREATE VIEW public.tree_join_v AS
     t.host_name,
     t.link_to_home_page,
     t.name,
+    t.name AS tree_name,
     t.reference_id,
     tv.id AS tree_version_id,
     tv.draft_name,
@@ -7825,7 +8114,8 @@ CREATE VIEW public.tree_join_v AS
     te.source_element_link,
     te.source_shard,
     te.synonyms,
-    te.synonyms_html
+    te.synonyms_html,
+    (t.current_tree_version_id = tv.id) AS is_current_version
    FROM (((public.tree t
      JOIN public.tree_version tv ON ((t.id = tv.tree_id)))
      JOIN public.tree_version_element tve ON ((tv.id = tve.tree_version_id)))
@@ -7833,23 +8123,42 @@ CREATE VIEW public.tree_join_v AS
 
 
 --
--- Name: tree_version_element_tmp; Type: TABLE; Schema: public; Owner: -
+-- Name: user_product_role; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.tree_version_element_tmp (
-    element_link text,
-    depth integer,
-    name_path text,
-    parent_id text,
-    taxon_id bigint,
-    taxon_link text,
-    tree_element_id bigint,
-    tree_path text,
-    tree_version_id bigint,
-    updated_at timestamp with time zone,
-    updated_by character varying(255),
-    merge_conflict boolean
+CREATE TABLE public.user_product_role (
+    user_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    product_role_type_id bigint NOT NULL,
+    lock_version bigint DEFAULT 0 NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by character varying(50) DEFAULT USER NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_by character varying(50) DEFAULT USER NOT NULL
 );
+
+
+--
+-- Name: user_product_role_v; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.user_product_role_v AS
+ SELECT users.user_name,
+    product.name AS product,
+    prtype.name AS role,
+    ref.citation AS reference,
+    tree.name AS tree,
+    (product.is_name_index)::text AS is_name_index,
+    users.id AS user_id,
+    product.id AS product_id,
+    prtype.id AS product_role_type_id
+   FROM (((((public.user_product_role upr
+     JOIN public.users ON ((upr.user_id = users.id)))
+     JOIN public.product ON ((upr.product_id = product.id)))
+     JOIN public.product_role_type prtype ON ((upr.product_role_type_id = prtype.id)))
+     LEFT JOIN public.reference ref ON ((product.reference_id = ref.id)))
+     LEFT JOIN public.tree ON ((product.tree_id = tree.id)))
+  ORDER BY users.user_name, product.name, prtype.name;
 
 
 --
@@ -7883,6 +8192,57 @@ CREATE VIEW public.view_depends_v AS
   ORDER BY (views.ref_object)::regclass, views.relkind;
 
 
+--
+-- Name: wfo_export; Type: VIEW; Schema: public; Owner: -
+--
+/*
+CREATE VIEW public.wfo_export AS
+ SELECT (((s.url)::text || '/'::text) || (res.path)::text) AS wfo_link,
+    ((('https://'::text || (host.host_name)::text) || '/'::text) || n.uri) AS name_id,
+    n.full_name_html,
+    n.full_name
+   FROM (((((public.resource res
+     JOIN public.resource_type rt ON ((res.resource_type_id = rt.id)))
+     JOIN public.site s ON ((res.site_id = s.id)))
+     JOIN public.name_resources nr ON ((res.id = nr.resource_id)))
+     JOIN public.name n ON ((nr.name_id = n.id)))
+     JOIN mapper.host host ON (host.preferred));
+
+
+--
+-- Name: VIEW wfo_export; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON VIEW public.wfo_export IS 'This provides a link of World Flora Online (WFO) IDs to APNI names as provided by the WFO';
+
+
+--
+-- Name: COLUMN wfo_export.wfo_link; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.wfo_export.wfo_link IS 'Link to World Flora Online.';
+
+
+--
+-- Name: COLUMN wfo_export.name_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.wfo_export.name_id IS 'ID (link) to the Name in APNI';
+
+
+--
+-- Name: COLUMN wfo_export.full_name_html; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.wfo_export.full_name_html IS 'The name including the authority with HTML mark up.';
+
+
+--
+-- Name: COLUMN wfo_export.full_name; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.wfo_export.full_name IS 'The name including the authority without HTML mark up.';
+*/
 
 --
 -- Name: xpg; Type: TABLE; Schema: public; Owner: -
@@ -7947,6 +8307,22 @@ ALTER TABLE ONLY loader.batch_review_role
 
 ALTER TABLE ONLY loader.batch_review_role
     ADD CONSTRAINT batch_review_role_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: batch_reviewer batch_reviewer_pkey; Type: CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.batch_reviewer
+    ADD CONSTRAINT batch_reviewer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: batch_reviewer batch_reviewer_user_id_org_id_batch_review_role_id_batch_re_key; Type: CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.batch_reviewer
+    ADD CONSTRAINT batch_reviewer_user_id_org_id_batch_review_role_id_batch_re_key UNIQUE (user_id, org_id, batch_review_role_id, batch_review_id);
 
 
 --
@@ -8022,6 +8398,14 @@ ALTER TABLE ONLY loader.name_review_comment_type
 
 
 --
+-- Name: name_review_vote name_review_vote_pkey; Type: CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.name_review_vote
+    ADD CONSTRAINT name_review_vote_pkey PRIMARY KEY (org_id, batch_review_id, loader_name_id);
+
+
+--
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8035,22 +8419,6 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.author
     ADD CONSTRAINT author_pkey PRIMARY KEY (id);
-
-
---
--- Name: batch_reviewer batch_reviewer_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.batch_reviewer
-    ADD CONSTRAINT batch_reviewer_pkey PRIMARY KEY (id);
-
-
---
--- Name: batch_reviewer batch_reviewer_user_id_org_id_batch_review_role_id_batch_re_key; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.batch_reviewer
-    ADD CONSTRAINT batch_reviewer_user_id_org_id_batch_review_role_id_batch_re_key UNIQUE (user_id, org_id, batch_review_role_id, batch_review_id);
 
 
 --
@@ -8107,6 +8475,14 @@ ALTER TABLE ONLY public.dist_status
 
 ALTER TABLE ONLY public.event_record
     ADD CONSTRAINT event_record_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: glossary glossary_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.glossary
+    ADD CONSTRAINT glossary_pkey PRIMARY KEY (id);
 
 
 --
@@ -8350,6 +8726,14 @@ ALTER TABLE ONLY public.product
 
 
 --
+-- Name: product_role_type product_role_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.product_role_type
+    ADD CONSTRAINT product_role_type_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: profile_item_annotation profile_item_annotation_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8411,6 +8795,14 @@ ALTER TABLE ONLY public.profile_object_type
 
 ALTER TABLE ONLY public.profile_text
     ADD CONSTRAINT profile_text_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_role_type prt_unique_name; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.product_role_type
+    ADD CONSTRAINT prt_unique_name UNIQUE (name);
 
 
 --
@@ -8670,11 +9062,19 @@ ALTER TABLE ONLY public.id_mapper
 
 
 --
+-- Name: user_product_role user_product_role_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_product_role
+    ADD CONSTRAINT user_product_role_pkey PRIMARY KEY (user_id, product_id, product_role_type_id);
+
+
+--
 -- Name: users users_name_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_name_key UNIQUE (name);
+    ADD CONSTRAINT users_name_key UNIQUE (user_name);
 
 
 --
@@ -9591,7 +9991,100 @@ CREATE UNIQUE INDEX trees_taxon_id_index ON public.trees_mv USING btree (taxon_i
 --
 -- Name: author audit_trigger_row; Type: TRIGGER; Schema: public; Owner: -
 --
+/*
+CREATE TRIGGER audit_trigger_row AFTER INSERT OR DELETE OR UPDATE ON public.author FOR EACH ROW EXECUTE FUNCTION audit.if_modified_func('true', 'i', '{id,abbrev,duplicate_of_id,full_name,name,notes,ipni_id,valid_record}', '{created_at,created_by,updated_at,updated_by}');
 
+
+--
+-- Name: comment audit_trigger_row; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_row AFTER INSERT OR DELETE OR UPDATE ON public.comment FOR EACH ROW EXECUTE FUNCTION audit.if_modified_func('true', 'i', '{id,author_id,name_id,reference_id,instance_id,text}', '{created_at,created_by,updated_at,updated_by}');
+
+
+--
+-- Name: instance audit_trigger_row; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_row AFTER INSERT OR DELETE OR UPDATE ON public.instance FOR EACH ROW EXECUTE FUNCTION audit.if_modified_func('true', 'i', '{id,bhl_url,cites_id,cited_by_id,draft,instance_type_id,name_id,page,page_qualifier,parent_id,reference_id,verbatim_name_string,nomenclatural_status,valid_record}', '{created_at,created_by,updated_at,updated_by}');
+
+
+--
+-- Name: instance_note audit_trigger_row; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_row AFTER INSERT OR DELETE OR UPDATE ON public.instance_note FOR EACH ROW EXECUTE FUNCTION audit.if_modified_func('true', 'i', '{id,instance_note_key_id,value}', '{created_at,created_by,updated_at,updated_by}');
+
+
+--
+-- Name: name audit_trigger_row; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_row AFTER INSERT OR DELETE OR UPDATE ON public.name FOR EACH ROW EXECUTE FUNCTION audit.if_modified_func('true', 'i', '{id,author_id,base_author_id,duplicate_of_id,ex_author_id,ex_base_author_id,family_id,full_name,name_rank_id,name_status_id,name_type_id,parent_id,sanctioning_author_id,second_parent_id,verbatim_name_string,orth_var,changed_combination,valid_record,published_year}', '{created_at,created_by,updated_at,updated_by}');
+
+
+--
+-- Name: reference audit_trigger_row; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_row AFTER INSERT OR DELETE OR UPDATE ON public.reference FOR EACH ROW EXECUTE FUNCTION audit.if_modified_func('true', 'i', '{id,bhl_url,doi,duplicate_of_id,edition,isbn,iso_publication_date,issn,language_id,notes,pages,parent_id,publication_date,published,published_location,publisher,ref_author_role_id,ref_type_id,title,volume,year,tl2,valid_record,verbatim_author,verbatim_citation,verbatim_reference}', '{created_at,created_by,updated_at,updated_by}');
+
+
+--
+-- Name: tree_element audit_trigger_row; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_row AFTER INSERT OR DELETE OR UPDATE ON public.tree_element FOR EACH ROW EXECUTE FUNCTION audit.if_modified_tree_element('true', 'i', '{id}');
+
+
+--
+-- Name: author audit_trigger_stm; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_stm AFTER TRUNCATE ON public.author FOR EACH STATEMENT EXECUTE FUNCTION audit.if_modified_func('true');
+
+
+--
+-- Name: comment audit_trigger_stm; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_stm AFTER TRUNCATE ON public.comment FOR EACH STATEMENT EXECUTE FUNCTION audit.if_modified_func('true');
+
+
+--
+-- Name: instance audit_trigger_stm; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_stm AFTER TRUNCATE ON public.instance FOR EACH STATEMENT EXECUTE FUNCTION audit.if_modified_func('true');
+
+
+--
+-- Name: instance_note audit_trigger_stm; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_stm AFTER TRUNCATE ON public.instance_note FOR EACH STATEMENT EXECUTE FUNCTION audit.if_modified_func('true');
+
+
+--
+-- Name: name audit_trigger_stm; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_stm AFTER TRUNCATE ON public.name FOR EACH STATEMENT EXECUTE FUNCTION audit.if_modified_func('true');
+
+
+--
+-- Name: reference audit_trigger_stm; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_stm AFTER TRUNCATE ON public.reference FOR EACH STATEMENT EXECUTE FUNCTION audit.if_modified_func('true');
+
+
+--
+-- Name: tree_element audit_trigger_stm; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER audit_trigger_stm AFTER TRUNCATE ON public.tree_element FOR EACH STATEMENT EXECUTE FUNCTION audit.if_modified_tree_element('true');
+*/
 
 
 --
@@ -9664,6 +10157,38 @@ ALTER TABLE ONLY loader.batch_review
 
 ALTER TABLE ONLY loader.batch_review_period
     ADD CONSTRAINT batch_review_period_batch_review_fk FOREIGN KEY (batch_review_id) REFERENCES loader.batch_review(id);
+
+
+--
+-- Name: batch_reviewer batch_reviewer_batch_review_fk; Type: FK CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.batch_reviewer
+    ADD CONSTRAINT batch_reviewer_batch_review_fk FOREIGN KEY (batch_review_id) REFERENCES loader.batch_review(id);
+
+
+--
+-- Name: batch_reviewer batch_reviewer_review_role_fk; Type: FK CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.batch_reviewer
+    ADD CONSTRAINT batch_reviewer_review_role_fk FOREIGN KEY (batch_review_role_id) REFERENCES loader.batch_review_role(id);
+
+
+--
+-- Name: batch_reviewer batch_reviewer_user_org_fk; Type: FK CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.batch_reviewer
+    ADD CONSTRAINT batch_reviewer_user_org_fk FOREIGN KEY (org_id) REFERENCES public.org(id);
+
+
+--
+-- Name: batch_reviewer batch_reviewer_users_fk; Type: FK CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.batch_reviewer
+    ADD CONSTRAINT batch_reviewer_users_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -9743,7 +10268,7 @@ ALTER TABLE ONLY loader.name_review_comment
 --
 
 ALTER TABLE ONLY loader.name_review_comment
-    ADD CONSTRAINT name_review_comment_reviewer_fk FOREIGN KEY (batch_reviewer_id) REFERENCES public.batch_reviewer(id);
+    ADD CONSTRAINT name_review_comment_reviewer_fk FOREIGN KEY (batch_reviewer_id) REFERENCES loader.batch_reviewer(id);
 
 
 --
@@ -9763,43 +10288,35 @@ ALTER TABLE ONLY loader.name_review_comment
 
 
 --
+-- Name: name_review_vote name_review_vote_batch_review_fk; Type: FK CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.name_review_vote
+    ADD CONSTRAINT name_review_vote_batch_review_fk FOREIGN KEY (batch_review_id) REFERENCES loader.batch_review(id);
+
+
+--
+-- Name: name_review_vote name_review_vote_loader_name_fk; Type: FK CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.name_review_vote
+    ADD CONSTRAINT name_review_vote_loader_name_fk FOREIGN KEY (loader_name_id) REFERENCES loader.loader_name(id);
+
+
+--
+-- Name: name_review_vote name_review_vote_org_fk; Type: FK CONSTRAINT; Schema: loader; Owner: -
+--
+
+ALTER TABLE ONLY loader.name_review_vote
+    ADD CONSTRAINT name_review_vote_org_fk FOREIGN KEY (org_id) REFERENCES public.org(id);
+
+
+--
 -- Name: loader_batch ref_fk; Type: FK CONSTRAINT; Schema: loader; Owner: -
 --
 
 ALTER TABLE ONLY loader.loader_batch
     ADD CONSTRAINT ref_fk FOREIGN KEY (default_reference_id) REFERENCES public.reference(id);
-
-
---
--- Name: batch_reviewer batch_reviewer_batch_review_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.batch_reviewer
-    ADD CONSTRAINT batch_reviewer_batch_review_fk FOREIGN KEY (batch_review_id) REFERENCES loader.batch_review(id);
-
-
---
--- Name: batch_reviewer batch_reviewer_review_role_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.batch_reviewer
-    ADD CONSTRAINT batch_reviewer_review_role_fk FOREIGN KEY (batch_review_role_id) REFERENCES loader.batch_review_role(id);
-
-
---
--- Name: batch_reviewer batch_reviewer_user_org_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.batch_reviewer
-    ADD CONSTRAINT batch_reviewer_user_org_fk FOREIGN KEY (org_id) REFERENCES public.org(id);
-
-
---
--- Name: batch_reviewer batch_reviewer_users_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.batch_reviewer
-    ADD CONSTRAINT batch_reviewer_users_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -10472,6 +10989,38 @@ ALTER TABLE ONLY public.profile_item
 
 ALTER TABLE ONLY public.profile_item_type
     ADD CONSTRAINT profile_item_type_profile_object_type_id_fkey FOREIGN KEY (profile_object_type_id) REFERENCES public.profile_object_type(id);
+
+
+--
+-- Name: tree_element tree_element_first_tree_version_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tree_element
+    ADD CONSTRAINT tree_element_first_tree_version_id_fkey FOREIGN KEY (first_tree_version_id) REFERENCES public.tree_version(id);
+
+
+--
+-- Name: user_product_role upr_product_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_product_role
+    ADD CONSTRAINT upr_product_fk FOREIGN KEY (product_id) REFERENCES public.product(id);
+
+
+--
+-- Name: user_product_role upr_product_role_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_product_role
+    ADD CONSTRAINT upr_product_role_type_fk FOREIGN KEY (product_role_type_id) REFERENCES public.product_role_type(id);
+
+
+--
+-- Name: user_product_role upr_users_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_product_role
+    ADD CONSTRAINT upr_users_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --

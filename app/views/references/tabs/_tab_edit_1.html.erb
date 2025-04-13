@@ -1,5 +1,6 @@
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>
-<div class="error-message-container"></div>
-<%= render 'form' %>
-
+<% if  can? :update, @reference %>
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
+  <div class="error-message-container"></div>
+  <%= render 'form' %>
+<% end %>

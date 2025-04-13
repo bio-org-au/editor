@@ -1,24 +1,24 @@
 <ul class="nav nav-tabs">
   <%= render partial: 'tab', locals: {first: true,
                                       last: false,
-                                      this_tab: 'tab_show_1', 
-                                      link_text: 'Details', 
-                                      link_id: 'author-show-tab', 
+                                      this_tab: 'tab_show_1',
+                                      link_text: 'Details',
+                                      link_id: 'author-show-tab',
                                       link_title: 'View a summary',
                                       tab_index: @tab_index,
-                                      prev_tab: '.search-result.show-details', 
-                                      next_tab: '' } %> 
-  <% if can? 'authors', 'update' %>
+                                      prev_tab: '.search-result.show-details',
+                                      next_tab: '' } %>
+  <% if can? :update, @author %>
 
   <%= render partial: 'tab', locals: {first: false,
                                       last: false,
-                                      this_tab: 'tab_edit', 
-                                      link_text: 'Edit', 
-                                      link_id: 'author-edit-tab', 
+                                      this_tab: 'tab_edit',
+                                      link_text: 'Edit',
+                                      link_id: 'author-edit-tab',
                                       link_title: 'Edit author.',
                                       tab_index: increment_tab_index,
-                                      prev_tab: '', 
-                                      next_tab: '.search-result.showing-details'} %> 
+                                      prev_tab: '',
+                                      next_tab: '.search-result.showing-details'} %>
 
   <% end %>
 
@@ -26,13 +26,13 @@
 
   <%= render partial: 'tab', locals: {first: false,
                                       last: true,
-                                      this_tab: 'tab_comments', 
-                                      link_text: 'Comments', 
-                                      link_id: 'author-comments-tab', 
+                                      this_tab: 'tab_comments',
+                                      link_text: 'Comments',
+                                      link_id: 'author-comments-tab',
                                       link_title: 'Edit author comments.',
                                       tab_index: increment_tab_index,
-                                      prev_tab: '', 
-                                      next_tab: '.search-result.showing-details'} %> 
+                                      prev_tab: '',
+                                      next_tab: '.search-result.showing-details'} %>
   <% end %>
 </ul>
 

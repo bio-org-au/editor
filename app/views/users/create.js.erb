@@ -1,0 +1,3 @@
+
+$('tr#new-user-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'user_record', locals: {search_result: @user, give_me_focus: true})) %>");
+$('tr#search-result-<%= @user.id %> td.takes-focus a.show-details-link').focus();

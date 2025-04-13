@@ -1,0 +1,42 @@
+<div class="focus-details">
+  <% if @working_draft %>
+    <div id="edit-draft-tree-form-container" class="new-record-form-container">
+
+      <h4>Publish Draft Taxonomy</h4>
+      <div>
+        <form action="<%= tree_versions_publish_path %>" data-remote="true" method="post">
+          <input type="hidden" id="version_id" name="version_id" value="<%= @working_draft.id %>"/>
+          <div class="form-group">
+            <%= @working_draft.tree.name %> <%= @working_draft.draft_name %>
+          </div>
+
+          <div class="form-group">
+            <label for="draft_log">Description / work log</label>
+            <textarea class="form-control"
+                      title="Description of work to carry out"
+                      id="draft_log" name="draft_log" rows="10"><%= @working_draft.log_entry %></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="draft_log">Next draft name</label>
+            <input type="text" class="form-control" title="What to call the next draft"
+                      id="next_draft_name" name="next_draft_name" rows="10" value="<%= @working_draft.draft_name %>" />
+          </div>
+
+          <div>
+            &nbsp;
+            <button id="tree-form-cancel" type="button" class="btn btn-default left">Cancel <i
+            class="fa fa-hand-o-left"></i></button>
+            <button id="edit-draft-submit" type="submit"
+                    class="btn btn-primary right"
+                    onclick="$(this).find('i.fa').addClass('fa-spin')">Publish <i class="fa fa-refresh"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+      <div>
+        <div id="publish-draft-message-container" class="message-container"></div>
+        <div id="publish-draft-error-message-container" class="message-container error"></div>
+      </div>
+  <% end %>
+</div>
