@@ -18,25 +18,18 @@
 #
 # == Schema Information
 #
-# Table name: user_product_role
-#
-#  user_id              :bigint           not null, primary key
-#  product_role_id      :bigint           not null, primary key
-#  lock_version         :bigint           default(0), not null
-#  created_by           :string(50)       not null
-#  updated_by           :string(50)       not null
-#  created_at           :timestamptz      not null
-#  updated_at           :timestamptz      not null
+# Table name: product_role
 #
 # Foreign Keys
 #
-#  upr_product_role_fk       (product_role_id => product_role.id)
-#  upr_users_fk              (user_id => users.id)
+#  upr_product_fk            (product_id => product.id)
+#  upr_role_fk               (role_id => role.id)
 #
-class User::ProductRole < ActiveRecord::Base
+class Product::Role < ActiveRecord::Base
   strip_attributes
-  self.table_name = "user_product_role"
-  self.primary_key = %i[user_id product_id role_id]
-  belongs_to :user
-  belongs_to :product_role, class_name: "Product::Role"
+  self.table_name = "product_role"
+  self.primary_key = "id"
+  belongs_to :role, class_name: "::Role"
+  belongs_to :product
+  has_many :user_product_role, class_name: "User::ProductRole"
 end

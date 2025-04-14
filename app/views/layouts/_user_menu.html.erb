@@ -13,9 +13,9 @@
       <li class="dropdown-submenu">
         <a tabindex="-1"
            href="#"
-           title="Your security groups and role types">
+           title="Your security groups and roles">
           <%= "#{pluralize(@current_user.groups.size,'Security group')}"%>
-          <%= "& #{pluralize(@current_registered_user.product_roles.size, 'Role type')}" if @current_registered_user.product_roles.present? %>
+          <%= "& #{pluralize(@current_registered_user.product_roles.size, 'Role')}" if @current_registered_user.product_roles.present? %>
         </a>
         <ul class="dropdown-menu">
           <% @current_user.groups.each do |group| %>
@@ -33,13 +33,13 @@
              </li>
           <% end %>
           <% if @current_registered_user.present? %>
-            <% @current_registered_user.product_roles.includes(:product, :role_type).each_with_index do |product_role, index| %>
+            <% @current_registered_user.product_roles.includes(:product, :role).each_with_index do |product_role, index| %>
               <% if index == 0 %>
                 <li role="presentation" class="divider"></li>
               <% end %>
               <li role="presentation">
                 <a title="A product role you have">
-                  <%= "#{editor_icon('user-group')} #{product_role.product.name} #{product_role.role_type.name}".html_safe %>
+                  <%= "#{editor_icon('user-group')} #{product_role.product.name} #{product_role.role.name}".html_safe %>
                 </a>
             <% end %>
           <% end %>

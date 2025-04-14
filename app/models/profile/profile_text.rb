@@ -25,6 +25,7 @@ module Profile
   class ProfileText < ApplicationRecord
     strip_attributes
     self.table_name = "profile_text"
+    self.primary_key = "id"
 
     has_one :profile_item, class_name: "Profile::ProfileItem", foreign_key: "profile_text_id"
     has_one :product_item_config, through: :profile_item

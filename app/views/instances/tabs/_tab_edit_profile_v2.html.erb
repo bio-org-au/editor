@@ -1,0 +1,22 @@
+<% if can? :manage_draft_secondary_reference, @instance %>
+  <% increment_tab_index(0) %>
+
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container-0" class="error-container"></div>
+  <div id="search-result-details-error-message-container-1" class="error-container"></div>
+  <div id="search-result-details-error-message-container-2" class="error-container"></div>
+  <div id="search-result-details-error-message-container-3" class="error-container"></div>
+
+  <%= render partial: "instances/tabs/show_standalone"%>
+
+  <%= divider %>
+  <% if @instance.allow_delete? %>
+    <%= render 'instances/delete_widgets' %>
+  <% else %>
+    <%= render 'instances/widgets/no_delete_reasons' %>
+  <% end %>
+
+<% else %>
+  <%= render partial: "instances/tabs/tab_empty" %>
+<% end %>

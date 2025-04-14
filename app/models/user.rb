@@ -43,26 +43,20 @@ class User < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
 
   has_many :batch_reviewers, class_name: "Loader::Batch::Reviewer", foreign_key: :user_id
-  has_many :product_roles, class_name: "User::ProductRole", foreign_key: :user_id
+  has_many :user_product_roles, class_name: "User::ProductRole", foreign_key: :user_id
+  has_many :product_roles, through: :user_product_roles
   has_many :products, through: :product_roles
+  has_many :roles, through: :product_roles
 
   before_create :set_audit_fields
   before_update :set_updated_by
 
-  def is?(requested_role_type_name)
-    product_roles.joins(:role_type).select("product_role_type.name").pluck(:name).include?(requested_role_type_name)
+  def is?(requested_role_name)
+    roles.map {|role| role.name}.include?(requested_role_name)
   end
 
   def available_product_from_roles
-    role = "draft-profile-editor" if self.is?("draft-profile-editor")
-    role ||= "draft-editor" if self.is?("draft-editor")
-
-    if role
-      self.product_roles
-        .joins(:role_type)
-        .find_by(product_role_type: {name: role})
-        .product
-    end
+    product_roles.select {|pr| ['draft-editor','draft-profile-editor'].include?(pr.role.name)}.map {|pr| pr.product}.first
   end
 
   def set_audit_fields

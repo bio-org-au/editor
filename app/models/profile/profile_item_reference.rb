@@ -23,6 +23,7 @@
 module Profile
     class ProfileItemReference < ApplicationRecord
       self.table_name = "profile_item_reference"
+      self.primary_key = [:profile_item_id, :reference_id]
 
       belongs_to :profile_item, class_name: 'Profile::ProfileItem', foreign_key: 'profile_item_id'
       belongs_to :reference, class_name: 'Reference', foreign_key: 'reference_id'

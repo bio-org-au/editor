@@ -23,7 +23,7 @@ FactoryBot.define do
     updated_by { "fred" }
 
     association :product
-    association :role_type, factory: :role_type
+    association :role
     association :user
   end
 end

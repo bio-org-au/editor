@@ -795,7 +795,7 @@ class Instance < ActiveRecord::Base
   # - avoid validation on that update - otherwise the delete will not occur.
   def delete_as_user(username)
     update_attribute(:updated_by, username)
-    Instance::AsServices.delete(id)
+    cleanup_records if Instance::AsServices.delete(id)
   rescue StandardError => e
     logger.error("delete_as_user exception: #{e}")
     raise
@@ -846,5 +846,12 @@ class Instance < ActiveRecord::Base
       (name.excluded_concept? ? "<i class='fa fa-ban apc' aria-hidden='true'></i><span class='apc small strong' title='Excluded from APC'>APC</span>" : "") +
       (name.excluded_concept? ? "" : "<i class='fa fa-check apc' aria-hidden='true'></i><span class='apc small strong' title='In APC'>APC</span>") +
       "</span>"
+  end
+
+  def cleanup_records
+    Profile::ProfileItem.where(instance_id: id).find_each do |profile_item|
+      profile_item.destroy if profile_item.is_draft? && profile_item.allow_delete?
+      Rails.logger.info("Deleted profile item: #{profile_item.id}")
+    end
   end
 end

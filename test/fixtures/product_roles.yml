@@ -1,0 +1,8 @@
+_fixture:
+  model_class: Product::Role
+
+foa_draft_profile_editor:
+  product: foa
+  role: draft_profile_editor
+  created_by: tester
+  updated_by: tester

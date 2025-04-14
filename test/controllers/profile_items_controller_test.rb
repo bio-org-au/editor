@@ -32,7 +32,7 @@ class ProfileItemsControllerTest < ActionController::TestCase
     end
     assert_response :success
     assert_equal "Deleted profile item.", assigns(:message)
-  end
+end
 
   test "should set instance variables" do
     delete :destroy, params: { id: @profile_item.id }, session: @session, xhr: true

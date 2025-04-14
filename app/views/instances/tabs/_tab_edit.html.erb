@@ -1,47 +1,49 @@
-<% increment_tab_index(0) %>
+<% if can? :edit, @instance %>
+  <% increment_tab_index(0) %>
 
-  <div id="search-result-details-info-message-container" class="message-container"></div>
-  <div id="search-result-details-error-message-container" class="message-container"></div>
-  <div id="search-result-details-error-message-container-0" class="error-container"></div>
-  <div id="search-result-details-error-message-container-1" class="error-container"></div>
-  <div id="search-result-details-error-message-container-2" class="error-container"></div>
-  <div id="search-result-details-error-message-container-3" class="error-container"></div>
-<% if @instance.standalone? %>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container-0" class="error-container"></div>
+    <div id="search-result-details-error-message-container-1" class="error-container"></div>
+    <div id="search-result-details-error-message-container-2" class="error-container"></div>
+    <div id="search-result-details-error-message-container-3" class="error-container"></div>
+  <% if @instance.standalone? %>
 
-  <%= render 'form_update_standalone' %>
-  <%= render 'update_reference_id_widgets' if can?('instances','update_reference_id_widgets') && !@instance.update_reference_allowed? %>
+    <%= render 'form_update_standalone' %>
+    <%= render 'update_reference_id_widgets' if can?('instances','update_reference_id_widgets') && !@instance.update_reference_allowed? %>
 
-<% elsif @instance.synonymy? %>
+  <% elsif @instance.synonymy? %>
 
-  <%= render 'form_update_synonymy' %>
+    <%= render 'form_update_synonymy' %>
 
-<% elsif @instance.unpublished_citation? %>
+  <% elsif @instance.unpublished_citation? %>
 
-  <%= render 'form_update_unpublished_citation' %>
+    <%= render 'form_update_unpublished_citation' %>
 
-<% else %> 
+  <% else %>
 
-  Unknown instance type.
+    Unknown instance type.
 
-<% end %>
+  <% end %>
 
-<%= divider %>
+  <%= divider %>
 
-<% if @instance.allow_delete? %>
-  <%= render 'delete_widgets' %>
+  <% if @instance.allow_delete? %>
+    <%= render 'delete_widgets' %>
+  <% else %>
+    <%= render 'instances/widgets/no_delete_reasons' %>
+  <% end %>
+
+  <br>
+  <br>
+  <% refresh_page_link = link_to("Refresh page",
+                                '#',
+                                id: "refresh-page-from-details-link",
+                                class: "btn btn-default hidden",
+                                title: "Refresh page",
+                                data: {instance_note_id: @instance.id})
+  %>
+  <%= refresh_page_link %>
 <% else %>
-  <%= render 'instances/widgets/no_delete_reasons' %>
+  <%= render partial: "instances/tabs/tab_empty" %>
 <% end %>
-
-<br>
-<br>
-<% refresh_page_link = link_to("Refresh page",
-                               '#', 
-                               id: "refresh-page-from-details-link",
-                               class: "btn btn-default hidden",
-                               title: "Refresh page",
-                               data: {instance_note_id: @instance.id}) 
-%>
-<%= refresh_page_link %>
-
-

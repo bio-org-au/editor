@@ -36,6 +36,6 @@ class Product < ApplicationRecord
 
   belongs_to :tree, optional: true
   belongs_to :reference, optional: true
-  has_many :user_product_roles, class_name: "User::ProductRole", foreign_key: "product_id"
-
+  has_many :product_roles, class_name: "Product::Role"
+  has_many :user_product_roles, class_name: "User::ProductRole", through: :product_roles
 end

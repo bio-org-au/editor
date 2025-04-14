@@ -45,10 +45,11 @@
 module Profile
   class ProfileItem < ApplicationRecord
     self.table_name = "profile_item"
+    self.primary_key = "id"
 
     belongs_to :instance
     belongs_to :product_item_config, class_name: 'Profile::ProductItemConfig', foreign_key: 'product_item_config_id'
-    belongs_to :profile_text, class_name: 'Profile::ProfileText', foreign_key: 'profile_text_id', dependent: :destroy
+    belongs_to :profile_text, class_name: 'Profile::ProfileText', foreign_key: 'profile_text_id'
     belongs_to :profile_object_type,
               class_name: 'Profile::ProfileObjectType',
               primary_key: 'rdf_id',
@@ -75,12 +76,24 @@ module Profile
 
     default_scope { includes(:product_item_config).order("product_item_config.sort_order ASC") }
 
+    after_destroy :conditionally_destroy_profile_text
+
     def fresh?
       created_at > 1.hour.ago
     end
 
     def allow_delete?
       self.sourced_in_profile_items.blank?
+    end
+
+    def fact?
+      statement_type == "fact"
+    end
+
+    private
+
+    def conditionally_destroy_profile_text
+      profile_text.destroy if fact?
     end
   end
 end

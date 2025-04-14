@@ -3,7 +3,6 @@ _fixture:
 
 user_one_foa_draft_profile_editor:
   user: user_one
-  product: foa
-  role_type: foa_draft_profile_editor
+  product_role: foa_draft_profile_editor
   updated_by: tester
   created_by: tester

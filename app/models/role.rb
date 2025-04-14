@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: product_role_type
+# Table name: role
 #
 #  id           :bigint           not null, primary key
 #  created_by   :string(50)       not null
@@ -17,10 +17,10 @@
 #
 #  prt_unique_name  (name) UNIQUE
 #
-class Product::RoleType < ActiveRecord::Base
+class Role < ActiveRecord::Base
   strip_attributes
-  self.table_name = "product_role_type"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  has_many :user_product_roles, class_name: "User::ProductRole", foreign_key: "product_role_type_id"
+  has_many :product_roles, class_name: "Product::Role"
+  has_many :user_product_roles, class_name: "User::ProductRole", through: :product_roles
 end

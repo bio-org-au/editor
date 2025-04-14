@@ -1,19 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe "names/tabs/_tab_instances_profile_v2.html.erb", type: :view do
-  let(:user) { FactoryBot.create(:session_user) }
+  let(:session_user) { FactoryBot.create(:session_user) }
+  let(:user) { FactoryBot.create(:user) }
   let(:name) { FactoryBot.create(:name) }
   let(:instance) { FactoryBot.create(:instance, name: name) }
-  let(:product) { FactoryBot.create(:product, name: user.profile_v2_context.product) }
-  let(:reference) { FactoryBot.create(:reference) }
+  let(:product) { FactoryBot.create(:product, name: "FOA") }
+  let!(:language) { FactoryBot.create(:language, iso6391code: "en", iso6393code: "eng") }
+  let!(:reference) { FactoryBot.create(:reference, language: language) }
   let!(:instance_type) { FactoryBot.create(:instance_type, name: "secondary reference") }
 
   before do
-    allow(user).to receive_message_chain(:profile_v2_context, :product).and_return(product.name)
     allow(Profile::Product).to receive(:find_by).with(name: product.name).and_return(product)
     allow(product).to receive(:reference).and_return(reference)
+    allow(user).to receive(:available_product_from_roles).and_return(product)
 
-    assign(:current_user, user)
+    assign(:current_user, session_user)
+    assign(:current_registered_user, user)
     assign(:name, name)
     assign(:instance, instance)
   end

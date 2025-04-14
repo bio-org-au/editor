@@ -4,9 +4,7 @@
 
   focusOnField = function(field_id) {
     let field = document.getElementById(field_id);
-      //if (field) {
-        field.focus()
-      //};
+      field?.focus()
   };
   window.focusOnField = focusOnField;
 

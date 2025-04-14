@@ -25,10 +25,10 @@ class SessionUser < ActiveType::Object
   validates :full_name, presence: true
   validates :groups, presence: true
 
-  def with_role?(requested_role_type_name)
+  def with_role?(requested_role_name)
     return unless user
 
-    user.is?(requested_role_type_name)
+    user.is?(requested_role_name)
   end
 
   #

@@ -5,7 +5,7 @@ RSpec.describe Profile::ProfileItem, type: :model do
   describe "associations" do
     it { is_expected.to belong_to(:instance) }
     it { is_expected.to belong_to(:product_item_config).class_name('Profile::ProductItemConfig').with_foreign_key('product_item_config_id') }
-    it { is_expected.to belong_to(:profile_text).class_name('Profile::ProfileText').with_foreign_key('profile_text_id').dependent(:destroy) }
+    it { is_expected.to belong_to(:profile_text).class_name('Profile::ProfileText').with_foreign_key('profile_text_id') }
     it { is_expected.to belong_to(:profile_object_type).class_name('Profile::ProfileObjectType').with_primary_key('rdf_id').with_foreign_key('profile_object_rdf_id').optional }
     it { is_expected.to have_many(:profile_item_references).class_name('Profile::ProfileItemReference').with_foreign_key('profile_item_id').dependent(:destroy) }
     it { is_expected.to have_one(:product).through(:product_item_config) }
@@ -34,4 +34,26 @@ RSpec.describe Profile::ProfileItem, type: :model do
     end
   end
 
+  describe "after_destroy callback" do
+    let(:profile_text) { FactoryBot.create(:profile_text) }
+    let(:profile_item) { FactoryBot.create(:profile_item, profile_text: profile_text, statement_type: statement_type) }
+
+    context "when the profile_item is a fact" do
+      let(:statement_type) { "fact" }
+
+      it "destroys the associated profile_text" do
+        profile_item.destroy
+        expect(Profile::ProfileText.exists?(profile_text.id)).to be false
+      end
+    end
+
+    context "when the profile_item is not a fact" do
+      let(:statement_type) { "link" }
+
+      it "does not destroy the associated profile_text" do
+        profile_item.destroy
+        expect(Profile::ProfileText.exists?(profile_text.id)).to be true
+      end
+    end
+  end
 end

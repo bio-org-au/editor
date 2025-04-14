@@ -28,6 +28,7 @@
 module Profile
     class ProfileItemAnnotation < ApplicationRecord
       self.table_name = "profile_item_annotation"
+      self.primary_key = "id"
 
       belongs_to :profile_item, class_name: 'Profile::ProfileItem', foreign_key: 'profile_item_id'
       has_one :product_item_config, through: :profile_item

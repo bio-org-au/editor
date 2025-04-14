@@ -18,18 +18,28 @@
     <% end %>
   <% end %>
 
-  <% if @tabs_to_offer.include?('tab_edit') %>
-    <% if can? 'instances', 'edit' %>
-      <%= render partial: 'instances/tabs/tab', locals: {first: false,
-                                        last: false,
-                                        this_tab: 'tab_edit',
-                                        link_text: "Edit".html_safe,
-                                        link_id: 'instance-edit-tab',
-                                        link_title: 'Edit',
-                                        tab_index: increment_tab_index,
-                                        prev_tab: '',
-                                        next_tab: '' } %>
-    <% end %>
+  <% if @tabs_to_offer.include?('tab_edit') && can?(:edit, @instance)%>
+    <%= render partial: 'instances/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_edit',
+                                      link_text: "Edit".html_safe,
+                                      link_id: 'instance-edit-tab',
+                                      link_title: 'Edit',
+                                      tab_index: increment_tab_index,
+                                      prev_tab: '',
+                                      next_tab: '' } %>
+  <% end %>
+
+  <% if @tabs_to_offer.include?('tab_edit_profile_v2') && can?(:manage_draft_secondary_reference, @instance) %>
+    <%= render partial: 'instances/tabs/tab', locals: {first: false,
+                                      last: false,
+                                      this_tab: 'tab_edit_profile_v2',
+                                      link_text: "Edit".html_safe,
+                                      link_id: 'instance-edit-tab-profile-v2-tab',
+                                      link_title: 'Edit',
+                                      tab_index: increment_tab_index,
+                                      prev_tab: '',
+                                      next_tab: '' } %>
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_edit_notes') %>
@@ -75,7 +85,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_unpublished_citation') %>
-    <% if can? 'instances', 'create' %>
+    <% if can? :create, @instance %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                           last: false,
                                           this_tab: 'tab_unpublished_citation',
@@ -89,7 +99,7 @@
   <% end %>
 
   <% if @tabs_to_offer.include?('tab_unpublished_citation_for_profile_v2') %>
-    <% if can? 'instances', 'tab_unpublished_citation_for_profile_v2' %>
+    <% if can? :unpublished_citation_as_draft_secondary_reference, @instance %>
       <%= render partial: 'instances/tabs/tab', locals: {first: false,
                                           last: false,
                                           this_tab: 'tab_unpublished_citation_for_profile_v2',

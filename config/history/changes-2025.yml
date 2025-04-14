@@ -1,3 +1,33 @@
+- :date: 09-Apr-2025
+  :jira_id: '72'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project permissions: add a <code>Product_Role</code> table and re-arrange the associations between <code>Users</code>, <code>Roles</code>, and <code>User_Product_Role</code> 
+- :date: 09-Apr-2025
+  :jira_id: '69'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Permissions for draft-editor to delete a draft instance via edit tab
+- :date: 03-Apr-2025
+  :jira_id: '48'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Permissions for draft-editor to edit a draft instance
+- :date: 01-Apr-2025
+  :jira_id: '41'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Show new instance tab from name for draft-editor users
+- :date: 31-Mar-2025
+  :jira_id: '56'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Rename table <code>product_role_type</code> to <code>roles</code>
+- :date: 28-Mar-2025
+  :jira_id: '34'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Show unpub tab for draft and secondary reference instance
 - :date: 28-Mar-2025
   :jira_id: '5368'
   :description: |-

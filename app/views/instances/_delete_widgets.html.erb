@@ -13,6 +13,16 @@
     </div>
   <% end %>
 
+  <% if @instance.profile_items.present? %>
+    <div class="text-warning">Note: Deleting this instance will also delete the following profile items:
+      <ul>
+        <% @instance.profile_items.each do |profile_item| %>
+          <li><%= profile_item.product_item_config.display_html %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <% confirm_delete_link = link_to("Confirm delete",
                                    instance_path(@instance.id),
                                    id: "confirm-delete-link",
@@ -40,6 +50,6 @@
   -%>
   <div class="actions"> <%= delete_link.html_safe %> </div>
   <div class="width-100-percent"> <%= confirm_or_cancel_element.html_safe %> </div>
- 
+
 <div id="instance-delete-info-message-container" class="message-container"></div>
 <div id="instance-delete-error-message-container" class="error-container message-container"></div>

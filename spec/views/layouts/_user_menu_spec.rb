@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe "layouts/_user_menu.html.erb", type: :view do
   let(:session_user) { FactoryBot.create(:session_user) }
   let(:registered_user) { FactoryBot.create(:user, user_name: "Registered User") }
-  let(:role_type) { FactoryBot.create(:role_type) }
+  let(:role) { FactoryBot.create(:role) }
   let(:product) { FactoryBot.create(:product, name: "Product") }
-  let!(:user_product_role) { FactoryBot.create(:user_product_role, product: product, role_type: role_type, user: registered_user) }
+  let!(:user_product_role) { FactoryBot.create(:user_product_role, product: product, role: role, user: registered_user) }
 
   before do
     allow(view).to receive(:editor_icon).and_return("icon")
@@ -29,10 +29,10 @@ RSpec.describe "layouts/_user_menu.html.erb", type: :view do
       it "displays the user's groups" do
         render
         expect(rendered).to have_selector("a", text: "2 Security groups")
-        expect(rendered).to have_selector("a", text: "1 Role type")
+        expect(rendered).to have_selector("a", text: "1 Role")
         expect(rendered).to have_selector("a", text: "Edit")
         expect(rendered).to have_selector("a", text: "Admin")
-        expect(rendered).to have_selector("a", text: "#{product.name} #{user_product_role.role_type.name}")
+        expect(rendered).to have_selector("a", text: "#{product.name} #{user_product_role.role.name}")
       end
     end
 
@@ -40,15 +40,15 @@ RSpec.describe "layouts/_user_menu.html.erb", type: :view do
       context "when registered user has product roles" do
         it "displays the registered user's product roles" do
           render
-          expect(rendered).to have_selector("a", text: "#{product.name} #{role_type.name}")
+          expect(rendered).to have_selector("a", text: "#{product.name} #{role.name}")
         end
       end
       context "when registered user does not have product roles" do
         let(:registered_user_1) { FactoryBot.create(:user, user_name: "Registered User 1") }
-        let!(:user_product_role) { FactoryBot.create(:user_product_role, product: product, role_type: role_type, user: registered_user_1) }
+        let!(:user_product_role) { FactoryBot.create(:user_product_role, product: product, role: role, user: registered_user_1) }
         it "does not display the registered user's product roles" do
           render
-          expect(rendered).not_to have_selector("a", text: role_type.name)
+          expect(rendered).not_to have_selector("a", text: role.name)
         end
       end
     end

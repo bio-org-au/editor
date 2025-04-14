@@ -32,6 +32,7 @@
 module Profile
   class Product < ApplicationRecord
     self.table_name = "product"
+    self.primary_key = "id"
     
     has_many :product_item_configs, class_name: 'Profile::ProductItemConfig', foreign_key: 'product_id'
     has_many :profile_items, through: :product_item_configs, class_name: 'Profiles::ProfileItem'

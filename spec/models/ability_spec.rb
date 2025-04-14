@@ -187,6 +187,18 @@ RSpec.describe Ability, type: :model do
       expect(subject.can?("instances", "copy_for_profile_v2")).to eq true
     end
 
+    it 'can access instances create_cited_by' do
+      expect(subject.can?("instances", "create_cited_by")).to eq true
+    end
+
+    it 'can access instances tab_unpublished_citation_for_profile_v2' do
+      expect(subject.can?("instances", "tab_unpublished_citation_for_profile_v2")).to eq true
+    end
+
+    it 'can access names/typeaheads/for_unpub_cit index' do
+      expect(subject.can?("names/typeaheads/for_unpub_cit", "index")).to eq true
+    end
+
     it "allows copying as draft secondary reference" do
       instance = FactoryBot.create(:instance, draft: false)
       expect(subject.can?(:copy_as_draft_secondary_reference, instance)).to eq true
@@ -195,24 +207,27 @@ RSpec.describe Ability, type: :model do
     context "when the instance is a draft" do
       let(:instance) { FactoryBot.create(:instance, draft: true) }
 
-      it "allows updating the instance" do
-        expect(subject.can?(:update, instance)).to eq true
-      end
-
-      it "allows destroying the instance" do
-        expect(subject.can?(:destroy, instance)).to eq true
-      end
-
       context "when instance product reference is the same as the user's product" do
-        it "allows synonymy as draft secondary reference" do
+        before do
           product = FactoryBot.create(:product)
           allow(instance).to receive_message_chain(:reference, :products).and_return([product])
           allow(session_user).to receive(:product_from_roles).and_return(product)
+        end
+
+        it "allows destroying the instance" do
+          expect(subject.can?(:destroy, instance)).to eq true
+        end
+
+        it "allows synonymy as draft secondary reference" do
           expect(subject.can?(:synonymy_as_draft_secondary_reference, instance)).to eq true
         end
       end
 
       context "when instance product reference is not the same as the user's product" do
+        it "does not allows destroying the instance" do
+          expect(subject.can?(:destroy, instance)).to eq false
+        end
+
         it "does not allow synonymy as draft secondary reference" do
           allow(instance).to receive(:reference).and_return(FactoryBot.create(:reference))
           allow(session_user).to receive(:product_from_roles).and_return(FactoryBot.create(:product))

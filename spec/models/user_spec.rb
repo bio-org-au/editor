@@ -10,9 +10,9 @@ RSpec.describe User, type: :model do
 
   describe '#is?' do
     let(:user) { FactoryBot.create(:user) }
-    let(:role_type) { FactoryBot.create(:role_type, name: 'admin') }
+    let(:role) { FactoryBot.create(:role, name: 'admin') }
     let(:product) { FactoryBot.create(:product) }
-    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role_type: role_type, product: product) }
+    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role: role, product: product) }
 
     context 'when the user has the requested role type' do
       it 'returns true' do

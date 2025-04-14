@@ -55,7 +55,6 @@ class Ability
     batch_loader_auth if user.batch_loader?
     loader_2_tab_auth if user.loader_2_tab_loader?
 
-    #profile_v2_auth   if user.profile_v2?
     # NOTES: Broader permissions come first
     draft_editor(user) if user.with_role?('draft-editor')
     profile_editor if user.with_role?('profile-editor')
@@ -108,18 +107,30 @@ class Ability
   end
 
   def draft_editor(user)
-    can [:update, :destroy], Instance do |instance|
-      instance.draft?
-    end
+    can :create_with_product_reference, Instance
     can :copy_as_draft_secondary_reference, Instance
-    can :synonymy_as_draft_secondary_reference, Instance do |instance|
-      instance.draft? && user.product_from_roles.present? && instance.reference.products.pluck(:name).any?(user.product_from_roles.name)
+    can [
+      :destroy,
+      :manage_draft_secondary_reference,
+      :synonymy_as_draft_secondary_reference,
+      :unpublished_citation_as_draft_secondary_reference
+    ], Instance do |instance|
+      instance.draft? && instance.reference.products.pluck(:name).any?(user.product_from_roles&.name.to_s)
     end
+    can "instances", "create"
+    can "instances", "tab_edit"
+    can "instances", "tab_edit_profile_v2"
+    can "instances", "update"
+    can "instances", "destroy"
     can "instances", "tab_copy_to_new_profile_v2"
     can "instances", "copy_for_profile_v2"
     can "instances", "tab_synonymy_for_profile_v2"
     can "instances", "typeahead_for_synonymy"
     can "instances", "create_cites_and_cited_by"
+    can "instances", "create_cited_by"
+    can "instances", "tab_unpublished_citation_for_profile_v2"
+    can "names/typeaheads/for_unpub_cit", "index"
+    can "names", "tab_instances_profile_v2"
   end
 
   def profile_editor
@@ -193,7 +204,12 @@ class Ability
   def edit_auth
     can :manage,              Author
     can :manage,              Reference
-    can :create,              Instance
+    can [
+      :create,
+      :edit,
+      :update,
+      :destroy
+    ], Instance
     can "authors",            :all
     can "comments",           :all
     can "instances",          :all

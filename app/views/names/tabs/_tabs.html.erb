@@ -23,29 +23,29 @@
                                             next_tab: ''} %>
       <% end %>
 
-      <% if can? 'instances', 'create' %>
-        <% if @current_user.profile_v2_context.new_instance_allowed? %>
-          <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                              last: false,
-                                              this_tab: 'tab_instances_profile_v2',
-                                              link_text: "New instance".html_safe,
-                                              link_id: 'name-instances-profile-v2-tab',
-                                              link_title: 'Create an instance for the name.',
-                                              tab_index: increment_tab_index,
-                                              prev_tab: '',
-                                              next_tab: ''} %>
-        <% else %>
-          <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                              last: false,
-                                              this_tab: 'tab_instances',
-                                              link_text: "New instance".html_safe,
-                                              link_id: 'name-instances-tab',
-                                              link_title: 'Create an instance for the name.',
-                                              tab_index: increment_tab_index,
-                                              prev_tab: '',
-                                              next_tab: ''} %>
-        <% end %>
+      <% if can? :create_with_product_reference, Instance %>
+        <%= render partial: 'names/tabs/tab', locals: {first: false,
+                                            last: false,
+                                            this_tab: 'tab_instances_profile_v2',
+                                            link_text: "New instance".html_safe,
+                                            link_id: 'name-instances-profile-v2-tab',
+                                            link_title: 'Create an instance for the name.',
+                                            tab_index: increment_tab_index,
+                                            prev_tab: '',
+                                            next_tab: ''} %>
+      <% elsif can? :create, Instance %>
+        <%= render partial: 'names/tabs/tab', locals: {first: false,
+                                            last: false,
+                                            this_tab: 'tab_instances',
+                                            link_text: "New instance".html_safe,
+                                            link_id: 'name-instances-tab',
+                                            link_title: 'Create an instance for the name.',
+                                            tab_index: increment_tab_index,
+                                            prev_tab: '',
+                                            next_tab: ''} %>
+      <% end %>
 
+      <% if can? :create, Instance %>
         <%= render partial: 'names/tabs/tab', locals: {first: false,
                                             last: false,
                                             this_tab: 'tab_copy',

@@ -162,8 +162,8 @@ RSpec.describe SessionUser, type: :model do
     let(:groups) { ['group1', 'group2'] }
 
     let!(:user) { FactoryBot.create(:user, user_name: username) }
-    let!(:role_type) { FactoryBot.create(:role_type, name: 'admin') }
-    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role_type: role_type) }
+    let!(:role) { FactoryBot.create(:role, name: 'admin') }
+    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role: role) }
 
     let(:session_user) { FactoryBot.create(:session_user, username: username, groups: groups) }
 
@@ -218,8 +218,8 @@ RSpec.describe SessionUser, type: :model do
     let!(:user) { FactoryBot.create(:user, user_name: username) }
     let!(:session_user) { FactoryBot.create(:session_user, username: "test", groups: ["login"]) }
 
-    let!(:role_type) { FactoryBot.create(:role_type, name: 'admin') }
-    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role_type: role_type) }
+    let!(:role) { FactoryBot.create(:role, name: 'admin') }
+    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role: role) }
 
     it "delegates to user.available_product_from_roles" do
       allow(session_user).to receive(:user).and_return(user)
