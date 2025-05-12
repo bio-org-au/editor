@@ -77,6 +77,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'factory_bot_rails'
   gem 'database_cleaner-active_record'
+  gem "bullet"
 end
 
 # Added

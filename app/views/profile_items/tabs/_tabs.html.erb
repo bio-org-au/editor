@@ -13,7 +13,7 @@
   %>
 
 
-  <% if can? :manage, Profile::ProfileItem %>
+  <% if can? :manage, @profile_item %>
     <%= render partial: 'profile_items/tabs/tab', locals: {first: false,
       last: false,
       this_tab: 'tab_edit',

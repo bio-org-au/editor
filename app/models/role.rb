@@ -2,20 +2,21 @@
 
 # == Schema Information
 #
-# Table name: role
+# Table name: roles
 #
 #  id           :bigint           not null, primary key
 #  created_by   :string(50)       not null
+#  deprecated   :boolean          default(FALSE), not null
 #  description  :text             default("Please describe this product role type"), not null
 #  lock_version :bigint           default(0), not null
-#  name         :citext           not null
+#  name         :string(50)       not null
 #  updated_by   :string(50)       not null
 #  created_at   :timestamptz      not null
 #  updated_at   :timestamptz      not null
 #
 # Indexes
 #
-#  prt_unique_name  (name) UNIQUE
+#  role_unique_name  (name) UNIQUE
 #
 class Role < ActiveRecord::Base
   strip_attributes

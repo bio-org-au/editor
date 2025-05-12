@@ -1,0 +1,47 @@
+
+<% delete_link = link_to("Delete...",
+  '#',
+  id: "delete-link-#{dom_id(user_product_role)}",
+  class: "btn btn-warning btn-sm unconfirmed-delete-link pull-right",
+  style: "",
+  title: "Select to delete this role.  You will be asked to confirm.",
+  data: { show_this_id: "confirm-or-cancel-link-product-role-container-#{dom_id(user_product_role)}" })
+%>
+<%
+# NOTES: Apparently, we need to add the turbo-related data attributes to ajax-driven links.
+# In this example, the delete button that makes an ajax request to the server should have the turbo attributes
+# if we want it to render the results via turbo stream. Just something we have to note of.
+confirm_delete_link = link_to("Confirm delete",
+                                user_product_roles_delete_path(user_product_role.user_id, user_product_role.product_role_id),
+                                class: "btn btn-danger btn-sm",
+                                style: "",
+                                title: "Select to confirm the delete.",
+                                data: {
+                                  turbo_method: :delete, # Makes sure the delete method is used
+                                  turbo_stream: true # Explicitly indicates that the request expects a Turbo Stream response
+                                })
+%>
+
+<% cancel_delete_link = link_to("Cancel delete",
+                                '#',
+                                id: "cancel-delete-link-#{dom_id(user_product_role)}",
+                                class: "btn btn-default btn-sm cancel-link",
+                                style: "",
+                                title: "Select to cancel the delete.",
+                                data: {enable_this_id: "delete-link-#{dom_id(user_product_role)}",
+                                       hide_this_id: "confirm-or-cancel-link-product-role-container-#{dom_id(user_product_role)}"})
+%>
+
+<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-link-product-role-container-#{dom_id(user_product_role)}"
+                                  class="product-role confirm-or-cancel-delete-link pull-right hidden">
+                                  #{cancel_delete_link}
+                                  #{confirm_delete_link}
+                                  </div>)
+%>
+
+<div class="padding-top-1em" id='<%= "#{dom_id(user_product_role)}-div" %>'>
+  <%= user_product_role.product.name %> <%= user_product_role.role.name %>   
+  <%= delete_link.html_safe %>
+  <%= confirm_or_cancel_element.html_safe %>
+</div>
+

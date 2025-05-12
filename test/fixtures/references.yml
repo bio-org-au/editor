@@ -92,7 +92,6 @@
 #  fk_p8lhsoo01164dsvvwxob0w3sp  (author_id => author.id)
 #
 DEFAULTS: &DEFAULTS
-  <<: *DEFAULTS
   language: undetermined
   namespace: apni
   created_by: tester
@@ -1922,3 +1921,23 @@ rare_or_threatened_australian_plants:
   ref_type: book
   iso_publication_date: 1996
 
+chah_book:
+  <<: *DEFAULTS
+  title: Australian Plant Census
+  citation: Council of Heads of Australasian Herbaria (2005-), Australian Plant Census
+  citation_html: Council of Heads of Australasian Herbaria (2005-), Australian Plant Census
+  display_title: Australian Plant Census
+  author: chah
+  ref_author_role: compiler
+  ref_type: book
+  iso_publication_date: 2005
+
+chah_2025:
+  <<: *DEFAULTS
+  title: Not set
+  citation: Council of Heads of Australasian Herbaria (1 June 2025), Australian Plant Census
+  citation_html: Council of Heads of Australasian Herbaria (1 June 2025), Australian Plant Census
+  display_title: Australian Plant Census
+  author: chah
+  ref_author_role: author
+  ref_type: section

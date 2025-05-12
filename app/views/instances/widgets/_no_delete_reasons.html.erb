@@ -35,7 +35,11 @@
     <%= link_to("See instance and children".html_safe,
                 search_path(query_string: "id: #{@instance.id},#{@instance.children.collect {|i| i.id}.join(',')}", query_target: 'instances'),
                 title: "Query the instances.") %>
-    <br> 
+    <br>
+  <% end %>
+  <% if @instance.profile_items.present? %>
+    <span title="See the <%= current_registered_user.available_product_from_roles&.name %> Profile tab."><%= "#{current_registered_user.available_product_from_roles&.name} Profile items: #{@instance.profile_items.size} (see the 'Profile' tab)" %></span>
+    <br>
   <% end %>
 
   <%# Code should be cleaned up once loader tables are in all databases %>

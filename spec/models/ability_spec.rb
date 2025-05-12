@@ -44,6 +44,7 @@ RSpec.describe Ability, type: :model do
       author = FactoryBot.create(:author)
       allow(author).to receive(:referenced_in_any_instance?).and_return(false)
       allow(author).to receive(:no_other_authored_names?).and_return(true)
+      allow(author).to receive_message_chain(:names, :blank?).and_return(true)
       expect(subject.can?(:update, author)).to eq true
     end
 
@@ -51,14 +52,22 @@ RSpec.describe Ability, type: :model do
       author = FactoryBot.create(:author)
       allow(author).to receive(:referenced_in_any_instance?).and_return(false)
       allow(author).to receive(:no_other_authored_names?).and_return(false)
+      allow(author).to receive_message_chain(:names, :blank?).and_return(true)
       expect(subject.can?(:update, author)).to eq false
 
       allow(author).to receive(:referenced_in_any_instance?).and_return(true)
       allow(author).to receive(:no_other_authored_names?).and_return(true)
+      allow(author).to receive_message_chain(:names, :blank?).and_return(true)
       expect(subject.can?(:update, author)).to eq false
 
       allow(author).to receive(:referenced_in_any_instance?).and_return(true)
       allow(author).to receive(:no_other_authored_names?).and_return(false)
+      allow(author).to receive_message_chain(:names, :blank?).and_return(true)
+      expect(subject.can?(:update, author)).to eq false
+
+      allow(author).to receive(:referenced_in_any_instance?).and_return(true)
+      allow(author).to receive(:no_other_authored_names?).and_return(true)
+      allow(author).to receive_message_chain(:names, :blank?).and_return(false)
       expect(subject.can?(:update, author)).to eq false
     end
 
@@ -164,6 +173,10 @@ RSpec.describe Ability, type: :model do
       expect(subject.can?("instances", "tab_profile_v2")).to eq true
     end
 
+    it 'can access instances typeahead_for_product_item_config' do
+      expect(subject.can?("instances", "typeahead_for_product_item_config")).to eq true
+    end
+
     it 'can access menu new' do
       expect(subject.can?("menu", "new")).to eq true
     end
@@ -202,6 +215,38 @@ RSpec.describe Ability, type: :model do
     it "allows copying as draft secondary reference" do
       instance = FactoryBot.create(:instance, draft: false)
       expect(subject.can?(:copy_as_draft_secondary_reference, instance)).to eq true
+    end
+
+    context "for a relationship instance" do
+      let(:instance) { FactoryBot.create(:instance, draft: true) }
+
+      let(:name_category) { FactoryBot.create(:name_category, name: "cultivar") }
+      let(:name_type) { FactoryBot.create(:name_type, name: "cultivar", name_category: name_category) }
+      let(:name) { FactoryBot.create(:name, name_type: name_type) }
+      let(:relationship_instance) { FactoryBot.create(:instance, draft: false, name: name) }
+
+      before do
+        product = FactoryBot.create(:product)
+        allow(instance).to receive_message_chain(:reference, :products).and_return([product])
+        allow(session_user).to receive(:product_from_roles).and_return(product)
+        allow(relationship_instance).to receive(:relationship?).and_return(true)
+        allow(relationship_instance).to receive(:this_is_cited_by).and_return(instance)
+      end
+
+      it "can edit the relationship instance" do
+        expect(subject.can?(:edit, relationship_instance)).to eq true
+      end
+
+      it "cannot edit the relationship instance if not cited by a draft instance" do
+        allow(instance).to receive(:draft?).and_return(false)
+        expect(subject.can?(:edit, relationship_instance)).to eq false
+      end
+
+      it "cannot edit the relationship instance if it's cited by an instance with different product" do
+        other_product = FactoryBot.create(:product, name: "other_product")
+        allow(instance).to receive_message_chain(:reference, :products).and_return([other_product])
+        expect(subject.can?(:edit, relationship_instance)).to eq false
+      end
     end
 
     context "when the instance is a draft" do

@@ -57,6 +57,7 @@ import "typeaheads_for_instance_reference";
 import "typeaheads_for_instance_reference_profile_v2";
 import "typeaheads_for_instance_reference_excluding_current";
 import "typeaheads_for_instance_synonymy";
+import "typeaheads_for_instance_product_item_config";
 
 import "typeaheads_for_loader_batch_default_reference";
 import "typeaheads_for_loader_name_parent";

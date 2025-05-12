@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe Author, type: :model do
   describe '#referenced_in_any_instance?' do
     let(:author) { FactoryBot.create(:author) }
-    let(:reference) { FactoryBot.create(:reference, author: author) }
+    let!(:language) { FactoryBot.create(:language, iso6391code: "en", iso6393code: "eng") }
+    let!(:reference) { FactoryBot.create(:reference, language: language, author: author) }
 
     context 'when the author has references associated with instances' do
       before do

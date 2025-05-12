@@ -267,7 +267,9 @@ class Loader::NamesController < ApplicationController
                                         :add_sibling_synonyms,
                                         :add_sourced_synonyms,
                                         :original_text,
-                                        :parent_typeahead)
+                                        :parent_typeahead,
+                                        :formatted_text_above,
+                                        :formatted_text_below)
   end
 
   def set_tab

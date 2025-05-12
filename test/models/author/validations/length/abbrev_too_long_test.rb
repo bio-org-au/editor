@@ -22,7 +22,7 @@ require "test_helper"
 class AuthorAbbrevTooLongTest < ActiveSupport::TestCase
 
   def setup
-    @max = 100
+    @max = 150
   end
 
   test "author abbrev too long test" do

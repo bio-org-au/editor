@@ -219,3 +219,6 @@
 .border-simple { border: 1px solid black; }
 .padding-simple { padding: 1em; }
 .padding-zero-dot-2 { padding: 0.2em; }
+
+.padding-top-1em { padding-top: 1em; }
+.padding-top-0-5em { padding-top: 0.5em; }

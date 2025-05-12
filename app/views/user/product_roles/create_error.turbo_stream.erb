@@ -1,0 +1,14 @@
+
+<turbo-stream action="update" targets=".message-container">
+  <template> </template>
+</turbo-stream>
+
+<turbo-stream action="remove" target="script-container">
+</turbo-stream>
+
+<turbo-stream action="update" target="search-result-details-error-message-container">
+  <template>
+  Error: <%= escape_javascript(@error) %>
+  </template>
+</turbo-stream>
+

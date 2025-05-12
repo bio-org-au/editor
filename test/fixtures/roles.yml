@@ -1,8 +1,49 @@
+# == Schema Information
+#
+# Table name: roles
+#
+#  id           :bigint           not null, primary key
+#  created_by   :string(50)       not null
+#  deprecated   :boolean          default(FALSE), not null
+#  description  :text             default("Please describe this product role type"), not null
+#  lock_version :bigint           default(0), not null
+#  name         :string(50)       not null
+#  updated_by   :string(50)       not null
+#  created_at   :timestamptz      not null
+#  updated_at   :timestamptz      not null
+#
+# Indexes
+#
+#  role_unique_name  (name) UNIQUE
+#
 _fixture:
   model_class: Role
 
+DEFAULTS: &DEFAULTS
+  created_by: tester
+  updated_by: tester
+
+draft_editor:
+  <<: *DEFAULTS
+  name: draft-editor
+  description: Can edit draft taxonomic concepts
+
 draft_profile_editor:
+  <<: *DEFAULTS
   name: "draft-profile-editor"
   description: "Can manage draft profile"
-  updated_by: tester
-  created_by: tester
+
+profile_editor:
+  <<: *DEFAULTS
+  name: profile-editor
+  description: Can edit a published profile content of a product
+
+tree_publisher:
+  <<: *DEFAULTS
+  name: tree-publisher
+  description: Can manage the publication of a taxonomy as a new version of a tree of a product
+
+name_index-editor:
+  <<: *DEFAULTS
+  name: name-index-editor
+  description: Can manage ANY taxonomic concepts in the name index in a dataset

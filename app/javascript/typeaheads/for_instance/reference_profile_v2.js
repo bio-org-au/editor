@@ -23,7 +23,7 @@ function setUpInstanceReferenceProfileV2(profileItemId) {
 }
 
 
-window.setUpInstanceReferenceProfileV2 = setUpInstanceReferenceProfileV2 
+window.setUpInstanceReferenceProfileV2 = setUpInstanceReferenceProfileV2
 
 // constructs the suggestion engine
 window.referenceByCitation = new Bloodhound({

@@ -59,38 +59,6 @@ RSpec.describe SessionUser, type: :model do
     end
   end
 
-  describe "#profile_v2_context" do
-    let(:session_user) { FactoryBot.create(:session_user) }
-
-    subject { session_user.profile_v2_context }
-
-    context "for foa group" do
-      it "return the foa profile context" do
-        allow_any_instance_of(SessionUser).to receive(:groups).and_return('foa')
-        expect(subject.class).to eq Users::ProfileContexts::Foa
-      end
-    end
-
-    context "for apni group" do
-      it "return the foa profile context" do
-        allow_any_instance_of(SessionUser).to receive(:groups).and_return('apni')
-        expect(subject.class).to eq Users::ProfileContexts::Apni
-      end
-    end
-
-    context "for non-profile group" do
-      it "return the foa profile context" do
-        allow_any_instance_of(SessionUser).to receive(:groups).and_return('other-product')
-        expect(subject.class).to eq Users::ProfileContexts::Apni
-      end
-    end
-  end
-
-  describe "#profile_v2?" do
-    include_context "#group_check?", :profile_v2?, "foa"
-    include_context "#group_check?", :profile_v2?, "apni"
-  end
-
   describe "#edit?" do
    include_context "#group_check?", :edit?, "edit"
   end
@@ -163,7 +131,8 @@ RSpec.describe SessionUser, type: :model do
 
     let!(:user) { FactoryBot.create(:user, user_name: username) }
     let!(:role) { FactoryBot.create(:role, name: 'admin') }
-    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role: role) }
+    let!(:product_role) { FactoryBot.create(:product_role, role:) }
+    let!(:user_product_role) { FactoryBot.create(:user_product_role, product_role:, user:) }
 
     let(:session_user) { FactoryBot.create(:session_user, username: username, groups: groups) }
 
@@ -219,7 +188,8 @@ RSpec.describe SessionUser, type: :model do
     let!(:session_user) { FactoryBot.create(:session_user, username: "test", groups: ["login"]) }
 
     let!(:role) { FactoryBot.create(:role, name: 'admin') }
-    let!(:product_role) { FactoryBot.create(:user_product_role, user: user, role: role) }
+    let!(:product_role) { FactoryBot.create(:product_role, role:) }
+    let!(:user_product_role) { FactoryBot.create(:user_product_role, product_role:, user:) }
 
     it "delegates to user.available_product_from_roles" do
       allow(session_user).to receive(:user).and_return(user)

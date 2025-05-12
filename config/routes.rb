@@ -17,7 +17,9 @@
 #   limitations under the License.
 #
 Rails.application.routes.draw do
-  resources :profile_items, only: %i[destroy index]
+  namespace :profile_items do
+    resources :links
+  end
   match "profile_items/:id",
         as: "profile_items_show",
         to: "profile_items#show",
@@ -31,6 +33,12 @@ Rails.application.routes.draw do
   resources :profile_texts, only: %i[create update]
   resources :profile_item_annotations, only: %i[create update]
   resources :profile_item_references, only: %i[create]
+  resources :profile_items, only: %i[destroy index] do
+    member do
+      get :details
+    end
+  end
+
   match "profile_item_references/:profile_item_id/:reference_id", as: "save_profile_item_references", to: "profile_item_references#update", via: :put
   match "profile_item_references/:profile_item_id/:reference_id", as: "delete_profile_item_references", to: "profile_item_references#destroy", via: :delete
 
@@ -82,6 +90,11 @@ Rails.application.routes.draw do
   match "instances/for_synonymy",
         as: "typeahead_for_synonymy",
         to: "instances#typeahead_for_synonymy",
+        via: :get
+
+  match "instances/for_product_item_config",
+        as: "typeahead_for_product_item_config",
+        to: "instances#typeahead_for_product_item_config",
         via: :get
 
   match "instances/for_name_showing_reference_to_update_instance",
@@ -546,6 +559,14 @@ Rails.application.routes.draw do
 
   match "users", as: "user_show", to: "users#show", via: :get
   match "users/:id/tab/:tab", as: "user_tab", to: "users#tab", via: :get
+
+  match "choose/product/for/role/:id", as: "choose_product_for_role", to: "user/product_roles#choose_product_for_role", via: :get
+  match "user_product_roles", as: "user_product_roles", to: "user/product_roles#create", via: :post
+  match "user_product_roles/:user_id/:product_role_id", as: "user_product_roles_delete", to: "user/product_roles#destroy", via: :delete
+
+  # resources :user_product_roles, only: %i[create destroy]
+  # user_product_roles POST                  /user_product_roles(.:format)                                                                     user_product_roles#create
+  # user_product_role DELETE                /user_product_roles/:id(.:format)                                                                 user_product_roles#destroy
 
   match "orgs", as: "org", to: "orgs#show", via: :get
   match "orgs/:id/tab/:tab", as: "org_tab", to: "orgs#tab", via: :get

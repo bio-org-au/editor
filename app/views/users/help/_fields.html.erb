@@ -4,11 +4,18 @@
   <% [
       {field_name: '', description: "default user search is on name - see next line below."},
       {field_name: 'name:', description: "match on name"},
+      {field_name: 'id:', description: "match on id"},
+      {field_name: 'user-name:', description: "match on user_name"},
+      {field_name: 'given:', description: "match on given name"},
+      {field_name: 'family:', description: "match on family name"},
+      {field_name: 'role:', description: "match on role"},
+      {field_name: 'product:', description: "match on product"},
+      {field_name: 'product-role:', description: "match on product-role - with one space between product (upper-case) and role (lower-case)"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
       <a href="javascript:void(0)" class="searchable-field width-100-percent"
-         data-search-directive="<%= val[:field] %>" 
+         data-search-directive="<%= val[:field_name] %>"
          title='Add "<%= val[:field_name] %>" field to search.'>
         <span class="blue"><%= val[:field_name] %></span>
       </a>

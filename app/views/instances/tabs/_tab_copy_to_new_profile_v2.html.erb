@@ -46,7 +46,17 @@
     <% if Rails.configuration.try("draft_instances")  %>
       <%= f.hidden_field :draft, value: true %>
     <% end %>
-
+    <% if @instance.profile_items.present? %>
+      <label class="form-check-label">
+        <%= f.check_box(:copy_profile_items,{title: "Copy profile items"}) %>
+        Copy profile items:
+      </label>
+      <ul>
+        <% @instance.profile_items.includes(:product_item_config).each do |profile_item| %>
+          <li><%= profile_item.product_item_config.display_html %></li>
+        <% end %>
+      </ul>
+    <% end %>
     <br>
   <div class="width-100-percent">
 

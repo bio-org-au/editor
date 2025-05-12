@@ -39,6 +39,7 @@
       <tr><td>Username</td><td> <%= Rails.configuration.database_configuration[Rails.env]["username"] %> </td></tr>
       <tr><td>Pool</td><td> <%= Rails.configuration.database_configuration[Rails.env]["pool"] %> </td></tr>
       <tr><td>Connections</td><td> <%= ActiveRecord::Base.connection_pool.connections.size %> </td></tr>
+      <tr><td>Schema search path</td><td> <%= ActiveRecord::Base.connection.try('schema_search_path') %> </td></tr>
       <tr><td colspan="2">&nbsp;</td></tr>
     </table>
 

@@ -52,11 +52,21 @@ class User < ActiveRecord::Base
   before_update :set_updated_by
 
   def is?(requested_role_name)
-    roles.map {|role| role.name}.include?(requested_role_name)
+    roles.where(name: requested_role_name).any?
   end
 
   def available_product_from_roles
-    product_roles.select {|pr| ['draft-editor','draft-profile-editor'].include?(pr.role.name)}.map {|pr| pr.product}.first
+    # NOTES: This field allows us to identify
+    # which specific product this user is related to.
+    # Currently, we're making an assumption that there will
+    # be just one product associated with these roles.
+    # We are currently using this method for the profile items
+    roles_to_check = ['draft-editor','draft-profile-editor']
+    product_roles
+      .joins(:role)
+      .where(roles: { name: roles_to_check })
+      .includes(:product)
+      .first&.product
   end
 
   def set_audit_fields
@@ -123,5 +133,10 @@ class User < ActiveRecord::Base
 
   def can_be_deleted?
     batch_reviewers.size.zero?
+  end
+
+  def grantable_product_roles_for_select
+    (Product::Role.all - product_roles).sort {|x,y| x.name <=> y.name}
+                                       .map {|pr| [pr.name, pr.id]}
   end
 end

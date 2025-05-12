@@ -3,9 +3,10 @@ require "rails_helper"
 RSpec.describe "layouts/_user_menu.html.erb", type: :view do
   let(:session_user) { FactoryBot.create(:session_user) }
   let(:registered_user) { FactoryBot.create(:user, user_name: "Registered User") }
-  let(:role) { FactoryBot.create(:role) }
-  let(:product) { FactoryBot.create(:product, name: "Product") }
-  let!(:user_product_role) { FactoryBot.create(:user_product_role, product: product, role: role, user: registered_user) }
+  let!(:role) { FactoryBot.create(:role) }
+  let!(:product) { FactoryBot.create(:product, name: "Product") }
+  let(:product_role) { FactoryBot.create(:product_role, product:, role:) }
+  let!(:user_product_role) { FactoryBot.create(:user_product_role, product_role:, user: registered_user) }
 
   before do
     allow(view).to receive(:editor_icon).and_return("icon")
@@ -32,7 +33,7 @@ RSpec.describe "layouts/_user_menu.html.erb", type: :view do
         expect(rendered).to have_selector("a", text: "1 Role")
         expect(rendered).to have_selector("a", text: "Edit")
         expect(rendered).to have_selector("a", text: "Admin")
-        expect(rendered).to have_selector("a", text: "#{product.name} #{user_product_role.role.name}")
+        expect(rendered).to have_selector("a", text: "#{product.name} #{role.name}")
       end
     end
 
@@ -45,7 +46,7 @@ RSpec.describe "layouts/_user_menu.html.erb", type: :view do
       end
       context "when registered user does not have product roles" do
         let(:registered_user_1) { FactoryBot.create(:user, user_name: "Registered User 1") }
-        let!(:user_product_role) { FactoryBot.create(:user_product_role, product: product, role: role, user: registered_user_1) }
+        let(:user_product_role) { FactoryBot.create(:user_product_role, product_role:, user: registered_user_1) }
         it "does not display the registered user's product roles" do
           render
           expect(rendered).not_to have_selector("a", text: role.name)

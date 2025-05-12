@@ -2,6 +2,12 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  config.after_initialize do
+    Bullet.enable = ENV.fetch('BULLET_ENABLED', nil) || false
+    Bullet.bullet_logger = true      # log to the Bullet log file (log/bullet.log)
+    Bullet.rails_logger = true       # add warnings to Rails log
+    Bullet.add_footer = true         # adds bullet footer to the page
+  end
 
   # In the development environment your application's code is reloaded any time
   # it changes. This slows down response time but is perfect for development
@@ -85,7 +91,7 @@ else
   Rails.configuration.env_editor_config_file = ""
   Rails.configuration.resolved_editor_config_file = "#{ENV.fetch('HOME', nil)}/.nsl/development/editor-r7-config.rb"
 end
- 
+
 puts "loading config from #{Rails.configuration.resolved_editor_config_file}"
 load "#{Rails.configuration.resolved_editor_config_file}"
 

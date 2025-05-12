@@ -8,8 +8,7 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
   def initialize(session_user, instance, params = {})
     @session_user = session_user
     @user = session_user.user
-    @profile_context = session_user.profile_v2_context
-    @product = find_product_by_name(@profile_context.product)
+    @product = find_product_by_name
     @product_configs_and_profile_items = []
     @instance = instance
     @params = params
@@ -33,10 +32,10 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
 
   attr_reader :user
 
-  def find_product_by_name(name)
+  def find_product_by_name
     product_name = user.products.where(name: SUPPORTED_PRODUCTS).first&.name
 
-    Profile::Product.find_by(name: product_name || name)
+    Profile::Product.find_by(name: product_name)
   end
 
   def profile_v2_aware?

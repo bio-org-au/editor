@@ -53,3 +53,17 @@ RON:
   rdf_id: ron
   is_schema: true
   is_read_only: true
+
+FOA:
+  accepted_tree: false
+  config: {""}
+  current_tree_version: 
+  default_draft_tree_version_id: 
+  description_html: FOA tree
+  group_name: treebuilder
+  host_name: http://localhost:7070/nsl-mapper
+  link_to_home_page:
+  name: FOA
+  rdf_id: foa
+  is_schema: false
+  is_read_only: false

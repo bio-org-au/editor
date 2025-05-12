@@ -37,17 +37,17 @@ module AuthorValidations
               uniqueness: { unless: -> { abbrev.blank? },
                             case_sensitive: false,
                             message: "has already been used" }
-    validates :abbrev, length: { maximum: 100,
-                                 too_long: "%{count} characters is the maximum allowed" }
+    validates :abbrev, length: { maximum: 150,
+                                 too_long: "- %{count} characters is the maximum allowed" }
     validates_exclusion_of :duplicate_of_id,
                            in: ->(author) { [author.id] },
                            allow_blank: true,
                            message: "and master cannot be the same record"
     validate :master_has_abbrev_if_needed, on: :update
     validates :full_name, length: { maximum: 255,
-                                 too_long: "%{count} characters is the maximum allowed" }
+                                 too_long: "- %{count} characters is the maximum allowed" }
     validates :notes, length: { maximum: 1000,
-                                too_long: "%{count} characters is the maximum allowed" }
+                                too_long: "- %{count} characters is the maximum allowed" }
   end
 
   def master_has_abbrev_if_needed

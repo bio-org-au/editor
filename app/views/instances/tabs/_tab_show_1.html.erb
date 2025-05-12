@@ -60,14 +60,14 @@
   <% end %>
 <% end %>
 
-<% if @current_user.profile_v2_context.profile_view_allowed? && @instance.profile_items.present? %>
+<% if Rails.configuration.try('profile_v2_aware') && @instance.profile_items.present? %>
   <h5><%= user_profile_tab_name %> Profile</h5>
   <dl class="dl-horizontal">
-    <% @instance.profile_items.each do |profile_item| %>
+    <% @instance.profile_items.includes(:product_item_config, :profile_text).each do |profile_item| %>
       <dt><%= profile_item.product_item_config.try(:display_html) %></dt>
       <dd>
         <%= link_to(
-          truncate(profile_item.profile_text&.value_md, length: 100), 
+          truncate(profile_item.profile_text&.value_md, length: 100),
           search_path(query_string: "id: #{@instance.id} show-profiles: ",focus_id: profile_item.id, query_target: 'instance'),
           title: profile_item.product_item_config.try(:display_html)) || '' %>
       </dd>

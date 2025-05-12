@@ -1,0 +1,19 @@
+
+<turbo-stream action="update" targets=".message-container">
+  <template> </template>
+</turbo-stream>
+
+<turbo-stream action="update" target="search-result-details-info-message-container">
+  <template>
+  Created
+  </template>
+</turbo-stream>
+
+
+<turbo-stream action="update" target="script-container">
+  <template>
+    <script>
+      setTimeout(function(){$('ul.nav-tabs li.active a.tab').click()},0);
+    </script>
+  </template>
+</turbo-stream>

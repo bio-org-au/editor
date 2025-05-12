@@ -1,36 +1,44 @@
 require 'rails_helper'
 
 RSpec.describe Instance, type: :model do
+  let(:instance) { create(:instance) }
+
+  describe ".product_item_config_id" do
+    let(:name) { create(:name, name_type: instance.name.name_type) }
+    let(:product_item_instance) { create(:instance, name:) }
+    let(:product_item_config) { create(:product_item_config) }
+    let!(:profile_item) { create(:profile_item, instance_id: product_item_instance.id, product_item_config: product_item_config) }
+
+    subject { described_class.product_item_config_id(product_item_config.id) }
+
+    it "returns instances associated with the given product_item_config_id" do
+      expect(subject).to include(product_item_instance)
+    end
+
+    it "does not return instances associated with other product_item_config_id" do
+      product_item_config2 = create(:product_item_config, profile_item_type: product_item_config.profile_item_type)
+      create(:profile_item, instance: instance, product_item_config: product_item_config2)
+      expect(subject).not_to include(instance)
+    end
+
+    it "returns distinct instances" do
+      create(:profile_item, instance: product_item_instance, product_item_config: product_item_config)
+      expect(subject.count).to eq(1)
+    end
+  end
+
   describe "#delete_as_user" do
-    let(:instance_type) { FactoryBot.create(:instance_type, secondary_instance: false)}
-    let(:instance) { FactoryBot.create(:instance, instance_type: instance_type) }
+    let(:instance_type) { create(:instance_type, secondary_instance: false)}
+    let(:instance) { create(:instance, instance_type: instance_type) }
     let(:username) { "test_user" }
 
     context "when deletion is successful" do
       before do
         allow(Instance::AsServices).to receive(:delete).with(instance.id).and_return(true)
-        allow(instance).to receive(:cleanup_records)
       end
 
       it "updates the updated_by field with the username" do
         expect(instance).to receive(:update_attribute).with(:updated_by, username)
-        instance.delete_as_user(username)
-      end
-
-      it "calls cleanup_records" do
-        expect(instance).to receive(:cleanup_records)
-        instance.delete_as_user(username)
-      end
-    end
-
-    context "when deletion fails" do
-      before do
-        allow(Instance::AsServices).to receive(:delete).with(instance.id).and_return(false)
-        allow(instance).to receive(:cleanup_records)
-      end
-
-      it "does not call cleanup_records" do
-        expect(instance).not_to receive(:cleanup_records)
         instance.delete_as_user(username)
       end
     end
@@ -53,19 +61,174 @@ RSpec.describe Instance, type: :model do
   end
 
   describe "#secondary_reference?" do
-    let(:instance) { FactoryBot.create(:instance, instance_type: instance_type) }
+    let(:instance) { create(:instance, instance_type: instance_type) }
 
     context "when instance type is not a secondary instance" do
-      let(:instance_type) { FactoryBot.create(:instance_type, secondary_instance: false)}
+      let(:instance_type) { create(:instance_type, secondary_instance: false)}
       it "returns false" do
         expect(instance.secondary_reference?).to eq false
       end
     end
 
     context "when instance type is a secondary instance" do
-      let(:instance_type) { FactoryBot.create(:instance_type, secondary_instance: true)}
+      let(:instance_type) { create(:instance_type, secondary_instance: true)}
       it "returns true" do
         expect(instance.secondary_reference?).to eq true
+      end
+    end
+  end
+
+  describe "#allow_delete?" do
+    context "when all conditions are met for deletion" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
+        allow(instance).to receive(:comments).and_return([])
+        allow(instance).to receive(:in_any_tree?).and_return(false)
+        allow(instance).to receive(:children).and_return([])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns true" do
+        expect(instance.allow_delete?).to be true
+      end
+    end
+
+    context "when instance_notes are present" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([double])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
+        allow(instance).to receive(:comments).and_return([])
+        allow(instance).to receive(:in_any_tree?).and_return(false)
+        allow(instance).to receive(:children).and_return([])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns false" do
+        expect(instance.allow_delete?).to be false
+      end
+    end
+
+    context "when reverse_of_this_cites are present" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([double])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
+        allow(instance).to receive(:comments).and_return([])
+        allow(instance).to receive(:in_any_tree?).and_return(false)
+        allow(instance).to receive(:children).and_return([])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns false" do
+        expect(instance.allow_delete?).to be false
+      end
+    end
+
+    context "when reverse_of_this_is_cited_by are present" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([double])
+        allow(instance).to receive(:comments).and_return([])
+        allow(instance).to receive(:in_any_tree?).and_return(false)
+        allow(instance).to receive(:children).and_return([])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns false" do
+        expect(instance.allow_delete?).to be false
+      end
+    end
+
+    context "when comments are present" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
+        allow(instance).to receive(:comments).and_return([double])
+        allow(instance).to receive(:in_any_tree?).and_return(false)
+        allow(instance).to receive(:children).and_return([])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns false" do
+        expect(instance.allow_delete?).to be false
+      end
+    end
+
+    context "when the instance is in a tree" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
+        allow(instance).to receive(:comments).and_return([])
+        allow(instance).to receive(:in_any_tree?).and_return(true)
+        allow(instance).to receive(:children).and_return([])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns false" do
+        expect(instance.allow_delete?).to be false
+      end
+    end
+
+    context "when children are present" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
+        allow(instance).to receive(:comments).and_return([])
+        allow(instance).to receive(:in_any_tree?).and_return(false)
+        allow(instance).to receive(:children).and_return([double])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns false" do
+        expect(instance.allow_delete?).to be false
+      end
+    end
+
+    context "when linked to loader name matches" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
+        allow(instance).to receive(:comments).and_return([])
+        allow(instance).to receive(:in_any_tree?).and_return(false)
+        allow(instance).to receive(:children).and_return([])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(false)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns false" do
+        expect(instance.allow_delete?).to be false
+      end
+    end
+
+    context "when profile_items are present" do
+      before do
+        allow(instance).to receive(:instance_notes).and_return([])
+        allow(instance).to receive(:reverse_of_this_cites).and_return([])
+        allow(instance).to receive(:reverse_of_this_is_cited_by).and_return([])
+        allow(instance).to receive(:comments).and_return([])
+        allow(instance).to receive(:in_any_tree?).and_return(false)
+        allow(instance).to receive(:children).and_return([])
+        allow(instance).to receive(:not_linked_to_loader_name_matches?).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([double])
+      end
+
+      it "returns false" do
+        expect(instance.allow_delete?).to be false
       end
     end
   end

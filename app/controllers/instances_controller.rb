@@ -197,6 +197,14 @@ class InstancesController < ApplicationController
     render json: instances.results
   end
 
+  def typeahead_for_product_item_config
+    typeahead = Instance::AsTypeahead::ForProductItemConfig.new(
+      product_item_config_id: params[:product_item_config_id],
+      term: params[:term]
+    )
+    render json: typeahead.instances
+  end
+
   # Expect instance id - of the instance user is updating.
   # Synonym Edit tab.
   def typeahead_for_name_showing_references_to_update_instance
@@ -231,7 +239,8 @@ class InstancesController < ApplicationController
                                      :duplicate_instance_override,
                                      :draft,
                                      :parent_id,
-                                     :instance_id)
+                                     :instance_id,
+                                     :copy_profile_items)
   end
 
   def instance_name_params
@@ -354,6 +363,7 @@ class InstancesController < ApplicationController
 
   def find_instance_for_copy
     @current_instance_for_copy = Instance::AsCopier.find(params[:id])
+    @current_instance_for_copy.copy_profile_items = instance_params[:copy_profile_items] == "1"
     @current_instance_for_copy.multiple_primary_override = instance_params[:multiple_primary_override] == "1"
     @current_instance_for_copy.duplicate_instance_override = instance_params[:duplicate_instance_override] == "1"
   end

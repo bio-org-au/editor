@@ -1,12 +1,13 @@
 
 <tr class="search-result accepted top-spacer"><td colspan="5">&nbsp;</td></tr>
 <tr id="search-result-<%#= search_result.id %>" 
-    class="search-result <%= search_result['record_type'] %> <%#= 'fresh' if search_result[:fresh] %>"  
+
     >
     <td class="min-with-40-percent width-50-percent max-width-60-percent" colspan="5">
-             <%= search_result[:notes] %>
+             <%= sanitize(search_result[:notes]) %>
     </td>
 </tr>
+<tr class="search-result accepted top-spacer"><td colspan="5">&nbsp;</td></tr>
 
 
 

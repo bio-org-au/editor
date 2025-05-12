@@ -117,6 +117,20 @@ class Instance::AsCopier < Instance
         new_citer.created_by = new_citer.updated_by = as_username
         new_citer.save!
       end
+      if copy_profile_items
+        self.profile_items.each do |profile_item|
+          new_profile_item = profile_item.dup
+          new_profile_item.instance_id = new.id
+          new_profile_item.source_profile_item_id = profile_item.id if profile_item.fact?
+          new_profile_item.is_draft = true
+          new_profile_item.statement_type = "link"
+          new_profile_item.source_id = nil
+          new_profile_item.source_id_string = nil
+          new_profile_item.source_system = nil
+          new_profile_item.tree_element_id = nil
+          new_profile_item.save!
+        end
+      end
     end
     new
   end

@@ -51,6 +51,21 @@
       <%= f.text_area :notes, class: 'form-control', title: "Enter notes", tabindex: increment_tab_index, autofocus: true %>
     </div>
 
+    <div class="form-group">
+      <label for="remark_to_reviewers">Remark to reviewers</label>
+      <%= f.text_area :remark_to_reviewers, class: 'form-control', title: "Enter remark to reviewers", tabindex: increment_tab_index %>
+    </div>
+
+    <div class="form-group">
+      <label for="formatted_text_above">Formatted text above</label>
+      <%= f.text_area :formatted_text_above, class: 'form-control', title: "Enter formatted text above", tabindex: increment_tab_index %>
+    </div>
+
+    <div class="form-group">
+      <label for="formatted_text_below">Formatted text below</label>
+      <%= f.text_area :formatted_text_below, class: 'form-control', title: "Enter formatted text below", tabindex: increment_tab_index %>
+    </div>
+
     <%= divider %>
 
     <div class="form-group align-right">

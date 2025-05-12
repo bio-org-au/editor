@@ -20,9 +20,8 @@ class ProfileItemsController < ApplicationController
 
   skip_before_action :authorise
 
-  before_action :set_profile_item, only: %i[show tab destroy]
-
-  before_action :authorise_user!, except: [:index]
+  before_action :set_profile_item, only: %i[show tab destroy details]
+  before_action :authorise_user!, except: %i[tab index details]
 
   # GET /profile_items/1/tab/:tab
   # Sets up RHS details panel on the search results page.
@@ -32,6 +31,13 @@ class ProfileItemsController < ApplicationController
     pick_a_tab_index
     @take_focus = params[:take_focus] == "true"
     render "show", layout: false
+  end
+
+  def details
+    @selected_instance = Instance.find_by(id: params[:instance_id])
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   alias tab show

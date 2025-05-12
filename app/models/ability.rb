@@ -68,12 +68,12 @@ class Ability
     end
     can [:create, :read], Author
     can :update, Author do |author|
-      !author.referenced_in_any_instance? && author.no_other_authored_names?
+      !author.referenced_in_any_instance? && author.no_other_authored_names? && author.names.blank?
     end
-    can :create, Profile::ProfileItem
     can :manage, Profile::ProfileItem do |profile_item|
       profile_item.is_draft?
     end
+    can [:read, :create], Profile::ProfileItem
     can :manage, Profile::ProfileItemReference do |profile_item_reference|
       profile_item_reference.profile_item.is_draft?
     end
@@ -88,7 +88,11 @@ class Ability
       reference.instances.blank?
     end
     can "authors", :all
-    can "instances", ["tab_details", "tab_profile_v2"]
+    can "instances", [
+      "tab_details",
+      "tab_profile_v2",
+      "typeahead_for_product_item_config"
+    ]
     can "menu", "new"
     can "profile_items", :all
     can "profile_item_annotations", :all
@@ -116,6 +120,11 @@ class Ability
       :unpublished_citation_as_draft_secondary_reference
     ], Instance do |instance|
       instance.draft? && instance.reference.products.pluck(:name).any?(user.product_from_roles&.name.to_s)
+    end
+    can :edit, Instance do |instance|
+      instance.relationship? &&
+      instance.this_is_cited_by.draft? &&
+      instance.this_is_cited_by.reference.products.pluck(:name).any?(user.product_from_roles&.name.to_s)
     end
     can "instances", "create"
     can "instances", "tab_edit"
@@ -249,6 +258,7 @@ class Ability
     can "admin",              :all
     can "menu",               "admin"
     can "users",              :all
+    can "user/product_roles", :all
   end
 
   def batch_loader_auth

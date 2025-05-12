@@ -20,23 +20,44 @@
 #
 # Table name: user_product_role
 #
-#  user_id              :bigint           not null, primary key
-#  product_role_id      :bigint           not null, primary key
-#  lock_version         :bigint           default(0), not null
-#  created_by           :string(50)       not null
-#  updated_by           :string(50)       not null
-#  created_at           :timestamptz      not null
-#  updated_at           :timestamptz      not null
+#  created_by      :string(50)       not null
+#  lock_version    :bigint           default(0), not null
+#  updated_by      :string(50)       not null
+#  created_at      :timestamptz      not null
+#  updated_at      :timestamptz      not null
+#  product_role_id :bigint           not null
+#  user_id         :bigint           not null, primary key
 #
 # Foreign Keys
 #
-#  upr_product_role_fk       (product_role_id => product_role.id)
-#  upr_users_fk              (user_id => users.id)
+#  upr_product_role_fk  (product_role_id => product_role.id)
+#  upr_users_fk         (user_id => users.id)
 #
 class User::ProductRole < ActiveRecord::Base
   strip_attributes
   self.table_name = "user_product_role"
-  self.primary_key = %i[user_id product_id role_id]
+  self.primary_key = %i[user_id product_role_id]
+  validates :user_id, :product_role_id, presence: true
+  validates :user_id, uniqueness: { scope: [:product_role_id],
+    message: "already has that product role" }
   belongs_to :user
   belongs_to :product_role, class_name: "Product::Role"
+  has_one :product, through: :product_role
+  has_one :role, through: :product_role
+
+  def self.create(params, username)
+    upr = User::ProductRole.new(params)
+    raise upr.errors.full_messages.first.to_s unless upr.save_with_username(username)
+
+    upr
+  end
+
+  def save_with_username(username)
+    self.created_by = self.updated_by = username
+    save
+  end
+
+  def name
+    "#{product.name} #{role.name} role for #{user.user_name}"
+  end
 end

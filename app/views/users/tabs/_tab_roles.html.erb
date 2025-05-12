@@ -1,0 +1,38 @@
+<% increment_tab_index(0) %>
+
+<% if @user.user_product_roles.count > 1 %>
+<h3> User <%= @user.user_name %> has these roles:</h3>
+<% elsif @user.user_product_roles.count == 1 %>
+<h3> User <%= @user.user_name %> has one role:</h3>
+<% end %>
+
+<% @user.user_product_roles.each do |user_product_role| %>
+  <%= render partial: 'user/product_roles/one_record', locals: {user_product_role: user_product_role} %>
+<% end %>
+
+<% if @user.user_product_roles.count > 0 %>
+<br>
+<%= divider %>
+<% end %>
+
+<h3> Give user <%= @user.user_name %> a product role</h3>
+<%= render partial: 'users/forms/user_product_role' %>
+<div id="role-form-container"></div>
+
+<%= divider %>
+
+
+
+
+
+<div id="script-container"></div>
+
+<script>
+  function doWhenProductSelected(product_id) {
+    console.log(product_id);
+    $('#form_product_id').val(product_id);
+    $('#user_product_role_role_id').val('');
+    $('#user_product_role_form').removeClass('hidden');
+    return false;
+}
+</script>

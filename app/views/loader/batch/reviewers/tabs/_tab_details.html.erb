@@ -18,7 +18,7 @@
                title:"Query the batch",class:'blue')} %>
 
 <%= render partial: 'detail_line',
-           locals: {info: @batch_reviewer.org.name, label: 'representing'} %>
+           locals: {info: @batch_reviewer.org.try('name'), label: 'representing'} %>
 <%= render partial: 'detail_line',
     locals: {label: 'query the stack',
              info: link_to("#{@batch_reviewer.batch_review.batch.name} Stack",

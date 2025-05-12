@@ -34,14 +34,6 @@ class SessionUser < ActiveType::Object
   #
   # Profile V2
   #
-  def profile_v2?
-    groups.include?('foa') || groups.include?('apni')
-  end
-
-  def profile_v2_context
-    @profile_v2_context ||= ::Users::ProfileContext.new(self).context
-  end
-
   def product_from_roles
     user&.available_product_from_roles
   end

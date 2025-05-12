@@ -43,14 +43,14 @@
   <% end %>
 </table>
 
-<h4>Vote search help</h4>
+<h4>Vote search</h4>
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th></tr>
   <% [
     {field_name: 'org-voted:',
      descr: "Search for loader names with a vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
     {field_name: 'org-not-voted:',
-     descr: "Search for loader names with no vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means no org."},
+     descr: "Search for loader names with no vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument not fully supported - aim for an org abbreviation that matches just one organisation."},
     {field_name: 'org-voted-yes:',
      descr: "Search for loader names with a 'yes' vote recorded by the organisation (abbrevation) given - takes one argument, the organisation abbreviation.  Wildcard argument supported and means any org."},
     {field_name: 'org-voted-no:',
@@ -73,3 +73,31 @@
   </tr>
   <% end %>
 </table>
+
+<h4>Print-ready output</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
+    {field_name: 'print:',
+     descr: "Prepare the output for printing"},
+    {field_name: 'print-with-comments:',
+     descr: "Prepare the output for printing, also showing review comments"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:descr].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+

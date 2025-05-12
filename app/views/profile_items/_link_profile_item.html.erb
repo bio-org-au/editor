@@ -1,0 +1,39 @@
+<%= turbo_frame_tag :link_profile_item do %>
+  <%= check_box_tag "link_profile_item", '', class: "link-profile-item", data: {product_item_config_id: product_item_config.id} %>
+  <%= label_tag "link_profile_item", "Link a published profile item" %>
+  <div class="link-profile-item-container-<%= product_item_config.id %> hidden">
+    <input
+      id="instance-product-item-config-typeahead-<%= product_item_config.id %>"
+      class="typeahead form-control width-100-percent give-me-focus"
+      title="Enter the instance. Typeahead for instance with similar profile item type."
+      required="true"
+      autofocus="true"
+      tabindex="<%= increment_tab_index %>"
+      type="text"
+      placeholder="Instance wildcarded order-insensitive"
+      value=""
+    />
+    <script>
+      $('#product_item_config_id').val('<%= product_item_config.id %>');
+      setUpInstanceForProductItemConfig('<%= product_item_config.id %>', '<%= instance_id %>');
+    </script>
+    <div id="link-profile-item-details-<%= product_item_config.id %>"></div>
+    <br/>
+  </div>
+  <hr/>
+
+  <script>
+    $('.link-profile-item').change(function() {
+      const productItemConfigId = $(this).data('product-item-config-id');
+      const linkDiv = $('.link-profile-item-container-'+productItemConfigId);
+      const div = $('.product-item-config-container-id-'+productItemConfigId);
+    if ($(this).is(':checked')) {
+      div.hide();
+      linkDiv.show().removeClass('hidden');
+    } else {
+      div.show();
+      linkDiv.hide();
+    }
+  });
+  </script>
+<% end %>

@@ -471,3 +471,6 @@ briggs_and_leigh:
   name: Briggs, J.D. & Leigh, J.H.
   abbrev: J.D.Briggs & Leigh
 
+chah:
+  <<: *DEFAULTS
+  name: Council of Heads of Australasian Herbaria

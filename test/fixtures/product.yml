@@ -35,6 +35,29 @@ foa:
   description_html: "foa description"
   name: "FOA"
   reference_id: simple (Reference)
+  tree_id: FOA
+  namespace_id: apni (Namespace)
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  
+apc:
+  description_html: "apc description"
+  name: "APC"
+  reference_id: 
+  tree_id: APC
+  namespace_id: apni (Namespace)
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  
+apni:
+  description_html: "apni description"
+  name: "APNI"
+  reference_id: 
+  tree_id: 
   namespace_id: apni (Namespace)
   created_by: tester
   updated_by: tester

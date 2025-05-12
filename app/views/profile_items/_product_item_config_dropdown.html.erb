@@ -2,20 +2,20 @@
   <%= form_with url: profile_items_path, method: :get, remote: true, data: { turbo_stream: "profile_items" } do %>
     <label for="product_item_config_id">Choose an item type to add or edit:</label>
     <%= hidden_field_tag :instance_id, instance.id %>
-    <%= select_tag :product_item_config_id, 
+    <%= select_tag :product_item_config_id,
       options_for_select(
-        product_configs_and_profile_items.collect do |ci| 
+        product_configs_and_profile_items.collect do |ci|
           product_item_config, profile_item = ci.values_at(:product_item_config, :profile_item)
           label = profile_item.persisted? ? "- Existing (Edit)" : ""
           ["#{product_item_config.display_html} #{label}",product_item_config.id]
         end,
         selected: selected_product_item_config_id
       ),
-      include_blank: "", 
+      include_blank: "",
       class: "form-control give-me-focus width-15em",
       style: "background-color: white",
       onchange: "this.form.requestSubmit()",
-      tabindex: increment_tab_index 
+      tabindex: increment_tab_index
     %>
   <% end %>
 </div>

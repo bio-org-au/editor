@@ -181,7 +181,6 @@ class Search::ParsedRequest
   }
 
   SHOW_INSTANCES = "show-instances:"
-  SHOW_REVIEW_COMMENTS = "show-review-comments:"
 
   def initialize(params)
     @params = params
@@ -232,8 +231,6 @@ class Search::ParsedRequest
     unused_qs_tokens = inflate_show_instances_abbrevs(unused_qs_tokens)
     unused_qs_tokens = parse_show_instances(unused_qs_tokens)
     unused_qs_tokens = parse_order_instances(unused_qs_tokens)
-    unused_qs_tokens = inflate_show_review_comments_abbrevs(unused_qs_tokens)
-    unused_qs_tokens = parse_show_review_comments(unused_qs_tokens)
     unused_qs_tokens = parse_view(unused_qs_tokens)
     unused_qs_tokens = parse_show_profiles(unused_qs_tokens)
     @where_arguments = unused_qs_tokens.join(" ")
@@ -271,6 +268,13 @@ class Search::ParsedRequest
       @print = true
       tokens.delete_if { |x| x.match(/print:/) }
     end
+    @show_loader_name_comments = false
+    if tokens.include?("print-with-comments:")
+      confirm_valid_print_with_comments_directive(tokens)
+      @print = true
+      @show_loader_name_comments = true
+      tokens.delete_if { |x| x.match(/print-with-comments:/) }
+    end
     @display = !@print
     tokens
   end
@@ -280,13 +284,27 @@ class Search::ParsedRequest
     raise 'Error: the print: directive has an argument, please remove the argument' if print_directive_has_arg?(tokens)
   end
 
+  def confirm_valid_print_with_comments_directive(tokens)
+    force_max_one_print_with_comments_directive(tokens)
+    raise 'Error: the print-with-comments: directive has an argument, please remove the argument' if print_with_comments_directive_has_arg?(tokens)
+  end
+
   def force_max_one_print_directive(tokens)
     raise 'Error: more than one print directive - please review and try again' if tokens.count('print:') > 1
+  end
+
+  def force_max_one_print_with_comments_directive(tokens)
+    raise 'Error: more than one print-with-comments directive - please review and try again' if tokens.count('print-with-comments:') > 1
   end
 
   def print_directive_has_arg?(tokens)
     return false if tokens.last == 'print:'
     tokens[tokens.index("print:")+1].match(/:\z/).blank?
+  end
+
+  def print_with_comments_directive_has_arg?(tokens)
+    return false if tokens.last == 'print-with-comments:'
+    tokens[tokens.index("print-with-comments:")+1].match(/:\z/).blank?
   end
 
   def default_to_display_not_print
@@ -534,21 +552,6 @@ class Search::ParsedRequest
       @show_instances = false
     end
     tokens
-  end
-
-  def parse_show_review_comments(tokens)
-    @show_loader_name_comments = false
-    return tokens unless @target_table == "loader name"
-
-    if tokens.include?("show-review-comments:")
-      @show_loader_name_comments = true
-      tokens.delete_if { |x| x.match(/show-review-comments:/) }
-    end
-    tokens
-  end
-
-  def inflate_show_review_comments_abbrevs(tokens)
-    tokens = inflate_token(tokens, "src:", SHOW_REVIEW_COMMENTS)
   end
 
   def show_instances_allowed?

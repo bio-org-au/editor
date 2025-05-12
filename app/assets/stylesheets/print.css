@@ -20,10 +20,13 @@ tr.search-result.heading td.text {
   text-align: center;
 }
 
-tr.search-result span.loader-name.remark-to-reviewers,
-tr.in-batch-note {
+tr.search-result span.loader-name.remark-to-reviewers {
   background: yellow;
 }
+
+tr.in-batch-note {
+}
+
 
 tr.in-batch-compiler-note {
   background: lightgreen;

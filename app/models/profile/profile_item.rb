@@ -44,6 +44,8 @@
 #
 module Profile
   class ProfileItem < ApplicationRecord
+    include UserTrackable
+
     self.table_name = "profile_item"
     self.primary_key = "id"
 
@@ -77,6 +79,8 @@ module Profile
     default_scope { includes(:product_item_config).order("product_item_config.sort_order ASC") }
 
     after_destroy :conditionally_destroy_profile_text
+
+    STATEMENT_TYPES = {fact: "fact", link: "link", assertion: "assertion"}
 
     def fresh?
       created_at > 1.hour.ago

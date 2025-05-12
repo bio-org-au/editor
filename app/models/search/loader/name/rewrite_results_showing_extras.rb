@@ -1,3 +1,4 @@
+#
 # Always show concept-notes and distributions
 # Optionally show review comments
 class Search::Loader::Name::RewriteResultsShowingExtras
@@ -22,7 +23,9 @@ class Search::Loader::Name::RewriteResultsShowingExtras
   def one_record(rec)
     top_level_record(rec) if %w[accepted excluded].include? rec[:record_type]
     push_preceding if %w[in-batch-note in-batch-compiler-note heading].include? rec[:record_type]
+    @results_with_comments << formatted_text_above(rec) unless rec.formatted_text_above.blank?
     @results_with_comments << rec
+    @results_with_comments << formatted_text_below(rec) unless rec.formatted_text_below.blank?
     review_comments(rec) if @show_review_comments
   end
 
@@ -108,6 +111,22 @@ class Search::Loader::Name::RewriteResultsShowingExtras
     comments_query = Loader::Name::Review::Comment::AsArray::ForLoaderName
                      .new(rec, rec[:record_type])
     comments_query.results.each { |i| @results_with_comments << i }
+  end
+
+  def formatted_text_above(rec)
+    h = {}
+    h[:display_as] = "Loader Name"
+    h[:record_type] = "formatted-text-above"
+    h[:formatted_text_above] = rec.formatted_text_above
+    h
+  end
+
+  def formatted_text_below(rec)
+    h = {}
+    h[:display_as] = "Loader Name"
+    h[:record_type] = "formatted-text-below"
+    h[:formatted_text_below] = rec.formatted_text_below
+    h
   end
 
   def debug(s)

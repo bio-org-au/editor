@@ -3,12 +3,15 @@
 </ul>
 
 <%#= render partial: 'detail_line', locals: {info: @loader_name.notes, label: 'Notes'} %>
-Notes:<br>
-<%= @loader_name.notes %>
-<br>
-<br>
-<br>
-<br>
+<% unless @loader_name.notes.blank? %>
+  <%= render partial: 'detail_line',
+    locals: {info: "",
+             label: 'notes'} %>
+  <div class="width-100-percent">
+  <%= sanitize(@loader_name.notes) %>
+  </div>
+<% end %>
+
 <%= divider %>
 <p>Family or Family and Name, if given, will help generate a sort key that positions the note in the batch</p>
 <%= render partial: 'detail_line', locals: {info: @loader_name.sort_key, label: 'value for sorting'} %>

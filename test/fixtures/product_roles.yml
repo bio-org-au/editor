@@ -1,8 +1,31 @@
 _fixture:
   model_class: Product::Role
 
-foa_draft_profile_editor:
-  product: foa
-  role: draft_profile_editor
+DEFAULTS: &DEFAULTS
   created_by: tester
   updated_by: tester
+
+foa_draft_editor:
+  <<: *DEFAULTS
+  product: foa
+  role: draft_editor
+
+foa_draft_profile_editor:
+  <<: *DEFAULTS
+  product: foa
+  role: draft_profile_editor
+
+foa_profile_editor:
+  <<: *DEFAULTS
+  product: foa
+  role: profile_editor
+
+foa_tree_publisher:
+  <<: *DEFAULTS
+  product: foa
+  role: tree_publisher
+
+apc_tree_publisher:
+  <<: *DEFAULTS
+  product: apc
+  role: tree_publisher

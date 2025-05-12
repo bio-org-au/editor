@@ -24,9 +24,9 @@
 
 
 <%= render partial: 'detail_line', locals: {info: @loader_name.subfamily, label: 'subfamily'} unless @loader_name.subfamily.blank?  %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.full_name, label: 'full name aka taxon full'} unless @loader_name.full_name.blank? %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.simple_name, label: 'simple name aka taxon'} unless @loader_name.simple_name.blank? %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.simple_name_as_loaded, label: 'simple name as loaded'} unless @loader_name.simple_name_as_loaded.blank? || @loader_name.simple_name == @loader_name.simple_name_as_loaded %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.full_name, label: 'full name aka taxon full'} unless @loader_name.full_name.blank? %>
 
 <%= render partial: 'detail_line', locals: {info: @loader_name.name_status, label: 'name_status'} unless @loader_name.name_status.blank? %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.name_comment, label: 'name_comment'} unless @loader_name.name_comment.blank? %>
@@ -49,9 +49,30 @@
     <br>
   <% end %>
 <% end %>
-<%= render partial: 'detail_line', locals: {info: "<span class='bgyellow remark loader-name remark-to-reviewers'>#{@loader_name.remark_to_reviewers}</span>".html_safe, label: 'remark to reviewers'} unless @loader_name.remark_to_reviewers.blank? || @loader_name.misapp? %>
+<%= render partial: 'detail_line',
+  locals: {info: "<span class='bgyellow remark loader-name remark-to-reviewers'>#{@loader_name.remark_to_reviewers}</span>".html_safe,
+           label: 'remark to reviewers'} unless @loader_name.remark_to_reviewers.blank? || @loader_name.misapp? %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.higher_rank_comment, label: 'higher rank comment'} unless @loader_name.higher_rank_comment.blank? %>
 <%= "<br><br>#{ divider }<br><br><br><br>".html_safe unless @loader_name.higher_rank_comment.blank? %>
+
+<% unless @loader_name.formatted_text_above.blank? %>
+  <%= render partial: 'detail_line',
+    locals: {info: "",
+             label: 'formatted text above'} %>
+  <div class="bgyellow black width-100-percent">
+  <%= sanitize(@loader_name.formatted_text_above) %>
+  </div>
+<% end %>
+
+<% unless @loader_name.formatted_text_below.blank? %>
+  <%= render partial: 'detail_line',
+    locals: {info: "",
+             label: 'formatted text below'} %>
+  <div class="bgyellow black width-100-percent">
+  <%= sanitize(@loader_name.formatted_text_below) %>
+  </div>
+<% end %>
+
 <%= render partial: 'detail_line', locals: {info: @loader_name.no_further_processing, label: 'no_further_processing'} unless @loader_name.no_further_processing.blank? %>
  <% if @loader_name.synonym_without_synonym_type? %>
       <span class="red">

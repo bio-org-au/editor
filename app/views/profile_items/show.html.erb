@@ -1,15 +1,15 @@
-<div class="focus-details 
-            <%= 'freshly-created' if Time.now.strftime("%Y%m%d") == @profile_item.created_at.strftime("%Y%m%d") &&  (@profile_item.created_at - @profile_item.updated_at).abs < 10 %>">
+<div class="focus-details
+  <%= 'freshly-created' if Time.now.strftime("%Y%m%d") == @profile_item.created_at.strftime("%Y%m%d") &&  (@profile_item.created_at - @profile_item.updated_at).abs < 10 %>">
+
   <% if notice %>
     <p id="notice"><%= notice %></p>
   <% end %>
-  
+
   <div class="inner">
     <h3 class="hide-overflow">
       <%= @profile_item.product_item_config.display_html.presence || @profile_item.product_item_config.profile_item_type.name.presence %>
     </h3>
     <%= render partial: 'profile_items/tabs/tabs' %>
     <%= render partial: "profile_items/tabs/#{@tab}" %>
-    
   </div><!-- /end .inner -->
 </div><!-- /end .focus-details -->

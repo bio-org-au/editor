@@ -21,10 +21,6 @@ RSpec.describe Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
       expect(subject.instance_variable_get(:@user)).to eq user
     end
 
-    it "has instance variable profile_context" do
-      expect(subject.instance_variable_get(:@profile_context).class).to eq Users::ProfileContexts::Apni
-    end
-
     it "has instance variable product" do
       product = instance_double("Product")
       allow_any_instance_of(described_class).to receive(:find_product_by_name).and_return(product)
@@ -60,6 +56,11 @@ RSpec.describe Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
       context "when there is a product" do
         let(:session_user) { FactoryBot.create(:session_user, :foa) }
         let!(:profile_product) { FactoryBot.create(:profile_product, name: "FOA") }
+
+        before do
+          allow(session_user.user).to receive(:products).and_return(instance_double(ActiveRecord::Relation, where: [profile_product]))
+        end
+
         context "and the product is not attached to a product_item_config" do
           it "returns an empty array of product_configs_and_profile_items and product" do
             expect(subject).to eq([[],profile_product])
@@ -83,7 +84,8 @@ RSpec.describe Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
       context "when a user has a FOA product role" do
         let(:product) { FactoryBot.create(:product, name: "FOA") }
         let!(:role) { FactoryBot.create(:role) }
-        let!(:user_draft_profile_editor) { FactoryBot.create(:user_product_role, role:, user:, product:)}
+        let!(:product_role) { FactoryBot.create(:product_role, product:, role:) }
+        let!(:user_draft_profile_editor) { FactoryBot.create(:user_product_role, product_role:, user:) }
 
         it "returns the product attached to the role" do
           expect(subject[1].id).to eq product.id

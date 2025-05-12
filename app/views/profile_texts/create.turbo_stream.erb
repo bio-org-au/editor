@@ -17,6 +17,9 @@
   </div>
 <% end %>
 
+<%= turbo_stream.replace "link-profile-item-container" do %>
+<% end %>
+
 <%= turbo_stream.replace "profile_text_form_#{@profile_item.product_item_config.id}" do %>
   <div id="profile_text_form_<%= @profile_item.product_item_config.id %>" style="overflow: hidden; margin-bottom: 10px;overflow:hidden;" >
     <%= render partial: "profile_texts/form",

@@ -9,7 +9,7 @@
   <%= render partial: 'detail_line',
              locals: {label: 'Comment by',
                       info: 
-                      "#{comment.reviewer.user.full_name} (#{comment.reviewer.org.abbrev} #{comment.reviewer.role.name}) #{link_to('(edit)',
+                      "#{comment.reviewer.user.full_name} (#{comment.reviewer.org.try('abbrev')} #{comment.reviewer.role.name}) #{link_to('(edit)',
                       edit_name_review_comment_path(comment.id), remote: true, class: 'blue', title: 'Edit your comment') if @current_user.username == comment.reviewer.user.user_name} "} %>
 
   </div>

@@ -1169,7 +1169,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public.author (
     id bigint DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
     lock_version bigint DEFAULT 0 NOT NULL,
-    abbrev character varying(100),
+    abbrev text,
     created_at timestamp with time zone NOT NULL,
     created_by character varying(255) NOT NULL,
     date_range character varying(50),
@@ -4906,7 +4906,9 @@ CREATE TABLE loader.loader_name (
     simple_name_as_loaded text NOT NULL,
     created_manually boolean DEFAULT false NOT NULL,
     sort_key text,
-    loaded_from_instance_id bigint
+    loaded_from_instance_id bigint,
+    formatted_text_above text,
+    formatted_text_below text
 );
 
 
@@ -11047,6 +11049,10 @@ ALTER TABLE ONLY public.product_role
 ALTER TABLE ONLY public.user_product_role
     ADD CONSTRAINT upr_users_fk FOREIGN KEY (user_id) REFERENCES public.users(id);
 
+
+ALTER TABLE only public.author
+ADD CONSTRAINT abbrev_length_check
+CHECK (char_length(abbrev) <= 150);
 
 --
 -- PostgreSQL database dump complete

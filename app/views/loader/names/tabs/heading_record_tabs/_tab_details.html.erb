@@ -13,12 +13,33 @@ Heading entry
                      class: 'blue underline'), 
                      label: "query family #{members} members"} %>
 <% end %>
-<%= render partial: 'detail_line', locals: {info: @loader_name.simple_name, label: 'Simple Name'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.full_name, label: 'Full Name'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.simple_name, label: 'Simple Name'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.family, label: 'Family'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.sort_key, label: 'Value for sorting'} %>
 <%= render partial: 'detail_line', locals: {info: @loader_name.rank, label: 'Rank'} %>
-<br>
+<%= render partial: 'detail_line', locals: {info: @loader_name.notes, label: 'Notes'} %>
+<%= render partial: 'detail_line', locals: {info: @loader_name.remark_to_reviewers, label: 'Remark to Reviewers'} %>
+
+<% unless @loader_name.formatted_text_above.blank? %>
+  <%= render partial: 'detail_line',
+    locals: {info: "",
+             label: 'formatted text above'} %>
+  <div class="bgyellow black width-100-percent">
+  <%= sanitize(@loader_name.formatted_text_above) %>
+  </div>
+<% end %>
+
+<% unless @loader_name.formatted_text_below.blank? %>
+  <%= render partial: 'detail_line',
+    locals: {info: "",
+             label: 'formatted text below'} %>
+  <div class="bgyellow black width-100-percent">
+  <%= sanitize(@loader_name.formatted_text_below) %>
+  </div>
+<% end %>
+
+<%= divider %>
 
 <h5>Metadata</h5>
 <%= render partial: 'detail_line', locals: {info: @loader_name.id, label: 'ID'} %>

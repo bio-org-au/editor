@@ -9,7 +9,7 @@
 
   <div id="simplemde-container">
     <% profile_text_value = profile_item.profile_text.try(:value_md).presence || profile_item.profile_text.try(:value).presence %>
-    <%= text_area_tag "profile_text[value_md]", profile_text_value.to_s, 
+    <%= text_area_tag "profile_text[value_md]", profile_text_value.to_s,
       class: "form-control editor-textarea-version2 custom-height",
       title: "Enter verbatim name",
       rows: 4,
@@ -23,6 +23,6 @@
       renderEditor(textarea)
     <% end %>
   </div>
-  
+
   <%= submit_tag 'Save', style: 'background-color: #5a5a5a; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; float: right;' %>
 <% end %>

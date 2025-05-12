@@ -176,9 +176,8 @@
   };
 
   searchableFieldClick = function(event, $element) {
-    debug(`searchableFieldClick: `);
-    var re = new RegExp($element.attr("data-search-directive"),"g");
-    if (!$('#query-string-field').val().match(re)) {
+    debug(`searchableFieldClick: ${$element.attr("data-search-directive")}`);
+    if (!$('#query-string-field').val().split(" ").includes($element.attr("data-search-directive"))) {
       $('#query-string-field').val($('#query-string-field').val() + ' ' + $element.attr("data-search-directive") + ' ');
     }
     return;

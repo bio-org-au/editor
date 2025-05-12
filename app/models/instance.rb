@@ -105,6 +105,14 @@ class Instance < ActiveRecord::Base
 
   has_many :tree_join_v
 
+  scope :product_item_config_id, -> (product_item_config_id) {
+    joins(:product_item_configs)
+      .where(product_item_configs: {id: product_item_config_id})
+      .distinct
+  }
+
+  attr_accessor :copy_profile_items
+
   def self.to_csv
     attributes = %w[id]
     headings = ["Instance ID", "Name ID", "Full Name", "Reference ID",
@@ -673,7 +681,8 @@ class Instance < ActiveRecord::Base
       comments.blank? &&
       !in_any_tree? &&
       children.empty? &&
-      not_linked_to_loader_name_matches?
+      not_linked_to_loader_name_matches? &&
+      profile_items.blank?
   end
 
   # This is not handled via an instance association because the loader is only
@@ -795,7 +804,7 @@ class Instance < ActiveRecord::Base
   # - avoid validation on that update - otherwise the delete will not occur.
   def delete_as_user(username)
     update_attribute(:updated_by, username)
-    cleanup_records if Instance::AsServices.delete(id)
+    Instance::AsServices.delete(id)
   rescue StandardError => e
     logger.error("delete_as_user exception: #{e}")
     raise
@@ -846,12 +855,5 @@ class Instance < ActiveRecord::Base
       (name.excluded_concept? ? "<i class='fa fa-ban apc' aria-hidden='true'></i><span class='apc small strong' title='Excluded from APC'>APC</span>" : "") +
       (name.excluded_concept? ? "" : "<i class='fa fa-check apc' aria-hidden='true'></i><span class='apc small strong' title='In APC'>APC</span>") +
       "</span>"
-  end
-
-  def cleanup_records
-    Profile::ProfileItem.where(instance_id: id).find_each do |profile_item|
-      profile_item.destroy if profile_item.is_draft? && profile_item.allow_delete?
-      Rails.logger.info("Deleted profile item: #{profile_item.id}")
-    end
   end
 end

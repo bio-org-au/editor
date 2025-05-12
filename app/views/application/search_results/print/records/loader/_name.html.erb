@@ -1,5 +1,15 @@
 <% case search_result[:record_type] %>
-<% when  /heading|accepted|excluded|synonym|misapplied|in-batch-note|in-batch-compiler-note|distribution|concept-note/ %>
+<% when  /heading|
+          accepted|
+          excluded|
+          synonym|
+          misapplied|
+          in-batch-note|
+          in-batch-compiler-note|
+          distribution|
+          concept-note|
+          formatted-text-above|
+          formatted-text-below/x %>
   <%= render partial: "application/search_results/print/records/loader/name/record_types/#{search_result[:record_type].gsub(/-/,'_')}", locals: {search_result: search_result} %>
 <% else %>
    <%= render partial: 'application/search_results/print/records/loader/name/record_types/other', locals: {search_result: search_result} %>

@@ -1,0 +1,12 @@
+
+<% div_id = "#{dom_id(@upr)}-div" %>
+
+<turbo-stream action="update" target='<%= "#{div_id}" %>'>
+  <template>
+  <span class="red">
+  Problem deleting <%= @upr.name %> - <%= @error %>
+  </span>
+  </template>
+</turbo-stream>
+
+

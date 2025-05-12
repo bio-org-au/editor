@@ -62,6 +62,7 @@ pin "typeaheads_for_instance_reference", to: "typeaheads/for_instance/reference.
 pin "typeaheads_for_instance_reference_profile_v2", to: "typeaheads/for_instance/reference_profile_v2.js"
 pin "typeaheads_for_instance_reference_excluding_current", to: "typeaheads/for_instance/reference_excluding_current.js"
 pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js"
+pin "typeaheads_for_instance_product_item_config", to: "typeaheads/for_instance/name_for_product_item_config.js"
 
 pin "typeaheads_for_loader_batch_default_reference", to: "typeaheads/for_loader_batch/default_reference.js"
 pin "typeaheads_for_loader_name_parent", to: "typeaheads/for_loader_name/parent.js"

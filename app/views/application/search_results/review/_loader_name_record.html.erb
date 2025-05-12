@@ -1,13 +1,11 @@
 <% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
-<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
-<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
-<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
-<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
 <%# There is complex logic here.
     The taxonomic note and distribution data from top-level records
     has to appear on separate lines _after_ any synonymy.
     Family headings also have to appear whenever a taxon from an unannounced family
-    is about to be displayed. %>
+    is about to be displayed.
+    Displaying notes and formatted text in the right places is also a bit complicated.
+  %>
 <% @previous_previous_record_type = @previous_record_type %>
 
 <% if @previous_record_type.blank? then %>
@@ -45,7 +43,7 @@
      @previous_family = search_result.family 
      @show_family = true
      @add_white_space_around_family = false
-   elsif @previous_family != search_result.family
+   elsif @previous_family != search_result.family && %w(accepted excluded heading).include?(search_result.record_type)
      @previous_family = search_result.family 
      @show_family = true
      @add_white_space_before_family = @previous_previous_record_type != 'heading'
@@ -67,6 +65,15 @@
   <% else %>
     <% show_details_class = '' %>
   <% end %>
+
+
+  <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+    <% unless search_result.formatted_text_above.blank? %>
+      <tr><td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_above) %></span></td></tr>
+    <% end %>
+  <% end %>
+
+
   <tr id="family-of-review-result-<%= search_result.id %>"
       class="<%= show_details_class %> review family takes-focus show-details" tabindex="<%= increment_tab_index(100) %>"
       data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
@@ -77,16 +84,22 @@
   <td class="takes-focus" colspan="2"
       tabindex="<%= increment_tab_index %>" 
     >
-      <a class="review-show-details-link navigation-link takes-focus show-details" title='title' tabindex="<%= increment_tab_index(100) %>">
       <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+      <a class="review-show-details-link navigation-link takes-focus show-details" title='title' tabindex="<%= increment_tab_index(100) %>">
         <span class="review loader-name family"><%= "#{search_result.family}" %> </span>
-      <% else %>
-        <span class="review loader-name family"><%= "[#{search_result.family}]" %> </span>
-      <% end %>
-
-        <% unless search_result.higher_rank_comment.blank? %>
-          <span class="review loader-name remark-to-reviewers"><%= search_result.higher_rank_comment %></span>
+        <% unless search_result.remark_to_reviewers.blank? %>
+          <span class="review loader-name remark-to-reviewers">
+            <%= search_result.remark_to_reviewers
+              .gsub(/<a/, "<a class='remark-to-reviewers'")
+              .sub(/(>)([^><]*$)/,'\1<span class="remark-to-reviewers">\2</span>')
+              .html_safe %>
+          </span>
         <% end %>
+      <% else %>
+        <% unless search_result.record_type == 'in-batch-note' %>
+          <span class="review loader-name family"><%= "[#{search_result.family}]" %> </span>
+        <% end %>
+      <% end %>
       </a>
       <% if search_result.rank == 'family' %><%# is it a real record or not? %>
         <% if search_result.reviewer_comments? %>
@@ -95,9 +108,35 @@
       <% end %>
     </td>
   </tr>
+
+    <% unless search_result.higher_rank_comment.blank? %>
+      <tr>
+        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.higher_rank_comment) %></span></td>
+      </tr>
+    <% end %>
+
+  <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+    <% unless search_result.formatted_text_below.blank? %>
+      <tr><td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_below) %></span></td></tr>
+    <% end %>
+  <% end %>
+
 <% end %>
 
-<% unless @show_family && search_result.rank == 'family' %>
+<% if search_result.record_type == 'in-batch-note' %>
+  <tr><td colspan="9">
+  <%= sanitize(search_result.notes) %>
+  </td></tr>
+<% end %>
+
+<% unless (@show_family && search_result.rank == 'family') || search_result.record_type == 'in-batch-note' %>
+    <% unless search_result.formatted_text_above.blank? %>
+      <tr>
+        <td class="width-1-percent">>&nbsp;</td>
+        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_above) %></span></td>
+      </tr>
+    <% end %>
+
 <tr id="review-result-<%= search_result.id %>" 
   class="review-result show-details <%= 'fresh' if search_result.fresh? %>"  
   data-get-url=""
@@ -130,7 +169,6 @@
       <% end %>
 
 
-
       <% unless search_result[:flushing] %>
         <% if search_result.narrow_direct_reviewer_comments? %>
           <span class="reviewer-comment-tag"><%= pluralize(search_result.narrow_direct_reviewer_comments.size, 'reviewer comment') %></span>
@@ -154,12 +192,22 @@
             .html_safe %>
         </span>
       <% end %>
-      <% unless search_result.higher_rank_comment.blank? %>
-        <span class="review loader-name remark-to-reviewers"><%= h(search_result.higher_rank_comment.html_safe) %></span>
-      <% end %>
     </a>
   </td>
 </tr>
+    <% unless search_result.higher_rank_comment.blank? %>
+      <tr>
+        <td class="width-1-percent">>&nbsp;</td>
+        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.higher_rank_comment) %></span></td>
+      </tr>
+    <% end %>
+
+    <% unless search_result.formatted_text_below.blank? %>
+      <tr>
+        <td class="width-1-percent">>&nbsp;</td>
+        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_below) %></span></td>
+      </tr>
+    <% end %>
 
 <% end %>
 

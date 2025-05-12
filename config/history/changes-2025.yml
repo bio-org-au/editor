@@ -1,8 +1,125 @@
+- :date: 09-May-2025
+  :jira_id: '5395'
+  :description: |-
+    Loader Review: Revise and improve SQL for <code>org-not-voted:</code> directive
+- :date: 08-May-2025
+  :jira_id: '53'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Avoid profile_instance_constraint when copying profile item by setting the tree_element_id to nil
+- :date: 08-May-2025
+  :jira_id: '5428'
+  :description: |-
+    Loader Name: Tweak the suppression of family headings to make sure real headings are shown
+- :date: 07-May-2025
+  :jira_id: '5394'
+  :description: |-
+    Loader Name: Show full context in vote query results
+- :date: 07-May-2025
+  :jira_id: '5428'
+  :description: |-
+    Loader Name: Suppress family headings in output when a synonym/misapp belongs to a different family
+- :date: 07-May-2025
+  :jira_id: '5406'
+  :description: |-
+    Loader Name: Switch order of full and simple names on loader name details tab for heading records too
+- :date: 07-May-2025
+  :jira_id: '53'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup issue not able to profile items of an instance
+- :date: 07-May-2025
+  :jira_id: '5395'
+  :description: |-
+    Loader Name: Show real family headers in vote query results
+- :date: 07-May-2025
+  :jira_id: '5406'
+  :description: |-
+    Loader Name: Switch order of full and simple names on loader name details tab
+- :date: 06-May-2025
+  :jira_id: ''
+  :description: |-
+    Bullet gem - added a bullet gem for development to identify N+1 queries.
+- :date: 06-May-2025
+  :jira_id: '5193'
+  :description: |-
+    Loader Name: Adjust print-ready output for reviewers to show formatted notes and text; introduce print-with-comments directive
+- :date: 05-May-2025
+  :jira_id: '49'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Don't allow draft profile editor to edit an author with authored names
+- :date: 05-May-2025
+  :jira_id: '55'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Support for link profile item's typeahead to search for name's full name and UI fix for draft item.
+- :date: 02-May-2025
+  :jira_id: '5193'
+  :description: |-
+    Loader Name: Adjust <code>in-batch-note.notes</code> review display to suit reference lists
+- :date: 02-May-2025
+  :jira_id: '55'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add a way to link a published profile item
+- :date: 01-May-2025
+  :jira_id: '5193'
+  :description: |-
+    Loader Name: Add <code>formatted_text_above</code> and <code>formatted_text_below</code> fields and allow editing and display
+- :date: 29-Apr-2025
+  :jira_id: '5193'
+  :description: |-
+    Loader Name: Allow header records to have a <code>remark_to_reviewer</code> value and display it
+- :date: 17-Apr-2025
+  :jira_id: '5376'
+  :description: |-
+    Show unaffiliated users in batch stack listing
+- :date: 17-Apr-2025
+  :jira_id: '53'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Offer to copy profile items of a standalone isntance
+- :date: 17-Apr-2025
+  :jira_id: '5397'
+  :description: |-
+    Admin configuration page: display schema search path
+- :date: 15-Apr-2025
+  :jira_id: '5386'
+  :description: |-
+    Author abbreviation: Allow for up to 150 characters
+- :date: 15-Apr-2025
+  :jira_id: '54'
+  :jira_project: FLOR
+  :description: |-
+    New Roles Mechanism: Fix search on Users role, products, product-roles
+- :date: 15-Apr-2025
+  :jira_id: '70'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Allow editing of a relationship instance
+- :date: 14-Apr-2025
+  :jira_id: '54'
+  :jira_project: FLOR
+  :description: |-
+    New Roles Mechanism: Admin editing interface for giving users roles
+- :date: 14-Apr-2025
+  :jira_id: '68'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project profile context v2 service: Code Cleanup - Remove unused codes
+- :date: 10-Apr-2025
+  :jira_id: '69'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project draft-editor permissions: Don't offer the delete button when the instance has profile items
+- :date: 14-Apr-2025
+  :release: true
 - :date: 09-Apr-2025
   :jira_id: '72'
   :jira_project: FLOR
   :description: |-
-    Foa Project permissions: add a <code>Product_Role</code> table and re-arrange the associations between <code>Users</code>, <code>Roles</code>, and <code>User_Product_Role</code> 
+    Foa Project permissions: add a <code>Product_Role</code> table and re-arrange the associations between <code>Users</code>, <code>Roles</code>, and <code>User_Product_Role</code>
 - :date: 09-Apr-2025
   :jira_id: '69'
   :jira_project: FLOR
