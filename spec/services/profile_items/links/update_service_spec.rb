@@ -49,6 +49,32 @@ RSpec.describe ProfileItems::Links::UpdateService, type: :service do
       end
     end
 
+    context "when profile item's source has profile item references" do
+      let!(:source_profile_item) do
+        create(:profile_item,
+          instance_id: instance.id,
+          product_item_config:,
+          profile_text:,
+          statement_type: 'fact',
+          is_draft: false
+        )
+      end
+
+      let!(:reference1) { create(:profile_item_reference, profile_item: source_profile_item) }
+      let!(:reference2) { create(:profile_item_reference, profile_item: source_profile_item) }
+
+      it 'create a copy of the profile item references to the profile_item' do
+        expect { service.execute }.to change { Profile::ProfileItemReference.count }.by(2)
+
+        new_refs = Profile::ProfileItemReference.where(profile_item_id: profile_item.id)
+        expect(new_refs.count).to eq(2)
+        expect(new_refs.pluck(:reference_id)).to match_array([reference1.reference_id, reference2.reference_id])
+        expect(new_refs.pluck(:created_by)).to all(eq(user.user_name))
+        expect(new_refs.pluck(:updated_by)).to all(eq(user.user_name))
+        expect(new_refs.pluck(:annotation)).to all(eq("Modified from."))
+      end
+    end
+
     context 'when the profile item is not a draft' do
       before { profile_item.update(is_draft: false) }
 

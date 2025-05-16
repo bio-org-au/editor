@@ -1,4 +1,9 @@
 - :date: 16-May-2025
+  :jira_id: '74'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Copy the profile item references of sourced profile item when converting a link item to fact
+- :date: 16-May-2025
   :jira_id: '5431'
   :description: |-
     Loader: Users no longer enter a comment type to make a review comment

@@ -8,6 +8,8 @@ class ProfileItems::Links::UpdateService < BaseService
     super(params)
     @user = user
     @profile_item = profile_item
+    @source_profile_item = profile_item.source_profile_item
+    @profile_item_references = []
   end
 
   def execute
@@ -15,14 +17,15 @@ class ProfileItems::Links::UpdateService < BaseService
 
     ActiveRecord::Base.transaction do
       create_profile_text
-      update_profile_item
+      convert_profile_item_to_fact
+      create_profile_item_references
       raise ActiveRecord::Rollback if errors.any?
     end
   end
 
   private
 
-  attr_reader :user
+  attr_reader :user, :source_profile_item, :profile_item_references
 
   def draft_profile_item
     return if profile_item.is_draft
@@ -36,7 +39,26 @@ class ProfileItems::Links::UpdateService < BaseService
     errors.merge!(@profile_text.errors) if @profile_text.errors.any?
   end
 
-  def update_profile_item
+  def create_profile_item_references
+    return if source_profile_item&.profile_item_references.blank?
+
+    @profile_item_references = source_profile_item.profile_item_references.map do |profile_item_reference|
+      new_profile_item_reference = Profile::ProfileItemReference.new(
+        profile_item_reference
+          .attributes
+          .except("profile_item_id", "created_by", "updated_by", "created_at", "updated_at")
+      )
+      new_profile_item_reference.profile_item_id = profile_item.id
+      new_profile_item_reference.current_user = user
+      new_profile_item_reference.annotation = "Modified from."
+      new_profile_item_reference.save
+      errors.merge!(new_profile_item_reference.errors) if new_profile_item_reference.errors.any?
+
+      new_profile_item_reference
+    end
+  end
+
+  def convert_profile_item_to_fact
     profile_item.current_user = user
     profile_item.assign_attributes(
       source_profile_item_id: nil,
