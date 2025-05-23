@@ -1,4 +1,8 @@
 - :date: 23-May-2025
+  :jira_id: '5442'
+  :description: |-
+    Loader Review Period: Fix date comparisons for start and end of review periods
+- :date: 23-May-2025
   :jira_id: '5435'
   :description: |-
     Loader Review: Allow reviewer comments on in-batch-notes

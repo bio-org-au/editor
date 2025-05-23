@@ -1,7 +1,6 @@
 _fixture:
   model_class: Loader::Batch::Review::Period
 
-
 review_period_one:
   name: "Review Period One"
   batch_review: review_one_on_batch_one
@@ -20,3 +19,32 @@ review_period_two_no_end_date:
   updated_by: fixture
   created_at: <%= Time.now.last_year.beginning_of_day %>
   updated_at: <%= Time.now.last_year.beginning_of_day %>
+
+review_period_past_yesterday:
+  name: "Review Period Past"
+  batch_review: review_one_on_batch_two
+  start_date: <%= Date.current.last_month %>
+  end_date: <%= Date.current.yesterday %>
+  created_by: fixture
+  updated_by: fixture
+  created_at: <%= Time.now.last_month.beginning_of_day %>
+  updated_at: <%= Time.now.last_month.beginning_of_day %>
+
+review_period_future_tomorrow:
+  name: "Review Period Future"
+  batch_review: review_one_on_batch_two
+  start_date: <%= Date.current.tomorrow %>
+  created_by: fixture
+  updated_by: fixture
+  created_at: <%= Time.now.last_year.beginning_of_day %>
+  updated_at: <%= Time.now.last_year.beginning_of_day %>
+
+review_period_starts_today:
+  name: "Review Period Starts Today"
+  batch_review: review_one_on_batch_two
+  start_date: <%= Date.current %>
+  end_date: <%= Date.current.next_month %>
+  created_by: fixture
+  updated_by: fixture
+  created_at: <%= Time.now.last_month.beginning_of_day %>
+  updated_at: <%= Time.now.last_month.beginning_of_day %>
