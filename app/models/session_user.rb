@@ -76,7 +76,7 @@ class SessionUser < ActiveType::Object
   # find_or_create_by would be preferred method but
   # I couldn't get that to work
   def registered_user
-    registered_user = User.find_or_initialize_by(user_name: username) do |user|
+    registered_user = User.find_or_initialize_by(user_name: username.downcase) do |user|
       user.family_name = full_name.split(' ').last||'unknown'
       user.given_name = full_name.split(' ').first||'unknown'
     end

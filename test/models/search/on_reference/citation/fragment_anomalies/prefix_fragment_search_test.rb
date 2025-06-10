@@ -20,6 +20,8 @@ require "test_helper"
 load "test/models/search/users.rb"
 
 # Single Search model test for Reference target.
+#
+# This anomaly was resolved by changes to text searching in May 2025
 class SearchOnRefCitTextPrefixFragmentAnomaliesDupTest < ActiveSupport::TestCase
   test "search on ref citation text for prefix fragment anomalies duplica" do
     params = ActiveSupport::HashWithIndifferentAccess.new(
@@ -30,9 +32,8 @@ class SearchOnRefCitTextPrefixFragmentAnomaliesDupTest < ActiveSupport::TestCase
     search = Search::Base.new(params)
     assert search.executed_query.results.is_a?(ActiveRecord::Relation),
            "Results should be an ActiveRecord::Relation."
-    assert_equal 0,
+    assert_equal 2,
                  search.executed_query.results.size,
-                 "Weirdly, no results are expected given the way text
-                 search works. 'Duplic' works but not 'Duplica'"
+                 "Two results expected"
   end
 end

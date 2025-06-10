@@ -105,9 +105,12 @@ RSpec.describe Instance::AsCopier, type: :model do
             expect(copied_profile_item.is_draft).to be true
             expect(copied_profile_item.statement_type).to eq "link"
             expect(copied_profile_item.source_id).to be_nil
+            expect(copied_profile_item.published_date).to be_nil
             expect(copied_profile_item.source_id_string).to be_nil
             expect(copied_profile_item.tree_element_id).to be_nil
             expect(copied_profile_item.source_system).to be_nil
+            expect(copied_profile_item.created_by).to eq username
+            expect(copied_profile_item.updated_by).to eq username
           end
 
           context "when profile item is not a fact" do

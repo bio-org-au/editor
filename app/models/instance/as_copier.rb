@@ -120,6 +120,7 @@ class Instance::AsCopier < Instance
       if copy_profile_items
         self.profile_items.each do |profile_item|
           new_profile_item = profile_item.dup
+          new_profile_item.published_date = nil
           new_profile_item.instance_id = new.id
           new_profile_item.source_profile_item_id = profile_item.id if profile_item.fact?
           new_profile_item.is_draft = true
@@ -128,6 +129,7 @@ class Instance::AsCopier < Instance
           new_profile_item.source_id_string = nil
           new_profile_item.source_system = nil
           new_profile_item.tree_element_id = nil
+          new_profile_item.created_by = new_profile_item.updated_by = as_username
           new_profile_item.save!
         end
       end

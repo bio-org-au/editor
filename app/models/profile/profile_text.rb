@@ -23,6 +23,8 @@
 #
 module Profile
   class ProfileText < ApplicationRecord
+    include UserTrackable
+
     strip_attributes
     self.table_name = "profile_text"
     self.primary_key = "id"

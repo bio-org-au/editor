@@ -22,6 +22,8 @@
 #
 module Profile
     class ProfileItemReference < ApplicationRecord
+      include UserTrackable
+
       self.table_name = "profile_item_reference"
       self.primary_key = [:profile_item_id, :reference_id]
 

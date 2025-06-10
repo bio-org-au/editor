@@ -69,12 +69,27 @@ RSpec.describe ProfileItemsController, type: :controller do
     end
   end
 
-  describe "#destroy" do
+  describe "DELETE #destroy" do
     before do
       allow(Profile::ProfileItem).to receive(:find).with(profile_item.id.to_s).and_return(profile_item)
     end
 
     subject { delete :destroy, params: { id: profile_item.id }, format: :turbo_stream  }
+
+    it "assigns a profile_item_id" do
+      subject
+      expect(assigns[:profile_item_id]).to eq(profile_item.id)
+    end
+
+    it "assigns a profile_item_config_id" do
+      subject
+      expect(assigns[:product_item_config]).to eq(profile_item.product_item_config)
+    end
+
+    it "assigns an instance_id" do
+      subject
+      expect(assigns[:instance_id]).to eq(profile_item.instance_id)
+    end
 
     context "when destroy is successful" do
       before do

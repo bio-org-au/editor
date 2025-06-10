@@ -19,15 +19,15 @@
 require "test_helper"
 
 # Test User can sign in.
-class NewSessionUnknownUserCreatesUserRecordTest < ActionController::TestCase
+class NewSessionUnknownUserUpperCaseCreatesUserRecordTest < ActionController::TestCase
   tests SearchController
 
   def setup
-    @unknown_user_name = "fjones"
+    @unknown_user_name = "FJones"
     @unknown_user_full_name = "Fred Jones"
   end
 
-  test "new session for unknown user creates user record" do
+  test "new session for unknown user upper case creates user record" do
     assert_difference("User.count") do
       get(:search,
           params: {},
@@ -38,7 +38,7 @@ class NewSessionUnknownUserCreatesUserRecordTest < ActionController::TestCase
     end
     assert assigns(:current_registered_user), "Current registered user should be assigned"
     reg_user = assigns(:current_registered_user)
-    assert reg_user.user_name == @unknown_user_name, "Registered user not set correctly"
+    assert reg_user.user_name == @unknown_user_name.downcase, "Registered user not set correctly"
     assert reg_user.created_by == 'self as new user', "Registered user created_by not set correctly"
     assert reg_user.updated_by == 'self as new user', "Registered user updated_by not set correctly"
   end

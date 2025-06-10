@@ -1,0 +1,48 @@
+<% edit_link = link_to("Edit Profile Item",
+  '#',
+  id: "profile-item-edit-link-#{profile_item.id}",
+  class: "btn btn-primary unconfirmed-action-link pull-right xhidden",
+  style: "margin-top: 3px;margin-bottom:3px",
+  title: "Select to edit the profile item. A confirmation dialog follows.",
+  data: { show_this_id: "confirm-or-cancel-edit-link-profile-item-container-#{profile_item.id}" })
+%>
+
+<%
+# NOTES: Apparently, we need to add the turbo-related data attributes to ajax-driven links.
+# In this example, the delete button that makes an ajax request to the server should have the turbo attributes
+# if we want it to render the results via turbo stream. Just something we have to note of.
+confirm_edit_link = link_to("Confirm edit",
+                                profile_items_link_path(profile_item.id),
+                                class: "btn btn-warning",
+                                style: "margin-top: 3px;margin-bottom: 3px;",
+                                title: "Select to confirm the edit.",
+                                data: {
+                                  turbo_method: :put, # Makes sure the delete method is used
+                                  turbo_stream: true # Explicitly indicates that the request expects a Turbo Stream response
+                                })
+%>
+
+<% cancel_edit_link = link_to("Cancel edit",
+                                '#',
+                                id: "cancel-edit-link-#{profile_item.id}",
+                                class: "btn btn-default cancel-link",
+                                style: "margin-top: 3px;margin-bottom: 3px;",
+                                title: "Select to cancel the edit.",
+                                data: {enable_this_id: "profile-item-edit-link-#{profile_item.id}",
+                                       hide_this_id: "confirm-or-cancel-edit-link-profile-item-container-#{profile_item.id}"})
+%>
+
+<% confirm_or_cancel_element = %Q(<div id="confirm-or-cancel-edit-link-profile-item-container-#{profile_item.id}"
+                                  class="profile-item confirm-or-cancel-edit-link pull-right hidden">
+                                  #{confirm_edit_link}
+                                  #{cancel_edit_link}
+                                  <div class="red">The original source is being copied for editing</div>
+                                  <div id="edit-error-message" class="error-container"/>
+                                  </div>)
+%>
+<div style="padding-top: 30px;padding-bottom: 20px; overflow: hidden;">
+  <%= edit_link.html_safe %>
+  <%= confirm_or_cancel_element.html_safe %>
+  <div id="message-for-profile-item-<%= profile_item.id %>" class="message-container"></div>
+  <div id="error-for-profile-item-<%= profile_item.id %>" class="error-container"></div>
+</div>

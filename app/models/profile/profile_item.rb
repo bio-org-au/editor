@@ -52,6 +52,7 @@ module Profile
     belongs_to :instance
     belongs_to :product_item_config, class_name: 'Profile::ProductItemConfig', foreign_key: 'product_item_config_id'
     belongs_to :profile_text, class_name: 'Profile::ProfileText', foreign_key: 'profile_text_id'
+    belongs_to :source_profile_item, class_name: 'Profile::ProfileItem', foreign_key: 'source_profile_item_id', optional: true
     belongs_to :profile_object_type,
               class_name: 'Profile::ProfileObjectType',
               primary_key: 'rdf_id',

@@ -10,7 +10,7 @@ module ReferenceScopes
                     ignoring: :accents,
                     using: {
                       tsearch: {
-                        dictionary: "english",
+                        dictionary: "simple",
                         prefix: "true",
                       }
                     }

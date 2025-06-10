@@ -5053,6 +5053,9 @@ CREATE TABLE public.users (
     updated_by character varying(50) DEFAULT USER NOT NULL
 );
 
+alter table public.users 
+add constraint users_user_name_lowercase_ck 
+check (user_name = lower(user_name));
 
 --
 -- Name: batch_stack_v; Type: VIEW; Schema: public; Owner: -

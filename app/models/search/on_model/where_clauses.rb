@@ -72,7 +72,10 @@ class Search::OnModel::WhereClauses
     elsif rule.has_scope
       # http://stackoverflow.com/questions/14286207/
       # how-to-remove-ranking-of-query-results
-      @sql = @sql.send(rule.scope_, rule.value).reorder(@parsed_request.default_order_column)
+      #
+      # Remove wildcards because users add them by habit and it gives bad results in text search
+      # Trialling this May 2025
+      @sql = @sql.send(rule.scope_, rule.value.gsub(/[*%]/,' ')).reorder(@parsed_request.default_order_column)
     else
       apply_predicate(rule, rule.value_frequency)
     end

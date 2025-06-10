@@ -18,7 +18,7 @@
    <% end %>
 <% else %>
    <% @previous_record_type = search_result.record_type %>
-   <% if search_result.record_type == 'accepted' or search_result.record_type == 'excluded' then %>
+   <% if %w(accepted excluded in-batch-note).include?(search_result.record_type) then %>
      <%= render partial: 'application/search_results/review/loader_name_stored_comment', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
      <%= render partial: 'application/search_results/review/loader_name_stored_distribution', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
      <% @stored_distribution = search_result.distribution %>
@@ -132,7 +132,7 @@
 <% unless (@show_family && search_result.rank == 'family') || search_result.record_type == 'in-batch-note' %>
     <% unless search_result.formatted_text_above.blank? %>
       <tr>
-        <td class="width-1-percent">>&nbsp;</td>
+        <td class="width-1-percent">&nbsp;</td>
         <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_above) %></span></td>
       </tr>
     <% end %>
@@ -197,14 +197,14 @@
 </tr>
     <% unless search_result.higher_rank_comment.blank? %>
       <tr>
-        <td class="width-1-percent">>&nbsp;</td>
+        <td class="width-1-percent">&nbsp;</td>
         <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.higher_rank_comment) %></span></td>
       </tr>
     <% end %>
 
     <% unless search_result.formatted_text_below.blank? %>
       <tr>
-        <td class="width-1-percent">>&nbsp;</td>
+        <td class="width-1-percent">&nbsp;</td>
         <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_below) %></span></td>
       </tr>
     <% end %>

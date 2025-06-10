@@ -39,26 +39,64 @@ RSpec.describe ProfileItems::Links::CreateService, type: :service do
         expect { service.execute }.to change(Profile::ProfileItem, :count).by(1)
       end
 
-      it "assigns the correct attributes to the profile item" do
-        service.execute
-        profile_item = service.profile_item
-
-        expect(profile_item.statement_type).to eq(Profile::ProfileItem::STATEMENT_TYPES[:link])
-        expect(profile_item.source_profile_item_id).to eq(source_profile_item.id)
-        expect(profile_item.is_draft).to be true
-        expect(profile_item.instance_id).to eq(instance.id)
-        expect(profile_item.profile_text_id).to eq(source_profile_item.profile_text_id)
-        expect(profile_item.product_item_config_id).to eq(source_profile_item.product_item_config_id)
-      end
-
       it "sets the current user on the profile item" do
         service.execute
         expect(service.profile_item.current_user).to eq(user)
       end
+
+      context "when copying a fact profile item" do
+        it "assigns the correct attributes to the profile item" do
+          service.execute
+          profile_item = service.profile_item
+
+          expect(profile_item.statement_type).to eq(Profile::ProfileItem::STATEMENT_TYPES[:link])
+          expect(profile_item.source_profile_item_id).to eq(source_profile_item.id)
+          expect(profile_item.is_draft).to be true
+          expect(profile_item.instance_id).to eq(instance.id)
+          expect(profile_item.profile_text_id).to eq(source_profile_item.profile_text_id)
+          expect(profile_item.product_item_config_id).to eq(source_profile_item.product_item_config_id)
+        end
+      end
+
+      context "when copying a link profile item" do
+        let(:fact_source) do
+          create(
+            :profile_item,
+            instance_id: instance.id,
+            profile_text: profile_text,
+            product_item_config: product_item_config,
+            statement_type: 'fact',
+            is_draft: false
+          )
+        end
+
+        let(:source_profile_item) do
+          create(
+            :profile_item,
+            instance_id: instance.id,
+            product_item_config: product_item_config,
+            source_profile_item_id: fact_source.id,
+            statement_type: 'link',
+            is_draft: false
+          )
+        end
+
+        it "assigns the correct attributes to the profile item" do
+          service.execute
+          profile_item = service.profile_item
+
+          expect(profile_item.statement_type).to eq(Profile::ProfileItem::STATEMENT_TYPES[:link])
+          expect(profile_item.source_profile_item_id).to eq(source_profile_item.source_profile_item_id)
+          expect(profile_item.is_draft).to be true
+          expect(profile_item.instance_id).to eq(instance.id)
+          expect(profile_item.profile_text_id).to eq(source_profile_item.profile_text_id)
+          expect(profile_item.product_item_config_id).to eq(source_profile_item.product_item_config_id)
+        end
+      end
     end
 
     context "when the service is invalid" do
-      let(:source_profile_item) { instance_double("Profile::ProfileItem", id: 1, profile_text_id: 1, product_item_config_id: 1, is_draft: true) }
+      let(:source_profile_item) { instance_double("Profile::ProfileItem", id: 1, profile_text_id: 1, product_item_config_id: 1, is_draft: true, fact?: true) }
 
       it "does not create a new profile item" do
         expect { service.execute }.not_to change(Profile::ProfileItem, :count)

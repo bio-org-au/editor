@@ -43,6 +43,7 @@ class ProfileItemsController < ApplicationController
   alias tab show
 
   def destroy
+    @profile_item_id = @profile_item.id
     @product_item_config = @profile_item.product_item_config
     @instance_id = @profile_item.instance_id
     if @profile_item.destroy

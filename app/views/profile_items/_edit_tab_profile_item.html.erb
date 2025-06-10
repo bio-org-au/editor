@@ -1,10 +1,5 @@
-<div>
-
-  <div id="common-error-message-container" class="error-container"></div>
-  <div id="message_<%= product_item_config.id %>" class="message-container"></div> <!-- Message container -->
-</div>
-
 <div id="edit-tab-profile-item" style="padding: 10px;margin: 5px 0 30px 0px;background-color: white;border: 1px solid #afafaf;">
+  <% product_item_config = profile_item&.product_item_config %>
   <% if profile_item.fact? %>
     <!-- Profile Text Form -->
     <% profile_text = profile_item.profile_text || Profile::ProfileText.new %>

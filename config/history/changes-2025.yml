@@ -1,3 +1,61 @@
+- :date: 21-May-2025
+  :jira_id: '5445'
+  :description: |-
+    Users: save and query user logins in lower case regardless of how users enter them for login
+- :date: 21-May-2025
+  :jira_id: ''
+  :description: |-
+    Loader Review: Revise <code>org-not-voted:</code> search directive SQL
+- :date: 21-May-2025
+  :jira_id: '74'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup few issues in the profile item UI (ie edit, delete from search results)
+- :date: 21-May-2025
+  :jira_id: '53'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Set copied profile item's published_date to nil, and set the created_by and updated_by field appropriately
+- :date: 21-May-2025
+  :jira_id: ''
+  :description: |-
+    Loader Review: Fix problem in has-review-comment-by: search directive
+- :date: 20-May-2025
+  :jira_id: '5440'
+  :description: |-
+    Loader Review: Fix comment/distribution wrongly appearing under an excluded name
+- :date: 16-May-2025
+  :jira_id: '74'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Copy the profile item references of sourced profile item when converting a link item to fact
+- :date: 16-May-2025
+  :jira_id: '5431'
+  :description: |-
+    Loader: Users no longer enter a comment type to make a review comment
+- :date: 16-May-2025
+  :jira_id: '5433'
+  :description: |-
+    Loader: Make in-batch note appear below distribution entry of previous accepted record
+- :date: 16-May-2025
+  :jira_id: '5432'
+  :description: |-
+    Loader: Remove stray "&gt;" in review output for some note and text fields
+- :date: 15-May-2025
+  :jira_id: '5432'
+  :description: |-
+    Loader: Remove some metadata boilerplate from comment tab; when user first logs in, give their users record better audit details.
+- :date: 14-May-2025
+  :jira_id: '74'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Allow draft-profile-editor to edit a linked profile item
+- :date: 12-May-2025
+  :jira_id: '5398'
+  :description: |-
+    Reference Search: Switch dictionary from 'english' to 'simple' and silently remove wildcards from user-supplied search terms
+- :date: 13-May-2025
+  :release: true
 - :date: 09-May-2025
   :jira_id: '5395'
   :description: |-

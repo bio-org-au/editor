@@ -11,7 +11,7 @@ class ProfileItems::Links::CreateService < BaseService
     @source_profile_item = source_profile_item
     @profile_item = Profile::ProfileItem.new(
       statement_type: Profile::ProfileItem::STATEMENT_TYPES[:link],
-      source_profile_item_id: source_profile_item.id,
+      source_profile_item_id: source_profile_item.fact? ? source_profile_item.id : source_profile_item.source_profile_item_id,
       is_draft: true,
       instance_id: instance.id,
       profile_text_id: source_profile_item.profile_text_id,

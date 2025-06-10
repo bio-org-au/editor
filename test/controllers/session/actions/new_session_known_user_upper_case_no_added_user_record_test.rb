@@ -1,4 +1,4 @@
-#efrozen_string_literal: true
+# frozen_string_literal: true
 
 #   Copyright 2015 Australian National Botanic Gardens
 #
@@ -19,27 +19,24 @@
 require "test_helper"
 
 # Test User can sign in.
-class NewSessionUnknownUserCreatesUserRecordTest < ActionController::TestCase
+class NewSessionKnownUserUpperCaseNoNewUserRecordTest < ActionController::TestCase
   tests SearchController
 
   def setup
-    @unknown_user_name = "fjones"
-    @unknown_user_full_name = "Fred Jones"
+    @known_user = users(:user_one)
   end
 
-  test "new session for unknown user creates user record" do
-    assert_difference("User.count") do
+  test "new session for known user upper case does not create user record" do
+    assert_no_difference("User.count") do
       get(:search,
           params: {},
-          session: { username: @unknown_user_name,
-                     user_full_name: @unknown_user_full_name,
+          session: { username: @known_user.user_name.upcase,
+                     user_full_name: "#{@known_user.given_name} #{@known_user.family_name}",
                      groups: [:login] })
       assert_response :success
     end
     assert assigns(:current_registered_user), "Current registered user should be assigned"
     reg_user = assigns(:current_registered_user)
-    assert reg_user.user_name == @unknown_user_name, "Registered user not set correctly"
-    assert reg_user.created_by == 'self as new user', "Registered user created_by not set correctly"
-    assert reg_user.updated_by == 'self as new user', "Registered user updated_by not set correctly"
+    assert reg_user.user_name == @known_user.user_name, "Registered user not set correctly"
   end
 end

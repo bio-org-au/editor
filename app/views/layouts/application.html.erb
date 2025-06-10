@@ -6,7 +6,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= javascript_importmap_tags %>
- 
+
     <script>
       window.relative_url_root = "<%= Rails.application.config.action_controller.relative_url_root %>";
     </script>
@@ -28,7 +28,7 @@
       <%= favicon_link_tag 'favicon-fallback.png?v=1', :rel => 'shortcut icon' %>
     <% end %>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
@@ -89,9 +89,8 @@ input[type="checkbox"]:not([title]) {
     <% wide_details = 'wide-details' if params[:query_target]&.downcase == 'loader names' && @view_mode == ViewMode::STANDARD %>
     <div id="search-result-details" class="hidden <%= wide_details %>"> </div>
 
-
       <div class="row">
-        <div id="search-result-container" 
+        <div id="search-result-container"
              class="main-body-container no-left-padding col-xs-12 col-sm-12 col-md-12 col-lg-12 sidebar" >
           <%= yield %>
         </div>
@@ -135,4 +134,4 @@ input[type="checkbox"]:not([title]) {
     </div>
  </body>
 </html>
- 
+

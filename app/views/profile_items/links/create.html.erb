@@ -33,4 +33,8 @@
       <%= @profile_item.profile_item_annotation.value %>
     </p>
   <% end %>
+
+  <div id="profile_item_actions_<%= product_item_config.id %>">
+    <%= render partial: "profile_items/edit_widgets", locals: {profile_item: @profile_item} %>
+  </div>
 <% end %>

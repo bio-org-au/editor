@@ -4,6 +4,7 @@ RSpec.describe Profile::ProfileItem, type: :model do
 
   describe "associations" do
     it { is_expected.to belong_to(:instance) }
+    it { is_expected.to belong_to(:source_profile_item).class_name('Profile::ProfileItem').optional }
     it { is_expected.to belong_to(:product_item_config).class_name('Profile::ProductItemConfig').with_foreign_key('product_item_config_id') }
     it { is_expected.to belong_to(:profile_text).class_name('Profile::ProfileText').with_foreign_key('profile_text_id') }
     it { is_expected.to belong_to(:profile_object_type).class_name('Profile::ProfileObjectType').with_primary_key('rdf_id').with_foreign_key('profile_object_rdf_id').optional }

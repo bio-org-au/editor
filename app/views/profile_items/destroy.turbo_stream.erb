@@ -63,3 +63,13 @@
 <%= turbo_stream.replace "profile_item_actions_#{@product_item_config.id}" do %>
   <div id="profile_item_actions_<%= @product_item_config.id %>"></div>
 <% end %>
+
+<%= turbo_stream.replace "linked-profile-item-container" do %>
+  <div id="linked-profile-item-container"></div>
+<% end %>
+
+<%= turbo_stream.replace "search-result-#{@profile_item_id}" do %>
+<% end %>
+
+<%= turbo_stream.replace "show-profile-items-container" do %>
+<% end %>
