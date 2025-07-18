@@ -16,6 +16,10 @@ module ApplicationHelper
     current_registered_user.available_product_from_roles&.name
   end
 
+  def user_profile_tab_names
+    current_registered_user.available_products_from_roles.map(&:name)
+  end
+
   def increment_tab_index(increment = 1)
     @tab_index ||= 1
     @tab_index += increment

@@ -69,6 +69,20 @@ class User < ActiveRecord::Base
       .first&.product
   end
 
+  def available_products_from_roles
+    # Returns all products that this user has access to through their roles
+    # This method supports multi-product scenarios by returning all available products
+    # instead of just the first one
+    roles_to_check = ['draft-editor','draft-profile-editor', 'profile-editor']
+    product_roles
+      .joins(:role)
+      .where(roles: { name: roles_to_check })
+      .includes(:product)
+      .map(&:product)
+      .compact
+      .uniq
+  end
+
   def set_audit_fields
     self.created_by = self.updated_by = @current_user&.username||'self as new user'
   end
