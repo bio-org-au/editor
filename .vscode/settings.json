@@ -1,0 +1,62 @@
+{
+    "files.trimTrailingWhitespace": true,
+    "files.exclude": {
+      "**/.git": false
+    },
+    "editor.tabSize": 2,
+    "editor.renderWhitespace": "none",
+    "ruby.lint": {
+      "rubocop": true
+    },
+    "[erb]": {
+      "editor.formatOnSave": false
+    },
+    "[html]": {
+      "editor.formatOnSave": false
+    },
+    "rubyLsp.formatter": "rubocop",
+    "[ruby]": {
+      "editor.defaultFormatter": "Shopify.ruby-lsp",
+      "editor.semanticHighlighting.enabled": true,
+      "editor.formatOnSave": true
+    },
+    "files.insertFinalNewline": true,
+    "workbench.colorCustomizations": {
+      "activityBar.activeBackground": "#2f7c47",
+      "activityBar.background": "#2f7c47",
+      "activityBar.foreground": "#e7e7e7",
+      "activityBar.inactiveForeground": "#e7e7e799",
+      "activityBarBadge.background": "#422c74",
+      "activityBarBadge.foreground": "#e7e7e7",
+      "commandCenter.border": "#e7e7e799",
+      "sash.hoverBorder": "#2f7c47",
+      "statusBar.background": "#215732",
+      "statusBar.foreground": "#e7e7e7",
+      "statusBarItem.hoverBackground": "#2f7c47",
+      "statusBarItem.remoteBackground": "#215732",
+      "statusBarItem.remoteForeground": "#e7e7e7",
+      "titleBar.activeBackground": "#215732",
+      "titleBar.activeForeground": "#e7e7e7",
+      "titleBar.inactiveBackground": "#21573299",
+      "titleBar.inactiveForeground": "#e7e7e799",
+      "terminal.background": "#252525",
+      "terminal.foreground": "#ecdbb2",
+      "terminal.ansiBlack": "#353535",
+      "terminal.ansiBrightBlack": "#a39586",
+      "terminal.ansiBrightBlue": "#94b3a8",
+      "terminal.ansiBrightCyan": "#9dd08e",
+      "terminal.ansiBrightGreen": "#c4c431",
+      "terminal.ansiBrightMagenta": "#dc9aab",
+      "terminal.ansiBrightRed": "#fe6142",
+      "terminal.ansiBrightWhite": "#efe1bf",
+      "terminal.ansiBrightYellow": "#fcc73c",
+      "terminal.ansiBlue": "#549699",
+      "terminal.ansiCyan": "#79aa7d",
+      "terminal.ansiGreen": "#a8a521",
+      "terminal.ansiMagenta": "#bf7897",
+      "terminal.ansiRed": "#d73925",
+      "terminal.ansiWhite": "#b7a996",
+      "terminal.ansiYellow": "#dfa82a"
+    },
+    "peacock.color": "#215732"
+  }
