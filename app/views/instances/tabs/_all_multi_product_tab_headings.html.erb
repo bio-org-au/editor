@@ -1,0 +1,380 @@
+<% increment_tab_index %>
+
+<ul class="nav nav-tabs">
+
+  <% this_tab = 'tab_show_1' %>
+  <% first_tab_of_each_type = Hash.new(true) %>
+
+  <% @current_registered_user.available_products_from_roles.each_with_index do |product, index| %>
+    <% if @tabs_to_offer.include?('tab_show_1') %>
+      <% if can? 'instances', 'tab_show_1' %>
+        <%= render(
+          partial: 'instances/tabs/tab',
+          locals: {
+            first: false,
+            last: false,
+            this_tab: 'tab_show_1',
+            link_text: "#{product.name} Details".html_safe,
+            link_id: "instance-show-#{product.name.downcase}-tab",
+            link_title: "#{product.name} Details",
+            tab_index: @tab_index,
+            prev_tab: ".search-result.show-details",
+            next_tab: '',
+            product_name: product.name,
+            is_first_tab_of_type: first_tab_of_each_type['tab_show_1']
+          })
+        %>
+        <% first_tab_of_each_type['tab_show_1'] = false %>
+      <% end %>
+    <% end %>
+    <% if @tabs_to_offer.include?('tab_edit') && can?(:edit, @instance)%>
+        <%= render(
+          partial: 'instances/tabs/tab',
+          locals: {
+            first: false,
+            last: false,
+            this_tab: 'tab_edit',
+            link_text: "#{product.name} Edit".html_safe,
+            link_id: "instance-edit-#{product.name.downcase}-tab",
+            link_title: "#{product.name} Edit",
+            tab_index: increment_tab_index,
+            prev_tab: '',
+            next_tab: '',
+            product_name: product.name,
+            is_first_tab_of_type: first_tab_of_each_type['tab_edit']
+          })
+        %>
+        <% first_tab_of_each_type['tab_edit'] = false %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_edit_profile_v2') && can?(:manage_draft_secondary_reference, @instance) %>
+        <%= render(
+          partial: 'instances/tabs/tab',
+          locals: {
+            first: false,
+            last: false,
+            this_tab: 'tab_edit_profile_v2',
+            link_text: "#{product.name} Edit".html_safe,
+            link_id: "instance-edit-tab-profile-v2-#{product.name}-tab",
+            link_title: "#{product.name} Edit",
+            tab_index: increment_tab_index,
+            prev_tab: '',
+            next_tab: '',
+            product_name: product.name,
+            is_first_tab_of_type: first_tab_of_each_type['tab_edit_profile_v2']
+          })
+        %>
+        <% first_tab_of_each_type['tab_edit_profile_v2'] = false %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_edit_notes') %>
+        <% if can? 'instance_notes', 'edit' %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_edit_notes',
+              link_text: "#{product.name}  Notes".html_safe,
+              link_id: "instance-edit-notes-#{product.name}-tab",
+              link_title: "#{product.name} Notes",
+              tab_index: increment_tab_index,
+              prev_tab: '',
+              next_tab: '',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_edit_notes']
+            })
+          %>
+          <% first_tab_of_each_type['tab_edit_notes'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_synonymy') %>
+        <% if can? :create, Instance %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_synonymy',
+              link_text: "#{product.name} Syn".html_safe,
+              link_id: "instance-cite-this-instance-#{product.name}-tab",
+              link_title: "#{product.name} Synonym",
+              tab_index: increment_tab_index,
+              prev_tab: '',
+              next_tab: '',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_synonymy']
+            })
+          %>
+          <% first_tab_of_each_type['tab_synonymy'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_synonymy_for_profile_v2') %>
+        <% if can? :synonymy_as_draft_secondary_reference, @instance %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_synonymy_for_profile_v2',
+              link_text: "#{product.name} Syn".html_safe,
+              link_id: "instance-cite-this-instance-for-profile-v2-#{product.name}-tab",
+              link_title: "#{product.name} Synonym",
+              tab_index: increment_tab_index,
+              prev_tab: '',
+              next_tab: '',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_synonymy_for_profile_v2']
+            })
+          %>
+          <% first_tab_of_each_type['tab_synonymy_for_profile_v2'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_unpublished_citation') %>
+        <% if can? :create, @instance %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_unpublished_citation',
+              link_text: "#{product.name} Unpub".html_safe,
+              link_id: "unpublished-citation-#{product.name}-tab",
+              link_title: "#{product.name} Unpublished citation",
+              tab_index: increment_tab_index,
+              prev_tab: '',
+              next_tab: '',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_unpublished_citation']
+            })
+          %>
+          <% first_tab_of_each_type['tab_unpublished_citation'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_unpublished_citation_for_profile_v2') %>
+        <% if can? :unpublished_citation_as_draft_secondary_reference, @instance %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_unpublished_citation_for_profile_v2',
+              link_text: "#{product.name} Unpub".html_safe,
+              link_id: "unpublished-citation-for-profile-v2-#{product.name}-tab",
+              link_title: "#{product.name} Unpublished citation",
+              tab_index: increment_tab_index,
+              prev_tab: '',
+              next_tab: '',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_unpublished_citation_for_profile_v2']
+            })
+          %>
+          <% first_tab_of_each_type['tab_unpublished_citation_for_profile_v2'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_classification') %>
+        <% if can? 'classification', 'place' %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_classification',
+              link_text: "#{product.name} Tree".html_safe,
+              link_id: "instance-classification-#{product.name}-tab",
+              link_title: "#{product.name} Tree placement",
+              tab_index: increment_tab_index,
+              prev_tab: '',
+              next_tab: '',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_classification']
+            })
+          %>
+          <% first_tab_of_each_type['tab_classification'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_comments') %>
+        <% if can? 'comments', 'create' %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: true,
+              this_tab: 'tab_comments',
+              link_text: "#{product.name} Adnot".html_safe,
+              link_id: "instance-comments-#{product.name}-tab",
+              link_title: "#{product.name} Adnot",
+              tab_index: increment_tab_index,
+              prev_tab: '',
+              next_tab: '',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_comments']
+            })
+          %>
+          <% first_tab_of_each_type['tab_comments'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_copy_to_new_reference') %>
+        <% if can? 'instances', 'copy_standalone' %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_copy_to_new_reference',
+              link_text: "#{product.name} Copy".html_safe,
+              link_id: "instance-copy-to-new-reference-#{product.name}-tab",
+              link_title: "#{product.name} Copy the instance",
+              tab_index: increment_tab_index,
+              prev_tab: 'instance-comments-tab',
+              next_tab: '.search-result.show-details',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_copy_to_new_reference']
+            })
+          %>
+          <% first_tab_of_each_type['tab_copy_to_new_reference'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_copy_to_new_profile_v2') %>
+        <% if (can? :copy_as_draft_secondary_reference, Instance) && @current_registered_user.available_product_from_roles.present? %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_copy_to_new_profile_v2',
+              link_text: "#{product.name} Copy".html_safe,
+              link_id: "instance-copy-to-new-profile-v2-#{product.name}-tab",
+              link_title: "#{product.name} Copy the instance",
+              tab_index: increment_tab_index,
+              prev_tab: 'instance-comments-tab',
+              next_tab: '.search-result.show-details',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_copy_to_new_profile_v2']
+            })
+          %>
+          <% first_tab_of_each_type['tab_copy_to_new_profile_v2'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_profile_details') %>
+        <% if can? 'classification', 'place' %>
+          <%= render(
+            partial: 'instances/tabs/tab',
+            locals: {
+              first: false,
+              last: false,
+              this_tab: 'tab_profile_details',
+              link_text: "#{product.name} Profile".html_safe,
+              link_id: "instance-profile-#{product.name}-tab",
+              link_title: "#{product.name} Profile details",
+              tab_index: increment_tab_index,
+              prev_tab: 'instance-copy-to-new-reference-tab',
+              next_tab: 'instance-edit-profile-tab',
+              product_name: product.name,
+              is_first_tab_of_type: first_tab_of_each_type['tab_profile_details']
+            })
+          %>
+          <% first_tab_of_each_type['tab_profile_details'] = false %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_edit_profile') %>
+        <% if Rails.configuration.try('profile_edit_aware') %>
+          <% if can? 'classification', 'place' %>
+            <%= render(
+              partial: 'instances/tabs/tab',
+              locals: {
+                first: false,
+                last: true,
+                this_tab: 'tab_edit_profile',
+                link_text: "#{product.name} Edit Profile".html_safe,
+                link_id: "instance-edit-profile-#{product.name}-tab",
+                link_title: "#{product.name} Edit Profile",
+                tab_index: increment_tab_index,
+                prev_tab: 'instance-profile-tab',
+                next_tab: 'instance-batch-loader-tab',
+                product_name: product.name,
+                is_first_tab_of_type: first_tab_of_each_type['tab_edit_profile']
+              })
+            %>
+            <% first_tab_of_each_type['tab_edit_profile'] = false %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_batch_loader') %>
+        <% if can?('loader/batches', 'process') %>
+            <%= render(
+              partial: 'instances/tabs/tab',
+              locals: {
+                first: false,
+                last: true,
+                this_tab: 'tab_batch_loader',
+                link_text: "#{product.name} Loader 1".html_safe,
+                link_id: "instance-batch-loader-#{product.name}-tab",
+                link_title: "#{product.name} Batch Loader operations",
+                tab_index: increment_tab_index,
+                prev_tab: "instance-edit-profile-#{product.name}-tab",
+                next_tab: 'instance-batch-loader-tab-2',
+                product_name: product.name,
+                is_first_tab_of_type: first_tab_of_each_type['tab_batch_loader']
+              })
+            %>
+            <% first_tab_of_each_type['tab_batch_loader'] = false %>
+
+        <% if can?('loader/instances-loader-2', 'use') %>
+            <%= render(
+              partial: 'instances/tabs/tab',
+              locals: {
+                first: false,
+                last: true,
+                this_tab: 'tab_batch_loader_2',
+                link_text: "#{product.name} Loader 2".html_safe,
+                link_id: "instance-batch-loader-#{product.name}-tab-2",
+                link_title: "#{product.name} More batch Loader operations",
+                tab_index: increment_tab_index,
+                prev_tab: 'instance-batch-tab-loader',
+                next_tab: 'instance-show-tab',
+                product_name: product.name,
+                is_first_tab_of_type: first_tab_of_each_type['tab_batch_loader_2']
+              })
+            %>
+            <% first_tab_of_each_type['tab_batch_loader_2'] = false %>
+            <% end %>
+          <% end %>
+      <% end %>
+
+      <% if @tabs_to_offer.include?('tab_profile_v2') %>
+        <% if can?(:manage_profile, @instance) %>
+          <% if Rails.configuration.try('profile_v2_aware') %>
+            <%= render(
+              partial: 'instances/tabs/tab',
+              locals: {
+                first: false,
+                last: true,
+                this_tab: 'tab_profile_v2',
+                link_id: "instance-profile-v2-#{product.name}-tab",
+                link_text: "#{product.name} Profile".html_safe,
+                link_title: "#{product.name} Profile",
+                tab_index: increment_tab_index,
+                prev_tab: "instance-edit-profile-v2-#{product.name.downcase}-tab",
+                next_tab: '.search-result.show-details',
+                product_name: product.name,
+                is_first_tab_of_type: first_tab_of_each_type['tab_profile_v2']
+              })
+            %>
+            <% first_tab_of_each_type['tab_profile_v2'] = false %>
+          <% end %>
+        <% end %>
+      <% end %>
+  <% end %>
+</ul>

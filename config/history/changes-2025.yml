@@ -1,4 +1,8 @@
 - :date: 22-July-2025
+  :jira_id: ''
+  :description: |-
+    Chore: Rubocop rules Update and added gems related to Rubocop
+- :date: 22-July-2025
   :jira_id: '82'
   :jira_project: FLOR
   :description: |-

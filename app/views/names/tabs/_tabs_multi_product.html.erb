@@ -1,0 +1,136 @@
+<% first_tab_of_each_type = Hash.new(true) %>
+
+<% @current_registered_user.available_products_from_roles.each do |product| %>
+  <%= render(
+    partial: 'names/tabs/tab',
+    locals: {
+      first: false,
+      last: false,
+      this_tab: 'tab_details',
+      link_text: "#{product.name} Details",
+      link_id: "name-details-#{product.name.downcase}-tab",
+      link_title: "See details of the name for #{product.name}",
+      tab_index: increment_tab_index,
+      prev_tab: '',
+      next_tab: '',
+      product_name: product.name,
+      is_first_tab_of_type: first_tab_of_each_type['tab_details']
+    })
+  %>
+  <% first_tab_of_each_type['tab_details'] = false %>
+
+  <% if can? 'names', 'update' %>
+    <%= render(
+      partial: 'names/tabs/tab',
+      locals: {
+        first: false,
+        last: false,
+        this_tab: 'tab_edit',
+        link_text: "#{product.name} Edit".html_safe,
+        link_id: "name-edit-#{product.name.downcase}-tab",
+        link_title: "Edit details of the name for #{product.name}.",
+        tab_index: increment_tab_index,
+        prev_tab: '',
+        next_tab: '',
+        product_name: product.name,
+        is_first_tab_of_type: first_tab_of_each_type['tab_edit']
+      })
+    %>
+    <% first_tab_of_each_type['tab_edit'] = false %>
+  <% end %>
+
+  <% if can? :create_with_product_reference, Instance %>
+    <%= render(
+      partial: 'names/tabs/tab',
+      locals: {
+        first: false,
+        last: false,
+        this_tab: 'tab_instances_profile_v2',
+        link_text: "#{product.name} New instance".html_safe,
+        link_id: "name-instances-profile-v2-#{product.name.downcase}-tab",
+        link_title: "Create an instance for the name in #{product.name}.",
+        tab_index: increment_tab_index,
+        prev_tab: '',
+        next_tab: '',
+        product_name: product.name,
+        is_first_tab_of_type: first_tab_of_each_type['tab_instances_profile_v2']
+      })
+    %>
+    <% first_tab_of_each_type['tab_instances_profile_v2'] = false %>
+  <% elsif can? :create, Instance %>
+    <%= render(
+      partial: 'names/tabs/tab',
+      locals: {
+        first: false,
+        last: false,
+        this_tab: 'tab_instances',
+        link_text: "#{product.name} New instance".html_safe,
+        link_id: "name-instances-#{product.name.downcase}-tab",
+        link_title: "Create an instance for the name in #{product.name}.",
+        tab_index: increment_tab_index,
+        prev_tab: '',
+        next_tab: '',
+        product_name: product.name,
+        is_first_tab_of_type: first_tab_of_each_type['tab_instances']
+      })
+    %>
+    <% first_tab_of_each_type['tab_instances'] = false %>
+  <% end %>
+
+  <% if can? :create, Instance %>
+    <%= render(
+      partial: 'names/tabs/tab',
+      locals: {
+        first: false,
+        last: false,
+        this_tab: 'tab_copy',
+        link_text: "#{product.name} Copy".html_safe,
+        link_id: "name-copy-#{product.name.downcase}-tab",
+        link_title: "Copy the name for #{product.name}.",
+        tab_index: increment_tab_index,
+        prev_tab: '',
+        next_tab: '',
+        product_name: product.name,
+        is_first_tab_of_type: first_tab_of_each_type['tab_copy']
+      })
+    %>
+    <% first_tab_of_each_type['tab_copy'] = false %>
+  <% end %>
+
+  <% if can? 'names', 'delete' %>
+    <%= render(
+      partial: 'names/tabs/tab',
+      locals: {
+        first: false,
+        last: false,
+        this_tab: 'tab_delete',
+        link_text: "#{product.name} Delete".html_safe,
+        link_id: "name-delete-#{product.name.downcase}-tab",
+        link_title: "Delete name for #{product.name}.",
+        tab_index: increment_tab_index,
+        prev_tab: '',
+        next_tab: '',
+        product_name: product.name,
+        is_first_tab_of_type: first_tab_of_each_type['tab_delete']
+      })
+    %>
+    <% first_tab_of_each_type['tab_delete'] = false %>
+  <% end %>
+<% end %>
+
+<% if can? 'names', 'update' %>
+  <%= render(
+    partial: 'names/tabs/tab',
+    locals: {
+      first: false,
+      last: false,
+      this_tab: 'tab_more',
+      link_text: "More".html_safe,
+      link_id: 'name-more-tab',
+      link_title: 'Show more tabs',
+      tab_index: increment_tab_index,
+      prev_tab: '',
+      next_tab: ''
+    })
+  %>
+<% end %>

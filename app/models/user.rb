@@ -73,23 +73,22 @@ class User < ActiveRecord::Base
     product_roles
       .joins(:role)
       .includes(:product)
-      .map(&:product)
-      .compact
+      .order("product.name ASC")
+      .filter_map(&:product)
       .uniq
   end
 
   def set_audit_fields
-    self.created_by = self.updated_by = @current_user&.username||'self as new user'
+    self.created_by = self.updated_by = @current_user&.username || "self as new user"
   end
 
   def force_lower_case_user_name
-    self.user_name = self.user_name.downcase
+    self.user_name = user_name.downcase
   end
 
   def set_updated_by
-    self.updated_by = @current_user&.username||'unknown'
+    self.updated_by = @current_user&.username || "unknown"
   end
-
 
   # Note, the PK for the users table is the id column.
   # That appears as user_id as a foreign key.
@@ -141,15 +140,15 @@ class User < ActiveRecord::Base
   end
 
   def self.users_not_already_reviewers(batch_review)
-    self.all.order(:user_name) - batch_review.batch_reviewers.collect {|reviewer| reviewer.user}
+    all.order(:user_name) - batch_review.batch_reviewers.collect { |reviewer| reviewer.user }
   end
 
   def can_be_deleted?
-    batch_reviewers.size.zero?
+    batch_reviewers.empty?
   end
 
   def grantable_product_roles_for_select
-    (Product::Role.all - product_roles).sort {|x,y| x.name <=> y.name}
-                                       .map {|pr| [pr.name, pr.id]}
+    (Product::Role.all - product_roles).sort_by(&:name)
+      .map { |pr| [pr.name, pr.id] }
   end
 end

@@ -1,7 +1,7 @@
 <% this_tab_re = Regexp.new(this_tab) %>
 <% current_product_name = params[:product_name]&.split('?')&.first  || '' %>
 <% tab_product_name = local_assigns[:product_name] || '' %>
-<% active_tab = (@tab.match(this_tab_re) && !this_tab.match(/tab_more/) && (current_product_name == tab_product_name)) || (@tab.match(/tab_more/) && this_tab.match(/tab_comments/)) %>
+<% active_tab = (@tab.match(this_tab_re) && !this_tab.match(/tab_more/) && (current_product_name == tab_product_name || (current_product_name.blank? && local_assigns[:is_first_tab_of_type]))) || (@tab.match(/tab_more/) && this_tab.match(/tab_comments/)) %>
 <% semi_active_tab = (@tab.match(/tab_comments|tab_name_tags|tab_refresh|tab_de_duplicate/) && this_tab.match(/tab_more/)) %>
 <% semi_active_tab = semi_active_tab || (@tab.match(/tab_more/) && this_tab.match(/tab_more/)) %>
 
