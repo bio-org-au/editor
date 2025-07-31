@@ -196,9 +196,12 @@ from comment where comment.instance_id = instance.id)",
                                  and lower(name_type.name) in (?)))" },
     "cites-an-instance:" => { where_clause: " cites_id is not null" },
 
-    "is-cited-by-an-instance:" => { where_clause: " cited_by_id is not null" },
-    "does-not-cite-an-instance:" => { where_clause: " cites_id is null" },
-    "is-not-cited-by-an-instance:" => { where_clause: " cited_by_id is null" },
+    "is-cited-by-an-instance:" => { where_clause: " cited_by_id is not null",
+                                    takes_no_arg: true},
+    "does-not-cite-an-instance:" => { where_clause: " cites_id is null",
+                                      takes_no_arg: true},
+    "is-not-cited-by-an-instance:" => { where_clause: " cited_by_id is null",
+                                        takes_no_arg: true},
     "verbatim-name-exact:" => { where_clause:
                                  "lower(verbatim_name_string) like lower(?) " },
     "verbatim-name:" => { where_clause:
@@ -220,7 +223,8 @@ from comment where comment.instance_id = instance.id)",
     "is-novelty:" => { where_clause: " exists (select null
                        from instance_type
                        where instance_type_id = instance_type.id
-                       and instance_type.primary_instance) " },
+                       and instance_type.primary_instance) ",
+                       takes_no_arg: true},
     "is-tax-nov-for-orth-var-name:" => { where_clause: " exists (select null
                                  from instance_type
                                  where instance_type_id = instance_type.id
@@ -232,7 +236,8 @@ from comment where comment.instance_id = instance.id)",
                                                         where name_status.id =
                                                         name.name_status_id
                                                           and name_status.name =
-                                                             'orth. var.'))" },
+                                                             'orth. var.'))" ,
+                       takes_no_arg: true},
     "species-or-below-syn-with-genus-or-above:" =>
     { where_clause:
       " instance.id in
@@ -256,7 +261,8 @@ where rb.sort_order >= (select sort_order from name_rank where name = 'Species')
       )
       ",
       order: "name.full_name",
-      join: :name },
+      join: :name,
+      takes_no_arg: true},
     "rank:" => { where_clause: " exists (select null from
                   name n inner join name_rank nr
                   on n.name_rank_id = nr.id where instance.name_id =

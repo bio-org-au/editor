@@ -22,7 +22,7 @@ load "test/models/search/users.rb"
 # Single Search model test for Reference target.
 class SearchOnReferencePageAliasSimpleTest < ActiveSupport::TestCase
   test "search on reference page alias simple" do
-    reference = references(:a_book)
+    reference = references(:for_typeahead_display)
     params =  ActiveSupport::HashWithIndifferentAccess
               .new(query_target: "reference",
                    query_string: "page: #{reference.pages}",

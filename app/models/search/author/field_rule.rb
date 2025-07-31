@@ -18,33 +18,40 @@
 #
 class Search::Author::FieldRule
   RULES = {
-    "is-a-duplicate:" => { where_clause: " duplicate_of_id is not null" },
-    "is-not-a-duplicate:" => { where_clause: " duplicate_of_id is null" },
-    "has-abbrev:" => { where_clause: " abbrev is not null" },
-    "has-no-abbrev:" => { where_clause: " abbrev is null" },
-    "has-name:" => { where_clause: " name is not null" },
-    "has-no-name:" => { where_clause: " name is null" },
+    "is-a-duplicate:" => { where_clause: " duplicate_of_id is not null",
+                           takes_no_arg: true},
+    "is-not-a-duplicate:" => { where_clause: " duplicate_of_id is null",
+                               takes_no_arg: true},
+    "has-abbrev:" => { where_clause: " abbrev is not null" ,
+                       takes_no_arg: true},
+    "has-no-abbrev:" => { where_clause: " abbrev is null",
+                          takes_no_arg: true},
+    "has-name:" => { where_clause: " name is not null" ,
+                     takes_no_arg: true},
+    "has-no-name:" => { where_clause: " name is null",
+                        takes_no_arg: true},
     "has-authored-name:" => { where_clause: " exists (select null from
-                               name where name.author_id = author.id) " },
-    "has-ex-authored-name:" \
-                            => { where_clause: " exists (select null from
-                               name where name.ex_author_id = author.id) " },
-    "has-ex-base-authored-name:" \
-                                 => { where_clause: " exists (select null from
-                               name where name.ex_base_author_id = author.id) " },
-    "has-base-authored-name:" \
-                              => { where_clause: " exists (select null from
-                               name where name.base_author_id = author.id) " },
-    "has-sanctioned-name:" \
-                           => { where_clause: " exists (select null from
-                               name where name.sanctioning_author_id = author.id) " },
-    "has-any-authored-name:" \
-                             => { where_clause: " exists (select null from
+                               name where name.author_id = author.id) ",
+                              takes_no_arg: true},
+    "has-ex-authored-name:"  => { where_clause: " exists (select null from
+                               name where name.ex_author_id = author.id) ",
+                                 takes_no_arg: true},
+    "has-ex-base-authored-name:" => { where_clause: " exists (select null from
+                               name where name.ex_base_author_id = author.id) ",
+                                      takes_no_arg: true},
+    "has-base-authored-name:" => { where_clause: " exists (select null from
+                               name where name.base_author_id = author.id) ",
+                                   takes_no_arg: true},
+    "has-sanctioned-name:" => { where_clause: " exists (select null from
+                               name where name.sanctioning_author_id = author.id) " ,
+                                takes_no_arg: true},
+    "has-any-authored-name:" => { where_clause: " exists (select null from
                                name where name.author_id = author.id
                                or name.base_author_id = author.id
                                or name.ex_author_id = author.id
                                or name.ex_base_author_id = author.id
-                               or name.sanctioning_author_id = author.id) " },
+                               or name.sanctioning_author_id = author.id) " ,
+                                  takes_no_arg: true},
     "comments:" => { trailing_wildcard: true,
                      leading_wildcard: true,
                      where_clause: " exists (select null from
@@ -67,7 +74,8 @@ from comment where comment.author_id = author.id)" },
     "abbrev:" => { tokenize: true,
                    where_clause:
                                " lower(f_unaccent(abbrev))
-                               like lower(f_unaccent(?)) " },
+                               like lower(f_unaccent(?)) ",
+                   not_exists_clause: " abbrev is null"},
     "name-or-abbrev:" => { leading_wildcard: true,
                            trailing_wildcard: true,
                            tokenize: true,
@@ -76,8 +84,10 @@ from comment where comment.author_id = author.id)" },
                                lower(f_unaccent(abbrev))
                                like lower(f_unaccent(?)) " },
     "name-exact:" => { where_clause: "lower(name) like lower(?)" },
-    "abbrev-exact:" => { where_clause: "lower(abbrev) like lower(?)" },
-    "full-name-exact:" => { where_clause: "lower(full_name) like lower(?)" },
+    "abbrev-exact:" => { where_clause: "lower(abbrev) like lower(?)",
+                         not_exists_clause: " abbrev is null"},
+    "full-name-exact:" => { where_clause: "lower(full_name) like lower(?)",
+                            not_exists_clause: " full_name is null"},
     "comments-exact:" => { where_clause: " exists (select null from
                                comment where comment.author_id = author.id
                                and lower(comment.text) like lower(?) ) " },

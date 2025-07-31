@@ -17,15 +17,18 @@
 #   limitations under the License.
 #
 require "test_helper"
+load "test/models/search/users.rb"
 
-# Single Name typeahead test.
-class NameTAOnFullNameSuggsShldNotInclNamesWOInstTest < ActiveSupport::TestCase
-  test "name on full name suggestions shd not incl names without instances" do
-    suggestions = Name::AsTypeahead::OnFullName
-                  .new(term: "a name without instances")
-                  .suggestions
-    assert(suggestions.is_a?(Array), "suggestions should be an array")
-    assert(suggestions.empty?,
-           'suggestions for "a name without instances" should be empty')
+# Single Search model test for Reference target.
+class SearchOnReferenceHasNoChildrenSimpleTest < ActiveSupport::TestCase
+  test "search has no children simple" do
+    params =  ActiveSupport::HashWithIndifferentAccess
+              .new(query_target: "reference",
+                   query_string: "has-no-children:",
+                   current_user: build_edit_user)
+    search = Search::Base.new(params)
+    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+           "Results should be an ActiveRecord::Relation."
+    assert !search.executed_query.results.empty?, "Results expected."
   end
 end

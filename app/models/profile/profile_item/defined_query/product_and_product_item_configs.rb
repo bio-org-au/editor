@@ -30,12 +30,12 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
 
   private
 
-  attr_reader :user
+  attr_reader :user, :params
 
   def find_product_by_name
     product_name = user.products.where(name: SUPPORTED_PRODUCTS).first&.name
 
-    Profile::Product.find_by(name: product_name)
+    Product.find_by(name: product_name)
   end
 
   def profile_v2_aware?
@@ -72,9 +72,17 @@ class Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
           product_item_config_id: product_item_configs.pluck(:id),
           instance_id: @instance.id
         )
-        .index_by(&:product_item_config_id)
+        .includes([
+          :sourced_in_profile_items,
+          :profile_item_annotation,
+          :profile_item_references,
+          :profile_text
+        ])
+        .order(created_at: :desc)
 
-    existing_profile_items
+   return existing_profile_items if params[:all]
+
+    existing_profile_items.group_by(&:product_item_config_id).transform_values { |items| items.first }
   end
 
   def map_product_item_configs_to_profile_items(product_item_configs, existing_profile_items)

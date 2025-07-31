@@ -26,7 +26,8 @@ class ReferenceDestroyForEditorSimpleTest < ActionController::TestCase
   end
 
   #  assert_difference('Reference.count') do
-  test "editor should destroy reference" do
+  test "editor should destroy reference not associated to a product" do
+    @reference.products.update_all(reference_id: nil)
     @request.headers["Accept"] = "application/javascript"
     assert_difference("Reference.count",
                       -1,

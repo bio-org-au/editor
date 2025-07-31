@@ -48,8 +48,9 @@ class Loader::Name::Review::CommentsController < ApplicationController
   end
 
   def update
-    logger.debug("update")
     @review_comment = Loader::Name::Review::Comment.find(review_comment_params[:id])
+    raise 'Update not permitted because Review is not active' unless @review_comment.batch_review_period.active?
+    raise 'You cannot update a comment that is not your own' unless @current_user.username == @review_comment.reviewer.user.user_name
     @message = @review_comment.update_if_changed(review_comment_params,
                                                  current_user.username)
     render "update"
@@ -76,6 +77,8 @@ class Loader::Name::Review::CommentsController < ApplicationController
   end
 
   def destroy
+    raise 'Delete is not permitted because Review is not active' unless @review_comment.batch_review_period.active?
+    raise 'You cannot delete a comment that is not your own' unless @current_user.username == @review_comment.reviewer.user.user_name
     @review_comment.destroy
   rescue StandardError => e
     logger.error("Loader::Name::Review::Comment#destroy rescuing #{e}")

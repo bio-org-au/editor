@@ -1,7 +1,7 @@
 <% increment_tab_index %>
 
-<%= @reference.ref_type.name %> by 
-<%= link_to("#{@reference.author.name} (#{@reference.ref_author_role.name}) #{search_icon_on_tab}".html_safe, search_path(query_string: "id:#{@reference.author_id}",query_target: 'author'),title: 'Search for the author(s)/editor(s)...',class: 'author') %> 
+<%= @reference.ref_type.name %> by
+<%= link_to("#{@reference.author.name} (#{@reference.ref_author_role.name}) #{search_icon_on_tab}".html_safe, search_path(query_string: "id:#{@reference.author_id}",query_target: 'author'),title: 'Search for the author(s)/editor(s)...',class: 'author') %>
 <br>
 <span title="Title"><%= @reference.title %></span>
 <br>
@@ -24,15 +24,15 @@
 <% if @reference.children && @reference.children.size != 0 %>
   <br>
   <% label_string = pluralize(@reference.children.size,'child') %>
-  <%= link_to("#{label_string} #{search_icon_on_tab}".html_safe, 
+  <%= link_to("#{label_string} #{search_icon_on_tab}".html_safe,
               search_path(query_target: "reference", query_string: "parent-id:#{@reference.id}"),
-              title: "Search for the #{label_string}", 
+              title: "Search for the #{label_string}",
               tabindex: increment_tab_index) %>
 <% end %>
 
 <% if @reference.duplicate_of.present? %>
   <br>
-  Duplicate of 
+  Duplicate of
   <%= link_to("#{@reference.duplicate_of.citation} #{search_icon_on_tab}".html_safe,
               search_path(query_target: "reference", query_string: "id:#{@reference.duplicate_of_id}"),
               title: 'Search for the duplicate reference.') %>
@@ -42,7 +42,7 @@
 <% if duplicates.size > 0 %>
   <br>
   <%= link_to(pluralize(duplicates.size,"Duplicate"),
-                          search_path(query_target: "reference", 
+                          search_path(query_target: "reference",
                                       query_string: "master-id:#{@reference.id}"),
                           title: "Retrieve this reference with its #{pluralize(duplicates.size,'duplicate')}") %>
 <% end %>
@@ -52,8 +52,8 @@
   <br>
   <% if instances_size == 1 %>
     <%= link_to("1 Instance #{search_icon_on_tab}".html_safe,
-                          search_path(query_target: "references", query_string: "id: #{@reference.id} show-instances:"), 
-                          tabindex: increment_tab_index, 
+                          search_path(query_target: "references", query_string: "id: #{@reference.id} show-instances:"),
+                          tabindex: increment_tab_index,
                           title: 'Search for the instance.') %>
   <% else %>
     <%= "#{instances_size} Instances" %>
@@ -62,7 +62,7 @@
                 search_path(query_string:
                             "id: #{@reference.id} show-instances:",
                             query_target: 'references'),
-                tabindex: increment_tab_index, 
+                tabindex: increment_tab_index,
                 title: 'Search for the instances, sorted by name.',
                 class: 'instance')
     %>
@@ -70,7 +70,7 @@
     <%= link_to("&mdash; sorted by page #{search_icon_on_tab}".html_safe,
                 search_path(query_string: "id:#{@reference.id.to_s} show-instances-by-page:",
                             query_target: "references"),
-                tabindex: increment_tab_index, 
+                tabindex: increment_tab_index,
                 title: 'Search for the instances, sorted by page.',
                 class: 'instance')
     %>
@@ -80,12 +80,18 @@
 <% novelties = @reference.novelties %>
 <% if novelties.size > 0 %>
   <%= link_to("#{pluralize(novelties.size,"Novelty")} #{search_icon_on_tab}".html_safe,
-                        search_path(query_target: "References with novelties", query_string: "id:#{@reference.id}"), 
-                        tabindex: increment_tab_index, 
+                        search_path(query_target: "References with novelties", query_string: "id:#{@reference.id}"),
+                        tabindex: increment_tab_index,
                         title: 'Taxon novelties in this reference.',
                         class: 'instance') %>
 <% end %>
 
+<% if @reference.products.present? %>
+  <h5>Products:</h5>
+  <% @reference.products.each do |product| %>
+    <p><%= "#{product.name} - ##{product.id}"%></p>
+  <% end %>
+<% end %>
 
 <% unless @reference.doi.blank? %>
   <br/>

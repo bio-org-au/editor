@@ -1,4 +1,4 @@
-<%= form_with url: url, method: method, remote: true, html: { data: { type: :json, form_type: 'annotation_form' } } do |f| %>
+<%= form_with url: url, method: method, remote: true, html: { class: "prompt-form-save", data: { type: :json, form_type: 'annotation_form' } } do |f| %>
   <div style="margin-top: 10px; display: flex; align-items: center;">
     <!-- Hidden fields with parameters -->
     <%= hidden_field_tag "profile_item_annotation[profile_item_id]", profile_item_annotation.profile_item_id %>
@@ -10,3 +10,6 @@
     <%= f.submit 'Save', style: 'background-color: #5a5a5a; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px; margin-left: 10px;' %>
   </div>
 <% end %>
+<script>
+  renderFormPrompt();
+</script>

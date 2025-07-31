@@ -29,6 +29,7 @@ services:
       - ./backups:/backups
     ports:
       - "5432:5432"
+      - "5430:5432"
     depends_on:
       - vpn_client
     networks:

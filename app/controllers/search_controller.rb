@@ -67,6 +67,7 @@ class SearchController < ApplicationController
     params[:include_common_and_cultivar_session] = \
       session[:include_common_and_cultivar]
     apply_view_mode
+    params[:view_mode] = session[:view_mode]
     # Avoid "A copy of Search has been removed from the module tree but is still active" error
     # https://stackoverflow.com/questions/29636334/a-copy-of-xxx-has-been-removed-from-the-module-tree-but-is-still-active
     @search = ::Search::Base.new(params)

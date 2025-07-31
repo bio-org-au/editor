@@ -57,7 +57,7 @@ class Ability
 
     # NOTES: Broader permissions come first
     draft_editor(user) if user.with_role?('draft-editor')
-    profile_editor if user.with_role?('profile-editor')
+    profile_editor(user) if user.with_role?('profile-editor')
     draft_profile_editor if user.with_role?('draft-profile-editor')
   end
 
@@ -142,12 +142,23 @@ class Ability
     can "names", "tab_instances_profile_v2"
   end
 
-  def profile_editor
+  def profile_editor(user)
     can :manage, :profile_v2
-    can :manage, Profile::ProfileItem
+    can :manage, Profile::ProfileItem do |profile_item|
+      profile_item.product_item_config.product_id == user.product_from_roles&.id
+    end
+    can :create_version, Profile::ProfileItem do |profile_item|
+      !profile_item.is_draft?
+    end
+    can :publish, Profile::ProfileItem do |profile_item|
+      profile_item.draft_version?
+    end
     can :manage, Profile::ProfileItemReference
     can :manage, Profile::ProfileText
     can :manage, Profile::ProfileItemAnnotation
+    can :manage_profile, Instance do |instance|
+      instance.profile_items.by_product(user.product_from_roles).any?
+    end
     can "references", "typeahead_on_citation"
     can "profile_items", :all
     can "profile_item_annotations", :all

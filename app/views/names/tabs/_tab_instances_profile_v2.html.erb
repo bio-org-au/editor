@@ -5,7 +5,7 @@
     You do not have a product reference. Please contact your administrator.
   </div>
 <% else %>
-  <% product_reference = Profile::Product.find_by(name: product.name).reference %>
+  <% product_reference = Product.find_by(name: product.name).reference %>
   <% increment_tab_index(0) %>
 
   <% if @name.duplicate? %>

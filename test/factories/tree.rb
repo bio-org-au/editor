@@ -35,6 +35,5 @@ FactoryBot.define do
     rdf_id { "Sample Rdf" }
     is_schema { true }
     is_read_only { true }
-    CONSTRAINT { "Default CONSTRAINT" }
   end
 end

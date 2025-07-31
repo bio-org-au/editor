@@ -88,6 +88,8 @@ import "markdown_it_min";
 import "simplemde_min";
 import "simple_mde_wysiwyg";
 
+import "prompt_form_save";
+
 import Rails from '@rails/ujs';
 
 Rails.start();

@@ -54,30 +54,32 @@ module Profile
     belongs_to :profile_text, class_name: 'Profile::ProfileText', foreign_key: 'profile_text_id'
     belongs_to :source_profile_item, class_name: 'Profile::ProfileItem', foreign_key: 'source_profile_item_id', optional: true
     belongs_to :profile_object_type,
-              class_name: 'Profile::ProfileObjectType',
-              primary_key: 'rdf_id',
-              foreign_key: 'profile_object_rdf_id',
-              optional: true
+      class_name: 'Profile::ProfileObjectType',
+      primary_key: 'rdf_id',
+      foreign_key: 'profile_object_rdf_id',
+      optional: true
+    belongs_to :tree_element, class_name: 'Tree::Element', foreign_key: 'tree_element_id', optional: true
 
-    has_many :profile_item_references,
-            class_name: 'Profile::ProfileItemReference',
-            foreign_key: 'profile_item_id',
-            dependent: :destroy
+    has_many :profile_item_references, class_name: 'Profile::ProfileItemReference', foreign_key: 'profile_item_id', dependent: :destroy
 
     has_one :product, through: :product_item_config
     has_one :profile_item_type, through: :profile_object_type, class_name: 'Profile::ProfileItemType'
-    has_one :profile_item_annotation,
-            class_name: 'Profile::ProfileItemAnnotation',
-            foreign_key: 'profile_item_id',
-            dependent: :destroy
+    has_one :profile_item_annotation, class_name: 'Profile::ProfileItemAnnotation', foreign_key: 'profile_item_id', dependent: :destroy
 
-    has_many :sourced_in_profile_items,
-            class_name: 'Profile::ProfileItem',
-            foreign_key: 'source_profile_item_id'
+    has_many :sourced_in_profile_items, class_name: 'Profile::ProfileItem',foreign_key: 'source_profile_item_id'
 
     validates :statement_type, presence: true
 
     default_scope { includes(:product_item_config).order("product_item_config.sort_order ASC") }
+
+    scope :drafts, -> { where(is_draft: true) }
+    scope :by_product, ->(product) do
+      joins(:product_item_config)
+      .where(product_item_config: { product_id: product.id })
+    end
+    scope :by_product_item_config, ->(product_item_config) do
+      where(product_item_config_id: product_item_config.id)
+    end
 
     after_destroy :conditionally_destroy_profile_text
 
@@ -93,6 +95,26 @@ module Profile
 
     def fact?
       statement_type == "fact"
+    end
+
+    def published?
+      !is_draft? && tree_element_id != nil && !instance.draft?
+    end
+
+    def under_this_product?(product)
+      self.product.id == product.id && tree_element_id != nil && ::Product.by_tree_element(tree_element).exists?(product.id)
+    end
+
+    def draft_version?
+      is_draft? && !instance.draft?
+    end
+
+    def publish!
+      return if published?
+
+      self.is_draft = false
+      self.published_date = Time.current
+      save!
     end
 
     private

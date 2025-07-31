@@ -19,6 +19,8 @@
 Rails.application.routes.draw do
   namespace :profile_items do
     resources :links
+    resources :versioned_copies, only: [:create]
+    resources :publishes, only: [:create]
   end
   match "profile_items/:id",
         as: "profile_items_show",

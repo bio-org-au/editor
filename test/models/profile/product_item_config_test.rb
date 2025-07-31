@@ -26,7 +26,7 @@ module Profile
 
     # Test associations
     test "should belong to product" do
-      assert @product_item_config.product.is_a?(Profile::Product)
+      assert @product_item_config.product.is_a?(::Product)
     end
 
     test "should belong to profile_item_type" do

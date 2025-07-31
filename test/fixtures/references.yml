@@ -1297,6 +1297,7 @@ a_book:
   citation: a book
   citation_html: a book
   display_title: a book
+  pages: 2-3
   author: unknown
   ref_author_role: dash
   ref_type: book

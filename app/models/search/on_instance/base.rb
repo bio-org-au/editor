@@ -86,9 +86,13 @@ class Search::OnInstance::Base
 
   def include_profile_items(instances)
     results = []
-    instances.includes(:profile_items).each do |instance|
+    instances.each do |instance|
       results << instance
-      results << instance.profile_items.where(profile_object_rdf_id: "text")
+      results << instance
+        .profile_items
+        .where(profile_object_rdf_id: "text")
+        .includes([:profile_text])
+
       results.flatten!
     end
 

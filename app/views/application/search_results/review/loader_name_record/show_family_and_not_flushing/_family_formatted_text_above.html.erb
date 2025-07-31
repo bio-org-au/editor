@@ -1,0 +1,8 @@
+
+
+  <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+    <% unless search_result.formatted_text_above.blank? %>
+      <tr><td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_above) %></span></td></tr>
+    <% end %>
+  <% end %>
+

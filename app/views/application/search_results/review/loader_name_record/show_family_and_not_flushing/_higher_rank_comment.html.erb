@@ -1,0 +1,7 @@
+
+
+    <% unless search_result.higher_rank_comment.blank? %>
+      <tr>
+        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.higher_rank_comment) %></span></td>
+      </tr>
+    <% end %>

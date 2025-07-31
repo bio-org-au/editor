@@ -15,6 +15,10 @@
       You cannot delete this reference because it has one or more instances.
     <% end %>
 
+    <% if @reference.products.any? %>
+      You cannot delete this reference because it has one or more products.
+    <% end %>
+
     <% unless @reference.children? || @reference.instances? %>
 
       <% delete_link = link_to("Delete the reference...",

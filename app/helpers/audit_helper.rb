@@ -21,7 +21,7 @@ module AuditHelper
   def created_by_whom_and_when(record)
     %(Created <span class="purple"
     >#{time_ago_in_words(record.created_at)}&nbsp;ago</span>
-    by #{record.created_by.downcase} #{formatted_timestamp(record.created_at)})
+    by #{record.created_by} #{formatted_timestamp(record.created_at)})
   end
 
   # Only show updated_at if a meaningful time after created_at.
@@ -36,7 +36,7 @@ module AuditHelper
   def meaningful_update(record)
     %(Last updated
     <span class="purple">#{time_ago_in_words(record.updated_at)}&nbsp;ago
-    </span> by #{record.updated_by.downcase} #{formatted_timestamp(
+    </span> by #{record.updated_by} #{formatted_timestamp(
       record.updated_at
     )})
   end
@@ -44,7 +44,7 @@ module AuditHelper
   def meaningful_update_when_no_created_at(record)
     %(Created or last updated
     <span class="purple">#{time_ago_in_words(record.updated_at)}&nbsp;ago
-    </span> by #{record.updated_by.downcase} #{formatted_timestamp(
+    </span> by #{record.updated_by} #{formatted_timestamp(
       record.updated_at
     )})
   end
@@ -52,6 +52,6 @@ module AuditHelper
   def published_by_whom_and_when(record)
     %(Published <span class="purple"
     >#{time_ago_in_words(record.published_at)}&nbsp;ago</span>
-    by #{record.published_by.downcase} #{formatted_timestamp(record.published_at)})
+    by #{record.published_by} #{formatted_timestamp(record.published_at)})
   end
 end

@@ -19,19 +19,29 @@
 # Field rules available for building predicates.
 class Search::Reference::FieldRule
   RULES = {
-    "is-a-duplicate:" => { where_clause: " duplicate_of_id is not null" },
-    "is-not-a-duplicate:" => { where_clause: " duplicate_of_id is null" },
+    "is-a-duplicate:" => { where_clause: " duplicate_of_id is not null",
+                           takes_no_arg: true},
+    "is-not-a-duplicate:" => { where_clause: " duplicate_of_id is null",
+                               takes_no_arg: true},
     "is-a-parent:" => { where_clause: " exists (select null from
-reference child where child.parent_id = reference.id) " },
+reference child where child.parent_id = reference.id) ",
+                        takes_no_arg: true},
     "is-not-a-parent:" => { where_clause: " not exists (select null from
-reference child where child.parent_id = reference.id) " },
+reference child where child.parent_id = reference.id) ",
+                            takes_no_arg: true},
     "has-no-children:" => { where_clause: " not exists (select null from
-reference child where child.parent_id = reference.id) " },
-    "has-no-parent:" => { where_clause: " parent_id is null" },
-    "is-a-child:" => { where_clause: " parent_id is not null" },
-    "is-not-a-child:" => { where_clause: " parent_id is null" },
-    "is-published:" => { where_clause: " published = true" },
-    "is-not-published:" => { where_clause: " not published" },
+reference child where child.parent_id = reference.id)",
+                            takes_no_arg: true },
+    "has-no-parent:" => { where_clause: " parent_id is null",
+                          takes_no_arg: true},
+    "is-a-child:" => { where_clause: " parent_id is not null",
+                       takes_no_arg: true},
+    "is-not-a-child:" => { where_clause: " parent_id is null",
+                           takes_no_arg: true},
+    "is-published:" => { where_clause: " published = true",
+                         takes_no_arg: true},
+    "is-not-published:" => { where_clause: " not published",
+                             takes_no_arg: true},
 
     "author-exact:" => { where_clause: " author_id in (select id from
                                  author where lower(name) like lower(?))" },
@@ -78,7 +88,8 @@ from ref_type where lower(name) like lower(?))" },
                                  like lower(?)" },
     "publisher:" => { where_clause:
                                  " lower(publisher) like lower(?)" },
-    "volume:" => { where_clause: " lower(volume) like lower(?)" },
+    "volume:" => { where_clause: " lower(volume) like lower(?)",
+                   not_exists_clause: "volume is null"},
     "pages:" => { where_clause: " lower(pages) like lower(?)" },
     "bhl:" => { where_clause:
                                  " lower(bhl_url) like lower(?)" },
@@ -113,8 +124,8 @@ from ref_type where lower(name) like lower(?))" },
 
     "parent-id:" => { where_clause: " id = ? or parent_id = ?",
                       order: "case when parent_id is null then
-                                 'A' else 'B' end, citation" },
-
+                                 'A' else 'B' end, citation",
+                      not_exists_clause: " parent_id is null"},
     "parent-id-sort-by-volume:" => { where_clause: " id = ? or parent_id = ?",
                                      order: "case when parent_id is null then
                                  'A' else 'B' end, volume, citation" },
@@ -153,10 +164,13 @@ inner join reference child on r.id = child.parent_id
 inner join ref_type child_rt on child.ref_type_id = child_rt.id
 where (rt.name,child_rt.name) not in (select xrt.name, xcrt.name
 from ref_type xrt
-inner join ref_type xcrt on xrt.id = xcrt.parent_id))" },
-    "no-year:" => { where_clause: " iso_publication_date is null " },
+inner join ref_type xcrt on xrt.id = xcrt.parent_id))",
+    takes_no_arg: true},
+    "no-year:" => { where_clause: " iso_publication_date is null ",
+                    takes_no_arg: true},
     "pub-date-is-year:" => {
-      where_clause: "publication_date ~ '^\\(*[0-9][0-9][0-9][0-9]\\)*$' "
+      where_clause: "publication_date ~ '^\\(*[0-9][0-9][0-9][0-9]\\)*$' ",
+      takes_no_arg: true,
     },
     "pub-date-matches:" => { where_clause: " publication_date ~* ? " },
     "has-no-direct-or-child-instances:" => { where_clause: " reference.id not in
@@ -177,7 +191,8 @@ inner join ref_type xcrt on xrt.id = xcrt.parent_id))" },
               where i2.reference_id = refchild.id
                 )
             )
-        ) " },
+        ) ",
+                     takes_no_arg: true},
     "language:" => { multiple_values: true,
                      where_clause: " language_id = (select id from language where lower(name) = lower(?) ) ",
                      multiple_values_where_clause: " language_id in (select id from language where lower(name) in (?))" },

@@ -71,7 +71,8 @@ class TreeVersionElement < ActiveRecord::Base
 
   belongs_to :parent,
              foreign_key: "parent_id",
-             class_name: "TreeVersionElement"
+             class_name: "TreeVersionElement",
+             optional: true
 
   def count_children
     pattern = "^#{tree_path}/.*"

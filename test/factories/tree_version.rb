@@ -27,5 +27,7 @@ FactoryBot.define do
     published { true }
     published_by { "Sample Published by" }
     tree_id { 1 }
+
+    association :tree
   end
 end

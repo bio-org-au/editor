@@ -35,7 +35,7 @@
 #  fk_5sv181ivf7oybb6hud16ptmo5  (previous_element_id => tree_element.id)
 #
 FactoryBot.define do
-  factory :tree_element do
+  factory :tree_element, class: "Tree::Element" do
     lock_version { 1 }
     display_html { "Sample Display html" }
     excluded { true }
@@ -49,5 +49,8 @@ FactoryBot.define do
     source_shard { "Sample Source shard" }
     synonyms_html { "Sample Synonyms html" }
     updated_by { "Sample Updated by" }
+
+    association :instance
+    association :name
   end
 end

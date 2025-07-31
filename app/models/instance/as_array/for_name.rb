@@ -53,7 +53,7 @@ class Instance::AsArray::ForName < Array
   end
 
   def sorted_instances(instances)
-    instances.sort do |i1, i2|
+    instances.includes([:name]).sort do |i1, i2|
       sort_fields(i1) <=> sort_fields(i2)
     end
   end

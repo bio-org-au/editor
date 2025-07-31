@@ -190,14 +190,11 @@ class NamesController < ApplicationController
     @name = Name.includes(:name_type,
                           :name_status,
                           :name_rank,
-                          :instances,
                           :author,
                           :ex_author,
                           :base_author,
-                          :duplicate_of,
                           :ex_base_author,
-                          :name_tags,
-                          :comments).find(params[:id])
+                          :name_tags).find(params[:id])
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "Could not find the name."
     redirect_to names_path

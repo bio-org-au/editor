@@ -55,7 +55,8 @@ class Tree < ActiveRecord::Base
 
   belongs_to :current_tree_version,
              class_name: "TreeVersion",
-             foreign_key: "current_tree_version_id"
+             foreign_key: "current_tree_version_id",
+             optional: true
 
   has_many :tree_versions,
            foreign_key: "tree_id"

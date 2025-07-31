@@ -26,7 +26,7 @@ class SearchLoaderNameSimpleWithBatchIdTest < ActiveSupport::TestCase
     params = ActiveSupport::HashWithIndifferentAccess.new(query_target:
                                                           "loader_names",
                                                           query_string:
-                                                          "* batch-id:",
+                                                          "* batch-id: 3",
                                                           current_user:
                                                           build_edit_user)
     search = Search::Base.new(params)

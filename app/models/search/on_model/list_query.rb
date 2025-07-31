@@ -21,31 +21,28 @@ class Search::OnModel::ListQuery
 
   def initialize(parsed_request)
     @parsed_request = parsed_request
+    @view_mode = parsed_request.params[:view_mode]
     prepare_query
     @limited = true
     @info_for_display = ""
   end
 
   def prepare_query
-    Rails.logger.debug("===========================================================================================")
-    Rails.logger.debug("Search::OnModel::ListQuery#prepare_query on target: #{@parsed_request.target_table}")
-    Rails.logger.debug("Search::OnModel::ListQuery#prepare_query target model: #{@parsed_request.target_model}")
-    Rails.logger.debug("===========================================================================================")
     if @parsed_request.target_model.nil?
       raise "Target '#{@parsed_request.target_table}' is not registered with parsed request."
     end
 
     @model_class = @parsed_request.target_model.constantize
-    prepared_query = @model_class.where("1=1")
-    Rails.logger.debug("Search::OnModel::ListQuery#prepare_query sql: #{prepared_query.to_sql}")
-    Rails.logger.debug("===========================================================================================")
+    if @parsed_request.target_table.match(/loader.name/) && @view_mode == 'review_view'
+      prepared_query = @model_class.where("record_type != 'in-batch-compiler-note'")
+    else
+      prepared_query = @model_class.where("1=1")
+    end
     where_clauses = Search::OnModel::WhereClauses.new(@parsed_request, prepared_query)
     @do_count_totals = where_clauses.do_count_totals
     prepared_query = where_clauses.sql
     prepared_query = prepared_query.limit(@parsed_request.limit) if @parsed_request.limited
-    Rails.logger.debug(prepared_query.to_sql)
     prepared_query = prepared_query.offset(@parsed_request.offset) if @parsed_request.offsetted
-    #prepared_query = prepared_query.order(Arel.sql("#{@parsed_request.default_order_column}"))
     prepared_query = prepared_query.order((Name.sanitize_sql_for_order("#{@parsed_request.default_order_column}")))
     @sql = prepared_query
   end

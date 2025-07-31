@@ -50,6 +50,11 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
 
   attr_accessor :give_me_focus, :message
 
+  scope :active, -> { 
+    where("start_date <= ?", Time.zone.today)
+    .where("end_date IS NULL OR end_date >= ?", Time.zone.today)
+  }
+
   def loader_name_comments(loader_name_id, scope = "unrestricted")
     if scope == "unrestricted"
       return comments.order(:created_at).collect.select do |x|
@@ -190,17 +195,21 @@ class Loader::Batch::Review::Period < ActiveRecord::Base
     "active" if active?
   end
 
+  # Comparison needs to be TZ neutral
   def future?
-    start_date > Time.now
+    start_date > Time.zone.today
   end
 
+  # Comparison needs to be TZ neutral
+  # We get PG to convert the date stored in db to the Rails TZ
   def past?
-    end_date.present? && end_date < Time.now
+    return false unless end_date.present?
+
+    end_date < Time.zone.today
   end
 
   def active?
-    start_date < Time.now &&
-      (end_date.blank? || end_date > Time.now)
+    !future? && !past?
   end
 
   def finite?

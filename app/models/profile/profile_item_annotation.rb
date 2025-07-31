@@ -27,6 +27,8 @@
 #
 module Profile
     class ProfileItemAnnotation < ApplicationRecord
+      include UserTrackable
+
       self.table_name = "profile_item_annotation"
       self.primary_key = "id"
 

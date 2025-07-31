@@ -1,0 +1,18 @@
+
+  <% wd = "application/search_results/review/loader_name_record/show_family_and_not_flushing" %>
+  <%= render partial: "#{wd}/white_space_before_family" %>
+
+  <% show_details_class = search_result.rank.match(/\Afamily\z/) ? 'review-result':'' %>
+
+  <%= render partial: "#{wd}/family_formatted_text_above", locals: {search_result: search_result} %>
+
+  <%= render partial: "#{wd}/family_of_review_result", locals: {search_result: search_result, show_details_class: show_details_class} %>
+
+  <%= render partial: "#{wd}/higher_rank_comment", locals: {search_result: search_result} %>
+
+  <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+    <% unless search_result.formatted_text_below.blank? %>
+      <tr><td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_below) %></span></td></tr>
+    <% end %>
+  <% end %>
+

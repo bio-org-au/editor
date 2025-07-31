@@ -11,7 +11,7 @@ RSpec.describe "names/tabs/_tab_instances_profile_v2.html.erb", type: :view do
   let!(:instance_type) { FactoryBot.create(:instance_type, name: "secondary reference") }
 
   before do
-    allow(Profile::Product).to receive(:find_by).with(name: product.name).and_return(product)
+    allow(Product).to receive(:find_by).with(name: product.name).and_return(product)
     allow(product).to receive(:reference).and_return(reference)
     allow(user).to receive(:available_product_from_roles).and_return(product)
 

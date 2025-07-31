@@ -28,37 +28,32 @@
 #  product_reference_id_fkey  (reference_id => reference.id)
 #  product_tree_id_fkey       (tree_id => tree.id)
 #
-_fixture:
-  model_class: Profile::Product
   
 foa:
-  description_html: "foa description"
-  name: "FOA"
-  reference_id: simple (Reference)
-  tree_id: FOA
-  namespace_id: apni (Namespace)
+  description_html: foa product
+  name: FOA
+  reference: simple
+  tree: FOA
   created_by: tester
   updated_by: tester
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
   
 apc:
-  description_html: "apc description"
-  name: "APC"
-  reference_id: 
-  tree_id: APC
-  namespace_id: apni (Namespace)
+  description_html: apc product
+  name: APC
+  reference: simple
+  tree: APC
   created_by: tester
   updated_by: tester
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
   
 apni:
-  description_html: "apni description"
-  name: "APNI"
-  reference_id: 
-  tree_id: 
-  namespace_id: apni (Namespace)
+  description_html: apni product
+  name: APNI
+  reference: simple
+  tree: 
   created_by: tester
   updated_by: tester
   created_at: <%= Time.now %>

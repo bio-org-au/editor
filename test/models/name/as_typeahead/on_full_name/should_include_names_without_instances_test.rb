@@ -17,19 +17,15 @@
 #   limitations under the License.
 #
 require "test_helper"
-load "models/search/users.rb"
 
-# Single Search model test.
-class SearchOnAuthorAssertionDuplicateIsNotATest < ActiveSupport::TestCase
-  test "is not a duplicate" do
-    search = Search::Base.new(
-      ActiveSupport::HashWithIndifferentAccess.new(query_string:
-                                                   "is-not-a-duplicate:",
-                                                   query_target: "Author",
-                                                   current_user:
-                                                   build_edit_user)
-    )
-    assert !search.executed_query.results.empty?,
-           "Should find non-duplicate authors."
+# Single Name typeahead test.
+class NameTAOnFullNameSuggsShldInclNamesWOInstTest < ActiveSupport::TestCase
+  test "name on full name suggestions shd not incl names without instances" do
+    suggestions = Name::AsTypeahead::OnFullName
+                  .new(term: "a name without instances")
+                  .suggestions
+    assert(suggestions.is_a?(Array), "suggestions should be an array")
+    assert_not(suggestions.empty?,
+           'suggestions for "a name without instances" should not be empty')
   end
 end

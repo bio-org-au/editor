@@ -1,9 +1,108 @@
-- :date: 21-May-2025
+- :date: 25-June-2025
+  :jira_id: '5472'
+  :jira_project: NSL
+  :description: |-
+    Don't allow a user to delete a reference that is used in a product
+- :date: 23-June-2025
+  :jira_id: '77'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Chore - Address bullet gem's N+1 queries
+- :date: 23-June-2025
+  :jira_id: '77'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Implement new versioned copy of profile item
+- :date: 20-Jun-2025
+  :jira_id: '5468'
+  :description: |-
+    Batch Review: Keep commenting available until the end of the review period's closing day
+- :date: 20-Jun-2025
+  :jira_id: '5462'
+  :description: |-
+    Batch Review: Remove ability for user to edit or delete their comments after review ends
+- :date: 18-June-2025
+  :jira_id: '73'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Unify the Product and Profile::Product models as a Product model
+- :date: 18-June-2025
+  :jira_id: '77'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Backend service for creating new versioned profile items
+- :date: 12-June-2025
+  :jira_id: '76'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add a feature flag for site-wide unsaved form changes prompt
+- :date: 12-Jun-2025
+  :jira_id: '5457'
+  :description: |-
+    Batch Loader: remove boiler plate text "need a way to see the comments"
+- :date: 12-Jun-2025
+  :jira_id: '5435'
+  :description: |-
+    Loader Review: allow comments on in-batch-note records - fix problem found testing re-factored display algorithm
+- :date: 11-June-2025
+  :jira_id: '76'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Prompt message for there are unsaved changes in the profile item editor
+- :date: 11-Jun-2025
+  :jira_id: '5450'
+  :description: |-
+    Loader Review: Do not display heading record full names e.g. for Family heading records
+- :date: 11-Jun-2025
+  :jira_id: '5453'
+  :description: |-
+    Created By and Updated By: Editor now does not downcase usernames when displaying them in metadata
+- :date: 06-Jun-2025
+  :jira_id: '4889'
+  :description: |-
+    Reference New Instance: include names without an instance in the names typeahead (revert NSL-945)
+- :date: 04-Jun-2025
+  :jira_id: '5448'
+  :description: |-
+    Loader Review: Fix first accepted name not being displayed in Test
+- :date: 30-May-2025
+  :jira_id: '75'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Identify profile item product by tree and fixup UI for editing linked profile item
+- :date: 29-May-2025
+  :jira_id: '5439'
+  :description: |-
+    Loader Review: Make in-batch compiler notes invisible to reviewers
+- :date: 28-May-2025
+  :jira_id: '75'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Profile editor permissions and view template code cleanups
+- :date: 28-May-2025
+  :jira_id: '5442'
+  :description: |-
+    Loader Review Period: Really fix data comparisons in cloud deployments (use Time.zone.today instead of Date.today)
+- :date: 27-May-2025
+  :jira_id: '5446'
+  :description: |-
+    Search directives: Report error to user when search directives requiring an argument are submitted without one
+- :date: 23-May-2025
+  :jira_id: '5442'
+  :description: |-
+    Loader Review Period: Fix date comparisons for start and end of review periods (make timezone neutral)
+- :date: 23-May-2025
+  :jira_id: '5435'
+  :description: |-
+    Loader Review: Allow reviewer comments on in-batch-notes
+- :date: 10-Jun-2025
+  :release: true
+- :date: 22-May-2025
   :jira_id: '5445'
   :description: |-
     Users: save and query user logins in lower case regardless of how users enter them for login
 - :date: 21-May-2025
-  :jira_id: ''
+  :jira_id: '5441'
   :description: |-
     Loader Review: Revise <code>org-not-voted:</code> search directive SQL
 - :date: 21-May-2025

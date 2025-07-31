@@ -1,0 +1,36 @@
+
+  <tr id="family-of-review-result-<%= search_result.id %>"
+      class="<%= show_details_class %> review family takes-focus show-details" tabindex="<%= increment_tab_index(100) %>"
+      data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+      data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+      data-record-id="<%= search_result.id %>"
+      data-record-type="loader-name"
+  >
+  <td class="takes-focus" colspan="2"
+      tabindex="<%= increment_tab_index %>" 
+    >
+      <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+      <a class="review-show-details-link navigation-link takes-focus show-details" title='title' tabindex="<%= increment_tab_index(100) %>">
+        <span class="review loader-name family"><%= "#{search_result.family}" %> </span>
+        <% unless search_result.remark_to_reviewers.blank? %>
+          <span class="review loader-name remark-to-reviewers">
+            <%= search_result.remark_to_reviewers
+              .gsub(/<a/, "<a class='remark-to-reviewers'")
+              .sub(/(>)([^><]*$)/,'\1<span class="remark-to-reviewers">\2</span>')
+              .html_safe %>
+          </span>
+        <% end %>
+      <% else %>
+        <% unless search_result.record_type == 'in-batch-note' %>
+          <span class="review loader-name family"><%= "[#{search_result.family}]" %> </span>
+        <% end %>
+      <% end %>
+      </a>
+      <% if search_result.rank == 'family' %><%# is it a real record or not? %>
+        <% if search_result.reviewer_comments? %>
+          <span class="reviewer-comment-tag"><%= pluralize(search_result.reviewer_comments.size, 'reviewer comment') %></span>
+        <% end %>
+      <% end %>
+    </td>
+  </tr>
+

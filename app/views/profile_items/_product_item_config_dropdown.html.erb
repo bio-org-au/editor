@@ -1,5 +1,5 @@
 <div id="product-item-config-dropdown-container" class="form-group" style="padding: 20px 0;">
-  <%= form_with url: profile_items_path, method: :get, remote: true, data: { turbo_stream: "profile_items" } do %>
+  <%= form_with url: profile_items_path, method: :get, remote: true, data: { turbo_stream: "profile_items"}  do %>
     <label for="product_item_config_id">Choose an item type to add or edit:</label>
     <%= hidden_field_tag :instance_id, instance.id %>
     <%= select_tag :product_item_config_id,
@@ -12,10 +12,12 @@
         selected: selected_product_item_config_id
       ),
       include_blank: "",
-      class: "form-control give-me-focus width-15em",
+      class: "form-control give-me-focus width-15em auto-submit-on-change",
       style: "background-color: white",
-      onchange: "this.form.requestSubmit()",
       tabindex: increment_tab_index
     %>
   <% end %>
 </div>
+<script>
+  renderFormPrompt();
+</script>

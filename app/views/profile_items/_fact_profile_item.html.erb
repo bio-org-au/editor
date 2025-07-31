@@ -2,6 +2,32 @@
   <h4>
     <%= product_item_config.display_html %>
     <span stype="font-size: 12px"><%= profile_item.is_draft? ? " - [DRAFT]" : ""%></span>
+
+    <% draft_profile_items = instance
+      .profile_items
+      .by_product_item_config(profile_item.product_item_config)
+      .drafts
+    %>
+
+    <% if !profile_item.is_draft? && !draft_profile_items.exists? %>
+      <%= form_with url: profile_items_versioned_copies_path, method: :post, remote: true, format: :turbo_stream, html: { style: 'display:inline; margin-left:10px;', class: 'prompt-form-save always-prompt-before-action'  } do |f| %>
+        <%= hidden_field_tag :id, profile_item.id %>
+        <%= hidden_field_tag :instance_id, instance.id %>
+        <%= f.submit 'Create a Versioned Update', title: "Create Version", class: 'btn btn-primary', style: 'background-color: #5a5a5a; font-size: 12px; padding: 2px 8px;' %>
+      <% end %>
+    <% end %>
+
+    <% if profile_item.persisted? && profile_item.draft_version? %>
+      <%= form_with url: profile_items_publishes_path, method: :post, remote: true, html: { style: 'display:inline; margin-left:10px;', class: 'prompt-form-save always-prompt-before-action'  } do |f| %>
+        <%= hidden_field_tag :id, profile_item.id %>
+        <%= hidden_field_tag :instance_id, instance.id %>
+        <%= submit_tag  'Publish', title: "Publish", class: 'btn btn-success', style: 'font-size: 12px; padding: 2px 8px;' %>
+      <% end %>
+    <% end %>
+
+    <%= javascript_tag do %>
+      renderFormPrompt();
+    <% end %>
   </h4>
   <div id="common-error-message-container" class="error-container"></div>
   <div id="message_<%= product_item_config.id %>" class="message-container"></div> <!-- Message container -->

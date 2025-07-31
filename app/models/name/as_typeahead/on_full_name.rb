@@ -43,7 +43,6 @@ class Name::AsTypeahead::OnFullName
         .where("lower(full_name) like lower(?)", prepared_search_term)
         .includes(:name_status)
         .joins(:name_rank)
-        .where("exists (select null from instance where instance.name_id = name.id)")
         .order("name_rank.sort_order, lower(full_name)")
         .limit(SEARCH_LIMIT)
         .collect do |n|

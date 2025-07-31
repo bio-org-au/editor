@@ -105,7 +105,7 @@ class Reference < ActiveRecord::Base
 
   attr_accessor :display_as, :message
 
-  has_many :products, dependent: :nullify, foreign_key: "reference_id"
+  has_many :products, foreign_key: "reference_id"
 
   before_validation :set_defaults
   before_create :set_defaults

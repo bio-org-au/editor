@@ -15,7 +15,7 @@
           "type": "controller",
           "class": "InstancesController",
           "method": "show",
-          "line": 42,
+          "line": 44,
           "file": "app/controllers/instances_controller.rb",
           "rendered": {
             "name": "instances/show",
@@ -35,49 +35,52 @@
       "note": ""
     },
     {
-      "warning_type": "Cross-Site Scripting",
-      "warning_code": 2,
-      "fingerprint": "bcc836b34f35b5ccf4147fcc4d2745fb84870806a142bdee257be75f66ab7cc8",
-      "check_name": "CrossSiteScripting",
-      "message": "Unescaped model attribute",
-      "file": "app/views/application/search_results/review/_loader_name_record.html.erb",
-      "line": 154,
-      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
-      "code": "Loader::Name.record_to_flush_results.remark_to_reviewers.gsub(/<a/, \"<a class='remark-to-reviewers'\").sub(/(>)([^><]*$)/, \"\\\\1<span class=\\\"remark-to-reviewers\\\">\\\\2</span>\")",
-      "render_path": [
-        {
-          "type": "template",
-          "name": "search/review/_container",
-          "line": 10,
-          "file": "app/views/search/review/_container.html.erb",
-          "rendered": {
-            "name": "search/review/_results",
-            "file": "app/views/search/review/_results.html.erb"
-          }
-        },
-        {
-          "type": "template",
-          "name": "search/review/_results",
-          "line": 36,
-          "file": "app/views/search/review/_results.html.erb",
-          "rendered": {
-            "name": "application/search_results/review/_loader_name_record",
-            "file": "app/views/application/search_results/review/_loader_name_record.html.erb"
-          }
-        }
-      ],
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "6fbab872bdf6fa0a4c7a5b7921b188cf393a15c4d393afe7e821bbc81155caae",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/loader/batch/review/period.rb",
+      "line": 197,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Loader::Batch::Review::Period.where(:id => self.id).select(\"timezone('#{Time.zone.name}', start_date) start_date\")",
+      "render_path": null,
       "location": {
-        "type": "template",
-        "template": "application/search_results/review/_loader_name_record"
+        "type": "method",
+        "class": "Loader::Batch::Review::Period",
+        "method": "future?"
       },
-      "user_input": null,
+      "user_input": "Time.zone.name",
       "confidence": "Medium",
       "cwe_id": [
-        79
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "d4688964c3031232a5fe957b21f2e67033750091ecff604bde10ab5794c35395",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/loader/batch/review/period.rb",
+      "line": 208,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Loader::Batch::Review::Period.where(:id => self.id).select(\"timezone('#{Time.zone.name}', end_date) end_date\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Loader::Batch::Review::Period",
+        "method": "past?"
+      },
+      "user_input": "Time.zone.name",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
       ],
       "note": ""
     }
   ],
-  "updated": "2024-11-22 15:58:30 +1100",
+  "updated": "2025-05-26 11:58:36 +1000",
   "brakeman_version": "6.2.2"
 }

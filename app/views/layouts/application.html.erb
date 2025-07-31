@@ -9,6 +9,8 @@
 
     <script>
       window.relative_url_root = "<%= Rails.application.config.action_controller.relative_url_root %>";
+      window.enablePromptUnsavedChanges = <%= Rails.configuration.try('unsaved_form_prompt_enabled') || false %>;
+      window.enableSiteWidePromptUnsavedChanges = <%= Rails.configuration.try('site_wide_form_prompt_enabled') || false %>;
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.js"
@@ -132,6 +134,8 @@ input[type="checkbox"]:not([title]) {
         <%= render partial: 'layouts/footer' %>
       </div>
     </div>
+
+    <%= render partial: "layouts/unsaved_changes_modal" %>
  </body>
 </html>
 

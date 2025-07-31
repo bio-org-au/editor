@@ -44,6 +44,7 @@ class Search::OnModel::Predicate
     @canon_field = build_canon_field(field)
     rule = @rules_class[@canon_field] || EMPTY_RULE
     @is_null = value.blank?
+    @has_not_exists_clause = rule[:not_exists_clause].present?
     apply_rule(rule)
     @canon_value = build_canon_value(value)
     apply_scope
@@ -109,6 +110,8 @@ class Search::OnModel::Predicate
 
   def build_scalar_predicate(rule)
     if @is_null
+      raise "#{@field} directive needs an argument" unless @takes_no_arg || @has_not_exists_clause
+
       build_is_null_predicate(rule)
     else
       rule[:where_clause]

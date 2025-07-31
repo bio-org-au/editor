@@ -1,7 +1,7 @@
 <div id="admin-page">
     <table  id="search-results-table" class="table table-condensed search-results" data-summary="Results of the latest search.">
     <tr><td colspan="99" width="80-percent">
-        
+
     <h3>Admin</h3>
     <h4>Configuration</h4>
 
@@ -70,15 +70,15 @@
     <tr><td>environment</td><td> <%= Rails.configuration.try(:environment) %> </td></tr>
 
     <tr><td>action_controller.perform_caching</td><td> <%= Rails.configuration.action_controller.try(:perform_caching) %> </td></tr>
-    <% if ENV['SECRET_KEY_BASE'].blank? %> 
-      <tr><td>SECRET_KEY_BASE stats</td><td>nil</td></tr>  
+    <% if ENV['SECRET_KEY_BASE'].blank? %>
+      <tr><td>SECRET_KEY_BASE stats</td><td>nil</td></tr>
     <% else %>
-      <tr><td>SECRET_KEY_BASE stats</td><td> <%= ENV['SECRET_KEY_BASE'][3..6] %> <%= ENV['SECRET_KEY_BASE'].length %> </td></tr>  
+      <tr><td>SECRET_KEY_BASE stats</td><td> <%= ENV['SECRET_KEY_BASE'][3..6] %> <%= ENV['SECRET_KEY_BASE'].length %> </td></tr>
     <% end %>
-    <% if ENV['RAILS_MASTER_KEY'].blank? %> 
-      <tr><td>RAILS_MASTER_KEY stats</td><td>nil</td></tr>  
+    <% if ENV['RAILS_MASTER_KEY'].blank? %>
+      <tr><td>RAILS_MASTER_KEY stats</td><td>nil</td></tr>
     <% else %>
-      <tr><td>RAILS_MASTER_KEY stats</td><td> <%= ENV['RAILS_MASTER_KEY'][3..6] %> <%= ENV['RAILS_MASTER_KEY'].length %> </td></tr>  
+      <tr><td>RAILS_MASTER_KEY stats</td><td> <%= ENV['RAILS_MASTER_KEY'][3..6] %> <%= ENV['RAILS_MASTER_KEY'].length %> </td></tr>
     <% end %>
     <tr><td colspan="2">&nbsp;</td></tr>
     </table>
@@ -110,7 +110,7 @@
         <td class="width-40-percent min-width-10em" >
           services
         </td>
-        <td> 
+        <td>
             <%= Rails.configuration.try(:services) %>
         </td>
       </tr>
@@ -132,24 +132,24 @@
     <tr><td class="width-40-percent min-width-10em" >API Doc </td><td> <%= link_to(service_url, service_url, title: 'API Documentation') %> </td></tr>
 
     <tr><td colspan="2"><strong>Services that do not change data</strong></td></tr>
-		
+
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/apc.json" %>
     <tr><td class="width-40-percent min-width-10em" >In the accepted taxonomy?</td><td> <%= link_to(service_url, service_url, title: 'Link to the "in APC?" client-side service.') %> </td></tr>
-		
+
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/apni.json" %>
     <tr><td class="width-40-percent min-width-10em" >In the nomenclatural set? </td><td> <%= link_to(service_url, service_url, title: 'Link to the "in APNI?" client-side service.') %> </td></tr>
-		
+
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/family.json" %>
     <tr><td>APNI Name Information</td><td> <%= link_to(service_url, service_url, title: 'Link to an APNI name information service.') %> </td></tr>
 
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/name/apni/91759/api/name-strings.json" %>
     <tr><td>Name strings</td><td> <%= link_to(service_url, service_url, title: 'Link to the name strings client-side service.') %> </td></tr>
-		
+
     <% service_url = "#{Rails.configuration.try(:services_clientside_root_url)}rest/reference/apni/17525/api/citation-strings.json" %>
     <tr><td>Reference strings</td><td> <%= link_to(service_url, service_url, title: 'Link to the reference strings client side service.') %> </td></tr>
     </table>
 
-    
+
     <h5>Mapper</h5>
     <table class="table table-condensed search-results width-100-percent">
       <tr>
@@ -167,8 +167,8 @@
       </tr>
       <tr>
         <td>x.mapper_api.password clues </td>
-        <td> <%= Rails.configuration.x.try(:mapper_api).try(:password).try(:first) %>, 
-             <%= Rails.configuration.x.try(:mapper_api).try(:password).try(:last) %>, 
+        <td> <%= Rails.configuration.x.try(:mapper_api).try(:password).try(:first) %>,
+             <%= Rails.configuration.x.try(:mapper_api).try(:password).try(:last) %>,
              <%= (Rails.configuration.x.try(:mapper_api).try(:password).try(:length) || 0) > 15 %> </td>
       </tr>
     </table>
@@ -196,6 +196,9 @@
     <tr><td class="width-40-percent min-width-10em">batch_loader_usage_order_aware</td><td> <%= Rails.configuration.try(:batch_loader_usage_order_aware) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">profile_v2_aware</td><td> <%= Rails.configuration.try(:profile_v2_aware) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">profile_v2_profile_v2_dropdown_ui</td><td> <%= Rails.configuration.try(:profile_v2_dropdown_ui) || false %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em">unsaved_form_prompt_enabled</td><td> <%= Rails.configuration.try(:unsaved_form_prompt_enabled) || false %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em">site_wide_form_prompt_enabled</td><td> <%= Rails.configuration.try(:site_wide_form_prompt_enabled) || false %> </td></tr>
+
     </table>
     <br> <br>
     <h5>Instance delete delay</h5>

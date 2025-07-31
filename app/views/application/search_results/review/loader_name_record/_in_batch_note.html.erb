@@ -1,0 +1,25 @@
+    <% unless search_result.formatted_text_above.blank? %>
+      <tr>
+        <td class="width-1-percent">&nbsp;</td>
+        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_above) %></span></td>
+      </tr>
+    <% end %>
+
+    <% wd = 'application/search_results/review/loader_name_record/in_batch_note' %>
+    <%= render partial: "#{wd}/one_record", locals: {search_result: search_result, give_me_focus: give_me_focus} %>
+     
+    <% unless search_result.higher_rank_comment.blank? %>
+      <tr>
+        <td class="width-1-percent">&nbsp;</td>
+        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.higher_rank_comment) %></span></td>
+      </tr>
+    <% end %>
+
+    <% unless search_result.formatted_text_below.blank? %>
+      <tr>
+        <td class="width-1-percent">&nbsp;</td>
+        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_below) %></span></td>
+      </tr>
+    <% end %>
+
+

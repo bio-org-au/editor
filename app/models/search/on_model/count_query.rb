@@ -21,6 +21,7 @@ class Search::OnModel::CountQuery
 
   def initialize(parsed_request)
     @parsed_request = parsed_request
+    @view_mode = parsed_request.params[:view_mode]
     prepare_query
     @info_for_display = "nothing yet from count query"
   end
@@ -29,7 +30,11 @@ class Search::OnModel::CountQuery
     Rails.logger.debug("Search::OnModel::CountQuery#prepare_query")
 
     @model_class = @parsed_request.target_model.constantize
-    prepared_query = @model_class.where("1=1")
+    if @parsed_request.target_table.match(/loader.name/) && @view_mode == 'review_view'
+      prepared_query = @model_class.where("record_type != 'in-batch-compiler-note'")
+    else
+      prepared_query = @model_class.where("1=1")
+    end
 
     where_clauses = Search::OnModel::WhereClauses.new(@parsed_request,
                                                       prepared_query)

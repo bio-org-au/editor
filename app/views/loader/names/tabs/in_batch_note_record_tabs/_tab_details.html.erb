@@ -1,5 +1,8 @@
 <ul class="nav nav-tabs">
   <%= @loader_name.record_type.gsub(/-/,' ').titlecase %>
+  <% if @loader_name.in_batch_compiler_note? %>
+    &mdash; will not appear in search results for reviewers
+  <% end %>
 </ul>
 
 <%#= render partial: 'detail_line', locals: {info: @loader_name.notes, label: 'Notes'} %>

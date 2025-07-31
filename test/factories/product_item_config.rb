@@ -44,6 +44,6 @@ FactoryBot.define do
     display_html { "Etymology"}
 
     association :profile_item_type
-    association :product, factory: :profile_product
+    association :product
   end
 end

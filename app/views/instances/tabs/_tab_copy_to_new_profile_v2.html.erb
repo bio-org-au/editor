@@ -1,4 +1,4 @@
-<% if @current_registered_user.available_product_from_roles.reference.blank? %>
+<% if @current_registered_user.available_product_from_roles&.reference.blank? %>
   <div id="search-result-details-error-message-container" class="message-container">
     You do not have a product reference. Please contact your administrator.
   </div>

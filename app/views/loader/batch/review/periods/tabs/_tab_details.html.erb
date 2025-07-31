@@ -19,6 +19,10 @@
                      info: @review_period&.end_date&.strftime("%d-%b-%Y")} %>
 
 <%= render partial: 'detail_line',
+           locals: { label: 'active?',
+                     info: @review_period.active?} %>
+
+<%= render partial: 'detail_line',
       locals: {label: 'names with comments',
                info: link_to(@review_period.names_with_comments.size,
                         search_path(

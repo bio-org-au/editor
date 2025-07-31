@@ -1,5 +1,5 @@
 <% field_id = profile_item_reference.persisted? ? "#{profile_item.id}-#{profile_item_reference.profile_item_id_reference_id}" : profile_item.id %>
-<%= form_with model: profile_item_reference, url: url, method: method, remote: true, html: { data: { type: :json, form_type: 'reference_item_form' } } do |f| %>
+<%= form_with model: profile_item_reference, url: url, method: method, remote: true, html: { data: { type: :json, form_type: 'reference_item_form' }, class: 'prompt-form-save' } do |f| %>
   <!-- Hidden fields with parameters -->
   <%= hidden_field_tag "profile_item_reference[profile_item_id]", profile_item.id %>
   <%= hidden_field_tag "profile_item_reference[reference_id]", profile_item_reference.reference_id, id: "reference-id-hidden-#{field_id}" %>
@@ -32,4 +32,5 @@
 
 <script>
   setUpInstanceReferenceProfileV2('<%= field_id %>');
+  renderFormPrompt();
 </script>

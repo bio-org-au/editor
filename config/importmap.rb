@@ -94,3 +94,5 @@ pin "simplemde_min", to: "https://cdn.jsdelivr.net/simplemde/latest/simplemde.mi
 pin "simple_mde_wysiwyg", preload: true
 
 pin "@rails/ujs", to: "https://ga.jspm.io/npm:@rails/ujs@7.0.4-3/lib/assets/compiled/rails-ujs.js"
+
+pin "prompt_form_save", preload: true

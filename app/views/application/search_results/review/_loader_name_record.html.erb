@@ -1,4 +1,4 @@
-<% Rails.logger.debug("loader name record; record_type: #{search_result.record_type}") %>
+<% wd = 'application/search_results/review' %>
 <%# There is complex logic here.
     The taxonomic note and distribution data from top-level records
     has to appear on separate lines _after_ any synonymy.
@@ -6,208 +6,44 @@
     is about to be displayed.
     Displaying notes and formatted text in the right places is also a bit complicated.
   %>
-<% @previous_previous_record_type = @previous_record_type %>
 
-<% if @previous_record_type.blank? then %>
-   <% @previous_record_type = search_result.record_type %>
-   <% if search_result.record_type == 'accepted' or search_result.record_type == 'excluded' then %>
-     <%  @stored_distribution = search_result.distribution %>
-     <%  @stored_comment = search_result.comment %>
-     <%  @stored_id = search_result.id %>
-     <%  @stored_result = search_result %>
-   <% end %>
+<%# displaying a record %>
+<% if first_record? then %>
+  <% capture_comment_distribution(search_result) if %w(accepted excluded).include?(search_result.record_type) %>
 <% else %>
-   <% @previous_record_type = search_result.record_type %>
-   <% if %w(accepted excluded in-batch-note).include?(search_result.record_type) then %>
-     <%= render partial: 'application/search_results/review/loader_name_stored_comment', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
-     <%= render partial: 'application/search_results/review/loader_name_stored_distribution', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
-     <% @stored_distribution = search_result.distribution %>
-     <% @stored_comment = search_result.comment %>
-     <%  @stored_id = search_result.id %>
-     <%  @stored_result = search_result %>
-     <tr class="review-result review white-space-row"><td colspan="4">
-       <a class="xnavigation-link takes-focus white-space" title='title' tabindex="<%= increment_tab_index(100) %>"></a>
-     &nbsp;</td></tr>
-   <% elsif search_result.record_type == 'heading' %>
-     <%= render partial: 'application/search_results/review/loader_name_stored_comment', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
-     <%= render partial: 'application/search_results/review/loader_name_stored_distribution', locals: {search_result: search_result, give_me_focus: give_me_focus} %>
-     <% @stored_distribution = nil %>
-     <% @stored_comment = nil %>
-     <%  @stored_id = nil %>
-     <%  @stored_result = nil %>
-   <% end %>
+  <% flush_captured_and_capture_next(search_result, give_me_focus, wd) %>
 <% end %>
 
+<% @previous_previous_record_type = @previous_record_type %>
+<% @previous_record_type = search_result.record_type %>
 
-<% if @previous_family.blank? then
-     @previous_family = search_result.family 
-     @show_family = true
-     @add_white_space_around_family = false
-   elsif @previous_family != search_result.family && %w(accepted excluded heading).include?(search_result.record_type)
-     @previous_family = search_result.family 
-     @show_family = true
-     @add_white_space_before_family = @previous_previous_record_type != 'heading'
-   else
-     @show_family = false
-   end
+
+<%# do we need to show a family heading?%>
+<%
+if first_family? then
+  capture_family(search_result)
+  will_show_family(:no_white_space)
+elsif family_has_changed?(search_result) && should_show_family_heading?(search_result)
+  capture_family(search_result)
+  will_show_family(params["query_string"].match(/family-list:/) ? :no_white_space : :show_white_space )
+else
+  will_not_show_family
+end
 %>
 
-<%# final search_result is a flushing record %>
-<% if @show_family && !search_result[:flushing] %>
-  <% if @add_white_space_before_family %>
-  <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
-  <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
-  <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
-  <tr class="spacer"><td colspan="4">&nbsp;</span></td></tr>
-<% end %>
-  <% if search_result.rank == 'family' %><%# is it a real record or not? %>
-    <% show_details_class = 'review-result' %>
-  <% else %>
-    <% show_details_class = '' %>
-  <% end %>
-
-
-  <% if search_result.rank == 'family' %><%# is it a real record or not? %>
-    <% unless search_result.formatted_text_above.blank? %>
-      <tr><td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_above) %></span></td></tr>
-    <% end %>
-  <% end %>
-
-
-  <tr id="family-of-review-result-<%= search_result.id %>"
-      class="<%= show_details_class %> review family takes-focus show-details" tabindex="<%= increment_tab_index(100) %>"
-      data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
-      data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
-      data-record-id="<%= search_result.id %>"
-      data-record-type="loader-name"
-  >
-  <td class="takes-focus" colspan="2"
-      tabindex="<%= increment_tab_index %>" 
-    >
-      <% if search_result.rank == 'family' %><%# is it a real record or not? %>
-      <a class="review-show-details-link navigation-link takes-focus show-details" title='title' tabindex="<%= increment_tab_index(100) %>">
-        <span class="review loader-name family"><%= "#{search_result.family}" %> </span>
-        <% unless search_result.remark_to_reviewers.blank? %>
-          <span class="review loader-name remark-to-reviewers">
-            <%= search_result.remark_to_reviewers
-              .gsub(/<a/, "<a class='remark-to-reviewers'")
-              .sub(/(>)([^><]*$)/,'\1<span class="remark-to-reviewers">\2</span>')
-              .html_safe %>
-          </span>
-        <% end %>
-      <% else %>
-        <% unless search_result.record_type == 'in-batch-note' %>
-          <span class="review loader-name family"><%= "[#{search_result.family}]" %> </span>
-        <% end %>
-      <% end %>
-      </a>
-      <% if search_result.rank == 'family' %><%# is it a real record or not? %>
-        <% if search_result.reviewer_comments? %>
-          <span class="reviewer-comment-tag"><%= pluralize(search_result.reviewer_comments.size, 'reviewer comment') %></span>
-        <% end %>
-      <% end %>
-    </td>
-  </tr>
-
-    <% unless search_result.higher_rank_comment.blank? %>
-      <tr>
-        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.higher_rank_comment) %></span></td>
-      </tr>
-    <% end %>
-
-  <% if search_result.rank == 'family' %><%# is it a real record or not? %>
-    <% unless search_result.formatted_text_below.blank? %>
-      <tr><td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_below) %></span></td></tr>
-    <% end %>
-  <% end %>
-
+<%# real or virtual family headings are processed here %>
+<% if @show_family && !search_result[:flushing] %> <%# final search_result is a flushing record %>
+  <%= render partial: "#{wd}/loader_name_record/show_family_and_not_flushing", locals: {search_result: search_result} %>
 <% end %>
 
-<% if search_result.record_type == 'in-batch-note' %>
-  <tr><td colspan="9">
-  <%= sanitize(search_result.notes) %>
-  </td></tr>
+<% case search_result.record_type %>
+<% when 'in-batch-compiler-note' %>
+<% when 'in-batch-note' %>
+  <%= render partial: "#{wd}/loader_name_record/in_batch_note",
+             locals: {search_result: search_result, give_me_focus: give_me_focus} %>
+<% when 'heading' %>
+  <%# handled above via show_family code %>
+<% else %>
+  <%= render partial: "#{wd}/loader_name_record/ordinary_record",
+             locals: {search_result: search_result, give_me_focus: give_me_focus} %>
 <% end %>
-
-<% unless (@show_family && search_result.rank == 'family') || search_result.record_type == 'in-batch-note' %>
-    <% unless search_result.formatted_text_above.blank? %>
-      <tr>
-        <td class="width-1-percent">&nbsp;</td>
-        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_above) %></span></td>
-      </tr>
-    <% end %>
-
-<tr id="review-result-<%= search_result.id %>" 
-  class="review-result show-details <%= 'fresh' if search_result.fresh? %>"  
-  data-get-url=""
-  data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
-  data-base-url=""
-  data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here', component: search_result.record_type) %>"
-  data-record-id="<%= search_result.id %>"
-  data-record-type="loader-name"
-  tabindex="<%= increment_tab_index %>" 
-    >
-    <td class="nsl-tiny-icon-container takes-focus width-1-percent"><%#= record_icon('loader-name') %></td>
-    <td
-        tabindex="<%= increment_tab_index %>" 
-        class="text takes-focus name main-content show-details min-width-70-percent max-width-90-percent width-80-percent <%= 'give-me-focus' if give_me_focus %>">
-    <a
-      class="review-show-details-link navigation-link"
-      tabindex="<%= increment_tab_index %>" 
-      title="Loader Name record. Select to show details."
-      id="<%= %Q(#{search_result.class}-#{search_result.id}) %>">
-      <%= render partial: 'application/search_results/review/link_texts/loader_name', locals: {search_result: search_result} %>
-      <% unless search_result.name_status.blank? %>
-        &nbsp;
-        <span class="review loader-name name-status"><%= search_result.name_status %> </span>
-      <% end %>
-      <% if search_result.record_type == 'accepted' && search_result.excluded? %>
-        <span class="excluded">excluded</span>
-      <% end %>
-      <% if search_result.isonym? %>
-        <span class="review loader-name isonym">isonym</span>
-      <% end %>
-
-
-      <% unless search_result[:flushing] %>
-        <% if search_result.narrow_direct_reviewer_comments? %>
-          <span class="reviewer-comment-tag"><%= pluralize(search_result.narrow_direct_reviewer_comments.size, 'reviewer comment') %></span>
-        <% end %>
-        <% if search_result.narrow_direct_compiler_comments? %>
-          <span class="compiler-comment-tag"><%= pluralize(search_result.narrow_direct_compiler_comments.size, 'compiler comment') %></span>
-        <% end %>
-      <% end %>
-
-      <% if search_result.accepted? || search_result.excluded? %>
-        <% if search_result.compiler_or_reviewer_comments? %>
-          <span class="total-reviewer-comment-tag"><%= pluralize(search_result.total_compiler_and_reviewer_comments.size, 'total comment') %></span>
-        <% end %>
-      <% end %>
-      <% unless search_result.remark_to_reviewers.blank? %>
-        <%# style text and link as well as we can %>
-        <span class="review loader-name remark-to-reviewers">
-          <%= search_result.remark_to_reviewers
-            .gsub(/<a/, "<a class='remark-to-reviewers'")
-            .sub(/(>)([^><]*$)/,'\1<span class="remark-to-reviewers">\2</span>')
-            .html_safe %>
-        </span>
-      <% end %>
-    </a>
-  </td>
-</tr>
-    <% unless search_result.higher_rank_comment.blank? %>
-      <tr>
-        <td class="width-1-percent">&nbsp;</td>
-        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.higher_rank_comment) %></span></td>
-      </tr>
-    <% end %>
-
-    <% unless search_result.formatted_text_below.blank? %>
-      <tr>
-        <td class="width-1-percent">&nbsp;</td>
-        <td colspan="9"><span class="review loader-name remark-to-reviewers"><%= sanitize(search_result.formatted_text_below) %></span></td>
-      </tr>
-    <% end %>
-
-<% end %>
-

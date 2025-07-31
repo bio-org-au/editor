@@ -6,5 +6,9 @@
     <%= period.start_date.strftime("%d-%b-%Y") %>&nbsp;&mdash;&nbsp; <%= period.end_date&.strftime("%d-%b-%Y") %><br>
     <%= render partial: 'loader/names/review/tabs/main/details/periods/comment',
                locals: {period: period} %>
+    <b>
+    Note:
+    </b>
+    It isn't necessary to comment - absence of a comment indicates acceptance.
   <% end %>
 <% end %>

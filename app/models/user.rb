@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     # Currently, we're making an assumption that there will
     # be just one product associated with these roles.
     # We are currently using this method for the profile items
-    roles_to_check = ['draft-editor','draft-profile-editor']
+    roles_to_check = ['draft-editor','draft-profile-editor', 'profile-editor']
     product_roles
       .joins(:role)
       .where(roles: { name: roles_to_check })
