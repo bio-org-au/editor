@@ -1,3 +1,8 @@
+- :date: 07-Aug-2025
+  :jira_id: '82'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Sort the user product roles in the user menu by product and role name
 - :date: 06-Aug-2025
   :jira_id:  '5530'
   :description: |-

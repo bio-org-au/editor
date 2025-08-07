@@ -1,6 +1,17 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def disable_common_cultivar_checkbox
     !(params[:query_on].nil? || params[:query_on].match(/\Aname\z/i))
+  end
+
+  def sorted_product_roles(user = nil)
+    return [] unless user
+
+    user
+      .product_roles
+      .includes(:product, :role)
+      .sort_by { |pr| [pr.product.name, pr.role.name] }
   end
 
   def markdown_to_html(markdown)

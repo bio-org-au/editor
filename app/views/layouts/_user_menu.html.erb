@@ -33,7 +33,7 @@
              </li>
           <% end %>
           <% if @current_registered_user.present? %>
-            <% @current_registered_user.product_roles.includes(:product, :role).each_with_index do |product_role, index| %>
+            <% sorted_product_roles(@current_registered_user).each_with_index do |product_role, index| %>
               <% if index == 0 %>
                 <li role="presentation" class="divider"></li>
               <% end %>
