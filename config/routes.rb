@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   match "/version", as: "version_service", to: "services#version", via: :get
   match "/build", as: "build_service", to: "services#build", via: :get
 
-  resources :name_tag_names, only: %i[show post create new]
+  resources :name_tag_names, only: %i[show create new]
   match "name_tag_names/:name_id/:tag_id",
         as: "delete_name_tag_name",
         to: "name_tag_names#destroy",
