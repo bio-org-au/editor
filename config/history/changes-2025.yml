@@ -2,6 +2,11 @@
   :jira_id: '112'
   :jira_project: FLOR
   :description: |-
+    Foa Project: Don't render the new name option to foa users
+- :date: 11-Sep-2025
+  :jira_id: '112'
+  :jira_project: FLOR
+  :description: |-
     Foa Project: Sort the product context in the menu by context id
 - :date: 11-Sep-2025
   :jira_id: '5564'

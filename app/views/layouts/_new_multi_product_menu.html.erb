@@ -7,79 +7,82 @@
   >
     New<span class="caret"></span>
   </a>
+  <% name_tabs_array = product_tab_service.all_available_tabs.dig('name')&.map{|tab| tab[:tab] } || [] %>
   <ul id="create-dropdown-menu" class="dropdown-menu" role="menu">
-    <li class="dropdown-submenu">
-      <a tabindex="-1" href="#" title="Names stuff"> Names </a>
-      <ul id="create-name-dropdown-submenu" class="dropdown-menu" role="menu">
-        <li role="presentation">
-          <%= link_to "Scientific name",
-            name_new_row_path('scientific'),
-            title: 'Add a new scientific name',
-            remote: true,
-            tabindex: '-1'
-          %>
-        </li>
-        <li role="presentation">
-          <%= link_to "Scientific name family or above",
-            name_new_row_path('scientific-family-or-above'),
-            title: 'Add a new scientific name family and above',
-            remote: true,
-            tabindex: '-1'
-          %>
-        </li>
-        <li role="presentation">
-          <%= link_to "Phrase name",
-            name_new_row_path('phrase'),
-            title: 'Add a new phrase name',
-            remote: true,
-            tabindex: '-1'
-          %>
-        </li>
-        <li role="presentation" class="divider"></li>
-        <li role="presentation">
-          <%= link_to "Hybrid formula name",
-            name_new_row_path('hybrid formula'),
-            title: 'Add a new hybrid name',
-            remote: true,
-            tabindex: '-1'
-          %>
-        </li>
-        <li role="presentation">
-          <%= link_to "Hybrid formula unknown 2nd parent name",
-            name_new_row_path('hybrid-formula-unknown-2nd-parent'),
-            title: 'Add a new hybrid formula unknown 2nd parent name',
-            remote: true,
-            tabindex: '-1'
-          %>
-        </li>
-        <li role="presentation" class="divider"></li>
-        <li role="presentation">
-          <%= link_to "Cultivar hybrid name",
-            name_new_row_path('cultivar-hybrid'),
-            title: 'Add a new cultivar hybrid name',
-            remote: true,
-            tabindex: '-1'
-          %>
-        </li>
-        <li role="presentation">
-          <%= link_to "Cultivar name",
-            name_new_row_path('cultivar'),
-            title: 'Add a new cultivar name',
-            remote: true,
-            tabindex: '-1'
-          %>
-        </li>
-        <li role="presentation" class="divider"></li>
-        <li role="presentation">
-          <%= link_to "Other name",
-            name_new_row_path('other'),
-            title: 'Add a new other name',
-            remote: true,
-            tabindex: '-1'
-          %>
-        </li>
-      </ul>
-    </li>
+    <% if tab_available?(name_tabs_array, "new") %>
+      <li class="dropdown-submenu">
+        <a tabindex="-1" href="#" title="Names stuff"> Names </a>
+        <ul id="create-name-dropdown-submenu" class="dropdown-menu" role="menu">
+          <li role="presentation">
+            <%= link_to "Scientific name",
+              name_new_row_path('scientific'),
+              title: 'Add a new scientific name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation">
+            <%= link_to "Scientific name family or above",
+              name_new_row_path('scientific-family-or-above'),
+              title: 'Add a new scientific name family and above',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation">
+            <%= link_to "Phrase name",
+              name_new_row_path('phrase'),
+              title: 'Add a new phrase name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">
+            <%= link_to "Hybrid formula name",
+              name_new_row_path('hybrid formula'),
+              title: 'Add a new hybrid name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation">
+            <%= link_to "Hybrid formula unknown 2nd parent name",
+              name_new_row_path('hybrid-formula-unknown-2nd-parent'),
+              title: 'Add a new hybrid formula unknown 2nd parent name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">
+            <%= link_to "Cultivar hybrid name",
+              name_new_row_path('cultivar-hybrid'),
+              title: 'Add a new cultivar hybrid name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation">
+            <%= link_to "Cultivar name",
+              name_new_row_path('cultivar'),
+              title: 'Add a new cultivar name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">
+            <%= link_to "Other name",
+              name_new_row_path('other'),
+              title: 'Add a new other name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+        </ul>
+      </li>
+    <% end %>
 
     <% author_tabs_array = product_tab_service.all_available_tabs.dig('author')&.collect{|tab| tab[:tab] } || [] %>
     <% if tab_available?(author_tabs_array, 'new') %>
