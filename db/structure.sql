@@ -1139,7 +1139,7 @@ begin
     end if;
 
 end;
-    
+
 $$;
 
 
@@ -5053,8 +5053,8 @@ CREATE TABLE public.users (
     updated_by character varying(50) DEFAULT USER NOT NULL
 );
 
-alter table public.users 
-add constraint users_user_name_lowercase_ck 
+alter table public.users
+add constraint users_user_name_lowercase_ck
 check (user_name = lower(user_name));
 
 --
@@ -6850,6 +6850,8 @@ CREATE TABLE public.product (
     is_available boolean DEFAULT false NOT NULL,
     is_name_index boolean DEFAULT false NOT NULL,
     has_default_reference boolean DEFAULT false NOT NULL,
+    manages_taxonomy boolean DEFAULT false NOT NULL,
+    manages_profile boolean DEFAULT false NOT NULL,
     source_id bigint,
     source_system character varying(50),
     source_id_string character varying(100),
@@ -6861,7 +6863,10 @@ CREATE TABLE public.product (
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_by character varying(50) NOT NULL,
     api_name character varying(50),
-    api_date timestamp with time zone
+    api_date timestamp with time zone,
+    context_id integer DEFAULT 0 NOT NULL,
+    context_sort_order integer DEFAULT 0 NOT NULL,
+    notes text
 );
 
 
@@ -11057,11 +11062,9 @@ ALTER TABLE only public.author
 ADD CONSTRAINT abbrev_length_check
 CHECK (char_length(abbrev) <= 150);
 
---
--- PostgreSQL database dump complete
---
 
 SET search_path TO public,loader;
 
-
-
+--
+-- PostgreSQL database dump complete
+--

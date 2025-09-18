@@ -11,6 +11,10 @@ RSpec.describe "layouts/_user_menu.html.erb", type: :view do
   before do
     allow(view).to receive(:editor_icon).and_return("icon")
     allow(view).to receive(:params).and_return(controller: "names")
+    
+    # Stub the context menu partial to avoid requiring context helper
+    allow(view).to receive(:render).and_call_original
+    allow(view).to receive(:render).with(partial: 'layouts/context_menu').and_return('')
 
     assign(:current_user, session_user)
     assign(:current_registered_user, registered_user)

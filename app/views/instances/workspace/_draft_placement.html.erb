@@ -20,8 +20,10 @@
                         title: "Exclude this",
                         onchange: "updateExcluded(this,'" + @tree_version_element.element_link + "');") %>
       <label for="ExcludedElement" class="exclude-label">exclude on draft</label>
+      <p>(Remove distribution before making excluded)</p>
 
     </dd>
+    <div id="tree_excluded_message" class="message-container inline hidden"></div>
 
     <dt><%= @tree_version_element.comment_key %></dt>
     <dd>
@@ -121,9 +123,10 @@
             excluded: input.checked,
             taxonUri: taxonUri
         };
-        $(input).replaceWith("<i class='fa fa-refresh fa-spin'></i>");
-      send(data, "POST", window.relative_url_root + "/trees/update_excluded", function () {
-        $('#instance-classification-tab').click();
-      });
+        $(input).replaceWith("<i id='cb-spinner' class='fa fa-refresh fa-spin'></i>");
+        $.post(window.relative_url_root + "/trees/update_excluded", data, function () {
+          // Do nothing here - let the response file sort it out
+          //$('#instance-classification-tab').click();
+        });
     }
 </script>

@@ -14,7 +14,7 @@ import "debug";
 import "search_result_focus";
 import "keyboard_nav";
 import "query_options";
-//import "run_tree_reports";
+import "run_tree_reports";
 import "instance_note_edit";
 import "add_new_row";
 import "menu_ops";

@@ -88,4 +88,20 @@ class SessionUser < ActiveType::Object
   def user
     @user ||= User.find_by(user_name: username)
   end
+
+  def user_name
+    @username
+  end
+
+  def user_id
+    @user.id
+  end
+
+  def inspect
+    {username: @username, 
+     full_name: @full_name,
+     groups: @groups,
+     user: @user.inspect
+    }
+  end
 end

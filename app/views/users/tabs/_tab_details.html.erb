@@ -8,8 +8,10 @@
 <%= render partial: 'detail_line',
            locals: {info: @user.family_name, label: 'Family Name'} %>
 
-<%= render partial: 'detail_line',
-           locals: {info: @user.batch_reviewers.size, label: 'Batch Reviews Count'} %>
+<% if Rails.configuration.try(:batch_loader_aware) %>
+  <%= render partial: 'detail_line',
+             locals: {info: @user.batch_reviewers.size, label: 'Batch Reviews Count'} %>
+<% end %>
 
 
 <%= divider %>

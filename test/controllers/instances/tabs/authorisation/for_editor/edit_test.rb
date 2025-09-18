@@ -23,7 +23,7 @@ class InstanceEditTabForEditorTest < ActionController::TestCase
   tests InstancesController
   setup do
     @triodia_in_brassard = instances(:triodia_in_brassard)
-    @draft_tree_version = tree_versions(:draft_version)
+    @draft_tree_version = tree_versions(:apc_draft_version)
   end
   test "should show instance edit tab to editor" do
     @request.headers["Accept"] = "application/javascript"

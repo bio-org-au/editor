@@ -6,10 +6,11 @@ class SearchController < ApplicationController
     handle_old
     run_local_search || run_empty_search
     respond_to do |format|
-      format.html
+      format.html do
+        render_html
+      end
       format.csv do
-        data = @search.executed_query.results.to_csv
-        send_data(encode_data_for_csv(data))
+        render_csv
       end
     end
   rescue ActiveRecord::StatementInvalid => e
@@ -59,6 +60,7 @@ class SearchController < ApplicationController
 
   def run_local_search
     return false unless params[:query_string].present?
+    raise 'Search needs a target. Do you have the right permissions?' unless params[:query_target].present?
 
     logger.debug("focus_id: #{params[:focus_id]}")
     @focus_id = params[:focus_id]
@@ -71,11 +73,6 @@ class SearchController < ApplicationController
     # Avoid "A copy of Search has been removed from the module tree but is still active" error
     # https://stackoverflow.com/questions/29636334/a-copy-of-xxx-has-been-removed-from-the-module-tree-but-is-still-active
     @search = ::Search::Base.new(params)
-    if @search.parsed_request&.print
-      render :printable, layout: "layouts/print"
-    else
-      render :search
-    end
     true
   end
 
@@ -141,6 +138,19 @@ class SearchController < ApplicationController
     end
     Rails.logger.info("apply_view_mode:    @view_mode: #{@view_mode}")
     Rails.logger.info("apply_view_mode:    @view: #{@view}")
+  end
+
+  def render_html
+    if @search.parsed_request&.print
+      render :printable, layout: "layouts/print"
+    else
+      render :search
+    end
+  end
+
+  def render_csv
+    data = @search.executed_query.results.to_csv
+    send_data(encode_data_for_csv(data))
   end
 
   def encode_data_for_csv(data)

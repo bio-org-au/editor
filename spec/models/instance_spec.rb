@@ -1,13 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe Instance, type: :model do
-  let(:instance) { create(:instance) }
+  let!(:name) { create(:name) }
+  let!(:instance) { create(:instance, name:) }
 
   describe ".product_item_config_id" do
-    let(:name) { create(:name, name_type: instance.name.name_type) }
-    let(:product_item_instance) { create(:instance, name:) }
+    let(:name_type) { create(:name_type) }
+    let(:name2) do
+      n = build(:name, name_type:)
+      n.save(validate: false)
+      n
+    end
+    let(:product_item_instance) { create(:instance, name: name2) }
     let(:product_item_config) { create(:product_item_config) }
-    let!(:profile_item) { create(:profile_item, instance_id: product_item_instance.id, product_item_config: product_item_config) }
+    let!(:profile_item) do
+      create(
+        :profile_item,
+        instance: product_item_instance,
+        instance_id: product_item_instance.id,
+        product_item_config: product_item_config
+      )
+    end
 
     subject { described_class.product_item_config_id(product_item_config.id) }
 
@@ -29,7 +42,7 @@ RSpec.describe Instance, type: :model do
 
   describe "#delete_as_user" do
     let(:instance_type) { create(:instance_type, secondary_instance: false)}
-    let(:instance) { create(:instance, instance_type: instance_type) }
+    let(:instance) { create(:instance, name:, instance_type: instance_type) }
     let(:username) { "test_user" }
 
     context "when deletion is successful" do
@@ -61,7 +74,7 @@ RSpec.describe Instance, type: :model do
   end
 
   describe "#secondary_reference?" do
-    let(:instance) { create(:instance, instance_type: instance_type) }
+    let(:instance) { create(:instance, name:, instance_type: instance_type) }
 
     context "when instance type is not a secondary instance" do
       let(:instance_type) { create(:instance_type, secondary_instance: false)}

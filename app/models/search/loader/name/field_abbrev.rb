@@ -37,5 +37,6 @@ class Search::Loader::Name::FieldAbbrev
     "mc:" => "created-manually:",
     "syn-match-in-tree:" => "syn-match-in-tree-faster-join:",
     "nfh:" => "no-family-heading:",
+    "ids:" => "id:",
   }.freeze
 end

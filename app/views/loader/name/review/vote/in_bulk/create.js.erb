@@ -1,4 +1,8 @@
 
 $('.message-container').html('');
 $('#search-result-details-info-message-container').html("<%= escape_javascript(@message) %> ");
+<% if Rails.configuration.try('multi_product_tabs_enabled') %>
+setTimeout(function(){$('ul.nav-tabs li.active a.tab').click();},500);
+<% else %>
 setTimeout(function(){$('li.active a.tab').click();},500);
+<% end %>

@@ -248,6 +248,8 @@
      description: "match fragment on the name status field (no wildcards added, but you can add them)"},
     {field_name: 'name-status-empty-string:',
      description: "loader name with an empty string in name status (these came about during early raw editing of loader name data when empty fields were mistakenly saved as empty strings)"},
+    {field_name: 'syn-matched-to-autonym:',
+     description: "loader name synonym with a preferred match to an autonym, implicit autonym, or explicit autonym (i.e. includes any instance type matching '%autonym%')"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -344,10 +346,12 @@
      description: "searches on a family name string exactly as bulk operations search does, wildcards are supported but not supplied (as for bulk ops)"},
     {field_name: 'no-further-processing:',
      description: "search for records flagged to stop further bulk processing"},
-    {field_name: 'in-current-taxonomy:',
+    {field_name: 'in-accepted-taxonomy:',
      description: "search for 'accepted' loader names matched to a name which is listed in the current accepted taxonomy"},
-    {field_name: 'not-in-current-taxonomy:',
-     description: "search for 'accepted' loader names NOT matched to a name which is listed in the current accepted taxonomy"},
+    {field_name: 'not-in-accepted-taxonomy:',
+     description: "search for 'accepted' loader names matched to a name which is NOT listed in the current accepted taxonomy"},
+    {field_name: 'in-or-not-in-accepted-taxonomy:',
+     description: "search for 'accepted' loader names matched to a name - this result should equal the total for the in- and not-in- searches"},
     {field_name: 'drafted:',
      description: "search for loader names matched to a name and flagged as drafted"},
     {field_name: 'manually-drafted:',

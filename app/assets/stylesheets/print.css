@@ -91,3 +91,19 @@ span.compiler-note {
   background: lightgreen;
   color: black;
 }
+
+span.bggreen {
+  background: lightgreen;
+}
+
+span.bgred {
+  background: tomato;
+}
+
+.vote-agree {
+  color: green;
+}
+
+.vote-disagree {
+  color: firebrick;
+}

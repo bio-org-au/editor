@@ -49,7 +49,15 @@
         </span>
     <% end %>
 
+    <span class="review loader-name votes">
+      <% batch_review_id = -1 %>
+      <% search_result.votes.order(:created_at).each do |vote| %>
+        <% unless batch_review_id == vote.batch_review %>
+          <%= vote.batch_review.name %>
+          <% batch_review_id = vote.batch_review %>
+        <% end %>
+        <span class='<%= vote.vote ? "bggreen" : "bgred" %>'><%= vote.vote ? '✓' : 'X' %>&nbsp;<%= vote.org.abbrev %>&nbsp;</span>
+      <% end %>
+    </span>
   </td>
 </tr>
-
-

@@ -11,7 +11,7 @@
   No review in place for this batch of records.
 <% else %>
   <% if @loader_name.batch.active_reviews? %>
-    <%= render partial: 'loader/names/review/tabs/main/details/periods' %>
+    <%= render partial: 'loader/names/review/tabs/main/details/periods_for_comments' %>
 
   <% else %>
     There are no active reviews for this record.

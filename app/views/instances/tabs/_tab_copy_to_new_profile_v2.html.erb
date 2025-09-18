@@ -3,7 +3,7 @@
     You do not have a product reference. Please contact your administrator.
   </div>
 <% else %>
-  <% product_reference = Profile::Product.find_by(name: @current_registered_user.available_product_from_roles&.name).reference %>
+  <% product_reference = Product.find_by(name: @current_registered_user.available_product_from_roles&.name).reference %>
   <div id="search-result-details-info-message-container" class="message-container"></div>
   <div id="search-result-details-error-message-container" class="message-container"></div>
   <% increment_tab_index(0) %>

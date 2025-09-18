@@ -1,5 +1,7 @@
 <% Tree.menu_drafts.each do |menu_item| %>
 
+  <% tree = Tree.find(menu_item[:id]) %>
+  <% if can? :toggle_draft, tree %>
     <%
       check_is_hidden =
           if session["draft"].present? &&
@@ -23,4 +25,5 @@
       <% end %>
     </li>
 
+  <% end %>
 <% end %>

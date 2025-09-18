@@ -25,13 +25,10 @@ module Loader::Name::ReviewComments
     name_review_comments
       .includes(batch_reviewer: [:batch_review_role])
       .select { |comment| comment.reviewer.role.name == role }
-      .select { |comment| comment.context == record_type }
+      .select { |comment| comment.context == record_type || comment.context == 'main'}
   end
 
-
-
   # All comments - needed for totals
-
   def reviewer_comments
     [narrow_direct_reviewer_comments,
      concept_note_reviewer_comments,

@@ -210,34 +210,6 @@ RSpec.describe Profile::ProfileItem, type: :model do
     end
   end
 
-  describe "#publish!" do
-    let(:instance) { create(:instance, draft: false) }
-    let(:profile_item) { create(:profile_item, instance:, is_draft: true, published_date: nil ) }
-
-    subject { profile_item.publish! }
-
-    it "sets is_draft to false and updates the tree_element_id" do
-      expect { subject }.to change { profile_item.is_draft }.from(true).to(false)
-    end
-
-    it "returns true" do
-      expect(subject).to be true
-    end
-
-    it "updates the published_date" do
-      expect { subject }.to change { profile_item.published_date }.from(nil).to be_within(1.second).of(Time.current)
-    end
-
-    context "when already published" do
-      let(:profile_item) { create(:profile_item, is_draft: false, published_date: Time.current - 30.days ) }
-
-      it "does not change is_draft or published_date" do
-        expect { subject }.not_to change { profile_item.is_draft }
-        expect { subject }.not_to change { profile_item.published_date }
-      end
-    end
-  end
-
   describe "after_destroy callback" do
     let(:profile_text) { create(:profile_text) }
     let(:profile_item) { create(:profile_item, profile_text: profile_text, statement_type: statement_type) }

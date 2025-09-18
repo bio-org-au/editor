@@ -1,11 +1,21 @@
 <% this_tab_re = Regexp.new(this_tab) %>
-<% active_tab = (@tab.match(this_tab_re) && !this_tab.match(/tab_more/)) || (@tab.match(/tab_more/) && this_tab.match(/tab_comments/)) %>
+<% current_product_name = params[:product_name]&.split('?')&.first  || '' %>
+<% tab_product_name = local_assigns[:product_name] || '' %>
+
+<% is_matching_tab = @tab.match(this_tab_re) && !this_tab.match(/tab_more/) %>
+<% is_first_tab_condition = current_product_name.blank? && local_assigns[:is_first_tab_of_type] %>
+<% is_active_tab_condition = current_product_name == tab_product_name || is_first_tab_condition %>
+<% is_tab_more_and_comments = @tab.match(/tab_more/) && this_tab.match(/tab_comments/) %>
+<% active_tab = (is_matching_tab && is_active_tab_condition) || is_tab_more_and_comments %>
+
 <% semi_active_tab = (@tab.match(/tab_comments|tab_name_tags|tab_refresh|tab_de_duplicate/) && this_tab.match(/tab_more/)) %>
 <% semi_active_tab = semi_active_tab || (@tab.match(/tab_more/) && this_tab.match(/tab_more/)) %>
 
 <% data = Hash.new %>
-<% data['edit-url'] = name_tab_path(@name,tab:"#{this_tab}") %>
-<% data['tab-url'] = name_tab_path(@name,tab:"#{this_tab}") %>
+<% tab_url_params = {tab: this_tab} %>
+<% tab_url_params[:product_name] = local_assigns[:product_name] if local_assigns[:product_name].present? %>
+<% data['edit-url'] = name_tab_path(@name, tab_url_params) %>
+<% data['tab-url'] = name_tab_path(@name, tab_url_params) %>
 <% data['prev-tab'] = prev_tab unless prev_tab.blank? %>
 <% data['tab-name'] = this_tab %>
 
@@ -14,7 +24,7 @@
  <%= link_to link_text,
              '#',
              id: link_id,
-             class: 'tab edit-details-tab', 
+             class: 'tab edit-details-tab',
              title: link_title,
              tabindex: tab_index,
              take_focus: true,

@@ -2,7 +2,7 @@
   <tr id="family-of-review-result-<%= search_result.id %>"
       class="<%= show_details_class %> review family takes-focus show-details" tabindex="<%= increment_tab_index(100) %>"
       data-edit-url="<%= loader_name_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
-      data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here') %>"
+      data-tab-url="<%= loader_name_review_tab_path(id: search_result[:id],tab: 'active_tab_goes_here', component: search_result.record_type) %>"
       data-record-id="<%= search_result.id %>"
       data-record-type="loader-name"
   >
@@ -29,6 +29,12 @@
       <% if search_result.rank == 'family' %><%# is it a real record or not? %>
         <% if search_result.reviewer_comments? %>
           <span class="reviewer-comment-tag"><%= pluralize(search_result.reviewer_comments.size, 'reviewer comment') %></span>
+        <% end %>
+        <% if search_result.compiler_comments? %>
+          <span class="compiler-comment-tag"><%= pluralize(search_result.compiler_comments.size, 'compiler comment') %></span>
+        <% end %>
+        <% if search_result.compiler_or_reviewer_comments? %>
+          <span class="total-reviewer-comment-tag"><%= pluralize(search_result.total_compiler_and_reviewer_comments.size, 'total comment') %></span>
         <% end %>
       <% end %>
     </td>

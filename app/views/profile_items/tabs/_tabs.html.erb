@@ -1,29 +1,38 @@
-<ul class="nav nav-tabs">
-  <% this_tab = 'tab_show_1' %>
+<%
+  tabs = product_tab_service.all_available_tabs["profile"] || []
+  tabs_array = tabs.collect{|tab| tab[:tab] }
+%>
 
-  <%= render partial: 'profile_items/tabs/tab', locals: {first: true,
-    last: false,
-    this_tab: 'tab_show_1',
-    link_text: 'Details',
-    link_id: 'profile-item-edit-show-1-tab',
-    link_title: 'View a summary',
-    tab_index: increment_tab_index,
-    prev_tab: '',
-    next_tab: '' }
+<ul class="nav nav-tabs">
+  <% this_tab = "tab_show_1" %>
+
+  <%= render partial: "profile_items/tabs/tab",
+    locals: {
+      first: true,
+      last: false,
+      this_tab: "tab_show_1",
+      link_text: "Details",
+      link_id: "profile-item-edit-show-1-tab",
+      link_title: "View a summary",
+      tab_index: increment_tab_index,
+      prev_tab: "",
+      next_tab: ""
+    }
   %>
 
-
-  <% if can? :manage, @profile_item %>
-    <%= render partial: 'profile_items/tabs/tab', locals: {first: false,
-      last: false,
-      this_tab: 'tab_edit',
-      link_text: 'Edit'.html_safe,
-      link_id: 'profile-item-edit-tab',
-      link_title: 'Main edit form for the profile item].',
-      tab_index: increment_tab_index,
-      prev_tab: '',
-      next_tab: ''}
+  <% if can?(:manage, @profile_item) && tab_available?(tabs_array, "edit") %>
+    <%= render partial: "profile_items/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_edit",
+        link_text: product_tab_text(:profile, "edit", "Edit"),
+        link_id: "profile-item-edit-tab",
+        link_title: "Main edit form for the profile item.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      }
     %>
   <% end %>
-
 </ul>

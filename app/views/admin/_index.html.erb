@@ -40,6 +40,8 @@
       <tr><td>Pool</td><td> <%= Rails.configuration.database_configuration[Rails.env]["pool"] %> </td></tr>
       <tr><td>Connections</td><td> <%= ActiveRecord::Base.connection_pool.connections.size %> </td></tr>
       <tr><td>Schema search path</td><td> <%= ActiveRecord::Base.connection.try('schema_search_path') %> </td></tr>
+      <tr><td>Database session user</td><td> <%= ActiveRecord::Base.connection.try(:execute,%q(select session_user;)).try('first').try(:[],"session_user") %> </td></tr>
+      <tr><td>Database current user</td><td> <%= ActiveRecord::Base.connection.try(:execute,%q(select current_user;)).try('first').try(:[],"current_user") %> </td></tr>
       <tr><td colspan="2">&nbsp;</td></tr>
     </table>
 
@@ -198,6 +200,7 @@
     <tr><td class="width-40-percent min-width-10em">profile_v2_profile_v2_dropdown_ui</td><td> <%= Rails.configuration.try(:profile_v2_dropdown_ui) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">unsaved_form_prompt_enabled</td><td> <%= Rails.configuration.try(:unsaved_form_prompt_enabled) || false %> </td></tr>
     <tr><td class="width-40-percent min-width-10em">site_wide_form_prompt_enabled</td><td> <%= Rails.configuration.try(:site_wide_form_prompt_enabled) || false %> </td></tr>
+    <tr><td class="width-40-percent min-width-10em">multi_product_tabs_enabled</td><td> <%= Rails.configuration.try(:multi_product_tabs_enabled) || false %> </td></tr>
 
     </table>
     <br> <br>

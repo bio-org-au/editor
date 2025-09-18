@@ -18,6 +18,7 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
     return unless valid?
 
     ActiveRecord::Base.transaction do
+      convert_link_profile_item_to_fact unless profile_item.fact?
       copy_profile_item_as_draft
       copy_profile_text
       copy_profile_item_annotation
@@ -46,11 +47,16 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
   end
 
   def copy_profile_item_as_draft
-    @new_profile_item = profile_item.dup
-    new_profile_item.is_draft = true
-    new_profile_item.published_date = nil
-    new_profile_item.created_by = user.user_name
-    new_profile_item.updated_by = user.user_name
+    @new_profile_item = profile_item.dup.tap do |pt|
+      pt.is_draft = true
+      pt.published_date = nil
+      pt.created_by = user.user_name
+      pt.updated_by = user.user_name
+      pt.source_system = nil
+      pt.source_id = nil
+      pt.source_id_string = nil
+    end
+
     new_profile_item.save
 
     return errors.merge!(new_profile_item.errors) if new_profile_item.errors.any?
@@ -59,8 +65,14 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
   end
 
   def copy_profile_text
-    new_profile_text = profile_item.profile_text.dup
-    new_profile_text.current_user = user
+    new_profile_text = profile_item.profile_text.dup.tap do |pt|
+      pt.created_by = user.user_name
+      pt.updated_by = user.user_name
+      pt.source_system = nil
+      pt.source_id_string = nil
+      pt.source_id = nil
+    end
+
     new_profile_text.save
 
     return errors.merge!(new_profile_text.errors) if new_profile_text.errors.any?
@@ -74,9 +86,12 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
   def copy_profile_item_annotation
     return unless profile_item.profile_item_annotation
 
-    new_profile_item_annotation = profile_item.profile_item_annotation.dup
-    new_profile_item_annotation.current_user = user
-    new_profile_item_annotation.profile_item_id = new_profile_item.id
+    new_profile_item_annotation = profile_item.profile_item_annotation.dup.tap do |pia|
+      pia.created_by = user.user_name
+      pia.updated_by = user.user_name
+      pia.profile_item_id = new_profile_item.id
+    end
+
     new_profile_item_annotation.save
 
     return errors.merge!(new_profile_item_annotation.errors) if new_profile_item_annotation.errors.any?
@@ -98,6 +113,23 @@ class ProfileItems::Published::CreateNewVersionService < BaseService
 
       errors.merge!(new_profile_item_reference.errors) if new_profile_item_reference.errors.any?
     end
+  end
+
+  def convert_link_profile_item_to_fact
+    profile_item.is_draft = true
+    profile_item.save
+    service = ProfileItems::Links::UpdateService.call(
+      user: user,
+      profile_item: profile_item,
+      params: params
+    )
+
+    return errors.merge!(service.errors) if service.errors.any?
+
+    @profile_item = service.profile_item
+    @profile_item.is_draft = false
+    @profile_item.save
+    return errors.merge!(@profile_item.errors) if @profile_item.errors.any?
   end
 
 end

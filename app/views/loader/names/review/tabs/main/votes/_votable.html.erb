@@ -1,17 +1,20 @@
 
-<% reviews_with_voting_in_progress =  Loader::Batch::Review.where( loader_batch_id: @loader_name.batch.id )
-                                       .where( allow_voting: true) %>
 
 
-<% if reviews_with_voting_in_progress.blank? %>
-  No voting in progress for any reviews of the batch for this record<br>
-<% elsif reviews_with_voting_in_progress.size > 1 %>
-  There is more than one review with voting in progress for <%= @loader_name.batch.name %>.
-  <br>
-  This is unexpected.
+
+<div id="create-one-vote-container">
+
+<% if @loader_name.batch.reviews.empty? %>
+  No review in place for this batch of records.
 <% else %>
-  <%= render partial: 'loader/names/review/tabs/main/votes/votable/voting_in_progress',
-    locals: {batch: @loader_name.batch,
-             review: reviews_with_voting_in_progress.first} %>
+  <% if @loader_name.batch.active_reviews? %>
+    <%= render partial: 'loader/names/review/tabs/main/votes/votable/voting_in_progress',
+               locals: {batch: @loader_name.batch,
+               review: @loader_name.batch.active_reviews.first} %>
+  <% else %>
+    There are no active reviews for this record.
+  <% end %>
 <% end %>
+
+</div>
 

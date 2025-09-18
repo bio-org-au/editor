@@ -1,3 +1,7 @@
-$('li.active a.tab').click();
+<% if Rails.configuration.try('multi_product_tabs_enabled') %>
+  $('ul.nav-tabs li.active a.tab').click();
+<% else %>
+  $('li.active a.tab').click();
+<% end %>
 $('a#name-<%= @name_tag_name.name.id %>').html('<%= escape_javascript(render partial: 'name_link_text', locals: {search_result: @name_tag_name.name}) %>');
 

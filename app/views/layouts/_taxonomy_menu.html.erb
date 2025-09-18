@@ -20,11 +20,12 @@
     </a>
     <ul id="tree-dropdown-menu" class="dropdown-menu" role="menu">
       <%= render partial: "tree_versions/drafts_menu" %>
-      <% if @working_draft %>
+      <% if @working_draft && can?(:edit, TreeVersion) %>
         <li role="presentation" class="divider"></li>
         <li>
-          <%= link_to "<i class='fa fa-edit'></i> Edit #{selected_draft_title}".html_safe,
+          <%= link_to %Q(<i class='fa fa-edit'></i> Edit #{selected_draft_title}).html_safe,
                       tree_versions_edit_draft_path,
+                      id: "edit-draft-taxonomy-menu-link-#{selected_draft_title.gsub(/ /,'-')}",
                       title: 'Edit draft taxonomy',
                       remote: true,
                       tabindex: '-1' %>
@@ -32,19 +33,27 @@
         <li>
           <%= link_to "<i class='fa fa-file-text green'></i> Publish #{selected_draft_title}".html_safe,
                       tree_versions_form_to_publish_path,
+                      id: "publish-draft-taxonomy-menu-link-#{selected_draft_title.gsub(/ /,'-')}",
                       title: 'Publish draft taxonomy',
                       remote: true,
                       tabindex: '-1' %>
         </li>
       <% end %>
-      <li role="presentation" class="divider"></li>
-      <li>
-        <%= link_to "<i class='fa fa-plus'></i> Create draft taxonomy".html_safe,
-                    tree_versions_new_draft_path,
-                    title: 'Add a new draft taxonomy',
-                    remote: true,
-                    tabindex: '-1' %>
-      </li>
+
+
+      <% Tree.all.order('name').each do |tree| %>
+        <% if can?(:create_draft, tree) %>
+        <li role="presentation" class="divider"></li>
+        <li>
+          <%= link_to "<i class='fa fa-plus'></i> Create draft taxonomy for #{tree.name}".html_safe,
+                      tree_versions_new_draft_path,
+                      id: 'create-draft-taxonomy-menu-link',
+                      title: 'Add a new draft taxonomy',
+                      remote: true,
+                      tabindex: '-1' %>
+        </li>
+        <% end %>
+      <% end %>
 
     </ul>
 

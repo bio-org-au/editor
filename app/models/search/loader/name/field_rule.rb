@@ -102,11 +102,13 @@ class Search::Loader::Name::FieldRule
     "batch-name:" => { where_clause: "loader_batch_id in (select id from loader_batch where lower(name) like ?)  "},
     "default-batch:" => { where_clause: "loader_batch_id = (select id from loader_batch where lower(name) = ?)  "},
     "id:" => { multiple_values: true,
-               where_clause: "id = ? or parent_id = ? ",
-               multiple_values_where_clause: " id in (?)"},
-    "ids:" => { multiple_values: true,
-                where_clause: " id = ? or parent_id = ?",
-                multiple_values_where_clause: " id in (?)"},
+               where_clause: "id = ? or parent_id = ?
+                              or id = (select parent_id from loader_name my_parent where my_parent.id = ?) 
+                              or parent_id = (select parent_id from loader_name my_sibling where my_sibling.id = ?)",
+               multiple_values_where_clause: "id in (?) or parent_id in (?)
+                              or id in (select parent_id from loader_name my_parent where my_parent.id in (?)) 
+                              or parent_id in (select parent_id from loader_name my_sibling where my_sibling.id in (?))",
+               },
     "raw-id:" => { multiple_values: true,
                    where_clause: "raw_id = ? or parent_raw_id = ? ",
                    multiple_values_where_clause: " raw_id in (?) or parent_raw_id in (?)"},
@@ -620,19 +622,42 @@ having count(*) > 2
        leading_wildcard: true,
        trailing_wildcard: true},
 
-    "in-current-taxonomy:" => { where_clause: "loader_name.id in (select distinct o.id
-  from loader_name_match orn
-  join loader_name o
-    on orn.loader_name_id = o.id
- where o.record_type = 'accepted'
-   and orn.name_id in (
+    "in-accepted-taxonomy:" => { where_clause: "loader_name.id in (select distinct ln.id
+  from loader_name_match lnm
+  join loader_name ln
+    on lnm.loader_name_id = ln.id
+ where ln.record_type = 'accepted'
+   and lnm.name_id in (
     select name_id
   from tree_join_v
   where accepted_tree
     and tree_version_id = current_tree_version_id
        )
- order by o.id)",
+ order by ln.id)",
                                 trailing_wildcard: true},
+
+    "not-in-accepted-taxonomy:" => { where_clause: "loader_name.id in (select distinct ln.id
+  from loader_name_match lnm
+  join loader_name ln
+    on lnm.loader_name_id = ln.id
+ where ln.record_type = 'accepted'
+   and lnm.name_id not in (
+    select name_id
+  from tree_join_v
+  where accepted_tree
+    and tree_version_id = current_tree_version_id
+       )
+ order by ln.id)",
+                                trailing_wildcard: true},
+
+    "in-or-not-in-accepted-taxonomy:" => { where_clause: "loader_name.id in (select distinct ln.id
+  from loader_name_match lnm
+  join loader_name ln
+    on lnm.loader_name_id = ln.id
+ where ln.record_type = 'accepted'
+ order by ln.id)",
+                                trailing_wildcard: true},
+
     "syn-type:" => { where_clause: "lower(synonym_type) like ?"},
     "manually-drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where manually_drafted)"},
     "drafted:" => { where_clause: " id in (select loader_name_id from loader_name_match where drafted)"},
@@ -999,6 +1024,15 @@ group by loader_name.family, family.simple_name) subq
 where simple_name is null
  )
 )",
-  }
+  },
+"syn-matched-to-autonym:" => { where_clause: "record_type = 'synonym' 
+  and exists (select null
+                from loader_name_match
+                     join instance on loader_name_match.instance_id = instance.id
+                     join instance_type on instance.instance_type_id = instance_type.id
+               where loader_name.id = loader_name_match.loader_name_id
+                 and instance_type.name like '%autonym%'
+             )", 
+            takes_no_arg: true},
   }.freeze
 end

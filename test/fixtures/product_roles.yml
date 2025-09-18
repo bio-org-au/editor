@@ -29,3 +29,13 @@ apc_tree_publisher:
   <<: *DEFAULTS
   product: apc
   role: tree_publisher
+
+foa_tree_builder:
+  <<: *DEFAULTS
+  product: foa
+  role: tree_builder
+
+apc_tree_builder:
+  <<: *DEFAULTS
+  product: apc
+  role: tree_builder

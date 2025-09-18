@@ -1,4 +1,4 @@
-<% if @working_draft.user_can_edit?(@current_user) %>
+<% if can? :remove_name_placement, @working_draft %>
   <% if @tree_version_element.present? %>
 
     <div>

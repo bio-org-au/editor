@@ -58,7 +58,6 @@ class Loader::Batch::Review < ActiveRecord::Base
 
   def update_if_changed(params, username)
     self.name = params[:name]
-    self.allow_voting = params[:allow_voting]
     if changed?
       self.updated_by = username
       save!
@@ -70,10 +69,6 @@ class Loader::Batch::Review < ActiveRecord::Base
 
   def name_in_context
     "#{batch.name} #{name}"
-  end
-
-  def allow_voting_to_words
-    allow_voting ? 'allowed' : 'not allowed'
   end
 
   def reviewer?(username)

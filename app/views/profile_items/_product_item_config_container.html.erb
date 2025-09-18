@@ -6,7 +6,8 @@
     <%= render partial: "profile_items/link_profile_item",
       locals: {
         product_item_config: product_item_config,
-        instance_id: instance.id
+        instance_id: instance.id,
+        instance: instance
       }
     %>
   <% end %>
@@ -24,6 +25,11 @@
       })
     %>
   <% else %>
-    <%= render partial: "profile_items/linked_profile_item", locals: { product_item_config: product_item_config, profile_item: profile_item } %>
+    <%= render partial: "profile_items/linked_profile_item",
+      locals: {
+        product_item_config: product_item_config,
+        profile_item: profile_item,
+        instance: instance
+      } %>
   <% end %>
 </div>

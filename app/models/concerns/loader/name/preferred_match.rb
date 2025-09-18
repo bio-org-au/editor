@@ -31,14 +31,10 @@ module Loader::Name::PreferredMatch
 
   # Watch out for rare but possible case of no primary instance
   def instance_id_for_non_misapplied_match(instance)
-    if instance.standalone?
-      primary_instance = instance.name.primary_instances&.first
-      if primary_instance.nil?
-        raise NoPrimaryInstanceError.new
-      end
-      primary_instance.id
-    else
-      instance.id
+    primary_instance = instance.name.primary_instances&.first
+    if primary_instance.nil?
+      raise NoPrimaryInstanceError.new
     end
+    primary_instance.id
   end
 end

@@ -14,6 +14,7 @@ describe ProfileItems::PublishesController, type: :controller do
     let(:profile_item) { create(:profile_item) }
     let(:instance) { profile_item.instance }
     let(:service_errors) { ActiveModel::Errors.new("Some error") }
+    let(:mock_service_result) { double("ProfileItems::Published::MarkPublishService", new_profile_item: profile_item, errors: {}) }
     let(:mock_product_and_product_item_config_result) { double("Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs", run_query: [[], nil]) }
     let(:params) { { instance_id: instance.id, id: profile_item.id } }
 
@@ -26,12 +27,10 @@ describe ProfileItems::PublishesController, type: :controller do
     end
 
     context 'when publish succeeds' do
-      before { allow(profile_item).to receive(:publish!).and_return(true) }
 
-      it 'calls publish! and renders index' do
-        subject
-        expect(profile_item).to have_received(:publish!)
-        expect(response).to render_template('profile_items/index')
+      before do
+        allow(mock_service_result.errors).to receive(:any?).and_return(false)
+        allow(ProfileItems::Published::MarkPublishService).to receive(:call).and_return(mock_service_result)
       end
 
       it "assigns @product_configs_and_profile_items" do
@@ -39,16 +38,14 @@ describe ProfileItems::PublishesController, type: :controller do
         expect(assigns(:product_configs_and_profile_items)).to eq([])
       end
 
-      it "sets the current user on the profile item" do
-        subject
-        expect(profile_item.current_user).to eq(current_user)
-      end
     end
 
     context 'when publish fails' do
+      let(:errors) { double('errors', any?: true, full_messages: ["Some error"]) }
+      let(:mock_service_result) { double("ProfileItems::Published::MarkPublishService", new_profile_item: nil, errors: errors) }
+
       before do
-        allow(profile_item).to receive(:publish!).and_return(false)
-        allow(profile_item).to receive_message_chain(:errors, :full_messages).and_return(["Some error"])
+        allow(ProfileItems::Published::MarkPublishService).to receive(:call).and_return(mock_service_result)
       end
 
       it 'assigns @message and renders create_failed' do

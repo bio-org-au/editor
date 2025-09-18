@@ -4,12 +4,15 @@
       <%= form.hidden_field :batch_reviewer_id %>
       <%= form.hidden_field :loader_name_id %>
       <%= form.hidden_field :batch_review_period_id %>
-      <%= form.hidden_field :context, value:  name_review_comment.context %>
+      <%= form.hidden_field :context, value:  name_review_comment.context, class: 'form-control', title: 'Context of comment' %>
       <%= form.hidden_field :name_review_comment_type_id, value:  Loader::Name::Review::Comment::Type.where(name: 'general').first.id %>
 
       Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", required: true, size: "60x10", tabindex: increment_tab_index %>
-      <br>
       <%= form.submit id: "save-new-batch-review-comment-btn", class: 'btn btn-primary', title: "Save comment", tabindex: increment_tab_index %>
       <br>
   <% end %>
+      <br>
+  <%= render partial: 'detail_line', locals: {label: 'Comment context will be', info: name_review_comment.context} %>
+      <br>
+      <br>
 

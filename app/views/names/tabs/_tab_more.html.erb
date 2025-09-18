@@ -1,4 +1,11 @@
+<%
+  tabs = product_tab_service.all_available_tabs["name"] || []
+  tabs_array = tabs.collect{|tab| tab[:tab] }
+%>
+
 <% increment_tab_index(0) %>
 <%= render partial: "names/tabs/tabs_row_2" %>
-<%= render partial: "names/tabs/tab_comments" %>
 
+<% if tab_available?(tabs_array, "more_comment") %>
+  <%= render partial: "names/tabs/tab_comments" %>
+<% end %>

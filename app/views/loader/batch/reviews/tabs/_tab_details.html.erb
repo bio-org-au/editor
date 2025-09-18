@@ -9,10 +9,6 @@
                           query_string: "id: #{@batch_review.batch.id}"),
                title:"Query the loader batch",class:'blue')} %>
 
-<%= render partial: 'detail_line',
-      locals: {label: 'voting status',
-               info: @batch_review.allow_voting_to_words.capitalize } %>
-
 <% if  @batch_review.periods.empty? %>
   <%= render partial: 'detail_line', locals: {info: 'Create one on the "New Review Period" tab',
                                               label:'No review periods'} %>

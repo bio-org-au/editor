@@ -8,9 +8,61 @@ RSpec.describe Ability, type: :model do
     allow(session_user).to receive(:with_role?).with('draft-profile-editor').and_return(false)
     allow(session_user).to receive(:with_role?).with('draft-editor').and_return(false)
     allow(session_user).to receive(:with_role?).with('profile-editor').and_return(false)
+    allow(session_user).to receive(:with_role?).with('tree-builder').and_return(false)
+    allow(session_user).to receive(:with_role?).with('tree-publisher').and_return(false)
   end
 
   subject { described_class.new(session_user) }
+
+  describe "#basic_auth_1" do
+    it "allows setting include common cultivars" do
+      expect(subject.can?("application", "set_include_common_cultivars")).to eq true
+    end
+
+    it "allows accessing authors tab_show_1" do
+      expect(subject.can?("authors", "tab_show_1")).to eq true
+    end
+
+    it "allows accessing help" do
+      expect(subject.can?("help", :all)).to eq true
+    end
+
+    it "allows accessing history" do
+      expect(subject.can?("history", :all)).to eq true
+    end
+
+    it "allows accessing instance_types index" do
+      expect(subject.can?("instance_types", "index")).to eq true
+    end
+
+    it "allows accessing instances tab_show_1" do
+      expect(subject.can?("instances", "tab_show_1")).to eq true
+    end
+
+    it "allows updating reference id widgets" do
+      expect(subject.can?("instances", "update_reference_id_widgets")).to eq true
+    end
+
+    it "allows accessing menu help" do
+      expect(subject.can?("menu", "help")).to eq true
+    end
+
+    it "allows accessing menu user" do
+      expect(subject.can?("menu", "user")).to eq true
+    end
+
+    it "allows accessing menu admin" do
+      expect(subject.can?("menu", "admin")).to eq true
+    end
+
+    it "allows accessing admin index" do
+      expect(subject.can?("admin", "index")).to eq true
+    end
+
+    it "allows setting product context" do
+      expect(subject.can?("product_contexts/set_context", "create")).to eq true
+    end
+  end
 
   describe "#draft_profile_editor role" do
     before do
@@ -467,3 +519,4 @@ RSpec.describe Ability, type: :model do
     end
   end
 end
+

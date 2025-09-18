@@ -59,10 +59,11 @@ RSpec.describe ProfileItems::Links::CreateService, type: :service do
       end
 
       context "when copying a link profile item" do
-        let(:fact_source) do
+        let!(:fact_source) do
           create(
             :profile_item,
             instance_id: instance.id,
+            instance: instance,
             profile_text: profile_text,
             product_item_config: product_item_config,
             statement_type: 'fact',
@@ -70,10 +71,11 @@ RSpec.describe ProfileItems::Links::CreateService, type: :service do
           )
         end
 
-        let(:source_profile_item) do
+        let!(:source_profile_item) do
           create(
             :profile_item,
             instance_id: instance.id,
+            instance: instance,
             product_item_config: product_item_config,
             source_profile_item_id: fact_source.id,
             statement_type: 'link',

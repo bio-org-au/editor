@@ -90,10 +90,6 @@ class TreeVersion < ActiveRecord::Base
     tree_version_elements.order(updated_at: :desc).first
   end
 
-  def user_can_edit?(user)
-    user && user.groups.include?(tree.group_name)
-  end
-
   def comment_key
     tree.config["comment_key"]
   end

@@ -83,7 +83,7 @@ class Loader::Batch::ReviewsController < ApplicationController
   end
 
   def batch_review_params
-    params.require(:loader_batch_review).permit(:id, :name, :loader_batch_id, :allow_voting)
+    params.require(:loader_batch_review).permit(:id, :name, :loader_batch_id)
   end
 
   def set_tab

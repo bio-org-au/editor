@@ -45,9 +45,9 @@ class Product::Role < ActiveRecord::Base
   self.primary_key = "id"
   belongs_to :role, class_name: "::Role"
   belongs_to :product
-  has_many :user_product_role, class_name: "User::ProductRole"
+  has_many :user_product_roles, class_name: "User::ProductRole", foreign_key: :product_role_id
 
   def name
-    "#{product.name} #{role.name}"
+    "#{product.name} #{role.name} product role"
   end
 end

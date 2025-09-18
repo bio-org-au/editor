@@ -1,2 +1,2 @@
-$('#synonymy-content').html('<h3>Error:</h3><p><%= escape_javascript(@message.html_safe) %></p><p>Refresh to update report.</p>');
-$('#update_selected_synonymy').addClass('hidden');
+$('#validate-synonymy-content').html('<br><br><b>Error:</b>&nbsp;&nbsp;<%= escape_javascript(@message.html_safe) %></p><p>Refresh to update report.</p>');
+$('#update_checked_synonymy').addClass('hidden').find('i.fa').removeClass('fa-spin');

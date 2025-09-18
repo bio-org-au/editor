@@ -1,90 +1,120 @@
-    <ul class="nav nav-tabs">
-      <% this_tab = 'tab_show_1' %>
+<%
+  tabs = product_tab_service.all_available_tabs['reference'] || []
+  tabs_array = tabs.collect{|tab| tab[:tab] }
+%>
 
-      <%= render partial: 'references/tabs/tab', locals: {first: true,
-                                          last: false,
-                                          this_tab: 'tab_show_1',
-                                          link_text: 'Details',
-                                          link_id: 'reference-edit-show-1-tab',
-                                          link_title: 'View a summary',
-                                          tab_index: increment_tab_index,
-                                          prev_tab: '',
-                                          next_tab: '' } %>
+<ul class="nav nav-tabs">
+  <% this_tab = 'tab_show_1' %>
 
-      <% if can? :update, @reference %>
+  <%= render partial: 'references/tabs/tab',
+    locals: {
+      first: true,
+      last: false,
+      this_tab: 'tab_show_1',
+      link_text: 'Details',
+      link_id: 'reference-edit-show-1-tab',
+      link_title: 'View a summary',
+      tab_index: increment_tab_index,
+      prev_tab: '',
+      next_tab: ''
+    }
+  %>
 
-        <%= render partial: 'references/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_edit_1',
-                                            link_text: 'Edit.'.html_safe,
-                                            link_id: 'reference-edit-1-tab',
-                                            link_title: 'Main edit form for the reference.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
+  <% if can?(:update, @reference) %>
+    <% if tab_available?(tabs_array, "edit_1") %>
+      <%= render partial: "references/tabs/tab",
+        locals: {
+          first: false,
+          last: false,
+          this_tab: "tab_edit_1",
+          link_text: product_tab_text(:reference, "edit_1", "Edit."),
+          link_id: "reference-edit-1-tab",
+          link_title: "Main edit form for the reference.",
+          tab_index: increment_tab_index,
+          prev_tab: "",
+          next_tab: ""
+        }
+      %>
+    <% end %>
 
-        <%= render partial: 'references/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_edit_2',
-                                            link_text: 'Edit..'.html_safe,
-                                            link_id: 'reference-edit-2-tab',
-                                            link_title: 'Second edit form for the reference.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
+    <% if tab_available?(tabs_array, "edit_2") %>
+      <%= render partial: "references/tabs/tab",
+        locals: {
+          first: false,
+          last: false,
+          this_tab: "tab_edit_2",
+          link_text: product_tab_text(:reference, "edit_2", "Edit.."),
+          link_id: "reference-edit-2-tab",
+          link_title: "Second edit form for the reference.",
+          tab_index: increment_tab_index,
+          prev_tab: "",
+          next_tab: ""
+        }
+      %>
+    <% end %>
 
-        <%= render partial: 'references/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_edit_3',
-                                            link_text: 'Edit...'.html_safe,
-                                            link_id: 'reference-edit-3-tab',
-                                            link_title: 'Links edit form for the reference.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
+    <% if tab_available?(tabs_array, "edit_3") %>
+      <%= render partial: "references/tabs/tab",
+        locals: {
+          first: false,
+          last: false,
+          this_tab: "tab_edit_3",
+          link_text: product_tab_text(:reference, "edit_3", "Edit..."),
+          link_id: "reference-edit-3-tab",
+          link_title: "Links edit form for the reference.",
+          tab_index: increment_tab_index,
+          prev_tab: "",
+          next_tab: ""
+        }
+      %>
+    <% end %>
+  <% end %>
 
-      <% end %>
+  <% if can?("comments", "create") && tab_available?(tabs_array, "comments") %>
+    <%= render partial: "references/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_comments",
+        link_text: product_tab_text(:reference, "comments", "Comments"),
+        link_id: "reference-comments-tab",
+        link_title: "Edit comments.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      }
+    %>
+  <% end %>
 
-      <% if can? 'comments', 'create' %>
+  <% if can?("instances", "create") && tab_available?(tabs_array, "new_instance") %>
+    <%= render partial: "references/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_new_instance",
+        link_text: product_tab_text(:reference, "new_instance", "New instance"),
+        link_id: "reference-new-instance-tab",
+        link_title: "New instance form for the reference.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      }
+    %>
+  <% end %>
 
-        <%= render partial: 'references/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_comments',
-                                            link_text: 'Comments'.html_safe,
-                                            link_id: 'reference-comments-tab',
-                                            link_title: 'Edit comments.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
-
-      <% end %>
-
-      <% if can? 'instances', 'create' %>
-
-        <%= render partial: 'references/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_new_instance',
-                                            link_text: 'New instance'.html_safe,
-                                            link_id: 'reference-new-instance-tab',
-                                            link_title: 'New instance form for the reference.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
-      <% end %>
-
-      <% if can? 'references', 'copy' %>
-
-        <%= render partial: 'references/tabs/tab',
-                   locals: {first: false,
-                            last: true,
-                            this_tab: 'tab_copy',
-                            link_text: 'Copy'.html_safe,
-                            link_id: 'reference-copy-tab',
-                            link_title: 'Copy the reference to a new reference ready to modify and save.',
-                            tab_index: increment_tab_index,
-                            prev_tab: '',
-                            next_tab: '.search-result.showing-details'} %>
-      <% end %>
-
-    </ul>
-
+  <% if can?("references", "copy") && tab_available?(tabs_array, "copy") %>
+    <%= render partial: "references/tabs/tab",
+      locals: {
+        first: false,
+        last: true,
+        this_tab: "tab_copy",
+        link_text: product_tab_text(:reference, "copy", "Copy"),
+        link_id: "reference-copy-tab",
+        link_title: "Copy the reference to a new reference ready to modify and save.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ".search-result.showing-details"
+      }
+    %>
+  <% end %>
+</ul>

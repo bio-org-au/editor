@@ -1,0 +1,5 @@
+alert('step 1');
+$('#synonymy-content').html('<h3>Error:</h3><p><%= escape_javascript(@message.html_safe) %></p><p>Refresh to update report.</p>');
+alert('<%= escape_javascript(@message.html_safe) %>');
+$('#update_selected_synonymy').addClass('hidden');
+alert('step 3');

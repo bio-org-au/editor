@@ -9,7 +9,7 @@
       .drafts
     %>
 
-    <% if !profile_item.is_draft? && !draft_profile_items.exists? %>
+    <% if !profile_item.is_draft? && !draft_profile_items.exists? && profile_item.end_date.blank? %>
       <%= form_with url: profile_items_versioned_copies_path, method: :post, remote: true, format: :turbo_stream, html: { style: 'display:inline; margin-left:10px;', class: 'prompt-form-save always-prompt-before-action'  } do |f| %>
         <%= hidden_field_tag :id, profile_item.id %>
         <%= hidden_field_tag :instance_id, instance.id %>

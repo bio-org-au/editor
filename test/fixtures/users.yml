@@ -43,3 +43,33 @@ user_two:
  user_name: utwo
  given_name: userx
  family_name: Two
+
+apc_tax_publisher:
+ <<: *DEFAULTS
+ user_name: apc-tax-publisher
+ given_name: Apc
+ family_name: TaxPublisher
+
+foa_tax_publisher:
+ <<: *DEFAULTS
+ user_name: foa-tax-publisher
+ given_name: Foa
+ family_name: TaxPublisher
+
+apc_tax_builder:
+ <<: *DEFAULTS
+ user_name: apc-tax-builder
+ given_name: Apc
+ family_name: TaxBuilder
+
+foa_tax_builder:
+ <<: *DEFAULTS
+ user_name: foa-tax-builder
+ given_name: Foa
+ family_name: TaxBuilder
+
+no_role:
+ <<: *DEFAULTS
+ user_name: no-role
+ given_name: No
+ family_name: Role

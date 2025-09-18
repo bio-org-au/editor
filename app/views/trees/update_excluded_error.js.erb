@@ -1,0 +1,6 @@
+$('#cb-spinner').removeClass('fa-spin');
+$('#tree_excluded_message')
+    .addClass('error')
+    .removeClass('hidden')
+    .html(markdown("Error: <%= escape_javascript(@message.html_safe) %> (tab will refresh soon)"));
+setTimeout(function(){$('#instance-classification-tab').click()},3000);

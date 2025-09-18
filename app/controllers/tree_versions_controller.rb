@@ -42,6 +42,8 @@ class TreeVersionsController < ApplicationController
 
   def create_draft
     logger.info "Create a draft tree"
+    tree = Tree.find(params[:tree_id])
+    authorize! :create_draft, tree
     response = Tree::DraftVersion.create_via_service(params[:tree_id],
                                                      nil,
                                                      params[:draft_name],
@@ -55,20 +57,21 @@ class TreeVersionsController < ApplicationController
       render "create_draft"
     else
       @message = "Something went wrong, no payload."
-      render "create_draft_error"
+      render "create_draft_error", status: :bad_request
     end
-  rescue RestClient::Unauthorized, RestClient::Forbidden => e
+  rescue CanCan::AccessDenied, RestClient::Unauthorized, RestClient::Forbidden => e
     @message = json_error(e)
-    render "create_draft_error"
+    render "create_draft_error", status: :forbidden
   rescue RestClient::ExceptionWithResponse => e
     @message = json_error(e)
-    render "create_draft_error"
+    render "create_draft_error", status: :bad_request
   rescue => e
     @message = e.to_s
-    render "create_draft_error"
+    render "create_draft_error", status: :bad_request
   end
 
   def edit_draft
+    authorize! :edit, @working_draft
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
     @diff_link = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id)
@@ -77,6 +80,7 @@ class TreeVersionsController < ApplicationController
 
   def update_draft
     draft_version = Tree::DraftVersion.find(params[:version_id])
+    authorize! :update_draft, draft_version
     draft_version.draft_name = params[:draft_name]
     draft_version.log_entry = params[:draft_log]
     if draft_version.changed?
@@ -87,18 +91,23 @@ class TreeVersionsController < ApplicationController
       @message = 'No change'
     end
     render "update_draft"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "create_draft_error", status: :forbidden
   rescue => e
     @message = "#{e} - #{draft_version.errors[:base].join(',')}"
-    render "update_draft_error"
+    render "update_draft_error", status: :bad_request
   end
 
   def form_to_publish
+    authorize! :publish, @working_draft
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
     render "form_to_publish_draft"
   end
 
   def publish
+    authorize! :publish, @working_draft
     draft_version = Tree::DraftVersion.find(params[:version_id])
     draft_version.log_entry = params[:draft_log]
     response = draft_version.publish(current_user.username, params[:next_draft_name])
@@ -112,15 +121,15 @@ class TreeVersionsController < ApplicationController
       @message = json_result(response)
       render "publish_error"
     end
-  rescue RestClient::Unauthorized, RestClient::Forbidden => e
+  rescue Unauthorized, RestClient::Unauthorized, RestClient::Forbidden => e
     @message = json_error(e)
-    render "publish_error"
+    render "publish_error", status: :forbidden
   rescue RestClient::ExceptionWithResponse => e
     @message = json_error(e)
-    render "publish_error"
+    render "publish_error", status: :bad_request
   rescue => e
     @message = e.to_s
-    render "publish_error"
+    render "publish_error", status: :bad_request
   end
 
   private

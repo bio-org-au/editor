@@ -62,5 +62,15 @@ FactoryBot.define do
     association :instance
     association :product_item_config
     association :profile_text
+
+    trait :draft do
+      is_draft { true }
+      published_date { nil }
+    end
+
+    trait :published do
+      is_draft { false }
+      published_date { Time.current }
+    end
   end
 end

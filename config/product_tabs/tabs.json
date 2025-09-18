@@ -1,0 +1,87 @@
+{
+  "author": {
+    "is_name_index": {
+      "tabs": ["new", "details", "edit", "comments"]
+    },
+    "has_default_reference": {
+      "tabs": ["details"]
+    },
+    "manages_taxonomy": {
+      "tabs": ["details"]
+    },
+    "manages_profile": {
+      "tabs": ["new", "details"]
+    },
+    "default": {
+      "tabs": ["details"]
+    }
+  },
+  "reference": {
+    "is_name_index": {
+      "tabs": ["new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy"]
+    },
+    "has_default_reference": {
+      "tabs": ["details"]
+    },
+    "manages_taxonomy": {
+      "tabs": ["details"]
+    },
+    "manages_profile": {
+      "tabs": ["new", "details", "edit_1", "edit_2", "edit_3"]
+    },
+    "default": {
+      "tabs": ["details"]
+    }
+  },
+  "name": {
+    "is_name_index": {
+      "tabs": ["new", "details", "edit", "new_instance", "copy", "more", "more_comment", "more_tag", "more_refresh"]
+    },
+    "has_default_reference": {
+      "tabs": ["details", "new_instance", "more", "more_tag"]
+    },
+    "manages_taxonomy": {
+      "tabs": ["details", "more", "more_tag"]
+    },
+    "manages_profile": {
+      "tabs": ["details", "more", "new_instance_profile", "more_tag"]
+    },
+    "default": {
+      "tabs": ["details"]
+    }
+  },
+  "instance": {
+    "is_name_index": {
+      "tabs": ["details", "edit", "syn", "unpub", "notes", "adnot", "copy", "loader"]
+    },
+    "has_default_reference": {
+      "tabs": ["details", "edit_profile", "syn_profile", "unpub_profile", "copy_profile", "loader"]
+    },
+    "manages_taxonomy": {
+      "tabs": ["details", "tree"]
+    },
+    "manages_profile": {
+      "tabs": ["details", "edit_profile", "syn_profile", "unpub_profile", "profile"]
+    },
+    "default": {
+      "tabs": ["details"]
+    }
+  },
+  "profile": {
+    "is_name_index": {
+      "tabs": ["details"]
+    },
+    "has_default_reference": {
+      "tabs": ["details"]
+    },
+    "manages_taxonomy": {
+      "tabs": ["details"]
+    },
+    "manages_profile": {
+      "tabs": ["details", "add", "edit", "delete"]
+    },
+    "default": {
+      "tabs": ["details"]
+    }
+  }
+}

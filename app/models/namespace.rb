@@ -39,6 +39,7 @@ class Namespace < ActiveRecord::Base
   has_many :references, foreign_key: "namespace_id"
   has_many :names, foreign_key: "namespace_id"
   has_many :instances, foreign_key: "namespace_id"
+  has_many :products, foreign_key: "namespace_id"
 
   def self.default
     Namespace.first

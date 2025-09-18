@@ -35,10 +35,11 @@ class TreeMenuDraftsTest < ActiveSupport::TestCase
   end
 
   def with_ron_read_only
-    assert Tree.find_by(name: 'RON').is_read_only?, "RON should be only"
+    assert Tree.find_by(name: 'RON').is_read_only?, "RON should be read only"
     menu_drafts = Tree.menu_drafts
-    assert_equal 1, menu_drafts.size, "Expecting only one menu draft"
+    assert_equal 2, menu_drafts.size, "Expecting two menu drafts not #{menu_drafts.size}"
     assert menu_drafts.pluck(:name).include?('APC'), "APC should be in menu drafts"
+    assert menu_drafts.pluck(:name).include?('FOA'), "FOA should be in menu drafts"
   end
 
   def make_ron_not_read_only
@@ -49,8 +50,8 @@ class TreeMenuDraftsTest < ActiveSupport::TestCase
 
   def with_ron_not_read_only
     menu_drafts = Tree.menu_drafts
-    assert_equal 2, menu_drafts.size, "Expecting two menu drafts"
-    assert menu_drafts.pluck(:name).sort == ['APC','RON'], 'should match'
+    assert_equal 3, menu_drafts.size, "Expecting three menu drafts not #{menu_drafts.size}"
+    assert menu_drafts.pluck(:name).sort == ['APC','FOA','RON'], "Menu drafts should now be 'APC','FOA', and 'RON'"
   end
 
   def make_ron_read_only

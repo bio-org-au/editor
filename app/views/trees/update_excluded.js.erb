@@ -1,0 +1,1 @@
+$('#instance-classification-tab').click();

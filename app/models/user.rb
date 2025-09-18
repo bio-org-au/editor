@@ -60,27 +60,35 @@ class User < ActiveRecord::Base
     # which specific product this user is related to.
     # Currently, we're making an assumption that there will
     # be just one product associated with these roles.
-    # We are currently using this method for the profile items
-    roles_to_check = ['draft-editor','draft-profile-editor', 'profile-editor']
     product_roles
       .joins(:role)
-      .where(roles: { name: roles_to_check })
       .includes(:product)
       .first&.product
   end
 
+  def available_products_from_roles
+    # Returns all products that this user has access to through their roles
+    # This method supports multi-product scenarios by returning all available products
+    # instead of just the first one
+    product_roles
+      .joins(:role, :product)
+      .includes(:product, :user_product_roles)
+      .order(Product.arel_table[:name].asc)
+      .filter_map(&:product)
+      .uniq
+  end
+
   def set_audit_fields
-    self.created_by = self.updated_by = @current_user&.username||'self as new user'
+    self.created_by = self.updated_by = @current_user&.username || "self as new user"
   end
 
   def force_lower_case_user_name
-    self.user_name = self.user_name.downcase
+    self.user_name = user_name.downcase
   end
 
   def set_updated_by
-    self.updated_by = @current_user&.username||'unknown'
+    self.updated_by = @current_user&.username || "unknown"
   end
-
 
   # Note, the PK for the users table is the id column.
   # That appears as user_id as a foreign key.
@@ -132,15 +140,23 @@ class User < ActiveRecord::Base
   end
 
   def self.users_not_already_reviewers(batch_review)
-    self.all.order(:user_name) - batch_review.batch_reviewers.collect {|reviewer| reviewer.user}
+    all.order([:given_name, :family_name]) - batch_review.batch_reviewers.collect { |reviewer| reviewer.user }
   end
 
   def can_be_deleted?
-    batch_reviewers.size.zero?
+    batch_reviewers.empty?
   end
 
   def grantable_product_roles_for_select
-    (Product::Role.all - product_roles).sort {|x,y| x.name <=> y.name}
-                                       .map {|pr| [pr.name, pr.id]}
+    (Product::Role.all - product_roles).sort_by(&:name)
+      .map { |pr| [pr.name, pr.id] }
+  end
+
+  def inspect
+    {id: id,
+     user_name: user_name,
+     given_name: given_name,
+     family_name: family_name
+    }
   end
 end

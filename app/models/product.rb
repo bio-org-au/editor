@@ -7,11 +7,15 @@
 #  api_name(The name of a script, jira or services task which last changed this record.)             :string(50)
 #  created_by(The user id of the person who created this data)                                       :string(50)       not null
 #  description_html(The full name for this profile product. i.e. Flora of Australia.)                :text
+#  has_default_reference                                                                             :boolean          default(FALSE), not null
 #  internal_notes(Team notes about the management or maintenance of this product.)                   :text
 #  is_available(Indicates this product is publicly available.)                                       :boolean          default(FALSE), not null
 #  is_current(Indicates this product is currently being maintained and published.)                   :boolean          default(FALSE), not null
-#  is_name_index                                                                                     :boolean          default(FALSE), not null
+#  is_name_index(Indicates this product is THE name index for this dataset/shard.)                   :boolean          default(FALSE), not null
 #  lock_version(A system field to manage row level locking.)                                         :integer          default(0), not null
+#  manages_profile(This product has profile data (as configured in product item config).)            :boolean          default(FALSE), not null
+#  manages_taxonomic_concept(This product manages taxonomic concepts.)                               :boolean          default(FALSE), not null
+#  manages_taxonomy(This product has a taxonomy which it manages.)                                   :boolean          default(FALSE), not null
 #  name(The standard acronym for this profile product. i.e. FOA, APC.)                               :text             not null
 #  source_id_string(The identifier from the source system that this profile text was imported from.) :string(100)
 #  source_system(The source system that this profile text was imported from.)                        :string(50)
@@ -22,6 +26,10 @@
 #  reference_id(The highest level reference for this product.)                                       :bigint
 #  source_id(The key at the source system imported on migration.)                                    :bigint
 #  tree_id(The tree (taxonomy) used for this product.)                                               :bigint
+#
+# Indexes
+#
+#  product_unique_tree_owner  (tree_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -40,9 +48,8 @@ class Product < ApplicationRecord
   has_many :profile_items, through: :product_item_configs, class_name: 'Profiles::ProfileItem'
   has_many :product_roles, class_name: "Product::Role"
   has_many :user_product_roles, class_name: "User::ProductRole", through: :product_roles
-    
+
   validates :name, presence: true
-  
 
   scope :by_tree_element, ->(tree_element) do
     return none if tree_element.nil?

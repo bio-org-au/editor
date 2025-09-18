@@ -19,10 +19,10 @@
 #  fk_4q3huja5dv8t9xyvt5rg83a35  (tree_id => tree.id)
 #  fk_tiniptsqbb5fgygt1idm1isfy  (previous_version_id => tree_version.id)
 #
-current_version:
+apc_current_version:
   created_at: 2016-01-12 13:00:00.000000
   created_by: 'import'
-  draft_name: 'import'
+  draft_name: 'apc current'
   log_entry: 'import'
   previous_version_id: nil
   published: true
@@ -30,24 +30,58 @@ current_version:
   published_by: 'import'
   tree: APC
 
-draft_version:
+apc_draft_version:
   created_at: 2016-01-12 13:00:00.000000
-  created_by: 'import'
-  draft_name: 'import'
-  log_entry: 'import'
-  previous_version_id: current_version.id
+  created_by: import
+  draft_name: draft version
+  log_entry: apc draft log
+  previous_version_id: apc_current_version.id
   published: false
-  published_at: 2016-01-12 13:00:00.000000
-  published_by: 'import'
+  published_at:
+  published_by:
   tree: APC
+
+ron_current_version:
+  created_at: 2024-01-13 13:00:00.000000
+  created_by: 'import'
+  draft_name: RON current
+  log_entry: RON current log
+  previous_version_id: nil
+  published: true
+  published_at: 2025-01-13 13:00:00.000000
+  published_by: 'import'
+  tree: RON
 
 ron_draft_version:
   created_at: 2024-01-12 13:00:00.000000
   created_by: gclarke
   draft_name: RON Draft
-  log_entry: RON Draft
+  log_entry: RON Draft log
   previous_version_id: 
   published: false
-  published_at: 2024-01-12 13:00:00.000000
+  published_at:
   published_by: 
   tree: RON
+
+foa_current_version:
+  created_at: 2016-01-12 13:00:00.000000
+  created_by: import
+  draft_name: foa latest
+  log_entry: foa latest log
+  previous_version_id: nil
+  published: true
+  published_at: 2016-01-12 13:00:00.000000
+  published_by: 'import'
+  tree: FOA
+
+foa_draft_version:
+  created_at: 2016-01-12 13:00:00.000000
+  created_by: import
+  draft_name: draft version
+  log_entry: foa draft log
+  previous_version_id: foa_current_version.id
+  published: false
+  published_at:
+  published_by:
+  tree: FOA 
+

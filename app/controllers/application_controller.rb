@@ -7,7 +7,8 @@ class ApplicationController < ActionController::Base
                 :authorise,
                 :set_view_mode,
                 :set_session_default_loader_batch_name
-  #  around_action :user_tagged_logging
+  # around_action :user_tagged_logging
+  # This is just an added comment to force-trigger the github workflow
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :show_login_page
   rescue_from CanCan::AccessDenied do |ex|
@@ -24,11 +25,44 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  helper_method :current_user, :current_registered_user
+  helper_method :current_user,
+    :current_registered_user,
+    :product_tab_service,
+    :product_context_service,
+    :current_context_id,
+    :current_context_name
 
   protected
 
   attr_reader :current_user, :current_registered_user
+
+  def product_tab_service
+    @product_tab_service ||= begin
+      context_id = current_context_id
+      if context_id
+        Products::ProductTabService.for_context(context_id)
+      else
+        Products::ProductTabService.call(current_registered_user.available_products_from_roles)
+      end
+    end
+  end
+
+  def current_context_id
+    session[:current_context_id]
+  end
+
+  def current_context_name
+    return "Select Context" unless current_context_id
+
+    session[:current_context_name] || "No Context Selected"
+  end
+
+  def product_context_service
+    @product_context_service ||= Products::ProductContextService
+      .call(products: current_registered_user.available_products_from_roles)
+  end
+
+  private
 
   def show_login_page
     logger.error("Invalid Authenticity Token.")

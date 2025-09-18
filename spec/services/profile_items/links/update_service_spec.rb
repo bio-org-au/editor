@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe ProfileItems::Links::UpdateService, type: :service do
+  let(:name) { create(:name, validate: false) }
   let!(:instance) { create(:instance, name:) }
 
   let(:profile_text) { create(:profile_text) }
   let!(:product_item_config) { create(:product_item_config) }
   let!(:source_profile_item) do
-    build(:profile_item,
+    create(:profile_item,
       instance_id: instance.id,
+      instance: instance,
       product_item_config:,
       profile_text:,
       statement_type: 'fact',
@@ -19,6 +21,7 @@ RSpec.describe ProfileItems::Links::UpdateService, type: :service do
     create(:profile_item,
       product_item_config:,
       instance_id: instance.id,
+      instance: instance,
       profile_text_id: profile_text.id,
       source_profile_item_id: source_profile_item.id,
       statement_type: 'link'
@@ -53,6 +56,7 @@ RSpec.describe ProfileItems::Links::UpdateService, type: :service do
       let!(:source_profile_item) do
         create(:profile_item,
           instance_id: instance.id,
+          instance: instance,
           product_item_config:,
           profile_text:,
           statement_type: 'fact',
@@ -112,6 +116,7 @@ RSpec.describe ProfileItems::Links::UpdateService, type: :service do
       let!(:source_profile_item) do
         create(:profile_item,
           instance_id: instance.id,
+          instance: instance,
           product_item_config:,
           profile_text:,
           statement_type: 'fact',

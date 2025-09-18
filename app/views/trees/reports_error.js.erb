@@ -1,0 +1,6 @@
+$('#tree-reports-container').removeClass('hidden');
+if (!$('#tree-reports-container').hasClass('has-data')) {
+  $('#tree-reports-container').html("<%= j render(:partial => 'trees/tab_inners/reports_inner') %>")
+  $('#tree-reports-container').addClass('has-data');
+}
+$('#tree-reports-error-message-container').removeClass('hidden').html('blah');

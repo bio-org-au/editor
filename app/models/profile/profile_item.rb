@@ -109,14 +109,6 @@ module Profile
       is_draft? && !instance.draft?
     end
 
-    def publish!
-      return if published?
-
-      self.is_draft = false
-      self.published_date = Time.current
-      save!
-    end
-
     private
 
     def conditionally_destroy_profile_text

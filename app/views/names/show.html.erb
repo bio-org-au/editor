@@ -11,7 +11,12 @@
 
   <%= render partial: 'names/tabs/tabs' %>
 
+  <% if Rails.configuration.try('multi_product_tabs_enabled') && params[:product_name].present? %>
+  <% product = Product.find_by(name: params[:product_name].upcase) %>
+  <%= render partial: "names/tabs/#{@tab}", locals: { product: product } %>
+  <% else %>
   <%= render partial: "names/tabs/#{@tab}" %>
+  <% end %>
 
   <span class='server-response-time'><%= "(#{(Time.now - @start_time).round(2)}s)" if @start_time %></span>
 

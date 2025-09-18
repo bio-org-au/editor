@@ -1,6 +1,17 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def disable_common_cultivar_checkbox
     !(params[:query_on].nil? || params[:query_on].match(/\Aname\z/i))
+  end
+
+  def sorted_product_roles(user = nil)
+    return [] unless user
+
+    user
+      .product_roles
+      .includes(:product, :role)
+      .sort_by { |pr| [pr.product.name, pr.role.name] }
   end
 
   def markdown_to_html(markdown)
@@ -10,20 +21,6 @@ module ApplicationHelper
   def nav_link(text, icon_name)
     "<div class='icon-for-menu'>#{menu_icon(icon_name)}</div>
     <div class='text-for-link'>#{text}</div>".html_safe
-  end
-
-  def user_profile_tab_name
-    current_registered_user.available_product_from_roles&.name
-  end
-
-  def increment_tab_index(increment = 1)
-    @tab_index ||= 1
-    @tab_index += increment
-  end
-
-  def tab_index(offset = 0)
-    tabi = @tab_index || 1
-    tabi + offset
   end
 
   def treated_label(label, treatment = :description)
@@ -122,7 +119,7 @@ module ApplicationHelper
       "#{ShardConfig.shard_group_name}"
     else
       "#{ShardConfig.shard_group_name}"
-    end + ":" + (params["query_target"] || "Editor").gsub("_", " ").titleize
+    end + ":" + (params["query_target"] || "Editor").tr("_", " ").titleize
   end
 
   def development?
@@ -140,5 +137,3 @@ class String
     tr("_", " ").upcase
   end
 end
-
-

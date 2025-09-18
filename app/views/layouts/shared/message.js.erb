@@ -1,0 +1,5 @@
+if ($("#common-error-message-container").length == 0) {
+ window.alert("<%= escape_javascript(@message) %>")
+} else {
+  document.getElementById("common-error-message-container").innerHTML = "<%= j render(partial: 'layouts/shared/message') %>";
+}

@@ -1,8 +1,31 @@
 _fixture:
   model_class: User::ProductRole
 
+DEFAULTS: &DEFAULTS
+  created_by: tester
+
 user_one_foa_draft_profile_editor:
+  <<: *DEFAULTS
   user: user_one
   product_role: foa_draft_profile_editor
-  updated_by: tester
-  created_by: tester
+
+apc_tax_publisher_apc_tree_publisher:
+  <<: *DEFAULTS
+  user: apc_tax_publisher
+  product_role: apc_tree_publisher
+
+foa_tax_publisher_foa_tree_publisher:
+  <<: *DEFAULTS
+  user: foa_tax_publisher
+  product_role: foa_tree_publisher
+
+apc_tax_builder_apc_tree_builder:
+  <<: *DEFAULTS
+  user: apc_tax_builder
+  product_role: apc_tree_builder
+
+foa_tax_builder_foa_tree_builder:
+  <<: *DEFAULTS
+  user: foa_tax_builder
+  product_role: foa_tree_builder
+

@@ -16,7 +16,17 @@
       <div id="product-config-and-profile-items-container"></div>
     <% else %>
       <div id="product-config-and-profile-items-container">
-        <% all_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs.new(@current_user, @instance, {product_item_config_id: @selected_product_item_config_id}).run_query %>
+        <% all_items, _product = Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs
+          .new(
+            @current_user,
+            @instance,
+            {
+              product_name: local_assigns[:product_name],
+              product_item_config_id: @selected_product_item_config_id
+            }
+          )
+          .run_query
+        %>
         <% all_items.each do |config_items| %>
             <% product_item_config, profile_item = config_items.values_at(:product_item_config, :profile_item) %>
             <div class="product-item-config-container product-item-config-container-id-<%= product_item_config.id %>">

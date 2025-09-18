@@ -1,0 +1,171 @@
+<li class="dropdown define-left-border-when-active">
+  <a href="#"
+    id="new-dropdown-menu-link"
+    class="dropdown-toggle"
+    tabindex="2"
+    data-toggle="dropdown"
+  >
+    New<span class="caret"></span>
+  </a>
+  <% name_tabs_array = product_tab_service.all_available_tabs.dig('name')&.map{|tab| tab[:tab] } || [] %>
+  <ul id="create-dropdown-menu" class="dropdown-menu" role="menu">
+    <% if tab_available?(name_tabs_array, "new") %>
+      <li class="dropdown-submenu">
+        <a tabindex="-1" href="#" title="Names stuff"> Names </a>
+        <ul id="create-name-dropdown-submenu" class="dropdown-menu" role="menu">
+          <li role="presentation">
+            <%= link_to "Scientific name",
+              name_new_row_path('scientific'),
+              title: 'Add a new scientific name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation">
+            <%= link_to "Scientific name family or above",
+              name_new_row_path('scientific-family-or-above'),
+              title: 'Add a new scientific name family and above',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation">
+            <%= link_to "Phrase name",
+              name_new_row_path('phrase'),
+              title: 'Add a new phrase name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">
+            <%= link_to "Hybrid formula name",
+              name_new_row_path('hybrid formula'),
+              title: 'Add a new hybrid name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation">
+            <%= link_to "Hybrid formula unknown 2nd parent name",
+              name_new_row_path('hybrid-formula-unknown-2nd-parent'),
+              title: 'Add a new hybrid formula unknown 2nd parent name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">
+            <%= link_to "Cultivar hybrid name",
+              name_new_row_path('cultivar-hybrid'),
+              title: 'Add a new cultivar hybrid name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation">
+            <%= link_to "Cultivar name",
+              name_new_row_path('cultivar'),
+              title: 'Add a new cultivar name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">
+            <%= link_to "Other name",
+              name_new_row_path('other'),
+              title: 'Add a new other name',
+              remote: true,
+              tabindex: '-1'
+            %>
+          </li>
+        </ul>
+      </li>
+    <% end %>
+
+    <% author_tabs_array = product_tab_service.all_available_tabs.dig('author')&.collect{|tab| tab[:tab] } || [] %>
+    <% if tab_available?(author_tabs_array, 'new') %>
+      <li role="presentation">
+        <%= link_to "Author",
+          author_new_row_path,
+          title: 'Add new Author',
+          remote: true,
+          tabindex: '-1'
+        %>
+      </li>
+    <% end %>
+
+    <% reference_tabs_array = product_tab_service.all_available_tabs.dig('reference')&.collect{|tab| tab[:tab] } || [] %>
+    <% if tab_available?(reference_tabs_array, 'new') %>
+      <li role="presentation">
+        <%= link_to "Reference",
+          reference_new_row_path,
+          title: 'Add a new reference',
+          remote: true,
+          tabindex: '-1'
+        %>
+      </li>
+    <% end %>
+
+    <% if Rails.configuration.try('batch_loader_aware') && @current_user.batch_loader? %>
+      <li role="presentation" class="divider"></li>
+      <% if session[:default_loader_batch_id].blank? %>
+        <li role="presentation">
+          Set default batch <br>to enable<br> loader names
+        </li>
+      <% else %>
+        <li class="dropdown-submenu">
+          <a tabindex="-1" href="#" title="New record options for Loader Names in the default batch">
+            <%= session[:default_loader_batch_name] %>
+          </a>
+          <ul id="create-name-dropdown-submenu" class="dropdown-menu" role="menu">
+            <li role="presentation">
+              <%= link_to "Accepted or excluded record",
+                loader_name_new_row_path,
+                {title: "Add a new accepted or excluded loader-name to batch #{session[:default_loader_batch_name]}",
+                remote: true,
+                tabindex: '-1'}
+              %>
+            </li>
+            <li role="presentation">
+              <%= link_to "Heading",
+                loader_name_new_heading_row_path,
+                title: "Add a new heading loader-name record within batch #{session[:default_loader_batch_name]}",
+                remote: true,
+                tabindex: '-1'
+              %>
+            </li>
+            <li role="presentation">
+              <%= link_to "Batch note",
+                loader_name_new_in_batch_note_row_path,
+                title: 'Add a new "in-batch-note" loader-name within the current loader-batch',
+                remote: true,
+                tabindex: '-1'
+              %>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+      <li role="presentation">
+        <%= link_to "Loader Batch",
+          loader_batch_new_row_path,
+          {title: "Add a new loader batch",
+          remote: true,
+          tabindex: '-1'}
+        %>
+      </li>
+      <% if can?("users", :edit) %>
+        <li role="presentation" class="divider"></li>
+        <li role="presentation">
+          <%= link_to "User",
+            user_new_row_path,
+            title: 'Add User',
+            remote: true,
+            tabindex: '-1'
+          %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</li>

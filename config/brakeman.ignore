@@ -35,52 +35,25 @@
       "note": ""
     },
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "6fbab872bdf6fa0a4c7a5b7921b188cf393a15c4d393afe7e821bbc81155caae",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/loader/batch/review/period.rb",
-      "line": 197,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Loader::Batch::Review::Period.where(:id => self.id).select(\"timezone('#{Time.zone.name}', start_date) start_date\")",
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 122,
+      "fingerprint": "21ab0fe00fdd5899ffc405cff75aadb91b805ee996a614f7e27b08a287e9062d",
+      "check_name": "EOLRails",
+      "message": "Support for Rails 7.1.5.1 ends on 2025-10-01",
+      "file": "Gemfile.lock",
+      "line": 279,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
       "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Loader::Batch::Review::Period",
-        "method": "future?"
-      },
-      "user_input": "Time.zone.name",
-      "confidence": "Medium",
+      "location": null,
+      "user_input": null,
+      "confidence": "Weak",
       "cwe_id": [
-        89
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "d4688964c3031232a5fe957b21f2e67033750091ecff604bde10ab5794c35395",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/loader/batch/review/period.rb",
-      "line": 208,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "Loader::Batch::Review::Period.where(:id => self.id).select(\"timezone('#{Time.zone.name}', end_date) end_date\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Loader::Batch::Review::Period",
-        "method": "past?"
-      },
-      "user_input": "Time.zone.name",
-      "confidence": "Medium",
-      "cwe_id": [
-        89
+        1104
       ],
       "note": ""
     }
   ],
-  "updated": "2025-05-26 11:58:36 +1000",
+  "updated": "2025-08-04 17:14:31 +1000",
   "brakeman_version": "6.2.2"
 }

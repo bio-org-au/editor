@@ -1,0 +1,28 @@
+<% if @current_user.present? && available_contexts_for_current_user.any?%>
+  <a tabindex="3"
+    href="#"
+    class="dropdown-toggle"
+    title="Select Working Context"
+    id="context-dropdown-menu-link"
+    data-toggle="dropdown">
+    <i class="fa fa-eye"></i>
+    <%= current_context_name %>
+    <span class="caret"></span>
+  </a>
+  <ul id="product-context-dropdown-menu" class="dropdown-menu">
+    <% available_contexts_for_current_user.each do |context| %>
+      <li role="presentation">
+        <%= link_to product_contexts_set_context_index_path(context_id: context[:context_id]),
+          method: :post,
+          title: context[:description],
+          class: "context-switch-link",
+          tabindex: "-1" do %>
+          <%= editor_icon('layers') %> <%= context[:name] %>
+          <% if current_context_id == context[:context_id] %>
+            <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

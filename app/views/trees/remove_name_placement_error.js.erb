@@ -1,3 +1,4 @@
+$('i.fa').removeClass('fa-spin');
 $('#remove-placement-error-message-container')
     .removeClass('hidden')
     .html(markdown("Error removing name: <%= escape_javascript(@message.html_safe) %>"));

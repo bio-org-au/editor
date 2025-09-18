@@ -43,7 +43,8 @@ tree_publisher:
   name: tree-publisher
   description: Can manage the publication of a taxonomy as a new version of a tree of a product
 
-name_index-editor:
+tree_builder:
   <<: *DEFAULTS
-  name: name-index-editor
-  description: Can manage ANY taxonomic concepts in the name index in a dataset
+  name: tree-builder
+  description: Can manage the taxonomic concepts on a draft tree
+

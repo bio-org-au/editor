@@ -32,6 +32,37 @@ RSpec.describe ProfileItems::Published::CreateNewVersionService, type: :service 
         expect(new_draft.profile_item_references.first.reference_id).to eq(profile_item_reference.reference_id)
       end
 
+      it "sets the correct attributes on the the new profile item" do
+        subject.execute
+        new_draft = Profile::ProfileItem.where(is_draft: true).last
+        expect(new_draft.is_draft).to be true
+        expect(new_draft.published_date).to be_nil
+        expect(new_draft.created_by).to eq(user.user_name)
+        expect(new_draft.updated_by).to eq(user.user_name)
+        expect(new_draft.source_system).to be_nil
+        expect(new_draft.source_id).to be_nil
+        expect(new_draft.source_id_string).to be_nil
+      end
+
+      it "sets the correct attribues of the new profile text" do
+        subject.execute
+        new_draft = Profile::ProfileItem.where(is_draft: true).last
+        new_profile_text = new_draft.profile_text
+        expect(new_profile_text.created_by).to eq(user.user_name)
+        expect(new_profile_text.updated_by).to eq(user.user_name)
+        expect(new_profile_text.source_system).to be_nil
+        expect(new_profile_text.source_id).to be_nil
+      end
+
+      it "sets the correct attributes of the new profile item annotation" do
+        subject.execute
+        new_draft = Profile::ProfileItem.where(is_draft: true).last
+        new_profile_item_annotation = new_draft.profile_item_annotation
+        expect(new_profile_item_annotation.created_by).to eq(user.user_name)
+        expect(new_profile_item_annotation.updated_by).to eq(user.user_name)
+        expect(new_profile_item_annotation.profile_item_id).to eq(new_draft.id)
+      end
+
       context "when there are errors copying the profile item" do
         before do
           errors = ActiveModel::Errors.new(profile_item)
@@ -106,6 +137,50 @@ RSpec.describe ProfileItems::Published::CreateNewVersionService, type: :service 
       it "does not create a new version and adds an error" do
         subject.execute
         expect(subject.errors.full_messages).to include("There is still a draft profile item for this product item config")
+      end
+    end
+
+    context "when the profile item is a link" do
+      before do
+        profile_item.update(statement_type: "link")
+      end
+
+      it "converts the link profile item to a fact before creating a new version" do
+        expect(profile_item.fact?).to be false
+        subject.execute
+        profile_item.reload
+        expect(profile_item.fact?).to be true
+      end
+
+      context "when the link profile item is a draft" do
+        let(:profile_item) { create(:profile_item, instance: instance, product_item_config: product_item_config, is_draft: true, statement_type: "link") }
+
+        it "does not convert the link profile item to a fact and adds an error" do
+          subject.execute
+          expect(subject.errors.full_messages).to include("Profile item must be published before creating a new version")
+          expect(profile_item.fact?).to be false
+        end
+      end
+
+      context "when there are errors converting the link profile item to a fact" do
+        let(:errors) do
+          errors = ActiveModel::Errors.new(profile_item)
+          errors.add(:base, "An error")
+          errors
+        end
+
+        let(:mock_service) { instance_double(ProfileItems::Links::UpdateService, errors: errors) }
+
+        before do
+          allow(ProfileItems::Links::UpdateService).to receive(:call).and_return(mock_service)
+        end
+
+        it "does not create a new version and returns errors" do
+          subject.execute
+          expect(subject.errors.full_messages).to include("An error")
+          profile_item.reload
+          expect(profile_item.fact?).to be false
+        end
       end
     end
   end

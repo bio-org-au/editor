@@ -1,4 +1,4 @@
-<% product = @current_registered_user.available_product_from_roles %>
+<% product = local_assigns[:product] || @current_registered_user.available_product_from_roles %>
 
 <% if product.blank? || product.reference.blank? %>
   <div id="search-result-details-error-message-container" class="message-container">
@@ -17,7 +17,7 @@
     <div id="search-result-details-error-message-container-1" class="error-container"></div>
     <div id="search-result-details-error-message-container-2" class="error-container"></div>
     <div id="search-result-details-error-message-container-3" class="error-container"></div>
-    <h5>Add an instance for FOA</h5>
+    <h5>Add an instance for <%= product.name %></h5>
 
     <%= form_for(@instance, remote: true) do |f| %>
       The new instance will remain attached to:<br>

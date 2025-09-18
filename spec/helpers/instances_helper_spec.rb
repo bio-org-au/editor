@@ -4,18 +4,18 @@ RSpec.describe InstancesHelper, type: :helper do
   describe "#tab_for_instance_record" do
     context "for invalid arguments" do
       it "raises an error" do
-        expect{helper.tab_for_instance_record}.to raise_error(ArgumentError)
+        expect { helper.tab_for_instance_record }.to raise_error(ArgumentError)
       end
     end
 
     context "passing a known tab" do
       it "returns the tab" do
         %w[tab_synonymy
-        tab_synonymy_for_profile_v2
-        tab_unpublished_citation
-        tab_unpublished_citation_for_profile_v2
-        tab_classification
-        tab_copy_to_new_reference].each do |tab|
+           tab_synonymy_for_profile_v2
+           tab_unpublished_citation
+           tab_unpublished_citation_for_profile_v2
+           tab_classification
+           tab_copy_to_new_reference].each do |tab|
           expect(helper.tab_for_instance_record(tab)).to eq tab
         end
       end
@@ -35,29 +35,29 @@ RSpec.describe InstancesHelper, type: :helper do
 
     context "for invalid arguments" do
       it "raises an error" do
-        expect{helper.tab_for_iapo_concept_record}.to raise_error(ArgumentError)
+        expect { helper.tab_for_iapo_concept_record }.to raise_error(ArgumentError)
       end
     end
 
     context "passing a known tab" do
       let(:tabs_to_offer) do
         %w[tab_synonymy
-          tab_synonymy_for_profile_v2
-          tab_unpublished_citation
-          tab_unpublished_citation_for_profile_v2
-          tab_classification
-          tab_copy_to_new_reference
-          tab_batch_loader_2]
+           tab_synonymy_for_profile_v2
+           tab_unpublished_citation
+           tab_unpublished_citation_for_profile_v2
+           tab_classification
+           tab_copy_to_new_reference
+           tab_batch_loader_2]
       end
 
       it "returns the tab" do
         %w[tab_synonymy
-          tab_synonymy_for_profile_v2
-          tab_unpublished_citation
-          tab_unpublished_citation_for_profile_v2
-          tab_classification
-          tab_copy_to_new_reference
-          tab_batch_loader_2].each do |tab|
+           tab_synonymy_for_profile_v2
+           tab_unpublished_citation
+           tab_unpublished_citation_for_profile_v2
+           tab_classification
+           tab_copy_to_new_reference
+           tab_batch_loader_2].each do |tab|
           expect(helper.tab_for_iapo_concept_record(tab)).to eq tab
         end
       end
@@ -74,16 +74,16 @@ RSpec.describe InstancesHelper, type: :helper do
   describe "#tab_for_citing_instance_in_name_search" do
     context "for invalid arguments" do
       it "raises an error" do
-        expect{helper.tab_for_citing_instance_in_name_search}.to raise_error(ArgumentError)
+        expect { helper.tab_for_citing_instance_in_name_search }.to raise_error(ArgumentError)
       end
     end
 
     context "passing a known tab" do
       it "returns the tab" do
         %w[tab_synonymy
-          tab_synonymy_for_profile_v2
-          tab_create_unpublished_citation
-          tab_unpublished_citation_for_profile_v2].each do |tab|
+           tab_synonymy_for_profile_v2
+           tab_create_unpublished_citation
+           tab_unpublished_citation_for_profile_v2].each do |tab|
           expect(helper.tab_for_citing_instance_in_name_search(tab)).to eq tab
         end
       end

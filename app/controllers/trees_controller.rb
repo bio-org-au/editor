@@ -36,6 +36,8 @@ class TreesController < ApplicationController
   alias tab show
 
   def reports
+    authorize! :reports, @working_draft,
+      :message => "You are not authorized to report on #{@working_draft.tree.name} drafts"
     @diff_link = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id)
     @diff_link_raw = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id).gsub(
       "embed=true", "embed=false"
@@ -46,6 +48,9 @@ class TreesController < ApplicationController
     @val_link_raw = Tree::AsServices.val_link(@working_draft.id).gsub("embed=true", "embed=false")
     @val_syn_link = Tree::AsServices.val_syn_link(@working_draft.id)
     @val_syn_link_raw = Tree::AsServices.val_syn_link(@working_draft.id).gsub("embed=true", "embed=false")
+  rescue RestClient::Exception => e
+    @message = e.to_s
+    render "reports_error"
   end
 
   def update_synonymy
@@ -61,18 +66,32 @@ class TreesController < ApplicationController
 
   def update_synonymy_by_instance
     logger.info "Update synonymy by instance"
+    authorize! :update_synonymy_by_instance, @working_draft,
+      :message => "You are not authorized to update synonymy on #{@working_draft.tree.name} drafts"
     Tree::AsServices.update_synonymy_by_instance(request.raw_post, current_user.username)
   rescue RestClient::Unauthorized, RestClient::Forbidden => e
+    Rails.logger.error('RestClient::Unauthorized')
     @message = json_error(e)
     render "update_synonymy_error"
   rescue RestClient::Exception => e
+    Rails.logger.error('RestClient::Exception')
+    Rails.logger.error(e.to_s)
+    Rails.logger.error(e.to_s)
+    Rails.logger.error(e.to_s)
+    Rails.logger.error(e.to_s)
     @message = json_error(e)
     render "update_synonymy_error"
+  rescue CanCan::AccessDenied => e
+    Rails.logger.debug('CanCan::AccessDenied')
+    @message = json_error(e)
+    render "update_synonymy_error", status: :forbidden
   end
 
   # Move an existing taxon (inc children) under a different parent
   def replace_placement
     logger.info("In replace placement!")
+    authorize! :replace_placement, @working_draft,
+      :message => "You are not authorized to replace a taxon in #{@working_draft.tree.name} draft"
     target = TreeVersionElement.find(move_name_params[:element_link])
     parent = TreeVersionElement.find(move_name_params[:parent_element_link])
 
@@ -92,6 +111,9 @@ class TreesController < ApplicationController
   rescue RestClient::Unauthorized, RestClient::Forbidden => e
     @message = json_error(e)
     render "move_placement_error"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "move_placement_error", status: :forbidden
   rescue RestClient::ExceptionWithResponse => e
     @message = json_error(e)
     render "move_placement_error"
@@ -99,6 +121,8 @@ class TreesController < ApplicationController
 
   # Place and instance on the draft tree version
   def place_name
+    authorize! :place_name, @working_draft,
+      :message => "You are not authorized to place names on any #{@working_draft.tree.name} draft"
     excluded = place_name_params[:excluded] ? true : false
     parent_element_link = place_name_params[:parent_name_typeahead_string].blank? ? nil : place_name_params[:parent_element_link]
     tree_version = TreeVersion.find(place_name_params[:version_id])
@@ -119,12 +143,17 @@ class TreesController < ApplicationController
   rescue RestClient::Unauthorized, RestClient::Forbidden => e
     @message = json_error(e)
     render "place_name_error"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "place_name_error", status: :forbidden
   rescue RestClient::ExceptionWithResponse => e
     @message = json_error(e)
     render "place_name_error"
   end
 
   def remove_name_placement
+    authorize! :remove_name_placement, @working_draft,
+      :message => "You are not authorized to remove names from #{@working_draft.tree.name} draft"
     target = TreeVersionElement.find(remove_name_placement_params[:taxon_uri])
     removement = Tree::Workspace::Removement.new(username: current_user.username,
                                                  target: target)
@@ -133,10 +162,18 @@ class TreesController < ApplicationController
     render "removed_placement"
   rescue RestClient::Unauthorized, RestClient::Forbidden => e
     @message = json_error(e)
+    render "remove_name_placement_error"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "remove_name_placement_error", status: :forbidden
+  rescue => e
+    @message = e.to_s
+    render "remove_name_placement_error", status: :bad_request
   end
 
   def update_comment
-    logger.info "update comment #{update_comment_params[:element_link]} #{update_comment_params[:comment]}"
+    authorize! :update_comment, @working_draft,
+      :message => "Not authorized to update or delete #{@working_draft.tree.name} draft taxon comment"
     tve = TreeVersionElement.find(update_comment_params[:element_link])
     profile_data = Tree::ProfileData.new(current_user, tve.tree_version, tve.tree_element.profile || {})
     profile_data.update_comment(update_comment_params[:comment])
@@ -147,11 +184,18 @@ class TreesController < ApplicationController
     render "update_comment"
   rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
     @message = json_error(e)
-    render "update_comment_error"
+    render "update_comment_error", status: :bad_request
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "update_comment_error", status: :forbidden
+  rescue => e
+    @message = e.to_s
+    render "update_comment_error", status: :bad_request
   end
 
   def update_distribution
-    logger.info "update distribution #{update_distribution_params[:element_link]} #{update_distribution_params[:dist]}"
+    authorize! :update_distribution, @working_draft,
+      :message => "Not authorized to update or delete #{@working_draft.tree.name} draft taxon distribution"
     tve = TreeVersionElement.find(update_distribution_params[:element_link])
     dist = update_distribution_params[:dist]
     profile_data = Tree::ProfileData.new(current_user, tve.tree_version, tve.tree_element.profile || {})
@@ -164,23 +208,41 @@ class TreesController < ApplicationController
   rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
     @message = json_error(e)
     render "update_distribution_error"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "update_distribution_error", status: :forbidden
+  rescue => e
+    @message = e.to_s
+    render "update_distribution_error", status: :bad_request
   end
 
+  # Originally written in non-standard way, different even from the other methods here.
+  # Now under review - I'm not sure how well this ever worked and whether it is a workflow
+  # we need.
   def update_excluded
     logger.info "update excluded #{params[:taxonUri]} #{params[:excluded]}"
+    authorize! :update_excluded, @working_draft,
+      :message => "Not authorized to update #{@working_draft.tree.name} draft taxon excluded"
     Tree::Workspace::Excluded.new(username: current_user.username,
                                   element_link: params[:taxonUri],
                                   excluded: params[:excluded]).update
+    render "update_excluded", format: :js, layout: nil
   rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
     @message = json_error(e)
-    render text: @message, status: 401
+    render "update_excluded_error", format: :js # error status breaks response flow
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "update_excluded_error", format: :js # error status breaks response flow
+  rescue => e
+    @message = e.to_s
+    render "update_excluded_error", format: :js # error status breaks response flow
   end
 
   def update_tree_parent
-    logger.info "update parent #{update_parent_params[:element_link]} parent #{update_parent_params[:parent_element_link]}"
+    authorize! :update_tree_parent, @working_draft,
+      :message => "Not authorized to update or delete #{@working_draft.tree.name} draft taxon parent"
     target = TreeVersionElement.find(update_parent_params[:element_link])
     parent = TreeVersionElement.find(update_parent_params[:parent_element_link])
-
     reparent = Tree::Workspace::Reparent.new(username: current_user.username,
                                              target: target,
                                              parent: parent)
@@ -190,43 +252,85 @@ class TreesController < ApplicationController
   rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
     @message = json_error(e)
     render "update_parent_error"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "update_parent_error", status: :forbidden
+  rescue => e
+    @message = e.to_s
+    render "update_parent_error", status: :bad_request
   end
 
   def show_cas
+    authorize! :show_cas, @working_draft,
+      :message => "You are not authorized to use the synonymy report on #{@working_draft.tree.name} drafts"
     @val_syn_link = Tree::AsServices.val_syn_link(@working_draft.id)
   end
 
   # runs slowly...10 seconds maybe
   def run_cas
+    authorize! :run_cas, @working_draft,
+      :message => "You are not authorized to run the synonymy report on #{@working_draft.tree.name} drafts"
     url = Tree::AsServices.val_syn_link(@working_draft.id)
     @result = RestClient.get(url, { content_type: :html, accept: :html })
-  rescue StandardError => e
-    @message = e.to_s
+  rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
+    @message = json_error(e)
     render "trees/reports/run_cas_error"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "trees/reports/run_cas_error", status: :forbidden
+  rescue => e
+    @message = e.to_s
+    render "trees/reports/run_cas_error", status: :bad_request 
   end
 
   def show_diff
+    authorize! :show_diff, @working_draft,
+      :message => "You are not authorized to use the differences report tab for #{@working_draft.tree.name} drafts"
     @val_syn_link = Tree::AsServices.val_syn_link(@working_draft.id)
   end
 
   # may run slowly
   def run_diff
+    authorize! :run_diff, @working_draft,
+      :message => "You are not authorized to run differences reports for #{@working_draft.tree.name} drafts"
     url = Tree::AsServices.diff_link(@working_draft.tree.current_tree_version_id, @working_draft.id)
     @result = RestClient.get(url, { content_type: :html, accept: :html })
     return unless @result.match(/Nothing to see here.*no changes, nothing, zip/)
 
     @result = @result.sub(%r{<h3>Nothing to see here.</h3> *<p>We have no changes, nothing, zip.</p>},
                           "<h4>No changes.</h4>")
+  rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
+    @message = json_error(e)
+    render "trees/reports/run_diff_error"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "trees/reports/run_diff_error", status: :forbidden
+  rescue => e
+    @message = e.to_s
+    render "trees/reports/run_diff_error", status: :bad_request 
   end
 
   def show_valrep
+    authorize! :show_valrep, @working_draft,
+      :message => "You are not authorized to use the validation reports tab for #{@working_draft.tree.name} drafts"
     @val_link = Tree::AsServices.val_link(@working_draft.id)
   end
 
   # runs slowly...30 seconds maybe
   def run_valrep
+    authorize! :run_valrep, @working_draft,
+      :message => "You are not authorized to run validation reports for #{@working_draft.tree.name} drafts"
     url = Tree::AsServices.val_link(@working_draft.id)
     @result = RestClient.get(url, { content_type: :html, accept: :html })
+  rescue RestClient::Unauthorized, RestClient::Forbidden, RestClient::ExceptionWithResponse => e
+    @message = json_error(e)
+    render "trees/reports/run_valrep_error"
+  rescue CanCan::AccessDenied => e
+    @message = json_error(e)
+    render "trees/reports/run_valrep_error", status: :forbidden
+  rescue => e
+    @message = e.to_s
+    render "trees/reports/run_valrep_error", status: :bad_request 
   end
 
   private
@@ -291,6 +395,8 @@ class TreesController < ApplicationController
                   :instance_id,
                   :comment,
                   :excluded,
+                  :parent_name_typeahead_string,
+                  :update,
                   distribution: [])
   end
 
@@ -329,7 +435,8 @@ class TreesController < ApplicationController
           .permit(:element_link,
                   :parent_element_link,
                   :update,
-                  :parent_name_typeahead_string)
+                  :parent_name_typeahead_string,
+                  :version_id)
   end
 
   def remove_name_placement_params

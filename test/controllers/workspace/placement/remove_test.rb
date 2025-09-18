@@ -25,7 +25,7 @@ class TreePlacementRemoveTest < ActionController::TestCase
     @instance = instances(:usage_of_name_to_be_placed)
     @name = names(:to_be_placed)
     @parent = names(:angophora_costata)
-    @workspace = tree_versions(:draft_version)
+    @workspace = tree_versions(:apc_draft_version)
     stub_it
   end
 
@@ -53,7 +53,7 @@ class TreePlacementRemoveTest < ActionController::TestCase
            session: { username: "fred",
                       user_full_name: "Fred Jones",
                       groups: %w[edit treebuilder],
-                      workspace: @workspace })
+                      draft: @workspace})
     assert_response :success
     assert_equal "remove_name_placement", @controller.action_name,
                  "Action should be 'remove_name_placement'"

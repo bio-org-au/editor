@@ -1,19 +1,86 @@
+inherit_mode:
+  merge:
+    - Exclude
+
+inherit_gem:
+  rubocop-shopify: rubocop.yml
+
+plugins:
+  - rubocop-rails
+  - rubocop-performance
+
+inherit_from:
+  - .rubocop_strict.yml
+
 AllCops:
+  TargetRubyVersion: 3.3
+  TargetRailsVersion: 7.1
   NewCops: enable
   Exclude:
     - 'db/**/*'
-  TargetRubyVersion: 2.5
+    - "config/**/*"
+    - "bin/**/*"
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+Rails/RedundantForeignKey:
+  Enabled: false
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
 Style/TrailingCommaInArrayLiteral:
   Enabled: false
+
 Style/TrailingCommaInHashLiteral:
-  Enabled: false
+  EnforcedStyleForMultiline: consistent_comma
+
 Naming/VariableNumber:
   Enabled: false
+
 Style/StringLiterals:
   EnforcedStyle: double_quotes
   Enabled: true
+
 Style/ClassAndModuleChildren:
   Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Layout/EmptyLinesAroundExceptionHandlingKeywords:
+  Enabled: false
+
+Style/AndOr:
+  Enabled: false
+
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - spec/**/*
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+
+Style/UnlessLogicalOperators:
+  Enabled: true
+  EnforcedStyle: forbid_logical_operators
+
 
 # Gives warning: || Warning: unrecognized cop Rails found in /Users/gregc/Dropbox/anbg/rails/ned/.rubocop.yml
 # Rails:

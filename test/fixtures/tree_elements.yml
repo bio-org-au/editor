@@ -17,5 +17,22 @@ red_gum_in_taxonomy:
   synonyms_html: <synonyms><nom><scientific><name data-id='110181'><scientific><name data-id='109596'><element>Metrosideros</element></name></scientific> <element>costata</element> <authors><author data-id='7066' title='Gaertner, J.'>Gaertn.</author></authors></name></scientific><name-status class="legitimate">, legitimate</name-status> <year>(1788)</year> <type>nomenclatural synonym</type></nom></synonyms>
   updated_at: 2020-02-18 19:19:44.173+11
   updated_by: amonro
+angophora_in_taxonomy:
+  display_html: <data><scientific><name data-id='91755'><scientific><name data-id='91714'><element>Angophora</element></name></scientific><authors>(<base data-id='7066' title='Gaertner, J.'>Gaertn.</base>) <author data-id='7087' title='Britten, J.'>Britten</author></authors></name></scientific><name-status class="legitimate">, legitimate</name-status> <citation><ref data-id='47743'><ref-section><author>CHAH</author> <year>(2009)</year>, <par-title><i>Australian Plant Census</i></par-title></ref-section></ref></citation></data>
+  excluded: f
+  name_element: Angophora
+  name: angophora
+  instance: instance_for_name_in_taxonomy
+  instance_link: ilink
+  name_link: nlink
+  previous_element_id:
+  rank: Genus
+  simple_name: Angophora
+  source_element_link:
+  source_shard: APNI
+  synonyms: {"list": [{"mis": false, "nom": true, "syn": true, "tax": false, "host": "https://id.biodiversity.org.au", "type": "nomenclatural synonym", "year": 1788.0, "cites": "Gaertner, J (1788), De Fructibus et Seminibus Plantarum 1", "name_id": 110181.0, "citesHtml": "<ref data-id='24067'><ref-section><author>Gaertner, J</author> <year>(1788)</year>, <par-title><i>De Fructibus et Seminibus Plantarum</i></par-title> <volume>1</volume></ref-section></ref>", "name_link": "/name/apni/110181", "cites_link": "/reference/apni/24067", "instance_id": 886464.0, "simple_name": "Metrosideros costata", "concept_link": "/instance/apni/541992", "instance_link": "/instance/apni/886464", "full_name_html": "<scientific><name data-id='110181'><scientific><name data-id='109596'><element>Metrosideros</element></name></scientific> <element>costata</element> <authors><author data-id='7066' title='Gaertner, J.'>Gaertn.</author></authors></name></scientific>"}]}
+  synonyms_html: <synonyms><nom><scientific><name data-id='110181'><scientific><name data-id='109596'><element>Metrosideros</element></name></scientific> <authors><author data-id='7066' title='Gaertner, J.'>Gaertn.</author></authors></name></scientific><name-status class="legitimate">, legitimate</name-status> <year>(1788)</year> <type>nomenclatural synonym</type></nom></synonyms>
+  updated_at: 2020-02-18 19:19:44.173+11
+  updated_by: amonro
 
 #  profile: {"APC Dist.": {"value": "Qld, NSW, Vic (naturalised)", "created_at": "2010-02-01T00:00:00+11:00", "created_by": "KIRSTENC", "updated_at": "2018-03-28T13:44:53.668+11:00", "updated_by": "amonro", "source_link": "https://id.biodiversity.org.au/instanceNote/apni/1112211"}} 

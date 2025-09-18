@@ -15,7 +15,12 @@
 
   <% else %>
     <div id="linked-profile-item-container">
-      <%= render partial: "profile_items/linked_profile_item", locals: { profile_item: profile_item, product_item_config: product_item_config} %>
+      <%= render partial: "profile_items/linked_profile_item",
+        locals: {
+          profile_item: profile_item,
+          product_item_config: product_item_config,
+          instance: instance
+        } %>
     </div>
   <% end %>
 

@@ -1,55 +1,72 @@
-    <ul class="nav nav-tabs">
+<%
+  tabs = product_tab_service.all_available_tabs["name"] || []
+  tabs_array = tabs.collect{|tab| tab[:tab] }
+%>
 
-      <% if can? 'names', 'update' %>
+<ul class="nav nav-tabs">
+  <% if can?("names", "update") %>
+    <% if tab_available?(tabs_array, "more_comment") %>
+      <%= render partial: "names/tabs/tab",
+        locals: {
+          first: false,
+          last: false,
+          this_tab: "tab_comments",
+          link_text: product_tab_text(:name, "more_comment", "Comment"),
+          link_id: "name-comment-tab",
+          link_title: "Add, remove or edit comments about the name.",
+          tab_index: increment_tab_index,
+          prev_tab: "",
+          next_tab: ""
+        }
+      %>
+    <% end %>
 
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_comments', 
-                                            link_text: "Comment".html_safe,
-                                            link_id: 'name-comment-tab', 
-                                            link_title: 'Add, remove or edit comments about the name.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '', 
-                                            next_tab: ''} %>
-  
-        <% if NameTag.all.count > 0 %>
+    <% if NameTag.all.count > 0 && tab_available?(tabs_array, "more_tag") %>
+      <%= render partial: "names/tabs/tab",
+        locals: {
+          first: false,
+          last: false,
+          this_tab: "tab_tag",
+          link_text: product_tab_text(:name, "more_tag", "Tag"),
+          link_id: "name-tags-tab",
+          link_title: "Add or remove tags for the name.",
+          tab_index: increment_tab_index,
+          prev_tab: "",
+          next_tab: ""
+        }
+      %>
+    <% end %>
 
-          <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                              last: false,
-                                              this_tab: 'tab_tag', 
-                                              link_text: "Tag".html_safe,
-                                              link_id: 'name-tags-tab', 
-                                              link_title: 'Add or remove tags for the name.',
-                                              tab_index: increment_tab_index,
-                                              prev_tab: '', 
-                                              next_tab: ''} %>
-        <% end %>
-  
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: true,
-                                            this_tab: 'tab_refresh',
-                                            link_text: "Refresh",
-                                            link_id: 'name-refresh-tab',
-                                            link_title: 'Refresh the constructed elements of the name or of its children.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
+    <% if tab_available?(tabs_array, "more_refresh") %>
+      <%= render partial: "names/tabs/tab",
+        locals: {
+          first: false,
+          last: true,
+          this_tab: "tab_refresh",
+          link_text: "Refresh",
+          link_id: "name-refresh-tab",
+          link_title: "Refresh the constructed elements of the name or of its children.",
+          tab_index: increment_tab_index,
+          prev_tab: "",
+          next_tab: ""
+        }
+      %>
+    <% end %>
+  <% end %>
 
-      <% end %>
-
-      <% if @name.duplicate? && can?('names', 'update') %>
-
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_de_duplicate', 
-                                            link_text: "De-duplicate".html_safe,
-                                            link_id: 'name-de-duplicate-tab', 
-                                            link_title: 'De-duplicate the name.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '', 
-                                            next_tab: ''} %>
-  
-      <% end %>
-    </ul>
-
-
+  <% if @name.duplicate? && can?("names", "update") %>
+    <%= render partial: "names/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_de_duplicate",
+        link_text: "De-duplicate".html_safe,
+        link_id: "name-de-duplicate-tab",
+        link_title: "De-duplicate the name.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      }
+    %>
+  <% end %>
+</ul>

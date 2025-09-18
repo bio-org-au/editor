@@ -1,89 +1,121 @@
-    <ul class="nav nav-tabs">
+<ul class="nav nav-tabs">
+  <%
+    tabs = product_tab_service.all_available_tabs["name"] || []
+    tabs_array = tabs.collect{|tab| tab[:tab] }
+  %>
 
-      <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                          last: false,
-                                          this_tab: 'tab_details',
-                                          link_text: 'Details',
-                                          link_id: 'name-details-tab',
-                                          link_title: 'See details of the name',
-                                          tab_index: increment_tab_index,
-                                          prev_tab: '',
-                                          next_tab: '' } %>
+  <%= render(
+    partial: "names/tabs/tab",
+    locals: {
+      first: false,
+      last: false,
+      this_tab: "tab_details",
+      link_text: "Details",
+      link_id: "name-details-tab",
+      link_title: "See details of the name",
+      tab_index: increment_tab_index,
+      prev_tab: "",
+      next_tab: ""
+    })
+  %>
 
-      <% if can? 'names', 'update' %>
+  <% if can?("names", "update") && tab_available?(tabs_array, "edit") %>
+    <%= render(
+      partial: "names/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_edit",
+        link_text: product_tab_text(:name, "edit", "Edit"),
+        link_id: "name-edit-tab",
+        link_title: "Edit details of the name.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      })
+    %>
+  <% end %>
 
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_edit',
-                                            link_text: "Edit".html_safe,
-                                            link_id: 'name-edit-tab',
-                                            link_title: 'Edit details of the name.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
-      <% end %>
+  <% if can?(:create_with_product_reference, Instance) && tab_available?(tabs_array, "new_instance_profile") %>
+    <%= render(
+      partial: "names/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_instances_profile_v2",
+        link_text: product_tab_text(:name, "new_instance_profile", "New instance"),
+        link_id: "name-instances-profile-v2-tab",
+        link_title: "Create an instance for the name.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      })
+    %>
+  <% elsif can?(:create, Instance) && tab_available?(tabs_array, "new_instance") %>
+    <%= render(
+      partial: "names/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_instances",
+        link_text: product_tab_text(:name, "new_instance", "New instance"),
+        link_id: "name-instances-tab",
+        link_title: "Create an instance for the name.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      })
+    %>
+  <% end %>
 
-      <% if can? :create_with_product_reference, Instance %>
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_instances_profile_v2',
-                                            link_text: "New instance".html_safe,
-                                            link_id: 'name-instances-profile-v2-tab',
-                                            link_title: 'Create an instance for the name.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
-      <% elsif can? :create, Instance %>
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_instances',
-                                            link_text: "New instance".html_safe,
-                                            link_id: 'name-instances-tab',
-                                            link_title: 'Create an instance for the name.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
-      <% end %>
+  <% if can?(:create, Instance) && tab_available?(tabs_array, "copy") %>
+    <%= render(
+      partial: "names/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_copy",
+        link_text: product_tab_text(:name, "copy", "Copy"),
+        link_id: "name-copy-tab",
+        link_title: "Copy the name.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      })
+    %>
+  <% end %>
 
-      <% if can? :create, Instance %>
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_copy',
-                                            link_text: "Copy".html_safe,
-                                            link_id: 'name-copy-tab',
-                                            link_title: 'Copy the name.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
-      <% end %>
+  <% if can?("names", "delete") && tab_available?(tabs_array, "delete") %>
+    <%= render(
+      partial: "names/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_delete",
+        link_text: product_tab_text(:name, "delete", "Delete"),
+        link_id: "name-delete-tab",
+        link_title: "Delete name.",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      })
+    %>
+  <% end %>
 
-      <% if can? 'names', 'delete' %>
-
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_delete',
-                                            link_text: "Delete".html_safe,
-                                            link_id: 'name-delete-tab',
-                                            link_title: 'Delete name.',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
-
-      <% end %>
-
-      <% if can? 'names', 'update' %>
-
-        <%= render partial: 'names/tabs/tab', locals: {first: false,
-                                            last: false,
-                                            this_tab: 'tab_more',
-                                            link_text: "More".html_safe,
-                                            link_id: 'name-more-tab',
-                                            link_title: 'Show more tabs',
-                                            tab_index: increment_tab_index,
-                                            prev_tab: '',
-                                            next_tab: ''} %>
-
-      <% end %>
-
-    </ul>
-
+  <% if can?("names", "update") && tab_available?(tabs_array, "more") %>
+    <%= render(
+      partial: "names/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_more",
+        link_text: product_tab_text(:name, "more", "More"),
+        link_id: "name-more-tab",
+        link_title: "Show more tabs",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      })
+    %>
+  <% end %>
+</ul>
