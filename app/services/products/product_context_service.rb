@@ -16,6 +16,12 @@ module Products
       @available_contexts ||= products.blank? ? [] : product_contexts
     end
 
+    def product_with_context(context_id)
+      return nil if context_id.nil? || products.blank?
+
+      products.find { |product| product.context_id == context_id }
+    end
+
     private
 
     def product_contexts
