@@ -98,10 +98,11 @@ class SessionUser < ActiveType::Object
   end
 
   def inspect
-    {username: @username, 
-     full_name: @full_name,
-     groups: @groups,
-     user: @user.inspect
+    {
+      username: @username,
+      full_name: @full_name,
+      groups: @groups,
+      user: @user.inspect
     }
   end
 end
