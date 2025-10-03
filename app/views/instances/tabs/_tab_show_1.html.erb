@@ -61,7 +61,7 @@
 <% end %>
 
 <% if Rails.configuration.try('profile_v2_aware') && @instance.profile_items.present? %>
-  <h5><%= user_profile_tab_name %> Profile</h5>
+  <h5>Profile</h5>
   <dl class="dl-horizontal">
     <% @instance.profile_items.includes(:product_item_config, :profile_text).each do |profile_item| %>
       <dt><%= profile_item.product_item_config.try(:display_html) %></dt>

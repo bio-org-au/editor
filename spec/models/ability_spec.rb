@@ -379,23 +379,52 @@ RSpec.describe Ability, type: :model do
       before do
         product = FactoryBot.create(:product)
         allow(instance).to receive_message_chain(:reference, :products).and_return([product])
-        allow(session_user).to receive(:product_from_roles).and_return(product)
         allow(relationship_instance).to receive(:relationship?).and_return(true)
         allow(relationship_instance).to receive(:this_is_cited_by).and_return(instance)
       end
 
-      it "can edit the relationship instance" do
-        expect(subject.can?(:edit, relationship_instance)).to eq true
+      context "when product_from_context is set" do
+        before do
+          product = FactoryBot.create(:product)
+          allow(instance).to receive_message_chain(:reference, :products).and_return([product])
+          allow(session_user).to receive(:product_from_context).and_return(product)
+        end
+
+        it "can edit the relationship instance" do
+          expect(subject.can?(:edit, relationship_instance)).to eq true
+        end
+
+        it "cannot edit the relationship instance if it's cited by an instance with different product" do
+          other_product = FactoryBot.create(:product, name: "other_product")
+          allow(instance).to receive_message_chain(:reference, :products).and_return([other_product])
+          expect(subject.can?(:edit, relationship_instance)).to eq false
+        end
+      end
+
+      context "when product_from_context is nil (uses product_from_roles)" do
+        before do
+          product = FactoryBot.create(:product)
+          allow(instance).to receive_message_chain(:reference, :products).and_return([product])
+          allow(session_user).to receive(:product_from_context).and_return(nil)
+          allow(session_user).to receive(:product_from_roles).and_return(product)
+        end
+
+        it "can edit the relationship instance" do
+          expect(subject.can?(:edit, relationship_instance)).to eq true
+        end
+
+        it "cannot edit the relationship instance if it's cited by an instance with different product" do
+          other_product = FactoryBot.create(:product, name: "other_product")
+          allow(instance).to receive_message_chain(:reference, :products).and_return([other_product])
+          expect(subject.can?(:edit, relationship_instance)).to eq false
+        end
       end
 
       it "cannot edit the relationship instance if not cited by a draft instance" do
+        product = FactoryBot.create(:product)
+        allow(instance).to receive_message_chain(:reference, :products).and_return([product])
+        allow(session_user).to receive(:product_from_roles).and_return(product)
         allow(instance).to receive(:draft?).and_return(false)
-        expect(subject.can?(:edit, relationship_instance)).to eq false
-      end
-
-      it "cannot edit the relationship instance if it's cited by an instance with different product" do
-        other_product = FactoryBot.create(:product, name: "other_product")
-        allow(instance).to receive_message_chain(:reference, :products).and_return([other_product])
         expect(subject.can?(:edit, relationship_instance)).to eq false
       end
     end
@@ -403,10 +432,27 @@ RSpec.describe Ability, type: :model do
     context "when the instance is a draft" do
       let(:instance) { FactoryBot.create(:instance, draft: true) }
 
-      context "when instance product reference is the same as the user's product" do
+      context "when product_from_context is set and matches instance product" do
         before do
           product = FactoryBot.create(:product)
           allow(instance).to receive_message_chain(:reference, :products).and_return([product])
+          allow(session_user).to receive(:product_from_context).and_return(product)
+        end
+
+        it "allows destroying the instance" do
+          expect(subject.can?(:destroy, instance)).to eq true
+        end
+
+        it "allows synonymy as draft secondary reference" do
+          expect(subject.can?(:synonymy_as_draft_secondary_reference, instance)).to eq true
+        end
+      end
+
+      context "when product_from_context is nil and product_from_roles matches instance product" do
+        before do
+          product = FactoryBot.create(:product)
+          allow(instance).to receive_message_chain(:reference, :products).and_return([product])
+          allow(session_user).to receive(:product_from_context).and_return(nil)
           allow(session_user).to receive(:product_from_roles).and_return(product)
         end
 
@@ -426,6 +472,7 @@ RSpec.describe Ability, type: :model do
 
         it "does not allow synonymy as draft secondary reference" do
           allow(instance).to receive(:reference).and_return(FactoryBot.create(:reference))
+          allow(session_user).to receive(:product_from_context).and_return(nil)
           allow(session_user).to receive(:product_from_roles).and_return(FactoryBot.create(:product))
           expect(subject.can?(:synonymy_as_draft_secondary_reference, instance)).to eq false
         end

@@ -141,12 +141,17 @@ class Ability
       :synonymy_as_draft_secondary_reference,
       :unpublished_citation_as_draft_secondary_reference
     ], Instance do |instance|
-      instance.draft? && instance.reference.products.pluck(:name).any?(user.product_from_roles&.name.to_s)
+      instance.draft? && instance.reference.products.pluck(:name).any?(selected_product(user)&.name.to_s)
     end
     can :edit, Instance do |instance|
       instance.relationship? &&
-      instance.this_is_cited_by.draft? &&
-      instance.this_is_cited_by.reference.products.pluck(:name).any?(user.product_from_roles&.name.to_s)
+        instance.this_is_cited_by.draft? &&
+        instance
+          .this_is_cited_by
+          .reference
+          .products
+          .pluck(:name)
+          .any?(selected_product(user)&.name.to_s)
     end
     can "instances", "create"
     can "instances", "tab_edit"
@@ -459,5 +464,11 @@ class Ability
 
     can "trees", "update_synonymy_by_instance"
     can :update_synonymy_by_instance, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+  end
+
+  def selected_product(user)
+    # NOTES: The selected product is either the one set in context or, if none set,
+    # the first product from the user's roles.
+    user.product_from_context || user.product_from_roles
   end
 end
