@@ -1,4 +1,8 @@
 - :date: 15-Oct-2025
+  :jira_id: '5590'
+  :description: |-
+    Batch Loader: Fix error in boilerplate that said "Convert to misapp" instead of "Convert to synonym"
+- :date: 15-Oct-2025
   :jira_id: '5581'
   :description: |-
     Batch Loader: Loader 2 tab - initialize the batch drop down with the current active batch
