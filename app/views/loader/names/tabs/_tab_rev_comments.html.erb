@@ -1,0 +1,62 @@
+<h5>Review comments for <%= @loader_name.simple_name %></h5>
+
+<%#  render partial: 'loader/names/review/tabs/common/vote_and_comments', locals: {scope: 'unrestricted'} %>
+<% @loader_name.batch.reviews.each do |review| %>
+  <%= review.batch.name %> <%= review.name %> <%= pluralize(@loader_name.name_review_comments.size,'Comment') %><br>
+  <% review.periods.each do |period| %>
+    <%= render partial: 'detail_line', 
+      locals: {label: 'Review Period',
+               info: "#{period.name}: #{period.start_date.strftime("%d-%b-%Y")} &mdash; #{period.end_date&.strftime("%d-%b-%Y")}" } %>
+    <% first_comment = true %>
+    <% period.loader_name_comments(@loader_name.id).sort {|x,y| x.created_at <=> y.created_at}.each do |comment| %>
+      <% if first_comment %>
+        <%= divider %>
+        Comments
+        <% first_comment = false %>
+      <% end %>
+      <br>
+      <div id="one-comment-<%= comment.id %>">
+
+         <%= render partial: 'loader/names/tabs/rev_comments/one_comment',
+                    locals: {comment: comment,
+                             context: 'accepted_record'} %>
+      </div>
+
+    <% end %>
+  <% end %>
+
+  <% if @current_user.user.batch_reviewers.empty? ||
+        !@current_user.user
+    .batch_reviewers
+    .collect {|batch_reviewer| batch_reviewer.batch_review}
+    .collect {|batch_review| batch_review.batch}
+    .include?(@loader_name.batch) %>
+  You cannot comment on this record because you are not registered as a batch reviewer for the record's batch: <%= @loader_name.batch.name %> <br>
+  <br>
+  Please make yourself a reviewer for the batch if you want to comment .  Choose "compiler" as the type of reviewer.
+<% else %>
+  <br>
+
+<%
+ name_review_comment = @loader_name.name_review_comments.new(
+        batch_reviewer_id: @loader_name.batch.batch_reviews.first.reviewer_id(@current_user.username),
+        loader_name_id: @loader_name.id,
+        context: @loader_name.record_type,
+        batch_review_period_id: review.review_periods.first.id)
+ %>
+
+<%= render partial: 'loader/name/review/comments/form',
+  locals: {name_review_comment: name_review_comment,
+           tab_focus: params[:component],
+           offer_context: true} %>
+
+
+  <%= divider %>
+<% end %>
+
+
+<% end %>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container error-container"></div>
+

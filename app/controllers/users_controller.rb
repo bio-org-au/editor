@@ -60,7 +60,7 @@ class UsersController < ApplicationController
   rescue StandardError => e
     logger.error("UserController.create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   # POST /users
@@ -70,7 +70,7 @@ class UsersController < ApplicationController
   rescue => e
     logger.error("Review.update:rescuing exception #{e}")
     @error = e.to_s
-    render "update_error", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   def destroy

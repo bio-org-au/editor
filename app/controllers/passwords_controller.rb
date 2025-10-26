@@ -60,10 +60,10 @@ class PasswordsController < ApplicationController
     if @password.save!
       redirect_to :password_changed
     else
-      render :show_password_form, status: :unprocessable_entity
+      render :show_password_form, status: :unprocessable_content
     end
   rescue StandardError => e
     Rails.logger.error(e.to_s)
-    render :show_password_form, status: :unprocessable_entity
+    render :show_password_form, status: :unprocessable_content
   end
 end

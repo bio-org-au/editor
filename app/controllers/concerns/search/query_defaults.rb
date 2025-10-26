@@ -17,11 +17,15 @@ module Search::QueryDefaults
     true
   end
 
+  # Note: default batch is deliberately case-sensitive, because it is added by the Editor,
+  # not by the user (typically), and its processing is different and quite complex.
+  # Also, the regex below for default-batch will vary if there is no default batch in the session.
+  # So far that doesn't seem to be a problem.
   def value_already_applied?
-    id_regex = /batch-id:/
-    name_regex = /batch-name:/
-    any_batch_regex = /any-batch:/
-    default_name_regex = /default-batch: #{session[:default_loader_batch_name]}/i
+    id_regex = /batch-id:/i
+    name_regex = /batch-name:/i
+    any_batch_regex = /any-batch:/i
+    default_name_regex = /default-batch: #{session[:default_loader_batch_name]}/
     params[:query_string] =~ id_regex ||
       params[:query_string] =~ name_regex ||
       params[:query_string] =~ default_name_regex ||

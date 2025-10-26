@@ -100,8 +100,8 @@ rails s
 ## Development
 
 Current stack:
-- Ruby version 3.3.5
-- Rails version 7.1.4.1
+- Ruby version 3.4.5
+- Rails version 8.0.0
 - Postgresql version 15.7
 
 Pre-requisites:
@@ -116,7 +116,6 @@ There are a couple of files/folders you need to acquire from the team before you
 All of these live in the root directory of the `editor`
 
 - `.env` (see the template.env and acquire the necessary information from the team)
-- `vpn` folder containing the vpn configuration
 - `.nsl` folder containing the database.yml and editor-config.rb
 - `.pgpass` file with the postgress password
 

@@ -1,4 +1,14 @@
-<% Tree.menu_drafts.each do |menu_item| %>
+<% if current_context_id && Rails.configuration.try(:multi_product_tabs_enabled) %>
+  <%
+    draft_trees = Tree.menu_drafts.where(
+      id: Product.with_context_and_tree(current_context_id).select(:tree_id)
+    )
+  %>
+<% else %>
+  <% draft_trees = Tree.menu_drafts %>
+<% end %>
+
+<% draft_trees.each do |menu_item| %>
 
   <% tree = Tree.find(menu_item[:id]) %>
   <% if can? :toggle_draft, tree %>

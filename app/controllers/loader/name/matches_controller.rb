@@ -32,7 +32,7 @@ class Loader::Name::MatchesController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::Name::Matches#set rescuing #{e}")
     @message = e.to_s
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   def delete_all

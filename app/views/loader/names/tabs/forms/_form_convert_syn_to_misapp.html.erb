@@ -1,0 +1,17 @@
+<h5>Convert to misapp</h5>
+<% if loader_name.preferred_match? %>
+  You cannot convert this synonym to a misapp because it already has a preferred match.  
+  <br>
+  Remove the preferred match to allow this operation.
+<% else %>
+  <%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |f| %>
+    <br>
+    <%= f.hidden_field :record_type, value: 'misapplied' %>
+    <%= f.hidden_field(:parent_typeahead, value: loader_name.parent.simple_name) %>
+    <%= f.hidden_field(:parent_id) %>
+
+    <%= render partial: "loader/names/tabs/forms/misapp_synonym_type", locals: {f: f, loader_name: loader_name} %>
+
+    <%= f.submit "Convert", id: 'loader-name-save2', class: 'btn btn-primary width-5em pull-right', title: "Save changes", tabindex: increment_tab_index, disabled: false %>
+  <% end %>
+<% end %>

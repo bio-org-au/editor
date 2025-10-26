@@ -26,7 +26,7 @@ class Loader::Name::Review::VotesController < ApplicationController
     rescue => e
       logger.error("Loader::Name::Review::Vote.create:rescuing exception #{e}")
       @error = e.to_s
-      render "create_error", status: :unprocessable_entity
+      render "create_error", status: :unprocessable_content
   end
 
   def destroy

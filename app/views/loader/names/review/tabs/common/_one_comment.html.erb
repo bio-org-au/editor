@@ -1,3 +1,7 @@
+<%# Silence the n+1 complaints %>
+<% comment = Loader::Name::Review::Comment.includes([:loader_name]).find(comment.id) %>
+  
+
 
 <div id="comment-<%= comment.id %>-display-container" class='name-comment-display-container'> 
 
@@ -17,15 +21,18 @@
                                                                           @current_user.username == comment.reviewer.user.user_name} "}
                     %>
 
+  <%= render partial: 'detail_line',
+             locals: {label: 'Comment On', info: comment.context } unless comment.context == comment.loader_name.record_type %>
+
   </div>
 
 <%= render partial: 'detail_line',
     locals: {label: 'Created',
-             info: "#{time_ago_in_words(comment.created_at)} ago"}  %>
+             info: "#{formatted_timestamp(comment.created_at)}"}  %>
 <% unless comment.created_at == comment.updated_at %>
   <%= render partial: 'detail_line',
     locals: {label: 'Updated',
-             info: "#{time_ago_in_words(comment.updated_at)} ago"}  %>
+             info: "#{formatted_timestamp(comment.updated_at)}"}  %>
 <% end %>
 
 

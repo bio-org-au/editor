@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.4.5"
 
-gem 'rails', '~> 7.2.0'
+gem 'rails', '~> 8.0.0'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -98,7 +98,7 @@ gem "sucker_punch"
 gem "exception_notification"
 gem "kramdown", ">= 2.3.0"
 gem "nokogiri", ">= 1.18.9"
-gem "rack", ">= 2.2.3"
+gem "rack", ">= 3.2.2"
 gem "rest-client"
 gem "simple_calendar"
 gem "websocket-extensions", ">= 0.1.5"

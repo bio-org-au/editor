@@ -30,7 +30,8 @@ class ApplicationController < ActionController::Base
     :product_tab_service,
     :product_context_service,
     :current_context_id,
-    :current_context_name
+    :current_context_name,
+    :current_product_from_context
 
   protected
 
@@ -49,6 +50,11 @@ class ApplicationController < ActionController::Base
 
   def current_context_id
     session[:current_context_id]
+  end
+
+  def current_product_from_context
+    return nil if current_context_id.nil?
+    product_context_service.product_with_context(current_context_id)
   end
 
   def current_context_name
@@ -131,6 +137,11 @@ class ApplicationController < ActionController::Base
                              full_name: session[:user_full_name],
                              groups: session[:groups])
     @current_registered_user = @current_user.registered_user
+
+    if current_product_from_context
+      @current_user.set_current_product_from_context(current_product_from_context)
+    end
+
     logger.info("User is known: #{@current_user.username}")
     set_working_draft_session
   end

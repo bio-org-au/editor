@@ -133,7 +133,7 @@ class InstancesController < ApplicationController
 
   def handle_not_unique
     @message = "Error: duplicate record"
-    render("create_error", status: :unprocessable_entity)
+    render("create_error", status: :unprocessable_content)
   end
   private :handle_not_unique
 
@@ -147,7 +147,7 @@ class InstancesController < ApplicationController
       @duplicate_instance_override = /#{Instance::DUPLICATE_INSTANCE_WARNING}\z/o.match?(errors.first)
     end
     @message = errors
-    render(file_to_render, status: :unprocessable_entity)
+    render(file_to_render, status: :unprocessable_content)
   end
   private :handle_other_errors
 
@@ -178,7 +178,7 @@ class InstancesController < ApplicationController
   rescue StandardError => e
     logger.error(e.to_s)
     @message = e.to_s
-    render("update_error", status: :unprocessable_entity)
+    render("update_error", status: :unprocessable_content)
   end
 
   def make_back_door_changes

@@ -63,6 +63,8 @@ class Tree < ActiveRecord::Base
 
   has_many :products
 
+  has_many :user_product_role_vs
+
   scope :accepted,
         (lambda do
           where(name: ShardConfig.classification_tree_key)

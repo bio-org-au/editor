@@ -27,7 +27,7 @@ class SearchLoaderNameNoDefaultBatchTest < ActionController::TestCase
         params: { query_target: "loader names", query_string: "*"},
         session: { username: "fred",
                    user_full_name: "Fred Jones",
-                   groups: [:ogin, :"atch-loader"] })
+                   groups: [:login, :"batch-loader"] })
     assert_response :success
     assert_select "#search-results-summary",
                   /Please set a default batch/,

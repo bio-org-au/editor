@@ -24,10 +24,10 @@ class SearchLoaderNameHardenbergiaAnyBatchTest < ActionController::TestCase
 
   test "can search loader names for Hardenbergia violacea in any batch" do
     get(:search,
-        params: { query_target: "loader names", query_string: "Hardenbergia violacea any-batch:" },
+        params: { query_target: "loader names", query_string: "Hardenbergia violacea any-bATch:" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
-                   groups: [:ogin, :"atch-loader"] })
+                   groups: [:login, :"batch-loader"] })
     assert_response :success
     assert_select "#search-results-summary",
                   /\b1 record*\b/,

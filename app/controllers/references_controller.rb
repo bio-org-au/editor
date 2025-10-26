@@ -64,7 +64,7 @@ class ReferencesController < ApplicationController
   rescue StandardError => e
     logger.error("Controller:reference:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   # PUT /references/1.json
@@ -78,7 +78,7 @@ class ReferencesController < ApplicationController
   rescue StandardError => e
     logger.error("Controller:reference:update rescuing: #{e}")
     @message = e.to_s
-    render "update_error", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   # DELETE /references/1

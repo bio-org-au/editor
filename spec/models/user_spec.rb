@@ -73,5 +73,13 @@ RSpec.describe(User, type: :model) do
 
       expect(user.available_products_from_roles.count(product1)).to(eq(1))
     end
+
+    it "sorts products by context and name" do
+      product1.update(context_id: 2, context_sort_order: 2)
+      product2.update(context_id: 1, context_sort_order: 1)
+      product3.update(context_id: 1, context_sort_order: 2)
+
+      expect(user.available_products_from_roles).to(eq([product2, product3, product1]))
+    end
   end
 end

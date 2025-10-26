@@ -443,16 +443,18 @@ class Search::ParsedRequest
   # Note limitation of the checks: doesn't care if result of search is in only
   # one batch.
   #
+  # Note: default-batch is deliberately case-sensitive due to its more complex 
+  # processing at this time.
   # Called via send
   def preprocess_loader_names
     result = loader_batch_preprocessing?
     unless @params["query_string"].match(/\bdefault-batch:/) ||
-           @params["query_string"].match(/\bbatch-id:/) ||
-           @params["query_string"].match(/\bbatch-name:/) ||
-           @params["query_string"].match(/\bany-batch:/) ||
-           @params["query_string"].match(/[^-]id:/) ||
-           @params["query_string"].match(/\Aid:/) ||
-           @params["query_string"].match(/\bid-with-syn:/) 
+           @params["query_string"].match(/\bbatch-id:/i) ||
+           @params["query_string"].match(/\bbatch-name:/i) ||
+           @params["query_string"].match(/\bany-batch:/i) ||
+           @params["query_string"].match(/[^-]id:/i) ||
+           @params["query_string"].match(/\Aid:/i) ||
+           @params["query_string"].match(/\bid-with-syn:/i) 
       raise "Please set a default batch, or specify a 'batch-id:', a 'batch-name:' or 'any-batch:'"
     end
   end
@@ -469,7 +471,7 @@ class Search::ParsedRequest
          batch.name.downcase.gsub(", ", " ").rstrip
        end.include?(@query_target.downcase.gsub("_", " ").rstrip)
       @default_query_scope = "batch-id: #{::Loader::Batch.id_of(@query_target.gsub('_', ' '))}"
-      debug("@default_query_scope: #{default_query_scope}")
+      debug("here is @default_query_scope: #{@default_query_scope}")
       @target_button_text = @query_target
       @original_query_target = @query_target
       @query_target = "loader_names"

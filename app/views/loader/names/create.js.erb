@@ -5,7 +5,7 @@ $('.message-container').html('');
   $('#loader-name-save').addClass('hidden');
   $('#loader-name-save2').addClass('hidden');
   $('#loader-name-cancel').addClass('hidden');
-  setTimeout(function(){$('#instance-batch-loader-tab').click()},1000);
+  setTimeout(function(){$('li.active a.tab').click();},1000);
 <% else %>
   $('tr#new-loader-name-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'application/search_results/loader_name_record', locals: {search_result: @loader_name, give_me_focus: true})) %>");
   $('tr#search-result-<%= @loader_name.id %> td.takes-focus a.show-details-link').focus();

@@ -1,3 +1,167 @@
+- :date: 24-Oct-2025
+  :jira_id: '5365'
+  :description: |-
+    Loader Name Search: Allow <code>family-members:</code>, <code>family:</code>, and <code>families:</code> to have zero arguments too
+- :date: 24-Oct-2025
+  :jira_id: '5605'
+  :description: |-
+    Loader Name Search: Make the <code>batch-id:</code>, <code>batch-name:</code> and <code>any-batch:</code> directives case-insensitive
+- :date: 23-Oct-2025
+  :jira_id: '5365'
+  :description: |-
+    Loader Name Search: Improve action of and help for family queries - allow <code>family-list:</code> to have zero arguments too
+- :date: 22-Oct-2025
+  :jira_id: '148'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Enable tree workflow for trees with no tree.config value - first set of changes
+- :date: 21-Oct-2025
+  :jira_id: '5200'
+  :description: |-
+    Batch Loader: Add Force Delete button as an easier way to delete loader name records with dependents 
+- :date: 21-Oct-2025
+  :jira_id: '5199'
+  :description: |-
+    Loader Tab 2: Allow processing even if no default batch has been set
+- :date: 20-Oct-2025
+  :jira_id: '5199'
+  :description: |-
+    Loader Tab 2: Add explanatory wording under the <code>Remark to reviewer</code> field
+- :date: 20-Oct-2025
+  :jira_id: '5375'
+  :description: |-
+    Batch Review: Tweak the wording of boilerplate saying Reviewers with comments cannot be removed from Review
+- :date: 17-Oct-2025
+  :jira_id: '5590'
+  :description: |-
+    Batch Loader: Change boilerplate from "Convert to misapp" to "Convert to synonym" on the appropriate form
+- :date: 17-Oct-2025
+  :jira_id: '5581'
+  :description: |-
+    Batch Loader: Loader 2 tab - do not initialize the batch drop down with the current active batch - causes odd problems
+- :date: 15-Oct-2025
+  :jira_id: '5581'
+  :description: |-
+    Batch Loader: Loader 2 tab - initialize the batch drop down with the current active batch
+- :date: 15-Oct-2025
+  :jira_id: '5604'
+  :description: |-
+    Batch Loader: Use pro parte status for misapplication display details from the match record not from the loader name record
+- :date: 14-Oct-2025
+  :jira_id: '5199'
+  :description: |-
+    Batch Loader: Allow addition of a remark when adding names from Loader 2 tab
+- :date: 14-Oct-2025
+  :jira_id: '5365'
+  :description: |-
+    Loader Name Search: Improve action of and help for family queries
+- :date: 13-Oct-2025
+  :jira_id: '5375'
+  :description: |-
+    Batch Review: Make the target of the Reviewer Delete button clearer
+- :date: 13-Oct-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree Profile Edit: Add ability for treebuilder to edit existing profile
+- :date: 10-Oct-2025
+  :jira_id: '5586'
+  :description: |-
+    Batch Review: Fix edit form so it picks up the current comment context value
+- :date: 10-Oct-2025
+  :jira_id: '5586'
+  :description: |-
+    Batch Review: Allow batch loaders to see reviewer comments and add their own comments - supplementary changes
+- :date: 08-Oct-2025
+  :jira_id: '5595'
+  :description: |-
+    Security: Update rack gem to latest then replace deprecated <code>:unprocessable_entity</code> with <code>:unprocessable_content</code>
+- :date: 03-Oct-2025
+  :jira_id: '128'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: fixup the profile tabs not showing when user has selected the foa context in test
+- :date: 03-Oct-2025
+  :jira_id: '5593'
+  :description: |-
+    Rails Upgrade: Upgrade to Rails 8.0.0 and update related dependencies
+- :date: 02-Oct-2025
+  :jira_id: '5198'
+  :description: |-
+    Batch Loading: Set and use synonym type on Instance Loader 2 tab
+- :date: 02-Oct-2025
+  :jira_id: '126'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add current_product_from_context method to User model and use it in views and controllers
+- :date: 01-Oct-2025
+  :jira_id: '5581'
+  :description: |-
+    Batch Loading: Allow user to choose batch on Instance Loader 2 tab
+- :date: 01-Oct-2025
+  :jira_id: '5591'
+  :description: |-
+    Batch Review: Show NFP status of loader name records to batch reviewers
+- :date: 30-Sep-2025
+  :jira_id: '5588'
+  :description: |-
+    Batch Load and Review: Fix doco for partly: and not-partly: searches, handle null values correctly in the queries
+- :date: 30-Sep-2025
+  :jira_id: '5590'
+  :description: |-
+    Batch Loader: Allow conversion from synonym to misapplication and vice versa
+- :date: 30-Sep-2025
+  :jira_id: '5588'
+  :description: |-
+    Batch Load and Review: Show misapp and pro parte data on web and print outputs consistently
+- :date: 29-Sep-2025
+  :jira_id: '5586'
+  :description: |-
+    Batch Loader: Allow batch loaders to see reviewer comments and add their own comments
+- :date: 29-Sep-2025
+  :jira_id: '127'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Refactor ability logic for name index editor and update reference tabs permissions
+- :date: 25-Sep-2025
+  :jira_id: '115'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Add a guard using the multi_product_tabs_enabled flag to the product context service
+- :date: 24-Sep-2025
+  :jira_id: '115'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Use product context when creating a draft taxonomy
+- :date: 24-Sep-2025
+  :jira_id: '5429'
+  :description: |-
+    Tree permissions: Refer to the user_product_role_v instead of separate tables in the ability.rb file to avoid N+1 queries
+- :date: 23-Sep-2025
+  :jira_id: '115'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Use product context to offer draft taxonomies in the menu
+- :date: 22-Sep-2025
+  :jira_id: '5550'
+  :description: |-
+    Add edit permission for name-index-editor role
+- :date: 22-Sep-2025
+  :jira_id: '116'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup foa copy tab with product context logic
+- :date: 19-Sep-2025
+  :jira_id: '117'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup missing edit tab for profile item when foa context is selected
+- :date: 18-Sep-2025
+  :jira_id: '119'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Sort the product context in the menu using the product's context_sort_order field
+- :date: 18-Sep-2025
+  :release: true
 - :date: 18-Sep-2025
   :jira_id: '5571'
   :description: |-

@@ -20,6 +20,8 @@ class Loader::NamesController < ApplicationController
   include Loader::Names::ParentTypeahead
   before_action :find_loader_name,
                 only: %i[show destroy tab update set_preferred_match]
+  before_action :find_loader_name_including_matches,
+                only: %i[force_destroy]
 
   # Sets up RHS details panel on the search results page.
   # Displays a specified or default tab.
@@ -120,7 +122,7 @@ class Loader::NamesController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::Names#update rescuing #{e}")
     @message = e.to_s
-    render "update_error", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   # For a given loader_name record, add or remove a loader_name_match
@@ -131,7 +133,7 @@ class Loader::NamesController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::Names#set_preferred_match rescuing #{e}")
     @message = e.to_s
-    render "set_preferred_match_error", status: :unprocessable_entity
+    render "set_preferred_match_error", status: :unprocessable_content
   end
 
   def update_matches
@@ -183,7 +185,7 @@ class Loader::NamesController < ApplicationController
   # simple actions in the loader interface, but it's also handling
   # creates from over in apni data.
   def create
-    insist_on_a_batch
+    insist_on_a_batch unless params["form-task"] == "supplement-existing-concept"
     if loader_name_params["loaded_from_instance_id"].blank?
       @loader_name = Loader::Name.create(loader_name_params, current_user.username)
     else 
@@ -193,7 +195,7 @@ class Loader::NamesController < ApplicationController
   rescue StandardError => e
     logger.error("Controller:Loader::Names:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   def destroy
@@ -201,8 +203,17 @@ class Loader::NamesController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::NamesController#destroy rescuing #{e}")
     @message = e.to_s
-    render "destroy_error", status: :unprocessable_entity
+    render "destroy_error", status: :unprocessable_content
   end
+
+  def force_destroy
+    @destroyed_ids = @loader_name.force_delete
+  rescue StandardError => e
+    logger.error("Loader::NamesController#force_destroy rescuing #{e}")
+    @message = e.to_s
+    render "destroy_error", status: :unprocessable_content
+  end
+
 
   def create_heading
     Loader::Name.create_family_heading(params) 
@@ -210,13 +221,20 @@ class Loader::NamesController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::NamesController#create_heading rescuing #{e}")
     @message = e.to_s
-    render "create_heading_error", status: :unprocessable_entity
+    render "create_heading_error", status: :unprocessable_content
   end
   #############################################################################
   private
 
   def find_loader_name
     @loader_name = Loader::Name.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = "We could not find the loader name record."
+    redirect_to loader_names_path
+  end
+
+  def find_loader_name_including_matches
+    @loader_name = Loader::Name.includes([:loader_name_matches]).where(id: params[:id]).first
   rescue ActiveRecord::RecordNotFound
     flash[:alert] = "We could not find the loader name record."
     redirect_to loader_names_path
@@ -241,13 +259,14 @@ class Loader::NamesController < ApplicationController
       end
 
       if params["form-task"] == "supplement-existing-concept"
-        main_supplement = @loader_name.create_flipped_synonym_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
+        main_supplement = @loader_name.create_flipped_synonym_for_instance(loader_name_params, @current_user)
       end
       if loader_name_params["add_sibling_synonyms"] == 'true'
         siblings = @loader_name.create_sibling_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
       end
       if loader_name_params["add_sourced_synonyms"] == 'true'
-        siblings = @loader_name.create_sourced_synonyms_for_instance(loader_name_params["loaded_from_instance_id"], @current_user)
+        siblings = @loader_name.create_sourced_synonyms_for_instance(loader_name_params[:loaded_from_instance_id],
+                                                                     loader_name_params[:remark_to_reviewers], @current_user)
       end
     end
   end
@@ -269,7 +288,7 @@ class Loader::NamesController < ApplicationController
                                         :original_text,
                                         :parent_typeahead,
                                         :formatted_text_above,
-                                        :formatted_text_below)
+                                        :formatted_text_below,)
   end
 
   def set_tab

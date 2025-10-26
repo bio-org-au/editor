@@ -241,15 +241,16 @@ class Search::Loader::Name::FieldRule
       leading_wildcard: true,
       trailing_wildcard: true},
     "simple-name-not-like:" => { where_clause: "(lower(simple_name) not like '%'||?||'%')" },
-    "family:" => { where_clause: "(lower(family) like ?)",
-                   multiple_values: true,
-                   multiple_values_where_clause: " (lower(family) in (?)) "},
-    "families:" => { multiple_values: true,
-                     where_clause: "lower(family) like ? || '%' ",
-                     multiple_values_where_clause: " lower(family) in (?)"},
-    "family-list:" => { multiple_values: true,
-                     where_clause: "lower(family) like ? || '%'  and lower(rank) = 'family'",
-                     multiple_values_where_clause: " lower(family) in (?) and lower(rank) = 'family'"},
+    "family-members:" => {
+        multiple_values: true,
+        takes_optional_arg: true,
+        where_clause: "lower(family) like ? || '%' ",
+        multiple_values_where_clause: " lower(family) in (?)"},
+    "family-list:" => {
+        multiple_values: true,
+        takes_optional_arg: true,
+        where_clause: "lower(family) like ? || '%'  and lower(rank) = 'family'",
+        multiple_values_where_clause: " lower(family) in (?) and lower(rank) = 'family'"},
     "family-id:" => { where_clause: "(lower(family) like (select lower(simple_name) from loader_name where id = ?))" },
     "record-type:" => { where_clause: " record_type = ?"},
 
@@ -525,10 +526,10 @@ having count(*) > 2
               from name_Type nt
             where name.name_type_id       = nt.id
        and nt.scientific))"},
-    "partly:" => { where_clause: "partly is not null",
+       "partly:" => { where_clause: "partly = 'p.p.' or publ_partly = 'p.p.' or synonym_type like 'pro parte%'",
                    takes_no_arg: true},
-    "not-partly:" => { where_clause: "partly is null",
-                       takes_no_arg: true},
+       "not-partly:" => { where_clause: "not (coalesce(partly,'x') = 'p.p.' or coalesce(publ_partly,'x') = 'p.p.' or coalesce(synonym_type,'x') like 'pro parte%')",
+                   takes_no_arg: true},
     "publ-partly:" => { where_clause: "publ_partly is not null",
                             takes_no_arg: true},
     "not-publ-partly:" => { where_clause: "publ_partly is null",
@@ -579,7 +580,16 @@ having count(*) > 2
     "hybrid-flag:" => { where_clause: "hybrid_flag like ?"},
     "no-hybrid-flag:" => { where_clause: "hybrid_flag is null",
                            takes_no_arg: true},
-    "no-further-processing:" => { where_clause: " no_further_processing or exists (select null from loader_name kids where kids.parent_id = loader_name.id and kids.no_further_processing) or exists (select null from loader_name pa where pa.id = loader_name.parent_id and pa.no_further_processing)"},
+    "no-further-processing:" => { where_clause: " no_further_processing
+                                  or exists (select null
+                                               from loader_name kids
+                                              where kids.parent_id = loader_name.id
+                                                and kids.no_further_processing)
+                                  or exists (select null
+                                               from loader_name pa
+                                              where pa.id = loader_name.parent_id
+                                                and pa.no_further_processing)",
+                           takes_no_arg: true},
     "isonym:" => { where_clause: "isonym is not null"},
     "orth-var:" => { where_clause: "name_status like 'orth%'"},
     "name-status:" => { where_clause: "name_status like ?",

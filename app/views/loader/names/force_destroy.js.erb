@@ -1,0 +1,8 @@
+$('.message-container').html('');
+$('#confirm-or-cancel-link-container a.btn-danger').addClass('disabled');
+$('#cancel-delete-link').addClass('disabled');
+$('#delete-info-message-container').html('<%= pluralize(@destroyed_ids.size, "record") %> deleted');
+$('.delete-widget').fadeOut("slow", function() { $(this).remove(); })
+<% @destroyed_ids.each do | id | %>
+  $('#search-result-<%= id %>').fadeOut("slow", function() { $(this).remove(); })
+<% end %>

@@ -68,7 +68,7 @@ class ProfileTextsControllerTest < ActionController::TestCase
       }
     }, session: @session, xhr: true
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_equal "Profile text already exists", assigns(:message)
     assert_template :create_failed
   end
@@ -102,7 +102,7 @@ class ProfileTextsControllerTest < ActionController::TestCase
             profile_item: {id: profile_item.id}
           }, session: @session, xhr: true
     end
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_equal "Not updated", assigns(:message)
     assert_equal profile_text, assigns(:profile_text)
     assert_equal profile_item, assigns(:profile_item)

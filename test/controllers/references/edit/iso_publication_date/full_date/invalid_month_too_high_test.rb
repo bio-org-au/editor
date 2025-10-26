@@ -39,7 +39,7 @@ class ReferencesesUpdateInvalidMonthTooHighTest < ActionController::TestCase
           session: { username: "fred",
                      user_full_name: "Fred Jones",
                      groups: ["edit"] })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_match(/Month 13 is above the range 1-12/,
                  response.body.to_s,
                  "Missing or incorrect error message")

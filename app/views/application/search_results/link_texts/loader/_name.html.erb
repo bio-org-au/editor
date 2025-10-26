@@ -14,9 +14,20 @@
 <% else %>
   <%= '?' if search_result.synonym_type&.match(/doubtful/) %>
    <span class='loader-name <%= search_result.record_type %>'>
-     <%= search_result.simple_name %><%= ", #{search_result.name_status}" unless search_result.name_status.blank? %>
+
+    <% if search_result.record_type == 'misapplied' then %>
+      <% if search_result.misapp_html.blank? %>
+        <%= render partial: 'application/search_results/print/records/loader/name/record_types/misapplied/construct_entry',
+                    locals: {search_result: search_result} %>
+      <% else %>
+        <%= search_result.misapp_html %>
+      <% end %>
+    <% else %>
+        <%= search_result.simple_name %><%= ", #{search_result.name_status}" unless search_result.name_status.blank? %>
+        <%= 'p.p.' if search_result.partly? %>
+    <% end %>
+
    </span>
-  <%= 'p.p.' if search_result.synonym_type&.match(/pro parte/) %>
    <%= render partial: "#{path}/decorate", locals: {search_result: search_result} %>
 <% end %>
 

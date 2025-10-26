@@ -21,6 +21,9 @@
             <%= check_box_tag("place_name[excluded]", true, false, title: 'Exclude this') %>
             <label for="place_name_excluded" class="exclude-label">exclude</label>
           </dd>
+
+          <% unless @working_draft.tree.config.blank? %>
+
           <dt><%= @working_draft.comment_key %></dt>
           <dd>
             <%= text_area_tag("place_name[comment]", '', escaped: false, title: 'Edit comment', rows: 4, class: 'form-control') %>
@@ -33,6 +36,9 @@
           <dd>
             <%= render partial: "trees/new_distribution" %>
           </dd>
+
+          <% end %>
+
         </dl>
       </div>
 

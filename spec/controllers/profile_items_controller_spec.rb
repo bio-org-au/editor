@@ -112,10 +112,10 @@ RSpec.describe ProfileItemsController, type: :controller do
         expect(assigns(:message)).to eq("Error deleting profile item: Something went wrong")
       end
 
-      it "renders the 'destroy_failed' template with unprocessable_entity status" do
+      it "renders the 'destroy_failed' template with unprocessable_content status" do
         subject
         expect(response).to render_template("destroy_failed")
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end

@@ -40,7 +40,7 @@ class NameTagsController < ApplicationController
         format.html { render :new }
         format.json do
           render json: @name_tag.errors,
-                 status: :unprocessable_entity
+                 status: :unprocessable_content
         end
       end
     end

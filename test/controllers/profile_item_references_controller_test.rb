@@ -60,7 +60,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
           }
         }, session: @session, xhr: true
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_match "Only one reference per profile item is permitted", assigns(:message)
     assert_template :create_failed
   end
@@ -76,7 +76,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
             }
           }, session: @session, xhr: true
 
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
       assert_match "Error creating profile item reference: ERROR: permission denied for table \"profile_item_references\"", assigns(:message)
       assert_template :create_failed
     end
@@ -168,7 +168,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
             reference_id: @reference.id,
             profile_item_id: @profile_item.id,
           }, session: @session, xhr: true
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
       assert_template :destroy_failed
     end
   end

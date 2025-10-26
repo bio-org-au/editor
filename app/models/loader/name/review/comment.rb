@@ -36,18 +36,9 @@ class Loader::Name::Review::Comment < ActiveRecord::Base
   alias_method :type, :name_review_comment_type
 
   validates :comment, presence: true
+  validates :context, presence: true
 
   attr_accessor :give_me_focus, :message
-
-  before_update :check_review_active
-  before_destroy :check_review_active
-
-  def check_review_active
-    unless batch_review_period.active?
-      Rails.logger.error("Check review active will now abort action because review is not active")
-      throw :abort
-    end
-  end
 
   def fresh?
     created_at > 1.hour.ago

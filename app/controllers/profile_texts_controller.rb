@@ -53,7 +53,7 @@ class ProfileTextsController < ApplicationController
     end
   rescue StandardError => e
     @message = e.to_s
-    render "create_failed", status: :unprocessable_entity
+    render "create_failed", status: :unprocessable_content
   end
 
   # PATCH/PUT /profile_texts/1
@@ -101,6 +101,6 @@ class ProfileTextsController < ApplicationController
     end
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_entity
+    render :update_failed, status: :unprocessable_content
   end
 end

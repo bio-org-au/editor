@@ -56,12 +56,16 @@ class Ability
     batch_loader_auth if user.batch_loader?
     loader_2_tab_auth if user.loader_2_tab_loader?
 
+    not_name_index = user.product_from_context.nil? || !user.product_from_context&.is_name_index?
+    is_name_index  = user.product_from_context.nil? || user.product_from_context&.is_name_index?
+
     # NOTES: Broader permissions come first
-    draft_editor(user) if user.with_role?('draft-editor')
-    profile_editor(user) if user.with_role?('profile-editor')
-    draft_profile_editor if user.with_role?('draft-profile-editor')
+    draft_editor(user) if user.with_role?('draft-editor') && not_name_index
+    profile_editor(user) if user.with_role?('profile-editor') && not_name_index
+    draft_profile_editor if user.with_role?('draft-profile-editor') && not_name_index
     tree_builder_auth(user) if user.with_role?('tree-builder')
     tree_publisher_auth(user) if user.with_role?('tree-publisher')
+    name_index_editor(user) if user.with_role?('name-index-editor') && is_name_index
   end
 
   def user
@@ -100,7 +104,10 @@ class Ability
     end
     can :create, Reference
     can :update, Reference do |reference|
-      reference.instances.blank?
+      reference.instances.blank? &&
+      (user.product_from_context.nil? || Profile::ProfileItemReference.where(reference_id: reference.id)
+        .joins(profile_item: :product_item_config)
+        .where("product_item_configs_profile_item.product_id = ?", user.product_from_context&.id).any?)
     end
     can "authors", :all
     can "instances", [
@@ -134,12 +141,17 @@ class Ability
       :synonymy_as_draft_secondary_reference,
       :unpublished_citation_as_draft_secondary_reference
     ], Instance do |instance|
-      instance.draft? && instance.reference.products.pluck(:name).any?(user.product_from_roles&.name.to_s)
+      instance.draft? && instance.reference.products.pluck(:name).any?(selected_product(user)&.name.to_s)
     end
     can :edit, Instance do |instance|
       instance.relationship? &&
-      instance.this_is_cited_by.draft? &&
-      instance.this_is_cited_by.reference.products.pluck(:name).any?(user.product_from_roles&.name.to_s)
+        instance.this_is_cited_by.draft? &&
+        instance
+          .this_is_cited_by
+          .reference
+          .products
+          .pluck(:name)
+          .any?(selected_product(user)&.name.to_s)
     end
     can "instances", "create"
     can "instances", "tab_edit"
@@ -155,12 +167,15 @@ class Ability
     can "instances", "tab_unpublished_citation_for_profile_v2"
     can "names/typeaheads/for_unpub_cit", "index"
     can "names", "tab_instances_profile_v2"
+    can "references", "tab_new_instance"
   end
 
-  def profile_editor(user)
+  def profile_editor(session_user)
+    user_products = session_user.user&.products || []
+
     can :manage, :profile_v2
     can :manage, Profile::ProfileItem do |profile_item|
-      profile_item.product_item_config.product_id == user.product_from_roles&.id
+      profile_item.product && user_products.include?(profile_item.product)
     end
     can :create_version, Profile::ProfileItem do |profile_item|
       !profile_item.is_draft?
@@ -172,7 +187,7 @@ class Ability
     can :manage, Profile::ProfileText
     can :manage, Profile::ProfileItemAnnotation
     can :manage_profile, Instance do |instance|
-      instance.profile_items.by_product(user.product_from_roles).any?
+      instance.profile_items.includes([:product]).any? { |item| item.product && user_products.include?(item.product) }
     end
     can "references", "typeahead_on_citation"
     can "profile_items", :all
@@ -207,6 +222,25 @@ class Ability
     can "instances", "typeahead_for_synonymy"
   end
 
+  def name_index_editor(user)
+    can :manage,              Author
+    can [:create, :read, :destroy], Reference
+    can :update, Reference
+    can [:create, :edit, :update, :destroy], Instance
+    can "authors",            :all
+    can "comments",           :all
+    can "instances",          :all
+    can "instances",          "copy_standalone"
+    can "instance_notes",     :all
+    can "menu",               "new"
+    can "name_tag_names",     :all
+    can "names",              :all
+    can "names_deletes",      :all
+    can "references",         :all
+    can "names/typeaheads/for_unpub_cit", :all
+    can "loader/batch/review/mode", "switch_off"
+  end
+
   def basic_auth_1
     can "application",        "set_include_common_cultivars"
     can "authors",            "tab_show_1"
@@ -238,7 +272,7 @@ class Ability
 
   def edit_auth
     can :manage,              Author
-    can :manage,              Reference
+    can :manage, Reference
     can [
       :create,
       :edit,
@@ -306,6 +340,7 @@ class Ability
     can :update_distribution, TreeVersion
     can :update_comment, TreeVersion
     can :update_tree_parent, TreeVersion
+    can "tree/elements", "update_profile"
   end
 
   def admin_auth
@@ -326,6 +361,7 @@ class Ability
     can "loader/batch/bulk",           :all
     can "loader/batch/job_lock",       :all
     can "menu",                        "batch"
+    can "loader/name/review/comments", :all
   end
 
   def loader_2_tab_auth
@@ -346,23 +382,22 @@ class Ability
   def tree_publisher_auth(session_user)
     can "menu", "tree"
     can "trees/workspaces/current", "toggle"
-    can :toggle_draft, Tree, products: { product_roles: { user_product_roles: { user_id:session_user.user_id} }}
+    can :toggle_draft, Tree, user_product_role_vs: { user_id:session_user.user_id }
     can 'tree_versions', 'edit_draft'
-    can :edit, Tree, products: { product_roles: { user_product_roles: { user_id:session_user.user_id} }}
-    can :edit, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :edit, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can 'tree_versions', 'update_draft' # display the update_draft form
-    can :update_draft, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
-    can :update_draft, Tree::DraftVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :update_draft, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+    can :update_draft, Tree::DraftVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can 'tree_versions', 'form_to_publish' # display the publish draft form
     can 'tree_versions', 'publish' # call the action
-    can :publish, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :publish, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can 'tree_versions', 'new_draft' # display the new draft form
     can 'tree_versions', 'create_draft' # display the new draft form
-    can :set_workspace, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
-    can :create_draft, Tree, products: { product_roles: { user_product_roles: { user_id:session_user.user_id} }}
+    can :set_workspace, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+    can :create_draft, Tree, user_product_role_vs: { user_id:session_user.user_id }
     can "instances", "tab_classification"
 
     run_reports_on_a_draft_tree(session_user)
@@ -372,61 +407,69 @@ class Ability
   def tree_builder_auth(session_user)
     can "menu", "tree"
     can "trees/workspaces/current", "toggle"
-    can :toggle_draft, Tree, products: { product_roles: { user_product_roles: { user_id:session_user.user_id} }}
-    can :set_workspace, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :toggle_draft, Tree, user_product_role_vs: { user_id:session_user.user_id }
+    can :set_workspace, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+
     can "classification", "place"
     can "instances", "tab_classification"
     # Note: update_comment also handles what looks to the user like insert and delete comment
     can "trees", "update_comment"
-    can :update_comment, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :update_comment, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+
     # Note: update_distribution also handles what looks to the user like insert and delete distribution
     can "trees", "update_distribution"
-    can :update_distribution, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :update_distribution, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "names/typeaheads/for_workspace_parent_name", :all
-    can :names_typeahead_for_workspace_parent, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :names_typeahead_for_workspace_parent, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "update_tree_parent"
-    can :update_tree_parent, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :update_tree_parent, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "update_excluded"
-    can :update_excluded, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :update_excluded, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "replace_placement"
-    can :replace_placement, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :replace_placement, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "remove_name_placement"
-    can :remove_name_placement, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :remove_name_placement, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "place_name"
-    can :place_name, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :place_name, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     run_reports_on_a_draft_tree(session_user)
   end
 
   def run_reports_on_a_draft_tree(session_user)
     can "trees", "reports"
-    can :reports, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :reports, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "show_cas"
-    can :show_cas, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :show_cas, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "run_cas"
-    can :run_cas, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :run_cas, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "show_diff"
-    can :show_diff, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :show_diff, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "run_diff"
-    can :run_diff, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :run_diff, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "show_valrep"
-    can :show_valrep, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :show_valrep, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "run_valrep"
-    can :run_valrep, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :run_valrep, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "update_synonymy_by_instance"
-    can :update_synonymy_by_instance, TreeVersion, tree: {products: { product_roles: { user_product_roles: { user_id:session_user.user_id}}}}
+    can :update_synonymy_by_instance, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+  end
+
+  def selected_product(user)
+    # NOTES: The selected product is either the one set in context or, if none set,
+    # the first product from the user's roles.
+    user.product_from_context || user.product_from_roles
   end
 end

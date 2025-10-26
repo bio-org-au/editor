@@ -11,14 +11,14 @@
       <%= form.hidden_field :batch_reviewer_id %>
       <%= form.hidden_field :loader_name_id %>
       <%= form.hidden_field :batch_review_period_id %>
-      Type*:<br>
-      <%= form.collection_select :name_review_comment_type_id, 
-        Loader::Name::Review::Comment::Type.for(name_review_comment.type.name, @current_user.compiler?).order(:name),
-        :id,
-        :name,
-        {},
-        class: 'form-control',
-        title: 'Type or topic of the comment' %> 
+
+      <% if defined?(offer_context) && offer_context && @review_comment.loader_name.contexts.size > 1 %>
+        Context<span class='red'>*</span>:<br>
+        <%= form.select :context, options_for_select(@review_comment.loader_name.contexts, @review_comment.context), {}, {title: 'context'} %>
+        <br>
+      <% else %>
+        <%= form.hidden_field :context %>
+      <% end %>
 
       Comment*: <%= form.text_area :comment, class: 'form-control give-me-focus', title: "Enter comment", required: true, size: "60x10", tabindex: increment_tab_index %>
       <br>

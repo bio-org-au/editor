@@ -24,10 +24,10 @@ class SearchLoaderNameAnyBatchTest < ActionController::TestCase
 
   test "can search for loader names" do
     get(:search,
-        params: { query_target: "loader names", query_string: "* any-batch:" },
+        params: { query_target: "loader names", query_string: "* aNy-batch:" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
-                   groups: [:ogin, :"atch-loader"] })
+                   groups: [:login, :"batch-loader"] })
     assert_response :success
     assert_select "#search-results-summary",
                   /\b[1-9] records*\b/,

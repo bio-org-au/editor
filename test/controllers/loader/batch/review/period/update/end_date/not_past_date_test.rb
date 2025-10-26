@@ -42,7 +42,7 @@ class BatchReviewPeriodUpdateEndDateNotPastDateTest < ActionController::TestCase
          session: { username: "fred",
                     user_full_name: "Fred Jones",
                     groups: ["batch-loader"] })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     updated = Loader::Batch::Review::Period.find(target.id)
     assert_match(/Error: Validation failed: End date cannot be changed to a past date/,
                  response.body.to_s,

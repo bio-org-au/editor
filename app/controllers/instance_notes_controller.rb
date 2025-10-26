@@ -45,7 +45,7 @@ class InstanceNotesController < ApplicationController
     end
   rescue StandardError => e
     @message = e.to_s
-    render "create_failed", status: :unprocessable_entity
+    render "create_failed", status: :unprocessable_content
   end
 
   # PATCH/PUT /instance_notes/1
@@ -63,7 +63,7 @@ class InstanceNotesController < ApplicationController
       render :destroy
     else
       @message = "Could not delete that record."
-      render "update_failed", status: :unprocessable_entity
+      render "update_failed", status: :unprocessable_content
     end
   end
 
@@ -99,6 +99,6 @@ class InstanceNotesController < ApplicationController
     end
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_entity
+    render :update_failed, status: :unprocessable_content
   end
 end

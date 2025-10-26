@@ -24,6 +24,7 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
   setup do
     @instance = instances(:britten_created_angophora_costata)
     @request.headers["Accept"] = "application/javascript"
+    @working_draft = TreeVersion.first
   end
 
   test "should show detail and APC tab links if editor requests details tab" do
@@ -33,6 +34,7 @@ class InstanceEditorShowDetailAPCTabsTest < ActionController::TestCase
                   "row-type" => "instance_as_part_of_concept_record" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
+                   draft: @working_draft,
                    groups: ["treebuilder"] })
     asserts
   end

@@ -109,7 +109,7 @@ class NamesController < ApplicationController
     render "update"
   rescue StandardError => e
     @message = e.to_s
-    render "update_error", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   def rules

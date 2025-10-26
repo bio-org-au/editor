@@ -90,7 +90,7 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
         }
       }, session: @session, xhr: true
 
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
       assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
       assert_match "Not updated", assigns(:message)
       assert_template :update_failed

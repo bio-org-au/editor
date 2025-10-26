@@ -38,7 +38,7 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
   rescue StandardError => e
     logger.error("Controller:Loader::Batch::Review::PeriodsController#create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   # POST /batch_reviews
@@ -49,7 +49,7 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::Batch::Review::Periods.update:rescuing exception #{e}")
     @error = e.to_s
-    render "update_error", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   def destroy
@@ -57,7 +57,7 @@ class Loader::Batch::Review::PeriodsController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::Batch::Review::Period.destroy:rescuing exception #{e}")
     @error = e.to_s
-    render "destroy_error", status: :unprocessable_entity
+    render "destroy_error", status: :unprocessable_content
   end
 
   private

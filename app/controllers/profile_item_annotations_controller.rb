@@ -40,7 +40,7 @@ class ProfileItemAnnotationsController < ApplicationController
     end
   rescue StandardError => e
     @message = e.to_s
-    render "create_failed", status: :unprocessable_entity
+    render "create_failed", status: :unprocessable_content
   end
 
   def update
@@ -76,7 +76,7 @@ class ProfileItemAnnotationsController < ApplicationController
     end
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_entity
+    render :update_failed, status: :unprocessable_content
   end
 
   def permitted_params

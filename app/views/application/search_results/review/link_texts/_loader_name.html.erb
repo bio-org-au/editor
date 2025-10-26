@@ -1,10 +1,27 @@
-<span class='review loader-name <%= search_result.has_parent? ? 'child' : '' %>
-<%= "#{search_result.record_type}-full-name" %>'>
-  <%= "#{search_result.full_name}" %>
-</span>
+<span class='review loader-name <%= search_result.has_parent? ? %q(child) : "" %> <%= "#{search_result.record_type}-full-name" %> '>
+
 <% if search_result.record_type == 'misapplied' then %>
+  <% if search_result.misapp_html.blank? %>
+    <%= render partial: 'application/search_results/print/records/loader/name/record_types/misapplied/construct_entry',
+               locals: {search_result: search_result} %>
+  <% else %>
+    <%= search_result.misapp_html %>
+  <% end %>
   <span class="review loader-name misapplied-flag">misapplied</span>
+<% else %>
+  <%= "#{search_result.full_name}" %>
+  <%= "<i>p.p.</i>".html_safe if search_result.partly? %>
 <% end %>
+
+</span>
+
+<% if search_result.try('parent').try('no_further_processing?') %>
+    <span class="flag exclude-from-further-processing" title='No further processing flag of parent set'>NFP via parent</span>
+<% elsif search_result.no_further_processing? %>
+    <span class="flag exclude-from-further-processing" title='No further processing flag set'>NFP</span>
+<% end %>
+
+
 <% if search_result.votable? %>
   <% search_result.name_review_votes.each do |vote| %>
     <span class="vote-<%= vote.vote_as_agree_disagree %>">

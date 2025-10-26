@@ -1,3 +1,4 @@
 $('#one-comment-<%= @review_comment.id %>').html('<%= escape_javascript(render partial: 'loader/names/review/tabs/common/one_comment', locals: {comment: @review_comment, scope: 'distribution'}) %>');
+$('li.active a.tab').click();
 
 

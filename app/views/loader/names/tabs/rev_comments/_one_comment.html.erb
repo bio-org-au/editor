@@ -1,0 +1,48 @@
+<%# Silence the n+1 complaints %>
+<% comment = Loader::Name::Review::Comment.includes([:loader_name]).find(comment.id) %>
+  
+
+
+<div id="comment-<%= comment.id %>-display-container" class='name-comment-display-container'> 
+
+  <div>
+
+  <%= render partial: 'detail_line',
+             locals: {label: 'Comment', info: comment.comment }  %>
+
+  <%= render partial: 'detail_line',
+             locals: {label: 'Comment by',
+                      info: 
+                      "#{comment.reviewer.user.full_name} (#{comment.reviewer.org.try('abbrev')} #{comment.reviewer.role.name})
+                       #{link_to('(edit)', edit_name_review_comment_path(comment.id, :offer_context),
+                                           remote: true,
+                                           class: 'blue',
+                                           title: 'Edit your comment') if @current_user.username == comment.reviewer.user.user_name} "}
+                    %>
+
+  <%= render partial: 'detail_line',
+             locals: {label: 'Comment On', info: comment.context } unless comment.context == comment.loader_name.record_type %>
+
+  </div>
+
+<%= render partial: 'detail_line',
+    locals: {label: 'Created',
+             info: "#{formatted_timestamp(comment.created_at)}"}  %>
+<% unless comment.created_at == comment.updated_at %>
+  <%= render partial: 'detail_line',
+    locals: {label: 'Updated',
+             info: "#{formatted_timestamp(comment.updated_at)}"}  %>
+<% end %>
+
+
+</div>
+
+
+<div id="comment-<%= comment.id %>-edit-container" class='name-comment-edit-container'> 
+
+  <div id="<%= comment.id %>-info-message-container" class="message-container"></div>
+  <div id="<%= comment.id %>-error-message-container" class="error-container message-container"></div>
+
+</div>
+<br>
+

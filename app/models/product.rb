@@ -48,6 +48,7 @@ class Product < ApplicationRecord
   has_many :profile_items, through: :product_item_configs, class_name: 'Profiles::ProfileItem'
   has_many :product_roles, class_name: "Product::Role"
   has_many :user_product_roles, class_name: "User::ProductRole", through: :product_roles
+  has_many :user_product_role_vs
 
   validates :name, presence: true
 
@@ -59,4 +60,8 @@ class Product < ApplicationRecord
       .joins("INNER JOIN tree_element ON tree_element.id = tree_version_element.tree_element_id")
       .where("tree_element.id = ?", tree_element.id)
   end
+
+  scope :with_context_and_tree, ->(context_id) {
+    where(context_id: context_id).where.not(tree_id: nil)
+  }
 end

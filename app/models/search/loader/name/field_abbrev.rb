@@ -38,5 +38,7 @@ class Search::Loader::Name::FieldAbbrev
     "syn-match-in-tree:" => "syn-match-in-tree-faster-join:",
     "nfh:" => "no-family-heading:",
     "ids:" => "id:",
+    "family:" => "family-members:",
+    "families:" => "family-members:",
   }.freeze
 end

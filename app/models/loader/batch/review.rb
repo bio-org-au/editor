@@ -76,7 +76,7 @@ class Loader::Batch::Review < ActiveRecord::Base
   end
 
   def reviewer_id(username)
-    reviewers.select { |r| r.user.user_name.downcase == username.downcase }.first.id
+    reviewers.includes([:user]).select { |r| r.user.user_name.downcase == username.downcase }.first.id
   end
 
   private

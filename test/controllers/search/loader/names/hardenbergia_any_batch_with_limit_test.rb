@@ -24,7 +24,7 @@ class SearchLoaderNameHardenbergiaAnyBatchWithLimitTest < ActionController::Test
 
   test "can search loader names for Hardenbergia violacea in any batch with limit on results" do
     get(:search,
-        params: { query_target: "loader names", query_string: "Hardenbergia violacea any-batch: limit: 100" },
+        params: { query_target: "loader names", query_string: "Hardenbergia violacea any-baTCh: limit: 100" },
         session: { username: "fred",
                    user_full_name: "Fred Jones",
                    groups: [:ogin, :"atch-loader"] })

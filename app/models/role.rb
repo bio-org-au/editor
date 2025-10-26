@@ -24,4 +24,5 @@ class Role < ActiveRecord::Base
   self.sequence_name = "nsl_global_seq"
   has_many :product_roles, class_name: "Product::Role"
   has_many :user_product_roles, class_name: "User::ProductRole", through: :product_roles
+  has_many :user_product_role_vs
 end

@@ -45,7 +45,7 @@ class ReferencesesUpdateInvalidYearTest < ActionController::TestCase
           session: { username: "fred",
                      user_full_name: "Fred Jones",
                      groups: ["edit"] })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     assert_match(/#{@msg1}#{@msg2}/,
                  response.body.to_s,
                  "Missing or incorrect error message")

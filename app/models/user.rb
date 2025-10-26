@@ -47,6 +47,7 @@ class User < ActiveRecord::Base
   has_many :product_roles, through: :user_product_roles
   has_many :products, through: :product_roles
   has_many :roles, through: :product_roles
+  has_many :user_product_role_vs
 
   before_create :set_audit_fields, :force_lower_case_user_name
   before_update :set_updated_by
@@ -73,7 +74,7 @@ class User < ActiveRecord::Base
     product_roles
       .joins(:role, :product)
       .includes(:product, :user_product_roles)
-      .order(Product.arel_table[:name].asc)
+      .order(Product.arel_table[:context_sort_order].asc, Product.arel_table[:name].asc)
       .filter_map(&:product)
       .uniq
   end

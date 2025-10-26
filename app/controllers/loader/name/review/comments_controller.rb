@@ -44,12 +44,15 @@ class Loader::Name::Review::CommentsController < ApplicationController
   rescue => e
     logger.error("Loader::Name::Review::Comment.create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   def update
     @review_comment = Loader::Name::Review::Comment.find(review_comment_params[:id])
-    raise 'Update not permitted because Review is not active' unless @review_comment.batch_review_period.active?
+
+    unless @review_comment.batch_review_period.active? || @current_user.batch_loader?
+      raise 'Update not permitted because Review is not active' 
+    end
     raise 'You cannot update a comment that is not your own' unless @current_user.username == @review_comment.reviewer.user.user_name
     @message = @review_comment.update_if_changed(review_comment_params,
                                                  current_user.username)
@@ -57,10 +60,11 @@ class Loader::Name::Review::CommentsController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::Name::Review::Comment#update rescuing #{e}")
     @message = e.to_s
-    render "update_error", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   def edit
+    @offer_context = params[:offer_context] == 'offer_context'
     render :edit, layout: false
   end
 
@@ -77,13 +81,15 @@ class Loader::Name::Review::CommentsController < ApplicationController
   end
 
   def destroy
-    raise 'Delete is not permitted because Review is not active' unless @review_comment.batch_review_period.active?
+    unless @review_comment.batch_review_period.active? || @current_user.batch_loader?
+      raise 'Delete is not permitted because Review is not active'
+    end
     raise 'You cannot delete a comment that is not your own' unless @current_user.username == @review_comment.reviewer.user.user_name
     @review_comment.destroy
   rescue StandardError => e
     logger.error("Loader::Name::Review::Comment#destroy rescuing #{e}")
     @message = e.to_s
-    render "destroy_error", status: :unprocessable_entity
+    render "destroy_error", status: :unprocessable_content
   end
 
   private

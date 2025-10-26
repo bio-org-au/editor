@@ -53,7 +53,7 @@ class ProfileItemsController < ApplicationController
     end
   rescue StandardError => e
     @message = "Error deleting profile item: #{e.message}"
-    render "destroy_failed", status: :unprocessable_entity
+    render "destroy_failed", status: :unprocessable_content
   end
 
   def index

@@ -46,6 +46,7 @@ class Product::Role < ActiveRecord::Base
   belongs_to :role, class_name: "::Role"
   belongs_to :product
   has_many :user_product_roles, class_name: "User::ProductRole", foreign_key: :product_role_id
+  has_many :user_product_role_vs
 
   def name
     "#{product.name} #{role.name} product role"

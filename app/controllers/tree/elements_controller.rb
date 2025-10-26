@@ -57,7 +57,7 @@ class Tree::ElementsController < ApplicationController
   rescue StandardError => e
     logger.error("Tree::ElementsController:update_profile:rescuing #{scope} exception #{e}")
     @message = "#{scope} update error: #{e}"
-    render :update_profile_error, status: :unprocessable_entity
+    render :update_profile_error, status: :unprocessable_content
   end
 
   private

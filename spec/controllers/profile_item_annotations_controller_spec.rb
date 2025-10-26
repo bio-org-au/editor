@@ -45,7 +45,7 @@ RSpec.describe ProfileItemAnnotationsController, type: :controller do
 
         expect(assigns(:message)).to include("Validation failed")
         expect(response).to render_template("create_failed")
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
@@ -119,7 +119,7 @@ RSpec.describe ProfileItemAnnotationsController, type: :controller do
 
         expect(assigns(:message)).to eq("Update failed")
         expect(response).to render_template(:update_failed)
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end

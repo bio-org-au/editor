@@ -1,0 +1,23 @@
+<% unless @loader_name.ok_to_delete? %>
+
+<h5>Force Delete</h5>
+
+
+  Force deleting <%= @loader_name.simple_name %> will remove the following batch loader records:
+  <ul>
+    <li/>the record itself,
+    <% unless @loader_name.preferred_matches.empty? %>
+      <li/>its <%= pluralize(@loader_name.preferred_matches.size,'preferred match') %>
+    <% end %>
+    <% unless @loader_name.children.empty? %>
+      <li/>its <%= pluralize(@loader_name.children.size,'synonymy record') %>
+    <% end %>
+    <% unless @loader_name.children.includes([:loader_name_matches]).collect {|child| child.preferred_matches }.flatten.empty? %>
+      <li/>the <%= pluralize(@loader_name.children.includes([:loader_name_matches]).collect {|child| child.preferred_matches }.flatten.size, 'preferred match') %> in synonymy
+    <% end %>
+  </ul>
+  <br>
+  <br>
+<%= render 'loader/names/tabs/delete/force_delete_widgets' %>
+
+<% end %>

@@ -25,6 +25,9 @@
           <%= check_box_tag("move_placement[excluded]", true, @tree_version_element.tree_element.excluded, title: 'Exclude this') %>
           <label for="move_placement_excluded" class="exclude-label">exclude</label>
         </dd>
+
+        <% unless @working_draft.tree.config.blank? %>
+
         <dt><%= @tree_version_element.comment_key %></dt>
         <dd>
           <%= text_area_tag("move_placement[comment]", @tree_version_element.comment, escaped: false, title: 'Edit comment', rows: 4, class: 'form-control') %>
@@ -37,6 +40,8 @@
         <dd>
           <%= render partial: "trees/move_distribution", locals: {tree_version_element: @tree_version_element} %>
         </dd>
+
+        <% end %>
       </dl>
 
       <%= render partial: "instances/workspace/forms/name_typeahead" %>

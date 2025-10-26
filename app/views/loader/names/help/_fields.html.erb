@@ -23,10 +23,6 @@
      descr: "Search for loader names that have a distribution without a given string."},
     {field_name: 'no-distribution:',
      descr: "Search for loader names that have no distribution string."},
-    {field_name: 'family:',
-     descr: "Search for loader names for a given family name. Takes one or more comma-separated arguments"},
-    {field_name: 'family-id:',
-     descr: "Search for loader names for a given family ID."},
     {field_name: 'simple-name:',
      descr: "Search for loader names based on simple name."},
     {field_name: 'simple-name-as-loaded:',
@@ -144,15 +140,47 @@
   <% end %>
 </table>
 
-
-  <h4>Rank Search Directives</h4>
+  <h4>Family-related Searches</h4>
+  <h5>See also: Processing and taxonomy queries</h5>
 <table class="table table-striped">
   <tr><th>Field</th><th>Description</th></tr>
   <% [
+    {field_name: 'family-list:',
+     description: "list records with rank 'family' - arguments are family name strings: zero retrieves all, one allows wildcards, but if more than one, each argument must be a complete family name"},
+    {field_name: 'family-members:',
+     description: "list records within the family - arguments are family name strings: zero retrieves all, one allows wildcards, but if more than one, each argument must be a complete family name"},
+    {field_name: 'family:',
+     description: "Alias for family-members"},
     {field_name: 'families:',
-     description: "retrieve record with rank 'family' - takes none, one, or many comma-separated arguments"},
+     description: "Alias for family-members"},
+    {field_name: 'family-id:',
+     description: "Search for loader names for a given family ID, includes the family record and its members - typically used in Editor-generated links."},
     {field_name: 'no-family-heading:',
      description: "retrieve records that belong to a family for which there is no family heading - takes no arguments; shortcut is <code>nfh:</code>"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+      <a href="javascript:void(0)" class="searchable-field width-100-percent"
+         data-search-directive="<%= val[:field_name] %>" 
+         title='Add "<%= val[:field_name] %>" field to search.'>
+        <span class="blue"><%= val[:field_name] %></span>
+      </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+    <% if val[:partial].present? %>
+      <td><%= render partial: val[:partial] %></td>
+    <% else %>
+      <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+
+  <h4>Other Rank Search Directives</h4>
+<table class="table table-striped">
+  <tr><th>Field</th><th>Description</th></tr>
+  <% [
     {field_name: 'rank:',
      description: "match on the rank field - case-insensitive"},
     {field_name: 'not-rank:',
@@ -235,9 +263,9 @@
   <tr><th>Field</th><th>Description</th></tr>
   <% [
     {field_name: 'partly:',
-     description: "match only on CSV data where the partly field has any data in it, which is uniformly 'p.p.' - it's essentially a flag where p.p. means true and is generally for synonyms"},
+     description: "find records where partly = 'p.p.', publ_partly = 'p.p.' or the synonym_type (used for misapps too) includes the text 'pro parte'"},
     {field_name: 'not-partly:',
-     description: "match only on CSV data where the partly field has no data"},
+     description: "find records where neither partly nor publ_partly contain 'p.p.' and the synonym_type does not contain the text 'pro parte'"},
     {field_name: 'publ-partly:',
      description: "match only on CSV data where the publ_partly field has any data in it, which is uniformly 'p.p.' - it's essentially a flag where p.p. means true and is generally for misapplieds"},
     {field_name: 'not-publ-partly:',

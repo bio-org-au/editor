@@ -42,7 +42,7 @@ class BatchReviewPeriodUpdateEndDateNotBeforeStartDateTest < ActionController::T
          session: { username: "fred",
                     user_full_name: "Fred Jones",
                     groups: ["batch-loader"] })
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
     updated = Loader::Batch::Review::Period.find(target.id)
     assert_match(/Error: Validation failed: End date must be after start date/,
                  response.body.to_s,

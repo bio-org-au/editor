@@ -40,7 +40,7 @@ class ProfileItemReferencesController < ApplicationController
 
   rescue StandardError => e
     @message = "Error creating profile item reference: #{e.message}"
-    render "create_failed", status: :unprocessable_entity
+    render "create_failed", status: :unprocessable_content
   end
 
   def update
@@ -57,7 +57,7 @@ class ProfileItemReferencesController < ApplicationController
     end
   rescue StandardError => e
     @message = "Error deleting profile item reference: #{e.message}"
-    render "destroy_failed", status: :unprocessable_entity
+    render "destroy_failed", status: :unprocessable_content
   end
 
   private
@@ -83,7 +83,7 @@ class ProfileItemReferencesController < ApplicationController
     end
   rescue StandardError => e
     @message = e.to_s
-    render :update_failed, status: :unprocessable_entity
+    render :update_failed, status: :unprocessable_content
   end
 
   def permitted_params

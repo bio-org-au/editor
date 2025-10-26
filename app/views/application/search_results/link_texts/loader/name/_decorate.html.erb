@@ -33,3 +33,9 @@
   locals: {search_result: search_result}
 %>
 
+<% if search_result.narrow_direct_reviewer_comments? %>
+  <span class="reviewer-comment-tag"><%= pluralize(search_result.narrow_direct_reviewer_comments.size, 'reviewer comment') %></span>
+<% end %>
+<% if search_result.narrow_direct_compiler_comments? %>
+  <span class="compiler-comment-tag"><%= pluralize(search_result.narrow_direct_compiler_comments.size, 'compiler comment') %></span>
+<% end %>

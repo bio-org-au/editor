@@ -8176,7 +8176,8 @@ CREATE VIEW public.user_product_role_v AS
     (product.is_name_index)::text AS is_name_index,
     users.id AS user_id,
     product.id AS product_id,
-    roles.id AS role_id
+    roles.id AS role_id,
+    tree.id AS tree_id
    FROM ((((((public.user_product_role upr
      JOIN public.users ON ((upr.user_id = users.id)))
      JOIN public.product_role pr ON ((upr.product_role_id = pr.id)))

@@ -71,6 +71,7 @@ class Search::OnModel::Predicate
   def apply_rule_overflow(rule)
     @multiple_values = rule[:multiple_values] || false
     @takes_no_arg = rule[:takes_no_arg] || false
+    @takes_optional_arg = rule[:takes_optional_arg] || false
     @predicate = build_predicate(rule)
     @tokenize = (rule[:tokenize] && !@is_null) || false
     check_do_count_totals(rule)
@@ -110,7 +111,7 @@ class Search::OnModel::Predicate
 
   def build_scalar_predicate(rule)
     if @is_null
-      raise "#{@field} directive needs an argument" unless @takes_no_arg || @has_not_exists_clause
+      raise "#{@field} directive needs an argument" unless @takes_no_arg || @has_not_exists_clause || @takes_optional_arg
 
       build_is_null_predicate(rule)
     else

@@ -28,6 +28,7 @@ class TreePublisherApcTaxoMenuOptions < ActionController::TestCase
         params: {},
         session: { username: user.user_name,
                    user_full_name: user.full_name,
+                   draft: @working_draft,
                    groups: ["login"] })
     assert_response :success
     assert_select "a",

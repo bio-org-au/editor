@@ -1,5 +1,15 @@
 <div class="focus-details unsaved-record">
   <div id="new-draft-tree-form-container" class="new-record-form-container">
+    <% if current_context_id && Rails.configuration.try(:multi_product_tabs_enabled) %>
+      <%
+        available_trees = Tree.accessible_by(current_ability, :create_draft)
+          .joins(:products).where(products: { context_id: current_context_id })
+      %>
+    <% else %>
+      <%
+        available_trees = Tree.accessible_by(current_ability, :create_draft)
+      %>
+    <% end %>
 
     <h4>New Draft Taxonomy</h4>
     <div>
@@ -7,10 +17,7 @@
         <div class="form-group">
           <label>Tree
             <%= select_tag("tree_id",
-                           options_from_collection_for_select(Tree.accessible_by(current_ability, :create_draft)
-                                                             .where('is_read_only = false')
-                                                             .order('name'),
-                                                             'id', 'name'),
+                           options_from_collection_for_select(available_trees.where('is_read_only = false').order('name'), 'id', 'name'),
                            {class: 'form-control give-me-focus',
                             required: true,
                             autofocus: true,

@@ -24,7 +24,7 @@
 
     <% if reviewer.name_review_comments.by_review(@batch_review.id).size == 0 %>
 
-            <%= link_to("Delete...",
+      <%= link_to("Remove #{reviewer.user.given_name} from the review...",
                         '#',
                         id: "batch-reviewer-delete-link-#{reviewer.id}",
                         class: "btn btn-warning unconfirmed-delete-link pull-right",
@@ -66,7 +66,9 @@
                                      query_string: "batch-id: #{@batch_review.batch.id} has-review-comment-by:#{reviewer.user.user_name}"),
                          class: 'blue',
                          title: "Query loader names in this batch with comments by this user") %>
+       &mdash; cannot remove reviewer
     <% end %>
+            <%= divider %>
   </ul>
   </div>
 <% end %>

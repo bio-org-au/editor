@@ -41,7 +41,15 @@
       <% end %>
 
 
-      <% Tree.all.order('name').each do |tree| %>
+      <% if current_context_id && Rails.configuration.try(:multi_product_tabs_enabled) %>
+        <%
+          all_trees = Tree.where(id: Product.with_context_and_tree(current_context_id).select(:tree_id))
+        %>
+      <% else %>
+        <% all_trees = Tree.all %>
+      <% end %>
+
+      <% all_trees.includes([:user_product_role_vs]).order('name').each do |tree| %>
         <% if can?(:create_draft, tree) %>
         <li role="presentation" class="divider"></li>
         <li>

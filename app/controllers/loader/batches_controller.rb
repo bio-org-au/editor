@@ -66,7 +66,7 @@ class Loader::BatchesController < ApplicationController
   rescue StandardError => e
     logger.error("Controller:Loader:Batches:create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   def update
@@ -77,7 +77,7 @@ class Loader::BatchesController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::Batches#update rescuing #{e}")
     @message = e.to_s
-    render "update_error", status: :unprocessable_entity
+    render "update_error", status: :unprocessable_content
   end
 
   def destroy
@@ -86,7 +86,7 @@ class Loader::BatchesController < ApplicationController
   rescue StandardError => e
     logger.error("Loader::BatchesController#destroy rescuing #{e}")
     @message = e.to_s
-    render "destroy_error", status: :unprocessable_entity
+    render "destroy_error", status: :unprocessable_content
   end
 
   def make_default

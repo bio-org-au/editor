@@ -49,6 +49,10 @@ class TreeVersion < ActiveRecord::Base
            foreign_key: "tree_version_id",
            class_name: "TreeVersionElement"
 
+  has_many :user_product_role_vs,
+           through: :tree
+
+
   before_save :stop_if_read_only
 
   # Returns a TreeVersionElement for this TreeVersion which contains the name
@@ -91,10 +95,14 @@ class TreeVersion < ActiveRecord::Base
   end
 
   def comment_key
+    return nil if tree.config.blank?
+
     tree.config["comment_key"]
   end
 
   def distribution_key
+    return nil if tree.config.blank?
+
     tree.config["distribution_key"]
   end
 

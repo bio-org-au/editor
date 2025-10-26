@@ -11,7 +11,29 @@
                           query_string: "family: #{@loader_name.family}"),
                title:"Query the family",class:'blue')} %>
 <%= render partial: 'detail_line', locals: {label: 'Rank', info: "#{@loader_name.rank}"} %>
+<%= render partial: 'detail_line', locals: {label: 'Record Type', info: "#{@loader_name.record_type}"} %>
+<% if @loader_name.partly? %>
+  <%= render partial: 'detail_line', locals: {label: 'Synonym Type', info: "#{@loader_name.synonym_type}"} %>
+  <%= render partial: 'detail_line', locals: {label: 'Partly', info: "#{@loader_name.partly}"} %>
+  <%= render partial: 'detail_line', locals: {label: 'Publ Partly', info: "#{@loader_name.publ_partly}"} %>
+<% end %>
+<% if @loader_name.no_further_processing? %>
+  <%= render partial: 'detail_line', locals: {info: @loader_name.no_further_processing, label: 'no further processing'} %>
+<% end %>
 <%= divider %>
+<% if @loader_name.no_further_processing? %>
+  <div class="bggray big-vertical-padding" >
+    <h4 class="white">No Further Processing</h4>
+    <p class="white">This record is flagged for no further processing.</p>
+  </div>
+<% end %>
+<% if @loader_name.try('parent').try('no_further_processing?') %>
+  <div class="bggray big-vertical-padding" >
+    <h4 class="white">No Further Processing via parent</h4>
+    <p class="white">This record is flagged for no further processing.</p>
+  </div>
+<% end %>
+
 
 <%= render partial: 'loader/names/review/tabs/common/vote_and_comments', locals: {scope: 'unrestricted'} %>
 

@@ -15,7 +15,7 @@
 
 <%= form_with(model: loader_name, role: 'form', data: { turbo: false }, local: false) do |form| %>
     <div class="form-group">
-      <label for="loader_batch_id">Batch*</label>
+      <label for="loader_batch_id">Batch<span class="red">*</span></label>
       <%= form.select :loader_batch_id,
         Loader::Batch.order(:name).map { |batch| [batch.name, batch.id] },
         {include_blank: true},

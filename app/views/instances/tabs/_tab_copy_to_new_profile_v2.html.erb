@@ -1,9 +1,9 @@
-<% if @current_registered_user.available_product_from_roles&.reference.blank? %>
+<% if product_context_service.product_with_context(current_context_id)&.reference.blank? %>
   <div id="search-result-details-error-message-container" class="message-container">
     You do not have a product reference. Please contact your administrator.
   </div>
 <% else %>
-  <% product_reference = Product.find_by(name: @current_registered_user.available_product_from_roles&.name).reference %>
+  <% product_reference = product_context_service.product_with_context(current_context_id)&.reference %>
   <div id="search-result-details-info-message-container" class="message-container"></div>
   <div id="search-result-details-error-message-container" class="message-container"></div>
   <% increment_tab_index(0) %>
@@ -32,7 +32,7 @@
               method: :post) do |f| %>
 
     <br>
-    The copied instance will be attached to the <%= @current_registered_user.available_product_from_roles&.name %> product reference:<br>
+    The copied instance will be attached to the <%= product_context_service.product_with_context(current_context_id)&.name %> product reference:<br>
     <h6>&mdash; <%= product_reference.citation %></h6>
     <br>
     <label for="instance_type_id">Instance type:</label>

@@ -48,5 +48,6 @@ FactoryBot.define do
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }
     api_date { Time.current }
+    context_id { 1 }
   end
 end

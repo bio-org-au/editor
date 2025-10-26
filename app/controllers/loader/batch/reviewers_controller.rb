@@ -46,7 +46,7 @@ class Loader::Batch::ReviewersController < ApplicationController
   rescue StandardError => e
     logger.error("Controller:Loader::Batch::ReviewersController#create:rescuing exception #{e}")
     @error = e.to_s
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   def destroy

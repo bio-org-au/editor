@@ -5,8 +5,18 @@
   <%= render partial: 'loader/names/tabs/forms/form_for_accepted_or_excluded', locals: { loader_name: @loader_name } %>
 <% elsif @loader_name.synonym? %>
   <%= render partial: 'loader/names/tabs/forms/form_for_synonym', locals: { loader_name: @loader_name } %>
+  <br>
+  <%= divider %>
+  <%= render partial: 'loader/names/tabs/forms/form_convert_syn_to_misapp', locals: { loader_name: @loader_name } %>
+  <div id="search-result-details-info-message-container2" class="message-container"></div>
+  <div id="search-result-details-error-message-container2" class="message-container error-container"></div>
 <% elsif @loader_name.misapp? %>
   <%= render partial: 'loader/names/tabs/forms/form_for_misapp', locals: { loader_name: @loader_name } %>
+  <br>
+  <%= divider %>
+  <%= render partial: 'loader/names/tabs/forms/form_convert_misapp_to_syn', locals: { loader_name: @loader_name } %>
+  <div id="search-result-details-info-message-container2" class="message-container"></div>
+  <div id="search-result-details-error-message-container2" class="message-container error-container"></div>
 <% else %>
   Unknown type of record to edit
 <% end %>

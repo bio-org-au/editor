@@ -33,7 +33,7 @@ class User::ProductRolesController < ApplicationController
   rescue StandardError => e
     @error = e.to_s
     logger.error("User::ProductRolesController#create:rescuing exception #{@error}")
-    render "create_error", status: :unprocessable_entity
+    render "create_error", status: :unprocessable_content
   end
 
   def destroy
@@ -41,7 +41,7 @@ class User::ProductRolesController < ApplicationController
   rescue StandardError => e
     @error = e.to_s
     logger.error("User::ProductRolesController#destroy:rescuing exception #{@error}")
-    render "destroy_error", status: :unprocessable_entity
+    render "destroy_error", status: :unprocessable_content
   end
 
   def choose_product_for_role

@@ -33,9 +33,13 @@ RSpec.describe ApplicationController, type: :controller do
   end
 
   describe "#continue_user_session" do
+    let(:product) { FactoryBot.create(:product) }
+    let(:product_context_service) { instance_double(Products::ProductContextService) }
+
     before do
       allow(SessionUser).to receive(:new).and_return(session_user)
       allow(session_user).to receive(:registered_user).and_return(user)
+      allow(controller).to receive(:product_context_service).and_return(product_context_service)
     end
 
     context 'when session variables are set' do
@@ -46,10 +50,37 @@ RSpec.describe ApplicationController, type: :controller do
       end
 
       it 'sets the current_user and current_registered_user' do
+        allow(controller).to receive(:current_product_from_context).and_return(nil)
+
         controller.send(:continue_user_session)
 
         expect(controller.instance_variable_get(:@current_user)).to eq(session_user)
         expect(controller.instance_variable_get(:@current_registered_user)).to eq(user)
+      end
+
+      context 'when current_product_from_context is present' do
+        before do
+          session[:current_context_id] = 1
+          allow(product_context_service).to receive(:product_with_context).with(1).and_return(product)
+        end
+
+        it 'calls set_current_product_from_context on current_user' do
+          expect(session_user).to receive(:set_current_product_from_context).with(product)
+
+          controller.send(:continue_user_session)
+        end
+      end
+
+      context 'when current_product_from_context is nil' do
+        before do
+          session[:current_context_id] = nil
+        end
+
+        it 'does not call set_current_product_from_context' do
+          expect(session_user).not_to receive(:set_current_product_from_context)
+
+          controller.send(:continue_user_session)
+        end
       end
     end
   end
@@ -186,6 +217,32 @@ RSpec.describe ApplicationController, type: :controller do
   describe "#product_context_service" do
     it "returns a ProductContextService instance" do
       expect(controller.send(:product_context_service)).to be_a(Products::ProductContextService)
+    end
+  end
+
+  describe "#current_product_from_context" do
+    let(:product) { FactoryBot.create(:product) }
+    let(:product_context_service) { instance_double(Products::ProductContextService) }
+
+    before do
+      allow(controller).to receive(:product_context_service).and_return(product_context_service)
+    end
+
+    context "when current_context_id is nil" do
+      it "returns nil" do
+        session[:current_context_id] = nil
+        expect(controller.send(:current_product_from_context)).to be_nil
+      end
+    end
+
+    context "when current_context_id is present" do
+      it "calls product_context_service.product_with_context" do
+        session[:current_context_id] = 1
+        expect(product_context_service).to receive(:product_with_context).with(1).and_return(product)
+
+        result = controller.send(:current_product_from_context)
+        expect(result).to eq(product)
+      end
     end
   end
 end

@@ -6,7 +6,7 @@ module Loader::Name::Voting
   end
 
   def summary_of_votes_for_review(review)
-    self.name_review_votes.where(batch_review_id: review.id)
+    self.name_review_votes.includes([:org]).where(batch_review_id: review.id)
         .sort {|v1,v2| v1.org.abbrev <=> v2.org.abbrev}
         .map {|vote| {org_abbrev: vote.org.abbrev, org_name: vote.org.name, vote: (vote.vote ? 'agree' :  'disagree')} }
 

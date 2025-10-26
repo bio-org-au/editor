@@ -51,7 +51,7 @@ end
       delete :destroy, params: { id: @profile_item.id }, session: @session, xhr: true
       assert_equal @profile_item.destroy, false
       assert_equal "Error deleting profile item: Not saved: #{@profile_item.errors.full_messages.to_sentence}", assigns(:message)
-      assert_response :unprocessable_entity
+      assert_response :unprocessable_content
       assert_template :destroy_failed
     end
   end

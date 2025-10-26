@@ -1,6 +1,6 @@
 module Loader::Name::SourcedSynonyms
   extend ActiveSupport::Concern
-    def create_sourced_synonyms_for_instance(instance_id, current_user)
+    def create_sourced_synonyms_for_instance(instance_id, remark_to_reviewers, current_user)
       logger.debug("instance id: #{instance_id}")
       instance = Instance.find(instance_id)
       sourced_syns = instance.synonyms_for_copy_to_loader_name
@@ -19,6 +19,7 @@ module Loader::Name::SourcedSynonyms
                                rank: sou_syn.name.name_rank.name.downcase,
                                name_status: sou_syn.name.name_status.name.downcase,
                                doubtful: sou_syn.instance_type.doubtful,
+                               remark_to_reviewers: remark_to_reviewers,
                                loaded_from_instance_id: sou_syn.id,
                                created_manually: true,
                                created_by: current_user.username,
