@@ -48,7 +48,8 @@ class Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance
         .joins(:name_status)
         .joins(:name_type)
         .where(['lower(f_unaccent(name.full_name)) like lower(f_unaccent(?))',
-                @params[:term].tr("*", "%").downcase + "%"])
+                @params[:term])
+                #@params[:term].tr("*", "%").downcase + "%"])
         .where("name_type.name = 'scientific'")
         .select("name.id, name.full_name, case name_status.name when 'legitimate' then null else name_status.name end as status")
         .order("name_rank.sort_order, name.full_name")
