@@ -74,7 +74,13 @@ class ProfileTextsController < ApplicationController
   end
 
   def permitted_profile_item_params
-    params.require(:profile_item).permit(:id, :instance_id, :product_item_config_id, :profile_object_rdf_id)
+    attrs = params.require(:profile_item).permit(:id, :instance_id, :product_item_config_id, :profile_object_rdf_id)
+    {
+      id: attrs[:id].present? ? attrs[:id].to_i : nil,
+      instance_id: attrs[:instance_id].present? ? attrs[:instance_id].to_i : nil,
+      product_item_config_id: attrs[:product_item_config_id].present? ? attrs[:product_item_config_id].to_i : nil,
+      profile_object_rdf_id: attrs[:profile_object_rdf_id].present? ? attrs[:profile_object_rdf_id].to_i : nil
+    }.compact
   end
 
   def find_profile_item
