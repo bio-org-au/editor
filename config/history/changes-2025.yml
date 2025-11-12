@@ -1,4 +1,8 @@
 - :date: 12-Nov-2025
+  :jira_id: '535'
+  :description: |-
+    Reference search: Fix typo in help text
+- :date: 12-Nov-2025
   :jira_id: '1724'
   :description: |-
     Name search: Add directive <code>isonym-has-early-secondary</code>
