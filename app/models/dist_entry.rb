@@ -31,7 +31,7 @@
 #
 #  fk_ffleu7615efcrsst8l64wvomw  (region_id => dist_region.id)
 #
-class DistEntry < ActiveRecord::Base
+class DistEntry < ApplicationRecord
   self.table_name = "dist_entry"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

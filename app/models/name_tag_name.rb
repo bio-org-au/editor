@@ -37,7 +37,7 @@
 #  fk_22wdc2pxaskytkgpdgpyok07n  (name_id => name.id)
 #  fk_2uiijd73snf6lh5s6a82yjfin  (tag_id => name_tag.id)
 #
-class NameTagName < ActiveRecord::Base
+class NameTagName < ApplicationRecord
   self.table_name = "name_tag_name"
   self.primary_key = [:name_id, :tag_id]
 

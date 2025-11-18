@@ -22,7 +22,7 @@
             <label for="place_name_excluded" class="exclude-label">exclude</label>
           </dd>
 
-          <% unless @working_draft.tree.config.blank? %>
+          <% if @working_draft.tree.config.present? %>
 
           <dt><%= @working_draft.comment_key %></dt>
           <dd>

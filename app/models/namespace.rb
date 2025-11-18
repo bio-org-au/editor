@@ -31,7 +31,7 @@
 #  namespace_rdfid               (rdf_id)
 #  uk_eq2y9mghytirkcofquanv5frf  (name) UNIQUE
 #
-class Namespace < ActiveRecord::Base
+class Namespace < ApplicationRecord
   self.table_name = "namespace"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

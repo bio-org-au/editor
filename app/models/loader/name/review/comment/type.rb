@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader NameReviewCommentType entity
-class Loader::Name::Review::Comment::Type < ActiveRecord::Base
+class Loader::Name::Review::Comment::Type < ApplicationRecord
   strip_attributes
   self.table_name = "name_review_comment_type"
   self.primary_key = "id"

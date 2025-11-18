@@ -127,7 +127,7 @@ class AuthorsController < ApplicationController
   end
 
   def author_params
-    params.require(:author).permit(:name, :full_name, :abbrev, :notes)
+    params.require(:author).permit(:name, :extra_information, :abbrev, :notes)
   end
 
   def typeahead_params

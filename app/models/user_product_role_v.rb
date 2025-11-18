@@ -33,8 +33,7 @@
 #  upr_product_role_fk  (product_role_id => product_role.id)
 #  upr_users_fk         (user_id => users.id)
 #
-class UserProductRoleV < ActiveRecord::Base
-  strip_attributes
+class UserProductRoleV < ApplicationRecord
   self.table_name = "user_product_role_v"
   belongs_to :user
   belongs_to :product

@@ -23,7 +23,7 @@
 #  id      :bigint           not null, primary key
 #  version :integer          not null
 #
-class DbVersion < ActiveRecord::Base
+class DbVersion < ApplicationRecord
   # Really "Schema Version"
 
   self.table_name = "db_version"

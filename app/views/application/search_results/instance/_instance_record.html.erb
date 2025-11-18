@@ -25,7 +25,7 @@
     tabindex="<%= increment_tab_index %>"
     title="Instance Reference. Select to show Instance details.">
       <%= "#{search_result.reference.citation}" if search_result.reference %>
-      <%= "#{search_result.page}" %>
+      <%= ": #{search_result.page}" if search_result.page.present? %>
       <%= "[#{search_result.instance_type.name}]" if search_result.instance_type %></a>
     <%= %Q(</td><td class="min-width-1-percent max-width-30-percent">[#{search_result.type}]::#{ search_result['display_as'] || search_result.class.to_s};#{search_result.id }cites #{Pathname.new(__FILE__).basename}).html_safe if @debug %>
   </td>

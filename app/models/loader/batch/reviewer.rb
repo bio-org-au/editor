@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader BatchReviewer entity
-class Loader::Batch::Reviewer < ActiveRecord::Base
+class Loader::Batch::Reviewer < ApplicationRecord
   strip_attributes
   self.table_name = "batch_reviewer"
   self.primary_key = "id"

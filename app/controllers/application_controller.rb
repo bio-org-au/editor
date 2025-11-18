@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_context_id
-    session[:current_context_id]
+    session[:current_context_id] || current_registered_user.default_product_context_id
   end
 
   def current_product_from_context
@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
   def current_context_name
     return "Select Context" unless current_context_id
 
-    session[:current_context_name] || "No Context Selected"
+    session[:current_context_name] || current_product_from_context&.name || "No Context Selected"
   end
 
   def product_context_service
@@ -143,6 +143,7 @@ class ApplicationController < ActionController::Base
     end
 
     logger.info("User is known: #{@current_user.username}")
+    set_default_product_context_if_missing
     set_working_draft_session
   end
 
@@ -156,6 +157,27 @@ class ApplicationController < ActionController::Base
     else
       @working_draft = version
     end
+  end
+
+  def set_default_product_context_if_missing
+    return unless Rails.configuration.try(:multi_product_tabs_enabled)
+
+    default_context_id = current_registered_user.default_product_context_id
+    return if default_context_id
+
+    product = current_registered_user.available_products_from_roles&.first
+    return unless product
+
+    current_registered_user.default_product_context_id = product.context_id
+
+    unless current_registered_user.save
+      logger.error("Could not save default product context for user #{current_registered_user.user_name}")
+      logger.error("Error: #{current_registered_user.errors.full_messages.join(', ')}")
+      return
+    end
+
+    session[:current_context_id] = product.context_id
+    session[:current_context_name] = product.name
   end
 
   def hide_details

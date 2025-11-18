@@ -273,7 +273,30 @@ in the following formats:</p>
 </table>
 <br>
 
+<h5>Source of migrated records</h5>
+<p>Useful for records imported from other systems where the source details have been retained.</p>
+<p>When the data exists for a record it is displayed at the bottom of the Details tab as "Migrated from source-system #source-id".</p>
+<table class="table table-striped">
+  <% [
+      {field_name: 'source-id:', description: "numeric ID of the source record, needs an argument, takes multiple arguments, no wildcards because it's numeric"},
+      {field_name: 'source-system:', description: "source system shown at bottom of Details tab, case-insensitive, needs an argument, takes only one argument, allows wildcards"},
+      {field_name: 'source-id-string:', description: "numeric ID as a string - so it takes wildcards and has a wildcard added to the tail, needs an argument"},
+      ].each do |val| %>
+  <tr>
+    <td class="width-20-percent">
+        <a href="javascript:void(0)" class="searchable-field width-100-percent"
+           data-search-directive="<%= val[:field_name] %>"
+           title='Add "<%= val[:field_name] %>" field to search.'>
+          <span class="blue"><%= val[:field_name] %></span>
+        </a>
+    </td>
+    <td><%= val[:description].html_safe %></td>
+  </tr>
+  <% end %>
+</table>
+<br>
 
 <%= render partial: 'comments/advanced_search/help' %>
+
 <%= render partial: 'help/case_and_wildcards_search' %>
 

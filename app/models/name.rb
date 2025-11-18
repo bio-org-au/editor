@@ -110,8 +110,6 @@ class Name < ApplicationRecord
   include NameEnterable
   include Name::Loadable
 
-  strip_attributes
-
   attr_accessor :display_as,
                 :give_me_focus,
                 :change_category_name_to

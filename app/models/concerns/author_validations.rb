@@ -44,7 +44,7 @@ module AuthorValidations
                            allow_blank: true,
                            message: "and master cannot be the same record"
     validate :master_has_abbrev_if_needed, on: :update
-    validates :full_name, length: { maximum: 255,
+    validates :extra_information, length: { maximum: 255,
                                  too_long: "- %{count} characters is the maximum allowed" }
     validates :notes, length: { maximum: 1000,
                                 too_long: "- %{count} characters is the maximum allowed" }

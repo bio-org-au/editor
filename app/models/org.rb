@@ -37,8 +37,7 @@
 #  org_abbrev_key  (abbrev) UNIQUE
 #  org_name_key    (name) UNIQUE
 #
-class Org < ActiveRecord::Base
-  strip_attributes
+class Org < ApplicationRecord
   self.table_name = "org"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

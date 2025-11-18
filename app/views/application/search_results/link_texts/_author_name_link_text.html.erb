@@ -1,5 +1,5 @@
-<% if search_result.full_name.present? %>
-  <%= "#{search_result.name} (#{search_result.full_name})" %>
+<% if search_result.extra_information.present? %>
+  <%= "#{search_result.name} (#{search_result.extra_information})" %>
 <% else %>
   <%= "#{search_result.name}" %>
 <% end %>

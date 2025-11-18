@@ -47,7 +47,7 @@
 #  fk_p3lpayfbl9s3hshhoycfj82b9  (name_group_id => name_group.id)
 #  fk_r67um91pujyfrx7h1cifs3cmb  (parent_rank_id => name_rank.id)
 #
-class NameRank < ActiveRecord::Base
+class NameRank < ApplicationRecord
   self.table_name = "name_rank"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

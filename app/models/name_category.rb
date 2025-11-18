@@ -47,7 +47,7 @@
 #  name_category_rdfid           (rdf_id)
 #  uk_rxqxoenedjdjyd4x7c98s59io  (name) UNIQUE
 #
-class NameCategory < ActiveRecord::Base
+class NameCategory < ApplicationRecord
   self.table_name = "name_category"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

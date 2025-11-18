@@ -43,6 +43,11 @@ class Loader::Name::Match::AsTypeahead::ForIntendedTreeParentInstance
 
   # Select on full name
   # Show full name and name status (unless 'legitimate')
+  # CodeQL on github alerts to this query, in particular to the use of 
+  # prepared_search_term to pass param value into the query - but the code 
+  # follows the Rails guide technique for passing values into a query via 
+  # a placeholder in a way that specifically counters SQL Injection.
+  # I will dismiss the alert.
   def core_query
     Name.joins(:name_rank)
         .joins(:name_status)

@@ -29,7 +29,7 @@
 #  name             :string(255)      not null
 #  sort_order       :integer          default(0), not null
 #
-class DistRegion < ActiveRecord::Base
+class DistRegion < ApplicationRecord
   self.table_name = "dist_region"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

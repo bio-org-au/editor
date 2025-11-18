@@ -1,3 +1,119 @@
+- :date: 14-Nov-2025
+  :jira_id: '3377'
+  :description: |-
+    Author delete: Delete button not offered if any comments; list dependents when they prevent delete
+- :date: 14-Nov-2025
+  :jira_id: '969'
+  :description: |-
+    Reference details: Remove trial clipboard copy feature from title and/or parent title.
+- :date: 13-Nov-2025
+  :jira_id: '1619'
+  :description: |-
+    Instance display: Avoid displaying "legitimate" name status for misapplied cross-references
+- :date: 13-Nov-2025
+  :jira_id: '535'
+  :description: |-
+    Source search: Fix typos, make query help consistent for Name and Reference, add <code>source-id-string</code> directive for Names
+- :date: 12-Nov-2025
+  :jira_id: '157'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup retrieval of product with selected context in name tab
+- :date: 12-Nov-2025
+  :jira_id: '1724'
+  :description: |-
+    Name search: Add directive <code>isonym-has-early-secondary</code>
+- :date: 12-Nov-2025
+  :jira_id: '475'
+  :description: |-
+    Synonymy: Names typeahead now sorts first by rank
+- :date: 11-Nov-2025
+  :jira_id: '1841'
+  :description: |-
+    Author edit: Add formatting example under the name field
+- :date: 11-Nov-2025
+  :jira_id: '969'
+  :description: |-
+    Reference details: Add clipboard copy for title and/or parent title.
+- :date: 11-Nov-2025
+  :jira_id: '5620'
+  :description: |-
+    Instance search: Add directives <code>ref-id</code> and <code>parent-ref-id</code>
+- :date: 11-Nov-2025
+  :jira_id: '1315'
+  :description: |-
+    Name search: Add directive <code>has-basionym-but-no-base-author</code>
+- :date: 10-Nov-2025
+  :jira_id: '535'
+  :description: |-
+    Reference search: Add directives for <code>source-system</code>, <code>source-id</code>, and <code>source-id-string</code>
+- :date: 10-Nov-2025
+  :jira_id: '144'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Set default product context if missing upon login
+- :date: 10-Nov-2025
+  :jira_id: '144'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Integrate default context service objects into product role controller actions
+- :date: 07-Nov-2025
+  :jira_id: '1084'
+  :description: |-
+    Author extra information: Switch from <code>full_name</code> to new <code>extra_information</code> field - updated query help too
+- :date: 07-Nov-2025
+  :jira_id: '144'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Service object to handle setting default product context for user when user product role is removed
+- :date: 07-Nov-2025
+  :jira_id: '967'
+  :description: |-
+    Author typeaheads: Add extra information to Name Author typeahead entries
+- :date: 06-Nov-2025
+  :jira_id: '5618'
+  :description: |-
+    Technical: Upgrade Bootstrap dropdown.js to latest patch (it makes our dropdown menus work)
+- :date: 06-Nov-2025
+  :jira_id: '144'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Service object to handle setting default product context for user when user product role is added
+- :date: 06-Nov-2025
+  :jira_id: '1206'
+  :description: |-
+    Instances search result records: added colon between citation and page
+- :date: 04-Nov-2025
+  :jira_id: '1574'
+  :description: |-
+    Technical: Remove user_queries code and help_topics code - not used, no impact on users
+- :date: 04-Nov-2025
+  :jira_id: '5615'
+  :description: |-
+    Technical: Remove the <code>exception_notifier</code> gem - no impact on users
+- :date: 03-Nov-2025
+  :jira_id: '1033'
+  :description: |-
+    Instance update: if you update an instance and try to remove the reference you now get an error message
+- :date: 03-Nov-2025
+  :jira_id: '826'
+  :description: |-
+    Technical: Models that inherited from <code>ActiveRecord::Base</code> now inherit from <code>ApplicationRecord</code>, and it calls <code>strip_attributes</code>
+- :date: 30-Oct-2025
+  :jira_id: '146'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Ability Permissions for profile-reference role
+- :date: 27-Oct-2025
+  :jira_id: '149'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Fixup the edit tab not showing for relationship instance when foa context is selected
+- :date: 27-Oct-2025
+  :jira_id: '148'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Enable tree workflow for trees with no tree.config value - second set of changes
 - :date: 27-Oct-2025
   :release: true
 - :date: 24-Oct-2025
@@ -20,7 +136,7 @@
 - :date: 21-Oct-2025
   :jira_id: '5200'
   :description: |-
-    Batch Loader: Add Force Delete button as an easier way to delete loader name records with dependents 
+    Batch Loader: Add Force Delete button as an easier way to delete loader name records with dependents
 - :date: 21-Oct-2025
   :jira_id: '5199'
   :description: |-

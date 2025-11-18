@@ -42,7 +42,7 @@
 #  fk_g4o6xditli5a0xrm6eqc6h9gw  (name_status_id => name_status.id)
 #  fk_swotu3c2gy1hp8f6ekvuo7s26  (name_group_id => name_group.id)
 #
-class NameStatus < ActiveRecord::Base
+class NameStatus < ApplicationRecord
   self.table_name = "name_status"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

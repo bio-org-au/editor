@@ -18,9 +18,7 @@
     <div class="form-group">
       <label for="name">Name</label>
       <%= f.text_field :name, class: 'form-control give-me-focus', title: "Enter author name", tabindex: increment_tab_index, autofocus: true %>
-      <% if @author.new_record? %>
-        <p class="help-block">e.g. Fischer, F.E.L. von, Meyer, C.A.A. von &amp; Ave-Lallelant, J.L.E.</p>
-      <% end %>
+      <p class="help-block">e.g. Fischer, F.E.L. von, Meyer, C.A.A. von &amp; Ave-Lallelant, J.L.E.</p>
     </div>
 
     <div class="form-group">
@@ -29,9 +27,9 @@
     </div>
 
     <div class="form-group">
-      <label for="full_name">Extra information to distinguish name</label>
-      <%= f.text_field :full_name, class: 'form-control', title: "Enter any optional information to distinguish this author from others with similar names.", tabindex: increment_tab_index %>
-      <p class="help-block">Will display in brackets beside the author's name.</p>
+      <label for="extra_information">Extra information to distinguish name</label>
+      <%= f.text_field :extra_information, class: 'form-control', title: "Enter any optional information to distinguish this author from others with similar names.", tabindex: increment_tab_index %>
+      <p class="help-block">Will display beside the author's name and in authority typeaheads.</p>
     </div>
 
     <div class="form-group">

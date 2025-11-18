@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader BatchReviewComment entity
-class Loader::Batch::Review::Comment < ActiveRecord::Base
+class Loader::Batch::Review::Comment < ApplicationRecord
   strip_attributes
   self.table_name = "batch_review_comment"
   self.primary_key = "id"

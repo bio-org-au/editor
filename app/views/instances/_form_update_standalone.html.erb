@@ -16,7 +16,7 @@
                             query_target: "name"),
                 title: "Name search for instances") %>
     <br>
-    appears in*
+    appears in<span class="red">*</span>
     <% if  @instance.update_reference_allowed? %>
             <% focus_taken = true %>
             <input id="instance-reference-typeahead"
@@ -24,6 +24,7 @@
                    class="typeahead form-control give-me-focus"
                    placeholder="Reference"
                    title="Enter a reference citation.  This is a reference typeahead - enter any fragments of the reference citation in any order to narrow the list."
+                   required="true"
                    tabindex="<%= increment_tab_index %>"
                    type="text" 
                    value="<%= @instance.reference.try('citation') %>"/>
@@ -34,7 +35,7 @@
       <%= show_field_as_linked_lookup('',@instance.reference,'citation', search_path(query_string: %Q(id:#{@instance.reference_id}),query_target: 'reference'),'to the reference') %>
     <% end %>
  
-    as a* 
+    as a<span class="red">*</span> 
     <br>
     <%= f.select(:instance_type_id, InstanceType.standalone_options,{include_blank: true},
                            {value: @instance.instance_type_id,data:{update_url: instance_path},

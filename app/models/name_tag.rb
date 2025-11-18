@@ -28,7 +28,7 @@
 #
 #  uk_o4su6hi7vh0yqs4c1dw0fsf1e  (name) UNIQUE
 #
-class NameTag < ActiveRecord::Base
+class NameTag < ApplicationRecord
   self.table_name = "name_tag"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

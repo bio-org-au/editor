@@ -4,6 +4,11 @@
   <%= render 'form' %>
 <% end %>
 
+<%= divider %>
 <% if can? :destroy, @author %>
-  <%= render 'delete_widgets' if @author.can_be_deleted? %>
+  <% if @author.can_be_deleted? %>
+    <%= render 'delete_widgets' %>
+  <% else %>
+    <%= render 'cannot_delete' %>
+  <% end %>
 <% end %>

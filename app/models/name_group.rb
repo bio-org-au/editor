@@ -31,7 +31,7 @@
 #  name_group_rdfid              (rdf_id)
 #  uk_5185nbyw5hkxqyyqgylfn2o6d  (name) UNIQUE
 #
-class NameGroup < ActiveRecord::Base
+class NameGroup < ApplicationRecord
   self.table_name = "name_group"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

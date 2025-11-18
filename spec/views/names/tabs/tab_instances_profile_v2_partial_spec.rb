@@ -5,15 +5,23 @@ RSpec.describe "names/tabs/_tab_instances_profile_v2.html.erb", type: :view do
   let(:user) { FactoryBot.create(:user) }
   let(:name) { FactoryBot.create(:name) }
   let(:instance) { FactoryBot.create(:instance, name: name) }
-  let(:product) { FactoryBot.create(:product, name: "FOA") }
+  let(:product) { FactoryBot.create(:product, name: "FOA", context_id: 1) }
+  let(:product_context_service) { instance_double(Products::ProductContextService) }
   let!(:language) { FactoryBot.create(:language, iso6391code: "en", iso6393code: "eng") }
   let!(:reference) { FactoryBot.create(:reference, language: language) }
   let!(:instance_type) { FactoryBot.create(:instance_type, name: "secondary reference") }
 
   before do
+    mock_service = product_context_service
+    context_id = product.context_id
+
+    view.define_singleton_method(:product_context_service) { mock_service }
+    view.define_singleton_method(:current_context_id) { context_id }
+
+    allow(product_context_service).to receive(:product_with_context).with(product.context_id).and_return(product)
+
     allow(Product).to receive(:find_by).with(name: product.name).and_return(product)
     allow(product).to receive(:reference).and_return(reference)
-    allow(user).to receive(:available_product_from_roles).and_return(product)
 
     assign(:current_user, session_user)
     assign(:current_registered_user, user)

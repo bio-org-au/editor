@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader Name entity
-class Loader::Name < ActiveRecord::Base
+class Loader::Name < ApplicationRecord
   include PreferredMatch
   include SortKeyBulkChanges
   include SortKey

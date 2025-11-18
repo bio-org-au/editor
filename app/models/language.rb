@@ -32,7 +32,7 @@
 #  uk_hghw87nl0ho38f166atlpw2hy  (iso6391code) UNIQUE
 #  uk_rpsahneqboogcki6p1bpygsua  (iso6393code) UNIQUE
 #
-class Language < ActiveRecord::Base
+class Language < ApplicationRecord
   self.table_name = "language"
   self.primary_key = "id"
   has_many :references

@@ -338,6 +338,8 @@
   <% [
       {field_name: 'possibly-malformed:', description: "search for names attached to a genus that don't start with the genus name - they might be malformed"},
       {field_name: 'bad-name-path:', description: "search for names that have a malformed name-path i.e. based on comparison with its parent's name-path"},
+      {field_name: 'has-basionym-but-no-base-author:', description: "search for names that have a basionym in synonymy but no base author entry"},
+      {field_name: 'isonym-has-early-secondary:', description: "search for names with status isonym who's earliest citation is from a secondary reference"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -379,12 +381,14 @@
 
 <%= render partial: 'comments/advanced_search/help' %>
 <%= render partial: 'help/id_search_help' %>
-<h5>Source</h5>
+<h5>Source of migrated records</h5>
 <p>Useful for records imported from other systems where the source details have been retained.</p>
+<p>When the data exists for a record it is displayed at the bottom of the Details tab as "Migrated from source-system #source-id".</p>
 <table class="table table-striped">
   <% [
-      {field_name: 'source-id:', description: "query the original ID of names loaded from other systems e.g. old APNI;  expects one ID or several comma separated IDs; source IDs are displayed at the bottom of the Name Details tab"},
-      {field_name: 'source-sytem:', description: "query the original source system of names loaded from other systems - the system identifier is displayed at the bottom of the Name Details tab; case-insensitive, takes a wildcard; useful when data has been imported from multiple systems"},
+      {field_name: 'source-id:', description: "numeric ID of the source record, needs an argument, takes multiple arguments, no wildcards because it's numeric"},
+      {field_name: 'source-system:', description: "source system shown at bottom of Details tab, case-insensitive, needs an argument, takes only one argument, allows wildcards"},
+      {field_name: 'source-id-string:', description: "numeric ID as a string - so it takes wildcards and has a wildcard added to the tail, needs an argument"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent"><a href="javascript:void(0)" 

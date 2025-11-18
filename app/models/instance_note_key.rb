@@ -33,7 +33,7 @@
 #  instance_note_key_rdfid       (rdf_id)
 #  uk_a0justk7c77bb64o6u1riyrlh  (name) UNIQUE
 #
-class InstanceNoteKey < ActiveRecord::Base
+class InstanceNoteKey < ApplicationRecord
   self.table_name = "instance_note_key"
   self.primary_key = "id"
   APC_DIST = "APC Dist."

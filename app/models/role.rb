@@ -18,8 +18,7 @@
 #
 #  role_unique_name  (name) UNIQUE
 #
-class Role < ActiveRecord::Base
-  strip_attributes
+class Role < ApplicationRecord
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
   has_many :product_roles, class_name: "Product::Role"

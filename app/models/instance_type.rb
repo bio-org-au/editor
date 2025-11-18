@@ -50,7 +50,7 @@
 #  instance_type_rdfid           (rdf_id)
 #  uk_j5337m9qdlirvd49v4h11t1lk  (name) UNIQUE
 #
-class InstanceType < ActiveRecord::Base
+class InstanceType < ApplicationRecord
   self.table_name = "instance_type"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

@@ -9,9 +9,10 @@
       {field_name: 'name-exact:', description: "name, supply your own wildcards *"},
       {field_name: 'abbrev:', description: "abbreviation, with leading and trailing wildcards added automatically *"},
       {field_name: 'abbrev-exact:', description: "abbreviation, supply your own wildcards *"},
-      {field_name: 'full-name:', description: "fully qualified author name or additional identifying information, leading and trailing wildcards added automatically *"},
-      {field_name: 'full-name-exact:', description: "fully qualified author name or additional identifying information, supply your own wildcards *"},
+      {field_name: 'extra-information:', description: "extra identifying information, leading and trailing wildcards added automatically *"},
+      {field_name: 'extra-information-exact:', description: "extra identifying information, supply your own wildcards *"},
       {field_name: 'notes:', description: "search on notes, add your own wildcards *"},
+      {field_name: 'duplicate-of-id:', description: "ID of the master record for records marked as a duplicate"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

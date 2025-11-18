@@ -33,7 +33,7 @@
 #  upr_product_role_fk  (product_role_id => product_role.id)
 #  upr_users_fk         (user_id => users.id)
 #
-class User::ProductRole < ActiveRecord::Base
+class User::ProductRole < ApplicationRecord
   strip_attributes
   self.table_name = "user_product_role"
   self.primary_key = %i[user_id product_role_id]

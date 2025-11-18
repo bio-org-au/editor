@@ -7,7 +7,7 @@
 #  abbrev           :string(100)
 #  created_by       :string(255)      not null
 #  date_range       :string(50)
-#  full_name        :string(255)
+#  full_name        :string(255)                            DEPRECATED Use extra_information
 #  lock_version     :bigint           default(0), not null
 #  name             :string(1000)
 #  notes            :string(1000)
@@ -22,6 +22,7 @@
 #  ipni_id          :string(50)
 #  namespace_id     :bigint           not null
 #  source_id        :bigint
+#  extra_information  :string(255)
 #
 # Indexes
 #
@@ -265,23 +266,23 @@ muller_f_with_umlaut:
   <<: *DEFAULTS
   name: Müller, F.
   abbrev: Fr.Müll.
-  full_name: Müller, Fritz (fl. 1901)
+  extra_information: Müller, Fritz (fl. 1901)
 
 accent_grave_cedilla_etc:
   <<: *DEFAULTS
   name: éàç
   abbrev: éàç
-  full_name: éàç
+  extra_information: éàç
 
 stanley:
   <<: *DEFAULTS
   name: stanley
-  full_name: stanley
+  extra_information: stanley
 
 stanley_and_ross:
   <<: *DEFAULTS
   name: Stanley & Ross
-  full_name: 
+  extra_information: 
 
 cav:
   <<: *DEFAULTS

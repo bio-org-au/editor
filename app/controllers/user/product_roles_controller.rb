@@ -27,21 +27,30 @@
 class User::ProductRolesController < ApplicationController
   before_action :find_upr, only: %i[destroy]
 
-  # POST 
+  # POST
   def create
-    @upr = User::ProductRole.create(user_product_role_params, current_user.username)
-  rescue StandardError => e
-    @error = e.to_s
-    logger.error("User::ProductRolesController#create:rescuing exception #{@error}")
-    render "create_error", status: :unprocessable_content
+    service = Users::ProductRoles::CreateService.call(
+      user_id: user_product_role_params[:user_id],
+      product_role_id: user_product_role_params[:product_role_id],
+      username: current_user.username
+    )
+
+    if service.errors.present?
+      @error = service.errors.full_messages.join(", ")
+      logger.error("User::ProductRolesController#create error: #{@error}")
+      render "create_error", status: :unprocessable_content
+    else
+      @upr = service.user_product_role
+    end
   end
 
   def destroy
-    @upr.destroy
-  rescue StandardError => e
-    @error = e.to_s
-    logger.error("User::ProductRolesController#destroy:rescuing exception #{@error}")
-    render "destroy_error", status: :unprocessable_content
+    service = Users::ProductRoles::DestroyService.call(user_product_role: @upr)
+    if service.errors.present?
+      @error = service.errors.full_messages.join(", ")
+      logger.error("User::ProductRolesController#destroy error: #{@error}")
+      render "destroy_error", status: :unprocessable_content
+    end
   end
 
   def choose_product_for_role

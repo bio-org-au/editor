@@ -39,7 +39,7 @@ class InstancesController < ApplicationController
       @tree_version_element = @working_draft.name_in_version(@instance.name)
       @parent_tve = find_a_parent(@instance.name)
     end
-    @accepted_tve = @instance.name.accepted_tree_version_element
+    @accepted_tve = @working_draft&.tree&.accepted_tree? && @instance.name.accepted_tree_version_element
     @take_focus = params[:take_focus] == "true"
     render("show", layout: false)
   end
@@ -283,7 +283,7 @@ class InstancesController < ApplicationController
       offer << "tab_synonymy"
       offer << "tab_synonymy_for_profile_v2" if @instance.draft? && @instance.secondary_reference?
       offer << "tab_classification"
-      offer << "tab_profile_details" if @instance.profile?
+      offer << "tab_profile_details" if @instance.profile? && @working_draft.present? && @working_draft.tree.config.present?
       offer << "tab_edit_profile" if @instance.profile? && @instance.show_taxo?
       offer << "tab_profile_v2"
     end

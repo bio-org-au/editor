@@ -37,7 +37,6 @@
 #  product_tree_id_fkey       (tree_id => tree.id)
 #
 class Product < ApplicationRecord
-  strip_attributes
   self.table_name = "product"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

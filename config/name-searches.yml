@@ -43,6 +43,13 @@
   :where_clause: " sanctioning_author_id is null"
 'has-no-authors:':
   :where_clause: " author_id is null and base_author_id is null and ex_author_id is null and ex_base_author_id is null and sanctioning_author_id is null"
+'has-basionym-but-no-base-author:':
+  :where_clause: " base_author_id is null and id in (select i.name_id
+                                                       from instance i
+                                                       join instance_type it on i.instance_type_id = it.id
+                                                       join instance syn on i.id = syn.cited_by_id
+                                                       join instance_type syntype on syn.instance_type_id = syntype.id
+                                                       where syntype.name = 'basionym')"
 'is-a-child:':
   :where_clause: " parent_id is not null"
 'is-not-a-child:':
@@ -106,13 +113,15 @@ from comment where comment.name_id = name.id)"
   :where_clause: " id = ? "
   :allow_common_and_cultivar: true
   :multiple_values_where_clause: " id in (?)"
+'source-system:':
+  :where_clause: 'lower(source_system) like ?'
 'source-id:':
   :multiple_values: true
   :where_clause: " source_id = ? "
   :allow_common_and_cultivar: true
   :multiple_values_where_clause: " source_id in (?)"
-'source-system:':
-  :where_clause: 'lower(source_system) like ?'
+'source-id-string:':
+  :where_clause: "lower(source_id_string) like ?||'%'"
 'author-id:':
   :where_clause: 'author_id = ? '
 'base-author-id:':
@@ -802,5 +811,30 @@ FROM
    and child.simple_name not like parent.simple_name || '%')"
 'parent-different-to-family:':
   :where_clause: 'name.id in (select id from name where parent_id != family_id)'
-
+'isonym-has-early-secondary:':
+  :takes_no_arg: true,
+  :where_clause: "name.id in (
+select instance.name_id
+  from instance
+  join instance_type itype
+    on instance.instance_type_id = itype.id
+  join reference r
+    on instance.reference_id = r.id
+ where instance.cites_id is null
+   and itype.name = 'secondary reference'
+   and r.iso_publication_date = (
+    select min(iso_publication_date)
+      from reference ir
+           join instance ii
+        on ir.id = ii.reference_id
+     where ii.name_id = instance.name_id
+       and ii.cites_id is null
+  )
+   and instance.name_id in (
+    select n.id
+      from name n
+      join name_status ns
+        on n.name_status_id = ns.id
+ where ns.name            = 'isonym'
+       ))"
 

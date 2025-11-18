@@ -26,7 +26,7 @@
 #  abbrev           :string(100)
 #  created_by       :string(255)      not null
 #  date_range       :string(50)
-#  full_name        :string(255)
+#  full_name        :string(255)                               DEPRECATED - Use extra_information
 #  lock_version     :bigint           default(0), not null
 #  name             :string(1000)
 #  notes            :string(1000)
@@ -41,6 +41,7 @@
 #  ipni_id          :string(50)
 #  namespace_id     :bigint           not null
 #  source_id        :bigint
+#  extra_information  :bigint
 #
 # Indexes
 #
@@ -57,11 +58,10 @@
 #  fk_6a4p11f1bt171w09oo06m0wag  (duplicate_of_id => author.id)
 #  fk_p0ysrub11cm08xnhrbrfrvudh  (namespace_id => namespace.id)
 #
-class Author < ActiveRecord::Base
+class Author < ApplicationRecord
   include AuditScopable
   include AuthorValidations
   include AuthorScopes
-  strip_attributes
   self.table_name = "author"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -174,7 +174,8 @@ class Author < ActiveRecord::Base
     references.size.zero? &&
       duplicates.size.zero? &&
       names.size.zero? &&
-      no_other_authored_names?
+      no_other_authored_names? &&
+      comments.size.zero?
   end
 
   def no_other_authored_names?

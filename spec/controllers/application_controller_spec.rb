@@ -51,6 +51,7 @@ RSpec.describe ApplicationController, type: :controller do
 
       it 'sets the current_user and current_registered_user' do
         allow(controller).to receive(:current_product_from_context).and_return(nil)
+        allow(controller).to receive(:set_default_product_context_if_missing)
 
         controller.send(:continue_user_session)
 
@@ -58,10 +59,18 @@ RSpec.describe ApplicationController, type: :controller do
         expect(controller.instance_variable_get(:@current_registered_user)).to eq(user)
       end
 
+      it 'calls set_default_product_context_if_missing' do
+        allow(controller).to receive(:current_product_from_context).and_return(nil)
+        expect(controller).to receive(:set_default_product_context_if_missing)
+
+        controller.send(:continue_user_session)
+      end
+
       context 'when current_product_from_context is present' do
         before do
           session[:current_context_id] = 1
           allow(product_context_service).to receive(:product_with_context).with(1).and_return(product)
+          allow(controller).to receive(:set_default_product_context_if_missing)
         end
 
         it 'calls set_current_product_from_context on current_user' do
@@ -74,6 +83,7 @@ RSpec.describe ApplicationController, type: :controller do
       context 'when current_product_from_context is nil' do
         before do
           session[:current_context_id] = nil
+          allow(controller).to receive(:set_default_product_context_if_missing)
         end
 
         it 'does not call set_current_product_from_context' do
@@ -132,8 +142,42 @@ RSpec.describe ApplicationController, type: :controller do
       allow(user).to receive(:available_products_from_roles).and_return(products)
     end
 
-    context 'when called for the first time' do
-      it 'creates a new ProductTabService instance' do
+    context 'when current_context_id is present' do
+      before do
+        session[:current_context_id] = 42
+      end
+
+      it 'calls ProductTabService.for_context with the context_id' do
+        expect(Products::ProductTabService).to receive(:for_context)
+          .with(42)
+          .and_return(product_tab_service_instance)
+
+        result = controller.send(:product_tab_service)
+        expect(result).to eq(product_tab_service_instance)
+      end
+
+      it 'memoizes the service instance' do
+        allow(Products::ProductTabService).to receive(:for_context)
+          .with(42)
+          .and_return(product_tab_service_instance)
+
+        first_result = controller.send(:product_tab_service)
+
+        expect(Products::ProductTabService).not_to receive(:for_context)
+        second_result = controller.send(:product_tab_service)
+
+        expect(first_result).to eq(second_result)
+        expect(first_result).to eq(product_tab_service_instance)
+      end
+    end
+
+    context 'when current_context_id is nil' do
+      before do
+        session[:current_context_id] = nil
+        allow(user).to receive(:default_product_context_id).and_return(nil)
+      end
+
+      it 'creates a new ProductTabService instance with products' do
         expect(Products::ProductTabService).to receive(:call)
           .with(products)
           .and_return(product_tab_service_instance)
@@ -160,6 +204,11 @@ RSpec.describe ApplicationController, type: :controller do
     context 'when current_registered_user has no products' do
       let(:products) { [] }
 
+      before do
+        session[:current_context_id] = nil
+        allow(user).to receive(:default_product_context_id).and_return(nil)
+      end
+
       it 'passes empty array to ProductTabService' do
         expect(Products::ProductTabService).to receive(:call)
           .with([])
@@ -174,6 +223,11 @@ RSpec.describe ApplicationController, type: :controller do
       let(:product2) { instance_double('Product') }
       let(:products) { [product1, product2] }
 
+      before do
+        session[:current_context_id] = nil
+        allow(user).to receive(:default_product_context_id).and_return(nil)
+      end
+
       it 'passes all products to ProductTabService' do
         expect(Products::ProductTabService).to receive(:call)
           .with([product1, product2])
@@ -185,23 +239,79 @@ RSpec.describe ApplicationController, type: :controller do
   end
 
   describe "#current_context_id" do
-    it "returns the current context ID from the session" do
-      session[:current_context_id] = 42
-      expect(controller.send(:current_context_id)).to eq(42)
+    context "when session has current_context_id" do
+      it "returns the current context ID from the session" do
+        session[:current_context_id] = 42
+        expect(controller.send(:current_context_id)).to eq(42)
+      end
+
+      it "prioritizes session value over user default" do
+        session[:current_context_id] = 42
+        allow(user).to receive(:default_product_context_id).and_return(99)
+        expect(controller.send(:current_context_id)).to eq(42)
+      end
+    end
+
+    context "when session current_context_id is nil" do
+      it "returns the user's default_product_context_id" do
+        session[:current_context_id] = nil
+        allow(user).to receive(:default_product_context_id).and_return(99)
+        expect(controller.send(:current_context_id)).to eq(99)
+      end
+
+      it "returns nil when user has no default_product_context_id" do
+        session[:current_context_id] = nil
+        allow(user).to receive(:default_product_context_id).and_return(nil)
+        expect(controller.send(:current_context_id)).to be_nil
+      end
     end
   end
 
   describe "#current_context_name" do
-    it "returns the current context name from the session" do
-      session[:current_context_id] = 1
-      session[:current_context_name] = "Test Context"
-      expect(controller.send(:current_context_name)).to eq("Test Context")
+    context "when session has current_context_name" do
+      it "returns the current context name from the session" do
+        session[:current_context_id] = 1
+        session[:current_context_name] = "Test Context"
+        expect(controller.send(:current_context_name)).to eq("Test Context")
+      end
     end
 
-    context "when no context is selected" do
-      it "returns 'No Context Selected'" do
+    context "when session context_name is nil but product from context exists" do
+      let(:product) { instance_double('Product', name: 'APNI Context') }
+
+      before do
         session[:current_context_id] = 1
         session[:current_context_name] = nil
+        allow(controller).to receive(:current_product_from_context).and_return(product)
+      end
+
+      it "returns the product name from context" do
+        expect(controller.send(:current_context_name)).to eq("APNI Context")
+      end
+    end
+
+    context "when product from context exists but name is nil" do
+      let(:product) { instance_double('Product', name: nil) }
+
+      before do
+        session[:current_context_id] = 1
+        session[:current_context_name] = nil
+        allow(controller).to receive(:current_product_from_context).and_return(product)
+      end
+
+      it "falls back to 'No Context Selected'" do
+        expect(controller.send(:current_context_name)).to eq("No Context Selected")
+      end
+    end
+
+    context "when current_product_from_context is nil" do
+      before do
+        session[:current_context_id] = 1
+        session[:current_context_name] = nil
+        allow(controller).to receive(:current_product_from_context).and_return(nil)
+      end
+
+      it "returns 'No Context Selected'" do
         expect(controller.send(:current_context_name)).to eq("No Context Selected")
       end
     end
@@ -242,6 +352,190 @@ RSpec.describe ApplicationController, type: :controller do
 
         result = controller.send(:current_product_from_context)
         expect(result).to eq(product)
+      end
+    end
+  end
+
+  describe "#set_default_product_context_if_missing" do
+    before do
+      allow(Rails.configuration).to receive(:multi_product_tabs_enabled).and_return(true)
+    end
+
+    context "when user already has a default_product_context_id" do
+      before do
+        allow(user).to receive(:default_product_context_id).and_return(42)
+      end
+
+      it "returns early without making changes" do
+        expect(user).not_to receive(:default_product_context_id=)
+        expect(user).not_to receive(:save)
+
+        controller.send(:set_default_product_context_if_missing)
+
+        expect(session[:current_context_id]).to be_nil
+        expect(session[:current_context_name]).to be_nil
+      end
+    end
+
+    context "when user has no default context" do
+      before do
+        allow(user).to receive(:default_product_context_id).and_return(nil)
+      end
+
+      context "and has available products" do
+        let(:product1) { instance_double('Product', context_id: 100, name: 'APNI') }
+        let(:products) { [product1] }
+
+        before do
+          allow(user).to receive(:available_products_from_roles).and_return(products)
+          allow(user).to receive(:default_product_context_id=)
+          allow(user).to receive(:save).and_return(true)
+        end
+
+        it "sets user's default_product_context_id to first product's context_id" do
+          expect(user).to receive(:default_product_context_id=).with(100)
+
+          controller.send(:set_default_product_context_if_missing)
+        end
+
+        it "saves the user" do
+          expect(user).to receive(:save)
+
+          controller.send(:set_default_product_context_if_missing)
+        end
+
+        it "sets session[:current_context_id] to product's context_id" do
+          controller.send(:set_default_product_context_if_missing)
+
+          expect(session[:current_context_id]).to eq(100)
+        end
+
+        it "sets session[:current_context_name] to product's name" do
+          controller.send(:set_default_product_context_if_missing)
+
+          expect(session[:current_context_name]).to eq('APNI')
+        end
+      end
+
+      context "and save fails" do
+        let(:product1) { instance_double('Product', context_id: 100, name: 'APNI') }
+        let(:products) { [product1] }
+        let(:errors) { instance_double('ActiveModel::Errors') }
+
+        before do
+          allow(user).to receive(:available_products_from_roles).and_return(products)
+          allow(user).to receive(:default_product_context_id=)
+          allow(user).to receive(:save).and_return(false)
+          allow(user).to receive(:user_name).and_return('test_user')
+          allow(user).to receive(:errors).and_return(errors)
+          allow(errors).to receive(:full_messages).and_return(['Validation failed'])
+        end
+
+        it "logs error messages with username and validation errors" do
+          expect(Rails.logger).to receive(:error).with("Could not save default product context for user test_user")
+          expect(Rails.logger).to receive(:error).with("Error: Validation failed")
+
+          controller.send(:set_default_product_context_if_missing)
+        end
+
+        it "does not set session[:current_context_id]" do
+          allow(Rails.logger).to receive(:error)
+
+          controller.send(:set_default_product_context_if_missing)
+
+          expect(session[:current_context_id]).to be_nil
+        end
+
+        it "does not set session[:current_context_name]" do
+          allow(Rails.logger).to receive(:error)
+
+          controller.send(:set_default_product_context_if_missing)
+
+          expect(session[:current_context_name]).to be_nil
+        end
+
+        it "attempts to set user's default_product_context_id before saving" do
+          allow(Rails.logger).to receive(:error)
+          expect(user).to receive(:default_product_context_id=).with(100)
+
+          controller.send(:set_default_product_context_if_missing)
+        end
+
+        it "attempts to save the user" do
+          allow(Rails.logger).to receive(:error)
+          expect(user).to receive(:save).and_return(false)
+
+          controller.send(:set_default_product_context_if_missing)
+        end
+      end
+
+      context "and has multiple available products" do
+        let(:product1) { instance_double('Product', context_id: 100, name: 'APNI') }
+        let(:product2) { instance_double('Product', context_id: 200, name: 'APC') }
+        let(:products) { [product1, product2] }
+
+        before do
+          allow(user).to receive(:available_products_from_roles).and_return(products)
+          allow(user).to receive(:default_product_context_id=)
+          allow(user).to receive(:save).and_return(true)
+        end
+
+        it "uses the first product" do
+          expect(user).to receive(:default_product_context_id=).with(100)
+
+          controller.send(:set_default_product_context_if_missing)
+
+          expect(session[:current_context_id]).to eq(100)
+          expect(session[:current_context_name]).to eq('APNI')
+        end
+      end
+
+      context "and has no available products (empty array)" do
+        before do
+          allow(user).to receive(:available_products_from_roles).and_return([])
+        end
+
+        it "returns early without making changes" do
+          expect(user).not_to receive(:default_product_context_id=)
+          expect(user).not_to receive(:save)
+
+          controller.send(:set_default_product_context_if_missing)
+
+          expect(session[:current_context_id]).to be_nil
+          expect(session[:current_context_name]).to be_nil
+        end
+      end
+
+      context "and available_products_from_roles returns nil" do
+        before do
+          allow(user).to receive(:available_products_from_roles).and_return(nil)
+        end
+
+        it "returns early without making changes" do
+          expect(user).not_to receive(:default_product_context_id=)
+          expect(user).not_to receive(:save)
+
+          controller.send(:set_default_product_context_if_missing)
+
+          expect(session[:current_context_id]).to be_nil
+          expect(session[:current_context_name]).to be_nil
+        end
+      end
+    end
+
+    context "when multi_product_tabs_enabled is false" do
+      before do
+        allow(Rails.configuration).to receive(:multi_product_tabs_enabled).and_return(false)
+      end
+
+      it "returns early without making changes" do
+        expect(user).not_to receive(:default_product_context_id=)
+        expect(user).not_to receive(:save)
+
+        controller.send(:set_default_product_context_if_missing)
+
+        expect(session[:current_context_id]).to be_nil
+        expect(session[:current_context_name]).to be_nil
       end
     end
   end

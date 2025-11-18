@@ -19,7 +19,9 @@
     tabindex="<%= increment_tab_index %>">
       <%= search_result.instance_type.of_label %>
       <%= "<b>#{search_result.this_is_cited_by.name.full_name}</b>".html_safe %>
-      <%= "[#{search_result.this_is_cited_by.name.name_status.name}]" unless search_result.this_is_cited_by.name.name_status.blank? %>
+      <% unless search_result.this_is_cited_by.name.name_status.name_for_instance_display.blank? %>
+      <%= "[#{search_result.this_is_cited_by.name.name_status.name_for_instance_display}]" %>
+      <% end %>
       by
       <%= "#{search_result.this_cites.try('reference').try('citation')}" %>
       <%= "#{search_result.page}" %>

@@ -73,13 +73,12 @@
 #  fk_o80rrtl8xwy4l3kqrt9qv0mnt  (instance_type_id => instance_type.id)
 #  fk_pr2f6peqhnx9rjiwkr5jgc5be  (cited_by_id => instance.id)
 #
-class Instance < ActiveRecord::Base
+class Instance < ApplicationRecord
   include ActionView::Helpers::TextHelper
   include InstanceTreeable
   include InstanceInTaxonomy
   include Instance::ForCopyToLoaderName
 
-  strip_attributes
   self.table_name = "instance"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

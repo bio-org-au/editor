@@ -31,7 +31,7 @@
 #  ref_author_role_rdfid         (rdf_id)
 #  uk_l95kedbafybjpp3h53x8o9fke  (name) UNIQUE
 #
-class RefAuthorRole < ActiveRecord::Base
+class RefAuthorRole < ApplicationRecord
   self.table_name = "ref_author_role"
   self.primary_key = "id"
   has_many :references

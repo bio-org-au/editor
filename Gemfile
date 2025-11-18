@@ -95,7 +95,6 @@ gem "pg_search"
 gem "strip_attributes"
 gem "sucker_punch"
 
-gem "exception_notification"
 gem "kramdown", ">= 2.3.0"
 gem "nokogiri", ">= 1.18.9"
 gem "rack", ">= 3.2.2"

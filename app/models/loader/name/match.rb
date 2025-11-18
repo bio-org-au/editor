@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader Name entity
-class Loader::Name::Match < ActiveRecord::Base
+class Loader::Name::Match < ApplicationRecord
   strip_attributes
   self.table_name = "loader_name_match"
   self.primary_key = "id"

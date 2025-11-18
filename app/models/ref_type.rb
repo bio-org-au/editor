@@ -38,7 +38,7 @@
 #
 #  fk_51alfoe7eobwh60yfx45y22ay  (parent_id => ref_type.id)
 #
-class RefType < ActiveRecord::Base
+class RefType < ApplicationRecord
   self.table_name = "ref_type"
   self.primary_key = "id"
 

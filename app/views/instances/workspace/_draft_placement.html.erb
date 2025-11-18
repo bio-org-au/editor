@@ -2,8 +2,10 @@
   <h5>Edit placement:
     <%= render partial: "instances/workspace/widgets/placement_indicator", locals: {tree_version_element: @tree_version_element} %>
   </h5>
-  <p>All operations on this tab change the selected draft tree.
-  <br>Use the Edit Profile tab to make immediate changes to the published tree.</p>
+  <p>All operations on this tab change the working draft tree version.
+  <% if @working_draft.present? && @working_draft.tree.holds_profile_data? %>
+    <br>Use the Edit Profile tab to make immediate changes to the published tree.</p>
+  <% end %>
   <% if @accepted_tve && @accepted_tve&.tree_element_id != @tree_version_element.tree_element_id %>
     (changed from <%= @accepted_tve&.tree_version&.tree&.name %>)
   <% end %>
@@ -25,34 +27,37 @@
     </dd>
     <div id="tree_excluded_message" class="message-container inline hidden"></div>
 
-    <dt><%= @tree_version_element.comment_key %></dt>
-    <dd>
-      <div>
-        <%= form_tag({controller: 'trees', action: 'update_comment'}, {method: :post, remote: true}) do %>
-          <%= hidden_field_tag("update_comment[element_link]", @tree_version_element.element_link) %>
-          <% if @tree_version_element.comment.blank? %>
-            <%= render partial: "trees/add_comment", locals: {tree_version_element: @tree_version_element} %>
+    <% if @working_draft.present? && @working_draft.tree.holds_profile_data? %>
+
+      <dt><%= @tree_version_element.comment_key %></dt>
+      <dd>
+        <div>
+          <%= form_tag({controller: 'trees', action: 'update_comment'}, {method: :post, remote: true}) do %>
+            <%= hidden_field_tag("update_comment[element_link]", @tree_version_element.element_link) %>
+            <% if @tree_version_element.comment.blank? %>
+              <%= render partial: "trees/add_comment", locals: {tree_version_element: @tree_version_element} %>
+            <% else %>
+              <%= render partial: "trees/update_comment", locals: {tree_version_element: @tree_version_element} %>
+            <% end %>
+          <% end %>
+        </div>
+        <div id="tree_comment_message" class="message-container inline hidden"></div>
+      </dd>
+  
+      <dt><%= @tree_version_element.distribution_key %></dt>
+      <dd><%= @tree_version_element.distribution %>
+        <%= form_tag({controller: 'trees', action: 'update_distribution'}, {method: :post, remote: true}) do %>
+          <%= hidden_field_tag("update_distribution[element_link]", @tree_version_element.element_link) %>
+          <% if @tree_version_element.distribution.blank? %>
+            <%= render partial: "trees/add_distribution", locals: {tree_version_element: @tree_version_element} %>
           <% else %>
-            <%= render partial: "trees/update_comment", locals: {tree_version_element: @tree_version_element} %>
+            <%= render partial: "trees/update_distribution", locals: {tree_version_element: @tree_version_element} %>
           <% end %>
         <% end %>
-      </div>
-      <div id="tree_comment_message" class="message-container inline hidden"></div>
-    </dd>
+        <div id="tree_distribution_message" class="message-container inline hidden"></div>
+      </dd>
 
-    <dt><%= @tree_version_element.distribution_key %></dt>
-    <dd><%= @tree_version_element.distribution %>
-      <%= form_tag({controller: 'trees', action: 'update_distribution'}, {method: :post, remote: true}) do %>
-        <%= hidden_field_tag("update_distribution[element_link]", @tree_version_element.element_link) %>
-        <% if @tree_version_element.distribution.blank? %>
-          <%= render partial: "trees/add_distribution", locals: {tree_version_element: @tree_version_element} %>
-        <% else %>
-          <%= render partial: "trees/update_distribution", locals: {tree_version_element: @tree_version_element} %>
-        <% end %>
-      <% end %>
-      <div id="tree_distribution_message" class="message-container inline hidden"></div>
-    </dd>
-
+    <% end %>
     <dt>Path</dt>
     <dd><%= @tree_version_element.name_path %></dd>
 

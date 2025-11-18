@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader Batch Stack query view
-class Loader::Batch::Stack < ActiveRecord::Base
+class Loader::Batch::Stack < ApplicationRecord
   strip_attributes
   self.table_name = "batch_stack_v"
 

@@ -1,4 +1,4 @@
-<% product = local_assigns[:product] || @current_registered_user.available_product_from_roles %>
+<% product = local_assigns[:product] || product_context_service.product_with_context(current_context_id) || @current_registered_user.available_product_from_roles %>
 
 <% if product.blank? || product.reference.blank? %>
   <div id="search-result-details-error-message-container" class="message-container">

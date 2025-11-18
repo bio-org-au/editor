@@ -296,6 +296,13 @@ where rb.sort_order >= (select sort_order from name_rank where name = 'Species')
                                    and exists (select null from reference parent
                                                 where ref.parent_id = parent.id
                                                   and lower(parent.citation) like lower(?) ))" },
+    "ref-id:" => { where_clause: " reference_id = ?" },
+    "parent-ref-id:" => { where_clause: "exists (select null
+                                 from reference ref
+                                 where instance.reference_id = ref.id
+                                   and exists (select null from reference parent
+                                                where ref.parent_id = parent.id
+                                                  and parent.id = ?))" },
     "draft:" => { where_clause: " draft " },
     "not-draft:" => { where_clause: " draft = false " },
     "syn-with-note:" => { where_clause: " id in (select id

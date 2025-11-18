@@ -47,7 +47,7 @@
 #  fk_10d0jlulq2woht49j5ccpeehu  (name_category_id => name_category.id)
 #  fk_5r3o78sgdbxsf525hmm3t44gv  (name_group_id => name_group.id)
 #
-class NameType < ActiveRecord::Base
+class NameType < ApplicationRecord
   self.table_name = "name_type"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

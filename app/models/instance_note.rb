@@ -48,7 +48,7 @@
 #  fk_f6s94njexmutjxjv8t5dy1ugt  (namespace_id => namespace.id)
 #  fk_he1t3ug0o7ollnk2jbqaouooa  (instance_note_key_id => instance_note_key.id)
 #
-class InstanceNote < ActiveRecord::Base
+class InstanceNote < ApplicationRecord
   belongs_to :namespace, class_name: "Namespace", foreign_key: "namespace_id", optional: true
   before_create :set_defaults
   self.table_name = "instance_note"

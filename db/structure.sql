@@ -1185,7 +1185,8 @@ CREATE TABLE public.author (
     updated_at timestamp with time zone NOT NULL,
     updated_by character varying(255) NOT NULL,
     valid_record boolean DEFAULT false NOT NULL,
-    uri text
+    uri text,
+    extra_information character varying(255)
 );
 
 
@@ -5050,7 +5051,8 @@ CREATE TABLE public.users (
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by character varying(50) DEFAULT USER NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_by character varying(50) DEFAULT USER NOT NULL
+    updated_by character varying(50) DEFAULT USER NOT NULL,
+    default_product_context_id int8 NULL
 );
 
 alter table public.users

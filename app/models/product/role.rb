@@ -39,7 +39,7 @@
 #  pr_product_fk  (product_id => product.id)
 #  pr_role_fk     (role_id => roles.id)
 #
-class Product::Role < ActiveRecord::Base
+class Product::Role < ApplicationRecord
   strip_attributes
   self.table_name = "product_role"
   self.primary_key = "id"

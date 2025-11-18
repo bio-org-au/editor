@@ -87,7 +87,7 @@
 #  fk_dm9y4p9xpsc8m7vljbohubl7x  (ref_type_id => ref_type.id)
 #  fk_p8lhsoo01164dsvvwxob0w3sp  (author_id => author.id)
 #
-class Reference < ActiveRecord::Base
+class Reference < ApplicationRecord
   include PgSearch::Model
   include AuditScopable
   include ReferenceAssociations
@@ -101,7 +101,6 @@ class Reference < ActiveRecord::Base
   self.table_name = "reference"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
-  strip_attributes
 
   attr_accessor :display_as, :message
 

@@ -62,7 +62,6 @@ FactoryBot.define do
     nomenclatural_status { "Sample Nomenclatural status" }
     page { "Sample Page" }
     page_qualifier { "Sample Page qualifier" }
-    reference_id { 1 }
     source_id_string { "Sample Source id string" }
     source_system { "Sample Source system" }
     updated_by { "Sample Updated by" }

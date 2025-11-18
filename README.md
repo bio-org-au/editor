@@ -2,16 +2,20 @@
 ---
 This is the names and taxonomy Editor for the NSL project, sometimes called the "NSL Editor".
 
+This document was last updated on 3 November 2025.
+
 ## Brief History of Versions
 
 The Editor was released in 2014 running on Rails 4.x and has been in use in the NSL project since then.
 
 This repository does not go back to that original version - it goes back several years to when the Editor was upgraded to Rails 6.
 
-The Editor was upgraded to Rails 7 in 2023.
+The Editor was upgraded to Rails 7 in 2023, then to Rails 8 in 2025.
 
 ### Note on repositories
-The original Rails 4.x app repository is now archived.  One unfortunate side-effect of starting a new repo for the Rails 6 upgrade was that contributions by others ended up in my (Greg Clarke's) name in the version 6.x app.  You also lose the history and context of the changes.  Neither of those results was my intention and it seemed like a good idea at a very frustrating time, so start with a clean Rails 6 application and copy in the controller, model, and view files, etc.  While most of the app going back to its origins in 2012 is down to me (GC), most of the "tree" ops were coded by others, especially Peter McNeil -- look at the archived v4.x app to find out more.
+The original Rails 4.x app repository is now archived on github.  One unfortunate side-effect of starting a new repo for the Rails 6 upgrade was that contributions by others ended up in my (Greg Clarke's) name in the version 6.x app.  You also lose the history and context of the changes.  Neither of those results was my intention at a very frustrating time when I started with a clean Rails 6 application and copied in the controller, model, and view files, etc.  
+
+While most of the app going back to its origins in 2012 is down to me (GC), most of the "tree" ops were coded by others, especially Peter McNeil -- look at the archived v4.x app to find out more.
 
 
 ## NSL
@@ -29,15 +33,24 @@ Currently running on Ruby 3.x
 ### Previously on JRuby
 Note, this app was originally developed, tested, and deployed in JRuby - from 2013-2022, running finally on `jruby-9.3.2.0` in 2022.
 
-In that year we moved to a C-Ruby deployment on AWS, so it is now developed, tested, and deployed in C-Ruby.
+In that year we moved to a C-Ruby deployment on AWS, so it is now developed, tested, and deployed in C-Ruby. Thanks to Daniel Cox from Blue Crystal for sorting that out!
 
 ## Postgresql database
 
-Developed against a Postgresql database, designed to by run as a low-privilege CRUD user.
+Developed against a Postgresql database, designed to be run as a low-privilege CRUD user.
 
-## Authentication
+## Authentication/Authorisation
 
-User authentication/authorisation is via LDAP/Active Directory - originally LDAP, more recently AD.
+User authentication/authorisation was originallhy entirely via LDAP.
+
+We moved to SimpleAD on AWS in 2022.
+
+We have also added some authorisations into database tables:
+  * Batch loaders can authorise batch reviewers on specific batches and that is recorded in the core database
+  * The Flora of Australia project introduced Products and Product Roles with authorisations for profile and tree editing coming from these records in the database
+  * We added a Users table (in 2023?) to let known users be authorised - this started in a small way for batch reviewers, but now every user who logs in gets a record added to the users table unless one already exists (great idea Gerda!)
+  * The plan going forward is to move all authorisations from SimpleAD into database tables.
+
 
 ## Database creation
 
@@ -49,7 +62,9 @@ As above, this app doesn't carry the information necessary to create the databas
 
 ## How to run the test suite
 
-We use simple Rails testing with fixtures.  We mock calls out to the Services app for testing.
+We have used simple minitest Rails testing with fixtures for most of the life of this app.  We mock calls out to the Services app for testing.
+
+Recently Gerda added rspecs.
 
 ### Grab the schema
 

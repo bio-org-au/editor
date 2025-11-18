@@ -27,7 +27,7 @@
 #  abbrev           :string(100)
 #  created_by       :string(255)      not null
 #  date_range       :string(50)
-#  full_name        :string(255)
+#  full_name        :string(255)                              DEPRECATED - Use extra_information
 #  lock_version     :bigint           default(0), not null
 #  name             :string(1000)
 #  notes            :string(1000)
@@ -42,6 +42,7 @@
 #  ipni_id          :string(50)
 #  namespace_id     :bigint           not null
 #  source_id        :bigint
+#  extra_information :string(255)
 #
 # Indexes
 #
@@ -68,7 +69,8 @@ class Author::AsTypeahead < Author
       Author.lower_abbrev_like(term + "%") \
             .where("duplicate_of_id is null") \
             .order("abbrev").limit(SEARCH_LIMIT) \
-            .collect { |n| { value: n.abbrev.to_s, id: n.id.to_s } }
+            .collect { |n| { value: "#{n.abbrev} #{' | '+n.extra_information unless n.extra_information.blank?}",
+                             id: n.id.to_s } }
     end
   end
 

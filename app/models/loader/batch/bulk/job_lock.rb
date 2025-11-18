@@ -16,7 +16,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class Loader::Batch::Bulk::JobLock < ActiveRecord::Base
+class Loader::Batch::Bulk::JobLock < ApplicationRecord
   self.table_name = "loader_batch_job_lock"
   self.primary_key = "id"
 

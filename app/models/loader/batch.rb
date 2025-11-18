@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader Batch entity
-class Loader::Batch < ActiveRecord::Base
+class Loader::Batch < ApplicationRecord
   include SortKey
   strip_attributes
   self.table_name = "loader_batch"

@@ -200,5 +200,10 @@ inner join ref_type xcrt on xrt.id = xcrt.parent_id))",
                          where_clause: " language_id != (select id from language where lower(name) = lower(?) ) ",
                          multiple_values_where_clause: " language_id not in (select id from language where lower(name) in (?))" },
     "no-publication-date:" => { where_clause: " publication_date is null " },
+    "source-system:" => {where_clause: "lower(source_system) like ?"},
+    "source-id:" => {multiple_values: true,
+                     where_clause: " source_id = ? ",
+                     multiple_values_where_clause: " source_id in (?)" },
+    "source-id-string:" => {where_clause: "lower(source_id_string) like ?||'%'"},
   }.freeze
 end

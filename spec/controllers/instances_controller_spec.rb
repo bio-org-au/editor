@@ -25,7 +25,7 @@ RSpec.describe InstancesController, type: :controller do
         tabs = controller.send(:tabs_to_offer)
         expect(tabs).to include("tab_show_1", "tab_edit", "tab_edit_notes")
         expect(tabs).to include("tab_unpublished_citation", "tab_synonymy", "tab_classification")
-        expect(tabs).to include("tab_profile_details", "tab_edit_profile", "tab_profile_v2", "tab_comments", "tab_synonymy")
+        expect(tabs).to include("tab_edit_profile", "tab_profile_v2", "tab_comments", "tab_synonymy")
       end
 
       it "includes 'tab_copy_to_new_reference' when row-type is 'instance_as_part_of_concept_record'" do
@@ -41,6 +41,21 @@ RSpec.describe InstancesController, type: :controller do
         expect(tabs).to include("tab_synonymy_for_profile_v2")
       end
 
+      context "when working_draft has tree config" do
+        let(:tree) { FactoryBot.create(:tree, is_read_only: false) }
+        let!(:working_draft) { FactoryBot.create(:tree_version, published: false, tree: tree) }
+
+        before do
+          allow(working_draft).to receive_message_chain(:tree, :config).and_return({ "some_key" => true })
+          controller.instance_variable_set(:@working_draft, working_draft)
+        end
+
+        it "includes 'tab_profile_details'" do
+          tabs = controller.send(:tabs_to_offer)
+          expect(tabs).to include("tab_profile_details")
+        end
+      end
+
       context 'when instance has a profile' do
         before do
           allow(instance).to receive(:profile?).and_return(true)
@@ -48,7 +63,22 @@ RSpec.describe InstancesController, type: :controller do
         end
 
         it 'includes profile related tabs' do
-          expect(controller.send(:tabs_to_offer)).to include('tab_profile_details', 'tab_edit_profile')
+          expect(controller.send(:tabs_to_offer)).to include('tab_edit_profile')
+        end
+
+        context "and has a working draft with tree config" do
+          let(:tree) { FactoryBot.create(:tree, is_read_only: false) }
+          let!(:working_draft) { FactoryBot.create(:tree_version, published: false, tree: tree) }
+
+          before do
+            allow(working_draft).to receive_message_chain(:tree, :config).and_return({ "some_key" => true })
+            controller.instance_variable_set(:@working_draft, working_draft)
+          end
+
+          it "includes 'tab_profile_details'" do
+            tabs = controller.send(:tabs_to_offer)
+            expect(tabs).to include("tab_profile_details")
+          end
         end
       end
 

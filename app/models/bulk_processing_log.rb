@@ -16,9 +16,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-class BulkProcessingLog < ActiveRecord::Base
+class BulkProcessingLog < ApplicationRecord
   self.table_name = "bulk_processing_log"
-  strip_attributes
 
   def self.log(info, username = "unknown")
     new(log_entry: info, logged_by: username).save!

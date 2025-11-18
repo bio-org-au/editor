@@ -20,6 +20,9 @@ class Search::Author::FieldAbbrev
   ABBREVS = {
     "n:" => "name:",
     "a:" => "abbrev:",
-    "extra-name-text:" => "full_name:",
+    "extra-name-text:" => "extra-information:",
+    "full-name:" => "extra-information:",
+    "extra:" => "extra-information:",
+    "full-name-exact:" => "extra-information-exact:",
   }.freeze
 end

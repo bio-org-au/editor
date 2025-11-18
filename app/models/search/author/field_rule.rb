@@ -64,9 +64,9 @@ from comment where comment.author_id = author.id)" },
                                comment where comment.author_id =
                                author.id and lower(comment.created_by)
                                like lower(?) ) " },
-    "full-name:" => { leading_wildcard: true,
+    "extra-information:" => { leading_wildcard: true,
                       trailing_wildcard: true,
-                      where_clause: "lower(full_name) like lower(?)" },
+                      where_clause: "lower(extra_information) like lower(?)" },
     "name:" => { tokenize: true,
                  where_clause:
                                " lower(f_unaccent(name))
@@ -86,8 +86,8 @@ from comment where comment.author_id = author.id)" },
     "name-exact:" => { where_clause: "lower(name) like lower(?)" },
     "abbrev-exact:" => { where_clause: "lower(abbrev) like lower(?)",
                          not_exists_clause: " abbrev is null"},
-    "full-name-exact:" => { where_clause: "lower(full_name) like lower(?)",
-                            not_exists_clause: " full_name is null"},
+    "extra-information-exact:" => { where_clause: "lower(extra_information) like lower(?)",
+                            not_exists_clause: " extra_information is null"},
     "comments-exact:" => { where_clause: " exists (select null from
                                comment where comment.author_id = author.id
                                and lower(comment.text) like lower(?) ) " },
@@ -99,7 +99,6 @@ from comment where comment.author_id = author.id)" },
     "ids:" => { multiple_values: true,
                 where_clause: " id = ?",
                 multiple_values_where_clause: " id in (?)" },
-    "duplicate-of-id:" => { where_clause: "duplicate_of_id = ? " },
     "notes:" => { where_clause: " lower(notes) like lower(?) " },
     "missed-diacritics:" => { where_clause: " (exists (
     select null
@@ -113,5 +112,9 @@ from comment where comment.author_id = author.id)" },
     where ascii(x) not between 1 and 127
    and length(abbrev) > 0
        )) " },
+   "duplicate-of-id:" => { multiple_values: true,
+                           where_clause: " duplicate_of_id = ?",
+                           multiple_values_where_clause:
+                                " duplicate_of_id in (?)" },
   }.freeze
 end

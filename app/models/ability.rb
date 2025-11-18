@@ -63,6 +63,7 @@ class Ability
     draft_editor(user) if user.with_role?('draft-editor') && not_name_index
     profile_editor(user) if user.with_role?('profile-editor') && not_name_index
     draft_profile_editor if user.with_role?('draft-profile-editor') && not_name_index
+    profile_reference_auth(user) if user.with_role?('profile-reference') && not_name_index
     tree_builder_auth(user) if user.with_role?('tree-builder')
     tree_publisher_auth(user) if user.with_role?('tree-publisher')
     name_index_editor(user) if user.with_role?('name-index-editor') && is_name_index
@@ -132,6 +133,33 @@ class Ability
     ]
   end
 
+  def profile_reference_auth(user)
+    can [:create, :read], Author
+    can :update, Author do |author|
+      !author.referenced_in_any_instance? && author.no_other_authored_names? && author.names.blank?
+    end
+    can :create, Reference
+    can :update, Reference do |reference|
+      reference.instances.blank? &&
+      (user.product_from_context.nil? || Profile::ProfileItemReference.where(reference_id: reference.id)
+        .joins(profile_item: :product_item_config)
+        .where("product_item_configs_profile_item.product_id = ?", user.product_from_context&.id).any?)
+    end
+    can "authors", :all
+    can "menu", "new"
+    can "references", [
+      "new_row",
+      "new",
+      "typeahead_on_citation_for_parent",
+      "typeahead_on_citation",
+      "create",
+      "tab_edit_1",
+      "tab_edit_2",
+      "tab_edit_3",
+      "update"
+    ]
+  end
+
   def draft_editor(user)
     can :create_with_product_reference, Instance
     can :copy_as_draft_secondary_reference, Instance
@@ -141,7 +169,7 @@ class Ability
       :synonymy_as_draft_secondary_reference,
       :unpublished_citation_as_draft_secondary_reference
     ], Instance do |instance|
-      instance.draft? && instance.reference.products.pluck(:name).any?(selected_product(user)&.name.to_s)
+      (instance.draft? || instance.this_is_cited_by&.draft?) && instance.reference.products.pluck(:name).any?(selected_product(user)&.name.to_s)
     end
     can :edit, Instance do |instance|
       instance.relationship? &&

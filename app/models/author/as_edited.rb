@@ -25,7 +25,7 @@
 #  abbrev           :string(100)
 #  created_by       :string(255)      not null
 #  date_range       :string(50)
-#  full_name        :string(255)
+#  full_name        :string(255)                              DEPRECATED - Use extra_information
 #  lock_version     :bigint           default(0), not null
 #  name             :string(1000)
 #  notes            :string(1000)
@@ -40,6 +40,7 @@
 #  ipni_id          :string(50)
 #  namespace_id     :bigint           not null
 #  source_id        :bigint
+#  extra_information :string(255)
 #
 # Indexes
 #

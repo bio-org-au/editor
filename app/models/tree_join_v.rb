@@ -66,7 +66,7 @@
 #  tree_id                       :bigint
 #  tree_version_id               :bigint
 #
-class TreeJoinV < ActiveRecord::Base
+class TreeJoinV < ApplicationRecord
   self.table_name = "tree_join_v"
   scope :draft, -> { where("not published") }
   scope :accepted, -> { where("accepted_tree = true") }

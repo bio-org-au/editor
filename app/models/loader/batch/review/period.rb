@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader Batch Review Period entity
-class Loader::Batch::Review::Period < ActiveRecord::Base
+class Loader::Batch::Review::Period < ApplicationRecord
   include DigestEndDate
   strip_attributes
   self.table_name = "batch_review_period"

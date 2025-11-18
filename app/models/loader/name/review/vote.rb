@@ -17,7 +17,7 @@
 #   limitations under the License.
 #
 # Loader NameReviewVote entity
-class Loader::Name::Review::Vote < ActiveRecord::Base
+class Loader::Name::Review::Vote < ApplicationRecord
   strip_attributes
   self.table_name = "name_review_vote"
   self.primary_key = [:org_id, :batch_review_id, :loader_name_id]

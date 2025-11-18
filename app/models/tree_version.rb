@@ -38,7 +38,7 @@
 #  fk_4q3huja5dv8t9xyvt5rg83a35  (tree_id => tree.id)
 #  fk_tiniptsqbb5fgygt1idm1isfy  (previous_version_id => tree_version.id)
 #
-class TreeVersion < ActiveRecord::Base
+class TreeVersion < ApplicationRecord
   self.table_name = "tree_version"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"

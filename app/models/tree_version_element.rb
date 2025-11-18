@@ -56,7 +56,7 @@
 #  fk_8nnhwv8ldi9ppol6tg4uwn4qv  (parent_id => tree_version_element.element_link)
 #  fk_ufme7yt6bqyf3uxvuvouowhh   (tree_element_id => tree_element.id)
 #
-class TreeVersionElement < ActiveRecord::Base
+class TreeVersionElement < ApplicationRecord
   self.table_name = "tree_version_element"
   self.primary_key = "element_link"
   self.sequence_name = "nsl_global_seq"

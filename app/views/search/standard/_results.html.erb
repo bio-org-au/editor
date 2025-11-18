@@ -98,12 +98,6 @@
       <% when 'Organisation' %>  
         <%= render partial: "#{partials}/org_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'HelpTopic' %>  
-        <%= render partial: "#{partials}/help_topic_record", 
-          locals: {search_result: record, give_me_focus: give_me_focus} %>
-      <% when 'UserQuery' %>  
-        <%= render partial: "#{partials}/user_query_record", 
-          locals: {search_result: record, give_me_focus: give_me_focus} %>
       <% when 'Name Review Comment' %>  
         <%= render partial: "#{partials}/main/loader/name/review/comment_record", 
           locals: {search_result: record, give_me_focus: give_me_focus} %>

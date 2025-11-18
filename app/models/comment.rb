@@ -46,11 +46,10 @@
 #  fk_9aq5p2jgf17y6b38x5ayd90oc  (author_id => author.id)
 #  fk_h9t5eaaqhnqwrc92rhryyvdcf  (name_id => name.id)
 #
-class Comment < ActiveRecord::Base
+class Comment < ApplicationRecord
   self.table_name = "comment"
   self.primary_key = "id"
   self.sequence_name = "hibernate_sequence"
-  strip_attributes
   belongs_to :author, optional: true
   belongs_to :instance, optional: true
   belongs_to :name, optional: true

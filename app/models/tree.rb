@@ -43,7 +43,7 @@
 #  fk_48skgw51tamg6ud4qa8oh0ycm  (default_draft_tree_version_id => tree_version.id)
 #  fk_svg2ee45qvpomoer2otdc5oyc  (current_tree_version_id => tree_version.id)
 #
-class Tree < ActiveRecord::Base
+class Tree < ApplicationRecord
   self.table_name = "tree"
   self.primary_key = "id"
   self.sequence_name = "nsl_global_seq"
@@ -92,5 +92,9 @@ class Tree < ActiveRecord::Base
 
   def distribution_key
     config["distribution_key"]
+  end
+
+  def holds_profile_data?
+    config.present?
   end
 end

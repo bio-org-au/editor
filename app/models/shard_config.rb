@@ -27,7 +27,7 @@
 #  use_notes  :string(255)
 #  value      :string(5000)     not null
 #
-class ShardConfig < ActiveRecord::Base
+class ShardConfig < ApplicationRecord
   self.table_name = "shard_config"
   NAME_SPACE = "name space"
 

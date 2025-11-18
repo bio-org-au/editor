@@ -32,19 +32,101 @@
 FactoryBot.define do
   factory :name_type do
     lock_version { 1 }
-    autonym { true }
-    cultivar { true }
-    formula { true }
-    hybrid { false }
-    #sequence(:name) {|n| "Sample Name #{n}" }
-    name { "phrase name" }
-    scientific { false }
     sort_order { 1 }
-    rdf_id { "Sample Rdf" }
     deprecated { false }
-    vernacular { true }
+
+    # Default attributes - will be overridden by after(:build) callback
+    autonym { false }
+    cultivar { false }
+    formula { false }
+    hybrid { false }
+    scientific { true }
+    vernacular { false }
 
     association :name_group
     association :name_category
+
+    # Use after(:build) to set appropriate values based on category or explicit name
+    after(:build) do |name_type, evaluator|
+      # Get the category name
+      category_name = name_type.name_category&.name
+
+      # If no name is set, determine it from category
+      if name_type.name.blank?
+        case category_name
+        when "scientific"
+          name_type.name = "scientific"
+          name_type.scientific = true
+          name_type.cultivar = false
+          name_type.vernacular = false
+        when "cultivar"
+          name_type.name = "cultivar"
+          name_type.scientific = false
+          name_type.cultivar = true
+          name_type.vernacular = false
+        when "phrase name"
+          name_type.name = "phrase name"
+          name_type.scientific = false
+          name_type.cultivar = false
+          name_type.vernacular = true
+        when "other"
+          name_type.name = "[n/a]"
+          name_type.scientific = false
+          name_type.cultivar = false
+          name_type.vernacular = false
+        else
+          # Default to scientific
+          name_type.name = "scientific"
+          name_type.scientific = true
+          name_type.cultivar = false
+          name_type.vernacular = false
+        end
+      else
+        # Name was explicitly set, adjust flags accordingly
+        case name_type.name
+        when "cultivar"
+          name_type.scientific = false
+          name_type.cultivar = true
+          name_type.vernacular = false
+        when "phrase name"
+          name_type.scientific = false
+          name_type.cultivar = false
+          name_type.vernacular = true
+        when "[n/a]", "[unknown]", "[default]", "informal", "common"
+          name_type.scientific = false
+          name_type.cultivar = false
+          name_type.vernacular = false
+        when "scientific", "autonym", "sanctioned"
+          name_type.scientific = true
+          name_type.cultivar = false
+          name_type.vernacular = false
+        end
+      end
+
+      # Set rdf_id if not already set
+      if name_type.rdf_id.blank?
+        group_id_part = name_type.name_group_id.present? ? name_type.name_group_id : "unknown"
+        name_type.rdf_id = "#{name_type.name.parameterize}-#{group_id_part}"
+      end
+    end
+
+
+    # Trait for cultivar types
+    trait :cultivar_type do
+      name { "cultivar" }
+      scientific { false }
+      cultivar { true }
+      vernacular { false }
+      association :name_category, factory: :name_category, name: "cultivar"
+    end
+
+    # Trait for phrase name types
+    trait :phrase_type do
+      name { "phrase name" }
+      scientific { false }
+      cultivar { false }
+      vernacular { true }
+      association :name_category, factory: :name_category, name: "phrase name"
+    end
   end
 end

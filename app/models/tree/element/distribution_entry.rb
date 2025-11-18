@@ -37,7 +37,7 @@
 #  fk_fmic32f9o0fplk3xdix1yu6ha  (tree_element_id => tree_element.id)
 #  fk_h7k45ugqa75w0860tysr4fgrt  (dist_entry_id => dist_entry.id)
 #
-class Tree::Element::DistributionEntry < ActiveRecord::Base
+class Tree::Element::DistributionEntry < ApplicationRecord
   strip_attributes
   self.table_name = "tree_element_distribution_entries"
 

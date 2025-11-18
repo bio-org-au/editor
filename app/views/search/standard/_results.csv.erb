@@ -52,12 +52,6 @@
       <% when 'instance-for-expansion' -%>  
         <%= render partial: 'instance_for_expansion_record', 
           locals: {search_result: record, give_me_focus: give_me_focus} -%>
-      <% when 'HelpTopic' -%>  
-        <%= render partial: 'help_topic_record', 
-          locals: {search_result: record, give_me_focus: give_me_focus} -%>
-      <% when 'UserQuery' -%>  
-        <%= render partial: 'user_query_record', 
-          locals: {search_result: record, give_me_focus: give_me_focus} -%>
       <% else -%>
       <% end -%>
     <% end -%>

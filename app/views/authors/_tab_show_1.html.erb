@@ -2,7 +2,7 @@
 
 <%= render partial: 'detail_line', locals: {info: @author.name, label: 'name'} %>
 <%= render partial: 'detail_line', locals: {info: @author.abbrev, label: 'abbrev'} %>
-<%= render partial: 'detail_line', locals: {info: @author.full_name, label: 'extra name info'} %>
+<%= render partial: 'detail_line', locals: {info: @author.extra_information, label: 'extra name info'} %>
 <% if @author.notes.present? && @author.notes.length > 0 %>
   <%= divider %>
   Notes

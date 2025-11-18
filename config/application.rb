@@ -26,5 +26,6 @@ module Ned
     config.time_zone = "Australia/Melbourne"
     config.active_record.default_timezone = :local
     config.active_record.schema_format = :sql
+    config.active_support.to_time_preserves_timezone = :zone
   end
 end

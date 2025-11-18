@@ -55,7 +55,7 @@
 require "open-uri"
 
 #  A tree element - holds the taxon information
-class Tree::Element < ActiveRecord::Base
+class Tree::Element < ApplicationRecord
   include Tree::Element::Profile
   include Tree::Element::Profile::Distribution
   include Tree::Element::Profile::Distribution::Validations

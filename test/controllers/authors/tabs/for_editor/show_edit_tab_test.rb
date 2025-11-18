@@ -38,7 +38,7 @@ class AuthorEditorShowEditTest < ActionController::TestCase
     assert_select "form", true
     assert_select "input#author_name", true
     assert_select "input#author_abbrev", true
-    assert_select "input#author_full_name", true
+    assert_select "input#author_extra_information", true
     assert_select "textarea#author_notes", true
     assert_select "input#author_duplicate_of_id", true
   end

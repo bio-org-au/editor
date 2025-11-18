@@ -19,19 +19,19 @@
 require "test_helper"
 
 # Single author model test.
-class AuthorFullNameTooLongTest < ActiveSupport::TestCase
+class AuthorExtraInformationTooLongTest < ActiveSupport::TestCase
 
   def setup
     @max = 255
   end
 
-  test "author full name too long test" do
+  test "author extra information too long test" do
     author = authors(:joe)
     assert author.valid?, "Author should be valid to start"
-    author.full_name = "X" * @max 
-    assert author.valid?, "Author should be valid with full name #{@max} chars long"
+    author.extra_information = "X" * @max 
+    assert author.valid?, "Author should be valid with extra information #{@max} chars long"
     assert author.save!, "Author should save"
-    author.full_name = "X" * (@max + 1)
-    assert_not author.valid?, "Author should not be valid with full name #{@max + 1} chars long"
+    author.extra_information = "X" * (@max + 1)
+    assert_not author.valid?, "Author should not be valid with extra information #{@max + 1} chars long"
   end
 end
