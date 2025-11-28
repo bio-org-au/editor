@@ -1,4 +1,8 @@
 - :date: 28-Nov-2025
+  :jira_id: '5628'
+  :description: |-
+    Update the tree_builder_auth in ability.rb broadening the place_name permission
+- :date: 28-Nov-2025
   :jira_id: '161'
   :jira_project: FLOR
   :description: |-

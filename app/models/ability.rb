@@ -464,7 +464,7 @@ class Ability
     can :remove_name_placement, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     can "trees", "place_name"
-    can :place_name, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+    can :place_name, :all
 
     can "tree/elements", "update_profile"
     can :update_profile, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
