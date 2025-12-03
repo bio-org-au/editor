@@ -23,6 +23,7 @@ class Name::AsResolvedTypeahead::ForAuthor
 
   def initialize(id_string, param_text, field_name)
     @text = param_text # .sub(/ *\|.*\z/, "")
+    @text.sub!(/\|.*/,'') unless @text.blank?
     @text.rstrip! unless @text.blank?
     @id_string = id_string
     @field_name = field_name

@@ -1,3 +1,36 @@
+- :date: 01-Dec-2025
+  :jira_id: '5631'
+  :description: |-
+    Loader Name: Fix bug in NSL-5623 - edit tab now works again and offers a list of families
+- :date: 28-Nov-2025
+  :jira_id: '161'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Display the feature flag config in the admin configuration page
+- :date: 26-Nov-2025
+  :jira_id: '5627'
+  :description: |-
+    Author typeaheads in Name records: Fix bug from NSL-967 so now you can select author abbreviations that are shown with extra information
+- :date: 26-Nov-2025
+  :jira_id: '160'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Update the ability permission for tree_builder_auth
+- :date: 24-Nov-2025
+  :jira_id: '161'
+  :jira_project: FLOR
+  :description: |-
+    Foa Project: Show name of tree in taxon concept
+- :date: 21-Nov-2025
+  :jira_id: '5623'
+  :description: |-
+    Loader Name: Add drop-down selection that also allows typing new values for family field of new accepted/excluded names
+- :date: 20-Nov-2025
+  :jira_id: '5625'
+  :description: |-
+    Loader Distribution error message: Re-worded to make clearer
+- :date: 19-Nov-2025
+  :release: true
 - :date: 14-Nov-2025
   :jira_id: '3377'
   :description: |-

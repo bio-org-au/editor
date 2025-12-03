@@ -253,7 +253,7 @@
 
   <% if @tabs_to_offer.include?("tab_edit_profile") && tab_available?(tabs_array, "profile") %>
     <% if Rails.configuration.try('profile_edit_aware') %>
-      <% if can?("classification", "place") %>
+      <% if can?("tree/elements", "update_profile") %>
         <%= render(
           partial: "instances/tabs/tab",
           locals: {

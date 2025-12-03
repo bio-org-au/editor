@@ -8,7 +8,7 @@ class InvalidRegionsAreRejectedTest < ActiveSupport::TestCase
   def setup
     @dist_s = "WA (naturalised), sA"
     @allowed_regions = DistRegion.all.order(:sort_order).collect(&:name)
-    @expected_error = "sA is an unknown region in: #{@dist_s}"
+    @expected_error = "string: '#{@dist_s}' contains unknown region 'sA'"
   end
 
   test "Invalid regions are rejected" do

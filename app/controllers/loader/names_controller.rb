@@ -28,6 +28,7 @@ class Loader::NamesController < ApplicationController
   def show
     set_tab
     set_tab_index
+    @current_families = current_families if @tab == 'tab_edit'
     @take_focus = params[:take_focus] == "true"
     new_comment if params[:tab] == "tab_review"
     if @view_mode == ::ViewMode::REVIEW
@@ -47,6 +48,7 @@ class Loader::NamesController < ApplicationController
     @loader_name.rank = "species"
     @loader_name.seq = @anchor.seq + 1 unless @anchor.blank?
     @loader_name.family = @anchor.family unless @anchor.blank?
+    @current_families = current_families
     @no_search_result_details = true
     @tab_index = (params[:tabIndex] || "40").to_i
     render :new
@@ -335,5 +337,14 @@ class Loader::NamesController < ApplicationController
   def embedded_parent_typeahead_id(typeahead_value)
     raise ArgumentError, "Input too long" if typeahead_value.length > 1000
     typeahead_value.sub(/.*\(/,'').sub(/\).*/,'') 
+  end
+
+  def current_families
+    if session[:default_loader_batch_id].blank?
+      []
+    else
+      current_batch = Loader::Batch.find(session[:default_loader_batch_id])
+      current_batch.families
+    end
   end
 end

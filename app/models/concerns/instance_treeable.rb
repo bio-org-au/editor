@@ -31,6 +31,16 @@ module InstanceTreeable
     id == name.accepted_instance_id
   end
 
+  def in_published_trees
+    Instance
+      .joins('INNER JOIN tree_element ON instance.id = tree_element.instance_id')
+      .joins('JOIN tree_version_element tve ON tree_element.id = tve.tree_element_id')
+      .joins('JOIN tree t ON tve.tree_version_id = t.current_tree_version_id')
+      .where(id: id)
+      .where('t.is_read_only = false')
+      .select('instance.id, t.name AS name')
+  end
+
   def in_workspace?(workspace)
     id == name.draft_instance_id(workspace)
   end

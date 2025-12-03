@@ -466,6 +466,9 @@ class Ability
     can "trees", "place_name"
     can :place_name, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
+    can "tree/elements", "update_profile"
+    can :update_profile, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+
     run_reports_on_a_draft_tree(session_user)
   end
 

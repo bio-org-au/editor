@@ -51,7 +51,7 @@ class Loader::Name::DistributionValidator
 
   def dist_regions_are_valid
     @dist_regions.each do |reg|
-      @error = "#{reg} is an unknown region in: #{@dist_s}"
+      @error = "string: '#{@dist_s}' contains unknown region '#{reg}'"
       return false unless @allowed_regions.include?(reg)
     end
     @error = nil

@@ -5,9 +5,15 @@
           <%= ShardConfig.classification_tree_key %>
         </span>
       <% else %>
-        <%= editor_icon('check','',class: '') %>
+        <% if Rails.configuration.try(:show_classification_from_tree) %>
+          <% in_taxon_key = instance.in_published_trees.pluck(:name).join(', ') %>
+        <% else %>
+          <% in_taxon_key = ShardConfig.classification_tree_key %>
+        <% end %>
+
+        <%= editor_icon('check','',class: '') if in_taxon_key.present? %>
         <span class='small strong' title="In taxonomy">
-          <%= ShardConfig.classification_tree_key %>
+          <%= in_taxon_key %>
         </span>
       <% end %>
       </span>

@@ -1080,5 +1080,360 @@ RSpec.describe Ability, type: :model do
     end
 
   end
+
+  describe "#basic_auth_2" do
+    it "allows accessing names rules" do
+      expect(subject.can?("names", "rules")).to eq true
+    end
+
+    it "allows accessing names tab_details" do
+      expect(subject.can?("names", "tab_details")).to eq true
+    end
+
+    it "allows accessing references tab_show_1" do
+      expect(subject.can?("references", "tab_show_1")).to eq true
+    end
+
+    it "allows accessing search" do
+      expect(subject.can?("search", :all)).to eq true
+    end
+
+    it "allows accessing new_search" do
+      expect(subject.can?("new_search", :all)).to eq true
+    end
+
+    it "allows accessing services" do
+      expect(subject.can?("services", :all)).to eq true
+    end
+
+    it "allows accessing sessions" do
+      expect(subject.can?("sessions", :all)).to eq true
+    end
+
+    it "allows editing passwords" do
+      expect(subject.can?("passwords", "edit")).to eq true
+    end
+
+    it "allows showing password form" do
+      expect(subject.can?("passwords", "show_password_form")).to eq true
+    end
+
+    it "allows password changed notification" do
+      expect(subject.can?("passwords", "password_changed")).to eq true
+    end
+
+    it "allows updating passwords" do
+      expect(subject.can?("passwords", "update")).to eq true
+    end
+  end
+
+  describe "#qa_auth role" do
+    before do
+      allow(session_user).to receive(:qa?).and_return(true)
+    end
+
+    it "allows all actions on de_duplicates" do
+      expect(subject.can?("de_duplicates", :all)).to eq true
+    end
+
+    it "allows all actions on tree_versions" do
+      expect(subject.can?("tree_versions", :all)).to eq true
+    end
+
+    it "allows all actions on tree_version_elements" do
+      expect(subject.can?("tree_version_elements", :all)).to eq true
+    end
+
+    it "allows all actions on tree_elements" do
+      expect(subject.can?("tree_elements", :all)).to eq true
+    end
+
+    it "allows all actions on mode" do
+      expect(subject.can?("mode", :all)).to eq true
+    end
+
+    it "allows all actions on orgs" do
+      expect(subject.can?("orgs", :all)).to eq true
+    end
+
+    it "allows accessing tree_versions form_to_publish" do
+      expect(subject.can?("tree_versions", "form_to_publish")).to eq true
+    end
+
+    it "allows accessing tree_versions publish" do
+      expect(subject.can?("tree_versions", "publish")).to eq true
+    end
+
+    it "allows publishing TreeVersion" do
+      expect(subject.can?(:publish, TreeVersion)).to eq true
+    end
+  end
+
+  describe "#admin_auth role" do
+    before do
+      allow(session_user).to receive(:admin?).and_return(true)
+    end
+
+    it "allows all actions on admin" do
+      expect(subject.can?("admin", :all)).to eq true
+    end
+
+    it "allows accessing menu admin" do
+      expect(subject.can?("menu", "admin")).to eq true
+    end
+
+    it "allows all actions on users" do
+      expect(subject.can?("users", :all)).to eq true
+    end
+
+    it "allows all actions on user/product_roles" do
+      expect(subject.can?("user/product_roles", :all)).to eq true
+    end
+  end
+
+  describe "#reviewer_auth role" do
+    before do
+      allow(session_user).to receive(:reviewer?).and_return(true)
+    end
+
+    it "allows all actions on loader/name/review/comments" do
+      expect(subject.can?("loader/name/review/comments", :all)).to eq true
+    end
+
+    it "allows all actions on loader/name/review/votes" do
+      expect(subject.can?("loader/name/review/votes", :all)).to eq true
+    end
+
+    it "allows all actions on loader/name/review/vote/in_bulk" do
+      expect(subject.can?("loader/name/review/vote/in_bulk", :all)).to eq true
+    end
+
+    it "allows switching on loader/batch/review/mode" do
+      expect(subject.can?("loader/batch/review/mode", "switch_on")).to eq true
+    end
+
+    it "allows showing loader/names" do
+      expect(subject.can?("loader/names", "show")).to eq true
+    end
+
+    it "allows accessing loader/names tab_details" do
+      expect(subject.can?("loader/names", "tab_details")).to eq true
+    end
+
+    it "allows accessing loader/names tab_comment" do
+      expect(subject.can?("loader/names", "tab_comment")).to eq true
+    end
+
+    it "allows accessing loader/names tab_vote" do
+      expect(subject.can?("loader/names", "tab_vote")).to eq true
+    end
+  end
+
+  describe "#batch_loader_auth role" do
+    before do
+      allow(session_user).to receive(:batch_loader?).and_return(true)
+    end
+
+    it "allows all actions on loader/batches" do
+      expect(subject.can?("loader/batches", :all)).to eq true
+    end
+
+    it "allows all actions on loader/names" do
+      expect(subject.can?("loader/names", :all)).to eq true
+    end
+
+    it "allows all actions on loader/name/matches" do
+      expect(subject.can?("loader/name/matches", :all)).to eq true
+    end
+
+    it "allows all actions on loader/name/match/suggestions/for_intended_tree_parent" do
+      expect(subject.can?("loader/name/match/suggestions/for_intended_tree_parent", :all)).to eq true
+    end
+
+    it "allows all actions on loader/batch/reviews" do
+      expect(subject.can?("loader/batch/reviews", :all)).to eq true
+    end
+
+    it "allows all actions on loader/batch/reviewers" do
+      expect(subject.can?("loader/batch/reviewers", :all)).to eq true
+    end
+
+    it "allows all actions on loader/batch/review/periods" do
+      expect(subject.can?("loader/batch/review/periods", :all)).to eq true
+    end
+
+    it "allows all actions on loader/batch/bulk" do
+      expect(subject.can?("loader/batch/bulk", :all)).to eq true
+    end
+
+    it "allows all actions on loader/batch/job_lock" do
+      expect(subject.can?("loader/batch/job_lock", :all)).to eq true
+    end
+
+    it "allows accessing menu batch" do
+      expect(subject.can?("menu", "batch")).to eq true
+    end
+
+    it "allows all actions on loader/name/review/comments" do
+      expect(subject.can?("loader/name/review/comments", :all)).to eq true
+    end
+  end
+
+  describe "#loader_2_tab_auth role" do
+    before do
+      allow(session_user).to receive(:loader_2_tab_loader?).and_return(true)
+    end
+
+    it "allows all actions on loader/instances-loader-2" do
+      expect(subject.can?("loader/instances-loader-2", :all)).to eq true
+    end
+  end
+
+  describe "#treebuilder_auth role" do
+    before do
+      allow(session_user).to receive(:treebuilder?).and_return(true)
+    end
+
+    it "allows placing classification" do
+      expect(subject.can?("classification", "place")).to eq true
+    end
+
+    it "allows all actions on trees" do
+      expect(subject.can?("trees", :all)).to eq true
+    end
+
+    it "allows all actions on workspace_values" do
+      expect(subject.can?("workspace_values", :all)).to eq true
+    end
+
+    it "allows toggling trees/workspaces/current" do
+      expect(subject.can?("trees/workspaces/current", "toggle")).to eq true
+    end
+
+    it "allows accessing names/typeaheads/for_workspace_parent_name" do
+      expect(subject.can?("names/typeaheads/for_workspace_parent_name", :all)).to eq true
+    end
+
+    it "allows names_typeahead_for_workspace_parent on TreeVersion" do
+      expect(subject.can?(:names_typeahead_for_workspace_parent, TreeVersion)).to eq true
+    end
+
+    it "allows accessing menu tree" do
+      expect(subject.can?("menu", "tree")).to eq true
+    end
+
+    it "allows editing TreeVersion" do
+      expect(subject.can?(:edit, TreeVersion)).to eq true
+    end
+
+    it "allows setting workspace on TreeVersion" do
+      expect(subject.can?(:set_workspace, TreeVersion)).to eq true
+    end
+
+    it "allows accessing tree_versions form_to_publish" do
+      expect(subject.can?("tree_versions", "form_to_publish")).to eq true
+    end
+
+    it "allows accessing tree_versions publish" do
+      expect(subject.can?("tree_versions", "publish")).to eq true
+    end
+
+    it "allows publishing TreeVersion" do
+      expect(subject.can?(:publish, TreeVersion)).to eq true
+    end
+
+    it "allows toggling draft on Tree" do
+      expect(subject.can?(:toggle_draft, Tree)).to eq true
+    end
+
+    it "allows creating draft on Tree" do
+      expect(subject.can?(:create_draft, Tree)).to eq true
+    end
+
+    it "allows accessing tree_versions edit_draft" do
+      expect(subject.can?("tree_versions", "edit_draft")).to eq true
+    end
+
+    it "allows updating draft on Tree::DraftVersion" do
+      expect(subject.can?(:update_draft, Tree::DraftVersion)).to eq true
+    end
+
+    it "allows accessing tree_versions update_draft" do
+      expect(subject.can?("tree_versions", "update_draft")).to eq true
+    end
+
+    it "allows accessing instances tab_classification" do
+      expect(subject.can?("instances", "tab_classification")).to eq true
+    end
+
+    it "allows place_name on all" do
+      expect(subject.can?(:place_name, :all)).to eq true
+    end
+
+    it "allows accessing trees update_excluded" do
+      expect(subject.can?("trees", "update_excluded")).to eq true
+    end
+
+    it "allows update_excluded on all" do
+      expect(subject.can?(:update_excluded, :all)).to eq true
+    end
+
+    it "allows replace_placement on all" do
+      expect(subject.can?(:replace_placement, :all)).to eq true
+    end
+
+    it "allows remove_name_placement on all" do
+      expect(subject.can?(:remove_name_placement, :all)).to eq true
+    end
+
+    it "allows reports on TreeVersion" do
+      expect(subject.can?(:reports, TreeVersion)).to eq true
+    end
+
+    it "allows show_cas on TreeVersion" do
+      expect(subject.can?(:show_cas, TreeVersion)).to eq true
+    end
+
+    it "allows show_diff on TreeVersion" do
+      expect(subject.can?(:show_diff, TreeVersion)).to eq true
+    end
+
+    it "allows show_valrep on TreeVersion" do
+      expect(subject.can?(:show_valrep, TreeVersion)).to eq true
+    end
+
+    it "allows run_cas on TreeVersion" do
+      expect(subject.can?(:run_cas, TreeVersion)).to eq true
+    end
+
+    it "allows update_synonymy_by_instance on TreeVersion" do
+      expect(subject.can?(:update_synonymy_by_instance, TreeVersion)).to eq true
+    end
+
+    it "allows run_diff on TreeVersion" do
+      expect(subject.can?(:run_diff, TreeVersion)).to eq true
+    end
+
+    it "allows run_valrep on TreeVersion" do
+      expect(subject.can?(:run_valrep, TreeVersion)).to eq true
+    end
+
+    it "allows update_distribution on TreeVersion" do
+      expect(subject.can?(:update_distribution, TreeVersion)).to eq true
+    end
+
+    it "allows update_comment on TreeVersion" do
+      expect(subject.can?(:update_comment, TreeVersion)).to eq true
+    end
+
+    it "allows update_tree_parent on TreeVersion" do
+      expect(subject.can?(:update_tree_parent, TreeVersion)).to eq true
+    end
+
+    it "allows accessing tree/elements update_profile" do
+      expect(subject.can?("tree/elements", "update_profile")).to eq true
+    end
+  end
+
 end
 

@@ -21,7 +21,7 @@
       <%= ": #{search_result.page}" if search_result.page.present? %>
       <%= "[#{search_result.instance_type.name}]" if search_result.show_primary_instance_type && search_result.instance_type.try('primary_instance') %>
       <% if search_result.consider_taxo %>
-        <% if search_result.show_taxo? %>
+        <% if search_result.show_taxo? || Rails.configuration.try(:show_classification_from_tree) %>
           <%= render(partial: 'instances/taxo/widgets', locals: { instance: search_result }) %>
         <% end %>
       <% end %>

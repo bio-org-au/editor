@@ -45,9 +45,16 @@
 
     <div class="form-group">
       <label for="family">Family<span class='red'>*</span></label>
-      <%= f.text_field :family, class: 'form-control',
+      <%= f.text_field :family, class: 'form-control', list: "families",
         required: true, title: "Enter family name", tabindex: increment_tab_index %>
     </div>
+
+    <datalist id="families">
+      <% @current_families&.each do | family | %>
+      <option value="<%= family %>">
+    <% end %>
+      <option value="new family for this batch">
+    </datalist>
 
     <div class="form-group">
       <label for="comment">Comment</label>

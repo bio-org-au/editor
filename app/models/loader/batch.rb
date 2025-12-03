@@ -101,4 +101,8 @@ class Loader::Batch < ApplicationRecord
   def last_n_seq(n = 1)
     self.loader_names.order(seq: :desc).limit(n).pluck(:seq)
   end
+
+  def families
+    loader_names.distinct.pluck(:family).sort
+  end
 end
