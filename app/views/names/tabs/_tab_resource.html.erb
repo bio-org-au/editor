@@ -1,0 +1,105 @@
+<% increment_tab_index %>
+
+<div>
+  <h5>Name Resource</h5>
+
+  <div id="name-resource-list-container">
+    <!-- Example resource item - will be replaced with dynamic data -->
+    <div class="resource-list-item" style="margin-bottom: 15px; padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px; background-color: #f9f9f9;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="flex: 1;">
+          <div style="margin-bottom: 5px;">
+            <strong>Host:</strong> <span>Some host name</span>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <strong>Resource Value:</strong> <span>Resource Value</span>
+          </div>
+          <div style="margin-bottom: 5px;">
+            <strong>Note:</strong> <span>Resource Note</span>
+          </div>
+          <div>
+            <strong>URL:</strong> <span><a href="#">https://example.com/resource</a></span>
+          </div>
+        </div>
+
+        <!-- Edit and Delete buttons -->
+        <div style="display: flex; gap: 5px; margin-left: 15px;">
+          <%= link_to "Edit",
+                      '#',
+                      id: "resource-edit-link-1",
+                      class: "btn btn-default btn-sm",
+                      title: "Edit this resource",
+                      tabindex: increment_tab_index,
+                      style: "min-width: 60px;" %>
+
+          <%= link_to "Delete",
+                      '#',
+                      id: "resource-delete-link-1",
+                      class: "btn btn-warning btn-sm unconfirmed-delete-link",
+                      title: "Delete this resource",
+                      tabindex: increment_tab_index,
+                      data: {show_this_id: "confirm-or-cancel-link-container-1"},
+                      style: "min-width: 60px;" %>
+        </div>
+      </div>
+
+      <!-- Confirm/Cancel delete container -->
+      <div id="confirm-or-cancel-link-container-1" class="confirm-or-cancel-delete-link hidden" style="margin-top: 10px; text-align: right;">
+        <%= link_to "Confirm delete",
+                    '#',
+                    class: "btn btn-danger btn-sm",
+                    title: "Really delete this resource",
+                    tabindex: increment_tab_index,
+                    remote: true,
+                    method: :delete,
+                    style: "min-width: 100px;" %>
+
+        <%= link_to "Cancel",
+                    '#',
+                    id: "cancel-delete-link-1",
+                    class: "btn btn-default btn-sm cancel-link",
+                    title: "Cancel delete",
+                    tabindex: increment_tab_index,
+                    data: {enable_this_id: "resource-delete-link-1",
+                           hide_this_id: "confirm-or-cancel-link-container-1"},
+                    style: "min-width: 100px;" %>
+      </div>
+    </div>
+
+    <!-- Add more resource items here when dynamic -->
+  </div>
+
+  <!-- Add new resource section -->
+  <div id="add-resource-section" style="margin-top: 20px; padding: 15px; border: 1px solid #d0d0d0; border-radius: 4px; background-color: #ffffff;">
+    <h6 style="margin-top: 0; margin-bottom: 10px;">Add New Resource</h6>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <label for="resource-type-select" style="margin: 0; font-weight: normal;">Resource Type:</label>
+      <%= select_tag 'resource_type',
+                     options_for_select([
+                       ['Select a resource type...', ''],
+                       ['APC', 'apc'],
+                       ['APNI', 'apni'],
+                       ['External Database', 'external_db'],
+                       ['Herbarium', 'herbarium'],
+                       ['Publication', 'publication']
+                     ]),
+                     id: 'resource-type-select',
+                     class: 'form-control',
+                     style: 'width: 250px;',
+                     tabindex: increment_tab_index %>
+
+      <%= link_to "Add Resource",
+                  '#',
+                  id: "add-resource-button",
+                  class: "btn btn-primary btn-sm",
+                  title: "Add the selected resource type to this name",
+                  tabindex: increment_tab_index,
+                  style: "min-width: 100px;" %>
+    </div>
+  </div>
+</div>
+
+<div id="search-result-details-info-message-container" class="message-container"></div>
+<div id="search-result-details-error-message-container" class="message-container"></div>
+
+
