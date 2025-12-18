@@ -102,6 +102,23 @@
     %>
   <% end %>
 
+  <% if Rails.configuration.try(:resource_tab_enabled) %>
+    <%= render(
+      partial: "names/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_resource",
+        link_text: product_tab_text(:name, "resource", "Resource"),
+        link_id: "name-resource-tab",
+        link_title: "Resource",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      })
+    %>
+  <% end %>
+
   <% if can?("names", "update") && tab_available?(tabs_array, "more") %>
     <%= render(
       partial: "names/tabs/tab",

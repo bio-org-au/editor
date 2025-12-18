@@ -14,6 +14,7 @@
  *= require components/dashboard
  *= require layouts/layout-using-dashboard
  *= require components/search-result-details
+ *= require components/resource-tab
  *= require components/stylish
  *= require utilities/media
  *= require utilities/width-primitives

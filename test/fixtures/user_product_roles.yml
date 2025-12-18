@@ -29,3 +29,13 @@ foa_tax_builder_foa_tree_builder:
   user: foa_tax_builder
   product_role: foa_tree_builder
 
+ron_tax_publisher_ron_tree_publisher:
+  <<: *DEFAULTS
+  user: ron_tax_publisher
+  product_role: ron_tree_publisher
+
+ron_tax_builder_ron_tree_builder:
+  <<: *DEFAULTS
+  user: ron_tax_builder
+  product_role: ron_tree_builder
+

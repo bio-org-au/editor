@@ -35,8 +35,8 @@ class TaxoInstanceTreePublisherFoaCannotSeeFoaTreeTab < ActionController::TestCa
                    groups: ["login"],
                    draft: foa_draft})
     assert_response :success, "Tree publisher tab request should be successful"
-    assert_no_match 'data-tab-name="tab_classification" href="#">Tree</a>',
-                  response.body, "Tab Classification should not be in the response"
+    assert_match 'data-tab-name="tab_classification" href="#">Tree</a>',
+                  response.body, "Tab Classification should be in the response"
     assert_no_match '<form', response.body, 'Tab should not contain a form'
   end
 end

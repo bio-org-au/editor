@@ -97,4 +97,8 @@ class Tree < ApplicationRecord
   def holds_profile_data?
     config.present?
   end
+
+  def has_no_drafts?
+    tree_versions.where(published: false).empty?
+  end
 end

@@ -344,7 +344,7 @@ Rails.application.routes.draw do
         to: "trees#update_excluded",
         via: :post
 
-  match "tree_versions/new_draft",
+  match "tree_versions/new_draft/:tree_id",
         as: "tree_versions_new_draft",
         to: "tree_versions#new_draft",
         via: :get

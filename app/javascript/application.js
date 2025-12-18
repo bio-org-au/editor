@@ -25,6 +25,7 @@ import "name_delete_form_submit";
 import "click_search_result_checkbox";
 import "copy_instance_for_name";
 import "cancel_link_click";
+import "resource_edit";
 import "copy_name_form_enter";
 import "create_copy_of_name_click";
 import "batch_submit";

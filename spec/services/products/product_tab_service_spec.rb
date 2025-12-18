@@ -254,7 +254,7 @@ RSpec.describe Products::ProductTabService do
         expect(result).to have_key(product_with_name_index)
         expect(result[product_with_name_index]).to have_key("author")
         expect(result[product_with_name_index]).to have_key("reference")
-        expect(result[product_with_name_index]["author"]).to eq(["new", "details", "edit", "comments"])
+        expect(result[product_with_name_index]["author"]).to eq(["new", "details", "edit", "comments", "copy"])
         expect(result[product_with_name_index]["reference"]).to eq(["new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy"])
       end
     end
@@ -281,7 +281,7 @@ RSpec.describe Products::ProductTabService do
         expect(result).to have_key(product_name_only)
         expect(result).to have_key(product_reference_only)
 
-        expect(result[product_name_only]["author"]).to eq(["new", "details", "edit", "comments"])
+        expect(result[product_name_only]["author"]).to eq(["new", "details", "edit", "comments", "copy"])
         expect(result[product_name_only]["reference"]).to eq(["new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy"])
 
         expect(result[product_reference_only]["author"]).to eq(["details"])
@@ -307,7 +307,7 @@ RSpec.describe Products::ProductTabService do
         result = subject.tabs_per_product
 
         expect(result).to have_key(product_with_multiple_flags)
-        expect(result[product_with_multiple_flags]["author"]).to eq(["new", "details", "edit", "comments"])
+        expect(result[product_with_multiple_flags]["author"]).to eq(["new", "details", "edit", "comments", "copy"])
         expect(result[product_with_multiple_flags]["reference"]).to eq(["new", "details", "edit_1", "edit_2", "edit_3", "comments", "new_instance", "copy"])
       end
     end

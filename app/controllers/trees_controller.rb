@@ -76,9 +76,6 @@ class TreesController < ApplicationController
   rescue RestClient::Exception => e
     Rails.logger.error('RestClient::Exception')
     Rails.logger.error(e.to_s)
-    Rails.logger.error(e.to_s)
-    Rails.logger.error(e.to_s)
-    Rails.logger.error(e.to_s)
     @message = json_error(e)
     render "update_synonymy_error"
   rescue CanCan::AccessDenied => e

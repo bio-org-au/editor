@@ -39,3 +39,14 @@ apc_tree_builder:
   <<: *DEFAULTS
   product: apc
   role: tree_builder
+
+ron_tree_publisher:
+  <<: *DEFAULTS
+  product: ron
+  role: tree_publisher
+
+ron_tree_builder:
+  <<: *DEFAULTS
+  product: ron
+  role: tree_builder
+

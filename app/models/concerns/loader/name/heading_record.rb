@@ -11,5 +11,11 @@ module Loader::Name::HeadingRecord
       heading.save!
     end
   end
+
+  def no_family_heading_or_record?
+    Loader::Name.where("loader_batch_id = ?", self.loader_batch_id)
+                .where("simple_name = ? or full_name = ?", self.family, self.family)
+                .empty?
+  end
 end
 

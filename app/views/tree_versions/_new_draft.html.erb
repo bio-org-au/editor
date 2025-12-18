@@ -1,4 +1,4 @@
-<div class="focus-details unsaved-record">
+<div id="new-draft-tree-version-panel" class="focus-details unsaved-record">
   <div id="new-draft-tree-form-container" class="new-record-form-container">
     <% if current_context_id && Rails.configuration.try(:multi_product_tabs_enabled) %>
       <%
@@ -11,19 +11,11 @@
       %>
     <% end %>
 
-    <h4>New Draft Taxonomy</h4>
+    <h4>Create New Draft Version of the <%= @tree.name %> Tree</h4>
     <div>
       <form action="<%= tree_versions_create_draft_path %>" data-remote="true" method="post">
         <div class="form-group">
-          <label>Tree
-            <%= select_tag("tree_id",
-                           options_from_collection_for_select(available_trees.where('is_read_only = false').order('name'), 'id', 'name'),
-                           {class: 'form-control give-me-focus',
-                            required: true,
-                            autofocus: true,
-                            title: "Choose a non-read-only tree",
-                            tabindex: increment_tab_index}) %>
-          </label>
+          <input id="tree_id" name="tree_id" type="hidden" title="tree_id" value="<%= @tree.id %>"/>
 
           <label>Name this draft<span class="red">*</span>
             <input class="form-control" id="draft_name" name="draft_name" type="text" required
@@ -46,11 +38,9 @@
         </div>
 
         <div>&nbsp;
-          <button id="tree-form-cancel" type="button" class="btn btn-default left">Cancel <i
-          class="fa fa-hand-o-left"></i></button>
-          <button id="create-draft-submit" type="submit"
-                  class="btn btn-primary right"
-                  onclick="$(this).find('i.fa').addClass('fa-spin')">Save <i class="fa fa-refresh"></i></button>
+          <button id="tree-form-cancel" type="button" class="btn btn-default left"
+                  onclick="$('#new-draft-tree-version-panel').hide()">Cancel</button>
+          <button id="create-draft-submit" type="submit" class="btn btn-primary right">Save</button>
         </div>
       </form>
     <br/>

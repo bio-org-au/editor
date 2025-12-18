@@ -19,24 +19,27 @@
 require "test_helper"
 
 # Single search controller test.
-class TreePublisherFoaUserCanSeeTaxonomyMenuTest < ActionController::TestCase
+class TreePublisherApcTaxoNoDraftMenuOptions < ActionController::TestCase
   tests SearchController
+  def setup
+    # We needto have no draft versions for this test case
+    draft_tree_version = tree_versions(:apc_draft_version)
+    draft_tree_version.published = true
+    draft_tree_version.save!
+  end
 
-  test "FOA tree publisher has taxonomy menu options" do
-    user = users(:foa_tax_publisher)
+  test "APC tree publisher has taxonomy menu options when no draft" do
+    user = users(:apc_tax_publisher)
     get(:search,
         params: {},
         session: { username: user.user_name,
                    user_full_name: user.full_name,
                    groups: ["login"] })
     assert_response :success
-    assert_select "a",
-                  /FOA draft version/,
-                  "Should show FOA draft version menu link."
     assert_select "a", {count: 0, text: "APC draft version"}, "Should not show APC draft version"
-    assert_select "li", /.*FOA Tree already has.*/i, "Should say FOA Tree already has draft"
-    #assert_select "a#create-draft-taxonomy-menu-link",
-    #              /Create draft taxonomy/,
-    #              "Should show Create Draft Taxonomy menu link."
+    assert_select "a", {count: 0, text: "FOA draft version"}, "Should not show FOA draft version"
+    assert_select "a#create-draft-taxonomy-menu-link",
+                  /Create draft taxonomy/,
+                  "Should show Create Draft Taxonomy menu link."
   end
 end

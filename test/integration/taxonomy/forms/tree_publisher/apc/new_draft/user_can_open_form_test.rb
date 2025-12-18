@@ -30,10 +30,21 @@ require "test_helper"
 class TaxFormsTreePubAPCNewDraftUserCanOpenFormTest < ActionController::TestCase
   tests TreeVersionsController
 
+  def setup
+    publish_existing_draft
+  end
+
+  # We need to have no draft versions for this test case
+  def publish_existing_draft
+    draft_tree_version = tree_versions(:apc_draft_version)
+    draft_tree_version.published = true
+    draft_tree_version.save!
+  end
+
   test "APC tree publisher user can open new draft form" do
     user = users(:apc_tax_publisher)
     get(:new_draft,
-        params: {},
+        params: {tree_id: trees(:APC)},
         format: :js,
         xhr: true,
         session: { username: user.user_name,

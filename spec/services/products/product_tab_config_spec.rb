@@ -11,13 +11,13 @@ RSpec.describe Products::ProductTabConfig do
 
     context "with active flags" do
       it "returns combined tabs for the model" do
-        expect(subject).to eq(["new", "details", "edit", "comments"])
+        expect(subject).to eq(["new", "details", "edit", "comments", "copy"])
       end
 
       context "for author" do
         it "returns tabs for is_name_index flag for author" do
           tabs = config.tabs_for(:author, ["is_name_index"])
-          expect(tabs).to eq(["new", "details", "edit", "comments"])
+          expect(tabs).to eq(["new", "details", "edit", "comments", "copy"])
         end
 
         it "returns tabs for has_default_reference flag for author" do
@@ -27,7 +27,7 @@ RSpec.describe Products::ProductTabConfig do
 
         it "combines tabs from multiple flags for author" do
           tabs = config.tabs_for(:author, ["is_name_index", "has_default_reference"])
-          expect(tabs).to match_array(["new", "details", "edit", "comments"])
+          expect(tabs).to match_array(["new", "details", "edit", "comments", "copy"])
         end
       end
 
@@ -97,14 +97,14 @@ RSpec.describe Products::ProductTabConfig do
 
       it "ignores unknown flags when combined with known flags" do
         tabs = config.tabs_for(:author, ["is_name_index", "unknown_flag"])
-        expect(tabs).to eq(["new", "details", "edit", "comments"])
+        expect(tabs).to eq(["new", "details", "edit", "comments", "copy"])
       end
     end
 
     context "edge cases" do
       it "handles string model names" do
         tabs = config.tabs_for("author", ["is_name_index"])
-        expect(tabs).to eq(["new", "details", "edit", "comments"])
+        expect(tabs).to eq(["new", "details", "edit", "comments", "copy"])
       end
 
       it "handles nil flags gracefully" do

@@ -1,0 +1,107 @@
+/* Resource Tab Styles */
+
+/* Utility Classes */
+.hidden {
+  display: none;
+}
+
+/* Resource List Item Container */
+.resource-list-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+/* Resource Display Layout */
+.resource-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resource-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.resource-actions {
+  display: flex;
+  gap: 5px;
+  margin-left: 15px;
+}
+
+/* Resource URL Icon */
+.resource-url-icon {
+  vertical-align: text-bottom;
+}
+
+/* Resource Edit Form */
+.resource-edit-form {
+  margin-top: 10px;
+}
+
+.resource-form-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.resource-form-actions {
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* Confirm/Cancel Delete Section */
+.confirm-or-cancel-delete-link {
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* Add Resource Section */
+.add-resource-section {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+.add-resource-section h6 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.add-resource-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Form Controls */
+.resource-form-control {
+  background-color: white !important;
+  color: #333;
+}
+
+.resource-type-select {
+  width: 250px;
+  background-color: white !important;
+}
+
+/* Button Sizing */
+.resource-btn-sm {
+  min-width: 60px;
+}
+
+.resource-btn-md {
+  min-width: 80px;
+}
+
+.resource-btn-lg {
+  min-width: 100px;
+}

@@ -21,7 +21,8 @@
              required
              >
 
-    <input id="query-submit" name="query_submit" value="Search" type="submit" class="btn search-btn" tabindex="9" title="Run the query">
+      <input id="query-submit" name="query_submit" value="Search <%= Rails.configuration.database_configuration[Rails.env]['database'].upcase %>"
+             type="submit" class="btn search-btn" tabindex="9" title="Run the query">
     </div><!-- /input-group -->
   </div><!-- /.col-lg-9 -->
 </div><!-- /row -->

@@ -157,22 +157,20 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_classification") && tab_available?(tabs_array, "tree") %>
-    <% if can?(:place_name, @working_draft) %>
-      <%= render(
-        partial: "instances/tabs/tab",
-        locals: {
-          first: false,
-          last: false,
-          this_tab: "tab_classification",
-          link_text: product_tab_text(:instance, "tree", "Tree"),
-          link_id: "instance-classification-tab",
-          link_title: "Tree placement",
-          tab_index: increment_tab_index,
-          prev_tab: "",
-          next_tab: ""
-        })
-      %>
-    <% end %>
+    <%= render(
+      partial: "instances/tabs/tab",
+      locals: {
+        first: false,
+        last: false,
+        this_tab: "tab_classification",
+        link_text: product_tab_text(:instance, "tree", "Tree"),
+        link_id: "instance-classification-tab",
+        link_title: "Tree placement",
+        tab_index: increment_tab_index,
+        prev_tab: "",
+        next_tab: ""
+      })
+    %>
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_comments") && tab_available?(tabs_array, "adnot") %>

@@ -68,6 +68,18 @@ foa_tax_builder:
  given_name: Foa
  family_name: TaxBuilder
 
+ron_tax_publisher:
+ <<: *DEFAULTS
+ user_name: ron-tax-publisher
+ given_name: Ron
+ family_name: TaxPublisher
+
+ron_tax_builder:
+ <<: *DEFAULTS
+ user_name: ron-tax-builder
+ given_name: Ron
+ family_name: TaxBuilder
+
 no_role:
  <<: *DEFAULTS
  user_name: no-role

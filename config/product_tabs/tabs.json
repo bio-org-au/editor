@@ -1,7 +1,7 @@
 {
   "author": {
     "is_name_index": {
-      "tabs": ["new", "details", "edit", "comments"]
+      "tabs": ["new", "details", "edit", "comments", "copy"]
     },
     "has_default_reference": {
       "tabs": ["details"]

@@ -26,6 +26,7 @@ class AuthorsController < ApplicationController
   def show
     set_tab
     set_tab_index
+    copy if @tab == "tab_copy"
     @take_focus = params[:take_focus] == "true"
     render "show", layout: false
   end
@@ -115,6 +116,11 @@ class AuthorsController < ApplicationController
     typeahead = Author::AsTypeahead
     authors = typeahead.on_abbrev(params[:term]) unless params[:term].blank?
     render json: authors
+  end
+
+  def copy
+    author = @author
+    @author = Author.new author.attributes
   end
 
   private

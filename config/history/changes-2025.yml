@@ -1,3 +1,57 @@
+- :date: 16-Dec-2025
+  :jira_id: '5587'
+  :description: |-
+    Taxonomy: Do not offer Create Draft for read-only Trees
+- :date: 16-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Initial backend models for the resource tab in Name records
+- :date: 15-Dec-2025
+  :jira_id: '2753'
+  :description: |-
+    General: Prevent tags in search terms infecting the results page
+- :date: 15-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Initial UI for the resource tab in Name records
+- :date: 12-Dec-2025
+  :jira_id: '5641'
+  :description: |-
+    Search Form: Add database name to the Search button
+- :date: 11-Dec-2025
+  :jira_id: '1723'
+  :description: |-
+    Reference Search: Add example searches for citations in which the string "wheeler" occurs twice
+- :date: 11-Dec-2025
+  :jira_id: '3451'
+  :description: |-
+    Author: Add success message for Author copy and also remove Save button on success
+- :date: 10-Dec-2025
+  :jira_id: '3047'
+  :description: |-
+    Reference: Add boilerplate advice about not entering pub date when type is 'Part'
+- :date: 09-Dec-2025
+  :jira_id: '3451'
+  :description: |-
+    Author: Add ability to copy an Author
+- :date: 08-Dec-2025
+  :jira_id: '5609'
+  :description: |-
+    Taxonomy: Limit each Taxonomy Tree to at most one draft Tree Version per database
+- :date: 04-Dec-2025
+  :jira_id: '5633'
+  :description: |-
+    Loader: Don't offer to create family headers for names in synonymy
+- :date: 04-Dec-2025
+  :jira_id: '5632'
+  :description: |-
+    Loader: Fix <code>no-family-heading:</code> query
+- :date: 01-Dec-2025
+  :jira_id: '5628'
+  :description: |-
+    Update tab classification rendering and update permissions message
+- :date: 03-Dec-2025
+  :release: true
 - :date: 01-Dec-2025
   :jira_id: '5631'
   :description: |-

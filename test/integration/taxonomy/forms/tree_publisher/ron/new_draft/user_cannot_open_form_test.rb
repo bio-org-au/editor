@@ -27,19 +27,30 @@ require "test_helper"
 #
 # ActionController::InvalidCrossOriginRequest: Security warning: 
 #   an embedded <script> tag on another site requested protected JavaScript.
-class TaxFormsTreePubAPCUserCannotCreateFoADraftTest < ActionController::TestCase
+class TaxFormsTreePubRONNewDraftUserCannotOpenFormTest < ActionController::TestCase
   tests TreeVersionsController
 
-  test "APC tree publisher user cannot create FoA draft" do
-    user = users(:apc_tax_publisher)
-    foa_tree = trees(:FOA)
-    post(:create_draft,
-         params: {"tree_id"=>foa_tree.id, "draft_name"=>"abcde name", "draft_log"=>"abcde log"},
-         format: :js,
-         xhr: true,
-         session: { username: user.user_name,
-                    user_full_name: user.full_name,
-                    groups: ["login"]})
-    assert_response 400, "APC tree publisher should not be able to create FOA draft"
+  def setup
+  end
+
+  # We need to have no draft versions for this test case
+  def publish_existing_draft
+    draft_tree_version = tree_versions(:ron_draft_version)
+    draft_tree_version.published = true
+    draft_tree_version.save!
+  end
+
+  test "RON tree publisher user cannot open new draft form for read only tree" do
+    user = users(:ron_tax_publisher)
+    error = assert_raises(RuntimeError) {
+      get(:new_draft,
+        params: {tree_id: trees(:RON)},
+        format: :js,
+        xhr: true,
+        session: { username: user.user_name,
+                   user_full_name: user.full_name,
+                   groups: ["login"]})
+    }
+    assert_equal 'RON tree is read only - cannot create any drafts', error.message
   end
 end

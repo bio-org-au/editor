@@ -1,3 +1,15 @@
-$('tr#new-author-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'author_record', locals: {search_result: @author, give_me_focus: true})) %>");
-$('tr#search-result-<%= @author.id %> td.takes-focus a.show-details-link').focus();
+
+$('.message-container').html('');
+<% if params[:random_id].present? %>
+  $('tr#new-author-<%= params[:random_id] %>').replaceWith("<%= escape_javascript(h(render partial: 'author_record', locals: {search_result: @author, give_me_focus: true})) %>");
+  $('tr#search-result-<%= @author.id %> td.takes-focus a.show-details-link').focus();
+<% else %>
+    if($('#search-result-details-info-message-container').text().indexOf('Copied') == -1) {
+      $('#search-result-details-info-message-container').html('Copied');
+    } else {
+      $('#search-result-details-info-message-container').append('.'); }
+    $('#author-save').remove();
+<% end %>
+
+
 

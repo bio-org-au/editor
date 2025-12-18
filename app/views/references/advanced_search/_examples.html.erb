@@ -15,7 +15,9 @@ Note: some examples here depend on APNI data - we apologise for that but for the
       {search_target: 'References', search_string: "citation-text: 1985 maslin", explanation: %Q(More than one search fragment for a citation search - order does not matter.)},
       {search_target: 'References', search_string: "citation-token: maslin 1985", explanation: %Q(More than one search fragment for a citation search - order does not matter.)},
       {search_target: 'References', search_string: "nuytsia type:journal", explanation: %Q(Restrict by type.)},
-      {search_target: 'References', search_string: "nuytsia ty:journal ti:nuytsia", explanation: %Q(Use field abbreviations.)}
+      {search_target: 'References', search_string: "nuytsia ty:journal ti:nuytsia", explanation: %Q(Use field abbreviations.)},
+      {search_target: 'References', search_string: "citation-exact:%wheeler%wheeler%", explanation: %Q(list of citations in which the string "wheeler" occurs twice)},
+      {search_target: 'References', search_string: "citation-exact:*wheeler*wheeler*", explanation: %Q(list of citations in which the string "wheeler" occurs twice)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">

@@ -45,33 +45,26 @@
 #
 # Indexes
 #
-#  lower_full_name                          (lower((full_name)::text))
-#  name_author_index                        (author_id)
-#  name_baseauthor_index                    (base_author_id)
-#  name_duplicate_of_id_index               (duplicate_of_id)
-#  name_exauthor_index                      (ex_author_id)
-#  name_exbaseauthor_index                  (ex_base_author_id)
-#  name_full_name_index                     (full_name)
-#  name_full_name_trgm_index                (full_name) USING gin
-#  name_lower_f_unaccent_full_name_like     (lower(f_unaccent((full_name)::text)) varchar_pattern_ops)
-#  name_lower_full_name_gin_trgm            (lower((full_name)::text) gin_trgm_ops) USING gin
-#  name_lower_simple_name_gin_trgm          (lower((simple_name)::text) gin_trgm_ops) USING gin
-#  name_lower_unacent_full_name_gin_trgm    (lower(f_unaccent((full_name)::text)) gin_trgm_ops) USING gin
-#  name_lower_unacent_simple_name_gin_trgm  (lower(f_unaccent((simple_name)::text)) gin_trgm_ops) USING gin
-#  name_name_element_index                  (name_element)
-#  name_name_path_index                     (name_path) USING gin
-#  name_parent_id_ndx                       (parent_id)
-#  name_rank_index                          (name_rank_id)
-#  name_sanctioningauthor_index             (sanctioning_author_id)
-#  name_second_parent_id_ndx                (second_parent_id)
-#  name_simple_name_index                   (simple_name)
-#  name_sort_name_idx                       (sort_name)
-#  name_source_index                        (namespace_id,source_id,source_system)
-#  name_source_string_index                 (source_id_string)
-#  name_status_index                        (name_status_id)
-#  name_system_index                        (source_system)
-#  name_type_index                          (name_type_id)
-#  uk_66rbixlxv32riosi9ob62m8h5             (uri) UNIQUE
+#  lower_full_name               (lower((full_name)::text))
+#  name_author_index             (author_id)
+#  name_baseauthor_index         (base_author_id)
+#  name_duplicate_of_id_index    (duplicate_of_id)
+#  name_exauthor_index           (ex_author_id)
+#  name_exbaseauthor_index       (ex_base_author_id)
+#  name_full_name_index          (full_name)
+#  name_name_element_index       (name_element)
+#  name_parent_id_ndx            (parent_id)
+#  name_rank_index               (name_rank_id)
+#  name_sanctioningauthor_index  (sanctioning_author_id)
+#  name_second_parent_id_ndx     (second_parent_id)
+#  name_simple_name_index        (simple_name)
+#  name_sort_name_idx            (sort_name)
+#  name_source_index             (namespace_id,source_id,source_system)
+#  name_source_string_index      (source_id_string)
+#  name_status_index             (name_status_id)
+#  name_system_index             (source_system)
+#  name_type_index               (name_type_id)
+#  uk_66rbixlxv32riosi9ob62m8h5  (uri) UNIQUE
 #
 # Foreign Keys
 #

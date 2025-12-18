@@ -22,6 +22,7 @@ pin "name_delete_form_submit", preload: true
 pin "click_search_result_checkbox", preload: true
 pin "copy_instance_for_name", preload: true
 pin "cancel_link_click", preload: true
+pin "resource_edit", preload: true
 pin "copy_name_form_enter", preload: true
 pin "create_copy_of_name_click", preload: true
 pin "batch_submit", preload: true

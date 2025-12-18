@@ -35,9 +35,8 @@ class TaxoInstanceTreeBuilderAPCCannotSeeFOATreeTab < ActionController::TestCase
                    groups: ["login"],
                    draft: foa_draft})
     assert_response :success, "Tree tab request should be successful"
-    assert_no_match 'data-tab-name="tab_classification" href="#">Tree</a>',
-                    response.body, "Tab Classification should not be in the response"
+    assert_match 'You do not have permission to place names in this draft taxonomy.',
+                    response.body, "Tab should inform user they lack permission"
     assert_no_match '<form', response.body, 'Tab should not contain a form'
-    assert_match 'You are not authorised', response.body, 'User should see message about missing permissions'
   end
 end

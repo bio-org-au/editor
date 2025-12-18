@@ -14,7 +14,7 @@
       link_title: 'View a summary',
       tab_index: @tab_index,
       prev_tab: '.search-result.show-details',
-      next_tab: ''
+      next_tab: 'author-edit-tab'
     }
   %>
 
@@ -28,8 +28,8 @@
         link_id: 'author-edit-tab',
         link_title: 'Edit author.',
         tab_index: increment_tab_index,
-        prev_tab: '',
-        next_tab: '.search-result.showing-details'
+        prev_tab: 'author-show-tab',
+        next_tab: 'author-comments-tab'
       }
     %>
   <% end %>
@@ -38,14 +38,30 @@
     <%= render partial: 'tab',
       locals: {
         first: false,
-        last: true,
+        last: false,
         this_tab: 'tab_comments',
         link_text: product_tab_text(:author, 'comments', 'Comments'),
         link_id: 'author-comments-tab',
         link_title: 'Edit author comments.',
         tab_index: increment_tab_index,
-        prev_tab: '',
-        next_tab: '.search-result.showing-details'
+        prev_tab: 'author-edit-tab',
+        next_tab: 'author-copy-tab'
+      }
+    %>
+  <% end %>
+
+  <% if can?(:create, @author) && tab_available?(tabs_array, 'copy') %>
+    <%= render partial: 'tab',
+      locals: {
+        first: false,
+        last: true,
+        this_tab: 'tab_copy',
+        link_text: product_tab_text(:author, 'copy', 'Copy'),
+        link_id: 'author-copy-tab',
+        link_title: 'Copy author',
+        tab_index: increment_tab_index,
+        prev_tab: 'author-comments-tab',
+        next_tab: 'author-show-tab'
       }
     %>
   <% end %>

@@ -22,12 +22,13 @@
 #  name_resource_name_id_fkey      (name_id => name.id)
 #  name_resource_resource_host_fk  (resource_host_id => resource_host.id)
 #
-FactoryBot.define do
-  factory :name_resource do
-    created_by { "Sample Created by" }
-    updated_by { "Sample Updated by" }
+class NameResource < ApplicationRecord
+  include UserTrackable
 
-    association :name
-    association :resource_host
-  end
+  self.table_name = "name_resource"
+  self.primary_key = "id"
+  self.sequence_name = "nsl_global_seq"
+
+  belongs_to :name
+  belongs_to :resource_host, class_name: "ResourceHost", foreign_key: "resource_host_id"
 end

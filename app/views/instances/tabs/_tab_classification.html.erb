@@ -1,7 +1,14 @@
 <% increment_tab_index(0) %>
 
 <% if @working_draft %>
-  <%= render partial: "instances/workspace/tab_main" %>
+  <% if can?(:place_name, @working_draft) %>
+    <%= render partial: "instances/workspace/tab_main" %>
+  <% else %>
+    <p>
+      You do not have permission to place names in this draft taxonomy.
+      If you believe this is an error, please contact the administrator.
+    </p>
+  <% end %>
 <% else %>
     <h5>No draft taxonomy selected</h5>
     <p>

@@ -69,6 +69,10 @@
       $('#current-ref-type-message-about-parent').html('');
       var key = $('#reference_ref_type_id option:selected').text().replace(' ','');
       $('#current-ref-type-message-about-parent').html($('div#ref-type-message div#'+ key).html());
+      $('#pub-date-message').html($('div#pub-date-message-content div#Default').html());
+      $('#pub-date-message').html($('div#pub-date-message-content div#'+ key).html());
+      $('#pub-date-text-message').html($('div#pub-date-text-message-content div#Default').html());
+      $('#pub-date-text-message').html($('div#pub-date-text-message-content div#'+ key).html());
     });
   </script>
   <div id="ref-type-message">
@@ -79,7 +83,7 @@
     <div id="Herbariumannotation" class="hidden">An Herbarium Annotation cannot belong to another reference - no parent allowed</div>
     <div id="Index" class="hidden">An index cannot belong to another reference - no parent allowed </div>
     <div id="Journal" class="hidden">A Journal cannot belong to another reference - no parent allowed</div>
-    <div id="Part" class="hidden">A Part can belong to a Paper</div>
+    <div id="Part" class="hidden">A Part should belong to a Paper</div>
     <div id="Paper" class="hidden">A Paper can belong to a Journal</div>
     <div id="PersonalCommunication" class="hidden">A Personal Communication cannot belong to another reference - no parent allowed</div>
     <div id="Section" class="hidden">A Section can belong to a Book</div>
@@ -143,13 +147,33 @@
 
     <%= f.text_field :year, type: 'number', min: '1000', max: "#{Time.new.year}", step: '1', class: 'year-field', title: "Enter year of publication (4-digit number)", tabindex: increment_tab_index %>
 
-    <p>Strictly formatted, partial or full date: day-month-year, month-year, or just year.</p>
+    <p id=pub-date-message>
+        <% if @reference&.ref_type&.part? then %>
+        Do not enter publication date for a Part - the parent's publication date will be used.
+        <% else %>
+        Strictly formatted, partial or full date: day-month-year, month-year, or just year.
+      <% end %>
+    </p>
+  </div>
+  <div id="pub-date-message-content">
+    <div id="Part" class="hidden">Do not enter publication date for a Part - the parent's publication date will be used.</div>
+    <div id="Default" class="hidden">Strictly formatted, partial or full date: day-month-year, month-year, or just year.</div>
   </div>
 	
   <div class="form-group">
     <label for="reference_publication_date">Publication date text</label>
     <%= f.text_field :publication_date, class: 'form-control', title: "Enter publication date", tabindex: increment_tab_index %>
-    <p>e.g. 3-5 Oct. 1776</p>
+    <p id=pub-date-text-message>
+        <% if @reference&.ref_type&.part? then %>
+        Do not enter publication date text for a Part - the parent's publication date text takes precedence
+        <% else %>
+        e.g. 3-5 Oct. 1776
+      <% end %>
+    </p>
+  </div>
+  <div id="pub-date-text-message-content">
+    <div id="Part" class="hidden">Do not enter publication date for a Part - the parent's publication date takes precedence.</div>
+    <div id="Default" class="hidden">e.g. 3-5 Oct. 1776</div>
   </div>
 
   <div class="form-group">
@@ -158,7 +182,7 @@
   </div>
 
   <div class="form-group align-right">
-  <% if @reference.new_record? %>
+  <% if @tab.blank? %>
     <%= link_to 'Cancel','/cancel-new-form',
                  class: "btn btn-primary cancel-new-record-link",
                  title: "Cancel new reference.",

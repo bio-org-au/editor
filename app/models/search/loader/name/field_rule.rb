@@ -1016,24 +1016,14 @@ having count(*) > 2
                               )"
        },
   "no-family-heading:" => { 
-      where_clause: "id in (
-      select id 
-  from loader_name
- where family in 
- (select family
-  from (
-select loader_name.family, family.simple_name
-  from loader_name
-       left outer join
-       loader_name family
-       on loader_name.family = family.simple_name
-       and loader_name.loader_batch_id = family.loader_batch_id
-       and family.record_type = 'heading'
- where loader_name.record_type in ('accepted','excluded','synonym','misapplied')
-group by loader_name.family, family.simple_name) subq
-where simple_name is null
- )
+    where_clause: "record_type in ('accepted','excluded') 
+and not exists
+(select null
+  from loader_name family
+ where family.loader_batch_id = loader_name.loader_batch_id
+   and loader_name.family = family.simple_name
 )",
+      takes_no_arg: true,
   },
 "syn-matched-to-autonym:" => { where_clause: "record_type = 'synonym' 
   and exists (select null

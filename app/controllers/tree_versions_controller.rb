@@ -34,15 +34,19 @@ class TreeVersionsController < ApplicationController
 
   # New draft tree version
   # This just collects the details and posts to the services
-  def new
-    @no_search_result_details = true
-    @tab_index = (params[:tabIndex] || "40").to_i
+  def new_draft
+    @tree = Tree.find(params[:tree_id])
+    raise "#{@tree.name} tree is read only - cannot create any drafts" if @tree.is_read_only?
+    raise "#{@tree.name} tree already has a draft - cannot create another draft" unless @tree.has_no_drafts?
+    authorize! :create_draft, @tree
     render "new_draft"
   end
 
   def create_draft
     logger.info "Create a draft tree"
     tree = Tree.find(params[:tree_id])
+    raise "#{tree.name} tree is read only - cannot create any drafts" if tree.is_read_only?
+    raise "#{tree.name} tree already has a draft - cannot create another draft" unless tree.has_no_drafts?
     authorize! :create_draft, tree
     response = Tree::DraftVersion.create_via_service(params[:tree_id],
                                                      nil,

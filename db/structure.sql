@@ -1390,6 +1390,27 @@ CREATE TABLE public.name_rank (
     display_name text NOT NULL
 );
 
+--
+-- Name: name_resource; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.name_resource (
+	id int8 DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
+	resource_host_id int8 NOT NULL,
+	name_id int8 NOT NULL,
+	value text NULL,
+	note text NULL,
+	lock_version int8 DEFAULT 0 NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	created_by varchar(50) DEFAULT USER NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	updated_by varchar(50) DEFAULT USER NOT NULL,
+	api_name varchar(50) NULL,
+	api_at timestamptz NULL,
+	CONSTRAINT name_resource_note_check CHECK ((char_length(note) <= 2400)),
+	CONSTRAINT name_resource_pkey PRIMARY KEY (id),
+	CONSTRAINT nr_length_check CHECK ((char_length(value) <= 250))
+);
 
 --
 -- Name: name_status; Type: TABLE; Schema: public; Owner: -
@@ -6399,6 +6420,32 @@ CREATE TABLE public.resource (
     resource_type_id bigint NOT NULL
 );
 
+--
+-- Name: resource_host; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.resource_host (
+	id int8 DEFAULT nextval('public.nsl_global_seq'::regclass) NOT NULL,
+	"name" varchar(50) NULL,
+	description text NULL,
+	resolving_url text NOT NULL,
+	sort_order int4 DEFAULT 0 NOT NULL,
+	for_reference bool DEFAULT false NULL,
+	for_name bool DEFAULT false NULL,
+	for_instance bool DEFAULT false NULL,
+	rdf_id varchar(50) NOT NULL,
+	deprecated bool DEFAULT false NOT NULL,
+	lock_version int8 DEFAULT 0 NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	created_by varchar(50) DEFAULT USER NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	updated_by varchar(50) DEFAULT USER NOT NULL,
+	CONSTRAINT lr_length_check CHECK ((char_length(resolving_url) <= 250)),
+	CONSTRAINT lr_unique_name UNIQUE (name),
+	CONSTRAINT resource_host_description_check CHECK ((char_length(description) <= 250)),
+	CONSTRAINT resource_host_pkey PRIMARY KEY (id)
+);
+
 
 --
 -- Name: site; Type: TABLE; Schema: public; Owner: -
@@ -11065,6 +11112,10 @@ ALTER TABLE only public.author
 ADD CONSTRAINT abbrev_length_check
 CHECK (char_length(abbrev) <= 150);
 
+-- public.name_resource foreign keys
+
+ALTER TABLE public.name_resource ADD CONSTRAINT name_resource_name_id_fkey FOREIGN KEY (name_id) REFERENCES public."name"(id);
+ALTER TABLE public.name_resource ADD CONSTRAINT name_resource_resource_host_fk FOREIGN KEY (resource_host_id) REFERENCES public.resource_host(id);
 
 SET search_path TO public,loader;
 

@@ -58,3 +58,13 @@ apni:
   updated_by: tester
   created_at: <%= Time.now %>
   updated_at: <%= Time.now %>
+  
+ron:
+  description_html: ron product
+  name: RON
+  reference: simple
+  tree: RON
+  created_by: tester
+  updated_by: tester
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

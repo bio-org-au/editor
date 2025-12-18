@@ -33,7 +33,7 @@ class TaxFormsTreePubNoRoleUserCannotOpenNewDraftFormTest < ActionController::Te
   test "No role user cannot open new draft form" do
     user = users(:no_role)
     get(:new_draft,
-        params: {},
+        params: {tree_id: Tree.first},
         format: :js,
         xhr: true,
         session: { username: user.user_name,

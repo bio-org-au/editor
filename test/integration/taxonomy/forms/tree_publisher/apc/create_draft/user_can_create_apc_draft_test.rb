@@ -31,6 +31,7 @@ class TaxFormsTreePubAPCUserCanCreateAPCDraftTest < ActionController::TestCase
   tests TreeVersionsController
 
   def setup
+    publish_existing_draft
     response_body = %Q({"payload":{"draftName":"blah","versionNumber":#{tree_versions(:apc_draft_version).id}}})
     stub_request(:put, %r{http:..localhost:90...nsl.services.api.tree.createVersion.apiKey=test-api-key&as=apc-tax-publisher}).
   with(
@@ -44,6 +45,13 @@ class TaxFormsTreePubAPCUserCanCreateAPCDraftTest < ActionController::TestCase
 	  'User-Agent'=>/ruby/
     }).
   to_return(status: 200, body: response_body, headers: {})
+  end
+
+  def publish_existing_draft
+    # We need to have no draft versions for this test case
+    draft_tree_version = tree_versions(:apc_draft_version)
+    draft_tree_version.published = true
+    draft_tree_version.save!
   end
 
   test "APC tree publisher user can create APC draft" do
