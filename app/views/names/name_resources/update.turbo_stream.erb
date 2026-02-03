@@ -1,0 +1,6 @@
+<%= turbo_stream.replace "name-resource-#{@name_resource.id}" do %>
+  <%= render partial: "names/name_resources/list", locals: { name: @name, name_resource: @name_resource } %>
+<% end %>
+
+<%= turbo_stream.update "search-result-details-info-message-container", @message %>
+<%= turbo_stream.update "search-result-details-error-message-container", '' %>

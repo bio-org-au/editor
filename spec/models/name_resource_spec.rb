@@ -8,6 +8,25 @@ RSpec.describe NameResource, type: :model do
     it { is_expected.to belong_to(:resource_host) }
   end
 
+  describe "validations" do
+    let(:name) { create(:name) }
+    let(:resource_host) { create(:resource_host) }
+    let!(:name_resource) { create(:name_resource, name: name, resource_host: resource_host) }
+
+    subject { build(:name_resource, name: name, resource_host: resource_host) }
+
+    it {
+      is_expected.to validate_uniqueness_of(:resource_host_id)
+        .scoped_to(:name_id)
+        .with_message("Resource already linked to this name")
+    }
+
+    it "does not allow duplicate resource_host_id for the same name" do
+      expect(subject.save).to be_falsey
+      expect(subject.errors[:resource_host_id]).to include("Resource already linked to this name")
+    end
+  end
+
   describe "UserTrackable concern" do
     let(:user) { double("User", user_name: "test_user") }
 

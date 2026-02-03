@@ -1,0 +1,14 @@
+<%= turbo_stream.update "name-resource-list-container" do %>
+  <% @name.name_resources.includes(:resource_host).each do |name_resource| %>
+    <%= render partial: "names/name_resources/list", locals: { name: @name, name_resource: name_resource } %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.update "add-resource-section" do %>
+  <h6>Add New Resource</h6>
+  <%= render partial: "names/name_resources/resource_host_dropdown_form", locals: { name: @name } %>
+  <%= render partial: "names/name_resources/add_resource_form", locals: { name: @name } %>
+<% end %>
+
+<%= turbo_stream.append "search-result-details-info-message-container", @message %>
+<%= turbo_stream.update "search-result-details-error-message-container", '' %>

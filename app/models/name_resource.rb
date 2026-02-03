@@ -31,4 +31,6 @@ class NameResource < ApplicationRecord
 
   belongs_to :name
   belongs_to :resource_host, class_name: "ResourceHost", foreign_key: "resource_host_id"
+
+  validates :resource_host_id, uniqueness: { scope: :name_id, message: "Resource already linked to this name" }
 end

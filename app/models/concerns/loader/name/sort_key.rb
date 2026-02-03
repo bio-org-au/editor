@@ -20,9 +20,17 @@ module Loader::Name::SortKey
     normalise_sort_key unless sort_key.blank?
     case record_type
     when "accepted"
-      self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase} #{'1genus' if rank == 'genus'}"
+      if rank.downcase == "family"
+        self.sort_key = "#{family.downcase}.family"
+      else
+        self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase} #{'1genus' if rank == 'genus'}"
+      end
     when "excluded"
-      self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase} #{'1genus' if rank == 'genus'}"
+      if rank.downcase == "family"
+        self.sort_key = "#{family.downcase}.family"
+      else
+        self.sort_key = "#{family.downcase}.family.#{record_type}.#{simple_name.downcase} #{'1genus' if rank == 'genus'}"
+      end
     when "synonym"
       self.sort_key = synonym_sort_key(parent.sort_key)
     when "misapplied"

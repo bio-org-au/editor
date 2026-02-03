@@ -35,7 +35,7 @@
   },
   "name": {
     "is_name_index": {
-      "tabs": ["new", "details", "edit", "new_instance", "copy", "more", "more_comment", "more_tag", "more_refresh"]
+      "tabs": ["delete", "new", "details", "edit", "new_instance", "copy", "more", "more_comment", "more_tag", "more_refresh"]
     },
     "has_default_reference": {
       "tabs": ["details", "new_instance", "more", "more_tag"]

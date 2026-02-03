@@ -282,6 +282,8 @@ class Ability
     can "menu",               "admin" # config is the only option
     can "admin",              "index" # allows viewing of the config
     can "product_contexts/set_context", "create"
+    can "names/name_resources", :all
+    can "names",              "tab_resource"
   end
 
   def basic_auth_2

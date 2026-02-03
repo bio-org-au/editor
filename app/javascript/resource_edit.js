@@ -1,5 +1,7 @@
 (function() {
-  var showResourceEditForm, hideResourceEditForm, saveResourceEdit;
+  var showResourceEditForm, hideResourceEditForm;
+  var showAddResourceForm, hideAddResourceForm, saveNewResource;
+  var clearMessages;
 
   $(document).on("turbo:load", function() {
 
@@ -13,12 +15,27 @@
       return hideResourceEditForm(event, $(this));
     });
 
-    // Save resource edit
-    $('body').on('click', 'a.save-resource-btn', function(event) {
-      return saveResourceEdit(event, $(this));
+    // Show add resource form when clicking Add Resource button
+    $('body').on('click', '#add-resource-button', function(event) {
+      return showAddResourceForm(event, $(this));
+    });
+
+    // Cancel adding new resource
+    $('body').on('click', '#cancel-new-resource-btn', function(event) {
+      return hideAddResourceForm(event);
+    });
+
+    // Save new resource
+    $('body').on('click', '#save-new-resource-btn', function(event) {
+      return saveNewResource(event);
     });
 
   });
+
+  clearMessages = function() {
+    $('.message-container').html('');
+    $('.error-container').html('');
+  };
 
   showResourceEditForm = function(event, $element) {
     debug('showResourceEditForm');
@@ -31,7 +48,7 @@
     // Show the edit form
     $(`#${targetId}`).removeClass('hidden');
 
-    $('.message-container').html('');
+    clearMessages();
     return event.preventDefault();
   };
 
@@ -46,29 +63,72 @@
     // Show the display view
     $(`#${displayId}`).removeClass('hidden');
 
-    $('.message-container').html('');
-    $('.error-container').html('');
+    clearMessages();
     return event.preventDefault();
   };
 
-  saveResourceEdit = function(event, $element) {
-    debug('saveResourceEdit');
-    const targetId = $element.data('target-id');
-    const displayId = $element.data('display-id');
+  showAddResourceForm = function(event, $element) {
+    debug('showAddResourceForm');
 
-    // TODO: Add AJAX call to save the resource data here
-    // For now, just hide the form and show the display
+    const selectedResourceId = $('#resource-type-select').val();
+    const selectedResourceText = $('#resource-type-select option:selected').text();
 
-    // Hide the edit form
-    $(`#${targetId}`).addClass('hidden');
+    // Validate selection
+    if (!selectedResourceId) {
+      $('#search-result-details-error-message-container').html('Please select a resource type first');
+      return event.preventDefault();
+    }
 
-    // Show the display view
-    $(`#${displayId}`).removeClass('hidden');
+    $('#new-resource-host').val(selectedResourceText);
+    $('#new-resource-host').data('resource-host-id', selectedResourceId);
 
-    // Show success message
-    $('#search-result-details-info-message-container').html('Resource updated successfully');
+    $('#resource-host-id-hidden').val(selectedResourceId);
+
+    const resolvingUrl = $('#resource-type-select option:selected').data('resolving-url') || '';
+    $('#new-resource-url').val(resolvingUrl);
+
+    $('#new-resource-value').val('');
+    $('#new-resource-note').val('');
+
+    $('.add-resource-form').addClass('hidden');
+
+    $('#add-resource-form-container').removeClass('hidden');
+
+    $('#new-resource-value').focus();
+
+    clearMessages();
 
     return event.preventDefault();
+  };
+
+  hideAddResourceForm = function(event) {
+    debug('hideAddResourceForm');
+
+    $('#add-resource-form-container').addClass('hidden');
+
+    $('.add-resource-form').removeClass('hidden');
+
+    $('#new-resource-host').val('');
+    $('#new-resource-value').val('');
+    $('#new-resource-note').val('');
+    $('#new-resource-url').val('');
+
+    clearMessages();
+
+    return event.preventDefault();
+  };
+
+  saveNewResource = function(event) {
+    debug('saveNewResource');
+
+    const resourceValue = $('#new-resource-value').val();
+    if (!resourceValue) {
+      $('#search-result-details-error-message-container').html('Resource value is required');
+      return event.preventDefault();
+    }
+
+    // Allow form to submit via Rails remote form handling
+    return true;
   };
 
 }).call(this);

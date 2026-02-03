@@ -4,18 +4,19 @@ require "rails_helper"
 
 RSpec.describe Name, type: :model do
   describe "associations" do
-    describe "name_resources dependent restriction" do
+    describe "name_resources dependent destroy" do
       context "when name has associated name_resources" do
         let!(:name) { create(:name) }
         let!(:name_resource) { create(:name_resource, name: name) }
 
-        it "raises ActiveRecord::DeleteRestrictionError when attempting to destroy" do
-          expect { name.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
+        it "destroys associated name_resources when name is destroyed" do
+          name_resource_id = name_resource.id
+          name.destroy
+          expect(NameResource.exists?(name_resource_id)).to be false
         end
 
-        it "prevents deletion and keeps the record persisted" do
-          expect { name.destroy }.to raise_error(ActiveRecord::DeleteRestrictionError)
-          expect(Name.exists?(name.id)).to be true
+        it "destroys the name successfully" do
+          expect { name.destroy }.to change(Name, :count).by(-1)
         end
       end
 
@@ -23,7 +24,7 @@ RSpec.describe Name, type: :model do
         let!(:name) { create(:name) }
 
         it "allows destruction when no name_resources exist" do
-          expect { name.destroy }.not_to raise_error(ActiveRecord::DeleteRestrictionError)
+          expect { name.destroy }.to change(Name, :count).by(-1)
         end
       end
     end
@@ -32,20 +33,43 @@ RSpec.describe Name, type: :model do
   describe "#allow_delete?" do
     let(:name) { create(:name) }
 
-    context "when name has name_resources" do
-      let!(:name_resource) { create(:name_resource, name: name) }
+    context "when name has instances" do
+      let!(:instance) { create(:instance, name: name) }
+
       it "returns false" do
         expect(name.allow_delete?).to be false
       end
+    end
 
-      context "when resource_tab_enabled is false" do
-        before do
-          allow(Rails.configuration).to receive(:resource_tab_enabled).and_return(false)
-        end
+    context "when name has children" do
+      let!(:child) { create(:name, parent: name) }
 
-        it "returns true when only name_resources exist" do
-          expect(name.allow_delete?).to be true
-        end
+      it "returns false" do
+        expect(name.allow_delete?).to be false
+      end
+    end
+
+    context "when name has comments" do
+      let!(:comment) { create(:comment, name: name) }
+
+      it "returns false" do
+        expect(name.allow_delete?).to be false
+      end
+    end
+
+    context "when name has duplicates" do
+      let!(:duplicate) { create(:name, duplicate_of: name) }
+
+      it "returns false" do
+        expect(name.allow_delete?).to be false
+      end
+    end
+
+    context "when name has name_resources" do
+      let!(:name_resource) { create(:name_resource, name: name) }
+
+      it "returns true as name_resources will be destroyed automatically" do
+        expect(name.allow_delete?).to be true
       end
     end
 

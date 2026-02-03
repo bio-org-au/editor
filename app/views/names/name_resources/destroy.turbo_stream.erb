@@ -1,0 +1,10 @@
+<%= turbo_stream.remove "name-resource-#{@name_resource.id}" %>
+
+<%= turbo_stream.update "add-resource-section" do %>
+  <h6>Add New Resource</h6>
+  <%= render partial: "names/name_resources/resource_host_dropdown_form", locals: { name: @name } %>
+  <%= render partial: "names/name_resources/add_resource_form", locals: { name: @name } %>
+<% end %>
+
+<%= turbo_stream.update "search-result-details-info-message-container", @message %>
+<%= turbo_stream.update "search-result-details-error-message-container", '' %>

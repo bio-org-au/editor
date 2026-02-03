@@ -192,7 +192,11 @@ Rails.application.routes.draw do
   match "names/:id/copy", as: "name_copy", to: "names#copy", via: :post
   match "names/new/:category/:random_id",
         as: "new_name_with_category_and_random_id", to: "names#new", via: :get
-  resources :names, only: %i[create update destroy]
+
+  resources :names, only: %i[create update destroy] do
+      resources :name_resources, only: [:create, :update, :destroy], controller: 'names/name_resources'
+  end
+
   match "names/:id",
         as: "name_show",
         to: "names#show",
@@ -295,7 +299,7 @@ Rails.application.routes.draw do
         to: "help#instance_types", as: "instance_types", via: :get
   match "help/typeaheads", to: "help#typeaheads", as: "typeaheads", via: :get
   match "history/:year(/show_status/:show_status)", to: "history#for_year", as: "history_for_year", via: :get,
-                                                    year: /202[012345]|201[5-9]/, defaults: { show_status: "false" }
+                                                    year: /202[0123456]|201[5-9]/, defaults: { show_status: "false" }
 
   match "/set_include_common_and_cultivar",
         to: "search#set_include_common_and_cultivar",

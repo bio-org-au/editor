@@ -56,7 +56,7 @@ RSpec.describe Products::ProductTabConfig do
       context "for name" do
         it "returns tabs for is_name_index flag for name" do
           tabs = config.tabs_for(:name, ["is_name_index"])
-          expect(tabs).to eq(["new", "details", "edit", "new_instance", "copy", "more", "more_comment", "more_tag", "more_refresh"])
+          expect(tabs).to eq(["delete", "new", "details", "edit", "new_instance", "copy", "more", "more_comment", "more_tag", "more_refresh"])
         end
       end
 

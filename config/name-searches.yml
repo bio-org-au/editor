@@ -837,4 +837,26 @@ select instance.name_id
         on n.name_status_id = ns.id
  where ns.name            = 'isonym'
        ))"
+'first-instance-is-syn:':
+  :takes_no_arg: true,
+  :where_clause: " id in 
+(select n.id
+from name n
+join instance i
+     on n.id = i.name_id
+join instance_type t
+     on i.instance_type_id = t.id 
+join reference r
+     on i.reference_id = r.id
+where t.relationship
+  and iso_publication_date <
+  (select min(iso_publication_date)
+     from instance i2
+     join instance_type t2
+          on i2.instance_type_id = t2.id
+     join reference r2
+          on i2.reference_id = r2.id
+    where i2.name_id = n.id
+      and t2.primary_instance
+  ) )"
 

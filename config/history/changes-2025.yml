@@ -1,3 +1,49 @@
+- :date: 24-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Update form labels for host and url
+- :date: 24-Dec-2025
+  :jira_id: '2986'
+  :description: |-
+    Instance display: Show Taxonomy status on LHS for Instances displayed within a Reference query
+- :date: 23-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: JS cleanup and set the host field to read-only when editing name resources
+- :date: 23-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Fix bug preventing resource tab from displaying for some users
+- :date: 22-Dec-2025
+  :jira_id: '5172'
+  :description: |-
+    Reference Edit: Remove bug preventing sequential edits
+- :date: 22-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Add and update functionality for the resource tab in Name records
+- :date: 19-Dec-2025
+  :jira_id: '3265'
+  :description: |-
+    Name Query: New search directive <code>first-instance-is-syn:</code>
+- :date: 18-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Delete functionality for the resource tab in Name records
+- :date: 18-Dec-2025
+  :jira_id: '5383'
+  :description: |-
+    Loader: Set name-status options to match scientific name options
+- :date: 17-Dec-2025
+  :jira_id: '5638'
+  :description: |-
+    Loader: Improvements to Family entries
+- :date: 17-Dec-2025
+  :jira_id: '5547'
+  :description: |-
+    Name Resource: Controller and routes for the resource tab in Name records
+- :date: 19-Dec-2025
+  :release: true
 - :date: 16-Dec-2025
   :jira_id: '5587'
   :description: |-

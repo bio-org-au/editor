@@ -233,6 +233,9 @@
       {field_name: "has-multiple-basionyms:",
        description: "name has at least one standalone instance which is itself \
        cited by more than 1 basionym usage"},
+      {field_name: "first-instance-is-syn:",
+       description: "name's earliest instance is a synonym - can include false \
+       positives when a year-only date is compared to a full date; query can be slow; combine with <code>si:</code> to also see instances"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

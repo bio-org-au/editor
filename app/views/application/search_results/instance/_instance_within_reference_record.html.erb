@@ -25,6 +25,10 @@
       <% end %>
       : <%= "#{search_result.page}" %>
       <%= "[#{search_result.instance_type.name}]" %>
+      <% if search_result.show_taxo? || Rails.configuration.try(:show_classification_from_tree) %>
+        <%= render(partial: 'instances/taxo/widgets', locals: { instance: search_result }) %>
+      <% end %>
+
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
       <%= render(partial: 'record_debug', locals: {search_result: search_result}) if @debug %>
     </a></td>

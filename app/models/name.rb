@@ -134,7 +134,7 @@ class Name < ApplicationRecord
   has_many :intended_tree_children,
            class_name: "Loader::Name::Match",
            foreign_key: "intended_tree_parent_name_id"
-  has_many :name_resources, dependent: :restrict_with_exception
+  has_many :name_resources, dependent: :destroy
 
   SEARCH_LIMIT = 50
   DECLARED_BT = "DeclaredBt"
@@ -187,7 +187,6 @@ class Name < ApplicationRecord
       children.blank? &&
       comments.blank? &&
       duplicates.blank? &&
-      no_name_resource_dependents? &&
       !family_dependents?
   end
 

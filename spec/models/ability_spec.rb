@@ -66,6 +66,14 @@ RSpec.describe Ability, type: :model do
     it "allows setting product context" do
       expect(subject.can?("product_contexts/set_context", "create")).to eq true
     end
+
+    it "allows accessing names/name_resources" do
+      expect(subject.can?("names/name_resources", :all)).to eq true
+    end
+
+    it "allows accessing names tab_resource" do
+      expect(subject.can?("names", "tab_resource")).to eq true
+    end
   end
 
   describe "#draft_profile_editor role" do

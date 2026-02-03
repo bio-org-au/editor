@@ -1,8 +1,8 @@
   Cannot delete:
   <% if @name.instances.size > 0 %>
     <br>
-    <%= link_to("#{pluralize(@name.instances.size,'instance')} #{editor_icon('search')}".html_safe, 
-                        search_path(query_string: "id: #{@name.id} show-instances:", 
+    <%= link_to("#{pluralize(@name.instances.size,'instance')} #{editor_icon('search')}".html_safe,
+                        search_path(query_string: "id: #{@name.id} show-instances:",
                         query_target: 'name'),
                         tabindex: increment_tab_index,
                         title: "Search for the #{pluralize(@name.instances.size,'instance')}",
@@ -31,9 +31,8 @@
     <br>
     <%= pluralize(@name.comments.size,'Comment') %>
   <% end %>
+
   <% if @name.duplicates.size > 0  %>
     <br>
     <%= render partial: "names/widgets/duplicates" %>
   <% end %>
-
-

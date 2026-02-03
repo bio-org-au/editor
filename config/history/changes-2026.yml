@@ -1,0 +1,17 @@
+- :date: 06-Jan-2026
+  :jira_id: '5667'
+  :description: |-
+    Reorder delete widget rendering logic for improved clarity in resource deletion flow
+- :date: 05-Jan-2026
+  :jira_id: '5667'
+  :description: |-
+    Name Resource: Show name resources when deleting a name
+- :date: 05-Jan-2026
+  :jira_id: '5626'
+  :description: |-
+    Reference edit: Hide some fields when the type is "Part"
+- :date: 05-Jan-2026
+  :jira_id: '5659'
+  :description: |-
+    History: Set up Changes 2026 page &#127881;
+

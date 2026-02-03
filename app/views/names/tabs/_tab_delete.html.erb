@@ -1,5 +1,26 @@
 <% increment_tab_index %>
 
+<% if @name.name_resources.present? %>
+  <br>Will delete the following resources:
+  <ul>
+    <% @name.name_resources.each do |nr| %>
+      <li>
+        <% if nr.resource_host.present? %>
+          <% resource_url = "#{nr.resource_host.resolving_url}#{nr.value}" %>
+          <%= link_to "#{nr.resource_host.name}: #{resource_url}",
+            resource_url,
+            title: "Open resource URL",
+            target: "_blank"
+          %>
+        <% else %>
+          <%= nr.value %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+
+<% end %>
+
 <% if @name.allow_delete? %>
   <%= render 'names/widgets/delete_widgets' %>
 <% else %>

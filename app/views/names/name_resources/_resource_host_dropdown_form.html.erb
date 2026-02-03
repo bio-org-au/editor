@@ -1,0 +1,23 @@
+<div class="add-resource-form">
+  <% available_resource_hosts = ResourceHost
+      .for_names
+      .where.not(id: name.name_resources.pluck(:resource_host_id))
+  %>
+  <%= select_tag 'resource_type',
+    options_for_select(available_resource_hosts.collect { |rt|
+      [rt.name, rt.id, {'data-resolving-url' => rt.resolving_url}]
+    }),
+    include_blank: "",
+    id: 'resource-type-select',
+    class: 'form-control resource-form-control resource-type-select',
+    tabindex: increment_tab_index
+  %>
+
+  <%= link_to "Add Resource",
+    '#',
+    id: "add-resource-button",
+    class: "btn btn-primary btn-sm resource-btn-lg",
+    title: "Add the selected resource type to this name",
+    tabindex: increment_tab_index
+  %>
+</div>

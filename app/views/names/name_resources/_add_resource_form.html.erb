@@ -1,0 +1,55 @@
+<%= form_with url: name_name_resources_path(name), method: :post, remote: true do |f| %>
+  <div id="add-resource-form-container" class="resource-edit-form hidden">
+    <%= hidden_field_tag 'name_resource[resource_host_id]', '', id: 'resource-host-id-hidden' %>
+    <div class="resource-form-grid">
+      <label for="new-resource-host">Resource:</label>
+      <%= text_field_tag 'new_resource_host', '',
+        id: "new-resource-host",
+        class: 'form-control resource-form-control',
+        readonly: true,
+        tabindex: increment_tab_index
+      %>
+
+      <label for="name_resource_value">Value:</label>
+      <%= text_field_tag 'name_resource[value]', '',
+        id: "new-resource-value",
+        class: 'form-control resource-form-control',
+        placeholder: 'Enter resource identifier',
+        tabindex: increment_tab_index
+      %>
+
+      <label for="name_resource_note">Note:</label>
+      <%= text_field_tag 'name_resource[note]', '',
+        id: "new-resource-note",
+        class: 'form-control resource-form-control',
+        placeholder: 'Optional note',
+        tabindex: increment_tab_index
+      %>
+
+      <label for="new-resource-url">URL:</label>
+      <%= text_field_tag 'new_resource_url', '',
+        id: "new-resource-url",
+        class: 'form-control resource-form-control',
+        readonly: true,
+        tabindex: increment_tab_index
+      %>
+    </div>
+
+    <div class="resource-form-actions">
+      <%= submit_tag "Save",
+        id: "save-new-resource-btn",
+        class: "btn btn-primary btn-sm resource-btn-md",
+        title: "Save new resource",
+        tabindex: increment_tab_index,
+        data: { disable_with: "Saving..." }
+      %>
+      <%= link_to "Cancel",
+        '#',
+        id: "cancel-new-resource-btn",
+        class: "btn btn-default btn-sm resource-btn-md",
+        title: "Cancel adding resource",
+        tabindex: increment_tab_index
+      %>
+    </div>
+  </div>
+<% end %>

@@ -49,6 +49,7 @@ class NameStatus < ApplicationRecord
   belongs_to :name_group
   scope :ordered_by_name, -> { order(Arel.sql(%(replace(name, '[', 'z') collate "C"))) }
   scope :not_deprecated, -> { where("not deprecated") }
+  scope :not_cultivar, -> { where(" name not in ('nom. cult.', 'nom. cult., nom. alt.') ") }
 
   NA = "[n/a]"
 
@@ -125,11 +126,11 @@ class NameStatus < ApplicationRecord
   end
 
   def self.scientific_options
-    where(" name not in ('nom. cult.', 'nom. cult., nom. alt.') ")
-      .not_deprecated
-      .ordered_by_name.collect do |n|
-        [n.name, n.id]
-      end
+    self.not_cultivar
+        .not_deprecated
+        .ordered_by_name.collect do |n|
+          [n.name, n.id]
+        end
   end
 
   def self.na_option
@@ -143,5 +144,13 @@ class NameStatus < ApplicationRecord
       .order("name").collect do |n|
         [n.name, n.id]
       end
+  end
+
+  def self.loader_options
+    self.not_cultivar
+        .not_deprecated
+        .ordered_by_name.collect do |n|
+          [n.name]
+    end
   end
 end
