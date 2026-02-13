@@ -41,11 +41,15 @@
       <% end %>
 
 
-      <% if current_context_id && Rails.configuration.try(:multi_product_tabs_enabled) %>
-        <%
-          all_trees = current_registered_user.roles.blank? ? Tree.where(accepted_tree: true) :
-            Tree.where(id: Product.with_context_and_tree(current_context_id).select(:tree_id))
-        %>
+      <% if Rails.configuration.try(:multi_product_tabs_enabled) %>
+        <% if current_context_id %>
+          <%
+            all_trees = current_registered_user.roles.blank? ? Tree.where(accepted_tree: true) :
+              Tree.where(id: Product.with_context_and_tree(current_context_id).select(:tree_id))
+          %>
+        <% else %>
+          <% all_trees = current_registered_user.roles.blank? ? Tree.where(accepted_tree: true) : Tree.all%>
+        <% end %>
       <% else %>
         <% all_trees = Tree.all %>
       <% end %>

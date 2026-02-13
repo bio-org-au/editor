@@ -1,9 +1,9 @@
-<% if current_context_id && Rails.configuration.try(:multi_product_tabs_enabled) %>
-  <%
-    draft_trees = current_registered_user.roles.blank? ?
-      Tree.menu_drafts.where(accepted_tree: true) :
-      Tree.menu_drafts.where(id: Product.with_context_and_tree(current_context_id).select(:tree_id))
-  %>
+<% if Rails.configuration.try(:multi_product_tabs_enabled) %>
+  <% if current_context_id %>
+    <% draft_trees = Tree.menu_drafts.where(id: Product.with_context_and_tree(current_context_id).select(:tree_id)) %>
+  <% else %>
+    <% draft_trees = Tree.menu_drafts.where(accepted_tree: true) %>
+  <% end %>
 <% else %>
   <% draft_trees = Tree.menu_drafts %>
 <% end %>
