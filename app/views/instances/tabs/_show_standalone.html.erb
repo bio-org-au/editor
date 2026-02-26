@@ -6,7 +6,7 @@
 <%= " [#{@instance.name.try('name_status').try('name_without_brackets')}]" if @instance.try('name').try('name_status').try('legitimate?') %>
 
 <% if @instance.name.accepted_concept? || @instance.name.excluded_concept? %>
-    <%= render(partial: 'instances/taxo/widgets', locals: {instance: @instance}) %>
+    <%= render(partial: 'instances/taxo/details/widgets', locals: {instance: @instance}) %>
 <% end %>
 &nbsp;
 <%= link_to("#{sanitize(ShardConfig.name_space)}&nbsp;#{external_link_square_icon}".html_safe,

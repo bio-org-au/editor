@@ -54,15 +54,17 @@
           <% if tree.read_only? %>
             <li>[<%= tree.name %> tree is read-only] </li>
           <% elsif tree.has_no_drafts? %>
-            <li role="presentation" class="divider"></li>
-            <li>
-              <%= link_to "<i class='fa fa-plus'></i> Create draft taxonomy for #{tree.name}".html_safe,
-                          tree_versions_new_draft_path(tree.id),
-                          id: 'create-draft-taxonomy-menu-link',
-                          title: 'Add a new draft taxonomy',
-                          remote: true,
-                          tabindex: '-1' %>
-            </li>
+            <% if current_registered_user.roles.present? || (current_registered_user.roles.blank? && tree.accepted_tree) %>
+              <li role="presentation" class="divider"></li>
+              <li>
+                <%= link_to "<i class='fa fa-plus'></i> Create draft taxonomy for #{tree.name}".html_safe,
+                            tree_versions_new_draft_path(tree.id),
+                            id: 'create-draft-taxonomy-menu-link',
+                            title: 'Add a new draft taxonomy',
+                            remote: true,
+                            tabindex: '-1' %>
+              </li>
+            <% end %>
           <% else %>
             <li>[<%= tree.name %> tree already has a draft version] </li>
           <% end %>

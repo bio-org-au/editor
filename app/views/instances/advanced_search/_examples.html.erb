@@ -10,8 +10,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -32,8 +32,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -56,13 +56,16 @@
          {search_target: 'Instances', search_string: "apc-dist-note-matches: [^C]hI", explanation: %Q(Find instances with APC Dist. notes matching "hI" not preceded by "C".)},
          {search_target: 'Instances', search_string: "tree-comment-matches: \\?", explanation: %Q(Find instances with profile comment containing "?".)},
          {search_target: 'Instances', search_string: "non-tree-drafts:", explanation: %Q(Find draft instances not on a tree.)},
+         {search_target: 'Instances', search_string: "draft:", explanation: %Q(Find draft instances.)},
+         {search_target: 'Instances', search_string: "not-draft:", explanation: %Q(Find non-draft instances.)},
          {search_target: 'Instances', search_string: "note-has-carriage-return:", explanation: %Q(Find instances with at least one note that has at least one carriage return. No argument allowed or required.)},
          {search_target: 'Instances', search_string: "note-updated-by: nsl-3495", explanation: %Q(Find instances with at least one note that was last updated by nsl-3495.)},
+         {search_target: 'Instances', search_string: "show-profiles:", explanation: %Q(Show profile items for instances matching the query.)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -86,8 +89,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -109,8 +112,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -133,8 +136,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
            <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -157,8 +160,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -178,8 +181,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -202,8 +205,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -218,14 +221,14 @@
 <h5 class="">Assertions</h5>
 <table class="example-searches table table-striped">
   <% [
-      {search_target: 'Instances', 
+      {search_target: 'Instances',
        search_string: "is-tax-nov-for-orth-var-name:",
        explanation: %Q(Tax. nov. instances with an orth. var. name.)},
-      {search_target: 'Instances', 
+      {search_target: 'Instances',
        search_string: "species-or-below-syn-with-genus-or-above:",
        explanation: %Q(Instances that synonymise a name ranked species or below
        with a name that is genus or above..)},
-      {search_target: 'Instances', 
+      {search_target: 'Instances',
        search_string: "name: morna species-or-below-syn-with-genus-or-above:",
        explanation: %Q(Instances for names containing "morna" that
        synonymise a name ranked species or below with a name that is genus or
@@ -233,8 +236,8 @@
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>
@@ -257,14 +260,14 @@
       {search_target: 'Instances', search_string: "count adnot:*", explanation: %Q(Count instances with an Adnot (comment).)},
       {search_target: 'Instances', search_string: "count adnot-by:*", explanation: %Q(Count instances with an Adnot (comment) by someone.)},
       {search_target: 'Instances', search_string: "count cites-an-instance:", explanation: %Q(Count instances that cite another instance.)},
-      {search_target: 'Instances', 
+      {search_target: 'Instances',
        search_string: "count is-tax-nov-for-orth-var-name:",
        explanation: %Q(Count tax. nov. instances with an orth-var name.)},
       ].each do |val| %>
   <tr>
     <td class="width-30-percent">
-      <a href="javascript:void(0)" 
-         class="example-search width-100-percent" 
+      <a href="javascript:void(0)"
+         class="example-search width-100-percent"
          title="Link to search">
          <span class="blue"><%= link_to(val[:search_string], search_path(query_string: val[:search_string], query_target: val[:search_target]),class:'blue', title: "Run the described search.") %></span>
       </a>

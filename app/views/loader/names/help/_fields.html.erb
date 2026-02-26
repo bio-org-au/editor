@@ -3,6 +3,7 @@
   <p>Note: setting a default batch will apply that batch to Loader Name searches.
   <p>Note: when searching for loader-names you need to specify a batch via 'batch-id:', 'batch-name:', or by setting a default batch.  If you really want to search across batches use the 'any-batch:' directive.
   <tr><th>Field</th><th>Description</th></tr>
+  <p>Note: In January 2026 we made "any-batch:" the default - so, with no batch selected as a default, your loader name queries will behave as if you had added the "any-batch:" directive
   <% [
     {field_name: 'batch-id:', descr: "Search within a batch using its ID."},
     {field_name: 'batch-name:', descr: "Search within a batch using its name. Accepts wild-cards."},

@@ -656,10 +656,12 @@ from comment where comment.name_id = name.id)"
   :where_clause: " simple_name in (select simple_name from name inner_name group by  inner_name.simple_name having count(*) > 1) "
   :order: name.simple_name
   :allow_common_and_cultivar: true
+  :takes_no_arg: true,
 'duplicate-full-names:':
   :where_clause: " full_name in (select full_name from name inner_name group by  inner_name.full_name having count(*) > 1) "
   :order: name.full_name
   :allow_common_and_cultivar: true
+  :takes_no_arg: true,
 'verbatim-rank:':
   :where_clause: 'lower(verbatim_rank) like lower(?) '
   :leading_wildcard: true
@@ -859,4 +861,13 @@ where t.relationship
     where i2.name_id = n.id
       and t2.primary_instance
   ) )"
+'is-a-duplicate-and-master:':
+  :takes_no_arg: true,
+  :allow_common_and_cultivar: true
+  :where_clause: " id in (select id
+                            from name name_dupe_master 
+                           where id in (select duplicate_of_id 
+                                          from name name_dupes
+                                         where duplicate_of_id is not null)
+                           and duplicate_of_id is not null)"
 

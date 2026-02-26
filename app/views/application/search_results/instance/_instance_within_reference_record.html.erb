@@ -20,15 +20,12 @@
       <%= "#{search_result.name.full_name}#{optional_name_status_comma(search_result)}" if search_result.name %>
       <% if search_result.name && search_result.name.name_status.show_name_for_instance_display_within_reference? %>
       <span class="non-legit-name-status">
-      <%= "#{search_result.name.name_status.name_for_instance_display_within_reference}" %>  
+      <%= "#{search_result.name.name_status.name_for_instance_display_within_reference}" %>
       </span>
       <% end %>
       : <%= "#{search_result.page}" %>
       <%= "[#{search_result.instance_type.name}]" %>
-      <% if search_result.show_taxo? || Rails.configuration.try(:show_classification_from_tree) %>
-        <%= render(partial: 'instances/taxo/widgets', locals: { instance: search_result }) %>
-      <% end %>
-
+      <%= render(partial: 'instances/taxo/widgets', locals: { instance: search_result }) %>
       <%= render(partial: 'draft', locals: { search_result: search_result }) %>
       <%= render(partial: 'record_debug', locals: {search_result: search_result}) if @debug %>
     </a></td>

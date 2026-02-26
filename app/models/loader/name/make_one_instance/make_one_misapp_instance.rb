@@ -11,13 +11,13 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
   end
 
   def create
+    return parent_using_existing if @loader_name.parent
+                                                .preferred_match
+                                                .use_existing_instance == true
     return already_noted if @match.relationship_instance_id.present?
     return misapp_already_attached if misapp_already_attached?
     return parent_no_preferred_match if @loader_name.parent
                      .preferred_match.blank?
-    return parent_using_existing if @loader_name.parent
-                                                .preferred_match
-                                                .use_existing_instance == true
     return parent_no_standalone if @loader_name.parent.preferred_match.try("standalone_instance_id").blank?
     return no_relationship_instance_type if @match
                                             .relationship_instance_type_id

@@ -222,3 +222,13 @@ div#change-category-widgets {
 .select2-container {
     width: 100% !important;
 }
+
+.print-profile-link {
+  margin-left: 8px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.print-profile-link:hover {
+  color: #333;
+}

@@ -10,6 +10,18 @@ xtable.search-results.for-print tr td {
   border: 1px solid black;
 }
 
+tr.search-result.instance .profile-details-header {
+  margin-top: 1.2em;
+  margin-bottom: 0;
+}
+
+tr.search-result.profile-item .profile-item-header {
+  background: #D9D9D9;
+  padding: 10px 5px;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
 tr.search-result.heading {
   font-weight: bold;
   font-size: 15pt;
@@ -86,7 +98,6 @@ tr.search-result.excluded-header {
   height: 4em;
 }
 
- 
 span.compiler-note {
   background: lightgreen;
   color: black;

@@ -38,7 +38,7 @@ module InstanceTreeable
       .joins('JOIN tree t ON tve.tree_version_id = t.current_tree_version_id')
       .where(id: id)
       .where('t.is_read_only = false')
-      .select('instance.id, t.name AS name')
+      .select('instance.id, t.name AS tree_name, tree_element.excluded AS excluded')
   end
 
   def in_workspace?(workspace)

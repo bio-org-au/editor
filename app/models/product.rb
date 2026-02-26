@@ -63,4 +63,10 @@ class Product < ApplicationRecord
   scope :with_context_and_tree, ->(context_id) {
     where(context_id: context_id).where.not(tree_id: nil)
   }
+
+  def has_the_same_reference?(instance)
+    return true unless has_default_reference
+
+    instance&.reference_id == reference_id
+  end
 end

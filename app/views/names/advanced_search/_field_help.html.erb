@@ -150,10 +150,12 @@
 <h6>Duplication Assertions</h6>
 <table class="table table-striped">
   <% [
-      {field_name: 'is-a-duplicate:', description: "marked as a duplicate"},
-      {field_name: 'is-not-a-duplicate:', description: "not marked as a duplicate"},
+      {field_name: 'is-a-duplicate:', description: "marked as a duplicate; no arguments"},
+      {field_name: 'is-not-a-duplicate:', description: "not marked as a duplicate; no arguments"},
       {field_name: 'duplicate-simple-names:', description: "not actually an assertion, but related: more than one name with the same 'simple' name value"},
-      {field_name: 'duplicate-full-names:', description: "not actually an assertion, but related: more than one name with the same 'full' name value"},
+      {field_name: 'duplicate-full-names:', description: "not actually an assertion, but related: more than one name with the same 'full' name value; no arguments"},
+      {field_name: 'master-id:', description: "the master via its ID and all its duplicates; no arguments"},
+      {field_name: 'is-a-duplicate-and-master:', description: "records marked as both a master and a duplicate - nested duplication; no arguments, includes common and cultivars"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">

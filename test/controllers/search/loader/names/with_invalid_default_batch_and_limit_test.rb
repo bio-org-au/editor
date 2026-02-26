@@ -29,12 +29,12 @@ class SearchLoaderNameInvalidDefaultBatchAndLimitTest < ActionController::TestCa
                    user_full_name: "Fred Jones",
                    groups: [:login, :"batch-loader"] })
     assert_response :success
-    assert_select "#search-results-summary",
-                  /Please set a default batch/,
-                  "Should be asked to set a default batch"
+    assert_not_select "#search-results-summary",
+                      /Please set a default batch/,
+                     "Should NOT be asked to set a default batch"
     
     qs_field_value = css_select("#query-string-field[value]")
-    assert_match /Hardenbergia violacea  limit: 10/, qs_field_value.attr('value').to_s,
+    assert_match /Hardenbergia violacea *limit: 10/, qs_field_value.to_s,
                 'Query string with limit should be retained'
     
   end

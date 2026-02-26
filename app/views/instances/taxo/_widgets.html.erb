@@ -1,20 +1,15 @@
-      <span class="taxo-icon-container no-decoration">
-      <% if instance.name.excluded_concept? %>
-        <%= editor_icon('ban','',class: '') %>
-        <span class='small strong' title="Excluded from the accepted taxonomy">
-          <%= ShardConfig.classification_tree_key %>
-        </span>
-      <% else %>
-        <% if Rails.configuration.try(:show_classification_from_tree) %>
-          <% in_taxon_key = instance.in_published_trees.pluck(:name).join(', ') %>
-        <% else %>
-          <% in_taxon_key = ShardConfig.classification_tree_key %>
-        <% end %>
-
-        <%= editor_icon('check','',class: '') if in_taxon_key.present? %>
-        <span class='small strong' title="In taxonomy">
-          <%= in_taxon_key %>
-        </span>
-      <% end %>
+<span class="taxo-icon-container no-decoration">
+  <% instance.in_published_trees.each do |pt| %>
+    <% if pt.excluded %>
+      <%= editor_icon('ban','',class: '') %>
+      <span class='small strong' title="Excluded from the accepted taxonomy">
+        <%= pt.tree_name %>
       </span>
-
+    <% else %>
+      <%= editor_icon('check','',class: '') %>
+      <span class='small strong' title="In taxonomy">
+        <%= pt.tree_name %>
+      </span>
+    <% end %>
+  <% end %>
+</span>

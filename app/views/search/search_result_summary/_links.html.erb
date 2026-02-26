@@ -1,7 +1,7 @@
 
 
 
-<%= link_to(%Q(#{@search.parsed_request.query_target.capitalize} "#{@search.parsed_request.query_string}" ),
+<%= link_to(%Q(#{@search.parsed_request.query_target.capitalize} "#{@search.parsed_request.query_string}"  #{@search.parsed_request.note_to_user} ),
             search_path(query_string: "#{@search.parsed_request.query_string}",
                         query_target: "#{params[:query_target]}"),
                         title: 'Rerun the query.') %>

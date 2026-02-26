@@ -116,5 +116,14 @@ from comment where comment.author_id = author.id)" },
                            where_clause: " duplicate_of_id = ?",
                            multiple_values_where_clause:
                                 " duplicate_of_id in (?)" },
+    "is-a-duplicate-and-master:" => { where_clause: " id in (select id
+                                                               from author author_dupe_master 
+                                                              where id in (select duplicate_of_id 
+                                                                             from author author_dupes
+                                                                            where duplicate_of_id is not null)
+                                                              and duplicate_of_id is not null)",
+                                      takes_no_arg: true},
+    "master-id:" => { where_clause: " id = ? or
+                                 duplicate_of_id = ?" },
   }.freeze
 end

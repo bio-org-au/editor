@@ -51,5 +51,49 @@ RSpec.describe Product, type: :model do
       expect(result).not_to include(product_other_context)
     end
   end
+
+  describe '#has_the_same_reference?' do
+    let(:reference) { create(:reference) }
+    let(:other_reference) { create(:reference) }
+
+    context 'when product does not have a default reference' do
+      let(:product) { create(:product, has_default_reference: false, reference: reference) }
+      let(:instance) { create(:instance, reference: other_reference) }
+
+      it 'returns true regardless of instance reference' do
+        expect(product.has_the_same_reference?(instance)).to be true
+      end
+
+      it 'returns true when instance is nil' do
+        expect(product.has_the_same_reference?(nil)).to be true
+      end
+    end
+
+    context 'when product has a default reference' do
+      let(:product) { create(:product, has_default_reference: true, reference: reference) }
+
+      context 'and instance has the same reference' do
+        let(:instance) { create(:instance, reference: reference) }
+
+        it 'returns true' do
+          expect(product.has_the_same_reference?(instance)).to be true
+        end
+      end
+
+      context 'and instance has a different reference' do
+        let(:instance) { create(:instance, reference: other_reference) }
+
+        it 'returns false' do
+          expect(product.has_the_same_reference?(instance)).to be false
+        end
+      end
+
+      context 'and instance is nil' do
+        it 'returns false' do
+          expect(product.has_the_same_reference?(nil)).to be false
+        end
+      end
+    end
+  end
 end
 

@@ -1,0 +1,21 @@
+
+<tr class="search-result instance">
+  <td class="width-1-percent"></td>
+  <td class="text name main-content" colspan="5">
+    <h1>
+      <span class='instance full-name'>
+        <%= search_result.name.try('full_name') %>
+        <% if search_result.name.try('name_status').present? %>
+          [<%= search_result.name.try('name_status').try('name') %>]
+        <% end %>
+      </span>
+    </h1>
+
+    <% if search_result.product_item_configs.present?%>
+      <h2 class="profile-details-header">
+        Profile Details
+      </h2>
+    <% end %>
+  </td>
+</tr>
+

@@ -1,0 +1,31 @@
+
+<tr class="search-result profile-item">
+  <td class="width-1-percent"></td>
+  <td class="text profile-item main-content" colspan="5">
+    <div class="profile-item-content">
+      <% if search_result.product_item_config.present? %>
+        <h3 class="profile-item-header"><strong><%= search_result.product_item_config.display_html %></strong></h3>
+      <% end %>
+      <% if search_result.profile_text.present? %>
+        <div class="profile-text" style="margin-top: 5px;">
+          <%= markdown_to_html(search_result.profile_text.value_md.to_s) %>
+        </div>
+      <% end %>
+      <% if search_result.profile_item_references.present? %>
+        <div class="profile-references" style="margin-top: 10px;">
+          <strong>References:</strong>
+          <% search_result.profile_item_references.each do |pir| %>
+            <div style="margin-left: 15px;">
+              <%= pir.reference.citation if pir.reference %>
+              <%= display_pages(pir.reference.pages) if pir.reference %>
+              <% if pir.annotation.present? %>
+                <br><em><%= pir.annotation %></em>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </td>
+</tr>
+

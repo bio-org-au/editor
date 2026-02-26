@@ -19,12 +19,13 @@ RSpec.describe InstanceTreeable do
           taxon_id: tree_element.id)
       end
 
-      it 'returns instances in published trees' do
+      it 'returns the instance with tree details' do
         result = instance.in_published_trees
 
         expect(result).to be_present
         expect(result.first.id).to eq(instance.id)
-        expect(result.first[:name]).to eq('Published Tree')
+        expect(result.first[:tree_name]).to eq('Published Tree')
+        expect(result.first[:excluded]).to eq(tree_element.excluded)
       end
     end
 
@@ -87,7 +88,7 @@ RSpec.describe InstanceTreeable do
         result = instance.in_published_trees
 
         expect(result.size).to eq(2)
-        tree_names = result.map { |r| r[:name] }
+        tree_names = result.map { |r| r[:tree_name] }
         expect(tree_names).to include('Published Tree', 'Second Published Tree')
       end
     end
@@ -121,7 +122,7 @@ RSpec.describe InstanceTreeable do
         result = instance.in_published_trees
 
         expect(result.length).to eq(1)
-        expect(result.first[:name]).to eq('Editable Tree')
+        expect(result.first[:tree_name]).to eq('Editable Tree')
       end
     end
   end

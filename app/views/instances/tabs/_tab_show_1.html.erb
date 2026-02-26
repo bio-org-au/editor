@@ -61,7 +61,15 @@
 <% end %>
 
 <% if Rails.configuration.try('profile_v2_aware') && @instance.profile_items.present? %>
-  <h5>Profile</h5>
+  <h5>
+    Profile
+    <%= link_to search_path(query_string: "id: #{@instance.id} show-profiles: print:", query_target: 'Instances'),
+        title: 'Print profile details',
+        class: 'print-profile-link pull-right' do %>
+      Print
+      <i class="fa fa-print"></i>
+    <% end %>
+  </h5>
   <dl class="dl-horizontal">
     <% @instance.profile_items.includes(:product_item_config, :profile_text).each do |profile_item| %>
       <dt><%= profile_item.product_item_config.try(:display_html) %></dt>

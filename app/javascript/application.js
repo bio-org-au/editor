@@ -90,6 +90,7 @@ import "simplemde_min";
 import "simple_mde_wysiwyg";
 
 import "prompt_form_save";
+import "print_link";
 
 import Rails from '@rails/ujs';
 

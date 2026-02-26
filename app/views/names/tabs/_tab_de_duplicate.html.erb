@@ -1,7 +1,14 @@
 <%= render partial: 'names/tabs/tabs_row_2' %>
 <% increment_tab_index %>
 
-<% if @name.duplicate? %>
+
+<% if !@name.duplicate? %>
+  Not a duplicate
+<% elsif @name.duplicate_of_id.blank? %>
+  No master record found
+<% elsif @name.duplicate_of.duplicate_of_id.present? %>
+  Master record is also a duplicate - we do not handle that on this tab
+<% else %>
   <h5>Rewire duplicate</h5>
   <div>
   <%= render partial: 'names/de_duplication/index' %>

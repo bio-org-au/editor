@@ -29,13 +29,11 @@ class SearchLoaderNameWithoutAnyBatchIdentTest < ActiveSupport::TestCase
                                                           "*",
                                                           current_user:
                                                           build_edit_user)
-    # TODO: rails 7.1 has a better way
-    # https://blog.saeloun.com/2023/07/17/
-    # add-ability-to-match-exception-messages-to-assert-raises-assertion/
-    error = assert_raises(RuntimeError) do
-      Search::Base.new(params)
-    end
-    assert_match(/Please set a default batch, or specify a/i, error.message)
-    assert_match(/'batch-id:', a 'batch-name:' or 'any-batch:'/i, error.message)
+    search = Search::Base.new(params)
+    assert search.executed_query.results.is_a?(ActiveRecord::Relation),
+           "Results should be an ActiveRecord::Relation."
+    assert_equal 1,
+                 search.executed_query.results.size,
+                 "Exactly 1 result is expected."
   end
 end

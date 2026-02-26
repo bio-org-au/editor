@@ -25,7 +25,18 @@ RSpec.describe InstancesController, type: :controller do
         tabs = controller.send(:tabs_to_offer)
         expect(tabs).to include("tab_show_1", "tab_edit", "tab_edit_notes")
         expect(tabs).to include("tab_unpublished_citation", "tab_synonymy", "tab_classification")
-        expect(tabs).to include("tab_edit_profile", "tab_profile_v2", "tab_comments", "tab_synonymy")
+        expect(tabs).to include("tab_edit_profile", "tab_comments", "tab_synonymy")
+      end
+
+      it "includes 'tab_profile_v2' when row-type is not 'citing_instance_within_name_search'" do
+        tabs = controller.send(:tabs_to_offer)
+        expect(tabs).to include("tab_profile_v2")
+      end
+
+      it "excludes 'tab_profile_v2' when row-type is 'citing_instance_within_name_search'" do
+        allow(controller).to receive(:params).and_return({"row-type" => "citing_instance_within_name_search"})
+        tabs = controller.send(:tabs_to_offer)
+        expect(tabs).not_to include("tab_profile_v2")
       end
 
       it "includes 'tab_copy_to_new_reference' when row-type is 'instance_as_part_of_concept_record'" do

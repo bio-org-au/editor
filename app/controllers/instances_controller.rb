@@ -285,7 +285,7 @@ class InstancesController < ApplicationController
       offer << "tab_classification"
       offer << "tab_profile_details" if @instance.profile? && @working_draft.present? && @working_draft.tree.config.present?
       offer << "tab_edit_profile" if @instance.profile? && @instance.show_taxo?
-      offer << "tab_profile_v2"
+      offer << "tab_profile_v2" if params["row-type"] != "citing_instance_within_name_search"
     end
     offer << "tab_comments"
     offer << "tab_copy_to_new_reference" if @instance.standalone? && params["row-type"] == "instance_as_part_of_concept_record"

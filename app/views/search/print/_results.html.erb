@@ -3,11 +3,17 @@
       <% display_as = record.class.name == 'Hash' ? record[:display_as] || record.class.to_s  : record.try('display_as') || record.class.to_s %>
       <%# TODO: standardize on strings or symbols, at least for the instance record variants. %>
       <% case display_as %>
-      <% when 'Loader Name' %>  
-        <%= render partial: 'application/search_results/print/records/loader/name', 
+      <% when 'Loader Name' %>
+        <%= render partial: 'application/search_results/print/records/loader/name',
           locals: {search_result: record, give_me_focus: nil} %>
-      <% when 'Name Review Comment' %>  
-        <%= render partial: 'application/search_results/print/records/loader/name/review/comments', 
+      <% when 'Name Review Comment' %>
+        <%= render partial: 'application/search_results/print/records/loader/name/review/comments',
+          locals: {search_result: record, give_me_focus: nil} %>
+      <% when 'Instance' %>
+        <%= render partial: 'application/search_results/print/records/instance',
+          locals: {search_result: record, give_me_focus: nil} %>
+      <% when 'Profile::ProfileItem' %>
+        <%= render partial: 'application/search_results/print/records/profile_item',
           locals: {search_result: record, give_me_focus: nil} %>
       <% else %>
         <tr>

@@ -23,13 +23,8 @@
 class Name::DeDuper
   def initialize(duplicate_name)
     @duplicate = duplicate_name
-    identify_master
+    @master = @duplicate&.duplicate_of
     identify_dependencies
-    debug("Name::DeDuper#initialize - de-duplicating name: #{@duplicate.id} #{@duplicate.full_name}")
-  end
-
-  def de_dupe
-    debug("De-duplicating.... not actually...")
   end
 
   def preview
@@ -151,24 +146,6 @@ class Name::DeDuper
   end
 
   private
-
-  def identify_master
-    @master = @duplicate.duplicate_of
-    validate_master
-  end
-
-  # NOTE: exclude the case of duplicate of a duplicate, because that
-  # trail of duplicates could lead back to the current duplicate
-  # In this early version we want to keep things simple
-  def validate_master
-    throw "No master" if @master.blank?
-    debug("Master name: #{@master.id} #{@master.full_name}")
-    return if @master.duplicate_of_id.blank?
-
-    debug("Master is also a duplicate")
-    throw "We do not de-duplicate where the master is also a duplicate"
-  end
-
   def identify_dependencies
     @children = @duplicate.children
     debug("children: #{@children.size}")
@@ -189,7 +166,6 @@ class Name::DeDuper
   end
 
   def debug(msg)
-    # Rails.logger.debug('De-duplicating....')
-    puts(msg)
+    Rails.logger.debug("Name::DeDuper: #{msg}")
   end
 end

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user do
-    user_name { "Sample Name" }
+    sequence(:user_name) { |n| "sample name #{n}" }
     given_name { "Sample Given name" }
     family_name { "Sample Family name" }
     lock_version { 1 }

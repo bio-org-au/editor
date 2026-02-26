@@ -1,3 +1,93 @@
+- :date: 04-Feb-2026
+  :jira_id: '5710'
+  :description: |-
+    Name De-duplication: Add text on tab explaining that nested duplicates are not handled there - instead of failing silently
+- :date: 03-Feb-2026
+  :jira_id: '5511'
+  :description: |-
+    Query duplicates for a record: add search directive <code>master-id:</code> to Author and documented it for Author, Name, and Reference
+- :date: 03-Feb-2026
+  :jira_id: '5709'
+  :description: |-
+    Duplicate query: add search directive <code>is-a-duplicate-and-master:</code> to Author, Name, and Reference
+- :date: 03-Feb-2026
+  :jira_id: '178'
+  :jira_project: FLOR
+  :description: |-
+    Don't show the Profile tab for instance that are part of a concept within a name
+- :date: 29-Jan-2026
+  :jira_id: '161'
+  :jira_project: FLOR
+  :description: |-
+    Fix for issue where classification tree icons were incorrectly showing in instance search results and tab details
+- :date: 27-Jan-2026
+  :jira_id: '174'
+  :jira_project: FLOR
+  :description: |-
+    Bypass the print dialog when clicking the print icon link in the Profile section header in the Instance view tab
+- :date: 23-Jan-2026
+  :jira_id: '143'
+  :jira_project: FLOR
+  :description: |-
+    Only show the "Create draft taxonomy" menu item for users with roles or for accepted trees
+- :date: 22-Jan-2026
+  :jira_id: '174'
+  :jira_project: FLOR
+  :description: |-
+    Add a print icon link to the Profile section header in the Instance view tab
+- :date: 21-Jan-2026
+  :jira_id: '177'
+  :jira_project: FLOR
+  :description: |-
+    Additional fix for the issue where Tree tab wasn't properly working for users with treebuild simple AD group
+- :date: 20-Jan-2026
+  :jira_id: '177'
+  :jira_project: FLOR
+  :description: |-
+    Fixup issue where Tree tab was not showing for users with treebuild simple AD group
+- :date: 19-Jan-2026
+  :jira_id: '173'
+  :jira_project: FLOR
+  :description: |-
+    Some css stying updates for the print view of profile items
+- :date: 19-Jan-2026
+  :jira_id: '5673'
+  :description: |-
+    Batch Loader: create instance for misapplication - first check is now whether the parent is using an existing instance
+- :date: 15-Jan-2026
+  :jira_id: '5621'
+  :description: |-
+    Reference Search: make the <code>citation:</code> search directive the default again
+- :date: 14-Jan-2026
+  :jira_id: '173'
+  :jira_project: FLOR
+  :description: |-
+    Add support for print directive in instance searches
+- :date: 14-Jan-2026
+  :jira_id: '173'
+  :jira_project: FLOR
+  :description: |-
+    Add support for print directive in instance searches
+- :date: 14-Jan-2026
+  :jira_id: '177'
+  :jira_project: FLOR
+  :description: |-
+    Hide Tree tab when the current product reference does not match the instance reference
+- :date: 13-Jan-2026
+  :jira_id: '5634'
+  :description: |-
+    Loader Name Search: add a note in the search result summary to say "any-batch" has been applied when it has been
+- :date: 09-Jan-2026
+  :jira_id: '172'
+  :jira_project: FLOR
+  :description: |-
+    Update the query help and examples to include "draft:", "not-draft:" and "show-profiles:"
+- :date: 09-Jan-2026
+  :jira_id: '5634'
+  :description: |-
+    Loader Name Search: make "any-batch:" the default if no batch is set as a default or specified in the search
+- :date: 03-Feb-2026
+  :release: true
 - :date: 06-Jan-2026
   :jira_id: '5667'
   :description: |-

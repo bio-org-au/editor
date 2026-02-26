@@ -13,6 +13,7 @@
       {field_name: 'extra-information-exact:', description: "extra identifying information, supply your own wildcards *"},
       {field_name: 'notes:', description: "search on notes, add your own wildcards *"},
       {field_name: 'duplicate-of-id:', description: "ID of the master record for records marked as a duplicate"},
+      {field_name: 'master-id:', description: "the master via its ID and all its duplicates; no arguments"},
       ].each do |val| %>
   <tr>
     <td class="width-20-percent">
@@ -39,6 +40,7 @@
   <% [
       {field_name: 'is-a-duplicate:', description: "marked as a duplicate"},
       {field_name: 'is-not-a-duplicate:', description: "not marked as a duplicate"},
+      {field_name: 'is-a-duplicate-and-master:', description: "records marked as both a master and a duplicate - nested duplication; no arguments"},
       {field_name: 'has-abbrev:', description: "has an abbreviation"},
       {field_name: 'has-no-abbrev:', description: "has no abbreviation"},
       {field_name: 'has-name:', description: "has a name"},
