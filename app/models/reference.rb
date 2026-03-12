@@ -118,6 +118,10 @@ class Reference < ApplicationRecord
     instances.size.positive?
   end
 
+  def not_used_by_any_related_table?
+    instances.blank? && profile_item_references.blank?
+  end
+
   def validate
     errors[:base].size.zero?
   end

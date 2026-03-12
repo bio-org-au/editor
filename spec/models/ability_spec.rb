@@ -385,9 +385,19 @@ RSpec.describe Ability, type: :model do
       let(:instance) { create(:instance) }
       let!(:reference) { create(:reference) }
 
-      it 'cannot update references when no matching profile item reference exists' do
-        allow(reference).to receive(:instances).and_return([])
-        expect(subject.can?(:update, reference)).to eq false
+      context 'when reference is not used by any related table' do
+        it 'can update references with no instances and no profile_item_references' do
+          allow(reference).to receive(:not_used_by_any_related_table?).and_return(true)
+          expect(subject.can?(:update, reference)).to eq true
+        end
+      end
+
+      context 'when reference has instances' do
+        it 'cannot update references' do
+          allow(reference).to receive(:not_used_by_any_related_table?).and_return(false)
+          allow(reference).to receive(:instances).and_return([instance])
+          expect(subject.can?(:update, reference)).to eq false
+        end
       end
 
       context "with profile item reference" do

@@ -1,7 +1,7 @@
 # NOTE: This is primarily for TeamCity use atm.
 #
 # Use the official Ruby image as a base image
-FROM ruby:3.4.5-bullseye
+FROM ruby:3.4.8-bookworm
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
   build-essential \

@@ -9,6 +9,36 @@ RSpec.describe(User, type: :model) do
     it { is_expected.to(have_many(:product_roles).through(:user_product_roles)) }
     it { is_expected.to(have_many(:products).through(:product_roles)) }
     it { is_expected.to(have_many(:roles).through(:product_roles)) }
+    it { is_expected.to(have_many(:user_product_role_vs)) }
+  end
+
+  describe "#role_names" do
+    let(:user) { create(:user) }
+    let!(:role1) { create(:role, name: "admin") }
+    let!(:role2) { create(:role, name: "editor") }
+    let!(:product) { create(:product) }
+    let!(:product_role1) { create(:product_role, product:, role: role1) }
+    let!(:product_role2) { create(:product_role, product:, role: role2) }
+    let!(:user_product_role1) { create(:user_product_role, product_role: product_role1, user:) }
+    let!(:user_product_role2) { create(:user_product_role, product_role: product_role2, user:) }
+
+    it "returns an array of role names" do
+      expect(user.role_names).to(match_array(["admin", "editor"]))
+    end
+
+    it "memoizes the result" do
+      user.role_names
+      expect(user.roles).not_to(receive(:pluck))
+      user.role_names
+    end
+
+    context "when user has no roles" do
+      let(:user_without_roles) { create(:user) }
+
+      it "returns an empty array" do
+        expect(user_without_roles.role_names).to(eq([]))
+      end
+    end
   end
 
   describe "#is?" do

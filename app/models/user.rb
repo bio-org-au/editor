@@ -52,8 +52,12 @@ class User < ApplicationRecord
   before_create :set_audit_fields, :force_lower_case_user_name
   before_update :set_updated_by
 
+  def role_names
+    @role_names ||= roles.pluck(:name)
+  end
+
   def is?(requested_role_name)
-    roles.where(name: requested_role_name).any?
+    role_names.include?(requested_role_name)
   end
 
   def available_product_from_roles

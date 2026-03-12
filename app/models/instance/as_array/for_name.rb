@@ -53,16 +53,21 @@ class Instance::AsArray::ForName < Array
   end
 
   def sorted_instances(instances)
-    instances.includes([:name]).sort do |i1, i2|
-      sort_fields(i1) <=> sort_fields(i2)
-    end
+    all = instances.to_a
+    drafts, non_drafts = all.partition(&:draft?)
+    non_drafts.sort { |i1, i2| sort_fields(i1) <=> sort_fields(i2) } +
+      drafts.sort_by { |i| author_name(i) }.reverse
   end
 
   def sort_fields(instance)
     [instance.reference.year || instance.reference.try("parent").try("year") || NO_YEAR,
      instance.instance_type.primaries_first,
      instance.reference.iso_publication_date || instance.reference.try("parent").try("iso_publication_date") || NO_YEAR,
-     instance.reference.author.try("name") || "x"]
+     author_name(instance)]
+  end
+
+  def author_name(instance)
+    instance.reference.author.try("name") || "x"
   end
 
   def show_standalone_instance(instance)

@@ -140,10 +140,11 @@ class Ability
     end
     can :create, Reference
     can :update, Reference do |reference|
-      reference.instances.blank? &&
-      (user.product_from_context.nil? || Profile::ProfileItemReference.where(reference_id: reference.id)
-        .joins(profile_item: :product_item_config)
-        .where("product_item_configs_profile_item.product_id = ?", user.product_from_context&.id).any?)
+      reference.not_used_by_any_related_table? ||
+        (reference.instances.blank? &&
+        (user.product_from_context.nil? || Profile::ProfileItemReference.where(reference_id: reference.id)
+          .joins(profile_item: :product_item_config)
+          .where("product_item_configs_profile_item.product_id = ?", user.product_from_context&.id).any?))
     end
     can "authors", :all
     can "menu", "new"
