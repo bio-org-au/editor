@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.4.8"
 
-gem 'rails', '~> 8.0.4'
+gem 'rails', '~> 8.1.0'
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -60,7 +60,7 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem "launchy"
   gem "minitest"
-  gem "minitest-rails"
+  gem "minitest-rails", "~> 8.1.0"
   gem "minitest-reporters"
   # NoMethodError: assert_template has been extracted to a gem. To continue using it, add:
   gem "minitest-stub_any_instance"
