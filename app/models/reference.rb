@@ -136,7 +136,7 @@ class Reference < ApplicationRecord
   end
 
   def pages_useless?
-    pages.blank? || pages.match(/null - null/)
+    pages.blank? || pages.match(/\Anull - null\z/)
   end
 
   def self.find_authors

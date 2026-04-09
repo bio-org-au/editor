@@ -38,7 +38,7 @@
 #
 FactoryBot.define do
   factory :product do
-    name { "Sample Name" }
+    sequence(:name) { |n| "Sample Name #{n}" }
     is_current { true }
     is_available { true }
     source_system { "Sample Source system" }

@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.bdr_unplaced_v AS/
+.,/^ *$/d
+=
+wq

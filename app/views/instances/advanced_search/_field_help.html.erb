@@ -262,8 +262,9 @@ word "darwin" followed by a space, one or more other characters followed by "bar
          {field_name: 'is-novelty:', description: "Primary instance type e.g. tax. nov.."},
          {field_name: 'is-tax-nov-for-orth-var-name:', description: "Instance is a tax. nov. type but the name is an orth. var."},
          {field_name: 'species-or-below-syn-with-genus-or-above:',
-          description: "Instance synonymises a name ranked species or below with
-       a name that is genus or above."},
+          description: "Instance synonymises a name ranked species or below with a name that is genus or above."},
+         {field_name: 'nov-lacks-replaced-syn:',
+          description: "Instances of the type 'nom. nov.' or 'nom. et stat. nov.' that do not have a 'replaced synonym' relationship associated with them"},
      ].each do |val| %>
     <tr>
       <td class="width-20-percent">

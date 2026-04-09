@@ -44,7 +44,7 @@ module NameValidatable
                            allow_blank: true,
                            message: "cannot be the same as the first parent",
                            unless: -> { cultivar_hybrid? }
-    validates :second_parent_id, absence: true, unless: -> { requires_parent_2? }
+    validates :second_parent_id, absence: true, unless: -> { takes_parent_2? }
     validates :verbatim_rank, length: { maximum: 50 }
     validates :published_year,
               numericality: { greater_than_or_equal_to: 1700,

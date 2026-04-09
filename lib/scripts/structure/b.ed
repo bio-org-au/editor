@@ -1,0 +1,4 @@
+/CREATE FUNCTION public.get_hstore_tree.tve_id text. RETURNS public\.hstore/,/RETURN result_hstore;/d
+d
+d
+wq

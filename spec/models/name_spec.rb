@@ -83,6 +83,9 @@ RSpec.describe Name, type: :model do
   describe "#no_name_resource_dependents?" do
     let(:name) { create(:name) }
 
+    before do
+      allow(Rails.configuration).to receive(:try).with(:resource_tab_enabled).and_return(true)
+    end
     context "when name has name_resources" do
       let!(:name_resource) { create(:name_resource, name: name) }
 

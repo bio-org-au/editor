@@ -24,10 +24,10 @@ RSpec.describe Instance::AsArray::ForName, type: :model do
     instance
   end
 
-  describe "sorting draft instances last" do
+  describe "sorting draft instances" do
     let!(:non_draft_old) { create_instance(name: name, draft: false, author_name: "Alpha", year: 1990, iso_date: "1990", primary: true) }
     let!(:non_draft_new) { create_instance(name: name, draft: false, author_name: "Beta", year: 2000, iso_date: "2000") }
-    let!(:draft_by_alpha) { create_instance(name: name, draft: true, author_name: "Alpha", year: 2020, iso_date: "2020") }
+    let!(:draft_by_gamma) { create_instance(name: name, draft: true, author_name: "Gamma", year: 2020, iso_date: "2020") }
     let!(:draft_by_zeta) { create_instance(name: name, draft: true, author_name: "Zeta", year: 2021, iso_date: "2021") }
 
     subject { described_class.new(name) }
@@ -36,23 +36,63 @@ RSpec.describe Instance::AsArray::ForName, type: :model do
     let(:draft_results) { standalone_results.select(&:draft?) }
     let(:non_draft_results) { standalone_results.reject(&:draft?) }
 
-    it "places all draft instances after non-draft instances" do
-      first_draft_idx = subject.results.index(draft_results.first)
-      last_non_draft_idx = subject.results.index(non_draft_results.last)
+    it "sorts all instances chronologically by year" do
+      years = standalone_results.map { |i| i.reference.year.to_i }
 
-      expect(first_draft_idx).to be > last_non_draft_idx
+      expect(years).to eq([1990, 2000, 2020, 2021])
     end
 
-    it "sorts draft instances by author name in descending order" do
-      author_names = draft_results.map { |i| i.reference.author.name }
+    it "sorts draft instances chronologically by year" do
+      years = draft_results.map { |i| i.reference.year.to_i }
 
-      expect(author_names).to eq(["Zeta", "Alpha"])
+      expect(years).to eq([2020, 2021])
     end
 
     it "sorts non-draft instances by year ascending" do
       years = non_draft_results.map { |i| i.reference.year.to_i }
 
       expect(years).to eq([1990, 2000])
+    end
+  end
+
+  describe "draft instances with same year as non-drafts" do
+    let!(:non_draft_2020) { create_instance(name: name, draft: false, author_name: "Alpha", year: 2020, iso_date: "2020", primary: true) }
+    let!(:draft_2020) { create_instance(name: name, draft: true, author_name: "Beta", year: 2020, iso_date: "2020") }
+
+    subject { described_class.new(name) }
+
+    let(:standalone_results) { subject.results.select { |r| r.is_a?(Instance) && r.standalone? } }
+
+    it "places non-draft before draft when they have the same year" do
+      expect(standalone_results.map(&:id)).to eq([non_draft_2020.id, draft_2020.id])
+    end
+  end
+
+  describe "undated draft instances" do
+    let!(:non_draft) { create_instance(name: name, draft: false, author_name: "Alpha", year: 2000, iso_date: "2000", primary: true) }
+    let!(:dated_draft) { create_instance(name: name, draft: true, author_name: "Beta", year: 2020, iso_date: "2020") }
+    let!(:undated_draft_zeta) { create_instance(name: name, draft: true, author_name: "Zeta", year: nil, iso_date: nil) }
+    let!(:undated_draft_gamma) { create_instance(name: name, draft: true, author_name: "Gamma", year: nil, iso_date: nil) }
+
+    subject { described_class.new(name) }
+
+    let(:standalone_results) { subject.results.select { |r| r.is_a?(Instance) && r.standalone? } }
+
+    it "places undated drafts after dated drafts" do
+      ids = standalone_results.map(&:id)
+      dated_draft_idx = ids.index(dated_draft.id)
+      undated_draft_zeta_idx = ids.index(undated_draft_zeta.id)
+      undated_draft_gamma_idx = ids.index(undated_draft_gamma.id)
+
+      expect(undated_draft_zeta_idx).to be > dated_draft_idx
+      expect(undated_draft_gamma_idx).to be > dated_draft_idx
+    end
+
+    it "sorts undated drafts alphabetically by author" do
+      undated_drafts = standalone_results.select { |i| i.draft? && i.reference.year.nil? }
+      author_names = undated_drafts.map { |i| i.reference.author.name }
+
+      expect(author_names).to eq(["Gamma", "Zeta"])
     end
   end
 
@@ -76,11 +116,11 @@ RSpec.describe Instance::AsArray::ForName, type: :model do
 
     subject { described_class.new(name) }
 
-    it "sorts by author name in descending order" do
+    it "sorts by year chronologically" do
       standalone_results = subject.results.select { |r| r.is_a?(Instance) && r.standalone? }
-      author_names = standalone_results.map { |i| i.reference.author.name }
+      years = standalone_results.map { |i| i.reference.year.to_i }
 
-      expect(author_names).to eq(["Zeta", "Alpha"])
+      expect(years).to eq([2020, 2021])
     end
   end
 
@@ -101,15 +141,11 @@ RSpec.describe Instance::AsArray::ForName, type: :model do
     let(:draft_instances) { all_instances.select(&:draft?) }
     let(:non_draft_instances) { all_instances.reject(&:draft?) }
 
-    it "places draft standalone instances after non-draft standalone instances" do
-      standalone_results = all_instances.select(&:standalone?)
-      draft_standalones = standalone_results.select(&:draft?)
-      non_draft_standalones = standalone_results.reject(&:draft?)
+    it "sorts standalone instances chronologically with non-drafts before drafts in same year" do
+      standalone_results = all_instances.select(&:standalone?).uniq(&:id)
+      years = standalone_results.map { |i| i.reference.year.to_i }
 
-      first_draft_idx = subject.results.index(draft_standalones.first)
-      last_non_draft_idx = subject.results.index(non_draft_standalones.last)
-
-      expect(first_draft_idx).to be > last_non_draft_idx
+      expect(years).to eq([2000, 2020, 2021])
     end
 
     it "includes both standalone and relationship draft instances in draft results" do
@@ -125,10 +161,10 @@ RSpec.describe Instance::AsArray::ForName, type: :model do
       expect(non_draft_ids).to include(relationship_non_draft.id)
     end
 
-    it "sorts draft standalone instances by author name in descending order" do
+    it "sorts draft standalone instances chronologically by year" do
       draft_standalones = all_instances.select { |i| i.standalone? && i.draft? }
-      draft_author_names = draft_standalones.map { |i| i.reference.author.name }
-      expect(draft_author_names).to eq(["Zeta", "Gamma"])
+      years = draft_standalones.map { |i| i.reference.year.to_i }
+      expect(years).to eq([2020, 2021])
     end
   end
 end

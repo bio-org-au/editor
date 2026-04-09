@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.tree_closure_v AS/
+.,/^ *$/d
+=
+wq

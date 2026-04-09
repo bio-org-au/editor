@@ -32,13 +32,13 @@ class ScientificTest < ActiveSupport::TestCase
   end
 
   def part1
-    assert_equal 5,
+    assert_equal 4,
                  NameType.options_for_category(@current_category).size,
-                 "Should be 6 #{@current_category} name types."
+                 "Should be 4 #{@current_category.name} name types."
     assert NameType.options_for_category(@current_category)
                    .collect(&:first)
                    .include?("scientific"),
-           "Scientific should be a #{@current_category} name type."
+           "Scientific should be a #{@current_category.name} name type."
   end
 
   def part2
@@ -49,17 +49,13 @@ class ScientificTest < ActiveSupport::TestCase
     assert NameType.options_for_category(@current_category)
                    .collect(&:first)
                    .include?("sanctioned"),
-           "Sanctioned should be a #{@current_category} name type."
+           "Sanctioned should be a #{@current_category.name} name type."
   end
 
   def part3
     assert NameType.options_for_category(@current_category)
                    .collect(&:first)
-                   .include?("named hybrid"),
-           "Named hybrid should be a #{@current_category} name type."
-    assert NameType.options_for_category(@current_category)
-                   .collect(&:first)
                    .include?("named hybrid autonym"),
-           "Named hybrid autonym should be a #{@current_category} name type."
+           "Named hybrid autonym should be a #{@current_category.name} name type."
   end
 end

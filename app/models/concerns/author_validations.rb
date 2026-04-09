@@ -10,6 +10,10 @@ module AuthorValidations
                           message: "can't be blank if abbrev is blank." }
     validates :name, length: { maximum: 1000,
                                  too_long: "%{count} characters is the maximum allowed" }
+    validates :name,
+              uniqueness: { unless: -> { name.blank? },
+                            case_sensitive: false,
+                            message: "has already been used" }
     validates :abbrev,
               presence: { if: -> { name.blank? },
                           unless: -> { duplicate_of_id.present? },

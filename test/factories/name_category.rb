@@ -31,7 +31,7 @@
 FactoryBot.define do
   factory :name_category do
     sort_order { 1 }
-    rdf_id { "Sample Rdf" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
     max_parents_allowed { 1 }
     min_parents_required { 1 }
     requires_family { true }

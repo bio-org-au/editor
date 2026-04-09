@@ -245,4 +245,81 @@ RSpec.describe Instance, type: :model do
       end
     end
   end
+
+  describe "#draft_for_sorting?" do
+    context "when instance is draft and has no profile items" do
+      before do
+        allow(instance).to receive(:draft).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns true" do
+        expect(instance.draft_for_sorting?).to be true
+      end
+    end
+
+    context "when instance is not draft and has no profile items" do
+      before do
+        allow(instance).to receive(:draft).and_return(false)
+        allow(instance).to receive(:profile_items).and_return([])
+      end
+
+      it "returns false" do
+        expect(instance.draft_for_sorting?).to be false
+      end
+    end
+
+    context "when instance is not draft but has draft profile items" do
+      let(:draft_profile_item) { double(is_draft: true) }
+
+      before do
+        allow(instance).to receive(:draft).and_return(false)
+        allow(instance).to receive(:profile_items).and_return([draft_profile_item])
+      end
+
+      it "returns true" do
+        expect(instance.draft_for_sorting?).to be true
+      end
+    end
+
+    context "when instance is not draft and has only non-draft profile items" do
+      let(:published_profile_item) { double(is_draft: false) }
+
+      before do
+        allow(instance).to receive(:draft).and_return(false)
+        allow(instance).to receive(:profile_items).and_return([published_profile_item])
+      end
+
+      it "returns false" do
+        expect(instance.draft_for_sorting?).to be false
+      end
+    end
+
+    context "when instance is draft and has draft profile items" do
+      let(:draft_profile_item) { double(is_draft: true) }
+
+      before do
+        allow(instance).to receive(:draft).and_return(true)
+        allow(instance).to receive(:profile_items).and_return([draft_profile_item])
+      end
+
+      it "returns true" do
+        expect(instance.draft_for_sorting?).to be true
+      end
+    end
+
+    context "when instance is not draft and has a mix of draft and non-draft profile items" do
+      let(:draft_profile_item) { double(is_draft: true) }
+      let(:published_profile_item) { double(is_draft: false) }
+
+      before do
+        allow(instance).to receive(:draft).and_return(false)
+        allow(instance).to receive(:profile_items).and_return([published_profile_item, draft_profile_item])
+      end
+
+      it "returns true" do
+        expect(instance.draft_for_sorting?).to be true
+      end
+    end
+  end
 end

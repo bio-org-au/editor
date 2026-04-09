@@ -40,7 +40,8 @@
               <% end %>
               <li role="presentation">
                 <a title="A product role you have">
-                  <%= "#{editor_icon('user-group')} #{product_role.product.name} #{product_role.role.name}".html_safe %>
+                  <%= "#{editor_icon('user-group')} #{product_role.product.name} #{product_role.role.name}:".html_safe %>
+                  <span class="role-description"><%= product_role.role&.description %></span>
                 </a>
             <% end %>
           <% end %>
@@ -66,7 +67,7 @@
 
   <% if can? 'loader/batch/review/mode', 'switch_off' %>
       <% unless @view_mode == ViewMode::STANDARD %>
-         <% if @current_user.edit? %>
+         <% if @current_user.edit? || Rails.configuration.try(:multi_product_tabs_enabled) %>
          <%= link_to "<i class=''></i> Switch out of Review Mode".html_safe,
                      switch_off_review_mode_path,
                      title: 'Stop seeing things as a reviewer would',

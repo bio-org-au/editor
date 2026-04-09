@@ -24,11 +24,11 @@ class CultivarHybridTest < ActiveSupport::TestCase
     current_category = name_categories(:cultivar_hybrid)
     assert_equal 1,
                  NameType.options_for_category(current_category).size,
-                 "Should be just 1 #{current_category} name type."
+                 "Should be just 1 #{current_category.name} name type."
     assert NameType
       .options_for_category(current_category)
       .collect(&:first)
       .include?("cultivar hybrid"),
-           "'cultivar hybrid' should be a #{current_category} name type."
+                "'cultivar hybrid' should be a #{current_category.name} name type."
   end
 end

@@ -19,8 +19,8 @@ FactoryBot.define do
   factory :instance_note_key do
     lock_version { 1 }
     deprecated { true }
-    name { "Sample Name" }
+    sequence(:name) { |n| "Sample Name #{n}" }
     sort_order { 1 }
-    rdf_id { "Sample Rdf" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
   end
 end

@@ -12,7 +12,7 @@
 #
 FactoryBot.define do
   factory :name_tag do
-    name { "Sample Name" }
+    sequence(:name) { |n| "Sample Name #{n}" }
     lock_version { 1 }
   end
 end

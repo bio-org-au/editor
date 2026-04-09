@@ -37,10 +37,10 @@ FactoryBot.define do
     has_parent { true }
     italicize { true }
     major { true }
-    sequence(:name) {|n| "Familia" }
+    name { "Familia" }
     sort_order { 1 }
     visible_in_name { true }
-    rdf_id { "Sample Rdf" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
     use_verbatim_rank { true }
     display_name { "Familia" }
 

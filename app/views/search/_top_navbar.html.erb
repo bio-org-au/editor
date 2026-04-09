@@ -78,13 +78,15 @@
       </li>
 
       <% if can?("de_duplicates", :index) %>
-      <li role="presentation" class="">
-        <%= link_to "De-duplicate",
-                    de_duplicates_index_path,
-                    class: "main-body-tab-link xhidden",
-                    remote: true,
-                    title: "De-duplicate names in bulk" %>
-      </li>
+        <% if @current_user.qa? || @current_user.product_from_context&.is_name_index? %>
+          <li role="presentation" class="">
+            <%= link_to "De-duplicate",
+                        de_duplicates_index_path,
+                        class: "main-body-tab-link xhidden",
+                        remote: true,
+                        title: "De-duplicate names in bulk" %>
+          </li>
+        <% end %>
       <% end %>
 
       <% if Rails.configuration.try('batch_loader_aware') && can?('loader/batches', 'process') %>
@@ -97,7 +99,7 @@
                       remote: true,
                       title: "Batch Loader work area" %>
         </li>
-      <% end %> 
+      <% end %>
 
 
     </ul>

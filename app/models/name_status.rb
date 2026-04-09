@@ -114,6 +114,8 @@ class NameStatus < ApplicationRecord
       na_default_and_deleted_options
     elsif name_category.cultivar?
       na_default_and_deleted_options
+    elsif name_category.named_hybrid?
+      scientific_options
     else
       na_option
     end

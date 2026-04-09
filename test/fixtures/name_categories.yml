@@ -167,3 +167,23 @@ cultivar_hybrid:
   takes_cultivar_scoped_parent: t
   takes_rank: t
   takes_verbatim_rank: t
+
+named_hybrid:
+  name: named hybrid
+  sort_order: 60
+  description_html: names entered and edited as named hybrids 
+  rdf_id:
+  min_parents_required: 1
+  max_parents_allowed: 2
+  parent_1_help_text: first parent is required
+  takes_hybrid_scoped_parent: f
+  requires_family: t
+  takes_name_element: t
+  takes_authors: t
+  takes_author_only: f
+  requires_name_element: t
+  requires_higher_ranked_parent: f
+  parent_2_help_text: second parent is optional
+  takes_cultivar_scoped_parent: t
+  takes_rank: t
+  takes_verbatim_rank: t

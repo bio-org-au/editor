@@ -1,0 +1,5 @@
+=
+/CREATE MATERIALIZED VIEW public.trees_mv AS/
+.,/WITH NO DATA;/d
+=
+wq

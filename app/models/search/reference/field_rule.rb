@@ -212,5 +212,16 @@ inner join ref_type xcrt on xrt.id = xcrt.parent_id))",
                                                                             where duplicate_of_id is not null)
                                                               and duplicate_of_id is not null)",
                                       takes_no_arg: true},
+    "unknown-in-journal:" => { takes_no_arg: true,
+                               where_clause: " id in (select r.id
+  from reference r
+  join ref_type rt
+    on r.ref_type_id = rt.id
+  join reference parent
+    on r.parent_id = parent.id
+  join ref_type prt
+    on parent.ref_type_id = prt.id
+ where rt.name  = 'Unknown'
+   and prt.name = 'Journal')"},
   }.freeze
 end

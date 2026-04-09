@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.dist_granular_booleans_v AS/
+.,/^ *$/d
+=
+wq

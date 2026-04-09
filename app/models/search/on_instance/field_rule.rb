@@ -239,27 +239,25 @@ from comment where comment.instance_id = instance.id)",
                                                              'orth. var.'))" ,
                        takes_no_arg: true},
     "species-or-below-syn-with-genus-or-above:" =>
-    { where_clause:
+    { where_clause: 
       " instance.id in
       (
      SELECT i.id
-  FROM instance i
- INNER JOIN instance ia
-    ON i.cited_by_id = ia.id
- INNER JOIN name na
-    ON ia.name_id = na.id
- INNER JOIN name_rank ra
-    ON na.name_rank_id = ra.id
- INNER JOIN instance ib
-    ON i.cites_id = ib.id
- INNER JOIN name nb
-    ON ib.name_id = nb.id
- INNER JOIN name_rank rb
-    ON nb.name_rank_id = rb.id
-where rb.sort_order >= (select sort_order from name_rank where name = 'Species')
-  and ra.sort_order <= (select sort_order from name_rank where name = 'Genus')
-      )
-      ",
+        FROM instance i
+ INNER JOIN instance i_cited_by
+    ON i.cited_by_id = i_cited_by.id
+ INNER JOIN name name_i_cited_by
+    ON i_cited_by.name_id = name_i_cited_by.id
+ INNER JOIN name_rank rank_of_name_i_cited_by
+    ON name_i_cited_by.name_rank_id = rank_of_name_i_cited_by.id
+ INNER JOIN instance cites_i
+    ON i.cites_id = cites_i.id
+ INNER JOIN name name_of_cites_i
+    ON cites_i.name_id = name_of_cites_i.id
+ INNER JOIN name_rank rank_of_name_of_cites_i
+    ON name_of_cites_i.name_rank_id = rank_of_name_of_cites_i.id
+where (rank_of_name_of_cites_i.sort_order >= (select sort_order from name_rank where name = 'Species') and rank_of_name_of_cites_i.name not in ('[infragenus]','[unranked]'))
+  and rank_of_name_i_cited_by.sort_order <= (select sort_order from name_rank where name = 'Genus') )",
       order: "name.full_name",
       join: :name,
       takes_no_arg: true},
@@ -355,6 +353,19 @@ from instance i
    and not tjv.published
    and lower(lb.name) = lower(?))",
                            order: "instance.id" },
+"nov-lacks-replaced-syn:" => { takes_no_arg: true,
+                               where_clause: "id in (select i.id
+  from instance i
+  join instance_type it
+    on i.instance_type_id = it.id
+ where it.name in ('nom. nov.', 'nom. et stat. nov.')
+   and not exists (select null
+     from instance syn
+          join instance_type syn_type
+          on syn.instance_type_id = syn_type.id
+    where syn.cited_by_id = i.id
+      and syn_type.name = 'replaced synonym'
+  ) )"},
   }.freeze
 
   def self.resolve(field)

@@ -67,6 +67,6 @@ class Product < ApplicationRecord
   def has_the_same_reference?(instance)
     return true unless has_default_reference
 
-    instance&.reference_id == reference_id
+    instance&.reference_id == reference_id || instance&.reference&.parent&.id == reference_id
   end
 end

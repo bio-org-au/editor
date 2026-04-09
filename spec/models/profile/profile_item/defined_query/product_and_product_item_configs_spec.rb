@@ -69,7 +69,7 @@ RSpec.describe(Profile::ProfileItem::DefinedQuery::ProductAndProductItemConfigs,
           end
         end
         context "and a product is attached to a product_item_config" do
-          let(:product_item_config) { FactoryBot.create(:product_item_config, product: product) }
+          let!(:product_item_config) { FactoryBot.create(:product_item_config, product: product) }
           it "returns an array of product_configs_and_profile_items and product" do
             profile_item = double("ProfileItem")
             allow(Profile::ProfileItem).to(receive(:new).and_return(profile_item))

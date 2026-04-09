@@ -19,6 +19,9 @@
       <%= truncate(profile_text_content, length: 100) %>
       <strong><%= "[#{search_result.product_item_config.display_html.presence || search_result.product_item_config.profile_item_type.name.presence}]" %></strong>
       <%= "[DRAFT]" if search_result.is_draft?%>
+      <% if search_result.end_date %>
+        <span class="pill pill-ended">Ended: <%= search_result.end_date.strftime("%d-%b-%Y") %></span>
+      <% end %>
     </a>
 
   </td>

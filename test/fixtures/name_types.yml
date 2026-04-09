@@ -114,7 +114,7 @@ hybrid_formula_unknown_2nd_parent:
 
 named_hybrid: 
   name: named hybrid
-  name_category: scientific
+  name_category: named_hybrid
   name_group: botanical
   scientific: true
   autonym: false

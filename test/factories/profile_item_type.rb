@@ -30,8 +30,8 @@
 FactoryBot.define do
   factory :profile_item_type, class: "Profile::ProfileItemType" do
     profile_object_type_id { 1 }
-    name { "Sample Name" }
-    rdf_id { "Sample Rdf" }
+    sequence(:name) { |n| "Sample Name #{n}" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
     is_deprecated { true }
     lock_version { 1 }
     created_by { "Sample Created by" }

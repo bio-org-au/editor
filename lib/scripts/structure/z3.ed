@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.dwc_name_v AS/
+.,/^ *$/d
+=
+wq

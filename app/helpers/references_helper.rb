@@ -5,7 +5,7 @@ module ReferencesHelper
   def display_pages(pages = "")
     if pages.blank?
       ""
-    elsif pages =~ /null - null/
+    elsif pages =~ /\Anull - null\z/
       ""
     else
       " : #{pages}"

@@ -1,0 +1,5 @@
+=
+/CREATE MATERIALIZED VIEW public.name_mv AS/
+.,/^ *$/d
+=
+wq

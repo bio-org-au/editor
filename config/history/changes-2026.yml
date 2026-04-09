@@ -1,3 +1,122 @@
+- :date: 19-Mar-2026
+  :jira_id: '5740'
+  :description: |-
+    Sort the user product roles in the roles tab of the user
+- :date: 19-Mar-2026
+  :jira_id: '184'
+  :jira_project: FLOR
+  :description: |-
+    Display the "Ended" pill for profile items that have an end date in the search results and profile item details
+- :date: 17-Mar-2026
+  :jira_id: '106'
+  :jira_project: FLOR
+  :description: |-
+    Modify the product.has_the_same_reference? method to also check for instance's parent reference
+- :date: 16-Mar-2026
+  :jira_id: '160'
+  :jira_project: FLOR
+  :description: |-
+    Refactor the "Edit Profile" tab access for users with tree-builder role
+- :date: 12-Mar-2026
+  :jira_id: '2796'
+  :description: |-
+    Activity queries: tweak message to 'takes no argument'
+- :date: 12-Mar-2026
+  :jira_id: '3357'
+  :description: |-
+    Author duplicate: change label from 'master' to 'duplicate of', tweak tooltip
+- :date: 11-Mar-2026
+  :jira_id: '3257'
+  :description: |-
+    Names: do not offer to create Instances for vernacular names
+- :date: 11-Mar-2026
+  :jira_id: '3924'
+  :description: |-
+    Improve handling of <code>iso_publication_date</code> when being set null during update
+- :date: 11-Mar-2026
+  :jira_id: '5729'
+  :description: |-
+    Sort order for draft and non-draft instances in name search results
+- :date: 06-Mar-2026
+  :jira_id: ''
+  :description: |-
+    Update the readme with docker-apps instructions and add the network to the docker-compose.dev.yml
+- :date: 06-Mar-2026
+  :jira_id: '5740'
+  :description: |-
+    Add role description to the user menu for product roles
+- :date: 06-Mar-2026
+  :jira_id: '2466'
+  :description: |-
+    Names: create facility to add named hybrids and optionally include two parents
+- :date: 05-Mar-2026
+  :jira_id: '5719'
+  :description: |-
+    Don't restrict product tree reviewer role to only be able to review if they have other roles
+- :date: 03-Mar-2026
+  :jira_id: '5726'
+  :description: |-
+    Admin product role: ability permissions to manage user roles for the product-admin role
+- :date: 02-Mar-2026
+  :jira_id: '2973'
+  :description: |-
+    Reference pages field: hide page data only if the whole field consists of 'null - null'
+- :date: 26-Feb-2026
+  :jira_id: '5728'
+  :description: |-
+    Task: Refactor factories for rspec tests
+- :date: 26-Feb-2026
+  :jira_id: '4335'
+  :description: |-
+    Reference Input: add format helper text to DOI field
+- :date: 26-Feb-2026
+  :jira_id: '3357'
+  :description: |-
+    Author duplicate display: Tweak the label and tool tip for Author duplicate/master display on Details tab
+- :date: 26-Feb-2026
+  :jira_id: '1832'
+  :description: |-
+    Author data entry: prevent entry of duplicate author name field
+- :date: 26-Feb-2026
+  :jira_id: '5726'
+  :description: |-
+    Additional changes for product-admin role to manage user roles mainly for the permissions
+- :date: 25-Feb-2026
+  :jira_id: '2796'
+  :description: |-
+    Activity queries: Stop with error message if activity search directives have the wrong number of arguments
+- :date: 25-Feb-2026
+  :jira_id: '5726'
+  :description: |-
+    Add support for product-admin role to manage user roles
+- :date: 24-Feb-2026
+  :jira_id: '2526'
+  :description: |-
+    Reference input: add context specific help for new journal without author
+- :date: 24-Feb-2026
+  :jira_id: '1771'
+  :description: |-
+    Instance query: add directive <code>nov-lacks-replaced-syn:</code>
+- :date: 24-Feb-2026
+  :jira_id: '1729'
+  :description: |-
+    Instance query: change <code>species-or-below-syn-with-genus-or-above:</code> to exclude infragenus and unranked cases
+- :date: 23-Feb-2026
+  :jira_id: '1668'
+  :description: |-
+    Reference query: add directive <code>unknown-in-journal</code>
+- :date: 20-Feb-2026
+  :jira_id: '5719'
+  :description: |-
+    Enable use of product tree reviewer role
+- :date: 20-Feb-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot updates Nokogiri from 1.18.9 to 1.19.1
+- :date: 19-Feb-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot updatesRack from 3.2.3 to 3.2.5
 - :date: 17-Feb-2026
   :jira_id: '5715'
   :description: |-
@@ -28,6 +147,8 @@
   :jira_id: '5696'
   :description: |-
     Move draft instances to the bottom of the search results
+- :date: 03-Mar-2026
+  :release: true
 - :date: 04-Feb-2026
   :jira_id: '5710'
   :description: |-

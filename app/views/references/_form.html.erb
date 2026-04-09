@@ -119,6 +119,7 @@
            tabindex="<%= increment_tab_index %>"
            title="Select the author name from the suggestions that appear when you start typing. This field has ordered fragment searching and frequency searching."
            value="<%= @reference.author.try('name') %>"/>
+    <p>If no author use a dash ('-')</p>
   </div>
   <%= f.hidden_field(:author_id) %>
 

@@ -9,7 +9,7 @@
   <label for="products">Product Roles</label>
   <br>
   <%= form.select( :product_role_id,
-                   @user.grantable_product_roles_for_select,
+                   @user.grantable_product_roles_for_select(current_user),
                   {include_blank: true,
                    required: true},
                   {title: "Choose a product role",

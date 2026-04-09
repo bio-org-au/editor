@@ -95,29 +95,6 @@ class NameType < ApplicationRecord
     NameType.options_for_category(name_category).collect(&:second)
   end
 
-  def self.xoptions_for_category(for_category)
-    case for_category
-    when Name.name_category.scientific?
-      scientific_1_parent_options
-    when Name.name_category.scientific_hybrid_formula?
-      scientific_2_parent_options
-    when Name.name_category.scientific_hybrid_formula_unknown_2nd_parent?
-      scientific_hybrid_formula_unknown_2nd_parent_options
-    when Name.name_category.cultivar_hybrid?
-      cultivar_hybrid_options
-    when Name.name_category.cultivar?
-      cultivar_options
-    when Name.name_category.phrase_name?
-      phrase_options
-    when Name.name_category.other?
-      other_options
-    when "all"
-      options
-    else
-      []
-    end
-  end
-
   def self.options_for_category(for_category)
     if for_category.scientific?
       scientific_1_parent_options
@@ -131,10 +108,10 @@ class NameType < ApplicationRecord
       cultivar_options
     elsif for_category.phrase_name?
       phrase_options
+    elsif for_category.named_hybrid?
+      named_hybrid_options
     elsif for_category.other?
       other_options
-    # when "all"
-    #   options
     else
       []
     end
@@ -142,7 +119,7 @@ class NameType < ApplicationRecord
 
   def self.scientific_1_parent_options
     where(scientific: true)
-      .where(" (not hybrid or name in ('named hybrid','named hybrid autonym'))")
+      .where(" (not hybrid or name in ('named hybrid autonym'))")
       .where(" name != 'phrase name' ")
       .sort_by(&:name).collect { |n| [n.name, n.id] }
   end
@@ -189,6 +166,12 @@ class NameType < ApplicationRecord
     end
   end
 
+  def self.named_hybrid_options
+    where(scientific: true)
+      .where(" name = 'named hybrid'")
+      .sort_by(&:name).collect { |n| [n.name, n.id] }
+  end
+
   def self.other_options
     where(scientific: false).where(cultivar: false)
                             .sort_by(&:name)
@@ -211,37 +194,5 @@ class NameType < ApplicationRecord
 
   def phrase_name?
     name == "phrase name"
-  end
-
-  def xcategory
-    case name
-    when "[default]"                         then "other"
-    when "[unknown]"                         then "other"
-    when "[n/a]"                             then "other"
-    when "scientific"                        then "scientific_1_parent"
-    when "phrase name"                       then "scientific_1_parent"
-    when "sanctioned"                        then "scientific_1_parent"
-    when "hybrid"                            then "scientific_2_parents"
-    when "hybrid formula parents known"      then "scientific_2_parents"
-    when "hybrid formula unknown 2nd parent" then "scientific_1_parent"
-    when "named hybrid"                      then "scientific_1_parent"
-    when "named hybrid autonym"              then "scientific_1_parent"
-    when "hybrid autonym"                    then "scientific_2_parents"
-    when "intergrade"                        then "scientific_2_parents"
-    when "autonym"                           then "scientific_1_parent"
-    when "cultivar"                          then "cultivar"
-    when "cultivar hybrid"                   then "cultivar"
-    when "cultivar hybrid formula"           then "scientific_2_parents"
-    when "acra"                              then "cultivar"
-    when "acra hybrid"                       then "cultivar"
-    when "pbr"                               then "cultivar"
-    when "pbr hybrid"                        then "cultivar"
-    when "trade"                             then "cultivar"
-    when "trade hybrid"                      then "cultivar"
-    when "graft/chimera"                     then "scientific_2_parents"
-    when "informal"                          then "other"
-    when "common"                            then "other"
-    else "other"
-    end
   end
 end

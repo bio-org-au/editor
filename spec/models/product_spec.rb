@@ -34,6 +34,7 @@ RSpec.describe Product, type: :model do
   describe '.with_context_and_tree' do
     let!(:context_id) { 1 }
     let!(:tree) { create(:tree) }
+    let!(:other_tree) { create(:tree) }
     let!(:product_with_tree) do
       create(:product, name: 'WithTree', context_id: context_id, tree_id: tree.id)
     end
@@ -41,7 +42,7 @@ RSpec.describe Product, type: :model do
       create(:product, name: 'NoTree', context_id: context_id, tree_id: nil)
     end
     let!(:product_other_context) do
-      create(:product, name: 'OtherContext', context_id: 2, tree_id: tree.id)
+      create(:product, name: 'OtherContext', context_id: 2, tree_id: other_tree.id)
     end
 
     it 'returns products with given context_id and non-nil tree_id' do
@@ -80,7 +81,25 @@ RSpec.describe Product, type: :model do
         end
       end
 
-      context 'and instance has a different reference' do
+      context 'and instance reference parent matches product reference' do
+        let(:instance) { create(:instance, reference: other_reference) }
+
+        it 'returns true' do
+          allow(other_reference).to receive(:parent).and_return(reference)
+          expect(product.has_the_same_reference?(instance)).to be true
+        end
+      end
+
+      context 'and instance reference has no parent' do
+        let(:reference_without_parent) { create(:reference, parent: nil) }
+        let(:instance) { create(:instance, reference: reference_without_parent) }
+
+        it 'returns false' do
+          expect(product.has_the_same_reference?(instance)).to be false
+        end
+      end
+
+      context 'and instance has a different reference with no matching parent' do
         let(:instance) { create(:instance, reference: other_reference) }
 
         it 'returns false' do

@@ -29,6 +29,7 @@ class User::ProductRolesController < ApplicationController
 
   # POST
   def create
+    authorize! :create, User::ProductRole.new(product_role_id: user_product_role_params[:product_role_id])
     service = Users::ProductRoles::CreateService.call(
       user_id: user_product_role_params[:user_id],
       product_role_id: user_product_role_params[:product_role_id],
@@ -45,6 +46,7 @@ class User::ProductRolesController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @upr
     service = Users::ProductRoles::DestroyService.call(user_product_role: @upr)
     if service.errors.present?
       @error = service.errors.full_messages.join(", ")

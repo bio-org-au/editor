@@ -152,9 +152,21 @@ class User < ApplicationRecord
     batch_reviewers.empty?
   end
 
-  def grantable_product_roles_for_select
-    (Product::Role.all - product_roles).sort_by(&:name)
-      .map { |pr| [pr.name, pr.id] }
+  def grantable_product_roles_for_select(current_user = nil)
+    available_roles = Product::Role.non_admins - product_roles
+
+    # NOTES: If current_user is a product admin, restrict to only products they have admin access to
+    if current_user&.with_role?('admin') && Rails.configuration.try(:multi_product_tabs_enabled)
+      admin_product_ids = current_user
+        .user
+        .product_roles
+        .joins(:role)
+        .where(roles: { name: 'admin' })
+        .pluck(:product_id)
+      available_roles = available_roles.select { |pr| admin_product_ids.include?(pr.product_id) }
+    end
+
+    available_roles.sort_by(&:name).map { |pr| [pr.name, pr.id] }
   end
 
   def inspect

@@ -18,6 +18,8 @@
 #
 class Audit::DefinedQuery::WhereClause::Predicate
   attr_reader :sql
+  SQL_TRUE = "1 = 1"
+  SQL_FALSE = "1 = 2"
 
   def initialize(sql, field = nil, value = nil, record_type)
     debug("Start field: #{field}; value: #{value};")
@@ -33,7 +35,6 @@ class Audit::DefinedQuery::WhereClause::Predicate
   end
 
   def build_predicate(field, value)
-    debug("#add_clause field: #{field}, value: #{value}")
     if field.blank? && value.blank?
       # do nothing @sql = sql
     elsif field.blank?
@@ -45,6 +46,12 @@ class Audit::DefinedQuery::WhereClause::Predicate
       canonical_value = value.blank? ? "" : canon_value(value)
       if ALLOWS_MULTIPLE_VALUES.key?(canonical_field) &&
          canonical_value.split(",").size > 1
+      elsif WHERE_VALUE_HASH.key?(canonical_field) && value.blank?
+        raise "Stopping because #{canonical_field} needs a value"
+      elsif WHERE_VALUE_HASH_2_VALUES.key?(canonical_field) && value.blank?
+        raise "Stopping because #{canonical_field} needs a value"
+      elsif RECORD_TYPE_ASSERTIONS.key?("#{@record_type}-#{canonical_field}") && value.present?
+        raise "Stopping because #{canonical_field} takes no argument"
       elsif RECORD_TYPE_ASSERTIONS.key?("#{@record_type}-#{canonical_field}")
         @sql = @sql.where(RECORD_TYPE_ASSERTIONS["#{@record_type}-#{canonical_field}"])
       elsif WHERE_ASSERTION_HASH.key?(canonical_field)
@@ -96,22 +103,22 @@ class Audit::DefinedQuery::WhereClause::Predicate
   WHERE_ASSERTION_HASH = {}.freeze
 
   RECORD_TYPE_ASSERTIONS = {
-    "author-instances-only:" => "1 = 2",
-    "name-instances-only:" => "1 = 2",
-    "instance-instances-only:" => "1 = 1",
-    "reference-instances-only:" => "1 = 2",
-    "author-names-only:" => "1 = 2",
-    "name-names-only:" => "1 = 1",
-    "instance-names-only:" => "1 = 2",
-    "reference-names-only:" => "1 = 2",
-    "author-authors-only:" => "1 = 1",
-    "name-authors-only:" => "1 = 2",
-    "instance-authors-only:" => "1 = 2",
-    "reference-authors-only:" => "1 = 2",
-    "author-references-only:" => "1 = 2",
-    "name-references-only:" => "1 = 2",
-    "instance-references-only:" => "1 = 2",
-    "reference-references-only:" => "1 = 1",
+    "author-instances-only:" => SQL_FALSE,
+    "name-instances-only:" => SQL_FALSE,
+    "instance-instances-only:" => SQL_TRUE,
+    "reference-instances-only:" => SQL_FALSE,
+    "author-names-only:" => SQL_FALSE,
+    "name-names-only:" => SQL_TRUE,
+    "instance-names-only:" => SQL_FALSE,
+    "reference-names-only:" => SQL_FALSE,
+    "author-authors-only:" => SQL_TRUE,
+    "name-authors-only:" => SQL_FALSE,
+    "instance-authors-only:" => SQL_FALSE,
+    "reference-authors-only:" => SQL_FALSE,
+    "author-references-only:" => SQL_FALSE,
+    "name-references-only:" => SQL_FALSE,
+    "instance-references-only:" => SQL_FALSE,
+    "reference-references-only:" => SQL_TRUE,
   }.freeze
 
   WHERE_VALUE_HASH = {

@@ -20,8 +20,8 @@
 #
 FactoryBot.define do
   factory :org do
-    name { "Sample Name" }
-    abbrev { "Sample Abbrev" }
+    sequence(:name) { |n| "Sample Name #{n}" }
+    sequence(:abbrev) { |n| "Abbrev#{n}" }
     deprecated { true }
     not_a_real_org { true }
     lock_version { 1 }

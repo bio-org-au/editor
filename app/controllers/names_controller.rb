@@ -231,6 +231,8 @@ class NamesController < ApplicationController
       Name::AsNew.cultivar_hybrid
     when /cultivar\z/
       Name::AsNew.cultivar
+    when /named.hybrid/
+      Name::AsNew.named_hybrid
     else
       Name::AsNew.other
     end

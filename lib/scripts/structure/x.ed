@@ -1,0 +1,5 @@
+=
+/CREATE TABLE public.taxon_mv_compare/
+.,/^ *$/d
+=
+wq

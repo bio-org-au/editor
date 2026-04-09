@@ -56,8 +56,10 @@ class NameCategory < ApplicationRecord
   SCIENTIFIC_HYBRID_FORMULA_UNKNOWN_2ND_PARENT_CATEGORY =
     "scientific hybrid formula unknown 2nd parent"
   PHRASE_NAME = "phrase name"
+  NAMED_HYBRID = "named hybrid"
   CULTIVAR_CATEGORY = "cultivar"
   CULTIVAR_HYBRID_CATEGORY = "cultivar hybrid"
+  NAMED_HYBRID_CATEGORY = "named hybrid"
   OTHER_CATEGORY = "other"
 
   has_many :name_types
@@ -91,6 +93,10 @@ class NameCategory < ApplicationRecord
 
   def phrase_name?
     name == PHRASE_NAME
+  end
+
+  def named_hybrid?
+    name == NAMED_HYBRID
   end
 
   def other?

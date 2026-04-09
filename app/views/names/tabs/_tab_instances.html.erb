@@ -3,6 +3,8 @@
 
 <% if @name.duplicate? %>
   <span class="message">Cannot create instances for a duplicate name.</span>
+<% elsif @name.name_type.vernacular? %>
+  <span class="message">Cannot create instances for vernacular names.</span>
 <% else %>
 
 <div id="search-result-details-info-message-container" class="message-container"></div>

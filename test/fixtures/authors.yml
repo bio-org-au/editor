@@ -414,12 +414,12 @@ has_multiple_embedded_spaces:
 
 clarke_1:
   <<: *DEFAULTS
-  name: clarke
+  name: clarke1
   notes: xyz
 
 clarke_2:
   <<: *DEFAULTS
-  name: clarke
+  name: clarke2
   notes: abc
 
 hesp_1:
@@ -429,7 +429,7 @@ hesp_1:
 
 hesp_2:
   <<: *DEFAULTS
-  name: hesp
+  name: hesp2
 
 hesp_3:
   <<: *DEFAULTS

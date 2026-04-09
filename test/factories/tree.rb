@@ -31,8 +31,8 @@ FactoryBot.define do
     description_html { "Sample Description html" }
     group_name { "Sample Group name" }
     host_name { "Sample Host name" }
-    name { "Sample Name" }
-    rdf_id { "Sample Rdf" }
+    sequence(:name) { |n| "Sample Name #{n}" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
     is_schema { true }
     is_read_only { true }
   end

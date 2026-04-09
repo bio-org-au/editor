@@ -45,7 +45,7 @@ FactoryBot.define do
     date_range { "Sample Date range" }
     full_name { "Sample Full name" }
     ipni_id { "Sample Ipni" }
-    name { "Sample Name" }
+    sequence(:name) { |n| "Sample Name #{n}" }
     notes { "Sample Notes" }
     source_id_string { "Sample Source id string" }
     source_system { "Sample Source system" }

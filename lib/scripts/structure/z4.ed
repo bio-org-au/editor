@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.name_view AS/
+.,/^ *$/d
+=
+wq

@@ -51,7 +51,7 @@ FactoryBot.define do
     synonym { true }
     taxonomic { true }
     unsourced { true }
-    rdf_id { "Sample Rdf" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
     has_label { "Sample Has label" }
     of_label { "Sample Of label" }
     bidirectional { true }

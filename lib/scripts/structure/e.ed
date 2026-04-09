@@ -1,0 +1,7 @@
+=
+/CREATE FUNCTION public.gettnu.tnu_name text. RETURNS SETOF public\.tnu_index_v/
+.,/name_published_in_year;/d
+d
+d
+=
+wq

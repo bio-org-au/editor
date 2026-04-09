@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.nsl_tree_mv AS/
+.,/^ *$/d
+=
+wq

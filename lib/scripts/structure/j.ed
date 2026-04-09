@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.taxon_name_usage_v AS/
+.,/^ *$/d
+=
+wq

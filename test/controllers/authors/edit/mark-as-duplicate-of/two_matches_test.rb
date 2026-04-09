@@ -22,7 +22,7 @@ require "test_helper"
 class AuthorEditMarkAsDuplicateOfTwoMatchesTest < ActionController::TestCase
   tests AuthorsController
 
-  test "update author to be duplicate of one of two matches" do
+  test "cannot update author to be duplicate of one of two matches" do
     @request.headers["Accept"] = "application/javascript"
     author = authors(:hesp_1)
     intended_dupe = authors(:hesp_3)
@@ -34,8 +34,9 @@ class AuthorEditMarkAsDuplicateOfTwoMatchesTest < ActionController::TestCase
           session: { username: "fred",
                      user_full_name: "Fred Jones",
                      groups: ["edit"] })
-    assert_response :success
-    expected_dupe = Author.find(intended_dupe.id)
-    assert_equal author.id, expected_dupe.duplicate_of_id, "Should be equal."
+    assert_response :unprocessable_entity
+    assert_match("Error: Validation failed: Name has already been used ",
+                 response.body, "Should report Name has already been used")
   end
 end
+

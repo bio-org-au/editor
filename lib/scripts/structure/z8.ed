@@ -1,0 +1,7 @@
+=
+/CREATE SCHEMA loader;/
+a
+CREATE SCHEMA audit;
+.
+=
+wq

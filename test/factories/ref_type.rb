@@ -25,7 +25,7 @@ FactoryBot.define do
     lock_version { 1 }
     sequence(:name) {|n| "Sample Name #{n}" }
     parent_optional { true }
-    rdf_id { "Sample Rdf" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
     use_parent_details { true }
   end
 end

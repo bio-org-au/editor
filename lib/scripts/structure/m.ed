@@ -1,0 +1,6 @@
+=
+g/CREATE .*trees_mv.*;/d
+g/CREATE .*taxon_mv.*;/d
+/COMMENT ON VIEW public.taxon_view IS .*;/d
+=
+wq

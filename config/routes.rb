@@ -185,7 +185,7 @@ Rails.application.routes.draw do
         as: "name_new_row",
         to: "names#new_row",
         via: :get,
-        type: /scientific|scientific-family-or-above|phrase|hybrid.*formula|hybrid-formula-unknown-2nd-parent|cultivar-hybrid|cultivar|other/
+        type: /scientific|scientific-family-or-above|phrase|hybrid.*formula|named.hybrid|hybrid-formula-unknown-2nd-parent|cultivar-hybrid|cultivar|other/
   match "names/:id/tab/:tab", as: "name_tab", to: "names#tab", via: :get
   match "names/:id/tab/:tab/as/:new_category",
         as: "name_edit_as_category", to: "names#edit_as_category", via: :get

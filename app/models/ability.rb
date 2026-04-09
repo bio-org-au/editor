@@ -60,6 +60,7 @@ class Ability
     is_name_index  = user.product_from_context.nil? || user.product_from_context&.is_name_index?
 
     # NOTES: Broader permissions come first
+    reviewer_auth(user) if user.with_role?('tree-reviewer')
     draft_editor(user) if user.with_role?('draft-editor') && not_name_index
     profile_editor(user) if user.with_role?('profile-editor') && not_name_index
     draft_profile_editor if user.with_role?('draft-profile-editor') && not_name_index
@@ -67,6 +68,7 @@ class Ability
     tree_builder_auth(user) if user.with_role?('tree-builder')
     tree_publisher_auth(user) if user.with_role?('tree-publisher')
     name_index_editor(user) if user.with_role?('name-index-editor') && is_name_index
+    product_admin_auth(user) if user.with_role?('admin')
   end
 
   def user
@@ -379,6 +381,7 @@ class Ability
     can "menu",               "admin"
     can "users",              :all
     can "user/product_roles", :all
+    can [:create, :destroy], User::ProductRole
   end
 
   def batch_loader_auth
@@ -399,7 +402,7 @@ class Ability
     can "loader/instances-loader-2",   :all
   end
 
-  def reviewer_auth
+  def reviewer_auth(session_user = nil)
     can "loader/name/review/comments",              :all
     can "loader/name/review/votes",                 :all
     can "loader/name/review/vote/in_bulk",          :all
@@ -408,6 +411,10 @@ class Ability
     can "loader/names",                             "tab_details"
     can "loader/names",                             "tab_comment"
     can "loader/names",                             "tab_vote"
+    if session_user
+      can "product_contexts/set_context", "create"
+      can "loader/batch/review/mode", "switch_off"
+    end
   end
 
   def tree_publisher_auth(session_user)
@@ -469,7 +476,6 @@ class Ability
     can "trees", "place_name"
     can :place_name, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
-    can "tree/elements", "update_profile"
     can :update_profile, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
 
     run_reports_on_a_draft_tree(session_user)
@@ -499,6 +505,40 @@ class Ability
 
     can "trees", "update_synonymy_by_instance"
     can :update_synonymy_by_instance, TreeVersion, tree: {user_product_role_vs: { user_id:session_user.user_id }}
+  end
+
+  def product_admin_auth(session_user)
+    # Product admins have all standard admin permissions
+    admin_auth
+
+    # NOTES: But they can only manage user product roles for products they have admin access to
+    # For product admin functionality, we need a User record since that's where roles are stored
+    if session_user&.registered_user
+      admin_product_ids = session_user
+        .registered_user
+        .product_roles
+        .joins(:role)
+        .where(roles: { name: "admin" })
+        .pluck(:product_id)
+
+      admin_manageable_product_role_ids = Product::Role.where(product_id: admin_product_ids).pluck(:id)
+
+      cannot "user/product_roles", :all
+      cannot [:create, :destroy], User::ProductRole
+
+      can("de_duplicates", :all) if session_user.product_from_context&.is_name_index? && admin_product_ids.include?(session_user.product_from_context&.id)
+      can "user/product_roles", "index"
+      can "user/product_roles", "show"
+      can "user/product_roles", "create"
+      can "user/product_roles", "destroy"
+      can "user/product_roles", "update"
+      can "user/product_roles", "choose_product_for_role"
+      can [:create, :destroy], User::ProductRole do |user_product_role|
+        admin_manageable_product_role_ids.include?(user_product_role.product_role_id)
+      end
+    else
+      can "user/product_roles", :all
+    end
   end
 
   def selected_product(user)

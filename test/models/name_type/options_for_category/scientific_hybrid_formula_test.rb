@@ -33,12 +33,12 @@ class ScientificHybridFormulaTest < ActiveSupport::TestCase
   def part1
     assert_equal 5,
                  NameType.options_for_category(@current_category).size,
-                 "Should be 5 #{@current_category} name types."
+                 "Should be 5 #{@current_category.name} name types."
     assert NameType
       .options_for_category(@current_category)
       .collect(&:first)
       .include?("hybrid autonym"),
-           "Name type 'hybrid autonym' should be a #{@current_category} option."
+    "Name type 'hybrid autonym' should be a #{@current_category.name} option."
   end
 
   def part2
@@ -46,12 +46,12 @@ class ScientificHybridFormulaTest < ActiveSupport::TestCase
       .options_for_category(@current_category)
       .collect(&:first)
       .include?("intergrade"),
-           "Name type 'intergrade' should be a #{@current_category} option."
+    "Name type 'intergrade' should be a #{@current_category.name} option."
     assert NameType
       .options_for_category(@current_category)
       .collect(&:first)
       .include?("graft/chimera"),
-           "Name type 'graft/chimera' should be a #{@current_category} option."
+    "Name type 'graft/chimera' should be a #{@current_category.name} option."
   end
 
   def part3
@@ -60,7 +60,7 @@ class ScientificHybridFormulaTest < ActiveSupport::TestCase
       .collect(&:first)
       .include?("hybrid formula parents known"),
            "Name type 'hybrid formula parents known' should be
-           a #{@current_category} option."
+           a #{@current_category.name} option."
   end
 
   def part4
@@ -69,6 +69,6 @@ class ScientificHybridFormulaTest < ActiveSupport::TestCase
       .collect(&:first)
       .include?("cultivar hybrid formula"),
            "Name type 'cultivar hybrid formula' should be
-           a #{@current_category} option."
+           a #{@current_category.name} option."
   end
 end

@@ -21,17 +21,17 @@
     <%= render partial: 'detail_line', 
                locals: {info: link_to(duplicate.name_and_or_abbrev,
                                       search_path(query_target: "author", query_string: "id:#{duplicate.id}"),
-                                      title: 'See duplicate of'), 
+                                      title: 'See duplicate'), 
                         label: 'duplicate'} %>
-    <%= divider %>
   <% end %>
+  <%= divider %>
 <% end %>
 
 <% if @author.duplicate_of_id.present? %>
     <%= render partial: 'detail_line', 
                locals: {info: link_to(@author.duplicate_of.name_and_or_abbrev,
                         search_path(query_target: "author", query_string: "id:#{@author.duplicate_of_id}"),
-                        title: 'See duplicate'), 
+                        title: 'See master record'), 
                         label: 'duplicate of'} %>
     <%= divider %>
 <% end %>

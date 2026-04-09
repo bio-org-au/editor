@@ -16,9 +16,9 @@
     <strong>References</strong>
     <br>
     <% @profile_item.profile_item_references.each do |pir| %>
-      <%= link_to("#{pir.reference.citation}#{display_pages(pir.reference.pages)}" || '[No citation found.]', 
-                  search_path(query_string: %Q(id:#{pir.reference.id}), query_target: 'reference'), 
-                  id: 'tab-heading', 
+      <%= link_to("#{pir.reference.citation}#{display_pages(pir.reference.pages)}" || '[No citation found.]',
+                  search_path(query_string: %Q(id:#{pir.reference.id}), query_target: 'reference'),
+                  id: 'tab-heading',
                   title: "Query this reference.",
                   tabindex: increment_tab_index )%>
                 <span class="pull-right"><%= mapper_link('reference', pir.reference.id)%></span>
@@ -35,6 +35,10 @@
     <br>
     <%= @profile_item.profile_item_annotation.value %>
   </p>
+<% end %>
+
+<% if @profile_item.end_date %>
+  <span class="pill pill-ended">Ended: <%= @profile_item.end_date.strftime("%d-%b-%Y") %></span>
 <% end %>
 
 <br>

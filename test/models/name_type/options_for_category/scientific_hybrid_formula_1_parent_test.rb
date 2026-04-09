@@ -25,12 +25,12 @@ class ScientificHybridFormula1ParentTest < ActiveSupport::TestCase
       name_categories(:scientific_hybrid_formula_unknown_2nd_parent)
     assert_equal 1,
                  NameType.options_for_category(current_category).size,
-                 "Should be just 1 #{current_category} name type."
+                 "Should be just 1 #{current_category.name} name type."
     assert NameType
       .options_for_category(current_category)
       .collect(&:first)
       .include?("hybrid formula unknown 2nd parent"),
            "Name type 'hybrid formula unknown 2nd parent' should be \
-           a #{current_category} name type."
+           a #{current_category.name} name type."
   end
 end

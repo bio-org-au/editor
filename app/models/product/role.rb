@@ -48,6 +48,9 @@ class Product::Role < ApplicationRecord
   has_many :user_product_roles, class_name: "User::ProductRole", foreign_key: :product_role_id
   has_many :user_product_role_vs
 
+  scope :non_admins, -> { joins(:role).where.not(roles: { name: "admin" }) }
+  scope :admins, -> { joins(:role).where(roles: { name: "admin" }) }
+
   def name
     "#{product.name} #{role.name} product role"
   end

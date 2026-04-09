@@ -4,7 +4,7 @@ FactoryBot.define do
     deprecated { true }
     description { "Sample Description" }
     display { true }
-    name { "Sample Name" }
-    rdf_id { "Sample Rdf" }
+    sequence(:name) { |n| "Sample Name #{n}" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
   end
 end

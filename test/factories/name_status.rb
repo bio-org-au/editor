@@ -27,10 +27,10 @@
 FactoryBot.define do
   factory :name_status do
     display { true }
-    name { "Sample Name" }
+    sequence(:name) { |n| "Sample Name #{n}" }
     nom_illeg { true }
     nom_inval { true }
-    rdf_id { "Sample Rdf" }
+    sequence(:rdf_id) { |n| "sample_rdf_#{n}" }
     deprecated { true }
 
     association :name_group

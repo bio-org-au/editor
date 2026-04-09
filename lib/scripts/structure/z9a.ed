@@ -1,0 +1,10 @@
+=
+/CREATE SCHEMA loader;/
+a
+CREATE SEQUENCE loader.nsl_global_seq
+    INCREMENT BY 1
+    CACHE 1;
+
+.
+=
+wq

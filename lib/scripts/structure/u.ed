@@ -1,0 +1,4 @@
+=
+/COMMENT ON VIEW public.dwc_taxon_v IS .*;/d
+=
+wq

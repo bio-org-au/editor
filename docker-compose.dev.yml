@@ -3,6 +3,8 @@ services:
     container_name: nsl_db_dev
     image: postgres:15.7-bullseye
     shm_size: '512MB'
+    networks:
+      - nsl_net
     volumes:
       - db_data_dev:/var/lib/postgresql/data
       - .pgpass:/root/.pgpass
@@ -48,3 +50,7 @@ services:
 volumes:
   gem_cache:
   db_data_dev:
+
+networks:
+  nsl_net:
+    external: true

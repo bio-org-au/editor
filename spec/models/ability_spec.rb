@@ -11,7 +11,9 @@ RSpec.describe Ability, type: :model do
     allow(session_user).to receive(:with_role?).with('profile-reference').and_return(false)
     allow(session_user).to receive(:with_role?).with('tree-builder').and_return(false)
     allow(session_user).to receive(:with_role?).with('tree-publisher').and_return(false)
+    allow(session_user).to receive(:with_role?).with('tree-reviewer').and_return(false)
     allow(session_user).to receive(:with_role?).with('name-index-editor').and_return(false)
+    allow(session_user).to receive(:with_role?).with('admin').and_return(false)
     allow(session_user).to receive(:user_id).and_return(1)
     allow(session_user).to receive(:product_from_context).and_return(nil)
   end
@@ -1209,7 +1211,7 @@ RSpec.describe Ability, type: :model do
     end
   end
 
-  describe "#reviewer_auth role" do
+  describe "#reviewer_auth role (AD group)" do
     before do
       allow(session_user).to receive(:reviewer?).and_return(true)
     end
@@ -1244,6 +1246,56 @@ RSpec.describe Ability, type: :model do
 
     it "allows accessing loader/names tab_vote" do
       expect(subject.can?("loader/names", "tab_vote")).to eq true
+    end
+
+    it "does not allow switching off loader/batch/review/mode" do
+      expect(subject.can?("loader/batch/review/mode", "switch_off")).to eq false
+    end
+  end
+
+  describe "#tree-reviewer role (via with_role?)" do
+    before do
+      allow(session_user).to receive(:with_role?).with('tree-reviewer').and_return(true)
+    end
+
+    it "allows all actions on loader/name/review/comments" do
+      expect(subject.can?("loader/name/review/comments", :all)).to eq true
+    end
+
+    it "allows all actions on loader/name/review/votes" do
+      expect(subject.can?("loader/name/review/votes", :all)).to eq true
+    end
+
+    it "allows all actions on loader/name/review/vote/in_bulk" do
+      expect(subject.can?("loader/name/review/vote/in_bulk", :all)).to eq true
+    end
+
+    it "allows showing loader/names" do
+      expect(subject.can?("loader/names", "show")).to eq true
+    end
+
+    it "allows accessing loader/names tab_details" do
+      expect(subject.can?("loader/names", "tab_details")).to eq true
+    end
+
+    it "allows accessing loader/names tab_comment" do
+      expect(subject.can?("loader/names", "tab_comment")).to eq true
+    end
+
+    it "allows accessing loader/names tab_vote" do
+      expect(subject.can?("loader/names", "tab_vote")).to eq true
+    end
+
+    it "allows switching on loader/batch/review/mode" do
+      expect(subject.can?("loader/batch/review/mode", "switch_on")).to eq true
+    end
+
+    it "allows switching off loader/batch/review/mode" do
+      expect(subject.can?("loader/batch/review/mode", "switch_off")).to eq true
+    end
+
+    it "allows setting product context" do
+      expect(subject.can?("product_contexts/set_context", "create")).to eq true
     end
   end
 
@@ -1448,8 +1500,95 @@ RSpec.describe Ability, type: :model do
       expect(subject.can?(:update_tree_parent, TreeVersion)).to eq true
     end
 
-    it "allows accessing tree/elements update_profile" do
-      expect(subject.can?("tree/elements", "update_profile")).to eq true
+  end
+
+  describe "#product_admin_auth role" do
+    let(:user) { create(:user) }
+    let(:admin_role) { create(:role, name: "admin") }
+    let(:editor_role) { create(:role, name: "editor") }
+
+    let(:foa_product) { create(:product, name: "FOA") }
+    let(:apc_product) { create(:product, name: "APC") }
+
+    let!(:foa_admin_product_role) { create(:product_role, product: foa_product, role: admin_role) }
+    let!(:foa_editor_product_role) { create(:product_role, product: foa_product, role: editor_role) }
+    let!(:apc_editor_product_role) { create(:product_role, product: apc_product, role: editor_role) }
+
+    before do
+      # Set up user with FOA admin role
+      create(:user_product_role, user: user, product_role: foa_admin_product_role)
+      user.reload
+
+      allow(session_user).to receive(:with_role?).with('admin').and_return(true)
+      allow(session_user).to receive(:registered_user).and_return(user)
+      allow(session_user).to receive(:admin?).and_return(false) # Product admin, not AD admin
+    end
+
+    context "controller permissions" do
+      it "allows viewing user/product_roles actions" do
+        expect(subject.can?("user/product_roles", "index")).to eq true
+        expect(subject.can?("user/product_roles", "show")).to eq true
+        expect(subject.can?("user/product_roles", "update")).to eq true
+        expect(subject.can?("user/product_roles", "choose_product_for_role")).to eq true
+      end
+
+      it "inherits all standard admin permissions" do
+        expect(subject.can?("admin", :all)).to eq true
+        expect(subject.can?("menu", "admin")).to eq true
+        expect(subject.can?("users", :all)).to eq true
+      end
+    end
+
+    context "User::ProductRole model permissions" do
+      let(:allowed_user_product_role) { create(:user_product_role, product_role: foa_editor_product_role) }
+      let(:forbidden_user_product_role) { create(:user_product_role, product_role: apc_editor_product_role) }
+
+      it "allows creating/destroying roles for products they have admin access to" do
+        allowed_user_product_role
+        ability = described_class.new(session_user)
+
+        expect(ability.can?(:create, allowed_user_product_role)).to eq true
+        expect(ability.can?(:destroy, allowed_user_product_role)).to eq true
+      end
+
+      it "denies creating/destroying roles for products they don't have admin access to" do
+        forbidden_user_product_role
+        ability = described_class.new(session_user)
+
+        expect(ability.can?(:create, forbidden_user_product_role)).to eq false
+        expect(ability.can?(:destroy, forbidden_user_product_role)).to eq false
+      end
+    end
+
+    context "when user has multiple admin products" do
+      let(:apni_product) { create(:product, name: "APNI") }
+      let(:apni_admin_product_role) { create(:product_role, product: apni_product, role: admin_role) }
+      let(:apni_editor_product_role) { create(:product_role, product: apni_product, role: editor_role) }
+
+      before do
+        create(:user_product_role, user: user, product_role: apni_admin_product_role)
+        user.reload
+      end
+
+      it "allows access to all products they have admin roles for" do
+        foa_user_product_role = create(:user_product_role, product_role: foa_editor_product_role)
+        apni_user_product_role = create(:user_product_role, product_role: apni_editor_product_role)
+
+        ability = described_class.new(session_user)
+
+        expect(ability.can?(:create, foa_user_product_role)).to eq true
+        expect(ability.can?(:create, apni_user_product_role)).to eq true
+      end
+    end
+
+    context "when session_user doesn't have registered_user" do
+      before do
+        allow(session_user).to receive(:registered_user).and_return(nil)
+      end
+
+      it "falls back to standard admin permissions" do
+        expect(subject.can?("user/product_roles", :all)).to eq true
+      end
     end
   end
 

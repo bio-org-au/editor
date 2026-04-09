@@ -29,5 +29,7 @@ FactoryBot.define do
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }
     api_date { Time.current }
+
+    initialize_with { Profile::ProfileObjectType.find_or_create_by(rdf_id: rdf_id) }
   end
 end

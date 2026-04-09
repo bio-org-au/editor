@@ -380,6 +380,11 @@ class Instance < ApplicationRecord
     draft
   end
 
+  # Used for sorting: considers both instance draft status and profile_items draft status
+  def draft_for_sorting?
+    draft || profile_items.any?(&:is_draft)
+  end
+
   def duplicate_instance_override?
     @duplicate_instance_override || false
   end

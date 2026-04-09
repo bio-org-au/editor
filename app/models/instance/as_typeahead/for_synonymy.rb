@@ -100,7 +100,7 @@ class Instance::AsTypeahead::ForSynonymy
 
   def display_value(i)
     value = "#{i.full_name} in #{i.citation}:#{i.iso_publication_date}"
-    value += " [#{i.page}]" unless i.page.blank? || i.page.match(/null - null/)
+    value += " [#{i.page}]" unless i.page.blank? || i.page.match(/\Anull - null\z/)
     value += " [#{i.instance_type_name}]" unless i.instance_type_name == "secondary reference"
     value
   end

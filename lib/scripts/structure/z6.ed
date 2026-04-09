@@ -1,0 +1,20 @@
+=
+/gin_trgm_ops/
+-1
+a
+SET search_path TO nsl, public;
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE EXTENSION if not exists unaccent;
+CREATE OR REPLACE FUNCTION public.f_unaccent(text)
+ RETURNS text
+ LANGUAGE sql
+ IMMUTABLE
+ SET search_path TO 'public', 'pg_temp'
+AS $function$
+SELECT unaccent('unaccent', $1)
+$function$
+;
+
+.
+=
+wq

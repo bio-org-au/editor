@@ -24,11 +24,11 @@ class PhraseNameTest < ActiveSupport::TestCase
     current_category = name_categories(:phrase)
     assert_equal 1,
                  NameType.options_for_category(current_category).size,
-                 "Should be just 1 #{current_category} name type."
+                 "Should be just 1 #{current_category.name} name type."
     assert NameType
       .options_for_category(current_category)
       .collect(&:first)
       .include?("phrase name"),
-           "'phrase name' should be a #{current_category} name type."
+    "'phrase name' should be a #{current_category.name} name type."
   end
 end

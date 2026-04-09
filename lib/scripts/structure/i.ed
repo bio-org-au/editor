@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.cited_usage_v AS/
+.,/^ *$/d
+=
+wq

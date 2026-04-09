@@ -1,0 +1,5 @@
+=
+/CREATE MATERIALIZED VIEW public.nsl_name_rank AS/
+.,/^ *$/d
+=
+wq

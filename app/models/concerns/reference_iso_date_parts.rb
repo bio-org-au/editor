@@ -19,7 +19,9 @@ module ReferenceIsoDateParts
     return if dd == 0
 
     if dd.blank? # remove an existing day
-      self.iso_publication_date = if month.nil?
+      self.iso_publication_date = if year.nil?
+                                    nil
+                                  elsif month.nil?
                                     year
                                   else
                                     "#{year}-#{month}"
@@ -59,7 +61,9 @@ module ReferenceIsoDateParts
   end
 
   def year=(yyyy)
-    if iso_publication_date.nil? || iso_publication_date.length <= 4
+    if yyyy.blank?
+      self.iso_publication_date = nil
+    elsif iso_publication_date.nil? || iso_publication_date.length <= 4
       self.iso_publication_date = yyyy
     elsif iso_publication_date.length == 7
       self.iso_publication_date = "#{yyyy}-#{month}"

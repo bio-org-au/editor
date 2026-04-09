@@ -23,10 +23,11 @@ load "models/search/users.rb"
 class NameUsagesOrderByReferenceYear < ActiveSupport::TestCase
   def setup
     @name = names(:casuarina_inophloia)
-    @first_ref = references(:ref_with_no_year)
-    @second_ref = references(:australasian_chemist_and_druggist)
-    @third_ref = references(:mueller_1882_section)
-    @fourth_ref = references(:bailey_catalogue_qld_plants)
+    # Sorted chronologically: dated instances first, then undated (within same draft group)
+    @first_ref = references(:australasian_chemist_and_druggist)  # 1881
+    @second_ref = references(:mueller_1882_section)              # 1882
+    @third_ref = references(:bailey_catalogue_qld_plants)        # 1913
+    @fourth_ref = references(:ref_with_no_year)                  # no year (after dated non-drafts)
     @params = ActiveSupport::HashWithIndifferentAccess.new(
       query_string: "id:#{@name.id} show-instances:",
       query_target: "Name",
@@ -44,17 +45,16 @@ class NameUsagesOrderByReferenceYear < ActiveSupport::TestCase
     assert_equal @name.id, results[1].name_id, "Expected a different name."
     assert_equal @first_ref.id,
                  results[1].reference_id,
-                 "Instance for ref with no year should be first: \
-                 #{results[1].reference.iso_publication_date}"
+                 "First reference (1881) wrong: got #{results[1].reference.iso_publication_date}"
     assert_equal @second_ref.id,
                  results[2].reference_id,
-                 "Second reference wrong"
+                 "Second reference (1882) wrong"
     assert_equal @third_ref.id,
                  results[3].reference_id,
-                 "Third reference wrong"
+                 "Third reference (1913) wrong"
     assert_equal @fourth_ref.id,
                  results[4].reference_id,
-                 "Fourth reference wrong"
+                 "Fourth reference (no year, should be last) wrong"
   end
 
   def print_data(results)

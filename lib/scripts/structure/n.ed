@@ -1,0 +1,5 @@
+=
+/CREATE VIEW public.bdr_alt_labels_v AS/
+.,/^ *$/d
+=
+wq

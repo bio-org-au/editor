@@ -270,7 +270,7 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
     end
   end
 
-  context "when 'tab_edit_profile' is offered and the user has permission" do
+  context "when 'tab_edit_profile' is offered and the user has permission via can?" do
     before do
       tabs_to_offer << "tab_edit_profile"
       allow(Rails.configuration).to(receive(:profile_edit_aware).and_return(true))
@@ -280,6 +280,52 @@ RSpec.describe("instances/tabs/_all_tab_headings.html.erb", type: :view) do
     it "renders the 'Edit Profile' tab" do
       render
       expect(rendered).to(have_selector("a#instance-edit-profile-tab", text: "Edit Profile"))
+    end
+  end
+
+  context "when 'tab_edit_profile' is offered and user is tree-builder with non-profile-managing product" do
+    let(:product_without_profile) { double("Product", manages_profile: false) }
+    let(:user_with_tree_builder_role) { FactoryBot.create(:user) }
+
+    before do
+      tabs_to_offer << "tab_edit_profile"
+      allow(Rails.configuration).to(receive(:profile_edit_aware).and_return(true))
+      allow(view).to(receive(:can?).with("tree/elements", "update_profile").and_return(false))
+
+      product = product_without_profile
+      view.define_singleton_method(:current_product_from_context) { product }
+
+      allow(user_with_tree_builder_role).to(receive(:role_names).and_return(["tree-builder"]))
+      user = user_with_tree_builder_role
+      view.define_singleton_method(:current_registered_user) { user }
+    end
+
+    it "renders the 'Edit Profile' tab" do
+      render
+      expect(rendered).to(have_selector("a#instance-edit-profile-tab", text: "Edit Profile"))
+    end
+  end
+
+  context "when 'tab_edit_profile' is offered but user lacks both permissions" do
+    let(:product_with_profile) { double("Product", manages_profile: true) }
+    let(:user_without_tree_builder_role) { FactoryBot.create(:user) }
+
+    before do
+      tabs_to_offer << "tab_edit_profile"
+      allow(Rails.configuration).to(receive(:profile_edit_aware).and_return(true))
+      allow(view).to(receive(:can?).with("tree/elements", "update_profile").and_return(false))
+
+      product = product_with_profile
+      view.define_singleton_method(:current_product_from_context) { product }
+
+      allow(user_without_tree_builder_role).to(receive(:role_names).and_return([]))
+      user = user_without_tree_builder_role
+      view.define_singleton_method(:current_registered_user) { user }
+    end
+
+    it "does not render the 'Edit Profile' tab" do
+      render
+      expect(rendered).not_to(have_selector("a#instance-edit-profile-tab"))
     end
   end
 
