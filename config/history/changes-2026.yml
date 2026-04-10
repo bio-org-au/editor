@@ -2,6 +2,11 @@
   :jira_id: '200'
   :jira_project: FLOR
   :description: |-
+    Fixup incorrect end_date handling for related profile items in service object during publish.
+- :date: 10-Apr-2026
+  :jira_id: '200'
+  :jira_project: FLOR
+  :description: |-
     Fix the profile_item not being set in the publish profile item controller by prepending the set_profile_item callback
 - :date: 10-Apr-2026
   :jira_id: '201'
