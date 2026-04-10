@@ -251,7 +251,8 @@ a:hover.blue           { color: blue; }
   font-weight: 500;
 }
 
-.badge.badge-muted-red {
+.badge.badge-muted-red,
+.badge.badge-duplicate {
   background: #FCEBEB;
   border: 0.5px solid #F09595;
   color: #791F1F;
