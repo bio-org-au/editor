@@ -3,6 +3,9 @@
 <% else %>
   <%= "#{search_result.name}" %>
 <% end %>
-<% if search_result.duplicate? %> [Duplicate] <% end %>
-
-
+<% if search_result.duplicate? %>
+  <span
+    title="Record flagged as duplicate"
+    class="badge badge-duplicate"
+  >duplicate</span>
+<% end %>
