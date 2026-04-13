@@ -1,3 +1,8 @@
+- :date: 13-Apr-2026
+  :jira_id: '204'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the undefined manages_profile for nil error in name instance search results when context is nil
 - :date: 19-Mar-2026
   :jira_id: '5740'
   :description: |-
