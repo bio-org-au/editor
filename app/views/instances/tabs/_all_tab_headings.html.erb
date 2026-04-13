@@ -253,7 +253,7 @@
 
   <% if @tabs_to_offer.include?("tab_edit_profile") %>
     <% if Rails.configuration.try('profile_edit_aware') %>
-      <% if can?("tree/elements", "update_profile") || (!current_product_from_context.manages_profile && current_registered_user.role_names.include?("tree-builder"))%>
+      <% if can?("tree/elements", "update_profile") || (!current_product_from_context&.manages_profile && current_registered_user.role_names.include?("tree-builder"))%>
         <%= render(
           partial: "instances/tabs/tab",
           locals: {
