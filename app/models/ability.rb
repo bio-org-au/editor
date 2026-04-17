@@ -112,10 +112,14 @@ class Ability
         .joins(profile_item: :product_item_config)
         .where("product_item_configs_profile_item.product_id = ?", user.product_from_context&.id).any?)
     end
+    can :create_adnot, Instance do |instance|
+      instance.draft? && user.product_from_context&.has_the_same_reference?(instance)
+    end
     can "authors", :all
     can "instances", [
       "tab_details",
       "tab_profile_v2",
+      "tab_comments",
       "typeahead_for_product_item_config"
     ]
     can "menu", "new"
@@ -203,6 +207,7 @@ class Ability
 
   def profile_editor(session_user)
     user_products = session_user.user&.products || []
+    user_product_trees = user_products.map(&:tree).compact
 
     can :manage, :profile_v2
     can :manage, Profile::ProfileItem do |profile_item|
@@ -220,12 +225,16 @@ class Ability
     can :manage_profile, Instance do |instance|
       instance.profile_items.includes([:product]).any? { |item| item.product && user_products.include?(item.product) }
     end
+    can :create_adnot, Instance do |instance|
+      instance.in_local_trees.any? { |tree| user_product_trees.include?(tree) }
+    end
     can "references", "typeahead_on_citation"
     can "profile_items", :all
     can "profile_item_annotations", :all
     can "profile_item_references", :all
     can "instances", "tab_details"
     can "instances", "tab_profile_v2"
+    can "instances", "tab_comments"
   end
 
   def profile_v2_auth
