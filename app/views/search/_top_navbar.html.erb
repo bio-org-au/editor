@@ -1,4 +1,4 @@
-<div id="top-navbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav id="top-navbar" class="navbar navbar-inverse fixed-top navbar-expand-lg navbar-fixed-top" role="navigation">
   <div class="container-fluid">
     <div class="row">
       <div id="first-navbar" class="no-left-padding navbar-header col-sm-12 col-md-12">
@@ -30,8 +30,7 @@
         <%= yield :search_result_summary %>
       </div>
     </div>
-  </div>
-  <% unless @no_advanced_search %>
+    <% unless @no_advanced_search %>
 
     <ul id="search-results-tabset" class="nav nav-tabs low">
 
@@ -104,5 +103,7 @@
 
     </ul>
   <% end %>
-</div>
+  </div>
+
+</nav>
 

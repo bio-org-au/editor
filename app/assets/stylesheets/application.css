@@ -26,6 +26,7 @@
  *= require components/tree
  *= require components/tree-placement
  *= require utilities/environment
+ *= require utilities/bootstrap-4-compatibility
  *= require components/old-application
  *= require components/new-for-rails-6
  *= require utilities/calendar
