@@ -13,7 +13,7 @@
   <% end %>
 </div>
 
-<div class="product-item-config-container product-item-config-container-id-<%= product_item_config.id %>">
+<div id="edit-tab-profile-item" class="product-item-config-container product-item-config-container-id-<%= product_item_config.id %>">
   <% if profile_item.fact? %>
     <%= render(
       partial: "profile_items/fact_profile_item",

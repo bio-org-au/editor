@@ -102,10 +102,13 @@ class Name < ApplicationRecord
   include NameRankable
   include NameEnterable
   include Name::Loadable
+  include Name::InstancesCopyable
 
   attr_accessor :display_as,
                 :give_me_focus,
-                :change_category_name_to
+                :change_category_name_to,
+                :target_name_id,
+                :instance_ids_to_copy
 
   belongs_to :name_type, optional: false
   has_one :name_category, through: :name_type

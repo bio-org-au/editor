@@ -13,6 +13,7 @@ RSpec.describe Ability, type: :model do
     allow(session_user).to receive(:with_role?).with('tree-publisher').and_return(false)
     allow(session_user).to receive(:with_role?).with('tree-reviewer').and_return(false)
     allow(session_user).to receive(:with_role?).with('name-index-editor').and_return(false)
+    allow(session_user).to receive(:with_role_for_context?).with('common-name').and_return(false)
     allow(session_user).to receive(:with_role?).with('admin').and_return(false)
     allow(session_user).to receive(:user_id).and_return(1)
     allow(session_user).to receive(:product_from_context).and_return(nil)
@@ -111,13 +112,26 @@ RSpec.describe Ability, type: :model do
       end
     end
 
-    it 'can manage draft instances' do
+    it 'can manage draft instances when the reference matches the product' do
       instance = create(:instance, draft: true)
+      allow(product).to receive(:has_the_same_reference?).with(instance).and_return(true)
       expect(subject.can?(:manage_profile, instance)).to eq true
+    end
+
+    it 'cannot manage draft instances when the reference does not match the product' do
+      instance = create(:instance, draft: true)
+      allow(product).to receive(:has_the_same_reference?).with(instance).and_return(false)
+      expect(subject.can?(:manage_profile, instance)).to eq false
     end
 
     it 'cannot manage non-draft instances' do
       instance = create(:instance, draft: false)
+      expect(subject.can?(:manage_profile, instance)).to eq false
+    end
+
+    it 'cannot manage draft instances when there is no product in context' do
+      allow(session_user).to receive(:product_from_context).and_return(nil)
+      instance = create(:instance, draft: true)
       expect(subject.can?(:manage_profile, instance)).to eq false
     end
 
@@ -299,8 +313,62 @@ RSpec.describe Ability, type: :model do
       expect(subject.can?("instances", "typeahead_for_product_item_config")).to eq true
     end
 
+    it 'can access instances tab_comments' do
+      expect(subject.can?("instances", "tab_comments")).to eq true
+    end
+
     it 'can access menu new' do
       expect(subject.can?("menu", "new")).to eq true
+    end
+
+    it 'can access comments' do
+      expect(subject.can?("comments", :all)).to eq true
+    end
+
+    describe ':create_adnot permission' do
+      let(:instance) { create(:instance, draft: true) }
+
+      context 'when instance is draft and product has the same reference' do
+        before do
+          allow(product).to receive(:has_the_same_reference?).with(instance).and_return(true)
+        end
+
+        it 'can create_adnot on the instance' do
+          expect(subject.can?(:create_adnot, instance)).to eq true
+        end
+      end
+
+      context 'when instance is draft but product does not have the same reference' do
+        before do
+          allow(product).to receive(:has_the_same_reference?).with(instance).and_return(false)
+        end
+
+        it 'cannot create_adnot on the instance' do
+          expect(subject.can?(:create_adnot, instance)).to eq false
+        end
+      end
+
+      context 'when instance is not draft' do
+        let(:instance) { create(:instance, draft: false) }
+
+        before do
+          allow(product).to receive(:has_the_same_reference?).with(instance).and_return(true)
+        end
+
+        it 'cannot create_adnot on the instance' do
+          expect(subject.can?(:create_adnot, instance)).to eq false
+        end
+      end
+
+      context 'when product_from_context is nil' do
+        before do
+          allow(session_user).to receive(:product_from_context).and_return(nil)
+        end
+
+        it 'cannot create_adnot on the instance' do
+          expect(subject.can?(:create_adnot, instance)).to eq false
+        end
+      end
     end
 
   end
@@ -779,6 +847,68 @@ RSpec.describe Ability, type: :model do
     end
   end
 
+  describe "#draft_editor role - change_name permissions" do
+    let(:product) { create(:product, is_name_index: false) }
+
+    before do
+      allow(session_user).to receive(:with_role?).with("draft-editor").and_return(true)
+      allow(session_user).to receive(:product_from_context).and_return(product)
+      allow(product).to receive(:is_name_index?).and_return(false)
+    end
+
+    it "can access instances/change_name update action" do
+      expect(subject.can?("instances/change_name", "update")).to eq true
+    end
+
+    it "can access instances/change_name typeahead action" do
+      expect(subject.can?("instances/change_name", "typeahead")).to eq true
+    end
+
+    context "with a draft instance belonging to the user product" do
+      let(:instance) { create(:instance, draft: true) }
+
+      before do
+        products_collection = double("products_collection")
+        allow(products_collection).to receive(:pluck).with(:name).and_return([product.name])
+        allow(instance).to receive_message_chain(:reference, :products).and_return(products_collection)
+        allow(session_user).to receive(:product_from_context).and_return(product)
+      end
+
+      it "can :change_name on a draft instance whose reference belongs to the user product" do
+        expect(subject.can?(:change_name, instance)).to eq true
+      end
+    end
+
+    context "with a draft instance belonging to a different product" do
+      let(:instance) { create(:instance, draft: true) }
+      let(:other_product) { create(:product, name: "OTHER") }
+
+      before do
+        products_collection = double("products_collection")
+        allow(products_collection).to receive(:pluck).with(:name).and_return([other_product.name])
+        allow(instance).to receive_message_chain(:reference, :products).and_return(products_collection)
+      end
+
+      it "cannot :change_name on a draft instance whose reference belongs to a different product" do
+        expect(subject.can?(:change_name, instance)).to eq false
+      end
+    end
+
+    context "with a non-draft instance" do
+      let(:instance) { create(:instance, draft: false) }
+
+      before do
+        products_collection = double("products_collection")
+        allow(products_collection).to receive(:pluck).with(:name).and_return([product.name])
+        allow(instance).to receive_message_chain(:reference, :products).and_return(products_collection)
+      end
+
+      it "cannot :change_name on a non-draft instance" do
+        expect(subject.can?(:change_name, instance)).to eq false
+      end
+    end
+  end
+
   describe "#profile_editor role" do
     let(:product) { create(:product, is_name_index: false)}
 
@@ -888,6 +1018,72 @@ RSpec.describe Ability, type: :model do
 
     it 'can access instances tab_profile_v2' do
       expect(subject.can?("instances", "tab_profile_v2")).to eq true
+    end
+
+    it 'can access instances tab_comments' do
+      expect(subject.can?("instances", "tab_comments")).to eq true
+    end
+
+    it 'can access comments' do
+      expect(subject.can?("comments", :all)).to eq true
+    end
+
+    describe ':create_adnot permission' do
+      let(:user) { create(:user, id: 1, user_name: session_user.username) }
+      let(:tree) { create(:tree) }
+      let(:product_with_tree) { create(:product, tree: tree) }
+      let(:instance) { create(:instance, draft: false) }
+
+      before do
+        product_role = create(:product_role, product: product_with_tree)
+        create(:user_product_role, user: user, product_role: product_role)
+        allow(session_user).to receive(:user).and_return(user)
+      end
+
+      context 'when instance is in a tree that user has access to' do
+        before do
+          allow(instance).to receive(:in_any_local_tree_ids?).with([tree.id]).and_return(true)
+        end
+
+        it 'can create_adnot on the instance' do
+          expect(subject.can?(:create_adnot, instance)).to eq true
+        end
+      end
+
+      context 'when instance is in a tree that user does not have access to' do
+        before do
+          allow(instance).to receive(:in_any_local_tree_ids?).with([tree.id]).and_return(false)
+        end
+
+        it 'cannot create_adnot on the instance' do
+          expect(subject.can?(:create_adnot, instance)).to eq false
+        end
+      end
+
+      context 'when instance is not in any local trees' do
+        before do
+          allow(instance).to receive(:in_any_local_tree_ids?).with([tree.id]).and_return(false)
+        end
+
+        it 'cannot create_adnot on the instance' do
+          expect(subject.can?(:create_adnot, instance)).to eq false
+        end
+      end
+
+      context 'when user products have no trees' do
+        let(:product_without_tree) { create(:product, tree: nil) }
+
+        before do
+          user.user_product_roles.destroy_all
+          product_role = create(:product_role, product: product_without_tree)
+          create(:user_product_role, user: user, product_role: product_role)
+          allow(instance).to receive(:in_any_local_tree_ids?).with([]).and_return(false)
+        end
+
+        it 'cannot create_adnot on the instance' do
+          expect(subject.can?(:create_adnot, instance)).to eq false
+        end
+      end
     end
 
     it "can manage_profile on instance if not draft and has profile items for product" do
@@ -1099,6 +1295,122 @@ RSpec.describe Ability, type: :model do
       end
     end
 
+  end
+
+  describe "#common_name_editor role" do
+    let(:product) { create(:product, is_name_index: false, manages_profile: true) }
+    let(:common_name_type) { create(:name_type, name: "common", name_category: create(:name_category, name: "other")) }
+    let(:scientific_name_type) { create(:name_type, name: "scientific", scientific: true) }
+    let(:common_name) { create(:name, name_type: common_name_type, full_name: "Common Daisy") }
+    let(:scientific_name) { create(:name, name_type: scientific_name_type, full_name: "Bellis perennis") }
+
+    before do
+      allow(session_user).to receive(:with_role_for_context?).with('common-name').and_return(true)
+      allow(session_user).to receive(:product_from_context).and_return(product)
+      allow(product).to receive(:is_name_index?).and_return(false)
+    end
+
+    context "when managing names" do
+      it "allows access_menu on :names" do
+        expect(subject.can?(:access_menu, :names)).to eq true
+      end
+
+      it "allows creating Name" do
+        expect(subject.can?(:create, Name)).to eq true
+      end
+
+      it "allows create_common_name action" do
+        expect(subject.can?(:create_common_name, Name)).to eq true
+      end
+
+      it "allows updating common name types" do
+        expect(subject.can?(:update, common_name)).to eq true
+      end
+
+      it "does not allow updating non-common name types" do
+        expect(subject.can?(:update, scientific_name)).to eq false
+      end
+
+      it "allows update_common_name for common names" do
+        expect(subject.can?(:update_common_name, common_name)).to eq true
+      end
+
+      it "does not allow update_common_name for non-common names" do
+        expect(subject.can?(:update_common_name, scientific_name)).to eq false
+      end
+    end
+
+    context 'when product is a name index' do
+      before do
+        allow(product).to receive(:is_name_index?).and_return(true)
+      end
+
+      it 'cannot create Name (not_name_index restriction)' do
+        # The initialize method checks not_name_index before calling common_name_editor
+        expect(subject.can?(:create, Name)).to eq false
+      end
+    end
+
+    context 'when product_from_context is nil' do
+      before do
+        allow(session_user).to receive(:with_role_for_context?).with('common-name').and_return(false)
+        allow(session_user).to receive(:product_from_context).and_return(nil)
+      end
+
+      it 'cannot create Name' do
+        expect(subject.can?(:create, Name)).to eq false
+      end
+
+      it 'cannot create_common_name' do
+        expect(subject.can?(:create_common_name, Name)).to eq false
+      end
+
+      it 'cannot access menu new' do
+        expect(subject.can?("menu", "new")).to eq false
+      end
+    end
+
+    context "when accessing specific actions" do
+      it "allows accessing the 'new' menu" do
+        expect(subject.can?("menu", "new")).to eq true
+      end
+
+      it "allows names new_row action" do
+        expect(subject.can?("names", "new_row")).to eq true
+      end
+
+      it "allows names new action" do
+        expect(subject.can?("names", "new")).to eq true
+      end
+
+      it "allows names create action" do
+        expect(subject.can?("names", "create")).to eq true
+      end
+
+      it "allows names tab_details action" do
+        expect(subject.can?("names", "tab_details")).to eq true
+      end
+
+      it "allows names tab_edit action" do
+        expect(subject.can?("names", "tab_edit")).to eq true
+      end
+
+      it "allows names update action" do
+        expect(subject.can?("names", "update")).to eq true
+      end
+
+      it "allows names tab_tag action" do
+        expect(subject.can?("names", "tab_tag")).to eq true
+      end
+
+      it "allows names tab_more action" do
+        expect(subject.can?("names", "tab_more")).to eq true
+      end
+
+      it "allows all actions on name_tag_names" do
+        expect(subject.can?("name_tag_names", :all)).to eq true
+      end
+    end
   end
 
   describe "#basic_auth_2" do
@@ -1535,7 +1847,12 @@ RSpec.describe Ability, type: :model do
       it "inherits all standard admin permissions" do
         expect(subject.can?("admin", :all)).to eq true
         expect(subject.can?("menu", "admin")).to eq true
-        expect(subject.can?("users", :all)).to eq true
+      end
+
+      it "allows viewing users but not updating them" do
+        expect(subject.can?("users", "index")).to eq true
+        expect(subject.can?("users", "show")).to eq true
+        expect(subject.can?("users", "update")).to eq false
       end
     end
 

@@ -1,0 +1,96 @@
+<%= divider %>
+<div>Change the name for this draft instance.</div>
+<%= form_for(@instance,
+             url: instance_name_path(@instance),
+             html: { id: "change-name-form", method: :patch, remote: true }) do |f| %>
+  <input id="instance-name-change-typeahead"
+         name="instance[name_typeahead]"
+         class="typeahead form-control"
+         placeholder="<%= @instance.name.try('full_name') %>"
+         tabindex="<%= increment_tab_index %>"
+         title="Enter a name. Must be same type and rank as the current name."
+         type="text"
+         value=""/>
+  <%= hidden_field_tag "instance[name_id]", "", id: "instance-change-name-id" %>
+  <script>setUpInstanceNameChange(<%= @instance.id %>);</script>
+  <div>
+    <br/>
+    <div>The name <%= @instance.name.try('full_name') %> will be added as a synonym to this instance.</div>
+    <select id="synonym-creation-select"
+            name="instance[create_synonym]"
+            title="Select whether the new name will be added as a synonym"
+            tabindex="<%= increment_tab_index %>">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <div id="synonym-creation-fields" style="margin-top: 10px;">
+      <div><%= @instance.name.try('full_name') %> (and optional year)*, as referenced below:</div>
+      <div class="typeahead-container">
+        <section class='block width-100-percent'>
+          <input id="change-name-synonymy-typeahead"
+                 class="typeahead form-control width-100-percent"
+                 title="Enter an instance. Typeahead field on name and year. Only names with instances are listed."
+                 tabindex="<%= increment_tab_index %>"
+                 type="text"
+                 placeholder="Name typeahead to list instances, 4 consecutive digits treated as a year"
+                 value=""/>
+        </section>
+      </div>
+      <%= hidden_field_tag "instance[cites_id]", "", id: "change-name-synonymy-cites-id" %>
+      <%= hidden_field_tag "change_name_current_name_id", @instance.name_id, id: "change-name-current-name-id" %>
+      is a type*
+      <br>
+      <%= select_tag "instance[synonym_instance_type_id]",
+                     options_for_select(InstanceType.synonym_options),
+                     include_blank: true,
+                     class: "form-control width-50-percent",
+                     title: "Select instance type",
+                     tabindex: increment_tab_index %>
+    </div>
+    <script>
+      setUpChangeNameSynonymyInstance();
+      $('#synonym-creation-select').on('change', function() {
+        if ($(this).val() === 'yes') {
+          $('#synonym-creation-fields').show();
+        } else {
+          $('#synonym-creation-fields').hide();
+        }
+      });
+
+      $('#change-name-form').on('submit', function(e) {
+        if ($('#synonym-creation-select').val() !== 'yes') {
+          return;
+        }
+
+        var errors = [];
+        if ($('#change-name-synonymy-cites-id').val() === '') {
+          errors.push('an instance (the name and optional year)');
+        }
+        if ($('#instance_synonym_instance_type_id').val() === '') {
+          errors.push('a type');
+        }
+
+        if (errors.length > 0) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          $('#change-name-error-message-container')
+            .html('Please enter ' + errors.join(' and ') +
+                  ' to add this name as a synonym.');
+        } else {
+          $('#change-name-error-message-container').empty();
+        }
+      });
+    </script>
+  </div>
+  <div id="change-name-info-message-container" class="message-container"></div>
+  <div id="change-name-error-message-container" class="message-container error-container"></div>
+  <div id="change-name-refresh-container"></div>
+  <%= f.submit "Change Name & Create Instance",
+               class: "btn btn-primary pull-right no-right-margin",
+               title: "Save changed name.",
+               style: "padding: 0 10px",
+               tabindex: increment_tab_index %>
+<% end %>
+<br/>
+<%= divider %>

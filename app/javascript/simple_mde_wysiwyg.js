@@ -148,56 +148,9 @@ window.renderEditor = function(textarea) {
   // Adjust the CodeMirror instance
   var cm = simplemde.codemirror;
 
-  // Function to adjust height based on content
-  function adjustHeight() {
-    if (simplemde.isSideBySideActive()) {
-      return; // Skip height adjustment when in side-by-side mode
-    }
-    var contentHeight = cm.getScrollerElement().querySelector('.CodeMirror-sizer').scrollHeight;
-    var padding = 10; // Add some padding to ensure no clipping
-    var newHeight = contentHeight + padding;
-    var wrapperElement = cm.getWrapperElement();
-    var scrollerElement = cm.getScrollerElement();
-
-    wrapperElement.style.height = newHeight + 'px';
-    scrollerElement.style.maxHeight = newHeight + 'px';
-    scrollerElement.style.height = newHeight + 'px';
-
-    debug('===============================');
-    debug('wrapperElement.style.height:', wrapperElement.style.height);
-    debug('scrollerElement.style.maxHeight:', scrollerElement.style.maxHeight);
-    debug('scrollerElement.style.height:', scrollerElement.style.height);
-  }
-
-  // Initial height setting based on content
-  if (simplemde.value().trim() === "") {
-    // Set initial height to 4 rows when empty
-    var initialHeight = '100px'; // 100px corresponds to 4 rows
-    var wrapperElement = cm.getWrapperElement();
-    var scrollerElement = cm.getScrollerElement();
-
-    wrapperElement.style.height = initialHeight;
-    scrollerElement.style.maxHeight = initialHeight;
-    scrollerElement.style.height = initialHeight;
-
-    debug('===============================');
-    debug('Initial empty editor height settings');
-    debug('wrapperElement.style.height:', wrapperElement.style.height);
-    debug('scrollerElement.style.maxHeight:', scrollerElement.style.maxHeight);
-    debug('scrollerElement.style.height:', scrollerElement.style.height);
-  } else {
-    // Adjust height based on content
-    adjustHeight();
-  }
-
-  // Adjust height on content change
-  cm.on('change', adjustHeight);
-
-  // Adjust height when exiting side-by-side mode
-  cm.on('modeChange', function() {
-    if (!simplemde.isSideBySideActive()) {
-      setTimeout(adjustHeight, 0);
-    }
+  // After paste, scroll to the top so the beginning of the pasted content is visible
+  cm.on('paste', function() {
+    setTimeout(function() { cm.scrollTo(0, 0); }, 0);
   });
 
   debug('SimpleMDE initialized for', textarea.id, ':', simplemde);

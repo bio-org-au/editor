@@ -19,7 +19,7 @@
 %>
 <% confirm_delete_link = link_to("Confirm delete",
                                  delete_review_period_path(@review_period),
-                                 class: "btn btn-danger",
+                                 class: "btn btn-danger confirm-delete-btn",
                                  tabindex: increment_tab_index,
                                  title: "Confirm you want to delete batch review period.",
                                  remote: true,

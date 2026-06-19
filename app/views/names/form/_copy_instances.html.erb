@@ -1,0 +1,91 @@
+
+<%= form_for(@name,
+             url: name_copy_instances_path(id: @name.id),
+             html: {id: "copy-name-form",
+                    role: 'form',
+                    remote: true,
+                    method: :post}) do |f| %>
+ <% if @name.errors.any? %>
+    <div id="error_explanation">
+      <h6><%= pluralize(@name.errors.count, "error") %> prevented this action:</h6>
+
+      <ul>
+      <% @name.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <input type="hidden" name="random_id" value="<%= params[:random_id] %>"/>
+  <%= f.hidden_field :target_name_id %>
+
+  <div class="form-group">
+    <label for="name">Target Name<span class='red'>*</span></label>
+    <div class="typeahead-container">
+      <section class='block width-100-percent'>
+        <input id="instance-target-name-typeahead"
+               class="typeahead form-control width-100-percent give-me-focus" 
+               tabindex="<%= increment_tab_index %>"
+               type="text" 
+               title="Select a name from the list of suggestions that appears as you type."
+               required="true"
+               placeholder="Name"
+               value=""/>
+      </section>
+    </div>
+    <script> setUpInstancesTargetName(); </script>
+  </div>
+
+
+  <div data-controller="checkbox-select-all">
+    <%= check_box_tag "all", nil, nil, {data: { checkbox_select_all_target: "parent", action: "change->checkbox-select-all#toggleChildren"}} %>
+    <%= label_tag "all" %>
+    <%# def collection_checkboxes(method, collection, value_method, text_method, options = {}, html_options = {}, &block) %>
+    <%= f.collection_checkboxes(:instance_ids_to_copy, 
+                                 @name.standalone_instances_sorted,
+                                 :instance_id_to_copy,
+                                 :citation_for_standalone,
+                                 options = {}, html_options = {}) do |b| %>
+    <div class="checkbox-line nowrap">
+      <%= b.check_box(data: {checkbox_select_all_target: "child", action: "change->checkbox-select-all#toggleParent"}) %>&nbsp;<%= b.label %>
+    </div>
+  <% end %>
+  </div>
+
+
+<br>
+<div class="width-100-percent"> 
+
+  <%= link_to("Copy...",
+             '#',
+             id: "copy-name-instances-link",
+             class: "btn btn-warning unconfirmed-action-link pull-right",
+             title: "Copy the name - you will be asked to confirm.",
+             tabindex: increment_tab_index,
+             data: {show_this_id: "confirm-or-cancel-copy-name-instances-link-container"})
+  %>
+  <div id="confirm-or-cancel-copy-name-instances-link-container"
+       class="confirm-or-cancel-container pull-right hidden">
+
+    <%= f.submit "Confirm", id: 'create-copy-of-name', class: 'btn btn-primary width-7em', title: 'Really copy the name', disabled: false, tabindex: increment_tab_index %>
+    <%= link_to("Cancel",
+                '#',
+                id: "cancel-copy-name-instances-link",
+                class: "btn btn-default cancel-link",
+                title: "Do not copy the name.",
+                tabindex: increment_tab_index,
+                data: {enable_this_id: 'copy-name-instances-link',
+                hide_this_id: "confirm-or-cancel-copy-name-instances-link-container"})
+    %>
+  </div>
+  <br>
+  <div id="copy-name-instances-info-message-container" class="message-container xwidth-100-percent xhidden"></div>
+  <div id="copy-name-instances-error-message-container" class="message-container error-container width-100-percent hidden"></div>
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<% end %>

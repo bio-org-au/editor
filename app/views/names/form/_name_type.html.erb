@@ -1,8 +1,16 @@
   <div class="form-group margin-top-1em">
     <label for="name_type_id">Type*</label>
-    <% if @name.category_for_edit.only_one_type? %>
+    <%
+      name_type_options = if can?(:create_common_name, Name) && !can?(:manage, Name) && @name.category_for_edit.other?
+                            NameType.common_only_options
+                          else
+                            NameType.options_for_category(@name.category_for_edit)
+                          end
+      show_prompt = @name.category_for_edit.only_one_type? || (can?(:create_common_name, Name) && !can?(:manage, Name))
+    %>
+    <% if show_prompt %>
       <%= f.select('name_type_id',
-                   NameType.options_for_category(@name.category_for_edit),
+                   name_type_options,
                    {prompt: 'Choose one'},
                    id: "name-type-selector",
                    title: 'Select type',
@@ -12,7 +20,7 @@
                    required: true) %>
     <% else %>
       <%= f.select('name_type_id',
-                   NameType.options_for_category(@name.category_for_edit),
+                   name_type_options,
                    {},
                    title: 'Select type',
                    tabindex: increment_tab_index,

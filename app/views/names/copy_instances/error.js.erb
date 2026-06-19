@@ -1,0 +1,4 @@
+
+$('.message-container').html('').addClass('hidden');
+$('#copy-name-instances-error-message-container').removeClass('hidden').html('<%= "#{editor_icon('warning red')} #{escape_javascript(@message)}".html_safe %>');
+

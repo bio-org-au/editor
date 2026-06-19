@@ -109,6 +109,10 @@ module Profile
       is_draft? && !instance.draft?
     end
 
+    def current_version?
+      !draft_version? && published_date.present? && end_date.nil?
+    end
+
     private
 
     def conditionally_destroy_profile_text

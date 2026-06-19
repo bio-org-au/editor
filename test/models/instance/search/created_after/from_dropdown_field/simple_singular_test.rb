@@ -21,8 +21,12 @@ load "models/search/users.rb"
 
 # Single instance model test.
 class InstSrchCreAfterFromDropdownSimpleSingularTest < ActiveSupport::TestCase
-  # New search for "42993" on instance up to 100 with field: cr-b
+  # query_string "1" means "changed in the last 1 day", so the test only passes
+  # if the instances look like they changed today. Stamp them with the database's
+  # own clock first to keep the test stable (see Instance.changed_in_the_last_n_days).
   test "instance search on created after from dropdown field simple singular" do
+    Instance.update_all("updated_at = current_timestamp")
+
     search = Search::Base
              .new(ActiveSupport::HashWithIndifferentAccess
                   .new(query_string: "1",

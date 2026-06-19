@@ -122,6 +122,8 @@ class InstanceType < ApplicationRecord
 
   def name_with_indefinite_article
     case name
+    when /^[aeiou]/
+      "an #{name}"
     when "[unknown]", "autonym", "[n/a]", "excluded name",
          "invalid publication", "isonym", "orth. var"
       "an #{name}"

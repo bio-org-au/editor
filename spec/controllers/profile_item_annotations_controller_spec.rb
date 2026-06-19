@@ -80,12 +80,14 @@ RSpec.describe ProfileItemAnnotationsController, type: :controller do
     end
 
     context "when value is blank" do
-      it "destroys the profile_item_annotation and renders :delete" do
-        put :update, params: { id: profile_item_annotation.id, profile_item_annotation: { value: "" } }, format: :turbo_stream
+      it "does not destroy the annotation and renders :update_failed with a validation error" do
+        expect {
+          put :update, params: { id: profile_item_annotation.id, profile_item_annotation: { value: "" } }, format: :turbo_stream
+        }.not_to change(Profile::ProfileItemAnnotation, :count)
 
-        expect(assigns(:message)).to eq("Deleted")
-        expect { profile_item_annotation.reload }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(response).to render_template(:delete)
+        expect(assigns(:message)).to include("can't be blank")
+        expect(response).to render_template(:update_failed)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
 
@@ -120,6 +122,51 @@ RSpec.describe ProfileItemAnnotationsController, type: :controller do
         expect(assigns(:message)).to eq("Update failed")
         expect(response).to render_template(:update_failed)
         expect(response).to have_http_status(:unprocessable_content)
+      end
+    end
+  end
+
+  describe "DELETE #destroy" do
+    let!(:profile_item_annotation) { FactoryBot.create(:profile_item_annotation, profile_item: profile_item, value: "To be deleted") }
+
+    context "for authorized user" do
+      before do
+        allow(controller).to receive(:can?).with(:manage, profile_item_annotation).and_return(true)
+      end
+
+      it "destroys the profile_item_annotation and renders :delete" do
+        expect {
+          delete :destroy, params: { id: profile_item_annotation.id }, format: :turbo_stream
+        }.to change(Profile::ProfileItemAnnotation, :count).by(-1)
+
+        expect(assigns(:message)).to eq("Deleted")
+        expect(response).to render_template(:delete)
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+      end
+
+      context "when an error occurs during destroy" do
+        before do
+          allow_any_instance_of(Profile::ProfileItemAnnotation).to receive(:destroy!).and_raise(StandardError, "Destroy failed")
+        end
+
+        it "renders :update_failed with an error message" do
+          delete :destroy, params: { id: profile_item_annotation.id }, format: :turbo_stream
+
+          expect(assigns(:message)).to eq("Destroy failed")
+          expect(response).to render_template(:update_failed)
+          expect(response).to have_http_status(:unprocessable_content)
+        end
+      end
+    end
+
+    context "for non-authorized user" do
+      before do
+        allow(controller).to receive(:can?).with(:manage, profile_item_annotation).and_return(false)
+      end
+
+      it "is forbidden access" do
+        delete :destroy, params: { id: profile_item_annotation.id }, format: :turbo_stream
+        expect(response).to have_http_status(:forbidden)
       end
     end
   end

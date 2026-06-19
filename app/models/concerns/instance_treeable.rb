@@ -55,6 +55,16 @@ module InstanceTreeable
 where te.instance_id = ?", id])
   end
 
+  def in_any_local_tree_ids?(tree_ids)
+    return false if tree_ids.blank?
+
+    Tree.joins("JOIN tree_version_element tve ON tree.current_tree_version_id = tve.tree_version_id")
+        .joins("JOIN tree_element te ON tve.tree_element_id = te.id")
+        .where(id: tree_ids)
+        .where("te.instance_id = ?", id)
+        .exists?
+  end
+
   def in_local_tree_names
     in_local_trees.collect do |tree|
       tree.name

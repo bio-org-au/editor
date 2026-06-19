@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "instances/tabs/_tab_edit_profile_v2.html.erb", type: :view do
-  let(:language) { FactoryBot.create(:language, iso6391code: "en", iso6393code: "eng") }
+  let(:language) { Language.find_or_create_by!(iso6391code: "en") { |l| l.iso6393code = "eng"; l.name = "English" } }
   let(:reference) { FactoryBot.create(:reference, language: language) }
   let(:instance_type) { FactoryBot.create(:instance_type, secondary_instance: false)}
   let(:instance) { FactoryBot.create(:instance, reference: reference) }
@@ -15,6 +15,7 @@ RSpec.describe "instances/tabs/_tab_edit_profile_v2.html.erb", type: :view do
   context "when the user can manage draft secondary references" do
     before do
       allow(view).to receive(:can?).with(:manage_draft_secondary_reference, instance).and_return(true)
+      allow(view).to receive(:can?).with(:change_name, instance).and_return(false)
       allow(ShardConfig).to receive(:classification_tree_key).and_return("some_value")
       allow(ShardConfig).to receive(:name_space).and_return("some_value")
       allow_any_instance_of(Name).to receive(:accepted_concept?).and_return(false)

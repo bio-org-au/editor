@@ -157,40 +157,45 @@
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_classification") && tab_available?(tabs_array, "tree") %>
-    <% if !Rails.configuration.try('multi_product_tabs_enabled') || current_product_from_context&.has_the_same_reference?(@instance) || current_registered_user.roles.blank? %>
-      <%= render(
-        partial: "instances/tabs/tab",
-        locals: {
-          first: false,
-          last: false,
-          this_tab: "tab_classification",
-          link_text: product_tab_text(:instance, "tree", "Tree"),
-          link_id: "instance-classification-tab",
-          link_title: "Tree placement",
-          tab_index: increment_tab_index,
-          prev_tab: "",
-          next_tab: ""
-        })
-      %>
+    <% if can?("instances", "tab_classification") %>
+      <% multi_product_tab_disabled = !Rails.configuration.try('multi_product_tabs_enabled') %>
+      <% if @working_draft && (can?(:place_name, @working_draft) && (multi_product_tab_disabled || current_product_from_context&.has_the_same_reference?(@instance) || current_registered_user.roles.blank? ))%>
+        <%= render(
+          partial: "instances/tabs/tab",
+          locals: {
+            first: false,
+            last: false,
+            this_tab: "tab_classification",
+            link_text: product_tab_text(:instance, "tree", "Tree"),
+            link_id: "instance-classification-tab",
+            link_title: "Tree placement",
+            tab_index: increment_tab_index,
+            prev_tab: "",
+            next_tab: ""
+          })
+        %>
+      <% end %>
     <% end %>
   <% end %>
 
   <% if @tabs_to_offer.include?("tab_comments") && tab_available?(tabs_array, "adnot") %>
     <% if can?("comments", "create") %>
-      <%= render(
-        partial: "instances/tabs/tab",
-        locals: {
-          first: false,
-          last: true,
-          this_tab: "tab_comments",
-          link_text: product_tab_text(:instance, "adnot", "Adnot"),
-          link_id: "instance-comments-tab",
-          link_title: "Adnot",
-          tab_index: increment_tab_index,
-          prev_tab: "",
-          next_tab: ""
-        })
-      %>
+      <% if !Rails.configuration.try('multi_product_tabs_enabled') || can?(:create_adnot, @instance) %>
+        <%= render(
+          partial: "instances/tabs/tab",
+          locals: {
+            first: false,
+            last: true,
+            this_tab: "tab_comments",
+            link_text: product_tab_text(:instance, "adnot", "Adnot"),
+            link_id: "instance-comments-tab",
+            link_title: "Adnot",
+            tab_index: increment_tab_index,
+            prev_tab: "",
+            next_tab: ""
+          })
+        %>
+      <% end %>
     <% end %>
   <% end %>
 

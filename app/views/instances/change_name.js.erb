@@ -1,0 +1,6 @@
+$('#change-name-error-message-container').html('');
+$('#change-name-info-message-container').html('<%= escape_javascript(@message) %>');
+$('#instance-name-link').text('<%= escape_javascript(@instance.name.full_name) %>');
+$('#instance-name-change-typeahead').typeahead('val', '<%= escape_javascript(@instance.name.full_name) %>');
+$('#instance-change-name-id').val('');
+$('#change-name-refresh-container').html('<a href="<%= escape_javascript(search_path(query_target: "name", query_string: "id: #{@instance.name_id} show-instances:")) %>" title="Name Change Successful" class="btn btn-success btn-sm">Refresh</a>');

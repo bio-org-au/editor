@@ -102,7 +102,7 @@ class ProfileItemReferencesControllerTest < ActionController::TestCase
           }
         }, session: @session, xhr: true
     assert_response :success
-    assert_equal "Updated", assigns(:message)
+    assert_equal "Saved", assigns(:message)
     assert_template :update
   end
 

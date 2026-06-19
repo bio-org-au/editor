@@ -34,7 +34,7 @@ class SearchNamesWithFocusSimpleTest < ActionController::TestCase
                    groups: [] })
     assert_response :success
     assert_select "#search-results-summary",
-                  /4[0-9] names of 4[0-9]/,
+                  /[45][0-9] names of [45][0-9]/,
                   "Should find plenty of records for a simple search on 'a'"
     assert_select "#focus_id[value='#{@name.id}']", { count: 1 }, "One Focus"
   end

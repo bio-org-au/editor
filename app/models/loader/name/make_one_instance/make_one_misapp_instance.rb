@@ -101,7 +101,7 @@ class Loader::Name::MakeOneInstance::MakeOneMisappInstance
     new_instance.draft = false
     new_instance.cited_by_id = @loader_name.parent.loader_name_matches.first.standalone_instance_id
     new_instance.reference_id = @loader_name.parent.loader_name_matches.first.standalone_instance.reference_id
-    new_instance.cites_id = @match.instance_id
+    new_instance.cites_id = @match.instance_id unless @loader_name.synonym_type.match(/unsourced/)
     new_instance.name_id = @match.instance.name_id
     new_instance.instance_type_id = @match.relationship_instance_type_id
     new_instance.created_by = new_instance.updated_by = "bulk for #{@user}"

@@ -9,7 +9,7 @@
   </a>
   <% name_tabs_array = product_tab_service.all_available_tabs.dig('name')&.map{|tab| tab[:tab] } || [] %>
   <ul id="create-dropdown-menu" class="dropdown-menu" role="menu">
-    <% if tab_available?(name_tabs_array, "new") %>
+    <% if can?(:access_menu, :names) %>
       <li class="dropdown-submenu">
         <a tabindex="-1" href="#" title="Names stuff"> Names </a>
         <%= render partial: 'layouts/new_name_sub_menu' %>

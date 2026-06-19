@@ -50,3 +50,7 @@ hs_err*.log
 # Ignore vpn configs
 *.ovpn
 /vpn
+
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+

@@ -294,6 +294,7 @@ tr.search-result.fresh td.main-content {
 }
 
 .message-container,
+.message-container a,
 .batch-message-container {
   margin-top: 1em;
   font-size: 13px;

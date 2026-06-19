@@ -36,7 +36,7 @@ Rails.application.routes.draw do
         defaults: { tab: "tab_show_1" }
 
   resources :profile_texts, only: %i[create update]
-  resources :profile_item_annotations, only: %i[create update]
+  resources :profile_item_annotations, only: %i[create update destroy]
   resources :profile_item_references, only: %i[create]
   resources :profile_items, only: %i[destroy index] do
     member do
@@ -44,6 +44,9 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :profile_item_references do
+    resources :annotations, only: %i[destroy]
+  end
   match "profile_item_references/:profile_item_id/:reference_id", as: "save_profile_item_references", to: "profile_item_references#update", via: :put
   match "profile_item_references/:profile_item_id/:reference_id", as: "delete_profile_item_references", to: "profile_item_references#destroy", via: :delete
 
@@ -121,7 +124,11 @@ Rails.application.routes.draw do
         as: "copy_standalone", to: "instances#copy_standalone", via: :post
   match "instances/:id/standalone/copy_for_profile_v2",
         as: "copy_for_profile_v2", to: "instances#copy_for_profile_v2", via: :post
-  resources :instances, only: %i[new create update destroy]
+  resources :instances, only: %i[new create update destroy] do
+    resource :name, only: [:update], controller: "instances/change_name" do
+      get :typeahead
+    end
+  end
   match "instances/:id",
         as: "instance_show",
         to: "instances#show",
@@ -190,6 +197,9 @@ Rails.application.routes.draw do
   match "names/:id/tab/:tab/as/:new_category",
         as: "name_edit_as_category", to: "names#edit_as_category", via: :get
   match "names/:id/copy", as: "name_copy", to: "names#copy", via: :post
+
+  match "/names/:id/copy/instances", as: "name_copy_instances", to: "names#copy_instances", via: :post
+
   match "names/new/:category/:random_id",
         as: "new_name_with_category_and_random_id", to: "names#new", via: :get
 

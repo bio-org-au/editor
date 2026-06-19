@@ -92,8 +92,38 @@ class ProfileItemAnnotationsControllerTest < ActionController::TestCase
 
       assert_response :unprocessable_content
       assert_equal profile_item_annotation.id, assigns(:profile_item_annotation).id
-      assert_match "Not updated", assigns(:message)
       assert_template :update_failed
     end
+  end
+
+  test "should return validation error when update value is blank" do
+    profile_item = profile_item(:ecology_pi)
+    profile_item_annotation = profile_item.profile_item_annotation
+
+    put :update, params: {
+      id: profile_item_annotation.id,
+      profile_item_annotation: {
+        value: ""
+      }
+    }, session: @session, xhr: true
+
+    assert_response :unprocessable_content
+    assert_match "can't be blank", assigns(:message)
+    assert_template :update_failed
+    assert profile_item_annotation.reload.value.present?
+  end
+
+  test "should destroy profile item annotation" do
+    profile_item = profile_item(:ecology_pi)
+    profile_item_annotation = profile_item.profile_item_annotation
+
+    assert_difference("Profile::ProfileItemAnnotation.count", -1) do
+      delete :destroy, params: { id: profile_item_annotation.id },
+             session: @session, xhr: true
+    end
+
+    assert_response :success
+    assert_equal "Deleted", assigns(:message)
+    assert_template :delete
   end
 end

@@ -24,7 +24,6 @@ FactoryBot.define do
     name { "Sample Name" }
     rdf_id { "text" }
     is_deprecated { true }
-    lock_version { 1 }
     created_by { "Sample Created by" }
     updated_by { "Sample Updated by" }
     api_name { "Sample Api name" }

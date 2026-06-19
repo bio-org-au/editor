@@ -17,7 +17,7 @@
   <% confirm_delete_link = link_to("Remove",
                                    delete_batch_reviewer_path(reviewer.id),
                                    id: "confirm-delete-reviewer-#{reviewer.id}-link",
-                                   class: "btn btn-danger hidden",
+                                   class: "btn btn-danger confirm-delete-btn hidden",
                                    tabindex: increment_tab_index,
                                    title: "Confirm the delete.",
                                    remote: true,

@@ -19,6 +19,7 @@ import "instance_note_edit";
 import "add_new_row";
 import "menu_ops";
 import "unconfirmed_action_link_click";
+import "confirm_delete_link_click";
 import "loader_bulk_show_stats_ops";
 import "name_rank_id_changed";
 import "name_delete_form_submit";
@@ -52,6 +53,7 @@ import "typeahead_bundle";
 import "typeaheads_for_author_duplicate_of";
 
 import "typeaheads_for_instance_for_name_showing_reference_update";
+import "typeaheads_for_instance_target_name_for_copy_instances";
 import "typeaheads_for_instance_name";
 import "typeaheads_for_instance_name_for_unpub_citation";
 import "typeaheads_for_instance_reference";
@@ -59,6 +61,7 @@ import "typeaheads_for_instance_reference_profile_v2";
 import "typeaheads_for_instance_reference_excluding_current";
 import "typeaheads_for_instance_synonymy";
 import "typeaheads_for_instance_product_item_config";
+import "typeaheads_for_instance_change_name";
 
 import "typeaheads_for_loader_batch_default_reference";
 import "typeaheads_for_loader_name_parent";

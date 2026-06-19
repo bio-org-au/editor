@@ -101,6 +101,7 @@
     </div>
 
     <div id="profile_item_actions_<%= product_item_config.id %>">
+      <%= divider %>
       <% if profile_item.persisted? %>
         <% if profile_item.allow_delete?%>
           <%= render partial: "profile_items/delete_widgets", locals: {profile_item: profile_item} %>

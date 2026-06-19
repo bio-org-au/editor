@@ -11,7 +11,7 @@
 
 <% confirm_delete_link = link_to("Confirm delete",
                                  delete_name_tag_name_path(name_id:name_tag_name.name_id,tag_id: name_tag_name.tag_id),
-                                 class: "btn btn-danger",
+                                 class: "btn btn-danger confirm-delete-btn",
                                  title: "Really removes the tag.",
                                  tabindex: increment_tab_index,
                                  remote: true,

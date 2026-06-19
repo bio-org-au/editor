@@ -1,0 +1,22 @@
+<div style="padding-bottom: 20px;" id="edit_reference_<%= profile_item_reference.profile_item_id_reference_id %>">
+  <% field_id = "#{profile_item.id}-#{profile_item_reference.profile_item_id_reference_id}" %>
+  <%= form_with model: profile_item_reference, url: save_profile_item_references_path(profile_item_reference.profile_item_id, profile_item_reference.reference_id), method: :put, remote: true, html: { data: { type: :json, form_type: 'reference_item_form' }, class: 'prompt-form-save' } do |f| %>
+    <div id="edit_reference_annotation_message_<%= profile_item_reference.profile_item_id_reference_id %>" class="message-container"><%= message if defined?(message) %></div>
+    <label>Annotation:</label>
+    <div style="display: flex">
+      <%= text_field_tag "profile_item_reference[annotation]",
+          profile_item_reference.annotation,
+          id: "reference-annotation-#{field_id}",
+          class: "form-control",
+          placeholder: "Enter reference annotation",
+          required: false,
+          style: "background-color: white;float: left"
+        %>
+      <%= f.submit 'Save', style: 'background-color: #5a5a5a; color: white; border: none; padding: 3px 10px; cursor: pointer; border-radius: 4px; margin-left: 10px;' %>
+    </div>
+  <% end %>
+  <% if profile_item_reference.annotation.present? %>
+    <%= render partial: "profile_item_references/delete_annotation_widgets",
+        locals: { profile_item_reference: profile_item_reference } %>
+  <% end %>
+</div>

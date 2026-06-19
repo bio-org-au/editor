@@ -44,4 +44,14 @@ module TabsHelper
 
     tabs_array.include?(tab_name)
   end
+
+  def can_edit_name?(name)
+    if can?(:manage, Name)
+      true
+    elsif can?(:update_common_name, name)
+      name.name_type&.name&.downcase == "common"
+    else
+      false
+    end
+  end
 end

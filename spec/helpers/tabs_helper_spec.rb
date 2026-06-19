@@ -122,6 +122,65 @@ RSpec.describe TabsHelper, type: :helper do
     end
   end
 
+  describe '#can_edit_name?' do
+    let(:common_name_type) { instance_double(NameType, name: "common") }
+    let(:scientific_name_type) { instance_double(NameType, name: "scientific") }
+    let(:name_with_common_type) { instance_double(Name, name_type: common_name_type) }
+    let(:name_with_scientific_type) { instance_double(Name, name_type: scientific_name_type) }
+    let(:name_with_nil_type) { instance_double(Name, name_type: nil) }
+
+    context "when the user can manage Name" do
+      before { helper.define_singleton_method(:can?) { |*_| true } }
+
+      it "returns true regardless of name type" do
+        expect(helper.can_edit_name?(name_with_scientific_type)).to be true
+      end
+
+      it "returns true for common names" do
+        expect(helper.can_edit_name?(name_with_common_type)).to be true
+      end
+    end
+
+    context "when the user cannot manage Name" do
+      before do
+        manage_name = false
+        name_ref = name_with_common_type
+        helper.define_singleton_method(:can?) do |action, subject|
+          action == :update_common_name && subject == name_ref
+        end
+      end
+
+      it "returns true when name type is common" do
+        expect(helper.can_edit_name?(name_with_common_type)).to be true
+      end
+    end
+
+    context "when the user can update_common_name but name type is not common" do
+      before do
+        name_ref = name_with_scientific_type
+        helper.define_singleton_method(:can?) do |action, subject|
+          action == :update_common_name && subject == name_ref
+        end
+      end
+
+      it "returns false" do
+        expect(helper.can_edit_name?(name_with_scientific_type)).to be false
+      end
+    end
+
+    context "when the user has no relevant permissions" do
+      before { helper.define_singleton_method(:can?) { |*_| false } }
+
+      it "returns false for a common name" do
+        expect(helper.can_edit_name?(name_with_common_type)).to be false
+      end
+
+      it "returns false when name_type is nil" do
+        expect(helper.can_edit_name?(name_with_nil_type)).to be false
+      end
+    end
+  end
+
   describe '#tab_available?' do
     let(:tabs_array) { ['details', 'edit', 'comments'] }
 

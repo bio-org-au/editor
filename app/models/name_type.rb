@@ -180,6 +180,12 @@ class NameType < ApplicationRecord
     end
   end
 
+  def self.common_only_options
+    where("lower(name) = ?", "common")
+      .sort_by(&:name)
+      .map { |n| [n.name, n.id, { class: "other" }] }
+  end
+
   def hybrid?
     hybrid
   end

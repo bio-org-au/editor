@@ -19,7 +19,7 @@
     })
   %>
 
-  <% if can?("names", "update") && tab_available?(tabs_array, "edit") %>
+  <% if can?("names", "update") && can_edit_name?(@name) %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {
@@ -119,7 +119,7 @@
     %>
   <% end %>
 
-  <% if can?("names", "update") && tab_available?(tabs_array, "more") %>
+  <% if can_edit_name?(@name) && tab_available?(tabs_array, "more") %>
     <%= render(
       partial: "names/tabs/tab",
       locals: {

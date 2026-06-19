@@ -5,6 +5,18 @@
             class: 'name') %>
 <%= " [#{@instance.name.try('name_status').try('name_without_brackets')}]" if @instance.try('name').try('name_status').try('legitimate?') %>
 
+<% if @instance.draft? && can?(:change_name, @instance) && local_assigns.fetch(:with_name_change, nil) == true %>
+  <%= link_to "#",
+              onclick: "$('#change-name-form-container').toggle(); $('#change-name-chevron').toggleClass('fa-chevron-down fa-chevron-up'); return false;",
+              title: "Show or hide the change name form",
+              class: "small" do %>
+    change name <%= editor_icon("chevron-down", "", id: "change-name-chevron", style: "font-size: inherit") %>
+  <% end %>
+  <div id="change-name-form-container" style="display: none">
+    <%= render 'form_change_name' %>
+  </div>
+<% end %>
+
 <% if @instance.name.accepted_concept? || @instance.name.excluded_concept? %>
     <%= render(partial: 'instances/taxo/details/widgets', locals: {instance: @instance}) %>
 <% end %>

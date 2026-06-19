@@ -2635,5 +2635,19 @@ darwinia_sp_7:
   name_path: 'Eukaryota/Plantae/Magnoliophyta/Magnoliopsida/Rosidae/Myrtales/Myrtaceae/Darwinia/sp.'
   uri: agh
 
+angophora_fred: 
+  <<: *DEFAULTS
+  simple_name: Angophora fred
+  full_name: Angophora fred (Gaertn.) Britten
+  name_element: fred
+  name_rank: species
+  name_status: unknown
+  name_type: scientific
+  namespace: apni
+  parent: angophora
+  family: a_family
+  author: moe
+  name_path: 'Plantae/Magnoliophyta/a_family/a_genus/fred'
+  uri: agi
 
 

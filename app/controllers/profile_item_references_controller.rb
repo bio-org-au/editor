@@ -45,6 +45,7 @@ class ProfileItemReferencesController < ApplicationController
 
   def update
     @message = "No change"
+    @profile_item = @profile_item_reference.profile_item
     really_update if changed?
   end
 
@@ -75,8 +76,12 @@ class ProfileItemReferencesController < ApplicationController
   end
 
   def really_update
+    if permitted_params[:annotation].blank?
+      @message = "Annotation can't be blank. Use 'Delete annotation' to remove it."
+      return render :update_failed, status: :unprocessable_content
+    end
     if @profile_item_reference.update(permitted_params.merge(updated_by: current_user.username))
-      @message = "Updated"
+      @message = "Saved"
       render :update
     else
       raise("Not updated")

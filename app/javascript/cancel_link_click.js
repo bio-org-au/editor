@@ -18,6 +18,9 @@
     debug(`data-enable-this-id: ${$element.attr('data-enable-this-id')}`);
     $(`#${$element.attr('data-hide-this-id')}`).addClass('hidden');
     $(`#${$element.attr('data-enable-this-id')}`).removeClass('disabled');
+    if ($element.attr('data-show-this-id')) {
+      $(`#${$element.attr('data-show-this-id')}`).removeClass('hidden');
+    }
     $(`.${$element.attr('data-empty-this-class')}`).html('');
     $('.message-container').html('');
     $('.error-container').html('');

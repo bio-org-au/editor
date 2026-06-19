@@ -61,7 +61,7 @@
       "tabs": ["details", "tree"]
     },
     "manages_profile": {
-      "tabs": ["details", "edit_profile", "syn_profile", "unpub_profile", "profile"]
+      "tabs": ["details", "edit_profile", "syn_profile", "unpub_profile", "profile", "adnot"]
     },
     "default": {
       "tabs": ["details"]

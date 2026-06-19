@@ -121,7 +121,10 @@
   height: 100px; /* Default height corresponding to 4 rows */
 }
 .CodeMirror {
-  min-height: 100px; /* Minimum height corresponding to 4 rows */
+  height: 200px;
+}
+.CodeMirror-scroll {
+  padding-bottom: 20px;
 }
 .message-container {
   margin-top: 5px;

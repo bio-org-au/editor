@@ -161,6 +161,66 @@ RSpec.describe SessionUser, type: :model do
     end
   end
 
+  describe '#with_role_for_context?' do
+    let(:username) { 'testuser' }
+    let(:full_name) { 'Test User' }
+    let(:groups) { ['group1'] }
+
+    let!(:user) { FactoryBot.create(:user, user_name: username) }
+    let!(:product) { FactoryBot.create(:product) }
+    let!(:role) { FactoryBot.create(:role, name: 'common-name') }
+    let!(:other_product) { FactoryBot.create(:product) }
+    let!(:product_role) { FactoryBot.create(:product_role, product: product, role: role) }
+    let!(:user_product_role) { FactoryBot.create(:user_product_role, product_role: product_role, user: user) }
+
+    let(:session_user) { FactoryBot.create(:session_user, username: username, groups: groups) }
+
+    context 'when user is present and product_from_context is set' do
+      before do
+        session_user.set_current_product_from_context(product)
+      end
+
+      context 'when the user has the role for the context product' do
+        it 'returns true' do
+          expect(session_user.with_role_for_context?('common-name')).to be true
+        end
+      end
+
+      context 'when the user does not have the role for the context product' do
+        it 'returns false for an unassigned role name' do
+          expect(session_user.with_role_for_context?('admin')).to be false
+        end
+      end
+
+      context 'when the user has the role but for a different product' do
+        before do
+          session_user.set_current_product_from_context(other_product)
+        end
+
+        it 'returns false' do
+          expect(session_user.with_role_for_context?('common-name')).to be false
+        end
+      end
+    end
+
+    context 'when product_from_context is nil' do
+      it 'returns false' do
+        expect(session_user.with_role_for_context?('common-name')).to be false
+      end
+    end
+
+    context 'when user is not present' do
+      before do
+        allow(session_user).to receive(:user).and_return(nil)
+        session_user.set_current_product_from_context(product)
+      end
+
+      it 'returns false' do
+        expect(session_user.with_role_for_context?('common-name')).to be false
+      end
+    end
+  end
+
   describe "#user" do
     let(:username) { "test" }
     let!(:user) { FactoryBot.create(:user, user_name: username) }

@@ -1,16 +1,16 @@
-<%= render partial: 'names/tabs/tabs_row_2' %>
+<% if can_edit_name?(@name) %>
+  <%= render partial: 'names/tabs/tabs_row_2' %>
 
-<% increment_tab_index %>
-<br>
+  <% increment_tab_index %>
+  <br>
 
-<% if NameTag.all.count > 0 %>
-  <div>
-  <h5>Tags</h5>
-  <%= render partial: 'names/tabs/name_tag_widgets' %>
-  </div>
+  <% if NameTag.all.count > 0 %>
+    <div>
+    <h5>Tags</h5>
+    <%= render partial: 'names/tabs/name_tag_widgets' %>
+    </div>
+  <% end %>
+
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
 <% end %>
-
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>
-
-

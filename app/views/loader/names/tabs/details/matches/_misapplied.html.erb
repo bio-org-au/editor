@@ -1,7 +1,11 @@
-<h3>Matches for Misapplied</h3>
+<% if @loader_name.synonym_type.match(/unsourced/) %>
+  <h4>Matches for Unsourced Misapplied</h4>
+    <%= render partial: 'loader/names/tabs/details/matches/misapplieds/unsourced_preferred_matches' %>
+<% else %>
+  <h3>Matches for Sourced Misapplied</h3>
   <% @loader_name.matches.each_with_index do |matching_name, index| %>
     <%= render partial: 'loader/names/tabs/details/matches/misapplieds/one_misapplied',
                locals: {matching_name: matching_name, index: index} %>
  <% end %>
-
+<% end %>
 

@@ -16,6 +16,7 @@ pin "instance_note_edit", preload: true
 pin "add_new_row", preload: true
 pin "menu_ops", preload: true
 pin "unconfirmed_action_link_click", preload: true
+pin "confirm_delete_link_click", preload: true
 pin "name_rank_id_changed", preload: true
 pin "loader_bulk_show_stats_ops", preload: true
 pin "name_delete_form_submit", preload: true
@@ -58,12 +59,14 @@ pin "typeaheads_for_author_duplicate_of", to: "typeaheads/for_author/duplicate_o
 pin "typeaheads_for_instance_for_name_showing_reference_update",
     to: "typeaheads/for_instance/for_name_showing_reference_update.js"
 pin "typeaheads_for_instance_name", to: "typeaheads/for_instance/name.js"
+pin "typeaheads_for_instance_target_name_for_copy_instances", to: "typeaheads/for_instance/target_name_for_copy_instances.js"
 pin "typeaheads_for_instance_name_for_unpub_citation", to: "typeaheads/for_instance/name_for_unpub_citation.js"
 pin "typeaheads_for_instance_reference", to: "typeaheads/for_instance/reference.js"
 pin "typeaheads_for_instance_reference_profile_v2", to: "typeaheads/for_instance/reference_profile_v2.js"
 pin "typeaheads_for_instance_reference_excluding_current", to: "typeaheads/for_instance/reference_excluding_current.js"
 pin "typeaheads_for_instance_synonymy", to: "typeaheads/for_instance/synonymy.js"
 pin "typeaheads_for_instance_product_item_config", to: "typeaheads/for_instance/name_for_product_item_config.js"
+pin "typeaheads_for_instance_change_name", to: "typeaheads/for_instance/change_name.js"
 
 pin "typeaheads_for_loader_batch_default_reference", to: "typeaheads/for_loader_batch/default_reference.js"
 pin "typeaheads_for_loader_name_parent", to: "typeaheads/for_loader_name/parent.js"

@@ -87,3 +87,15 @@ ul#tree-report-tabs.nav-tabs li a:focus {
   color: purple;
 }
 
+a.btn-danger[disabled],
+a.btn-default[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+a.btn-danger[disabled] {
+  background-color: #a94442;
+  border-color: #843534;
+}
+

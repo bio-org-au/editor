@@ -22,11 +22,14 @@ require "open-uri"
 class NamesController < ApplicationController
   include OpenURI
   include Name::Typeaheads
+  include Name::CopyInstances
   # All text/html requests should go to the search page, except for rules.
   before_action :javascript_only, except: %i[rules refresh_children]
   before_action :find_name,
                 only: %i[show tab edit_as_category
-                         refresh refresh_children transfer_dependents]
+                         refresh refresh_children
+                         transfer_dependents
+                         copy_instances]
 
   # GET /names/1
   # GET /names/1.json
@@ -263,7 +266,9 @@ class NamesController < ApplicationController
                                  :name_element,
                                  :verbatim_rank,
                                  :published_year,
-                                 :changed_combination)
+                                 :changed_combination,
+                                 :target_name_id,
+                                 instance_ids_to_copy: [])
   end
 
   def dependent_params

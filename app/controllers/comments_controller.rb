@@ -20,6 +20,7 @@ class CommentsController < ApplicationController
   # All text/html requests should go to the search page.
   before_action :javascript_only
   before_action :set_comment, only: %i[show edit update destroy]
+  before_action :authorize_for_instance!, only: %i[create update destroy]
 
   # GET /comments/1
   # GET /comments/1.json
@@ -93,6 +94,25 @@ class CommentsController < ApplicationController
     else
       @message = "Not saved. #{@comment.errors.full_messages.first}"
       render :update_failed
+    end
+  end
+
+  def authorize_for_instance!
+    return unless Rails.configuration.try(:multi_product_tabs_enabled)
+
+    instance = find_instance_for_authorization
+    return unless instance
+
+    return if can?(:create_adnot, instance)
+
+    raise CanCan::AccessDenied.new("Access Denied!", :create_adnot, instance)
+  end
+
+  def find_instance_for_authorization
+    if @comment&.instance
+      @comment.instance
+    elsif params[:comment].present? && comment_params[:instance_id].present?
+      Instance.find_by(id: comment_params[:instance_id])
     end
   end
 end

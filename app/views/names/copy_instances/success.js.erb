@@ -1,0 +1,12 @@
+$('.message-container').html('').addClass('hidden');
+$('#confirm-or-cancel-copy-name-link-container').addClass('hidden');
+
+$('#copy-name-instances-info-message-container')
+  .html('<%= link_to("#{pluralize(@tally, 'Instance')} copied - view target: #{editor_icon('search')}".html_safe,
+                     search_url(query_target: 'Names',
+                                query_string: "id:#{@target_name.id} si:"),
+                                title: "Query the target name") %>');
+
+$('#copy-name-instances-info-message-container').removeClass('hidden');
+$('#confirm-or-cancel-copy-name-instances-link-container').addClass('hidden');
+$('#copy-name-instances-link').removeClass('disabled');

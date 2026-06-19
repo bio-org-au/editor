@@ -4,6 +4,14 @@
   <div class="form-group">
     <label for="name">Name<%= "*" if @name.requires_name_element? %></label>
    <%= f.text_field :name_element, tabindex: increment_tab_index, title: "Enter name", class: 'form-control', required: @name.requires_name_element?, autofocus: true %>
+   <% if @name.persisted? &&
+         @name.name_rank.can_impact_child_name_construction? &&
+        (@name.children.present? || @name.second_children.present?) %>
+     <p class="red">
+     Changing this may also change the constructed names of <%= pluralize(@name.children.size + @name.second_children.size, 'direct child') %> and possibly more indirect children.
+     </p>
+     </p>
+  <% end %>
   </div>
 
   <% end %>

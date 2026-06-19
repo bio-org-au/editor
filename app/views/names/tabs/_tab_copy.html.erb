@@ -2,9 +2,23 @@
 
 <br>
 <div>
-<h5>Copy</h5>
+<h5>Copy Name</h5>
 <%= render partial: 'names/form/copy' %>
 </div>
 <br>
 <div id="search-result-details-info-message-container" class="message-container"></div>
 <div id="search-result-details-error-message-container" class="message-container"></div>
+
+
+
+<%= divider %>
+<div>
+  <h5>Copy Standalone Instances</h5>
+  <% if @name.standalone_instances.blank? %>
+     No instances available to copy. 
+  <% else %>
+    <p>Copy up to <%= pluralize(@name.standalone_instances.size, 'standalone instance') %> to another Name record</p>
+    <%= render partial: 'names/form/copy_instances' %>
+  <% end %>
+</div>
+

@@ -8,22 +8,10 @@
        col-lg-12 search-results-inner">
     <h3>Changes <%= the_year %></h3>
     <p>This week in the Editor...</p>
-    <% unless Rails.configuration.try('jira_key').nil? %>
-      <p>
-      <%= link_to "Changes #{params[:year]} showing Jira statuses", history_for_year_path(params[:year],'true'), title: 'Changes history', class: 'blue with-underline' %>
-      (Can be slower when not cached.)
-      </p>
-      <% if Rails.env == "development" %>
-        <p><b>
-        Developer note: caching is switched off in development by default.
-        </b></p>
-      <% end %>
-    <% end %>
     <% if defined? the_note %>
       <p><%= the_note %></p>
     <% end %>
-
-
+    Tickets:<%= @tickets.size %>
     <% unless the_list.blank? %>
 
     <ul class="list-group">  
@@ -50,7 +38,9 @@
         <% jira_status = 'Unknown' %>
           <% if canonical_jira_id.present? %>
             <% unless canonical_jira_id.match(/-.*-/) %>
-              <% jira_status = Jira.new(canonical_jira_id).status if params[:show_status] == 'true' %>
+
+              <% jira_status = JiraTicket.results[canonical_jira_id] unless @tickets.blank? %>
+
               <span class="badge jira <%= jira_status&.to_s&.downcase&.gsub(/ /,'-') %>">
                <%= link_to "(#{ val[:jira_project]||'NSL' }-#{val[:jira_id]}) 
                  #{editor_icon('external-link fa-lg')}".html_safe, 

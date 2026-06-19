@@ -1,10 +1,12 @@
-<%= render partial: 'names/tabs/tabs_row_2' %>
-<% increment_tab_index %>
+<% if can_edit_name?(@name) %>
+  <%= render partial: 'names/tabs/tabs_row_2' %>
+  <% increment_tab_index %>
 
-<div>
-<%= render partial: 'names/tabs/refresh_widgets' %>
-</div>
+  <div>
+  <%= render partial: 'names/tabs/refresh_widgets' %>
+  </div>
 
 
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>
+  <div id="search-result-details-info-message-container" class="message-container"></div>
+  <div id="search-result-details-error-message-container" class="message-container"></div>
+<% end %>

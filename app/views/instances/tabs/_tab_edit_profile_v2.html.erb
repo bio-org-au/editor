@@ -8,7 +8,7 @@
   <div id="search-result-details-error-message-container-2" class="error-container"></div>
   <div id="search-result-details-error-message-container-3" class="error-container"></div>
 
-  <%= render partial: "instances/tabs/show_standalone"%>
+  <%= render partial: "instances/tabs/show_standalone", locals: { with_name_change: true } %>
 
   <%= divider %>
   <% if @instance.allow_delete? %>

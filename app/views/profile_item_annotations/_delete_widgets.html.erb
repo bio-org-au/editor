@@ -1,0 +1,35 @@
+<div style="margin-top: 6px; text-align: right;">
+  <%= link_to "Delete annotation",
+      '#',
+      id: "annotation-delete-link-#{profile_item_annotation.id}",
+      class: "btn btn-default btn-xs unconfirmed-delete-link",
+      title: "Delete this annotation. A confirmation step follows.",
+      data: {
+        show_this_id: "confirm-or-cancel-annotation-container-#{profile_item_annotation.id}",
+        hide_this_id: "annotation-delete-link-#{profile_item_annotation.id}",
+      }
+  %>
+  <span id="confirm-or-cancel-annotation-container-<%= profile_item_annotation.id %>"
+        class="hidden">
+    <span style="font-size: 0.9em; color: #555; vertical-align: middle;">Delete annotation?</span>
+    &nbsp;
+    <%= link_to "Confirm delete",
+        profile_item_annotation_path(profile_item_annotation),
+        class: "btn btn-danger btn-xs confirm-delete-btn",
+        title: "Select to confirm the delete.",
+        data: {
+          turbo_method: :delete,
+          turbo_stream: true
+        } %>
+    &nbsp;
+    <%= link_to "Cancel delete",
+        '#',
+        title: "Select to cancel the delete.",
+        class: "btn btn-default btn-xs cancel-link",
+        data: {
+          hide_this_id: "confirm-or-cancel-annotation-container-#{profile_item_annotation.id}",
+          show_this_id: "annotation-delete-link-#{profile_item_annotation.id}",
+          enable_this_id: "annotation-delete-link-#{profile_item_annotation.id}",
+        } %>
+  </span>
+</div>

@@ -19,7 +19,7 @@
 class ProfileItemAnnotationsController < ApplicationController
   skip_before_action :authorise
 
-  before_action :set_profile_item_annotation, only: %i[update]
+  before_action :set_profile_item_annotation, only: %i[update destroy]
 
   before_action :authorise_user!, except: [:create]
 
@@ -49,6 +49,16 @@ class ProfileItemAnnotationsController < ApplicationController
     really_update if changed?
   end
 
+  def destroy
+    @profile_item = @profile_item_annotation.profile_item
+    @profile_item_annotation.destroy!
+    @message = "Deleted"
+    render :delete
+  rescue StandardError => e
+    @message = e.to_s
+    render :update_failed, status: :unprocessable_content
+  end
+
   private
 
   def authorise_user!
@@ -64,15 +74,12 @@ class ProfileItemAnnotationsController < ApplicationController
   end
 
   def really_update
-    if permitted_params[:value].blank?
-      @profile_item_annotation.destroy!
-      @message = "Deleted"
-      render :delete
-    elsif @profile_item_annotation.update(permitted_params.merge(updated_by: current_user.username))
+    if @profile_item_annotation.update(permitted_params.merge(updated_by: current_user.username))
       @message = "Updated"
       render :update
     else
-      raise("Not updated")
+      @message = @profile_item_annotation.errors.full_messages.join(", ")
+      render :update_failed, status: :unprocessable_content
     end
   rescue StandardError => e
     @message = e.to_s

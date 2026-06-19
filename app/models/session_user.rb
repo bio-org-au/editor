@@ -37,6 +37,16 @@ class SessionUser < ActiveType::Object
     user.is?(requested_role_name)
   end
 
+  def with_role_for_context?(requested_role_name)
+    return false unless user && product_from_context
+
+    user.user_product_roles
+        .joins(product_role: :role)
+        .where(product_role: { product_id: product_from_context.id },
+               roles: { name: requested_role_name })
+        .exists?
+  end
+
   #
   # Profile V2
   #

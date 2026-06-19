@@ -63,11 +63,12 @@ class Ability
     reviewer_auth(user) if user.with_role?('tree-reviewer')
     draft_editor(user) if user.with_role?('draft-editor') && not_name_index
     profile_editor(user) if user.with_role?('profile-editor') && not_name_index
-    draft_profile_editor if user.with_role?('draft-profile-editor') && not_name_index
+    draft_profile_editor(user) if user.with_role?('draft-profile-editor') && not_name_index
     profile_reference_auth(user) if user.with_role?('profile-reference') && not_name_index
     tree_builder_auth(user) if user.with_role?('tree-builder')
     tree_publisher_auth(user) if user.with_role?('tree-publisher')
     name_index_editor(user) if user.with_role?('name-index-editor') && is_name_index
+    common_name_editor(user) if user.with_role_for_context?('common-name') && not_name_index
     product_admin_auth(user) if user.with_role?('admin')
   end
 
@@ -83,10 +84,15 @@ class Ability
     @user.id
   end
 
-  def draft_profile_editor
+  def draft_profile_editor(user)
     can :manage, :profile_v2
     can :manage_profile, Instance do |instance|
-      instance.draft?
+      next false unless instance.draft?
+
+      context_product = user.product_from_context
+      next false unless context_product
+
+      context_product.has_the_same_reference?(instance)
     end
     can [:create, :read], Author
     can :update, Author do |author|
@@ -112,10 +118,15 @@ class Ability
         .joins(profile_item: :product_item_config)
         .where("product_item_configs_profile_item.product_id = ?", user.product_from_context&.id).any?)
     end
+    can :create_adnot, Instance do |instance|
+      instance.draft? && user.product_from_context&.has_the_same_reference?(instance)
+    end
+    can "comments", :all
     can "authors", :all
     can "instances", [
       "tab_details",
       "tab_profile_v2",
+      "tab_comments",
       "typeahead_for_product_item_config"
     ]
     can "menu", "new"
@@ -199,10 +210,18 @@ class Ability
     can "names/typeaheads/for_unpub_cit", "index"
     can "names", "tab_instances_profile_v2"
     can "references", "tab_new_instance"
+
+    # NOTES Change name permissions
+    can :change_name, Instance do |instance|
+      instance.draft? && instance.reference.products.pluck(:name).any?(selected_product(user)&.name.to_s)
+    end
+    can "instances/change_name", "update"
+    can "instances/change_name", "typeahead"
   end
 
   def profile_editor(session_user)
     user_products = session_user.user&.products || []
+    user_product_tree_ids = user_products.map(&:tree_id).compact
 
     can :manage, :profile_v2
     can :manage, Profile::ProfileItem do |profile_item|
@@ -220,12 +239,17 @@ class Ability
     can :manage_profile, Instance do |instance|
       instance.profile_items.includes([:product]).any? { |item| item.product && user_products.include?(item.product) }
     end
+    can :create_adnot, Instance do |instance|
+      instance.in_any_local_tree_ids?(user_product_tree_ids)
+    end
+    can "comments", :all
     can "references", "typeahead_on_citation"
     can "profile_items", :all
     can "profile_item_annotations", :all
     can "profile_item_references", :all
     can "instances", "tab_details"
     can "instances", "tab_profile_v2"
+    can "instances", "tab_comments"
   end
 
   def profile_v2_auth
@@ -272,6 +296,37 @@ class Ability
     can "loader/batch/review/mode", "switch_off"
   end
 
+  # For common-name product roles - allows creating and editing common names only
+  def common_name_editor(session_user)
+    # Name creation - restricted to common names only (via form restrictions)
+    can :access_menu, :names
+    can :create, Name
+    can :create_common_name, Name
+
+    # Name update - only for common name types
+    can :update, Name do |name|
+      name.name_type&.name&.downcase == "common"
+    end
+    can :update_common_name, Name do |name|
+      name.name_type&.name&.downcase == "common"
+    end
+
+    # Menu access for "New" dropdown
+    can "menu", "new"
+
+    # Name controller actions
+    can "names", "new_row"
+    can "names", "new"
+    can "names", "create"
+    can "names", "tab_details"
+    can "names", "tab_edit"
+    can "names", "update"
+    can "names", "tab_tag"
+    can "names", "tab_more"
+    can "names", "tab_refresh"
+    can "name_tag_names", :all
+  end
+
   def basic_auth_1
     can "application",        "set_include_common_cultivars"
     can "authors",            "tab_show_1"
@@ -304,7 +359,9 @@ class Ability
   end
 
   def edit_auth
-    can :manage,              Author
+    can :access_menu, :all
+    can :manage, Author
+    can :manage, Name
     can :manage, Reference
     can [
       :create,
@@ -378,6 +435,7 @@ class Ability
 
   def admin_auth
     can "admin",              :all
+    can :access_menu, :all
     can "menu",               "admin"
     can "users",              :all
     can "user/product_roles", :all
@@ -510,6 +568,7 @@ class Ability
   def product_admin_auth(session_user)
     # Product admins have all standard admin permissions
     admin_auth
+    cannot "users", "update"
 
     # NOTES: But they can only manage user product roles for products they have admin access to
     # For product admin functionality, we need a User record since that's where roles are stored

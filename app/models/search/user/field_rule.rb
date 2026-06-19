@@ -19,7 +19,9 @@
 class Search::User::FieldRule
   RULES = {
     "id:" => { where_clause: " id = ? " },
-    "user-name:" => { where_clause: " lower(user_name) like ? " },
+    "user-name:" => {trailing_wildcard: true,
+                     where_clause: " lower(user_name) like ? " },
+    "user-name-exact:" => {where_clause: " lower(user_name) like ? " },
     "given:" => { where_clause: " lower(given_name) like ? " },
     "family:" => { where_clause: " lower(family_name) like ? " },
     "role:" => { where_clause: " id in (select user_id from user_product_role_v where role like lower(?))" },

@@ -209,11 +209,11 @@
     <table class="table table-condensed search-results width-100-percent">
     <tr><td class="width-40-percent min-width-10em">instance_delete_delay_seconds</td><td> <%= Rails.configuration.try(:instance_delete_delay_seconds) %> </td></tr>
     </table>
-    <br>
     <h5>Jiras</h5>
     <table class="table table-condensed search-results width-100-percent">
-      <tr><td class="width-40-percent min-width-10em">jira_key</td><td> <%= (!Rails.configuration.try(:jira_key).try('length').nil?) ? 'exists' : 'not there'  %> </td></tr>
-    <tr><td class="width-40-percent min-width-10em">jira_api_timeout</td><td> <%= Rails.configuration.try(:jira_api_timeout).to_s %> seconds </td></tr>
+      <tr><td class="width-40-percent min-width-10em">jira_status_aware</td><td> <%= Rails.configuration.try(:jira_status_aware)  %> </td></tr>
+      <tr><td class="width-40-percent min-width-10em">jira email present</td><td> <%= Rails.application.credentials.jira_email.present? ? 'Yes' : 'No' %></td></tr>
+      <tr><td class="width-40-percent min-width-10em">jira token present</td><td> <%= Rails.application.credentials.jira_token.present? ? 'Yes' : 'No' %></td></tr>
     </table>
     <br>
 </div>

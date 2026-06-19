@@ -19,7 +19,7 @@
 %>
 <% confirm_delete_link = link_to("Confirm delete",
                                  loader_name_path(@loader_name.id),
-                                 class: "btn btn-danger delete-widget",
+                                 class: "btn btn-danger confirm-delete-btn delete-widget",
                                  tabindex: increment_tab_index,
                                  title: "Confirm you want to delete the loader name.",
                                  remote: true,

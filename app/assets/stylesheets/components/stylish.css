@@ -171,3 +171,7 @@ hr.dark {
   background-color: #e67e22;
   color: #fff;
 }
+
+.nowrap {
+  white-space: nowrap;
+}

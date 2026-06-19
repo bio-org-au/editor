@@ -210,6 +210,41 @@ RSpec.describe Profile::ProfileItem, type: :model do
     end
   end
 
+  describe "#current_version?" do
+    let(:instance) { create(:instance, draft: false) }
+    let(:profile_item) { create(:profile_item, instance:, is_draft: false, published_date: Time.current, end_date: nil) }
+
+    subject { profile_item.current_version? }
+
+    it "returns true when not a draft version, has a published_date, and end_date is nil" do
+      expect(subject).to be true
+    end
+
+    context "when the profile item is a draft version" do
+      before { profile_item.update(is_draft: true) }
+
+      it "returns false" do
+        expect(subject).to be false
+      end
+    end
+
+    context "when published_date is nil" do
+      before { profile_item.update(published_date: nil) }
+
+      it "returns false" do
+        expect(subject).to be false
+      end
+    end
+
+    context "when end_date is present" do
+      before { profile_item.update(end_date: Time.current) }
+
+      it "returns false" do
+        expect(subject).to be false
+      end
+    end
+  end
+
   describe "after_destroy callback" do
     let(:profile_text) { create(:profile_text) }
     let(:profile_item) { create(:profile_item, profile_text: profile_text, statement_type: statement_type) }

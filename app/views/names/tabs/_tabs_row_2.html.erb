@@ -4,7 +4,7 @@
 %>
 
 <ul class="nav nav-tabs">
-  <% if can?("names", "update") %>
+  <% if can_edit_name?(@name) %>
     <% if tab_available?(tabs_array, "more_comment") %>
       <%= render partial: "names/tabs/tab",
         locals: {

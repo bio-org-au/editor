@@ -1,18 +1,18 @@
-<%= render partial: 'names/tabs/tabs_row_2' unless @tab.match(/tab_more/) %>
+<% if can_edit_name?(@name) %>
+    <%= render partial: 'names/tabs/tabs_row_2' unless @tab.match(/tab_more/) %>
 
-<div id="search-result-details-info-message-container" class="message-container"></div>
-<div id="search-result-details-error-message-container" class="message-container"></div>
-<% increment_tab_index(0) %>
+    <div id="search-result-details-info-message-container" class="message-container"></div>
+    <div id="search-result-details-error-message-container" class="message-container"></div>
+    <% increment_tab_index(0) %>
 
-<div id="name-comments-fields" >
+    <div id="name-comments-fields" >
 
-    <% @name.comments.sort{|x,y| x.created_at <=> y.created_at}.each do |comment| %>
-        <div id="container-for-comment-<%= comment.id %>">
-            <%= render partial: 'comments/form', locals: {comment: comment} %>
-        </div>
-    <% end %>
+        <% @name.comments.sort{|x,y| x.created_at <=> y.created_at}.each do |comment| %>
+            <div id="container-for-comment-<%= comment.id %>">
+                <%= render partial: 'comments/form', locals: {comment: comment} %>
+            </div>
+        <% end %>
 
-    <%= render partial: 'comments/form_new', locals: {comment: Comment.new, parent_entity_type: 'name', parent_id: @name.id} %>
-</div>
-
-
+        <%= render partial: 'comments/form_new', locals: {comment: Comment.new, parent_entity_type: 'name', parent_id: @name.id} %>
+    </div>
+<% end %>

@@ -1,3 +1,144 @@
+- :date: 04-June-2026
+  :jira_id: '240'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the profile tab not showing up when instance has no profile items but is part of a concept with profile items
+- :date: 03-June-2026
+  :jira_id:
+  :description: |-
+    Regression tests: Added some Claude suggested - no user testing required.
+- :date: 02-June-2026
+  :jira_id: '5811'
+  :description: |-
+    Add an option to create a synonym for draft instance name change
+- :date: 28-May-2026
+  :jira_id: '218'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the ui for of the versioned update success message
+- :date: 27-May-2026
+  :jira_id: '217'
+  :jira_project: FLOR
+  :description: |-
+    Improve the print preview of profile items by adding draft/current labels and removing ended items
+- :date: 27-May-2026
+  :jira_id: '216'
+  :jira_project: FLOR
+  :description: |-
+    Restrict product admins from updating user details
+- :date: 27-May-2026
+  :jira_id: '5635'
+  :description: |-
+    Batch Loader: Allow manual addition of unsourced misapplications to an accepted or excluded name directly in a batch
+- :date: 26-May-2026
+  :jira_id: '215'
+  :jira_project: FLOR
+  :description: |-
+    Fixup draft-profile-editor permissions to only allow managing profile items that are related to the product
+- :date: 25-May-2026
+  :jira_id: '220'
+  :jira_project: FLOR
+  :description: |-
+    Add a delete button for profile item reference annotations
+- :date: 25-May-2026
+  :jira_id: '5813'
+  :description: |-
+    User search: Automatically add a trailing wildcard to the user-name search
+- :date: 22-May-2026
+  :jira_id: '220'
+  :jira_project: FLOR
+  :description: |-
+    Add a delete button for profile item annotations
+- :date: 22-May-2026
+  :jira_id: '221'
+  :jira_project: FLOR
+  :description: |-
+    Restrict "More" and sub tabs to users with name edit permissions
+- :date: 21-May-2026
+  :jira_id: '2958'
+  :description: |-
+    Name Edit: Minor extra change to make the information text red
+- :date: 21-May-2026
+  :jira_id: '1319'
+  :description: |-
+    Names and Instances: Minor additional change to NOT offer the copy form when a Name has no standalone instances
+- :date: 20-May-2026
+  :jira_id: '1319'
+  :description: |-
+    Names and Instances: Minor additional change to properly clear the Confirm dialog after successful copy
+- :date: 20-May-2026
+  :jira_id: ''
+  :description: |-
+    Fixup the typo in the changelog for jira 5896 -> 5796
+- :date: 20-May-2026
+  :jira_id: '222'
+  :jira_project: FLOR
+  :description: |-
+    Add loading state and disable the button on confirm delete widgets
+- :date: 19-May-2026
+  :jira_id: '1319'
+  :description: |-
+    Names and Instances: Allow copy of Instances from one Name to another Name
+- :date: 19-May-2026
+  :jira_id: '237'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the remove from tree button that seem to hang forever
+- :date: 18-May-2026
+  :jira_id: '223'
+  :jira_project: FLOR
+  :description: |-
+    Fix the issue where pasting a long string in the profile item textarea was not showing all the content until the user saves the profile item
+- :date: 18-May-2026
+  :jira_id: '226'
+  :jira_project: FLOR
+  :description: |-
+    Fixup the display of the Tree tab for user with/without tree permission
+- :date: 05-May-2026
+  :jira_id: '5796'
+  :description: |-
+    UI integration for the change name workflow for draft instances
+- :date: 04-May-2026
+  :jira_id: '5796'
+  :description: |-
+    Change name controller and js template changes to support the change name workflow for draft instances
+- :date: 04-May-2026
+  :jira_id: '5796'
+  :description: |-
+    Ability and service object changes to support the change name workflow for draft instances
+- :date: 01-May-2026
+  :jira_id: ''
+  :description: |-
+    Chore: Add vim to the editor development Dockerfile for easier debugging and testing in the container
+- :date: 29-Apr-2026
+  :jira_id: '5800'
+  :description: |-
+    Fix and rework the display of Jira ticket statuses in release notes - they will also display quicker
+- :date: 28-Apr-2026
+  :jira_id: '206'
+  :jira_project: FLOR
+  :description: |-
+    Display the common name form and edit common name tab for users with the common-name product role
+- :date: 28-Apr-2026
+  :jira_id: ''
+  :description: |-
+    Dependabot updates erb from 6.0.2 to 6.0.4
+- :date: 24-Apr-2026
+  :jira_id: '206'
+  :jira_project: FLOR
+  :description: |-
+    Add a common-name product role and give it permissions to create new common names
+- :date: 20-Apr-2026
+  :jira_id: '205'
+  :jira_project: FLOR
+  :description: |-
+    Apply adnot permissions for draft-profile-editor and profile-editor users
+- :date: 17-Apr-2026
+  :jira_id: '2958'
+  :description: |-
+    Name Edit: Let the user know when a name change will impact children
+- :date: 07-May-2026
+  :release: true
 - :date: 16-Apr-2026
   :jira_id: '2144'
   :description: |-

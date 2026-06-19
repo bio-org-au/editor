@@ -1,14 +1,12 @@
 (function() {
-  var refreshTreeTab, refreshPage;
-
-  function refreshTreeTab(event) {
+  window.refreshTreeTab = function(event) {
     $('#instance-classification-tab').click();
     event.preventDefault();
     return false;
-  }
+  };
 
-  function refreshPage() {
-  location.reload();
-  }
+  window.refreshPage = function() {
+    location.reload();
+  };
 
 }).call(this);

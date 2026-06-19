@@ -302,6 +302,12 @@ class NameRank < ApplicationRecord
   end
 
   # NOTE: greater than means below!
+  def at_or_below_genus?
+    sort_order >= NameRank.genus.sort_order
+  end
+
+
+  # NOTE: greater than means below!
   def below_family?
     sort_order > NameRank.family.sort_order
   end
@@ -328,6 +334,14 @@ class NameRank < ApplicationRecord
 
   def top_rank?
     sort_order == NameRank.minimum(:sort_order)
+  end
+
+  def not_bracketed?
+    !(name.match(/\[/))
+  end
+
+  def can_impact_child_name_construction?
+    at_or_below_genus? && not_bracketed?
   end
 end
 
